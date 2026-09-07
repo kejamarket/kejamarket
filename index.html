@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nairobi Rentals Live | Nairobi's #1 Real Estate & House Classifieds</title>
-  <meta name="description" content="Find verified rental houses, bedsitters, apartments, and maisonettes across Nairobi, Ruaka, Kilimani, Roysambu, Westlands, Syokimau, and satellite towns with borehole water, prepaid tokens, and direct landlord contact.">
-  <meta name="keywords" content="Nairobi rentals, houses for rent Nairobi, bedsitter in Ruaka, apartments in Kilimani, Roysambu flats, borehole water rentals Kenya, Kenya rentals">
+  <title>KejaMarket | Kenya's #1 Real Estate & Rental Property Marketplace</title>
+  <meta name="description" content="Find verified rental houses, bedsitters, apartments, and maisonettes across Nairobi, Ruaka, Kilimani, Roysambu, Westlands, and satellite towns with direct landlord contact.">
+  <meta name="keywords" content="KejaMarket, Nairobi rentals, houses for rent Nairobi, bedsitter in Ruaka, apartments in Kilimani, Roysambu flats, Kenya rentals">
 <link rel="manifest" href="manifest.json">
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,19 +25,6 @@
 </head>
 <body>
 
-  <!-- Top Notice / Aggregator Bot Status Bar -->
-  <div class="top-notice-bar">
-    <div class="badges">
-      <span class="notice-badge live"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> Nairobi Real-Time Aggregator: Active</span>
-      <span class="notice-badge"><i class="fas fa-shield-alt"></i> 100% Direct Landlord Contacts & Verified Water Badges</span>
-    </div>
-    <div>
-      <button class="bot-btn-mini" onclick="app.openModal('modal-bot-simulator')">
-        <i class="fas fa-robot"></i> Run Scraper Bot Engine
-      </button>
-    </div>
-  </div>
-
   <!-- Main Site Header -->
   <header class="site-header">
     <div class="header-container">
@@ -47,8 +34,8 @@
         <a href="index.html" class="brand-logo">
           <div class="logo-icon"><i class="fas fa-home"></i></div>
           <div>
-            <div>Nairobi<span class="green">Rentals</span></div>
-            <div class="brand-tagline">Premium Real Estate Platform</div>
+            <div>Keja<span class="green">Market</span></div>
+            <div class="brand-tagline">Kenya's #1 Property Marketplace</div>
           </div>
         </a>
       </div>
@@ -62,7 +49,7 @@
           type="text" 
           id="header-search-input" 
           class="search-input-field" 
-          placeholder="Find bedsitter in Kibra, 1 bedroom in Mathare, Ruaka, Huruma..." 
+          placeholder="Search bedsitter, 1 bedroom, Kilimani, Ruaka, Roysambu..." 
           aria-label="Search listings"
         >
         <button type="submit" class="search-submit-btn">
@@ -114,14 +101,27 @@
     </div>
   </nav>
 
+  <!-- Mobile Quick Filter & Sort Bar (Jiji style) -->
+  <div class="mobile-filter-bar">
+    <button class="btn-mobile-filter-toggle" id="btn-mobile-filter-toggle" onclick="app.toggleMobileFilters()">
+      <i class="fas fa-sliders-h"></i> Filters
+    </button>
+    <button class="btn-mobile-view-toggle" onclick="app.cycleMobileView()">
+      <i class="fas fa-th-large" id="mobile-view-icon"></i> View
+    </button>
+  </div>
+
   <!-- Main Application Layout -->
   <main class="main-app-layout">
 
     <!-- Left Sidebar: Filters -->
-    <aside class="sidebar-filters" aria-label="Rental Filters">
+    <aside class="sidebar-filters" id="sidebar-filters" aria-label="Rental Filters">
       <div class="filter-header">
         <h2><i class="fas fa-sliders-h" style="color: #00b53f;"></i> Filters</h2>
-        <button class="btn-reset-filters" onclick="app.resetFilters()">Clear All</button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn-reset-filters" onclick="app.resetFilters()">Clear All</button>
+          <button class="btn-close-mobile-filter" onclick="app.toggleMobileFilters()" style="display:none;">&times;</button>
+        </div>
       </div>
 
       <!-- Location / Corridor Filter -->
@@ -1276,6 +1276,32 @@
       </div>
     </div>
   </div>
+
+  <!-- Mobile Bottom Navigation Bar (Jiji style) -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <a href="#" class="mobile-nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="document.getElementById('header-search-input').focus(); return false;">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </a>
+    <a href="#" class="mobile-nav-item mobile-nav-post" onclick="kejaAuth.requireLandlordForAction('modal-post-ad'); return false;">
+      <div class="mobile-nav-post-btn">
+        <i class="fas fa-plus"></i>
+      </div>
+      <span>Post Ad</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="app.toggleFavoritesView(); return false;">
+      <i class="fas fa-heart"></i>
+      <span>Saved</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="kejaAuth.openAuthModal(); return false;">
+      <i class="fas fa-user"></i>
+      <span id="mobile-nav-user-label">Profile</span>
+    </a>
+  </nav>
 
 </body>
 </html>

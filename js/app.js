@@ -775,6 +775,27 @@ class NairobiRentalsApp {
     }
   }
 
+  toggleMobileFilters() {
+    const sidebar = document.getElementById('sidebar-filters');
+    const closeBtn = document.querySelector('.btn-close-mobile-filter');
+    if (sidebar) {
+      sidebar.classList.toggle('mobile-open');
+      if (closeBtn) {
+        closeBtn.style.display = sidebar.classList.contains('mobile-open') ? 'inline-block' : 'none';
+      }
+    }
+  }
+
+  cycleMobileView() {
+    const views = ['grid', 'split', 'map'];
+    const nextIdx = (views.indexOf(this.currentViewMode) + 1) % views.length;
+    this.setViewMode(views[nextIdx]);
+    const icon = document.getElementById('mobile-view-icon');
+    if (icon) {
+      icon.className = nextIdx === 0 ? 'fas fa-th-large' : nextIdx === 1 ? 'fas fa-columns' : 'fas fa-map-marked-alt';
+    }
+  }
+
   showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
     if (!container) return;
