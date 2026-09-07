@@ -108,7 +108,9 @@
           "caption": "Modern fitted kitchen with granite countertops"
         }
       ],
-      "photoCount": 8
+      "photoCount": 8,
+      "isTaken": false,
+      "status": "available"
     },
     {
       "id": "prop-nrb-008",

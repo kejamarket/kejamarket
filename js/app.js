@@ -19,6 +19,7 @@ class NairobiRentalsApp {
     this.maxPrice = 200000;
     this.sortBy = 'newest';
     this.showOnlyFavorites = false;
+    this.hideTaken = true; // Default hide taken/occupied properties
 
     // Filters for utilities & amenities
     this.filters = {
@@ -266,6 +267,15 @@ class NairobiRentalsApp {
       }
     });
 
+    // Hide Taken Checkbox
+    const hideTakenEl = document.getElementById('filter-hide-taken');
+    if (hideTakenEl) {
+      hideTakenEl.addEventListener('change', (e) => {
+        this.hideTaken = e.target.checked;
+        this.applyFilters();
+      });
+    }
+
     // Sorting
     const sortSelect = document.getElementById('sort-by-select');
     if (sortSelect) {
@@ -347,6 +357,9 @@ class NairobiRentalsApp {
 
   applyFilters() {
     let result = this.properties.filter(p => {
+      // Hide taken / occupied properties filter
+      if (this.hideTaken && (p.isTaken || p.status === 'taken')) return false;
+
       // Favorites filter
       if (this.showOnlyFavorites && !this.favorites.has(p.id)) return false;
 
@@ -457,6 +470,7 @@ class NairobiRentalsApp {
     const photoCount = p.photoCount || p.media.length || 1;
     const thumbnail = p.media[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
+    const isTaken = p.isTaken || p.status === 'taken';
     const pricePeriod = isBnb ? '/ night' : '/ month';
     
     // WhatsApp click-to-chat text
@@ -464,11 +478,12 @@ class NairobiRentalsApp {
     const waPhone = p.landlord.whatsapp.replace(/[^0-9]/g, '');
 
     return `
-      <div class="property-card" data-id="${p.id}">
+      <div class="property-card ${isTaken ? 'property-card-taken' : ''}" data-id="${p.id}">
         <div class="card-media-wrapper" onclick="app.openPropertyDetail('${p.id}')">
-          <img src="${thumbnail}" alt="${p.title}" loading="lazy">
+          <img src="${thumbnail}" alt="${p.title}" loading="lazy" style="${isTaken ? 'filter: grayscale(50%) opacity(0.8);' : ''}">
           
           <div class="card-badges-top">
+            ${isTaken ? '<span class="badge-taken" style="background: #dc2626; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;"><i class="fas fa-ban"></i> TAKEN / OCCUPIED</span>' : ''}
             ${isBnb ? '<span class="badge-top-ad" style="background: #ff5a5f;"><i class="fas fa-bed"></i> BNB / AIRBNB</span>' : (p.isTopAd ? '<span class="badge-top-ad"><i class="fas fa-bolt"></i> TOP AD</span>' : '')}
             ${p.landlord.isVerified ? '<span class="badge-verified-landlord"><i class="fas fa-shield-alt"></i> VERIFIED</span>' : ''}
           </div>
@@ -483,11 +498,11 @@ class NairobiRentalsApp {
 
         <div class="card-content">
           <div class="card-price-row">
-            <div class="card-price">KSh ${p.rentKes.toLocaleString()} <span class="period">${pricePeriod}</span></div>
+            <div class="card-price" style="${isTaken ? 'color: #64748b;' : ''}">KSh ${p.rentKes.toLocaleString()} <span class="period">${pricePeriod}</span></div>
           </div>
 
           <h3 class="card-title" onclick="app.openPropertyDetail('${p.id}')" title="${p.title}">
-            ${p.title}
+            ${isTaken ? '<span style="color: #dc2626; font-size: 0.8rem; font-weight: 800; margin-right: 4px;">[TAKEN]</span>' : ''}${p.title}
           </h3>
 
           <div class="card-location-row">
@@ -509,12 +524,21 @@ class NairobiRentalsApp {
           </div>
 
           <div class="card-action-buttons">
-            <button class="btn-card-call" onclick="app.revealLandlordPhone('${p.id}', this)">
-              <i class="fas fa-phone-alt"></i> ${isBnb ? 'Call Host' : 'Call'}
-            </button>
-            <button class="btn-card-chat" onclick="app.openChatForProperty('${p.id}', event)">
-              <i class="fas fa-comment-dots"></i> Chat
-            </button>
+            ${isTaken ? `
+              <button class="btn-card-call" style="background: #ef4444; color: white; opacity: 0.85;" onclick="app.showTakenToast(event)">
+                <i class="fas fa-ban"></i> Taken
+              </button>
+              <button class="btn-card-chat" style="background: #94a3b8; color: white; opacity: 0.85;" onclick="app.showTakenToast(event)">
+                <i class="fas fa-lock"></i> Taken
+              </button>
+            ` : `
+              <button class="btn-card-call" onclick="app.revealLandlordPhone('${p.id}', this)">
+                <i class="fas fa-phone-alt"></i> ${isBnb ? 'Call Host' : 'Call'}
+              </button>
+              <button class="btn-card-chat" onclick="app.openChatForProperty('${p.id}', event)">
+                <i class="fas fa-comment-dots"></i> Chat
+              </button>
+            `}
             <button class="btn-card-map" onclick="app.focusPropertyOnMap('${p.id}', event)" title="View Pin on Map">
               <i class="fas fa-map-marked-alt"></i> Pin Map
             </button>
@@ -615,7 +639,37 @@ class NairobiRentalsApp {
 
     this.selectedPropertyForDetail = p;
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
+    const isTaken = p.isTaken || p.status === 'taken';
     const pricePeriod = isBnb ? '/ night' : '/ month';
+
+    // Taken Status Banner & Control Bar
+    const takenBanner = document.getElementById('detail-taken-banner');
+    const statusPill = document.getElementById('detail-status-pill');
+    const toggleBtn = document.getElementById('btn-toggle-taken-status');
+
+    if (takenBanner) {
+      takenBanner.style.display = isTaken ? 'flex' : 'none';
+    }
+
+    if (statusPill) {
+      if (isTaken) {
+        statusPill.textContent = 'TAKEN / OCCUPIED';
+        statusPill.style.background = '#fef2f2';
+        statusPill.style.color = '#991b1b';
+      } else {
+        statusPill.textContent = 'VACANT / AVAILABLE';
+        statusPill.style.background = '#dcfce7';
+        statusPill.style.color = '#166534';
+      }
+    }
+
+    if (toggleBtn) {
+      toggleBtn.innerHTML = isTaken
+        ? '<i class="fas fa-check-circle"></i> Mark as Vacant / Available'
+        : '<i class="fas fa-tag"></i> Mark as Taken / Occupied';
+      toggleBtn.style.background = isTaken ? '#00b53f' : '';
+      toggleBtn.style.color = isTaken ? '#ffffff' : '';
+    }
 
     // Set modal title & price
     document.getElementById('detail-modal-title').textContent = p.title;
@@ -1043,6 +1097,52 @@ class NairobiRentalsApp {
 
   saveChatMessages() {
     localStorage.setItem('kejamarket_chat_messages', JSON.stringify(this.chatMessages));
+  }
+
+  showTakenToast(event) {
+    if (event) event.stopPropagation();
+    this.showToast('This listing was marked TAKEN / OCCUPIED by the landlord.', 'warning');
+  }
+
+  async toggleCurrentPropertyTakenStatus() {
+    if (!this.selectedPropertyForDetail) return;
+    await this.togglePropertyTakenStatus(this.selectedPropertyForDetail.id);
+  }
+
+  async togglePropertyTakenStatus(propertyId) {
+    const p = this.properties.find(x => x.id === propertyId);
+    if (!p) return;
+
+    const newStatus = !(p.isTaken || p.status === 'taken');
+
+    try {
+      const res = await fetch(`/api/properties/${propertyId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isTaken: newStatus, status: newStatus ? 'taken' : 'available' })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        p.isTaken = newStatus;
+        p.status = newStatus ? 'taken' : 'available';
+        this.showToast(data.message || `Status updated to ${newStatus ? 'TAKEN / OCCUPIED' : 'VACANT / AVAILABLE'}!`, 'success');
+      } else {
+        p.isTaken = newStatus;
+        p.status = newStatus ? 'taken' : 'available';
+        this.showToast(`Status updated to ${newStatus ? 'TAKEN / OCCUPIED' : 'VACANT / AVAILABLE'}!`, 'success');
+      }
+    } catch (err) {
+      p.isTaken = newStatus;
+      p.status = newStatus ? 'taken' : 'available';
+      this.showToast(`Status updated to ${newStatus ? 'TAKEN / OCCUPIED' : 'VACANT / AVAILABLE'}!`, 'info');
+    }
+
+    if (this.selectedPropertyForDetail && this.selectedPropertyForDetail.id === propertyId) {
+      this.openPropertyDetail(propertyId);
+    }
+
+    this.applyFilters();
   }
 
   showToast(message, type = 'success') {

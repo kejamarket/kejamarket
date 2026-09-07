@@ -569,6 +569,25 @@ app.put('/api/properties/:id/boost', optionalAuth, (req, res) => {
   res.json({ success: true, message: 'Property boosted successfully!', property });
 });
 
+// PATCH /api/properties/:id/status (Toggle taken / occupied / available status)
+app.patch('/api/properties/:id/status', optionalAuth, (req, res) => {
+  const { id } = req.params;
+  const { isTaken, status } = req.body;
+  const newStatus = isTaken !== undefined ? isTaken : (status === 'taken');
+  const property = store.updateProperty(id, {
+    isTaken: newStatus,
+    status: newStatus ? 'taken' : 'available'
+  });
+  if (!property) {
+    return res.status(404).json({ success: false, message: 'Property not found.' });
+  }
+  res.json({
+    success: true,
+    message: `Property status updated to ${newStatus ? 'TAKEN / OCCUPIED' : 'VACANT / AVAILABLE'}`,
+    property
+  });
+});
+
 // ─── REVIEWS ROUTES ─────────────────────────────────────────────────────────
 
 // GET /api/properties/:id/reviews
