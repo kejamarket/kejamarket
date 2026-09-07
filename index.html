@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nairobi Rentals Live | Nairobi's #1 Real Estate & House Classifieds</title>
+  <meta name="description" content="Find verified rental houses, bedsitters, apartments, and maisonettes across Nairobi, Ruaka, Kilimani, Roysambu, Westlands, Syokimau, and satellite towns with borehole water, prepaid tokens, and direct landlord contact.">
+  <meta name="keywords" content="Nairobi rentals, houses for rent Nairobi, bedsitter in Ruaka, apartments in Kilimani, Roysambu flats, borehole water rentals Kenya, Kenya rentals">
+<link rel="manifest" href="manifest.json">
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/monetization.css">
+</head>
+<body>
+
+  <!-- Top Notice / Aggregator Bot Status Bar -->
+  <div class="top-notice-bar">
+    <div class="badges">
+      <span class="notice-badge live"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> Nairobi Real-Time Aggregator: Active</span>
+      <span class="notice-badge"><i class="fas fa-shield-alt"></i> 100% Direct Landlord Contacts & Verified Water Badges</span>
+    </div>
+    <div>
+      <button class="bot-btn-mini" onclick="app.openModal('modal-bot-simulator')">
+        <i class="fas fa-robot"></i> Run Scraper Bot Engine
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      
+      <!-- Brand Logo -->
+      <div class="brand-wrapper">
+        <a href="index.html" class="brand-logo">
+          <div class="logo-icon"><i class="fas fa-home"></i></div>
+          <div>
+            <div>Nairobi<span class="green">Rentals</span></div>
+            <div class="brand-tagline">Premium Real Estate Platform</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Header Search Form -->
+      <form class="header-search-bar" id="header-search-form" onsubmit="return false;">
+        <select class="search-category-select" id="header-category-select" aria-label="Search Category">
+          <option value="All">All Categories</option>
+        </select>
+        <input 
+          type="text" 
+          id="header-search-input" 
+          class="search-input-field" 
+          placeholder="Find bedsitter in Kibra, 1 bedroom in Mathare, Ruaka, Huruma..." 
+          aria-label="Search listings"
+        >
+        <button type="submit" class="search-submit-btn">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </form>
+
+      <!-- Header Action Buttons -->
+      <div class="header-actions">
+        
+        <!-- Post Free Ad Button -->
+        <button class="btn-post-ad" onclick="kejaAuth.requireLandlordForAction('modal-post-ad')">
+          <i class="fas fa-plus-circle"></i> Post Free Ad
+        </button>
+
+        <!-- Favorites (Heart) -->
+        <button class="btn-header-action" id="btn-header-favs" onclick="app.toggleFavoritesView()" title="Saved Favorites">
+          <i class="fas fa-heart" style="color: #ef4444;"></i>
+          <span>Favorites</span>
+          <span class="badge-count" id="fav-count-badge">0</span>
+        </button>
+
+        <!-- In-app Messages -->
+        <button class="btn-header-action" onclick="app.openModal('modal-messages')" title="Messages & Inquiries">
+          <i class="fas fa-comment-dots" style="color: #00b53f;"></i>
+          <span>Messages</span>
+        </button>
+
+        <!-- Pricing & Landlord Pro -->
+        <button class="btn-header-action btn-header-pricing" onclick="app.openModal('modal-pricing-plans')" title="Boost Ads & Landlord Pro">
+          <i class="fas fa-crown"></i>
+          <span>Pricing & Pro</span>
+        </button>
+
+        <!-- Sign In / Sign Up (dynamic based on session) -->
+        <button class="btn-header-action btn-auth-trigger" id="btn-auth-header" onclick="kejaAuth.openAuthModal()">
+          <i class="fas fa-user-circle"></i>
+          <span id="auth-header-label">Sign In</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Category Quick Filter Pills Bar -->
+  <nav class="category-pills-bar" aria-label="Category Navigation">
+    <div class="pills-scroll-container" id="category-pills-container">
+      <!-- Generated via JS -->
+    </div>
+  </nav>
+
+  <!-- Main Application Layout -->
+  <main class="main-app-layout">
+
+    <!-- Left Sidebar: Filters -->
+    <aside class="sidebar-filters" aria-label="Rental Filters">
+      <div class="filter-header">
+        <h2><i class="fas fa-sliders-h" style="color: #00b53f;"></i> Filters</h2>
+        <button class="btn-reset-filters" onclick="app.resetFilters()">Clear All</button>
+      </div>
+
+      <!-- Location / Corridor Filter -->
+      <div class="filter-group">
+        <div class="filter-title">
+          <span><i class="fas fa-map-marked-alt" style="color: #00b53f;"></i> Nairobi Corridor</span>
+        </div>
+        <select class="filter-select" id="filter-corridor">
+          <!-- Populated by JS -->
+        </select>
+
+        <div class="filter-title" style="margin-top: 10px;">
+          <span><i class="fas fa-city" style="color: #00b53f;"></i> Suburb / Estate</span>
+        </div>
+        <select class="filter-select" id="filter-suburb">
+          <!-- Populated by JS -->
+        </select>
+      </div>
+
+      <!-- Price Range (KES) -->
+      <div class="filter-group">
+        <div class="filter-title">
+          <span><i class="fas fa-money-bill-wave" style="color: #00b53f;"></i> Rent Price (KES / mo)</span>
+        </div>
+        <div class="price-inputs-wrapper">
+          <input type="number" id="price-min-input" class="price-input" placeholder="Min KES" value="0" min="0" step="1000">
+          <span style="color: #94a3b8; font-size: 0.8rem;">to</span>
+          <input type="number" id="price-max-input" class="price-input" placeholder="Max KES" value="200000" min="5000" step="5000">
+        </div>
+        <input type="range" id="price-slider" class="price-slider" min="5000" max="200000" step="5000" value="200000">
+      </div>
+
+      <!-- Utility Setup Badges (PRD Water & Tokens) -->
+      <div class="filter-group">
+        <div class="filter-title">
+          <span><i class="fas fa-faucet" style="color: #00b53f;"></i> Water & Utilities</span>
+        </div>
+        <div class="checkbox-list">
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-borehole">
+            <span>💧 Borehole Water (24/7)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-council">
+            <span>🚰 Nairobi Council Water</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-tokens">
+            <span>⚡ Prepaid Tokens (KPLC)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Amenities Checkboxes -->
+      <div class="filter-group">
+        <div class="filter-title">
+          <span><i class="fas fa-couch" style="color: #00b53f;"></i> Amenities</span>
+        </div>
+        <div class="checkbox-list">
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-balcony">
+            <span>Balcony / Verandah</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-parking">
+            <span>Designated Parking</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-fence">
+            <span>Electric Perimeter Fence</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-cctv">
+            <span>CCTV Security</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-internet">
+            <span>High Speed Fiber WiFi</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-tiles">
+            <span>Ceramic Floor Tiles</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="filter-ensuite">
+            <span>Master Ensuite</span>
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area: View Mode, Listings Grid, Interactive Map -->
+    <section class="content-area-wrapper">
+
+      <!-- WhatsApp Tenant Alerts Banner -->
+      <div class="whatsapp-alert-banner" style="background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 10px 16px; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 8px rgba(18, 140, 126, 0.2);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <i class="fab fa-whatsapp" style="font-size: 1.8rem; color: #25d366;"></i>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">Looking for a house? Get Instant WhatsApp Alerts!</div>
+            <div style="font-size: 0.8rem; opacity: 0.9;">Be the first to receive verified rentals directly on your phone.</div>
+          </div>
+        </div>
+        <button class="btn-primary" style="background: #25d366; color: #075e54; font-weight: 800; font-size: 0.85rem; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);" onclick="app.openModal('modal-whatsapp-alerts')">
+          <i class="fab fa-whatsapp"></i> Set Alert (KSh 100)
+        </button>
+      </div>
+
+      <!-- View Controls & View Mode Switcher -->
+      <div class="view-controls-bar">
+        <div class="listings-count-summary" id="listings-count-summary">
+          Loading rental listings...
+        </div>
+
+        <div class="right-controls">
+          <!-- Sort dropdown -->
+          <select class="sort-select" id="sort-by-select">
+            <option value="category_asc">Arrange: Single Room & Upwards</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="featured">Featured / Top Ads</option>
+          </select>
+
+          <!-- View Mode Toggle (Grid | Split | Map) -->
+          <div class="view-mode-toggle">
+            <button class="btn-view-mode active" data-view="grid" onclick="app.setViewMode('grid')">
+              <i class="fas fa-th"></i> Grid View
+            </button>
+            <button class="btn-view-mode" data-view="split" onclick="app.setViewMode('split')">
+              <i class="fas fa-columns"></i> Split View
+            </button>
+            <button class="btn-view-mode" data-view="map" onclick="app.setViewMode('map')">
+              <i class="fas fa-map-marked-alt"></i> Map View
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 1: Standard Grid View -->
+      <div class="view-container" id="view-grid-container">
+        <div class="property-listings-grid" id="property-grid">
+          <!-- Generated via JS -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-wrapper" id="pagination-container">
+          <!-- Generated via JS -->
+        </div>
+      </div>
+
+      <!-- VIEW 2: Split View (Listings Left + Live Map Right) -->
+      <div class="view-container hidden" id="view-split-container">
+        <div class="split-view-container">
+          <div class="split-listings-col" id="split-property-list">
+            <!-- Populated via JS -->
+          </div>
+          <div class="split-map-col">
+            <div id="leaflet-split-map"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: Full Screen Interactive Live Map View -->
+      <div class="view-container hidden" id="view-map-container">
+        <div class="full-map-view-container">
+          <div id="leaflet-full-map"></div>
+        </div>
+      </div>
+
+      <!-- Site Footer -->
+      <footer style="margin-top: 40px; padding: 32px 20px; border-top: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 0.9rem; background: #f8fafc;">
+        <div style="max-width: 600px; margin: 0 auto 16px auto;">
+          <h4 style="color: #0f172a; margin-bottom: 8px; font-weight: 700;">About Keja</h4>
+          <p style="line-height: 1.5; margin-bottom: 0;">Our mission is to connect Kenyans with verified, affordable homes seamlessly and securely. We eliminate the hassle of house hunting by bringing the best rentals directly to your phone.</p>
+        </div>
+        <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap;">
+          <a href="https://wa.me/254180511492" target="_blank" style="color: #25d366; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+            <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> Contact Us: 0180511492
+          </a>
+        </div>
+        <div style="font-size: 0.85rem;">&copy; <script>document.write(new Date().getFullYear())</script> Keja. All rights reserved.</div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ====================================================================
+       MODAL 1: Landlord "+ Post Free Ad"
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-post-ad">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><i class="fas fa-plus-circle" style="color: #00b53f;"></i> Post Free Rental Ad</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-post-ad')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="post-ad-form">
+          <div class="form-group">
+            <label>Property Title *</label>
+            <input type="text" id="post-title" class="form-control" placeholder="e.g. Spacious 2 Bedroom Master Ensuite in Ruaka" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>House Category *</label>
+              <select id="post-category" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label>Nairobi Suburb / Estate *</label>
+              <select id="post-suburb" class="form-control" required></select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Pricing Rate / Type *</label>
+              <select id="post-price-type" class="form-control">
+                <option value="monthly">Monthly Long-Term Rental</option>
+                <option value="night">Daily BnB / Airbnb Short-Stay Rate</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Rent / Daily Rate (KES) *</label>
+              <input type="number" id="post-rent" class="form-control" placeholder="e.g. 25000 / mo or 3500 / night" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Security Deposit (KES) (Optional for BnBs)</label>
+            <input type="number" id="post-deposit" class="form-control" placeholder="e.g. 25000 (Leave 0 for BnB)">
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Water Supply Type *</label>
+              <select id="post-water" class="form-control">
+                <option value="Borehole Water">Borehole Water (24/7)</option>
+                <option value="City Council Water">Nairobi City Council Water</option>
+                <option value="Rationed Water">Rationed Water (Scheduled)</option>
+                <option value="Borehole + Council Backup">Borehole + Council Backup</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Electricity Meter *</label>
+              <select id="post-electricity" class="form-control">
+                <option value="Prepaid (Tokens)">Prepaid Tokens (KPLC Direct)</option>
+                <option value="Postpaid (Monthly Bill)">Postpaid Monthly Bill</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- GPS Location Map Pin Drop -->
+          <div class="form-group">
+            <label>Exact GPS Map Pin Placement (Drag pin to property location)</label>
+            <div id="post-pin-map" style="height: 180px; border-radius: 8px; margin-bottom: 6px;"></div>
+            <div id="post-gps-coords" style="font-size: 0.78rem; color: #64748b; font-family: monospace;">GPS: -1.28638, 36.81722</div>
+          </div>
+
+          <!-- Photos Upload with Watermarking -->
+          <div class="form-group">
+            <label>Property Photos (Up to 16 High-Res Photos)</label>
+            <div class="photo-dropzone" id="photo-dropzone">
+              <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #00b53f; margin-bottom: 6px;"></i>
+              <div style="font-weight: 700; font-size: 0.9rem;">Click or drag & drop property photos here</div>
+              <div style="font-size: 0.78rem; color: #64748b;">Automatic platform watermark protection applied</div>
+            </div>
+            <input type="file" id="post-photos-input" multiple accept="image/*" style="display: none;">
+            <div class="photo-preview-grid" id="post-photos-preview"></div>
+          </div>
+
+          <!-- Amenities Selection -->
+          <div class="form-group">
+            <label>Key Amenities</label>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 0.82rem;">
+              <label><input type="checkbox" id="amenity-balcony" checked> Balcony</label>
+              <label><input type="checkbox" id="amenity-parking" checked> Parking</label>
+              <label><input type="checkbox" id="amenity-fence" checked> Electric Fence</label>
+              <label><input type="checkbox" id="amenity-cctv" checked> CCTV Security</label>
+              <label><input type="checkbox" id="amenity-internet" checked> Fast WiFi</label>
+              <label><input type="checkbox" id="amenity-tiles" checked> Ceramic Tiles</label>
+              <label><input type="checkbox" id="amenity-ensuite" checked> Master Ensuite</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Description & Special Instructions</label>
+            <textarea id="post-description" class="form-control" rows="3" placeholder="Describe the house, road access, security details, garbage collection..."></textarea>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Landlord / Agency Name *</label>
+              <input type="text" id="post-landlord-name" class="form-control" placeholder="e.g. Mwangi Management" required>
+            </div>
+            <div class="form-group">
+              <label>Contact Phone (WhatsApp / Calls) *</label>
+              <input type="tel" id="post-phone" class="form-control" placeholder="e.g. +254712345678" required>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-post-ad')">Cancel</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Publish Free Ad</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 2: Property Detail & Community Transparency Review
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-property-detail">
+    <div class="modal-dialog" style="max-width: 860px;">
+      <div class="modal-header">
+        <h3 id="detail-modal-title">Property Details</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-property-detail')">&times;</button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Main Photo Gallery -->
+        <div class="detail-gallery-main">
+          <img id="detail-main-photo" src="" alt="Property main view">
+          <span class="card-watermark"><i class="fas fa-home"></i> NAIROBI RENTALS LIVE</span>
+        </div>
+        <div class="detail-thumbs-strip" id="detail-thumbs-container"></div>
+
+        <!-- Price & Location Overview -->
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 12px;">
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #00b53f;" id="detail-modal-price">KSh 0 / month</div>
+            <div style="font-size: 0.85rem; color: #64748b;" id="detail-modal-deposit">Deposit: KSh 0</div>
+          </div>
+          <div style="font-size: 0.92rem; color: #334155; font-weight: 600;" id="detail-modal-location"></div>
+        </div>
+
+        <!-- Specifications Grid -->
+        <div class="detail-specs-grid">
+          <div class="spec-item">
+            <span class="spec-label">House Type</span>
+            <span class="spec-value" id="spec-category">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Bedrooms</span>
+            <span class="spec-value" id="spec-bedrooms">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Water Supply</span>
+            <span class="spec-value" id="spec-water">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Electricity</span>
+            <span class="spec-value" id="spec-electricity">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Garbage Fee</span>
+            <span class="spec-value" id="spec-garbage">-</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Verification</span>
+            <span class="spec-value" id="spec-verified">-</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div style="margin-bottom: 18px;">
+          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 6px;">Description</h4>
+          <p id="detail-modal-desc" style="font-size: 0.9rem; color: #475569; line-height: 1.6;"></p>
+        </div>
+
+        <!-- Amenities -->
+        <div style="margin-bottom: 20px;">
+          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px;">Amenities & Features</h4>
+          <div id="detail-amenities-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; font-size: 0.85rem;"></div>
+        </div>
+
+        <!-- Interactive Property Location Map (GPS Pin) -->
+        <div style="margin-bottom: 22px;">
+          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-map-marked-alt" style="color: #00b53f;"></i> Exact GPS Location on Map</span>
+            <span id="detail-gps-badge" style="font-size: 0.78rem; font-weight: 600; color: #64748b; font-family: monospace;">-</span>
+          </h4>
+          <div id="detail-property-map" style="height: 220px; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08);"></div>
+        </div>
+
+        <!-- Landlord Contacts Box -->
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="font-weight: 800; font-size: 1.05rem; color: #166534;" id="detail-landlord-name">-</div>
+              <div style="font-size: 0.8rem; color: #15803d;" id="detail-landlord-since">-</div>
+              <div style="font-size: 0.88rem; font-weight: 700; margin-top: 4px; color: #0f172a;" id="detail-landlord-phone-display">-</div>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <a id="detail-btn-whatsapp" href="#" target="_blank" class="btn-card-whatsapp" style="padding: 10px 18px; font-size: 0.9rem; border-radius: 8px;">
+                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+              </a>
+              <a id="detail-btn-call" href="#" class="btn-primary" style="padding: 10px 18px; font-size: 0.9rem; border-radius: 8px;">
+                <i class="fas fa-phone-alt"></i> Call Landlord
+              </a>
+              <a id="detail-btn-directions" href="#" target="_blank" class="btn-secondary" style="padding: 10px 14px; font-size: 0.88rem; border-radius: 8px;">
+                <i class="fas fa-directions"></i> Open in Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Value-Add Affiliate Cards (Monetization: Lead Generation) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px;">
+          <!-- Nairobi Movers Card -->
+          <div style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1px solid #fed7aa; border-radius: 12px; padding: 16px; cursor: pointer;" onclick="app.openModal('modal-lead-movers')">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: #f97316; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-truck-moving" style="color: white; font-size: 1rem;"></i>
+              </div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.92rem; color: #9a3412;">🚚 Moving to This Estate?</div>
+                <div style="font-size: 0.75rem; color: #c2410c;">Nairobi Movers Partner</div>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: #78350f; line-height: 1.5; margin-bottom: 10px;">Get a free quote for professional movers within Nairobi. Same-day & weekend moves available.</p>
+            <button class="btn-primary" style="width: 100%; background: #f97316; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
+              <i class="fas fa-arrow-right"></i> Get Free Moving Quote
+            </button>
+          </div>
+
+          <!-- Fibre WiFi Connection Card -->
+          <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #93c5fd; border-radius: 12px; padding: 16px; cursor: pointer;" onclick="app.openModal('modal-lead-fibre')">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: #2563eb; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-wifi" style="color: white; font-size: 1rem;"></i>
+              </div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.92rem; color: #1e3a8a;">📡 Need WiFi Connection?</div>
+                <div style="font-size: 0.75rem; color: #1d4ed8;">Safaricom & Zuku Fibre</div>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: #1e3a5f; line-height: 1.5; margin-bottom: 10px;">Install high-speed fibre internet in your new house. From KSh 2,500/mo for 20Mbps.</p>
+            <button class="btn-primary" style="width: 100%; background: #2563eb; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
+              <i class="fas fa-arrow-right"></i> Request WiFi Installation
+            </button>
+          </div>
+        </div>
+
+        <!-- Community Reviews Section (PRD Water, Security & Deposit Transparency) -->
+        <div style="border-top: 1px solid #e2e8f0; padding-top: 18px;">
+          <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-star" style="color: #ff9800;"></i> Resident Community Reviews & Transparency
+          </h4>
+          
+          <div id="detail-reviews-list" style="margin-bottom: 18px;"></div>
+
+          <!-- Add Review Form -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
+            <h5 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">Leave a Resident / Tenant Review</h5>
+            <form id="form-submit-review" onsubmit="app.submitReviewForm(event)">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label>Your Name</label>
+                  <input type="text" id="review-author-name" class="form-control" placeholder="e.g. Alex N. (Tenant)">
+                </div>
+                <div class="form-group">
+                  <label>💧 Water Availability Rating</label>
+                  <select id="review-water-rating" class="form-control">
+                    <option value="5.0">5.0 ★ - Constant 24/7 Borehole</option>
+                    <option value="4.0">4.0 ★ - Regular with minor rationing</option>
+                    <option value="3.0">3.0 ★ - Moderate supply</option>
+                    <option value="2.0">2.0 ★ - Frequent shortage</option>
+                    <option value="1.0">1.0 ★ - Severe rationing</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label>🛡️ Security Rating</label>
+                  <select id="review-sec-rating" class="form-control">
+                    <option value="5.0">5.0 ★ - Very secure, electric fence & guard</option>
+                    <option value="4.0">4.0 ★ - Good security</option>
+                    <option value="3.0">3.0 ★ - Average</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>💰 Deposit Refund Transparency</label>
+                  <select id="review-dep-rating" class="form-control">
+                    <option value="5.0">5.0 ★ - Prompt, 100% fair refund</option>
+                    <option value="4.0">4.0 ★ - Fair deductions</option>
+                    <option value="3.0">3.0 ★ - Moderate delays</option>
+                    <option value="2.0">2.0 ★ - Difficult refund</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Review Comment</label>
+                <textarea id="review-comment-text" class="form-control" rows="2" placeholder="Describe your experience with water, caretaker, noise levels, and security..."></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary" style="font-size: 0.85rem; padding: 8px 16px;">
+                <i class="fas fa-check"></i> Post Community Review
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 3: Automated Aggregator Bot (Web Scraper Engine)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-bot-simulator">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><i class="fas fa-robot" style="color: #00b53f;"></i> Automated Aggregator Bot (Web Scraper Engine)</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-bot-simulator')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 12px;">
+          Simulates PRD Section 5: Automated extraction of public Nairobi listings, SHA-256 deduplication hashing, auto-tagging into corridors, and 21-day stale auto-archiving.
+        </p>
+
+        <!-- Bot Live Stats -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
+          <div style="background: #f1f5f9; padding: 10px; border-radius: 6px; text-align: center;">
+            <div style="font-size: 0.75rem; color: #64748b;">Listings Extracted</div>
+            <div style="font-size: 1.3rem; font-weight: 800; color: #00b53f;" id="bot-stat-extracted">0</div>
+          </div>
+          <div style="background: #f1f5f9; padding: 10px; border-radius: 6px; text-align: center;">
+            <div style="font-size: 0.75rem; color: #64748b;">Duplicates Blocked</div>
+            <div style="font-size: 1.3rem; font-weight: 800; color: #eab308;" id="bot-stat-dedup">0</div>
+          </div>
+          <div style="background: #f1f5f9; padding: 10px; border-radius: 6px; text-align: center;">
+            <div style="font-size: 0.75rem; color: #64748b;">Stale Auto-Archived</div>
+            <div style="font-size: 1.3rem; font-weight: 800; color: #ef4444;" id="bot-stat-archived">0</div>
+          </div>
+        </div>
+
+        <!-- Terminal Console -->
+        <div class="bot-console-wrapper" id="bot-console-logs">
+          <div class="bot-console-log info">[SYSTEM] Bot Aggregator Engine ready for Nairobi Metropolitan Area.</div>
+          <div class="bot-console-log info">[SYSTEM] Target corridors: Kiambu Rd, Thika Rd, Westlands, Eastlands, Mombasa Rd, Ngong Rd.</div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-primary" onclick="botAggregator.runScraperCycle()">
+            <i class="fas fa-play"></i> Trigger Live Scrape Cycle
+          </button>
+          <button class="btn-secondary" onclick="botAggregator.runStaleArchiver()">
+            <i class="fas fa-broom"></i> Run 21-Day Stale Archiver
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 4: Landlord Identity Verification Badge
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-verification">
+    <div class="modal-dialog" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-shield-alt" style="color: #1976d2;"></i> Landlord Identity Verification</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-verification')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 14px;">
+          Verified landlords receive a blue <strong>"VERIFIED LANDLORD"</strong> badge on all listings, boosting tenant inquiries by 300%.
+        </p>
+        <form id="form-verification-badge">
+          <div class="form-group">
+            <label>Full Legal Name / Business Name *</label>
+            <input type="text" class="form-control" placeholder="e.g. Mwangi James" required>
+          </div>
+          <div class="form-group">
+            <label>National ID Number or Business Reg No *</label>
+            <input type="text" class="form-control" placeholder="e.g. 29384819" required>
+          </div>
+          <div class="form-group">
+            <label>Upload Proof (National ID, Title Deed or Utility Bill)</label>
+            <input type="file" class="form-control" accept="image/*,.pdf" required>
+          </div>
+          <div class="form-group">
+            <label>Phone Number for OTP Verification</label>
+            <input type="tel" class="form-control" placeholder="+2547..." required>
+          </div>
+          <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent;">
+            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-verification')">Cancel</button>
+            <button type="submit" class="btn-primary" style="background: #1976d2;"><i class="fas fa-check"></i> Submit Verification</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 5: In-app Messages / Tenant Inquiries
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-messages">
+    <div class="modal-dialog" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-comment-dots" style="color: #00b53f;"></i> Messages & Inquiries</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-messages')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #00b53f;">
+            <div style="font-weight: 700; font-size: 0.9rem; color: #0f172a;">James Mwangi Properties</div>
+            <div style="font-size: 0.78rem; color: #64748b;">Re: Executive 2 Bedroom in Ruaka</div>
+            <div style="font-size: 0.85rem; color: #334155; margin-top: 4px;">"Hello, the house is available for viewing today between 10am and 5pm. Water is running 24/7."</div>
+          </div>
+          <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #1976d2;">
+            <div style="font-weight: 700; font-size: 0.9rem; color: #0f172a;">Grace Wambui</div>
+            <div style="font-size: 0.78rem; color: #64748b;">Re: Cozy Bedsitter in Roysambu</div>
+            <div style="font-size: 0.85rem; color: #334155; margin-top: 4px;">"Hi! Yes, prepaid tokens are installed and fiber internet from Safaricom/Zuku is ready."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 6: Pricing & Landlord Pro Plans
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-pricing-plans">
+    <div class="modal-dialog" style="max-width: 880px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-crown" style="color: #ff9800;"></i> Pricing & Landlord Pro Plans</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-pricing-plans')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: #475569; margin-bottom: 18px;">
+          Boost your listings, get verified, and reach more tenants across Nairobi.
+        </p>
+
+        <div class="pricing-tiers-grid">
+          <!-- TOP AD Boost 7 Days -->
+          <div class="pricing-card">
+            <div class="pricing-plan-name"><i class="fas fa-bolt" style="color: #ff9800;"></i> TOP AD Boost</div>
+            <div class="pricing-plan-price">KSh 499 <span class="term">/ 7 days</span></div>
+            <ul class="pricing-features-list">
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Pinned at top of search results</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Golden-orange price highlight</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> 3x more tenant inquiries</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> "TOP AD" badge on listing</li>
+            </ul>
+            <button class="btn-primary" style="width: 100%; background: #ff9800; border: none; font-weight: 700; cursor: pointer;" onclick="monetization.openMpesaCheckout('whatsapp_alerts', `WhatsApp House Alerts (${document.getElementById('alert-tenant-estate').value} - KSh ${document.getElementById('alert-tenant-budget').value}/mo)`, 100)">
+              <i class="fas fa-mobile-alt"></i> Pay Now
+            </button>
+          </div>
+
+          <!-- TOP AD Boost 30 Days -->
+          <div class="pricing-card popular">
+            <span class="pricing-popular-badge">MOST POPULAR</span>
+            <div class="pricing-plan-name"><i class="fas fa-fire" style="color: #ef4444;"></i> TOP AD Pro</div>
+            <div class="pricing-plan-price">KSh 1,499 <span class="term">/ 30 days</span></div>
+            <ul class="pricing-features-list">
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Everything in TOP AD Boost</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> 30-day pinned ranking</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> 5x tenant inquiries</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Auto-refresh every 3 days</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Featured on WhatsApp alerts</li>
+            </ul>
+            <button class="btn-primary" style="width: 100%; font-weight: 700; cursor: pointer;" onclick="monetization.openMpesaCheckout('top_ad_30', 'TOP AD Pro (30 Days)', 1499)">
+              <i class="fas fa-mobile-alt"></i> Pay Now
+            </button>
+          </div>
+
+          <!-- Verified Landlord Badge -->
+          <div class="pricing-card">
+            <div class="pricing-plan-name"><i class="fas fa-shield-alt" style="color: #1976d2;"></i> Verified Landlord</div>
+            <div class="pricing-plan-price">KSh 2,999 <span class="term">/ year</span></div>
+            <ul class="pricing-features-list">
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Blue "VERIFIED" badge</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Identity & title deed validated</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> 300% more tenant trust</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Priority customer support</li>
+            </ul>
+            <button class="btn-primary" style="width: 100%; background: #1976d2; border: none; font-weight: 700; cursor: pointer;" onclick="monetization.openMpesaCheckout('verified_badge', 'Verified Landlord Badge (1 Year)', 2999)">
+              <i class="fas fa-mobile-alt"></i> Pay Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Agency Packages -->
+        <h4 style="font-size: 1rem; font-weight: 800; margin: 24px 0 14px 0; color: #0f172a;"><i class="fas fa-building" style="color: #6366f1;"></i> Agency & Property Manager Packages</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <!-- Starter Agency -->
+          <div class="pricing-card">
+            <div class="pricing-plan-name"><i class="fas fa-store" style="color: #8b5cf6;"></i> Starter Agency</div>
+            <div class="pricing-plan-price">KSh 4,999 <span class="term">/ month</span></div>
+            <ul class="pricing-features-list">
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Up to 5 property listings</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Priority ranking in searches</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Direct WhatsApp leads</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Basic analytics dashboard</li>
+            </ul>
+            <button class="btn-primary" style="width: 100%; background: #8b5cf6; border: none; font-weight: 700; cursor: pointer;" onclick="monetization.openMpesaCheckout('agency_starter', 'Starter Agency Package (Monthly)', 4999)">
+              <i class="fas fa-mobile-alt"></i> Pay Now
+            </button>
+          </div>
+
+          <!-- Pro Agency -->
+          <div class="pricing-card popular" style="border-color: #6366f1; background: #f5f3ff;">
+            <span class="pricing-popular-badge" style="background: #6366f1;">BEST VALUE</span>
+            <div class="pricing-plan-name"><i class="fas fa-city" style="color: #4f46e5;"></i> Pro Agency</div>
+            <div class="pricing-plan-price">KSh 9,999 <span class="term">/ month</span></div>
+            <ul class="pricing-features-list">
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Up to 25 property listings</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Auto-refresh every 2 days</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Monthly analytics report</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Dedicated account manager</li>
+              <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> Featured on homepage banner</li>
+            </ul>
+            <button class="btn-primary" style="width: 100%; background: #4f46e5; border: none; font-weight: 700; cursor: pointer;" onclick="monetization.openMpesaCheckout('agency_pro', 'Pro Agency Package (Monthly)', 9999)">
+              <i class="fas fa-mobile-alt"></i> Pay Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 7: M-Pesa STK Push Checkout
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-mpesa-checkout">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #4caf50, #00b53f);">
+        <h3 style="color: white;"><i class="fas fa-mobile-alt"></i> Lipa Na M-Pesa Checkout</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-mpesa-checkout')" style="color: white;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <!-- Order Summary -->
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 20px; text-align: center;">
+          <div style="font-size: 0.82rem; color: #64748b; margin-bottom: 4px;">You are paying for</div>
+          <div style="font-weight: 800; font-size: 1.1rem; color: #0f172a;" id="mpesa-checkout-item-title">-</div>
+          <div style="font-size: 2rem; font-weight: 800; color: #00b53f; margin: 8px 0;" id="mpesa-checkout-amount-badge">KSh 0</div>
+          <div style="font-size: 0.8rem; color: #64748b;" id="mpesa-checkout-desc">-</div>
+        </div>
+
+        <!-- Step 1: Phone Input -->
+        <div id="mpesa-step-input">
+          <form id="form-mpesa-stk-trigger">
+            <div class="form-group">
+              <label style="font-weight: 700; font-size: 0.9rem;">Safaricom M-Pesa Number</label>
+              <input type="tel" id="mpesa-phone-number" class="form-control" placeholder="e.g. 0712345678" required style="font-size: 1.1rem; text-align: center; letter-spacing: 2px; font-weight: 700;">
+              <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">An STK Push will be sent to your phone. Enter your M-Pesa PIN to confirm.</div>
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; font-size: 1rem; padding: 14px; font-weight: 800; background: #00b53f; border: none; cursor: pointer;">
+              <i class="fas fa-paper-plane"></i> Send STK Push to My Phone
+            </button>
+          </form>
+        </div>
+
+        <!-- Step 2: STK Push Simulation -->
+        <div id="mpesa-step-stk" style="display: none;">
+          <div style="background: #1a1a2e; border-radius: 24px; padding: 30px 20px; text-align: center; color: white; max-width: 300px; margin: 0 auto;">
+            <div style="font-size: 0.7rem; color: #94a3b8; margin-bottom: 8px;">SAFARICOM M-PESA</div>
+            <div style="font-size: 0.85rem; margin-bottom: 4px;">Pay to: <strong>NairobiRentals</strong></div>
+            <div style="font-size: 0.78rem; color: #94a3b8;" id="stk-sim-phone">+254...</div>
+            <div style="font-size: 1.8rem; font-weight: 800; color: #25d366; margin: 14px 0;" id="stk-sim-amount">KSh 0</div>
+            <div style="border-top: 1px solid #334155; padding-top: 14px; margin-top: 10px;">
+              <div style="font-size: 0.78rem; color: #94a3b8;">Enter M-Pesa PIN</div>
+              <div style="font-size: 2rem; letter-spacing: 8px; font-weight: 800; margin: 8px 0;" id="stk-pin-display">••••</div>
+            </div>
+            <div style="display: flex; gap: 8px; justify-content: center; margin-top: 14px;">
+              <div class="mpesa-spinner" style="width: 20px; height: 20px; border: 3px solid #334155; border-top-color: #25d366; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+              <span style="font-size: 0.82rem; color: #94a3b8;">Processing payment...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Payment Success -->
+        <div id="mpesa-step-success" style="display: none; text-align: center;">
+          <div style="width: 70px; height: 70px; border-radius: 50%; background: #dcfce7; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+            <i class="fas fa-check-circle" style="font-size: 2.5rem; color: #00b53f;"></i>
+          </div>
+          <h3 style="font-weight: 800; color: #166534; font-size: 1.3rem; margin-bottom: 8px;">Payment Confirmed!</h3>
+          <p style="font-size: 0.88rem; color: #475569; margin-bottom: 12px;" id="mpesa-success-msg">-</p>
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 0.92rem; font-weight: 700; color: #166534;">
+            M-Pesa Receipt: <span id="mpesa-success-receipt">-</span>
+          </div>
+          <button class="btn-primary" style="margin-top: 16px; width: 100%; font-weight: 700; cursor: pointer;" onclick="app.closeModal('modal-mpesa-checkout')">
+            <i class="fas fa-check"></i> Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 8: WhatsApp Tenant Alerts Subscription
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-whatsapp-alerts">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #075e54, #128c7e);">
+        <h3 style="color: white;"><i class="fab fa-whatsapp" style="color: #25d366;"></i> Instant WhatsApp House Alerts</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-whatsapp-alerts')" style="color: white;">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 14px;">
+          Receive new verified rental listings directly to your WhatsApp as soon as they're posted. Never miss a good house again!
+        </p>
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 0.85rem; color: #166534;">
+          <strong>KSh 100/month</strong> — Unlimited alerts for your preferred estate and budget range.
+        </div>
+
+        <form id="form-whatsapp-alert-sub">
+          <div class="form-group">
+            <label>Your WhatsApp Number *</label>
+            <input type="tel" id="alert-tenant-phone" class="form-control" placeholder="e.g. 0712345678" required>
+          </div>
+          <div class="form-group">
+            <label>House Category *</label>
+            <select id="alert-tenant-category" class="form-control" required>
+              <option value="Any Category">All Categories</option>
+              <option value="Single Room">Single Room</option>
+              <option value="Bedsitter">Bedsitter</option>
+              <option value="1 Bedroom">1 Bedroom</option>
+              <option value="2 Bedroom">2 Bedroom</option>
+              <option value="3 Bedroom">3 Bedroom</option>
+              <option value="4+ Bedroom">4+ Bedroom / Maisonette</option>
+              <option value="Studio">Studio Apartment</option>
+              <option value="Shared Room">Shared Room / Hostel</option>
+              <option value="BnB">BnB / Short Stay</option>
+            </select>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Preferred Estate / Area</label>
+              <select id="alert-tenant-estate" class="form-control">
+                <option value="Any Estate">Any Estate in Nairobi</option>
+                <option value="Ruaka">Ruaka</option>
+                <option value="Kilimani">Kilimani</option>
+                <option value="Roysambu">Roysambu</option>
+                <option value="Westlands">Westlands</option>
+                <option value="Kasarani">Kasarani</option>
+                <option value="Syokimau">Syokimau</option>
+                <option value="Kangemi">Kangemi</option>
+                <option value="Uthiru">Uthiru</option>
+                <option value="Kibra">Kibra</option>
+                <option value="Mathare">Mathare</option>
+                <option value="Huruma">Huruma</option>
+                <option value="Umoja">Umoja</option>
+                <option value="South B">South B</option>
+                <option value="Langata">Langata</option>
+                <option value="Ngong Road">Ngong Road</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Budget Range (KSh / month)</label>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <input
+                  type="number"
+                  id="alert-tenant-budget-min"
+                  class="form-control"
+                  placeholder="Min e.g. 5,000"
+                  min="0"
+                  step="500"
+                  style="flex:1;"
+                >
+                <span style="font-weight:700; color:#6b7280; white-space:nowrap;">–</span>
+                <input
+                  type="number"
+                  id="alert-tenant-budget-max"
+                  class="form-control"
+                  placeholder="Max e.g. 25,000"
+                  min="0"
+                  step="500"
+                  style="flex:1;"
+                >
+              </div>
+              <small style="color:#9ca3af; font-size:0.78rem; margin-top:4px; display:block;">Leave blank for no limit</small>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent;">
+            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-whatsapp-alerts')">Cancel</button>
+            <button type="submit" class="btn-primary" style="background: #25d366; border: none; font-weight: 700; cursor: pointer;">
+              <i class="fab fa-whatsapp"></i> Subscribe & Pay KSh 100
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 9: Nairobi Movers Lead Form (Affiliate)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-lead-movers">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #ea580c, #f97316);">
+        <h3 style="color: white;"><i class="fas fa-truck-moving"></i> Nairobi Moving Quote</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-lead-movers')" style="color: white;">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 14px;">
+          Get a free quote from our vetted Nairobi movers. Professional packing, transport, and unpacking. Same-day & weekend moves available.
+        </p>
+
+        <form onsubmit="submitMoversLead(event)">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Your Name *</label>
+              <input type="text" id="mover-lead-name" class="form-control" placeholder="e.g. John Kamau" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" id="mover-lead-phone" class="form-control" placeholder="e.g. 0722123456" required>
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Moving From *</label>
+              <input type="text" id="mover-lead-from" class="form-control" placeholder="e.g. Pipeline, Embakasi" required>
+            </div>
+            <div class="form-group">
+              <label>Moving To *</label>
+              <input type="text" id="mover-lead-to" class="form-control" placeholder="e.g. Ruaka, Kiambu Rd" required>
+            </div>
+          </div>
+          <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent;">
+            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-lead-movers')">Cancel</button>
+            <button type="submit" class="btn-primary" style="background: #f97316; border: none; font-weight: 700; cursor: pointer;">
+              <i class="fas fa-paper-plane"></i> Get Free Quote
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 10: Fibre WiFi Installation Lead (Affiliate)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-lead-fibre">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #1d4ed8, #2563eb);">
+        <h3 style="color: white;"><i class="fas fa-wifi"></i> Fibre WiFi Installation</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-lead-fibre')" style="color: white;">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 14px;">
+          Get high-speed Safaricom Fibre or Zuku Internet installed in your new house. Plans from KSh 2,500/mo.
+        </p>
+
+        <form onsubmit="submitFibreLead(event)">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Your Phone Number *</label>
+              <input type="tel" id="fibre-lead-phone" class="form-control" placeholder="e.g. 0712345678" required>
+            </div>
+            <div class="form-group">
+              <label>Estate / Suburb *</label>
+              <input type="text" id="fibre-lead-estate" class="form-control" placeholder="e.g. Ruaka, Kiambu" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Preferred ISP</label>
+            <select id="fibre-lead-isp" class="form-control">
+              <option value="Safaricom Fibre">Safaricom Fibre (Home)</option>
+              <option value="Zuku Fibre">Zuku Fibre</option>
+              <option value="JTL Faiba">JTL Faiba</option>
+              <option value="Any Provider">Any Provider (Best Deal)</option>
+            </select>
+          </div>
+          <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent;">
+            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-lead-fibre')">Cancel</button>
+            <button type="submit" class="btn-primary" style="background: #2563eb; border: none; font-weight: 700; cursor: pointer;">
+              <i class="fas fa-wifi"></i> Request Installation
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts: Leaflet JS & Application Modules -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/data/locations.js"></script>
+  <script src="js/data/seedListings.js"></script>
+  <script src="js/reviews.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/landlord.js"></script>
+  <script src="js/botSimulator.js"></script>
+  <script src="js/monetization.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+</script>
+
+  <!-- ====================================================================
+       AUTH MODAL: Sign In / Sign Up (Tenant & Landlord)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-auth">
+    <div class="modal-dialog" style="max-width:480px;">
+
+      <!-- Header tabs -->
+      <div class="modal-header" style="background:linear-gradient(135deg,#4f46e5,#7c3aed); padding:0; overflow:hidden;">
+        <div style="display:flex; width:100%;">
+          <button id="auth-tab-signin" onclick="kejaAuth.switchTab('signin')"
+            style="flex:1; padding:18px; border:none; background:transparent; color:white; font-weight:700; font-size:1rem; cursor:pointer; border-bottom:3px solid white; transition:all 0.2s;">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+          </button>
+          <button id="auth-tab-signup" onclick="kejaAuth.switchTab('signup')"
+            style="flex:1; padding:18px; border:none; background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.75); font-weight:700; font-size:1rem; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s;">
+            <i class="fas fa-user-plus"></i> Sign Up
+          </button>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-auth')" style="color:white; position:absolute; right:14px; top:12px;">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding:24px;">
+
+        <!-- ── SIGN IN PANEL ── -->
+        <div id="auth-panel-signin">
+          <!-- Role chooser -->
+          <div style="display:flex; gap:12px; margin-bottom:20px;">
+            <button onclick="kejaAuth.setRole('tenant','signin')" id="role-signin-tenant"
+              class="role-btn role-btn-active" style="flex:1;">
+              <i class="fas fa-user"></i><br>I'm a Tenant
+            </button>
+            <button onclick="kejaAuth.setRole('landlord','signin')" id="role-signin-landlord"
+              class="role-btn" style="flex:1;">
+              <i class="fas fa-building"></i><br>I'm a Landlord
+            </button>
+          </div>
+          <form id="form-signin" onsubmit="kejaAuth.handleSignIn(event)">
+            <div class="form-group">
+              <label>Phone / Email</label>
+              <input type="text" id="signin-identifier" class="form-control" placeholder="0712345678 or name@email.com" required>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <div style="position:relative;">
+                <input type="password" id="signin-password" class="form-control" placeholder="Enter password" required style="padding-right:42px;">
+                <button type="button" onclick="kejaAuth.togglePwd('signin-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;margin-top:4px;">
+              <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+            <p style="text-align:center;margin-top:14px;font-size:0.85rem;color:#6b7280;">
+              No account? <a href="#" onclick="kejaAuth.switchTab('signup');return false;" style="color:#4f46e5;font-weight:600;">Create one free</a>
+            </p>
+          </form>
+        </div>
+
+        <!-- ── SIGN UP PANEL ── -->
+        <div id="auth-panel-signup" style="display:none;">
+          <!-- Role chooser -->
+          <div style="display:flex; gap:12px; margin-bottom:20px;">
+            <button onclick="kejaAuth.setRole('tenant','signup')" id="role-signup-tenant"
+              class="role-btn role-btn-active" style="flex:1;">
+              <i class="fas fa-user"></i><br>I'm a Tenant
+            </button>
+            <button onclick="kejaAuth.setRole('landlord','signup')" id="role-signup-landlord"
+              class="role-btn" style="flex:1;">
+              <i class="fas fa-building"></i><br>I'm a Landlord
+            </button>
+          </div>
+          <form id="form-signup" onsubmit="kejaAuth.handleSignUp(event)">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="signup-name" class="form-control" placeholder="e.g. John Mwangi" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" id="signup-phone" class="form-control" placeholder="0712345678" required>
+            </div>
+            <div class="form-group">
+              <label>Email (optional)</label>
+              <input type="email" id="signup-email" class="form-control" placeholder="name@email.com">
+            </div>
+            <!-- Landlord-only fields -->
+            <div id="signup-landlord-fields" style="display:none;">
+              <div class="form-group">
+                <label>Number of Properties You Own</label>
+                <select id="signup-num-properties" class="form-control">
+                  <option value="1">1 Property</option>
+                  <option value="2-5">2–5 Properties</option>
+                  <option value="6-10">6–10 Properties</option>
+                  <option value="10+">10+ Properties (Agency)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Primary Area / Estate</label>
+                <input type="text" id="signup-landlord-area" class="form-control" placeholder="e.g. Kilimani, Ruaka">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Password *</label>
+              <div style="position:relative;">
+                <input type="password" id="signup-password" class="form-control" placeholder="Min 6 characters" required minlength="6" style="padding-right:42px;">
+                <button type="button" onclick="kejaAuth.togglePwd('signup-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;margin-top:4px;">
+              <i class="fas fa-user-plus"></i> Create Account
+            </button>
+            <p style="text-align:center;margin-top:14px;font-size:0.85rem;color:#6b7280;">
+              Already have an account? <a href="#" onclick="kejaAuth.switchTab('signin');return false;" style="color:#4f46e5;font-weight:600;">Sign In</a>
+            </p>
+          </form>
+        </div>
+
+        <!-- ── LOGGED IN PANEL ── -->
+        <div id="auth-panel-loggedin" style="display:none; text-align:center;">
+          <div id="auth-user-avatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:2rem;color:white;"></div>
+          <div id="auth-user-greeting" style="font-size:1.1rem;font-weight:700;color:#1f2937;margin-bottom:4px;"></div>
+          <div id="auth-user-role-badge" style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.78rem;font-weight:700;margin-bottom:20px;"></div>
+
+          <!-- Tenant dashboard links -->
+          <div id="auth-tenant-links" style="display:none;">
+            <button class="btn-primary" style="width:100%;border:none;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-whatsapp-alerts');app.closeModal('modal-auth');">
+              <i class="fab fa-whatsapp"></i> My WhatsApp Alerts
+            </button>
+            <button class="btn-secondary" style="width:100%;margin-bottom:10px;cursor:pointer;" onclick="app.toggleFavoritesView();app.closeModal('modal-auth');">
+              <i class="fas fa-heart"></i> My Saved Houses
+            </button>
+          </div>
+
+          <!-- Landlord dashboard links -->
+          <div id="auth-landlord-links" style="display:none;">
+            <button class="btn-primary" style="width:100%;border:none;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-post-ad');app.closeModal('modal-auth');">
+              <i class="fas fa-plus-circle"></i> Post a Property
+            </button>
+            <button class="btn-secondary" style="width:100%;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-pricing-plans');app.closeModal('modal-auth');">
+              <i class="fas fa-crown"></i> Boost My Listing
+            </button>
+            <button class="btn-secondary" style="width:100%;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-verification');app.closeModal('modal-auth');">
+              <i class="fas fa-user-check"></i> Get Verified Badge
+            </button>
+          </div>
+
+          <button onclick="kejaAuth.signOut()" style="margin-top:8px;background:none;border:1px solid #e5e7eb;padding:8px 24px;border-radius:6px;cursor:pointer;color:#6b7280;font-size:0.85rem;">
+            <i class="fas fa-sign-out-alt"></i> Sign Out
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

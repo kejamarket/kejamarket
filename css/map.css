@@ -1,0 +1,159 @@
+/* ==========================================================================
+   Leaflet Map Custom Styling & Price Badges
+   Nairobi Rentals Live (Jiji Kenya Style)
+   ========================================================================== */
+
+/* Custom Price Marker Pin */
+.custom-price-pin {
+  background: #00b53f;
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-family: var(--font-family);
+  font-size: 0.78rem;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  border: 2px solid #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.custom-price-pin::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 5px 0 5px;
+  border-style: solid;
+  border-color: #00b53f transparent transparent transparent;
+}
+
+.custom-price-pin:hover,
+.custom-price-pin.active {
+  background: #0f172a;
+  transform: scale(1.15) translateY(-2px);
+  z-index: 9999 !important;
+}
+
+.custom-price-pin:hover::after,
+.custom-price-pin.active::after {
+  border-color: #0f172a transparent transparent transparent;
+}
+
+.custom-price-pin.featured {
+  background: #ff9800;
+}
+
+.custom-price-pin.featured::after {
+  border-color: #ff9800 transparent transparent transparent;
+}
+
+/* Custom Leaflet Popup Card */
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  line-height: 1.4;
+  width: 260px !important;
+}
+
+.map-popup-card {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family);
+}
+
+.map-popup-thumb {
+  position: relative;
+  height: 130px;
+  background: #1e293b;
+}
+
+.map-popup-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.map-popup-body {
+  padding: 10px 12px;
+}
+
+.map-popup-price {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #00b53f;
+  margin-bottom: 2px;
+}
+
+.map-popup-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-popup-location {
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.map-popup-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.map-popup-btn {
+  padding: 5px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+}
+
+.map-popup-btn.btn-view {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.map-popup-btn.btn-wa {
+  background: #25d366;
+  color: white;
+}
+
+/* Cluster Group Customization */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background-color: rgba(0, 181, 63, 0.4);
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  background-color: rgba(0, 181, 63, 0.9);
+  color: white;
+  font-weight: 800;
+  font-family: var(--font-family);
+}
