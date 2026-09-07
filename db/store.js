@@ -17,7 +17,8 @@ const defaultState = {
   transactions: [],
   alerts: [],
   leads: [],
-  messages: []
+  messages: [],
+  comments: {}
 };
 
 class Store {
@@ -31,13 +32,15 @@ class Store {
       if (fs.existsSync(DB_FILE)) {
         const raw = fs.readFileSync(DB_FILE, 'utf-8');
         this.data = JSON.parse(raw);
-        // Ensure all arrays exist
+        // Ensure all arrays and objects exist
         this.data.users = this.data.users || [];
         this.data.properties = this.data.properties || [];
         this.data.reviews = this.data.reviews || {};
         this.data.transactions = this.data.transactions || [];
         this.data.alerts = this.data.alerts || [];
         this.data.leads = this.data.leads || [];
+        this.data.messages = this.data.messages || [];
+        this.data.comments = this.data.comments || {};
       } else {
         this.seedInitialData();
         this.save();
@@ -387,6 +390,86 @@ class Store {
     this.data.messages.push(newMsg);
     this.save();
     return newMsg;
+  }
+
+  // ─── LIVE FACEBOOK-STYLE PUBLIC COMMENTS ────────────────────────────────────
+  getComments(propertyId) {
+    this.data.comments = this.data.comments || {};
+    return this.data.comments[propertyId] || [];
+  }
+
+  addComment(propertyId, { author, avatar, text, userId, isLandlord = false }) {
+    this.data.comments = this.data.comments || {};
+    if (!this.data.comments[propertyId]) {
+      this.data.comments[propertyId] = [];
+    }
+
+    const cleanAuthor = author ? author.trim() : 'Nairobi Resident';
+    const initials = cleanAuthor.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+
+    const newComment = {
+      id: 'comm-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      propertyId,
+      userId: userId || null,
+      author: cleanAuthor,
+      avatar: avatar || initials,
+      isLandlord: Boolean(isLandlord),
+      text: text.trim(),
+      reactions: {
+        likes: 0,
+        loves: 0,
+        fire: 0,
+        clap: 0
+      },
+      userReactions: {},
+      replies: [],
+      createdAt: new Date().toISOString()
+    };
+
+    this.data.comments[propertyId].unshift(newComment);
+    this.save();
+    return newComment;
+  }
+
+  addCommentReaction(propertyId, commentId, reactionType = 'likes', userId = 'anon') {
+    this.data.comments = this.data.comments || {};
+    const comments = this.data.comments[propertyId] || [];
+    const comment = comments.find(c => c.id === commentId);
+    if (!comment) return null;
+
+    comment.reactions = comment.reactions || { likes: 0, loves: 0, fire: 0, clap: 0 };
+    comment.userReactions = comment.userReactions || {};
+
+    const validTypes = ['likes', 'loves', 'fire', 'clap'];
+    const type = validTypes.includes(reactionType) ? reactionType : 'likes';
+
+    // Toggle reaction or increment
+    comment.reactions[type] = (comment.reactions[type] || 0) + 1;
+    comment.userReactions[userId] = type;
+
+    this.save();
+    return comment;
+  }
+
+  addCommentReply(propertyId, commentId, { author, text, isLandlord = false }) {
+    this.data.comments = this.data.comments || {};
+    const comments = this.data.comments[propertyId] || [];
+    const comment = comments.find(c => c.id === commentId);
+    if (!comment) return null;
+
+    comment.replies = comment.replies || [];
+    const cleanAuthor = author ? author.trim() : 'Resident';
+    const reply = {
+      id: 'rep-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      author: cleanAuthor,
+      isLandlord: Boolean(isLandlord),
+      text: text.trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    comment.replies.push(reply);
+    this.save();
+    return reply;
   }
 }
 

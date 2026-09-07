@@ -697,6 +697,12 @@ class NairobiRentalsApp {
       window.reviewManager.renderReviewsList(p.id, reviewsList);
     }
 
+    // Facebook-Style Live Comments & Discussion
+    const commentsContainer = document.getElementById('detail-comments-container');
+    if (commentsContainer && window.commentManager) {
+      window.commentManager.renderCommentsSection(p.id, commentsContainer);
+    }
+
     this.openModal('modal-property-detail');
 
     // Initialize or refresh Detail Map Canvas

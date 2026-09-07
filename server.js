@@ -608,6 +608,96 @@ app.post('/api/properties/:id/reviews', optionalAuth, (req, res) => {
   }
 });
 
+// ─── LIVE FACEBOOK-STYLE PUBLIC COMMENTS ROUTES ─────────────────────────────
+
+// GET /api/properties/:id/comments
+app.get('/api/properties/:id/comments', (req, res) => {
+  try {
+    const { id } = req.params;
+    const comments = store.getComments(id);
+    res.json({ success: true, count: comments.length, comments });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/properties/:id/comments (Anyone can post a public live comment)
+app.post('/api/properties/:id/comments', optionalAuth, (req, res) => {
+  try {
+    const { id } = req.params;
+    const { author, text } = req.body;
+
+    if (!text || !text.trim()) {
+      return res.status(400).json({ success: false, message: 'Comment text is required.' });
+    }
+
+    const commentAuthor = req.user ? req.user.name : (author || 'Nairobi Resident');
+    const isLandlord = req.user && req.user.role === 'landlord';
+
+    const newComment = store.addComment(id, {
+      author: commentAuthor,
+      text: text.trim(),
+      userId: req.user ? req.user.id : null,
+      isLandlord
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Comment posted live!',
+      comment: newComment
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/properties/:id/comments/:commentId/react (Like, Love, Fire, Clap)
+app.post('/api/properties/:id/comments/:commentId/react', optionalAuth, (req, res) => {
+  try {
+    const { id, commentId } = req.params;
+    const { reactionType } = req.body;
+    const userId = req.user ? req.user.id : (req.headers['x-client-id'] || 'anon-' + Date.now());
+
+    const updatedComment = store.addCommentReaction(id, commentId, reactionType || 'likes', userId);
+    if (!updatedComment) {
+      return res.status(404).json({ success: false, message: 'Comment not found.' });
+    }
+
+    res.json({ success: true, comment: updatedComment });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/properties/:id/comments/:commentId/reply (Reply to a comment)
+app.post('/api/properties/:id/comments/:commentId/reply', optionalAuth, (req, res) => {
+  try {
+    const { id, commentId } = req.params;
+    const { author, text } = req.body;
+
+    if (!text || !text.trim()) {
+      return res.status(400).json({ success: false, message: 'Reply text is required.' });
+    }
+
+    const replyAuthor = req.user ? req.user.name : (author || 'Resident');
+    const isLandlord = req.user && req.user.role === 'landlord';
+
+    const reply = store.addCommentReply(id, commentId, {
+      author: replyAuthor,
+      text: text.trim(),
+      isLandlord
+    });
+
+    if (!reply) {
+      return res.status(404).json({ success: false, message: 'Comment not found.' });
+    }
+
+    res.status(201).json({ success: true, reply });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
 // ─── IN-APP CHAT & INBOX MESSAGES ROUTES ────────────────────────────────────
 
 // GET /api/messages
