@@ -1,11 +1,12 @@
 /**
- * Nairobi Rentals Live - Community Reviews & Transparency Module
+ * KejaMarket - Community Reviews & Transparency Module
  * Tracks ratings for: Water Consistency, Security, Deposit Refund Transparency
+ * Connected to live backend database API.
  */
 
 class ReviewManager {
   constructor() {
-    this.reviews = { ...SEED_REVIEWS };
+    this.reviews = typeof SEED_REVIEWS !== 'undefined' ? { ...SEED_REVIEWS } : {};
     this.initStorage();
   }
 
@@ -13,7 +14,7 @@ class ReviewManager {
     const saved = localStorage.getItem('nairobi_rentals_reviews');
     if (saved) {
       try {
-        this.reviews = JSON.parse(saved);
+        this.reviews = { ...this.reviews, ...JSON.parse(saved) };
       } catch (e) {
         console.error('Failed parsing reviews storage', e);
       }
@@ -28,7 +29,7 @@ class ReviewManager {
     return this.reviews[propertyId] || [];
   }
 
-  addReview(propertyId, reviewData) {
+  async addReview(propertyId, reviewData) {
     if (!this.reviews[propertyId]) {
       this.reviews[propertyId] = [];
     }
@@ -47,6 +48,22 @@ class ReviewManager {
 
     this.reviews[propertyId].unshift(newReview);
     this.saveStorage();
+
+    // Sync to backend
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (window.kejaAuth && window.kejaAuth.getToken()) {
+        headers['Authorization'] = `Bearer ${window.kejaAuth.getToken()}`;
+      }
+      await fetch(`/api/properties/${encodeURIComponent(propertyId)}/reviews`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(reviewData)
+      });
+    } catch (err) {
+      console.warn('Review offline sync:', err);
+    }
+
     return newReview;
   }
 
@@ -55,7 +72,7 @@ class ReviewManager {
     if (!reviews || reviews.length === 0) {
       containerEl.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #64748b; font-size: 0.88rem;">
-          <i class="fas fa-comment-dots" style="font-size: 1.5rem; margin-bottom: 6px; display: block;"></i>
+          <i class="fas fa-comment-dots" style="font-size: 1.5rem; margin-bottom: 6px; display: block; color: #94a3b8;"></i>
           No community reviews yet. Be the first tenant to leave feedback on water, security & deposit transparency!
         </div>
       `;

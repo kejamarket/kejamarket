@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: kejamarket-app
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - MPESA_CALLBACK_URL=https://kejamarket.co.ke/api/mpesa/callback
+    volumes:
+      - ./db:/app/db
+      - ./.env:/app/.env

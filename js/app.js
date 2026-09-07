@@ -37,11 +37,15 @@ class NairobiRentalsApp {
     this.selectedPropertyForDetail = null;
   }
 
-  init() {
+  async init() {
     this.loadFavorites();
     this.renderCategoryPills();
     this.populateSidebarFilters();
     this.setupEventListeners();
+    
+    // Fetch live database listings from backend
+    await this.fetchLiveProperties();
+
     this.applyFilters();
 
     // Init map and landlord managers
@@ -52,6 +56,20 @@ class NairobiRentalsApp {
     setTimeout(() => {
       window.mapController.renderPins(this.filteredProperties);
     }, 300);
+  }
+
+  async fetchLiveProperties() {
+    try {
+      const res = await fetch('/api/properties');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.properties) && data.properties.length > 0) {
+          this.properties = data.properties;
+        }
+      }
+    } catch (err) {
+      console.log('Using seed properties (offline fallback)');
+    }
   }
 
   loadFavorites() {
