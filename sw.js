@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v1';
+const CACHE_NAME = 'kejamarket-v4';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -9,6 +9,7 @@ const STATIC_ASSETS = [
   '/js/data/locations.js',
   '/js/data/seedListings.js',
   '/js/reviews.js',
+  '/js/comments.js',
   '/js/map.js',
   '/js/landlord.js',
   '/js/botSimulator.js',
@@ -19,20 +20,25 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
+  // Force new service worker to activate immediately
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS).catch(err => console.warn('Cache addAll warning:', err));
+      return cache.addAll(STATIC_ASSETS).catch(err => console.warn('Cache addAll:', err));
     })
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
+  // Purge all previous caches immediately
   e.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((k) => {
-          if (k !== CACHE_NAME) return caches.delete(k);
+          if (k !== CACHE_NAME) {
+            console.log('Purging old cache:', k);
+            return caches.delete(k);
+          }
         })
       );
     })
@@ -41,21 +47,24 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  // Always fetch API routes from network
+  // Never cache API calls
   if (e.request.url.includes('/api/')) {
     return;
   }
 
+  // Network-first for HTML and JS files to always show freshest updates
   e.respondWith(
     fetch(e.request)
-      .then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
-        return res;
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const resClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, resClone));
+        }
+        return networkResponse;
       })
       .catch(() => {
-        return caches.match(e.request).then((cached) => {
-          if (cached) return cached;
+        return caches.match(e.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
           if (e.request.headers.get('accept')?.includes('text/html')) {
             return caches.match('/offline.html');
           }
