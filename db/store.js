@@ -16,7 +16,8 @@ const defaultState = {
   reviews: {},
   transactions: [],
   alerts: [],
-  leads: []
+  leads: [],
+  messages: []
 };
 
 class Store {
@@ -352,6 +353,40 @@ class Store {
     this.data.leads.push(entry);
     this.save();
     return entry;
+  }
+
+  // ─── MESSAGES (IN-APP INBOX / CHAT) ─────────────────────────────────────────
+  getMessages(propertyId = null, userId = null) {
+    this.data.messages = this.data.messages || [];
+    let list = this.data.messages;
+    if (propertyId) {
+      list = list.filter(m => m.propertyId === propertyId);
+    }
+    if (userId) {
+      list = list.filter(m => m.senderId === userId || m.recipientId === userId);
+    }
+    return list;
+  }
+
+  saveMessage(msg) {
+    this.data.messages = this.data.messages || [];
+    const newMsg = {
+      id: 'msg-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      propertyId: msg.propertyId || null,
+      propertyTitle: msg.propertyTitle || '',
+      estateSuburb: msg.estateSuburb || '',
+      senderId: msg.senderId || 'guest-' + Date.now(),
+      senderName: msg.senderName || 'Tenant',
+      senderPhone: msg.senderPhone || '',
+      recipientId: msg.recipientId || null,
+      recipientName: msg.recipientName || 'Landlord',
+      text: (msg.text || '').trim(),
+      isRead: false,
+      createdAt: new Date().toISOString()
+    };
+    this.data.messages.push(newMsg);
+    this.save();
+    return newMsg;
   }
 }
 

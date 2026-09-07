@@ -1536,5 +1536,21 @@
     }
   ],
   "alerts": [],
-  "leads": []
+  "leads": [],
+  "messages": [
+    {
+      "id": "msg-1788820490406-837",
+      "propertyId": "prop-nrb-001",
+      "propertyTitle": "Executive 2 Bedroom in Ruaka",
+      "estateSuburb": "Ruaka",
+      "senderId": "guest-1788820490406",
+      "senderName": "Test Tenant",
+      "senderPhone": "",
+      "recipientId": "usr-landlord-01",
+      "recipientName": "James Mwangi",
+      "text": "Hi James, is this house available for viewing this Saturday?",
+      "isRead": false,
+      "createdAt": "2026-09-07T22:34:50.406Z"
+    }
+  ]
 }

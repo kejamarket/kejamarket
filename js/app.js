@@ -35,6 +35,8 @@ class NairobiRentalsApp {
     };
 
     this.selectedPropertyForDetail = null;
+    this.activeChatProperty = null;
+    this.chatMessages = [];
   }
 
   async init() {
@@ -42,6 +44,7 @@ class NairobiRentalsApp {
     this.renderCategoryPills();
     this.populateSidebarFilters();
     this.setupEventListeners();
+    this.loadChatMessages();
     
     // Fetch live database listings from backend
     await this.fetchLiveProperties();
@@ -509,9 +512,9 @@ class NairobiRentalsApp {
             <button class="btn-card-call" onclick="app.revealLandlordPhone('${p.id}', this)">
               <i class="fas fa-phone-alt"></i> ${isBnb ? 'Call Host' : 'Call'}
             </button>
-            <a class="btn-card-whatsapp" href="https://wa.me/${waPhone}?text=${waText}" target="_blank" rel="noopener">
-              <i class="fab fa-whatsapp"></i> WhatsApp
-            </a>
+            <button class="btn-card-chat" onclick="app.openChatForProperty('${p.id}', event)">
+              <i class="fas fa-comment-dots"></i> Chat
+            </button>
             <button class="btn-card-map" onclick="app.focusPropertyOnMap('${p.id}', event)" title="View Pin on Map">
               <i class="fas fa-map-marked-alt"></i> Pin Map
             </button>
@@ -682,12 +685,8 @@ class NairobiRentalsApp {
     // Landlord & Contacts
     document.getElementById('detail-landlord-name').textContent = p.landlord.name;
     document.getElementById('detail-landlord-since').textContent = `Member since ${p.landlord.memberSince}`;
-    
-    const waPhone = p.landlord.whatsapp.replace(/[^0-9]/g, '');
-    const waText = encodeURIComponent(`Hello ${p.landlord.name}, I am inquiring about booking "${p.title}" on Nairobi Rentals Live.`);
-    document.getElementById('detail-btn-whatsapp').href = `https://wa.me/${waPhone}?text=${waText}`;
-    document.getElementById('detail-btn-call').href = `tel:${p.landlord.phone}`;
     document.getElementById('detail-landlord-phone-display').textContent = p.landlord.phone;
+    document.getElementById('detail-btn-call').href = `tel:${p.landlord.phone}`;
 
     // Google Maps Link
     document.getElementById('detail-btn-directions').href = `https://www.google.com/maps/dir/?api=1&destination=${p.latitude},${p.longitude}`;
@@ -812,6 +811,232 @@ class NairobiRentalsApp {
     if (icon) {
       icon.className = nextIdx === 0 ? 'fas fa-th-large' : nextIdx === 1 ? 'fas fa-columns' : 'fas fa-map-marked-alt';
     }
+  }
+
+  /* ─────────────────────────────────────────
+     IN-APP CHAT & INBOX MESSAGING SYSTEM
+  ───────────────────────────────────────── */
+  openChatForProperty(propertyId, event) {
+    if (event) event.stopPropagation();
+    const prop = this.properties.find(p => p.id === propertyId);
+    if (!prop) return;
+
+    this.activeChatProperty = prop;
+
+    // Update Chat Header
+    const avatarEl = document.getElementById('chat-landlord-avatar');
+    const titleEl = document.getElementById('chat-landlord-title');
+    const subEl = document.getElementById('chat-property-subtitle');
+    const banner = document.getElementById('chat-property-banner');
+    const bannerTitle = document.getElementById('chat-banner-title');
+    const bannerPrice = document.getElementById('chat-banner-price');
+
+    if (avatarEl) {
+      avatarEl.textContent = (prop.landlord.name || 'Landlord').slice(0, 2).toUpperCase();
+    }
+    if (titleEl) {
+      titleEl.textContent = prop.landlord.name;
+    }
+    if (subEl) {
+      subEl.textContent = `${prop.estateSuburb} · Direct Landlord Chat`;
+    }
+    if (banner && bannerTitle && bannerPrice) {
+      banner.style.display = 'flex';
+      bannerTitle.textContent = prop.title.length > 35 ? prop.title.substring(0, 35) + '...' : prop.title;
+      bannerPrice.textContent = `KSh ${prop.rentKes.toLocaleString()}/${prop.rentPeriod || 'mo'}`;
+    }
+
+    this.renderChatMessages();
+    this.openModal('modal-messages');
+
+    // Auto-focus message input
+    setTimeout(() => {
+      const input = document.getElementById('chat-message-input');
+      if (input) input.focus();
+    }, 300);
+  }
+
+  openChatForCurrentProperty() {
+    if (this.selectedPropertyForDetail) {
+      this.closeModal('modal-property-detail');
+      this.openChatForProperty(this.selectedPropertyForDetail.id);
+    } else {
+      this.openModal('modal-messages');
+    }
+  }
+
+  renderChatMessages() {
+    const container = document.getElementById('chat-messages-container');
+    if (!container) return;
+
+    const propId = this.activeChatProperty ? this.activeChatProperty.id : null;
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+
+    // Filter relevant messages
+    let msgs = this.chatMessages;
+    if (propId) {
+      msgs = this.chatMessages.filter(m => m.propertyId === propId);
+    }
+
+    if (!msgs || msgs.length === 0) {
+      const landlordName = this.activeChatProperty ? this.activeChatProperty.landlord.name : 'Landlord';
+      container.innerHTML = `
+        <div style="text-align: center; padding: 24px 16px; color: #64748b;">
+          <div style="width: 50px; height: 50px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; font-size: 1.4rem;">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+          <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem; margin-bottom: 4px;">Start a direct chat with ${landlordName}</div>
+          <div style="font-size: 0.8rem; color: #64748b; max-width: 320px; margin: 0 auto;">Ask about house availability, booking viewings, deposit policies, or water supply.</div>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = msgs.map(m => {
+      const isMe = m.senderId === (session ? session.id : 'me') || m.isSenderMe;
+      const timeStr = m.createdAt ? new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now';
+
+      return `
+        <div style="display: flex; flex-direction: column; align-items: ${isMe ? 'flex-end' : 'flex-start'}; margin-bottom: 4px;">
+          <div style="font-size: 0.72rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
+            ${isMe ? 'You' : m.senderName} · ${timeStr}
+          </div>
+          <div style="max-width: 80%; padding: 10px 14px; border-radius: ${isMe ? '16px 16px 2px 16px' : '16px 16px 16px 2px'}; background: ${isMe ? '#00b53f' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.88rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
+            ${m.text}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Scroll to bottom
+    container.scrollTop = container.scrollHeight;
+  }
+
+  sendQuickReply(text) {
+    const input = document.getElementById('chat-message-input');
+    if (input) {
+      input.value = text;
+      this.sendChatMessage(text);
+      input.value = '';
+    }
+  }
+
+  handleChatMessageSubmit(e) {
+    e.preventDefault();
+    const input = document.getElementById('chat-message-input');
+    if (!input) return;
+    const text = input.value.trim();
+    if (!text) return;
+    this.sendChatMessage(text);
+    input.value = '';
+  }
+
+  async sendChatMessage(text) {
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    const prop = this.activeChatProperty;
+
+    const newMsg = {
+      id: 'msg-' + Date.now(),
+      propertyId: prop ? prop.id : null,
+      propertyTitle: prop ? prop.title : '',
+      estateSuburb: prop ? prop.estateSuburb : '',
+      recipientId: prop ? prop.landlord.id : null,
+      recipientName: prop ? prop.landlord.name : 'Landlord',
+      senderId: session ? session.id : 'me',
+      senderName: session ? session.name : 'Tenant',
+      senderPhone: session ? session.phone : '',
+      isSenderMe: true,
+      text: text,
+      createdAt: new Date().toISOString()
+    };
+
+    this.chatMessages.push(newMsg);
+    this.saveChatMessages();
+    this.renderChatMessages();
+
+    // Post to backend
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (window.kejaAuth && window.kejaAuth.getToken()) {
+        headers['Authorization'] = `Bearer ${window.kejaAuth.getToken()}`;
+      }
+      await fetch('/api/messages', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(newMsg)
+      });
+    } catch (err) {
+      console.warn('Message offline sync');
+    }
+
+    // Landlord Auto-Reply Simulation for realistic instant response
+    if (prop) {
+      this.simulateLandlordReply(text, prop);
+    }
+  }
+
+  simulateLandlordReply(tenantText, prop) {
+    setTimeout(() => {
+      let replyText = `Hello! Thank you for inquiring about ${prop.title}. The house is available for viewing today.`;
+      
+      const lower = tenantText.toLowerCase();
+      if (lower.includes('water')) {
+        replyText = `Yes, water is supplied via ${prop.waterSupplyType} with overhead storage tanks. Always running!`;
+      } else if (lower.includes('view') || lower.includes('book') || lower.includes('schedule')) {
+        replyText = `You are welcome for a viewing today! You can reach me at ${prop.landlord.phone} once you arrive at ${prop.estateSuburb}.`;
+      } else if (lower.includes('deposit') || lower.includes('token') || lower.includes('rent')) {
+        replyText = `Rent is KSh ${prop.rentKes.toLocaleString()}/month, deposit is KSh ${prop.depositKes.toLocaleString()}, and electricity is ${prop.electricityMeterType}.`;
+      }
+
+      const replyMsg = {
+        id: 'reply-' + Date.now(),
+        propertyId: prop.id,
+        propertyTitle: prop.title,
+        estateSuburb: prop.estateSuburb,
+        recipientId: 'me',
+        recipientName: 'Tenant',
+        senderId: prop.landlord.id,
+        senderName: prop.landlord.name,
+        isSenderMe: false,
+        text: replyText,
+        createdAt: new Date().toISOString()
+      };
+
+      this.chatMessages.push(replyMsg);
+      this.saveChatMessages();
+      this.renderChatMessages();
+      this.showToast(`💬 New reply from ${prop.landlord.name}`, 'info');
+    }, 1500);
+  }
+
+  loadChatMessages() {
+    const saved = localStorage.getItem('kejamarket_chat_messages');
+    if (saved) {
+      try {
+        this.chatMessages = JSON.parse(saved);
+      } catch (e) {
+        this.chatMessages = [];
+      }
+    } else {
+      // Default initial welcome conversations
+      this.chatMessages = [
+        {
+          id: 'seed-msg-1',
+          propertyId: 'prop-nrb-001',
+          propertyTitle: 'Executive 2 Bedroom in Ruaka',
+          estateSuburb: 'Ruaka',
+          senderId: 'usr-landlord-01',
+          senderName: 'James Mwangi',
+          isSenderMe: false,
+          text: 'Hello! The house is available for viewing today between 10am and 5pm. Borehole water is running 24/7.',
+          createdAt: new Date(Date.now() - 3600000).toISOString()
+        }
+      ];
+    }
+  }
+
+  saveChatMessages() {
+    localStorage.setItem('kejamarket_chat_messages', JSON.stringify(this.chatMessages));
   }
 
   showToast(message, type = 'success') {

@@ -608,6 +608,51 @@ app.post('/api/properties/:id/reviews', optionalAuth, (req, res) => {
   }
 });
 
+// ─── IN-APP CHAT & INBOX MESSAGES ROUTES ────────────────────────────────────
+
+// GET /api/messages
+app.get('/api/messages', optionalAuth, (req, res) => {
+  try {
+    const { propertyId } = req.query;
+    const userId = req.user ? req.user.id : null;
+    const messages = store.getMessages(propertyId, userId);
+    res.json({ success: true, count: messages.length, messages });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/messages (Send in-app inquiry to landlord)
+app.post('/api/messages', optionalAuth, (req, res) => {
+  try {
+    const { propertyId, propertyTitle, estateSuburb, recipientId, recipientName, text, senderName, senderPhone } = req.body;
+
+    if (!text || !text.trim()) {
+      return res.status(400).json({ success: false, message: 'Message text is required.' });
+    }
+
+    const message = store.saveMessage({
+      propertyId,
+      propertyTitle,
+      estateSuburb,
+      recipientId,
+      recipientName,
+      senderId: req.user ? req.user.id : ('guest-' + Date.now()),
+      senderName: req.user ? req.user.name : (senderName || 'Interested Tenant'),
+      senderPhone: req.user ? req.user.phone : (senderPhone || ''),
+      text
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Message sent directly to landlord inbox!',
+      data: message
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
 // ─── LEADS & ALERTS ROUTES ───────────────────────────────────────────────────
 
 // POST /api/alerts/whatsapp

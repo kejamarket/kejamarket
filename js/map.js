@@ -94,7 +94,9 @@ class MapController {
             <div class="map-popup-location"><i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${prop.estateSuburb}, ${prop.county}</div>
             <div class="map-popup-actions">
               <button class="map-popup-btn btn-view" onclick="window.app.openPropertyDetail('${prop.id}')">View Details</button>
-              <a class="map-popup-btn btn-wa" href="https://wa.me/${prop.landlord.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hi, I am interested in booking: ' + prop.title + ' on Nairobi Rentals Live')}" target="_blank">WhatsApp</a>
+              <button class="map-popup-btn btn-chat" onclick="window.app.openChatForProperty('${prop.id}')" style="background:#00b53f; color:white; border:none; border-radius:4px; padding:4px 8px; font-weight:700; font-size:0.75rem; cursor:pointer;">
+                <i class="fas fa-comment-dots"></i> Chat
+              </button>
             </div>
           </div>
         </div>

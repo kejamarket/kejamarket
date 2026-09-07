@@ -852,8 +852,9 @@ button, input, select, textarea {
   border-color: #cbd5e1;
 }
 
+.btn-card-chat,
 .btn-card-whatsapp {
-  background: #25d366;
+  background: #00b53f;
   border: none;
   color: white;
   padding: 7px 8px;
@@ -869,8 +870,10 @@ button, input, select, textarea {
   white-space: nowrap;
 }
 
+.btn-card-chat:hover,
 .btn-card-whatsapp:hover {
-  background: #1eb956;
+  background: #009634;
+  transform: translateY(-1px);
 }
 
 .btn-card-map {
@@ -1566,6 +1569,7 @@ button, input, select, textarea {
     gap: 4px;
   }
 
+  .btn-card-chat,
   .btn-card-whatsapp,
   .btn-card-call,
   .btn-card-detail {
