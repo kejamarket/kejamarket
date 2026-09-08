@@ -179,9 +179,206 @@ function formatPhone(phone) {
   return clean;
 }
 
+// ─── OTP MEMORY STORE & UTILITIES ──────────────────────────────────────────
+const pendingOtps = new Map();
+
+// Helper to generate a 4-digit numeric OTP code
+function generateOtpCode() {
+  return Math.floor(1000 + Math.random() * 9000).toString();
+}
+
+// Clean up expired OTPs periodically (every 5 minutes)
+setInterval(() => {
+  const now = Date.now();
+  for (const [phone, data] of pendingOtps.entries()) {
+    if (data.expiresAt < now) {
+      pendingOtps.delete(phone);
+    }
+  }
+}, 5 * 60 * 1000);
+
 // ─── AUTHENTICATION ROUTES ───────────────────────────────────────────────────
 
-// POST /api/auth/register
+// POST /api/auth/send-otp (Step 1 of Phone-Verified Registration)
+app.post('/api/auth/send-otp', async (req, res) => {
+  try {
+    const { name, phone, email, password, role, numProperties, area } = req.body;
+
+    if (!name || !phone || !password) {
+      return res.status(400).json({ success: false, message: 'Full name, phone number, and password are required.' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long.' });
+    }
+
+    const cleanPhone = formatPhone(phone);
+    if (!cleanPhone || cleanPhone.length < 9) {
+      return res.status(400).json({ success: false, message: 'Please enter a valid Kenyan phone number (e.g. 0712345678 or 254712345678).' });
+    }
+
+    // Check if phone or email already registered
+    const cleanEmail = email ? email.trim().toLowerCase() : null;
+    const existingUser = store.data.users.find(u => 
+      u.phone === cleanPhone || 
+      (cleanEmail && u.email && u.email.toLowerCase() === cleanEmail)
+    );
+
+    if (existingUser) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'An account with this phone number or email already exists. Please sign in instead.' 
+      });
+    }
+
+    // Generate 4-digit OTP code
+    const otp = generateOtpCode();
+    const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes expiry
+
+    pendingOtps.set(cleanPhone, {
+      otp,
+      expiresAt,
+      attempts: 0,
+      signupData: {
+        name: name.trim(),
+        phone: cleanPhone,
+        email: cleanEmail,
+        password,
+        role: role || 'tenant',
+        numProperties,
+        area
+      }
+    });
+
+    // Send Real SMS via Africa's Talking / SMS Gateway
+    const smsMessage = `Your KejaMarket verification code is ${otp}. Valid for 5 minutes. Enter this code to verify your account.`;
+    const smsResult = await sendRealSMS(cleanPhone, smsMessage);
+
+    console.log(`🔑 [OTP GENERATED] Phone: +${cleanPhone} | OTP: ${otp} | Expires in: 5m`);
+
+    res.json({
+      success: true,
+      message: `Verification code sent to +${cleanPhone}.`,
+      phone: cleanPhone,
+      // Provide dev OTP if running in sandbox without SMS credentials for immediate testing
+      devOtp: (!atSMS ? otp : undefined)
+    });
+  } catch (err) {
+    console.error('Error in send-otp:', err);
+    res.status(500).json({ success: false, message: 'Failed to send verification code. Please try again.' });
+  }
+});
+
+// POST /api/auth/verify-otp (Step 2: Confirm OTP & Create Account)
+app.post('/api/auth/verify-otp', async (req, res) => {
+  try {
+    const { phone, otp } = req.body;
+
+    if (!phone || !otp) {
+      return res.status(400).json({ success: false, message: 'Phone number and verification code are required.' });
+    }
+
+    const cleanPhone = formatPhone(phone);
+    const entry = pendingOtps.get(cleanPhone);
+
+    if (!entry) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Verification code expired or not found. Please request a new code.' 
+      });
+    }
+
+    if (Date.now() > entry.expiresAt) {
+      pendingOtps.delete(cleanPhone);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Verification code has expired. Please request a new code.' 
+      });
+    }
+
+    if (entry.attempts >= 5) {
+      pendingOtps.delete(cleanPhone);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Too many incorrect attempts. Please request a new code.' 
+      });
+    }
+
+    if (entry.otp !== otp.trim()) {
+      entry.attempts += 1;
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid verification code. Please check and try again.' 
+      });
+    }
+
+    // OTP is valid! Create the verified user
+    const { signupData } = entry;
+    pendingOtps.delete(cleanPhone);
+
+    const user = await store.createUser({
+      ...signupData,
+      isPhoneVerified: true
+    });
+
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
+
+    // Send Welcome SMS confirmation
+    sendRealSMS(
+      cleanPhone,
+      `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your ${user.role === 'landlord' ? 'Landlord' : 'Tenant'} account is now verified and active.`
+    );
+
+    res.status(201).json({
+      success: true,
+      message: `🎉 Account verified and created successfully! Welcome to KejaMarket, ${user.name}!`,
+      user,
+      token
+    });
+  } catch (err) {
+    console.error('Error in verify-otp:', err);
+    res.status(400).json({ success: false, message: err.message || 'Verification failed.' });
+  }
+});
+
+// POST /api/auth/resend-otp
+app.post('/api/auth/resend-otp', async (req, res) => {
+  try {
+    const { phone } = req.body;
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Phone number is required.' });
+    }
+
+    const cleanPhone = formatPhone(phone);
+    const entry = pendingOtps.get(cleanPhone);
+
+    if (!entry) {
+      return res.status(400).json({ success: false, message: 'No pending registration found for this number. Please fill out the sign up form.' });
+    }
+
+    // Generate new OTP
+    const otp = generateOtpCode();
+    entry.otp = otp;
+    entry.expiresAt = Date.now() + 5 * 60 * 1000;
+    entry.attempts = 0;
+
+    const smsMessage = `Your new KejaMarket verification code is ${otp}. Valid for 5 minutes.`;
+    await sendRealSMS(cleanPhone, smsMessage);
+
+    console.log(`🔄 [OTP RESENT] Phone: +${cleanPhone} | OTP: ${otp}`);
+
+    res.json({
+      success: true,
+      message: `New verification code sent to +${cleanPhone}.`,
+      phone: cleanPhone,
+      devOtp: (!atSMS ? otp : undefined)
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Failed to resend code.' });
+  }
+});
+
+// POST /api/auth/register (Direct registration fallback)
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, phone, email, password, role, numProperties, area } = req.body;
@@ -202,15 +399,15 @@ app.post('/api/auth/register', async (req, res) => {
       password,
       role: role || 'tenant',
       numProperties,
-      area
+      area,
+      isPhoneVerified: true
     });
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
 
-    // Send real welcome SMS notification
     sendRealSMS(
       cleanPhone,
-      `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your ${user.role === 'landlord' ? 'Landlord' : 'Tenant'} account is active. Explore verified listings across Nairobi.`
+      `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your ${user.role === 'landlord' ? 'Landlord' : 'Tenant'} account is active.`
     );
 
     res.status(201).json({

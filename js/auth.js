@@ -68,13 +68,18 @@ const kejaAuth = (() => {
     showPanel(tab);
   }
 
+  let pendingSignupPhone = '';
+  let otpTimerInterval = null;
+
   function showPanel(tab) {
     const signinEl = document.getElementById('auth-panel-signin');
     const signupEl = document.getElementById('auth-panel-signup');
+    const otpEl = document.getElementById('auth-panel-otp');
     const loggedinEl = document.getElementById('auth-panel-loggedin');
 
     if (signinEl) signinEl.style.display = tab === 'signin' ? 'block' : 'none';
     if (signupEl) signupEl.style.display = tab === 'signup' ? 'block' : 'none';
+    if (otpEl) otpEl.style.display = tab === 'otp' ? 'block' : 'none';
     if (loggedinEl) loggedinEl.style.display = 'none';
 
     // Tab button styles
@@ -83,8 +88,8 @@ const kejaAuth = (() => {
 
     const tabSignIn = document.getElementById('auth-tab-signin');
     const tabSignUp = document.getElementById('auth-tab-signup');
-    if (tabSignIn) tabSignIn.style.cssText += tab === 'signin' ? activeStyle : inactiveStyle;
-    if (tabSignUp) tabSignUp.style.cssText += tab === 'signup' ? activeStyle : inactiveStyle;
+    if (tabSignIn) tabSignIn.style.cssText += (tab === 'signin' ? activeStyle : inactiveStyle);
+    if (tabSignUp) tabSignUp.style.cssText += (tab === 'signup' || tab === 'otp' ? activeStyle : inactiveStyle);
   }
 
   /* ─────────────────────────────────────────
@@ -110,7 +115,7 @@ const kejaAuth = (() => {
   }
 
   /* ─────────────────────────────────────────
-     SIGN UP (REAL BACKEND API)
+     SIGN UP (STEP 1: SEND OTP VIA SMS)
   ───────────────────────────────────────── */
   async function handleSignUp(e) {
     e.preventDefault();
@@ -130,6 +135,11 @@ const kejaAuth = (() => {
       return;
     }
 
+    if (password.length < 6) {
+      if (window.app) window.app.showToast('Password must be at least 6 characters long.', 'info');
+      return;
+    }
+
     const numProperties = role === 'landlord' && document.getElementById('signup-num-properties')
       ? document.getElementById('signup-num-properties').value
       : null;
@@ -141,11 +151,11 @@ const kejaAuth = (() => {
     const originalText = submitBtn ? submitBtn.innerHTML : '';
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending SMS code...';
     }
 
     try {
-      const res = await fetch(`${API_BASE}/api/auth/register`, {
+      const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, email, password, role, numProperties, area })
@@ -153,19 +163,17 @@ const kejaAuth = (() => {
 
       const data = await res.json();
 
-      if (data.success && data.user && data.token) {
-        saveSession(data.user, data.token);
-        updateHeaderUI(data.user);
-        showLoggedInPanel(data.user);
+      if (data.success && data.phone) {
+        pendingSignupPhone = data.phone;
+        showOtpPanel(data.phone, data.devOtp);
         if (window.app) {
-          window.app.showToast(`🎉 Welcome to KejaMarket, ${data.user.name}! Your account is active.`, 'success');
+          window.app.showToast(`📲 Verification code sent to +${data.phone}! Enter the 4-digit code.`, 'success');
         }
-        handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Registration failed'}`, 'error');
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to send verification code.'}`, 'error');
       }
     } catch (err) {
-      console.error('Sign up error:', err);
+      console.error('Sign up send-otp error:', err);
       if (window.app) {
         window.app.showToast('❌ Unable to reach server. Please check your connection and try again.', 'error');
       }
@@ -174,6 +182,189 @@ const kejaAuth = (() => {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalText;
       }
+    }
+  }
+
+  /* ─────────────────────────────────────────
+     OTP VERIFICATION UI & COUNTDOWN
+  ───────────────────────────────────────── */
+  function showOtpPanel(phone, devOtp) {
+    showPanel('otp');
+    const phoneDisplay = document.getElementById('otp-display-phone');
+    if (phoneDisplay) {
+      phoneDisplay.textContent = `+${phone}`;
+    }
+
+    // Dev/Sandbox helper banner
+    const devBanner = document.getElementById('otp-dev-banner');
+    const devCode = document.getElementById('otp-dev-code');
+    if (devOtp && devBanner && devCode) {
+      devBanner.style.display = 'block';
+      devCode.textContent = devOtp;
+    } else if (devBanner) {
+      devBanner.style.display = 'none';
+    }
+
+    // Reset digit boxes
+    for (let i = 1; i <= 4; i++) {
+      const el = document.getElementById(`otp-${i}`);
+      if (el) el.value = '';
+    }
+    const firstInput = document.getElementById('otp-1');
+    if (firstInput) firstInput.focus();
+
+    startOtpCountdown(60);
+  }
+
+  function startOtpCountdown(seconds) {
+    if (otpTimerInterval) clearInterval(otpTimerInterval);
+
+    let remaining = seconds;
+    const resendBtn = document.getElementById('btn-resend-otp');
+    const countdownSpan = document.getElementById('otp-countdown');
+
+    if (resendBtn) resendBtn.disabled = true;
+    if (countdownSpan) countdownSpan.textContent = `(${remaining}s)`;
+
+    otpTimerInterval = setInterval(() => {
+      remaining -= 1;
+      if (countdownSpan) countdownSpan.textContent = `(${remaining}s)`;
+      if (remaining <= 0) {
+        clearInterval(otpTimerInterval);
+        if (resendBtn) resendBtn.disabled = false;
+        if (countdownSpan) countdownSpan.textContent = '';
+      }
+    }, 1000);
+  }
+
+  function onOtpDigitInput(index, input, event) {
+    input.value = input.value.replace(/\D/g, '').slice(0, 1);
+    if (input.value && index < 4) {
+      const next = document.getElementById(`otp-${index + 1}`);
+      if (next) next.focus();
+    }
+    // If all 4 digits entered, auto-submit
+    const d1 = document.getElementById('otp-1')?.value || '';
+    const d2 = document.getElementById('otp-2')?.value || '';
+    const d3 = document.getElementById('otp-3')?.value || '';
+    const d4 = document.getElementById('otp-4')?.value || '';
+    if (d1 && d2 && d3 && d4) {
+      const submitBtn = document.getElementById('btn-submit-otp');
+      if (submitBtn) submitBtn.click();
+    }
+  }
+
+  function onOtpKeyDown(index, input, event) {
+    if (event.key === 'Backspace' && !input.value && index > 1) {
+      const prev = document.getElementById(`otp-${index - 1}`);
+      if (prev) {
+        prev.focus();
+        prev.value = '';
+      }
+    }
+  }
+
+  /* ─────────────────────────────────────────
+     CONFIRM OTP (STEP 2: VERIFY & LOG IN)
+  ───────────────────────────────────────── */
+  async function handleVerifyOtp(e) {
+    if (e) e.preventDefault();
+    const d1 = document.getElementById('otp-1')?.value || '';
+    const d2 = document.getElementById('otp-2')?.value || '';
+    const d3 = document.getElementById('otp-3')?.value || '';
+    const d4 = document.getElementById('otp-4')?.value || '';
+    const otp = `${d1}${d2}${d3}${d4}`.trim();
+
+    if (otp.length !== 4) {
+      if (window.app) window.app.showToast('Please enter the full 4-digit verification code.', 'info');
+      return;
+    }
+
+    const submitBtn = document.getElementById('btn-submit-otp');
+    const originalText = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: pendingSignupPhone, otp })
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.user && data.token) {
+        if (otpTimerInterval) clearInterval(otpTimerInterval);
+        saveSession(data.user, data.token);
+        updateHeaderUI(data.user);
+        showLoggedInPanel(data.user);
+        if (window.app) {
+          window.app.showToast(`🎉 Phone verified! Welcome to KejaMarket, ${data.user.name}!`, 'success');
+        }
+        handleAuthSuccess(data.user);
+      } else {
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Invalid verification code.'}`, 'error');
+        // Clear digits for retry
+        for (let i = 1; i <= 4; i++) {
+          const el = document.getElementById(`otp-${i}`);
+          if (el) el.value = '';
+        }
+        const first = document.getElementById('otp-1');
+        if (first) first.focus();
+      }
+    } catch (err) {
+      console.error('Error verifying OTP:', err);
+      if (window.app) window.app.showToast('❌ Verification failed. Please try again.', 'error');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    }
+  }
+
+  /* ─────────────────────────────────────────
+     RESEND OTP
+  ───────────────────────────────────────── */
+  async function handleResendOtp() {
+    if (!pendingSignupPhone) {
+      switchTab('signup');
+      return;
+    }
+
+    const resendBtn = document.getElementById('btn-resend-otp');
+    if (resendBtn) resendBtn.disabled = true;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/resend-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: pendingSignupPhone })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        if (data.devOtp) {
+          const devBanner = document.getElementById('otp-dev-banner');
+          const devCode = document.getElementById('otp-dev-code');
+          if (devBanner && devCode) {
+            devBanner.style.display = 'block';
+            devCode.textContent = data.devOtp;
+          }
+        }
+        startOtpCountdown(60);
+        if (window.app) window.app.showToast(`🔄 New verification code sent to +${pendingSignupPhone}!`, 'success');
+      } else {
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to resend code.'}`, 'error');
+        if (resendBtn) resendBtn.disabled = false;
+      }
+    } catch (err) {
+      console.error('Error resending OTP:', err);
+      if (resendBtn) resendBtn.disabled = false;
     }
   }
 
@@ -489,6 +680,10 @@ const kejaAuth = (() => {
     setRole,
     handleSignIn,
     handleSignUp,
+    handleVerifyOtp,
+    handleResendOtp,
+    onOtpDigitInput,
+    onOtpKeyDown,
     signOut,
     togglePwd,
     requireLandlordForAction,

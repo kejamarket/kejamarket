@@ -957,9 +957,22 @@
               <i class="fas fa-check-double"></i> I Have Entered PIN – Confirm Now
             </button>
 
+            <!-- Manual Paybill Instruction Card -->
+            <div style="margin-top: 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; padding: 12px; text-align: left; font-size: 0.78rem;">
+              <div style="font-weight: 700; color: #fde047; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                <i class="fas fa-info-circle"></i> Prompt not popping up on phone?
+              </div>
+              <div style="color: #cbd5e1; line-height: 1.5;">
+                1. Go to <strong>M-Pesa</strong> &gt; <strong>Lipa na M-Pesa</strong> &gt; <strong>Paybill</strong><br>
+                2. Business No: <strong style="color: #fff; font-size: 0.85rem;">303030</strong><br>
+                3. Account No: <strong style="color: #fff; font-size: 0.85rem;">2057103992</strong><br>
+                4. Enter Amount &amp; PIN
+              </div>
+            </div>
+
             <!-- Manual Receipt Entry Option -->
-            <div style="margin-top: 12px; font-size: 0.75rem; color: #94a3b8;">
-              Already received SMS? <a href="#" onclick="monetization.promptReceiptCode(); return false;" style="color: #38bdf8; font-weight: 600; text-decoration: underline;">Enter Receipt Code</a>
+            <div style="margin-top: 12px; font-size: 0.78rem; color: #94a3b8;">
+              Already paid? <a href="#" onclick="monetization.promptReceiptCode(); return false;" style="color: #38bdf8; font-weight: 700; text-decoration: underline;">Enter M-Pesa Receipt Code</a>
             </div>
           </div>
         </div>
@@ -1293,6 +1306,44 @@
           </form>
         </div>
 
+        <!-- ── OTP PHONE VERIFICATION PANEL ── -->
+        <div id="auth-panel-otp" style="display:none; text-align:center;">
+          <div style="width:64px; height:64px; border-radius:50%; background:#e0e7ff; color:#4f46e5; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.8rem;">
+            <i class="fas fa-sms"></i>
+          </div>
+          <h3 style="margin:0 0 6px 0; color:#1e1b4b; font-size:1.2rem; font-weight:800;">Verify Your Phone</h3>
+          <p style="font-size:0.88rem; color:#64748b; margin-bottom:16px;">
+            We sent a 4-digit verification code via SMS to <strong id="otp-display-phone" style="color:#1e1b4b;">+254...</strong>
+          </p>
+
+          <!-- Dev sandbox helper alert if testing -->
+          <div id="otp-dev-banner" style="display:none; background:#fef3c7; border:1px solid #fde68a; border-radius:8px; padding:10px; margin-bottom:16px; font-size:0.82rem; color:#92400e; text-align:left;">
+            <i class="fas fa-info-circle"></i> <strong>SMS Gateway Code:</strong> <code id="otp-dev-code" style="background:#fff; padding:2px 8px; border-radius:4px; font-weight:800; color:#b45309; font-size:1.1rem; margin-left:4px;"></code>
+          </div>
+
+          <form id="form-otp-verify" onsubmit="kejaAuth.handleVerifyOtp(event)">
+            <div style="display:flex; justify-content:center; gap:10px; margin-bottom:18px;">
+              <input type="text" maxlength="1" class="otp-digit form-control" id="otp-1" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required autofocus oninput="kejaAuth.onOtpDigitInput(1, this, event)" onkeydown="kejaAuth.onOtpKeyDown(1, this, event)">
+              <input type="text" maxlength="1" class="otp-digit form-control" id="otp-2" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required oninput="kejaAuth.onOtpDigitInput(2, this, event)" onkeydown="kejaAuth.onOtpKeyDown(2, this, event)">
+              <input type="text" maxlength="1" class="otp-digit form-control" id="otp-3" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required oninput="kejaAuth.onOtpDigitInput(3, this, event)" onkeydown="kejaAuth.onOtpKeyDown(3, this, event)">
+              <input type="text" maxlength="1" class="otp-digit form-control" id="otp-4" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required oninput="kejaAuth.onOtpDigitInput(4, this, event)" onkeydown="kejaAuth.onOtpKeyDown(4, this, event)">
+            </div>
+
+            <button type="submit" id="btn-submit-otp" class="btn-primary" style="width:100%; border:none; font-weight:700; cursor:pointer; padding:12px; font-size:0.95rem; background:linear-gradient(135deg,#4f46e5,#7c3aed);">
+              <i class="fas fa-check-circle"></i> Verify & Complete Registration
+            </button>
+          </form>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; font-size:0.82rem;">
+            <button type="button" onclick="kejaAuth.handleResendOtp()" id="btn-resend-otp" style="background:none; border:none; color:#4f46e5; font-weight:700; cursor:pointer; padding:0;">
+              <i class="fas fa-redo"></i> Resend Code <span id="otp-countdown">(60s)</span>
+            </button>
+            <a href="#" onclick="kejaAuth.switchTab('signup'); return false;" style="color:#64748b; text-decoration:underline;">
+              Edit Phone Number
+            </a>
+          </div>
+        </div>
+
         <!-- ── LOGGED IN PANEL ── -->
         <div id="auth-panel-loggedin" style="display:none; text-align:center;">
           <div id="auth-user-avatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:2rem;color:white;"></div>
@@ -1572,19 +1623,19 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="js/data/locations.js?v=2.3"></script>
-  <script src="js/data/seedListings.js?v=2.3"></script>
-  <script src="js/comments.js?v=2.3"></script>
-  <script src="js/map.js?v=2.3"></script>
-  <script src="js/landlord.js?v=2.3"></script>
-  <script src="js/botSimulator.js?v=2.3"></script>
-  <script src="js/monetization.js?v=2.3"></script>
-  <script src="js/app.js?v=2.3"></script>
-  <script src="js/auth.js?v=2.3"></script>
-  <script src="js/admin.js?v=2.3"></script>
+  <script src="js/data/locations.js?v=2.4"></script>
+  <script src="js/data/seedListings.js?v=2.4"></script>
+  <script src="js/comments.js?v=2.4"></script>
+  <script src="js/map.js?v=2.4"></script>
+  <script src="js/landlord.js?v=2.4"></script>
+  <script src="js/botSimulator.js?v=2.4"></script>
+  <script src="js/monetization.js?v=2.4"></script>
+  <script src="js/app.js?v=2.4"></script>
+  <script src="js/auth.js?v=2.4"></script>
+  <script src="js/admin.js?v=2.4"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=2.3');
+      navigator.serviceWorker.register('/sw.js?v=2.4');
     }
   </script>
 </body>

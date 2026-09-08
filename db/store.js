@@ -189,6 +189,7 @@ class Store {
       email: cleanEmail,
       password: hashedPassword,
       role: role || 'tenant',
+      isPhoneVerified: true,
       isVerified: role === 'tenant',
       numProperties: role === 'landlord' ? (numProperties || '1') : null,
       area: role === 'landlord' ? (area || '') : null,
