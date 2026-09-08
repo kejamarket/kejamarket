@@ -637,6 +637,12 @@ class NairobiRentalsApp {
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 
+    // Require login to view full property details
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.openPropertyDetail(propertyId));
+      return;
+    }
+
     this.selectedPropertyForDetail = p;
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
     const isTaken = p.isTaken || p.status === 'taken';
