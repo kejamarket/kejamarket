@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v4';
+const CACHE_NAME = 'kejamarket-v9';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -8,7 +8,6 @@ const STATIC_ASSETS = [
   '/css/monetization.css',
   '/js/data/locations.js',
   '/js/data/seedListings.js',
-  '/js/reviews.js',
   '/js/comments.js',
   '/js/map.js',
   '/js/landlord.js',
