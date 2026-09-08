@@ -76,6 +76,12 @@ class NairobiRentalsApp {
     }
   }
 
+  // Alias called by admin.js after listing boost/delete
+  async loadProperties() {
+    await this.fetchLiveProperties();
+    this.applyFilters();
+  }
+
   loadFavorites() {
     const saved = localStorage.getItem('nairobi_rentals_favs');
     if (saved) {

@@ -84,6 +84,12 @@
           <span>Pricing & Pro</span>
         </button>
 
+        <!-- Admin Control Portal (Visible to Admin only) -->
+        <button class="btn-header-action" id="btn-admin-header" style="display: none; background: linear-gradient(135deg, #7c3aed, #4f46e5); color: #ffd700; font-weight: 700; border: 1px solid rgba(255,215,0,0.4);" onclick="kejaAdmin.openAdminModal()" title="Administrator Control Portal">
+          <i class="fas fa-crown" style="color: #ffd700;"></i>
+          <span>Admin Portal</span>
+        </button>
+
         <!-- Sign In / Sign Up (dynamic based on session) -->
         <button class="btn-header-action btn-auth-trigger" id="btn-auth-header" onclick="kejaAuth.openAuthModal()">
           <i class="fas fa-user-circle"></i>
@@ -1293,6 +1299,19 @@
           <div id="auth-user-greeting" style="font-size:1.1rem;font-weight:700;color:#1f2937;margin-bottom:4px;"></div>
           <div id="auth-user-role-badge" style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.78rem;font-weight:700;margin-bottom:20px;"></div>
 
+          <!-- Administrator control links -->
+          <div id="auth-admin-links" style="display:none; margin-bottom:14px; background:#faf5ff; border:1px solid #e9d5ff; border-radius:10px; padding:12px; text-align:left;">
+            <div style="font-size:0.75rem; font-weight:800; color:#7c3aed; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+              <i class="fas fa-crown" style="color:#ffd700;"></i> Administrator Controls
+            </div>
+            <button class="btn-primary" style="width:100%; background:linear-gradient(135deg,#7c3aed,#4f46e5); border:none; margin-bottom:8px; cursor:pointer; font-weight:700; font-size:0.85rem;" onclick="kejaAdmin.openAdminModal(); app.closeModal('modal-auth');">
+              <i class="fas fa-tachometer-alt"></i> Open Admin Control Center
+            </button>
+            <button class="btn-secondary" style="width:100%; border:1px solid #cbd5e1; margin-bottom:8px; cursor:pointer; font-size:0.82rem;" onclick="kejaAdmin.downloadBackup()">
+              <i class="fas fa-download"></i> Download Database Backup
+            </button>
+          </div>
+
           <!-- Tenant dashboard links -->
           <div id="auth-tenant-links" style="display:none;">
             <button class="btn-primary" style="width:100%;border:none;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-whatsapp-alerts');app.closeModal('modal-auth');">
@@ -1377,20 +1396,195 @@
     </a>
   </nav>
 
+  <!-- ====================================================================
+       MODAL 10: Administrator Control Center & Live Portal
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-admin-portal">
+    <div class="modal-dialog" style="max-width: 900px; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden; border-radius: 16px;">
+      
+      <!-- Admin Header -->
+      <div class="modal-header" style="background: linear-gradient(135deg, #1e1b4b, #312e81); color: white; padding: 16px 24px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.4); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+            👑
+          </div>
+          <div>
+            <h3 style="margin: 0; color: #ffffff; font-size: 1.2rem; font-weight: 800;">KejaMarket Administrator Control Center</h3>
+            <div style="font-size: 0.8rem; color: #c7d2fe;">Live Platform Overview · User Management · Database Operations</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-admin-portal')" style="color: white; font-size: 1.8rem;">&times;</button>
+      </div>
+
+      <!-- Admin Tabs Navigation -->
+      <div style="display: flex; gap: 8px; padding: 12px 24px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; overflow-x: auto;">
+        <button id="admin-tab-btn-overview" class="category-pill active" style="font-size: 0.85rem; padding: 6px 14px; margin: 0; background: #7c3aed; color: white; cursor: pointer; font-weight: 700;" onclick="kejaAdmin.switchTab('overview')">
+          <i class="fas fa-chart-pie"></i> Overview
+        </button>
+        <button id="admin-tab-btn-users" class="category-pill" style="font-size: 0.85rem; padding: 6px 14px; margin: 0; background: transparent; color: #475569; cursor: pointer; font-weight: 700;" onclick="kejaAdmin.switchTab('users')">
+          <i class="fas fa-users"></i> Registered Users
+        </button>
+        <button id="admin-tab-btn-listings" class="category-pill" style="font-size: 0.85rem; padding: 6px 14px; margin: 0; background: transparent; color: #475569; cursor: pointer; font-weight: 700;" onclick="kejaAdmin.switchTab('listings')">
+          <i class="fas fa-home"></i> Listings Moderation
+        </button>
+        <button id="admin-tab-btn-system" class="category-pill" style="font-size: 0.85rem; padding: 6px 14px; margin: 0; background: transparent; color: #475569; cursor: pointer; font-weight: 700;" onclick="kejaAdmin.switchTab('system')">
+          <i class="fas fa-server"></i> System & DB Backup
+        </button>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="modal-body" style="flex: 1; overflow-y: auto; padding: 24px; background: #ffffff;">
+        
+        <!-- PANE 1: OVERVIEW & STATS -->
+        <div id="admin-tab-pane-overview">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 24px;">
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Total Users</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #4f46e5;" id="admin-stat-total-users">-</div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Registered Landlords</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #7c3aed;" id="admin-stat-landlords">-</div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Active Tenants</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #00b53f;" id="admin-stat-tenants">-</div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Total Properties</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #0284c7;" id="admin-stat-total-props">-</div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Vacant / Available</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #16a34a;" id="admin-stat-available-props">-</div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Occupied / Taken</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #dc2626;" id="admin-stat-taken-props">-</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 16px;">
+              <h4 style="margin: 0 0 8px 0; color: #1e40af; font-size: 0.95rem;"><i class="fas fa-bolt"></i> Quick Operations</h4>
+              <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px;">Trigger automated tasks and platform maintenance routines.</p>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button class="btn-primary" style="background: #2563eb; border: none; font-size: 0.85rem; font-weight: 600; cursor: pointer;" onclick="app.openModal('modal-bot-simulator')">
+                  <i class="fas fa-robot"></i> Open Scraper & Ingestion Bot
+                </button>
+                <button class="btn-secondary" style="border: 1px solid #cbd5e1; font-size: 0.85rem; cursor: pointer;" onclick="kejaAdmin.downloadBackup()">
+                  <i class="fas fa-download"></i> Download Full Database Backup (.json)
+                </button>
+              </div>
+            </div>
+
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px;">
+              <h4 style="margin: 0 0 8px 0; color: #166534; font-size: 0.95rem;"><i class="fas fa-satellite-dish"></i> Gateways Status</h4>
+              <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.82rem; color: #334155; display: flex; flex-direction: column; gap: 6px;">
+                <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <strong>Safaricom M-Pesa Daraja:</strong> Webhook active (`/api/mpesa/callback`)</li>
+                <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <strong>Africa's Talking SMS:</strong> Dispatch service ready</li>
+                <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <strong>JSON Data Store:</strong> Read/Write persistent disk</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: USERS REGISTRY -->
+        <div id="admin-tab-pane-users" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Registered Platform Users</div>
+            <button class="category-pill" style="font-size: 0.8rem; padding: 4px 10px; cursor: pointer;" onclick="kejaAdmin.refreshAllData()">
+              <i class="fas fa-sync-alt"></i> Refresh Users
+            </button>
+          </div>
+          <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+              <thead style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; color: #475569;">
+                <tr>
+                  <th style="padding: 10px 12px;">Name</th>
+                  <th style="padding: 10px 12px;">Phone</th>
+                  <th style="padding: 10px 12px;">Email</th>
+                  <th style="padding: 10px 12px;">Role</th>
+                  <th style="padding: 10px 12px;">Status</th>
+                  <th style="padding: 10px 12px; text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-table-body">
+                <!-- Rendered dynamically by js/admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PANE 3: LISTINGS MODERATION -->
+        <div id="admin-tab-pane-listings" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Live Property Listings</div>
+            <button class="category-pill" style="font-size: 0.8rem; padding: 4px 10px; cursor: pointer;" onclick="kejaAdmin.renderListings()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+              <thead style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; color: #475569;">
+                <tr>
+                  <th style="padding: 10px 12px;">Listing Title</th>
+                  <th style="padding: 10px 12px;">Suburb</th>
+                  <th style="padding: 10px 12px;">Rent (KES)</th>
+                  <th style="padding: 10px 12px;">Tier</th>
+                  <th style="padding: 10px 12px;">Status</th>
+                  <th style="padding: 10px 12px; text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-listings-table-body">
+                <!-- Rendered dynamically by js/admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PANE 4: SYSTEM & DB TOOLS -->
+        <div id="admin-tab-pane-system" style="display: none;">
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px;">
+            <h4 style="margin: 0 0 8px 0; font-size: 1rem; color: #1e293b;"><i class="fas fa-database" style="color: #7c3aed;"></i> Database Persistence</h4>
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 14px;">
+              KejaMarket stores users, listings, reviews, and transactions in a real-time persistent JSON database. Download a timestamped backup anytime.
+            </p>
+            <button class="btn-primary" style="background: #7c3aed; border: none; font-weight: 700; cursor: pointer;" onclick="kejaAdmin.downloadBackup()">
+              <i class="fas fa-download"></i> Download Database Backup JSON
+            </button>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px;">
+            <h4 style="margin: 0 0 8px 0; font-size: 1rem; color: #1e293b;"><i class="fas fa-robot" style="color: #00b53f;"></i> Automated Listings Aggregator</h4>
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 14px;">
+              Ingest, deduplicate, and auto-classify public Nairobi rental listings directly into the live database.
+            </p>
+            <button class="btn-primary" style="background: #00b53f; border: none; font-weight: 700; cursor: pointer;" onclick="app.openModal('modal-bot-simulator'); app.closeModal('modal-admin-portal');">
+              <i class="fas fa-play"></i> Launch Ingestion Engine
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="js/data/locations.js?v=2.2"></script>
-  <script src="js/data/seedListings.js?v=2.2"></script>
-  <script src="js/comments.js?v=2.2"></script>
-  <script src="js/map.js?v=2.2"></script>
-  <script src="js/landlord.js?v=2.2"></script>
-  <script src="js/botSimulator.js?v=2.2"></script>
-  <script src="js/monetization.js?v=2.2"></script>
-  <script src="js/app.js?v=2.2"></script>
-  <script src="js/auth.js?v=2.2"></script>
+  <script src="js/data/locations.js?v=2.3"></script>
+  <script src="js/data/seedListings.js?v=2.3"></script>
+  <script src="js/comments.js?v=2.3"></script>
+  <script src="js/map.js?v=2.3"></script>
+  <script src="js/landlord.js?v=2.3"></script>
+  <script src="js/botSimulator.js?v=2.3"></script>
+  <script src="js/monetization.js?v=2.3"></script>
+  <script src="js/app.js?v=2.3"></script>
+  <script src="js/auth.js?v=2.3"></script>
+  <script src="js/admin.js?v=2.3"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=2.2');
+      navigator.serviceWorker.register('/sw.js?v=2.3');
     }
   </script>
 </body>

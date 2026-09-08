@@ -68,7 +68,8 @@ class Store {
       existingAdmin.email = 'admin@kejamarket.co.ke';
       existingAdmin.name = 'KejaMarket Admin';
       existingAdmin.phone = '0700000000';
-      existingAdmin.role = 'landlord';
+      existingAdmin.role = 'admin';
+      existingAdmin.isAdmin = true;
       existingAdmin.isVerified = true;
       existingAdmin.password = adminPasswordHash;
     } else {
@@ -78,7 +79,8 @@ class Store {
         phone: '0700000000',
         email: 'admin@kejamarket.co.ke',
         password: adminPasswordHash,
-        role: 'landlord',
+        role: 'admin',
+        isAdmin: true,
         isVerified: true,
         numProperties: '10+',
         area: 'Nairobi Metro',
@@ -128,7 +130,8 @@ class Store {
         phone: '0700000000',
         email: 'admin@kejamarket.co.ke',
         password: hashedPassword,
-        role: 'landlord',
+        role: 'admin',
+        isAdmin: true,
         isVerified: true,
         numProperties: '10+',
         area: 'Nairobi Metro',
@@ -222,8 +225,9 @@ class Store {
       throw new Error('Incorrect password. Please try again.');
     }
 
-    // If role requested and does not match, optionally update or warn
-    if (role && user.role !== role) {
+    // If role requested and does not match, update unless this is a protected system account (admin)
+    const isSystemAccount = user.id === 'usr-admin-01' || user.isAdmin === true;
+    if (role && user.role !== role && !isSystemAccount) {
       // Allow flexible switch if they are signing in to their valid account
       user.role = role;
       this.save();
@@ -283,6 +287,14 @@ class Store {
     this.data.properties[index] = { ...this.data.properties[index], ...updates };
     this.save();
     return this.data.properties[index];
+  }
+
+  deleteProperty(id) {
+    const index = this.data.properties.findIndex(p => p.id === id);
+    if (index === -1) return false;
+    this.data.properties.splice(index, 1);
+    this.save();
+    return true;
   }
 
   boostProperty(propertyId, boostType = 'top_ad') {

@@ -5,12 +5,13 @@
       "name": "KejaMarket Admin",
       "phone": "0700000000",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$F8kvQ8d27.DEGIyL.7omHOCRIDr/Rej5TMJ5jyWIUXoNjTS0PH3ji",
-      "role": "landlord",
+      "password": "$2b$10$SGs1HSd6oY8mpdBsJVKsQetjcGtOO5oX7p24K8snHVA0RI46Zoy3a",
+      "role": "admin",
       "isVerified": true,
       "numProperties": "10+",
       "area": "Nairobi Metro",
-      "createdAt": "2026-09-07T22:08:35.439Z"
+      "createdAt": "2026-09-07T22:08:35.439Z",
+      "isAdmin": true
     },
     {
       "id": "usr-landlord-01",

@@ -273,9 +273,23 @@ const kejaAuth = (() => {
     if (avatarEl) avatarEl.textContent = initials;
     if (greetingEl) greetingEl.textContent = `Hi, ${session.name}!`;
 
-    // Role badge
+    // Role badge & Admin detection
+    const isAdmin = Boolean(
+      session && (
+        session.id === 'usr-admin-01' || 
+        session.role === 'admin' ||
+        session.isAdmin === true ||
+        (session.email && session.email.toLowerCase().includes('admin')) ||
+        (session.name && session.name.toLowerCase().includes('admin'))
+      )
+    );
+
     if (badgeEl) {
-      if (session.role === 'landlord') {
+      if (isAdmin) {
+        badgeEl.textContent = '👑 Administrator';
+        badgeEl.style.background = 'linear-gradient(135deg, #7c3aed, #4f46e5)';
+        badgeEl.style.color = '#ffffff';
+      } else if (session.role === 'landlord') {
         badgeEl.textContent = '🏠 Landlord';
         badgeEl.style.background = '#e0e7ff';
         badgeEl.style.color = '#4f46e5';
@@ -287,10 +301,17 @@ const kejaAuth = (() => {
     }
 
     // Show correct dashboard links
+    const adminLinks = document.getElementById('auth-admin-links');
     const tenantLinks = document.getElementById('auth-tenant-links');
     const landlordLinks = document.getElementById('auth-landlord-links');
+
+    if (adminLinks) adminLinks.style.display = isAdmin ? 'block' : 'none';
     if (tenantLinks) tenantLinks.style.display = session.role === 'tenant' ? 'block' : 'none';
-    if (landlordLinks) landlordLinks.style.display = session.role === 'landlord' ? 'block' : 'none';
+    if (landlordLinks) landlordLinks.style.display = (session.role === 'landlord' || isAdmin) ? 'block' : 'none';
+
+    if (window.kejaAdmin && typeof window.kejaAdmin.checkAdminSession === 'function') {
+      window.kejaAdmin.checkAdminSession();
+    }
   }
 
   /* ─────────────────────────────────────────
@@ -300,8 +321,17 @@ const kejaAuth = (() => {
     const label = document.getElementById('auth-header-label');
     const btn = document.getElementById('btn-auth-header');
     const mobileLabel = document.getElementById('mobile-nav-user-label');
+    const adminHeaderBtn = document.getElementById('btn-admin-header');
 
     if (session) {
+      const isAdmin = Boolean(
+        session.id === 'usr-admin-01' || 
+        session.role === 'admin' ||
+        session.isAdmin === true ||
+        (session.email && session.email.toLowerCase().includes('admin')) ||
+        (session.name && session.name.toLowerCase().includes('admin'))
+      );
+
       const initials = (session.name || 'User')
         .split(' ')
         .map(w => w[0])
@@ -309,21 +339,34 @@ const kejaAuth = (() => {
         .toUpperCase()
         .slice(0, 2);
 
-      if (label) label.textContent = initials;
-      if (mobileLabel) mobileLabel.textContent = session.name.split(' ')[0];
+      if (label) label.textContent = isAdmin ? '👑 Admin' : initials;
+      if (mobileLabel) mobileLabel.textContent = isAdmin ? 'Admin' : session.name.split(' ')[0];
+      if (adminHeaderBtn) adminHeaderBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+
       if (btn) {
-        btn.style.background = session.role === 'landlord'
-          ? 'linear-gradient(135deg,#4f46e5,#7c3aed)'
-          : 'linear-gradient(135deg,#10b981,#059669)';
-        btn.style.color = 'white';
+        if (isAdmin) {
+          btn.style.background = 'linear-gradient(135deg, #7c3aed, #4f46e5)';
+          btn.style.color = '#ffd700';
+          btn.style.fontWeight = '700';
+        } else {
+          btn.style.background = session.role === 'landlord'
+            ? 'linear-gradient(135deg,#4f46e5,#7c3aed)'
+            : 'linear-gradient(135deg,#10b981,#059669)';
+          btn.style.color = 'white';
+        }
       }
     } else {
       if (label) label.textContent = 'Sign In';
       if (mobileLabel) mobileLabel.textContent = 'Profile';
+      if (adminHeaderBtn) adminHeaderBtn.style.display = 'none';
       if (btn) {
         btn.style.background = '';
         btn.style.color = '';
       }
+    }
+
+    if (window.kejaAdmin && typeof window.kejaAdmin.checkAdminSession === 'function') {
+      window.kejaAdmin.checkAdminSession();
     }
   }
 
@@ -350,7 +393,14 @@ const kejaAuth = (() => {
       openAuthModal();
       return;
     }
-    if (session.role !== 'landlord') {
+    // Admins have full landlord access
+    const isAdmin = Boolean(
+      session.id === 'usr-admin-01' ||
+      session.role === 'admin' ||
+      session.isAdmin === true ||
+      (session.email && session.email.toLowerCase().includes('admin'))
+    );
+    if (session.role !== 'landlord' && !isAdmin) {
       if (window.app) window.app.showToast('Only landlord accounts can post properties. Please switch or create a Landlord account.', 'info');
       switchTab('signup');
       setRole('landlord', 'signup');

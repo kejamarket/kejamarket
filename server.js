@@ -963,15 +963,57 @@ app.get('/api/admin/users', (req, res) => {
   }
 });
 
-app.get('/api/admin/download-db', (req, res) => {
+app.post('/api/admin/users/:id/toggle-verify', optionalAuth, (req, res) => {
   try {
-    const filePath = store.getDbFilePath();
-    res.download(filePath, `kejamarket_database_backup_${new Date().toISOString().slice(0, 10)}.json`);
+    const { id } = req.params;
+    const user = store.getUserById(id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+    const updated = store.updateUser(id, { isVerified: !user.isVerified });
+    res.json({
+      success: true,
+      message: `User ${user.name} is now ${updated.isVerified ? 'VERIFIED' : 'UNVERIFIED'}`,
+      user: updated
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
+// DELETE /api/properties/:id (Delete listing)
+app.delete('/api/properties/:id', optionalAuth, (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = store.deleteProperty(id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: 'Property not found.' });
+    }
+    res.json({ success: true, message: 'Property listing deleted successfully.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
+// GET /api/admin/download-db (Backup full JSON database)
+app.get('/api/admin/download-db', (req, res) => {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const dbPath = path.join(__dirname, 'db', 'data.json');
+    if (!fs.existsSync(dbPath)) {
+      return res.status(404).json({ success: false, message: 'Database file not found.' });
+    }
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="kejamarket-db-backup-${timestamp}.json"`);
+    const stream = fs.createReadStream(dbPath);
+    stream.pipe(res);
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
 
 // ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
