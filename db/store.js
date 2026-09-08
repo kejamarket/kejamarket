@@ -41,6 +41,9 @@ class Store {
         this.data.leads = this.data.leads || [];
         this.data.messages = this.data.messages || [];
         this.data.comments = this.data.comments || {};
+
+        // Guarantee official Admin account exists with current credentials
+        this.ensureAdminUser();
       } else {
         this.seedInitialData();
         this.save();
@@ -50,6 +53,39 @@ class Store {
       this.seedInitialData();
       this.save();
     }
+  }
+
+  ensureAdminUser() {
+    const adminPasswordHash = bcrypt.hashSync('keja2026', 10);
+    const existingAdmin = this.data.users.find(u => 
+      u.id === 'usr-admin-01' || 
+      u.email === 'admin@kejamarket.co.ke' || 
+      u.email === 'admin@keja.co.ke' || 
+      u.phone === '0700000000'
+    );
+
+    if (existingAdmin) {
+      existingAdmin.email = 'admin@kejamarket.co.ke';
+      existingAdmin.name = 'KejaMarket Admin';
+      existingAdmin.phone = '0700000000';
+      existingAdmin.role = 'landlord';
+      existingAdmin.isVerified = true;
+      existingAdmin.password = adminPasswordHash;
+    } else {
+      this.data.users.unshift({
+        id: 'usr-admin-01',
+        name: 'KejaMarket Admin',
+        phone: '0700000000',
+        email: 'admin@kejamarket.co.ke',
+        password: adminPasswordHash,
+        role: 'landlord',
+        isVerified: true,
+        numProperties: '10+',
+        area: 'Nairobi Metro',
+        createdAt: new Date().toISOString()
+      });
+    }
+    this.save();
   }
 
   save() {
@@ -163,11 +199,18 @@ class Store {
 
   async authenticateUser(identifier, password, role = null) {
     const cleanId = identifier.trim().toLowerCase();
+
+    // If attempting Admin login, ensure admin user is initialized
+    if (cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin@keja.co.ke' || cleanId === '0700000000' || cleanId === '254700000000' || cleanId === 'admin') {
+      this.ensureAdminUser();
+    }
+
     const user = this.data.users.find(u => 
       u.phone === cleanId || 
       (u.email && u.email.toLowerCase() === cleanId) ||
       u.phone.replace(/^254/, '0') === cleanId ||
-      u.phone === '254' + cleanId.replace(/^0/, '')
+      u.phone === '254' + cleanId.replace(/^0/, '') ||
+      (cleanId === 'admin' && u.id === 'usr-admin-01')
     );
 
     if (!user) {
