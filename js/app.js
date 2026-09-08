@@ -640,10 +640,28 @@ class NairobiRentalsApp {
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 
-    btnEl.innerHTML = `<i class="fas fa-phone"></i> ${p.landlord.phone}`;
-    btnEl.style.background = '#e6f8ec';
-    btnEl.style.color = '#008e31';
-    btnEl.style.borderColor = '#00b53f';
+    if (btnEl) {
+      btnEl.innerHTML = `<i class="fas fa-phone"></i> ${p.landlord.phone}`;
+      btnEl.style.background = '#e6f8ec';
+      btnEl.style.color = '#008e31';
+      btnEl.style.borderColor = '#00b53f';
+    }
+
+    // Immediately open phone dialer app
+    window.location.href = `tel:${p.landlord.phone}`;
+  }
+
+  callLandlordDirect(propertyId) {
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.callLandlordDirect(propertyId));
+      return;
+    }
+    const p = this.properties.find(x => x.id === propertyId) || this.selectedPropertyForDetail;
+    if (!p) return;
+
+    this.unlockDetailContact(p);
+    // Immediately open phone dialer app
+    window.location.href = `tel:${p.landlord.phone}`;
   }
 
   openPropertyDetail(propertyId) {
@@ -816,8 +834,8 @@ class NairobiRentalsApp {
       if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;letter-spacing:1px;">+254 7•• ••• ••• (Sign in to view)</span>`;
       if (callBtn) {
         callBtn.href = '#';
-        callBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}')); return false;`);
-        callBtn.style.opacity = '0.85';
+        callBtn.setAttribute('onclick', `event.preventDefault(); app.callLandlordDirect('${p.id}'); return false;`);
+        callBtn.style.opacity = '0.9';
         callBtn.innerHTML = '<i class="fas fa-lock"></i> Sign In to Call';
       }
       if (chatBtn) {
