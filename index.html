@@ -631,69 +631,8 @@
           </div>
         </div>
 
-        <!-- Community Reviews Section (PRD Water, Security & Deposit Transparency) -->
-        <div style="border-top: 1px solid #e2e8f0; padding-top: 18px;">
-          <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-            <i class="fas fa-star" style="color: #ff9800;"></i> Resident Community Reviews & Transparency
-          </h4>
-          
-          <div id="detail-reviews-list" style="margin-bottom: 18px;"></div>
-
-          <!-- Add Review Form -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
-            <h5 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">Leave a Resident / Tenant Review</h5>
-            <form id="form-submit-review" onsubmit="app.submitReviewForm(event)">
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label>Your Name</label>
-                  <input type="text" id="review-author-name" class="form-control" placeholder="e.g. Alex N. (Tenant)">
-                </div>
-                <div class="form-group">
-                  <label>💧 Water Availability Rating</label>
-                  <select id="review-water-rating" class="form-control">
-                    <option value="5.0">5.0 ★ - Constant 24/7 Borehole</option>
-                    <option value="4.0">4.0 ★ - Regular with minor rationing</option>
-                    <option value="3.0">3.0 ★ - Moderate supply</option>
-                    <option value="2.0">2.0 ★ - Frequent shortage</option>
-                    <option value="1.0">1.0 ★ - Severe rationing</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label>🛡️ Security Rating</label>
-                  <select id="review-sec-rating" class="form-control">
-                    <option value="5.0">5.0 ★ - Very secure, electric fence & guard</option>
-                    <option value="4.0">4.0 ★ - Good security</option>
-                    <option value="3.0">3.0 ★ - Average</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>💰 Deposit Refund Transparency</label>
-                  <select id="review-dep-rating" class="form-control">
-                    <option value="5.0">5.0 ★ - Prompt, 100% fair refund</option>
-                    <option value="4.0">4.0 ★ - Fair deductions</option>
-                    <option value="3.0">3.0 ★ - Moderate delays</option>
-                    <option value="2.0">2.0 ★ - Difficult refund</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Review Comment</label>
-                <textarea id="review-comment-text" class="form-control" rows="2" placeholder="Describe your experience with water, caretaker, noise levels, and security..."></textarea>
-              </div>
-
-              <button type="submit" class="btn-primary" style="font-size: 0.85rem; padding: 8px 16px;">
-                <i class="fas fa-check"></i> Post Community Review
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- Facebook-Style Live Public Comments & Discussion Section -->
-        <div style="border-top: 1px solid #e2e8f0; padding-top: 22px; margin-top: 22px;">
+        <!-- Public Comments, Tenant Critiques & Live Discussion Section -->
+        <div style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 18px;">
           <div id="detail-comments-container"></div>
         </div>
 
@@ -1455,5 +1394,16 @@
     </a>
   </nav>
 
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/data/locations.js"></script>
+  <script src="js/data/seedListings.js"></script>
+  <script src="js/comments.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/landlord.js"></script>
+  <script src="js/botSimulator.js"></script>
+  <script src="js/monetization.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
 </body>
 </html>

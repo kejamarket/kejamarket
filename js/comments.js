@@ -136,54 +136,54 @@ class CommentManager {
     const userInitials = session ? session.name.slice(0, 2).toUpperCase() : 'ME';
 
     containerEl.innerHTML = `
-      <!-- Comments Header -->
+      <!-- Comments & Critiques Header -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">
         <div style="font-weight: 800; font-size: 1.05rem; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-          <i class="fab fa-facebook-messenger" style="color: #0084ff; font-size: 1.2rem;"></i>
-          Live Community Comments & Q&A
+          <i class="fas fa-comments" style="color: #0084ff; font-size: 1.2rem;"></i>
+          Tenant Comments & Critiques
           <span style="background: #e0f2fe; color: #0369a1; font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 12px;" id="comment-count-pill-${propertyId}">
             ${commentsList.length}
           </span>
         </div>
         <div style="font-size: 0.78rem; color: #64748b;">
-          <i class="fas fa-circle" style="color: #22c55e; font-size: 0.55rem;"></i> Live Discussion
+          <i class="fas fa-circle" style="color: #22c55e; font-size: 0.55rem;"></i> Live Public Discussions
         </div>
       </div>
 
-      <!-- New Comment Input Box -->
-      <form id="form-add-comment-${propertyId}" onsubmit="window.commentManager.handleNewComment(event, '${propertyId}')" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+      <!-- New Comment / Critique Input Box -->
+      <form id="form-add-comment-${propertyId}" onsubmit="window.commentManager.handleNewComment(event, '${propertyId}')" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
         <div style="display: flex; gap: 10px; align-items: flex-start;">
-          <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #0084ff, #00b53f); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0;">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #0084ff, #00b53f); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0;">
             ${userInitials}
           </div>
           <div style="flex: 1;">
             ${!session ? `
-              <div style="margin-bottom: 6px;">
-                <input type="text" id="comment-author-name-${propertyId}" class="form-control" placeholder="Your Name (e.g. Brian Otieno)" style="font-size: 0.82rem; padding: 6px 10px; border-radius: 6px; width: 100%;" required>
+              <div style="margin-bottom: 8px;">
+                <input type="text" id="comment-author-name-${propertyId}" class="form-control" placeholder="Your Name (e.g. Brian Otieno)" style="font-size: 0.84rem; padding: 6px 12px; border-radius: 6px; width: 100%;" required>
               </div>
             ` : ''}
             <textarea 
               id="comment-text-${propertyId}" 
               class="form-control" 
-              placeholder="Ask a question or leave a public comment on this house (e.g. water, security, viewing time)..." 
+              placeholder="Leave a comment, question, or critique on this house (e.g. water pressure, security, caretaker, noise)..." 
               rows="2" 
-              style="font-size: 0.88rem; border-radius: 8px; resize: none; padding: 8px 12px; width: 100%; line-height: 1.4;"
+              style="font-size: 0.88rem; border-radius: 8px; resize: none; padding: 10px 12px; width: 100%; line-height: 1.45;"
               required
             ></textarea>
           </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 6px; border-top: 1px solid #f8fafc;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #f8fafc;">
           <!-- Quick Emojis -->
-          <div style="display: flex; gap: 6px;">
-            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '👍')" style="background:none;border:none;font-size:1.1rem;cursor:pointer;" title="Like">👍</button>
-            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '❤️')" style="background:none;border:none;font-size:1.1rem;cursor:pointer;" title="Love">❤️</button>
-            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '🔥')" style="background:none;border:none;font-size:1.1rem;cursor:pointer;" title="Fire">🔥</button>
-            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '🏠')" style="background:none;border:none;font-size:1.1rem;cursor:pointer;" title="House">🏠</button>
-            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '👏')" style="background:none;border:none;font-size:1.1rem;cursor:pointer;" title="Clap">👏</button>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '👍')" style="background:none;border:none;font-size:1.15rem;cursor:pointer;" title="Like">👍</button>
+            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '👎')" style="background:none;border:none;font-size:1.15rem;cursor:pointer;" title="Critique / Dislike">👎</button>
+            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '❤️')" style="background:none;border:none;font-size:1.15rem;cursor:pointer;" title="Love">❤️</button>
+            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '🔥')" style="background:none;border:none;font-size:1.15rem;cursor:pointer;" title="Fire">🔥</button>
+            <button type="button" onclick="window.commentManager.insertEmoji('${propertyId}', '🏠')" style="background:none;border:none;font-size:1.15rem;cursor:pointer;" title="House">🏠</button>
           </div>
 
-          <button type="submit" class="btn-primary" style="padding: 6px 18px; font-size: 0.85rem; font-weight: 700; background: #0084ff; border: none; border-radius: 20px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <button type="submit" class="btn-primary" style="padding: 7px 20px; font-size: 0.85rem; font-weight: 700; background: #0084ff; border: none; border-radius: 20px; display: flex; align-items: center; gap: 6px; cursor: pointer; color: white;">
             <i class="fas fa-paper-plane"></i> Post Comment
           </button>
         </div>
@@ -203,7 +203,7 @@ class CommentManager {
         <div style="text-align: center; padding: 24px; color: #64748b; background: #f8fafc; border-radius: 10px;">
           <div style="font-size: 1.5rem; margin-bottom: 6px;">💬</div>
           <div style="font-weight: 700; color: #1e293b; font-size: 0.9rem;">No comments yet</div>
-          <div style="font-size: 0.8rem; color: #64748b;">Be the first to ask a question or leave a comment on this house!</div>
+          <div style="font-size: 0.8rem; color: #64748b;">Be the first to ask a question or leave a critique on this house!</div>
         </div>
       `;
     }
@@ -212,7 +212,7 @@ class CommentManager {
   }
 
   renderSingleCommentHtml(propertyId, comment) {
-    const totalReactions = (comment.reactions.likes || 0) + (comment.reactions.loves || 0) + (comment.reactions.fire || 0) + (comment.reactions.clap || 0);
+    comment.reactions = comment.reactions || { likes: 0, dislikes: 0, loves: 0, fire: 0 };
     const timeAgoStr = this.formatTimeAgo(comment.createdAt);
 
     return `
@@ -227,23 +227,26 @@ class CommentManager {
           <div style="background: #f1f5f9; border-radius: 14px; padding: 10px 14px; display: inline-block; max-width: 100%; word-break: break-word;">
             <div style="font-weight: 700; font-size: 0.88rem; color: #0f172a; display: flex; align-items: center; gap: 6px;">
               ${comment.author}
-              ${comment.isLandlord ? '<span style="background: #e0e7ff; color: #4338ca; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; font-weight: 800;"><i class="fas fa-check-circle"></i> Landlord</span>' : ''}
+              ${comment.isLandlord ? '<span style="background: #e0e7ff; color: #4338ca; font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; font-weight: 800;"><i class="fas fa-check-circle"></i> Landlord / Host</span>' : ''}
             </div>
             <div style="font-size: 0.88rem; color: #1e293b; margin-top: 3px; line-height: 1.45;">
               ${comment.text}
             </div>
           </div>
 
-          <!-- Comment Action Row (Like, Love, Reply, Timestamp, Count) -->
+          <!-- Comment Action Row (Like, Dislike/Critique, Love, Reply, Timestamp) -->
           <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px; font-size: 0.76rem; color: #64748b; padding-left: 4px;">
             <button type="button" onclick="window.commentManager.reactToComment('${propertyId}', '${comment.id}', 'likes')" style="background:none; border:none; color:#475569; font-weight:700; cursor:pointer; padding:0; display:flex; align-items:center; gap:3px;">
-              👍 Like ${comment.reactions.likes > 0 ? `(${comment.reactions.likes})` : ''}
+              👍 ${comment.reactions.likes > 0 ? `${comment.reactions.likes}` : 'Like'}
+            </button>
+            <button type="button" onclick="window.commentManager.reactToComment('${propertyId}', '${comment.id}', 'dislikes')" style="background:none; border:none; color:#64748b; font-weight:700; cursor:pointer; padding:0; display:flex; align-items:center; gap:3px;">
+              👎 ${comment.reactions.dislikes > 0 ? `${comment.reactions.dislikes}` : ''}
             </button>
             <button type="button" onclick="window.commentManager.reactToComment('${propertyId}', '${comment.id}', 'loves')" style="background:none; border:none; color:#ef4444; font-weight:700; cursor:pointer; padding:0; display:flex; align-items:center; gap:3px;">
-              ❤️ Love ${comment.reactions.loves > 0 ? `(${comment.reactions.loves})` : ''}
+              ❤️ ${comment.reactions.loves > 0 ? `${comment.reactions.loves}` : ''}
             </button>
             <button type="button" onclick="window.commentManager.reactToComment('${propertyId}', '${comment.id}', 'fire')" style="background:none; border:none; color:#f97316; font-weight:700; cursor:pointer; padding:0; display:flex; align-items:center; gap:3px;">
-              🔥 ${comment.reactions.fire > 0 ? `(${comment.reactions.fire})` : ''}
+              🔥 ${comment.reactions.fire > 0 ? `${comment.reactions.fire}` : ''}
             </button>
             <button type="button" onclick="window.commentManager.toggleReplyBox('${comment.id}')" style="background:none; border:none; color:#0284c7; font-weight:700; cursor:pointer; padding:0;">
               Reply
@@ -330,7 +333,7 @@ class CommentManager {
       isLandlord: session && session.role === 'landlord',
       text,
       createdAt: new Date().toISOString(),
-      reactions: { likes: 0, loves: 0, fire: 0, clap: 0 },
+      reactions: { likes: 0, dislikes: 0, loves: 0, fire: 0 },
       userReactions: {},
       replies: []
     };

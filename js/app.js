@@ -854,13 +854,7 @@ class NairobiRentalsApp {
       if (gpsLockOverlay) gpsLockOverlay.style.display = 'flex';
     }
 
-    // Community Reviews
-    const reviewsList = document.getElementById('detail-reviews-list');
-    if (reviewsList) {
-      window.reviewManager.renderReviewsList(p.id, reviewsList);
-    }
-
-    // Facebook-Style Live Comments & Discussion
+    // Social Live Comments, Tenant Critiques & Discussion
     const commentsContainer = document.getElementById('detail-comments-container');
     if (commentsContainer && window.commentManager) {
       window.commentManager.renderCommentsSection(p.id, commentsContainer);
@@ -1102,38 +1096,6 @@ class NairobiRentalsApp {
     this.unlockDetailContact(p);
   }
 
-  submitReviewForm(e) {
-    e.preventDefault();
-    if (!this.selectedPropertyForDetail) return;
-
-    const name = document.getElementById('review-author-name').value.trim() || 'Verified Resident';
-    const water = document.getElementById('review-water-rating').value;
-    const sec = document.getElementById('review-sec-rating').value;
-    const dep = document.getElementById('review-dep-rating').value;
-    const text = document.getElementById('review-comment-text').value.trim();
-
-    if (!text) {
-      this.showToast('Please write a short review comment', 'info');
-      return;
-    }
-
-    window.reviewManager.addReview(this.selectedPropertyForDetail.id, {
-      author: name,
-      ratingWater: water,
-      ratingSecurity: sec,
-      ratingDeposit: dep,
-      ratingOverall: ((parseFloat(water) + parseFloat(sec) + parseFloat(dep)) / 3).toFixed(1),
-      text
-    });
-
-    const reviewsList = document.getElementById('detail-reviews-list');
-    if (reviewsList) {
-      window.reviewManager.renderReviewsList(this.selectedPropertyForDetail.id, reviewsList);
-    }
-
-    document.getElementById('review-comment-text').value = '';
-    this.showToast('Thank you! Community review published.', 'success');
-  }
 
   addProperty(newProperty) {
     this.properties.unshift(newProperty);
