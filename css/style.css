@@ -1181,48 +1181,164 @@ button, input, select, textarea {
   cursor: pointer;
 }
 
-/* Detail Modal Specifics */
+/* Detail Modal Jiji-Style Gallery Specifics */
 .detail-gallery-main {
-  height: 340px;
+  height: 380px;
   border-radius: var(--radius-md);
   overflow: hidden;
   position: relative;
   background: #0f172a;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+  user-select: none;
 }
 
 .detail-gallery-main img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  color: white;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.gallery-nav-btn:hover {
+  background: rgba(0, 181, 63, 0.9);
+  border-color: white;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.gallery-nav-btn.prev {
+  left: 12px;
+}
+
+.gallery-nav-btn.next {
+  right: 12px;
+}
+
+.gallery-counter-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gallery-fullscreen-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: var(--transition);
+}
+
+.gallery-fullscreen-btn:hover {
+  background: var(--primary-color);
+  color: white;
 }
 
 .detail-thumbs-strip {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  margin-bottom: 18px;
-  padding-bottom: 4px;
+  margin-bottom: 16px;
+  padding: 4px 2px 8px 2px;
+  scroll-behavior: smooth;
+}
+
+.detail-thumbs-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.detail-thumbs-strip::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
 .detail-thumb {
-  width: 70px;
-  height: 50px;
+  width: 76px;
+  height: 56px;
   border-radius: var(--radius-sm);
   overflow: hidden;
   cursor: pointer;
-  border: 2px solid transparent;
+  border: 2.5px solid transparent;
   flex-shrink: 0;
+  position: relative;
+  transition: all 0.2s ease;
+  background: #0f172a;
+}
+
+.detail-thumb:hover {
+  transform: translateY(-2px);
+  border-color: #94a3b8;
 }
 
 .detail-thumb.active {
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 181, 63, 0.3);
+  transform: scale(1.03);
 }
 
 .detail-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.detail-thumb-locked {
+  position: relative;
+}
+
+.thumb-lock-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 0.9rem;
+  background: rgba(15, 23, 42, 0.4);
 }
 
 .detail-specs-grid {

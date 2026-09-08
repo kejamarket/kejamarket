@@ -822,6 +822,35 @@ app.get('/api/stats', (req, res) => {
   });
 });
 
+// ─── OWNER / ADMIN DATABASE PORTAL ROUTES ──────────────────────────────────
+app.get('/api/admin/overview', (req, res) => {
+  try {
+    const stats = store.getOverviewStats();
+    res.json({ success: true, ...stats });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.get('/api/admin/users', (req, res) => {
+  try {
+    const users = store.getAllUsers();
+    res.json({ success: true, count: users.length, users });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.get('/api/admin/download-db', (req, res) => {
+  try {
+    const filePath = store.getDbFilePath();
+    res.download(filePath, `kejamarket_database_backup_${new Date().toISOString().slice(0, 10)}.json`);
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
 // ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

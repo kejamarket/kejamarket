@@ -711,8 +711,11 @@ class NairobiRentalsApp {
       : '<span style="color:#64748b;">Direct Listing</span>';
 
     // Gallery
+    this.currentPhotoIndex = 0;
     const mainImg = document.getElementById('detail-main-photo');
     if (mainImg) mainImg.src = p.media[0]?.url || '';
+    this.updatePhotoCounter();
+    this.setupGallerySwipe();
 
     const thumbsContainer = document.getElementById('detail-thumbs-container');
     if (thumbsContainer) {
@@ -720,13 +723,13 @@ class NairobiRentalsApp {
       thumbsContainer.innerHTML = p.media.map((m, idx) => {
         if (idx === 0) {
           // Always show first photo free
-          return `<div class="detail-thumb active" onclick="app.selectDetailPhoto('${m.url}', this)">
+          return `<div class="detail-thumb active" onclick="app.selectDetailPhoto('${m.url}', this, 0)">
             <img src="${m.url}" alt="${m.caption || 'Photo'}">
           </div>`;
         }
         if (isLoggedIn) {
           // Logged-in: show all photos normally
-          return `<div class="detail-thumb" onclick="app.selectDetailPhoto('${m.url}', this)">
+          return `<div class="detail-thumb" onclick="app.selectDetailPhoto('${m.url}', this, ${idx})">
             <img src="${m.url}" alt="${m.caption || 'Photo'}">
           </div>`;
         }
@@ -883,12 +886,142 @@ class NairobiRentalsApp {
     }
   }
 
-  selectDetailPhoto(url, thumbEl) {
+  selectDetailPhoto(url, thumbEl, index) {
+    if (typeof index === 'number') {
+      this.currentPhotoIndex = index;
+    } else if (this.selectedPropertyForDetail && this.selectedPropertyForDetail.media) {
+      const foundIdx = this.selectedPropertyForDetail.media.findIndex(m => m.url === url);
+      if (foundIdx !== -1) this.currentPhotoIndex = foundIdx;
+    }
     const mainImg = document.getElementById('detail-main-photo');
     if (mainImg) mainImg.src = url;
 
     document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
-    if (thumbEl) thumbEl.classList.add('active');
+    if (thumbEl) {
+      thumbEl.classList.add('active');
+      thumbEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+    this.updatePhotoCounter();
+  }
+
+  prevDetailPhoto(event) {
+    if (event) event.stopPropagation();
+    const p = this.selectedPropertyForDetail;
+    if (!p || !p.media || p.media.length <= 1) return;
+
+    const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
+    if (!isLoggedIn && p.media.length > 1) {
+      window.kejaAuth.requireTenantAuth(() => this.prevDetailPhoto());
+      return;
+    }
+
+    this.currentPhotoIndex = (this.currentPhotoIndex - 1 + p.media.length) % p.media.length;
+    this.showPhotoAtIndex(this.currentPhotoIndex);
+  }
+
+  nextDetailPhoto(event) {
+    if (event) event.stopPropagation();
+    const p = this.selectedPropertyForDetail;
+    if (!p || !p.media || p.media.length <= 1) return;
+
+    const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
+    if (!isLoggedIn && p.media.length > 1) {
+      window.kejaAuth.requireTenantAuth(() => this.nextDetailPhoto());
+      return;
+    }
+
+    this.currentPhotoIndex = (this.currentPhotoIndex + 1) % p.media.length;
+    this.showPhotoAtIndex(this.currentPhotoIndex);
+  }
+
+  showPhotoAtIndex(index) {
+    const p = this.selectedPropertyForDetail;
+    if (!p || !p.media || !p.media[index]) return;
+
+    this.currentPhotoIndex = index;
+    const photo = p.media[index];
+    const mainImg = document.getElementById('detail-main-photo');
+    if (mainImg) {
+      mainImg.style.opacity = '0.7';
+      mainImg.src = photo.url;
+      setTimeout(() => { if (mainImg) mainImg.style.opacity = '1'; }, 80);
+    }
+
+    // Update active thumb
+    const thumbs = document.querySelectorAll('#detail-thumbs-container .detail-thumb');
+    thumbs.forEach((t, idx) => {
+      if (idx === index) {
+        t.classList.add('active');
+        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        t.classList.remove('active');
+      }
+    });
+
+    this.updatePhotoCounter();
+
+    // Update Lightbox if open
+    const lightboxModal = document.getElementById('modal-lightbox');
+    if (lightboxModal && lightboxModal.classList.contains('open')) {
+      const lbImg = document.getElementById('lightbox-img');
+      const lbCounter = document.getElementById('lightbox-counter');
+      const lbCaption = document.getElementById('lightbox-caption');
+      if (lbImg) lbImg.src = photo.url;
+      if (lbCounter) lbCounter.textContent = `${index + 1} / ${p.media.length}`;
+      if (lbCaption) lbCaption.textContent = photo.caption || p.title;
+    }
+  }
+
+  updatePhotoCounter() {
+    const p = this.selectedPropertyForDetail;
+    if (!p || !p.media) return;
+    const idxEl = document.getElementById('detail-photo-index');
+    const totEl = document.getElementById('detail-photo-total');
+    if (idxEl) idxEl.textContent = (this.currentPhotoIndex || 0) + 1;
+    if (totEl) totEl.textContent = p.media.length;
+  }
+
+  openLightbox(event) {
+    if (event) event.stopPropagation();
+    const p = this.selectedPropertyForDetail;
+    if (!p || !p.media || p.media.length === 0) return;
+
+    const idx = this.currentPhotoIndex || 0;
+    const photo = p.media[idx] || p.media[0];
+    const lbImg = document.getElementById('lightbox-img');
+    const lbCounter = document.getElementById('lightbox-counter');
+    const lbCaption = document.getElementById('lightbox-caption');
+
+    if (lbImg) lbImg.src = photo.url;
+    if (lbCounter) lbCounter.textContent = `${idx + 1} / ${p.media.length}`;
+    if (lbCaption) lbCaption.textContent = photo.caption || p.title;
+
+    this.openModal('modal-lightbox');
+  }
+
+  setupGallerySwipe() {
+    const container = document.getElementById('detail-gallery-main-container');
+    if (!container || container.dataset.swipeBound) return;
+    container.dataset.swipeBound = 'true';
+
+    let startX = 0;
+    let endX = 0;
+
+    container.addEventListener('touchstart', (e) => {
+      startX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (e) => {
+      endX = e.changedTouches[0].screenX;
+      const diff = endX - startX;
+      if (Math.abs(diff) > 45) {
+        if (diff < 0) {
+          this.nextDetailPhoto();
+        } else {
+          this.prevDetailPhoto();
+        }
+      }
+    }, { passive: true });
   }
 
   // Called after login to unlock contact details in the open detail modal
@@ -933,7 +1066,7 @@ class NairobiRentalsApp {
     const thumbsContainer = document.getElementById('detail-thumbs-container');
     if (thumbsContainer) {
       thumbsContainer.innerHTML = p.media.map((m, idx) => `
-        <div class="detail-thumb ${idx === 0 ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this)">
+        <div class="detail-thumb ${idx === (this.currentPhotoIndex || 0) ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this, ${idx})">
           <img src="${m.url}" alt="${m.caption || 'Photo'}">
         </div>
       `).join('');
@@ -942,9 +1075,97 @@ class NairobiRentalsApp {
     const lockBanner = document.getElementById('detail-photos-lock-banner');
     if (lockBanner) lockBanner.remove();
 
+    this.updatePhotoCounter();
+
     // Also unlock contact section
     this.unlockDetailContact(p);
   }
+
+  // ─── OWNER / ADMIN DATABASE PORTAL ───────────────────────────────────────
+  async openAdminModal() {
+    this.openModal('modal-admin-db');
+    await this.refreshAdminData();
+  }
+
+  async refreshAdminData() {
+    const tbody = document.getElementById('admin-users-table-body');
+    if (tbody) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color: #64748b;"><i class="fas fa-spinner fa-spin"></i> Fetching live database records...</td></tr>`;
+    }
+
+    try {
+      const res = await fetch('/api/admin/overview');
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || 'Failed to fetch admin stats');
+
+      const uEl = document.getElementById('admin-stat-users');
+      const tEl = document.getElementById('admin-stat-tenants');
+      const lEl = document.getElementById('admin-stat-landlords');
+      const pEl = document.getElementById('admin-stat-properties');
+
+      if (uEl) uEl.textContent = (data.totalUsers || 0).toLocaleString();
+      if (tEl) tEl.textContent = (data.tenants || 0).toLocaleString();
+      if (lEl) lEl.textContent = (data.landlords || 0).toLocaleString();
+      if (pEl) pEl.textContent = (data.totalProperties || 0).toLocaleString();
+
+      const usersRes = await fetch('/api/admin/users');
+      const usersData = await usersRes.json();
+      this.adminUsersList = usersData.users || data.recentUsers || [];
+      this.renderAdminUsersTable(this.adminUsersList);
+    } catch (err) {
+      console.error('Error loading admin data:', err);
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color: #ef4444;"><i class="fas fa-exclamation-triangle"></i> Error loading database: ${err.message}</td></tr>`;
+      }
+    }
+  }
+
+  renderAdminUsersTable(users) {
+    const tbody = document.getElementById('admin-users-table-body');
+    if (!tbody) return;
+
+    if (!users || users.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color: #64748b;">No registered users found in data.json.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = users.map(u => {
+      const roleBadge = u.role === 'landlord'
+        ? '<span style="background:#e0e7ff; color:#4338ca; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">🏠 LANDLORD</span>'
+        : '<span style="background:#d1fae5; color:#065f46; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">🔍 TENANT</span>';
+
+      const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Earlier';
+
+      return `
+        <tr style="border-bottom: 1px solid #f1f5f9;">
+          <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">${u.name || 'User'}</td>
+          <td style="padding: 10px 14px; font-family: monospace; font-weight: 700; color: #0284c7;">
+            <a href="tel:${u.phone}" style="color: inherit; text-decoration: none;">${u.phone}</a>
+          </td>
+          <td style="padding: 10px 14px;">${roleBadge}</td>
+          <td style="padding: 10px 14px; color: #64748b;">${u.email || '<span style="color:#cbd5e1;">None</span>'}</td>
+          <td style="padding: 10px 14px; color: #64748b; font-size: 0.8rem;">${dateStr}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  filterAdminUsers() {
+    const q = document.getElementById('admin-user-search')?.value.trim().toLowerCase() || '';
+    if (!this.adminUsersList) return;
+    if (!q) {
+      this.renderAdminUsersTable(this.adminUsersList);
+      return;
+    }
+    const filtered = this.adminUsersList.filter(u => 
+      (u.name && u.name.toLowerCase().includes(q)) ||
+      (u.phone && u.phone.toLowerCase().includes(q)) ||
+      (u.email && u.email.toLowerCase().includes(q)) ||
+      (u.role && u.role.toLowerCase().includes(q))
+    );
+    this.renderAdminUsersTable(filtered);
+  }
+
 
   submitReviewForm(e) {
     e.preventDefault();

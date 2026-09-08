@@ -309,8 +309,13 @@
           <a href="https://wa.me/254180511492" target="_blank" style="color: #25d366; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 6px;">
             <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> Contact Us: 0180511492
           </a>
+        <div style="font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 8px;">
+          <span>&copy; <script>document.write(new Date().getFullYear())</script> KejaMarket. All rights reserved.</span>
+          <span>·</span>
+          <a href="#" onclick="app.openAdminModal(); return false;" style="color: #64748b; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+            <i class="fas fa-database" style="color: #00b53f;"></i> Owner DB Portal
+          </a>
         </div>
-        <div style="font-size: 0.85rem;">&copy; <script>document.write(new Date().getFullYear())</script> Keja. All rights reserved.</div>
       </footer>
     </section>
   </main>
@@ -482,10 +487,21 @@
             <i class="fas fa-tag"></i> Mark as Taken / Occupied
           </button>
         </div>
-
-        <!-- Main Photo Gallery -->
-        <div class="detail-gallery-main">
-          <img id="detail-main-photo" src="" alt="Property main view">
+        <!-- Main Photo Gallery (Jiji-Style Interactive Carousel) -->
+        <div class="detail-gallery-main" id="detail-gallery-main-container">
+          <img id="detail-main-photo" src="" alt="Property main view" onclick="app.openLightbox()">
+          <button type="button" class="gallery-nav-btn prev" onclick="app.prevDetailPhoto(event)" title="Previous photo" aria-label="Previous photo">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button type="button" class="gallery-nav-btn next" onclick="app.nextDetailPhoto(event)" title="Next photo" aria-label="Next photo">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="gallery-counter-badge" id="detail-photo-counter">
+            <i class="fas fa-camera"></i> <span id="detail-photo-index">1</span> / <span id="detail-photo-total">1</span>
+          </div>
+          <button type="button" class="gallery-fullscreen-btn" onclick="app.openLightbox(event)" title="View Fullscreen Photo" aria-label="Fullscreen">
+            <i class="fas fa-expand"></i>
+          </button>
           <span class="card-watermark"><i class="fas fa-home"></i> NAIROBI RENTALS LIVE</span>
         </div>
         <div class="detail-thumbs-strip" id="detail-thumbs-container"></div>
@@ -1387,6 +1403,114 @@
           </button>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: Fullscreen Image Lightbox (Jiji Style)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-lightbox" style="background: rgba(0, 0, 0, 0.95); z-index: 3000;">
+    <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+      <button type="button" class="modal-close-btn" onclick="app.closeModal('modal-lightbox')" style="position: absolute; top: 20px; right: 20px; color: #ffffff; font-size: 2rem; background: rgba(255,255,255,0.15); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; z-index: 20;">&times;</button>
+      
+      <div style="position: absolute; top: 20px; left: 20px; color: #ffffff; font-size: 0.95rem; font-weight: 700; background: rgba(0,0,0,0.6); padding: 6px 14px; border-radius: 20px; z-index: 20;">
+        <i class="fas fa-camera"></i> <span id="lightbox-counter">1 / 1</span>
+      </div>
+
+      <img id="lightbox-img" src="" alt="Property fullscreen" style="max-width: 95vw; max-height: 82vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); user-select: none;">
+
+      <button type="button" class="gallery-nav-btn prev" onclick="app.prevDetailPhoto(event)" style="left: 20px; width: 50px; height: 50px; font-size: 1.4rem;">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button type="button" class="gallery-nav-btn next" onclick="app.nextDetailPhoto(event)" style="right: 20px; width: 50px; height: 50px; font-size: 1.4rem;">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+
+      <div id="lightbox-caption" style="color: #cbd5e1; font-size: 0.9rem; margin-top: 14px; text-align: center; max-width: 600px;"></div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: Owner Database Portal (Website Owner Access)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-admin-db">
+    <div class="modal-dialog" style="max-width: 900px; max-height: 92vh;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0f172a, #1e293b); color: white;">
+        <h3 style="color: white; display: flex; align-items: center; gap: 8px;">
+          <i class="fas fa-database" style="color: #4ade80;"></i> KejaMarket Database & Users Portal
+        </h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-admin-db')" style="color: #94a3b8;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 20px; background: #f8fafc;">
+        
+        <!-- Storage Info Card -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="font-weight: 800; font-size: 1.05rem; color: #0f172a;">
+                📁 Database Storage Location: <span style="color: #00b53f; font-family: monospace;">db/data.json</span>
+              </div>
+              <div style="font-size: 0.83rem; color: #64748b; margin-top: 4px;">
+                All tenant & landlord accounts, properties, transactions, reviews, and chats are automatically saved and persisted in real time.
+              </div>
+            </div>
+            <a href="/api/admin/download-db" target="_blank" class="btn-primary" style="background: #00b53f; font-size: 0.85rem; padding: 10px 16px; text-decoration: none;">
+              <i class="fas fa-download"></i> Download Full Database Backup (.json)
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Metrics Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px;">
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
+            <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Total Users</div>
+            <div id="admin-stat-users" style="font-size: 1.6rem; font-weight: 800; color: #0f172a; margin-top: 4px;">-</div>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #d1fae5; border-radius: 10px; padding: 14px; text-align: center;">
+            <div style="font-size: 0.75rem; color: #065f46; font-weight: 700; text-transform: uppercase;">Tenants</div>
+            <div id="admin-stat-tenants" style="font-size: 1.6rem; font-weight: 800; color: #059669; margin-top: 4px;">-</div>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #e0e7ff; border-radius: 10px; padding: 14px; text-align: center;">
+            <div style="font-size: 0.75rem; color: #4338ca; font-weight: 700; text-transform: uppercase;">Landlords</div>
+            <div id="admin-stat-landlords" style="font-size: 1.6rem; font-weight: 800; color: #4f46e5; margin-top: 4px;">-</div>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #fed7aa; border-radius: 10px; padding: 14px; text-align: center;">
+            <div style="font-size: 0.75rem; color: #9a3412; font-weight: 700; text-transform: uppercase;">Properties</div>
+            <div id="admin-stat-properties" style="font-size: 1.6rem; font-weight: 800; color: #ea580c; margin-top: 4px;">-</div>
+          </div>
+        </div>
+
+        <!-- Users Table -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+          <div style="padding: 14px 18px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="font-weight: 700; color: #0f172a; font-size: 0.95rem;">
+              👥 Registered Landlords & Tenants (Live List)
+            </div>
+            <input type="text" id="admin-user-search" placeholder="Search by name, phone or email..." onkeyup="app.filterAdminUsers()" style="padding: 6px 12px; font-size: 0.82rem; border: 1px solid #cbd5e1; border-radius: 6px; width: 240px;">
+          </div>
+          <div style="max-height: 380px; overflow-y: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.83rem;">
+              <thead>
+                <tr style="background: #f1f5f9; color: #475569; border-bottom: 1px solid #e2e8f0;">
+                  <th style="padding: 10px 14px;">Name</th>
+                  <th style="padding: 10px 14px;">Phone Number</th>
+                  <th style="padding: 10px 14px;">Role</th>
+                  <th style="padding: 10px 14px;">Email</th>
+                  <th style="padding: 10px 14px;">Registered On</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-table-body">
+                <tr><td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">Loading user database...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="app.closeModal('modal-admin-db')">Close</button>
+        <button type="button" class="btn-primary" onclick="app.refreshAdminData()"><i class="fas fa-sync-alt"></i> Refresh Data</button>
       </div>
     </div>
   </div>

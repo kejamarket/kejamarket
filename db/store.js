@@ -471,6 +471,43 @@ class Store {
     this.save();
     return reply;
   }
+
+  // ─── ADMIN & OWNER METHODS ────────────────────────────────────────────────
+  getAllUsers() {
+    return (this.data.users || []).map(u => this.sanitizeUser(u));
+  }
+
+  getOverviewStats() {
+    const users = this.data.users || [];
+    const properties = this.data.properties || [];
+    const transactions = this.data.transactions || [];
+    const messages = this.data.messages || [];
+
+    const totalUsers = users.length;
+    const tenants = users.filter(u => u.role === 'tenant').length;
+    const landlords = users.filter(u => u.role === 'landlord').length;
+    const totalProperties = properties.length;
+    const availableProperties = properties.filter(p => !p.isTaken && p.status !== 'taken').length;
+    const takenProperties = properties.filter(p => p.isTaken || p.status === 'taken').length;
+
+    return {
+      totalUsers,
+      tenants,
+      landlords,
+      totalProperties,
+      availableProperties,
+      takenProperties,
+      totalTransactions: transactions.length,
+      totalMessages: messages.length,
+      dbFilePath: DB_FILE,
+      recentUsers: users.slice(-50).reverse().map(u => this.sanitizeUser(u))
+    };
+  }
+
+  getDbFilePath() {
+    return DB_FILE;
+  }
 }
 
 module.exports = new Store();
+
