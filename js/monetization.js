@@ -67,7 +67,7 @@ class MonetizationEngine {
       case 'top_ad_30':
         return 'Top pinned ranking for 30 days across all Nairobi categories with 5x tenant inquiries.';
       case 'verified_badge':
-        return 'Earn the blue "VERIFIED LANDLORD" badge for 1 year with identity & title deed validation.';
+        return 'Get a blue "VERIFIED LANDLORD" badge on all your listings for 1 year. Tenants trust verified landlords more and inquire faster.';
       case 'agency_starter':
         return 'Post up to 5 properties with priority ranking and direct WhatsApp leads.';
       case 'agency_pro':

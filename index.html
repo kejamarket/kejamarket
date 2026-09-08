@@ -325,112 +325,129 @@
         <button class="modal-close-btn" onclick="app.closeModal('modal-post-ad')">&times;</button>
       </div>
       <div class="modal-body">
+        <p style="font-size: 0.85rem; color: #475569; margin-bottom: 14px;">Fill in just the basics — your listing goes live in under 2 minutes. You can always edit later.</p>
         <form id="post-ad-form">
-          <div class="form-group">
-            <label>Property Title *</label>
-            <input type="text" id="post-title" class="form-control" placeholder="e.g. Spacious 2 Bedroom Master Ensuite in Ruaka" required>
+
+          <!-- STEP 1: Core details -->
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Your Name / Agency *</label>
+              <input type="text" id="post-landlord-name" class="form-control" placeholder="e.g. Mwangi James" required>
+            </div>
+            <div class="form-group">
+              <label>WhatsApp / Call Number *</label>
+              <input type="tel" id="post-phone" class="form-control" placeholder="e.g. 0712345678" required>
+            </div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
-              <label>House Category *</label>
+              <label>House Type *</label>
               <select id="post-category" class="form-control" required></select>
             </div>
             <div class="form-group">
-              <label>Nairobi Suburb / Estate *</label>
+              <label>Estate / Area *</label>
               <select id="post-suburb" class="form-control" required></select>
             </div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
-              <label>Pricing Rate / Type *</label>
+              <label>Rent (KES) *</label>
+              <input type="number" id="post-rent" class="form-control" placeholder="e.g. 15000" required>
+            </div>
+            <div class="form-group">
+              <label>Rental Type *</label>
               <select id="post-price-type" class="form-control">
-                <option value="monthly">Monthly Long-Term Rental</option>
-                <option value="night">Daily BnB / Airbnb Short-Stay Rate</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Rent / Daily Rate (KES) *</label>
-              <input type="number" id="post-rent" class="form-control" placeholder="e.g. 25000 / mo or 3500 / night" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Security Deposit (KES) (Optional for BnBs)</label>
-            <input type="number" id="post-deposit" class="form-control" placeholder="e.g. 25000 (Leave 0 for BnB)">
-          </div>
-
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label>Water Supply Type *</label>
-              <select id="post-water" class="form-control">
-                <option value="Borehole Water">Borehole Water (24/7)</option>
-                <option value="City Council Water">Nairobi City Council Water</option>
-                <option value="Rationed Water">Rationed Water (Scheduled)</option>
-                <option value="Borehole + Council Backup">Borehole + Council Backup</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Electricity Meter *</label>
-              <select id="post-electricity" class="form-control">
-                <option value="Prepaid (Tokens)">Prepaid Tokens (KPLC Direct)</option>
-                <option value="Postpaid (Monthly Bill)">Postpaid Monthly Bill</option>
+                <option value="monthly">Monthly</option>
+                <option value="night">Per Night (BnB / Airbnb)</option>
               </select>
             </div>
           </div>
 
-          <!-- GPS Location Map Pin Drop -->
           <div class="form-group">
-            <label>Exact GPS Map Pin Placement (Drag pin to property location)</label>
-            <div id="post-pin-map" style="height: 180px; border-radius: 8px; margin-bottom: 6px;"></div>
-            <div id="post-gps-coords" style="font-size: 0.78rem; color: #64748b; font-family: monospace;">GPS: -1.28638, 36.81722</div>
+            <label>Ad Title *</label>
+            <input type="text" id="post-title" class="form-control" placeholder="e.g. 2 Bedroom with Parking in Ruaka" required>
           </div>
 
-          <!-- Photos Upload with Watermarking -->
+          <!-- STEP 2: Photos -->
           <div class="form-group">
-            <label>Property Photos (Up to 16 High-Res Photos)</label>
+            <label>Photos <span style="font-weight:400; color:#64748b;">(optional — adds up to 16 photos)</span></label>
             <div class="photo-dropzone" id="photo-dropzone">
-              <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #00b53f; margin-bottom: 6px;"></i>
-              <div style="font-weight: 700; font-size: 0.9rem;">Click or drag & drop property photos here</div>
-              <div style="font-size: 0.78rem; color: #64748b;">Automatic platform watermark protection applied</div>
+              <i class="fas fa-camera" style="font-size: 1.8rem; color: #00b53f; margin-bottom: 6px;"></i>
+              <div style="font-weight: 700; font-size: 0.9rem;">Tap to add photos</div>
+              <div style="font-size: 0.78rem; color: #64748b;">Photos make tenants 5x more likely to contact you</div>
             </div>
             <input type="file" id="post-photos-input" multiple accept="image/*" style="display: none;">
             <div class="photo-preview-grid" id="post-photos-preview"></div>
           </div>
 
-          <!-- Amenities Selection -->
-          <div class="form-group">
-            <label>Key Amenities</label>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 0.82rem;">
-              <label><input type="checkbox" id="amenity-balcony" checked> Balcony</label>
-              <label><input type="checkbox" id="amenity-parking" checked> Parking</label>
-              <label><input type="checkbox" id="amenity-fence" checked> Electric Fence</label>
-              <label><input type="checkbox" id="amenity-cctv" checked> CCTV Security</label>
-              <label><input type="checkbox" id="amenity-internet" checked> Fast WiFi</label>
-              <label><input type="checkbox" id="amenity-tiles" checked> Ceramic Tiles</label>
-              <label><input type="checkbox" id="amenity-ensuite" checked> Master Ensuite</label>
-            </div>
-          </div>
+          <!-- STEP 3: Optional extras -->
+          <details style="margin-bottom: 14px;">
+            <summary style="cursor:pointer; font-size:0.88rem; font-weight:700; color:#00b53f; padding: 6px 0;">+ Add more details (optional)</summary>
+            <div style="padding-top: 12px;">
 
-          <div class="form-group">
-            <label>Description & Special Instructions</label>
-            <textarea id="post-description" class="form-control" rows="3" placeholder="Describe the house, road access, security details, garbage collection..."></textarea>
-          </div>
+              <div class="form-group">
+                <label>Security Deposit (KES)</label>
+                <input type="number" id="post-deposit" class="form-control" placeholder="Leave blank if none">
+              </div>
 
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label>Landlord / Agency Name *</label>
-              <input type="text" id="post-landlord-name" class="form-control" placeholder="e.g. Mwangi Management" required>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label>Water Supply</label>
+                  <select id="post-water" class="form-control">
+                    <option value="Borehole Water">Borehole (24/7)</option>
+                    <option value="City Council Water">City Council</option>
+                    <option value="Rationed Water">Rationed</option>
+                    <option value="Borehole + Council Backup">Borehole + Backup</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Electricity</label>
+                  <select id="post-electricity" class="form-control">
+                    <option value="Prepaid (Tokens)">Prepaid Tokens</option>
+                    <option value="Postpaid (Monthly Bill)">Postpaid Bill</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>What's available? <span style="font-weight:400; color:#64748b;">(tick all that apply)</span></label>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 0.82rem;">
+                  <label><input type="checkbox" id="amenity-balcony"> Balcony</label>
+                  <label><input type="checkbox" id="amenity-parking"> Parking</label>
+                  <label><input type="checkbox" id="amenity-fence"> Electric Fence</label>
+                  <label><input type="checkbox" id="amenity-cctv"> CCTV</label>
+                  <label><input type="checkbox" id="amenity-internet"> WiFi</label>
+                  <label><input type="checkbox" id="amenity-tiles"> Tiles</label>
+                  <label><input type="checkbox" id="amenity-ensuite"> Master Ensuite</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Extra Details</label>
+                <textarea id="post-description" class="form-control" rows="3" placeholder="Anything else tenants should know — road access, agent rules, move-in date..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
+                  <label style="margin:0;">Pin Your Location on Map <span style="font-weight:400; color:#64748b;">(drag to exact spot)</span></label>
+                  <button type="button" id="btn-use-live-location"
+                    style="display:flex; align-items:center; gap:6px; background:#e0f2fe; color:#0284c7; border:1.5px solid #7dd3fc; border-radius:6px; padding:5px 12px; font-size:0.82rem; font-weight:700; cursor:pointer; white-space:nowrap;"
+                    onclick="landlordManager.useLiveLocation()">
+                    <i class="fas fa-location-arrow"></i> Use My Live Location
+                  </button>
+                </div>
+                <div id="post-pin-map" style="height: 180px; border-radius: 8px; margin-bottom: 6px;"></div>
+                <div id="post-gps-coords" style="font-size: 0.78rem; color: #64748b; font-family: monospace;">GPS: -1.28638, 36.81722</div>
+              </div>
+
             </div>
-            <div class="form-group">
-              <label>Contact Phone (WhatsApp / Calls) *</label>
-              <input type="tel" id="post-phone" class="form-control" placeholder="e.g. +254712345678" required>
-            </div>
-          </div>
+          </details>
 
           <div class="modal-footer">
             <button type="button" class="btn-secondary" onclick="app.closeModal('modal-post-ad')">Cancel</button>
-            <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Publish Free Ad</button>
+            <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Publish Free Ad Now</button>
           </div>
         </form>
       </div>
@@ -523,12 +540,24 @@
         </div>
 
         <!-- Interactive Property Location Map (GPS Pin) -->
-        <div style="margin-bottom: 22px;">
+        <div id="detail-map-section" style="margin-bottom: 22px; position: relative;">
           <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
             <span><i class="fas fa-map-marked-alt" style="color: #00b53f;"></i> Exact GPS Location on Map</span>
             <span id="detail-gps-badge" style="font-size: 0.78rem; font-weight: 600; color: #64748b; font-family: monospace;">-</span>
           </h4>
-          <div id="detail-property-map" style="height: 220px; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08);"></div>
+          <div style="position:relative;">
+            <div id="detail-property-map" style="height: 220px; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08);"></div>
+            <!-- Lock overlay — hidden when logged in -->
+            <div id="detail-map-lock-overlay" onclick="kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id))"
+              style="display:none; position:absolute; inset:0; border-radius:10px; background:rgba(15,23,42,0.72); backdrop-filter:blur(3px); cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:#fff; text-align:center;">
+              <i class="fas fa-map-marked-alt" style="font-size:2rem; color:#4ade80;"></i>
+              <div style="font-weight:800; font-size:0.95rem;">GPS Location Hidden</div>
+              <div style="font-size:0.8rem; color:#94a3b8; max-width:220px; line-height:1.4;">Sign in free to see the exact map pin and get directions</div>
+              <div style="margin-top:4px; background:#00b53f; color:#fff; padding:7px 20px; border-radius:6px; font-weight:700; font-size:0.85rem;">
+                <i class="fas fa-unlock-alt"></i> Sign In to Unlock
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Landlord Contacts Box -->
@@ -714,33 +743,42 @@
   <div class="modal-backdrop" id="modal-verification">
     <div class="modal-dialog" style="max-width: 550px;">
       <div class="modal-header">
-        <h3><i class="fas fa-shield-alt" style="color: #1976d2;"></i> Landlord Identity Verification</h3>
+        <h3><i class="fas fa-user-check" style="color: #1976d2;"></i> Get Your Verified Badge</h3>
         <button class="modal-close-btn" onclick="app.closeModal('modal-verification')">&times;</button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 14px;">
-          Verified landlords receive a blue <strong>"VERIFIED LANDLORD"</strong> badge on all listings, boosting tenant inquiries by 300%.
-        </p>
+        <div style="background: #eff6ff; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: flex; gap: 12px; align-items: flex-start;">
+          <i class="fas fa-shield-alt" style="color: #1976d2; font-size: 1.4rem; margin-top: 2px;"></i>
+          <div>
+            <div style="font-weight: 700; font-size: 0.9rem; color: #1e40af;">Tenants trust verified landlords</div>
+            <div style="font-size: 0.82rem; color: #475569; margin-top: 2px;">A blue <strong>VERIFIED</strong> badge appears on all your listings. Takes about 30 seconds to submit.</div>
+          </div>
+        </div>
         <form id="form-verification-badge">
           <div class="form-group">
-            <label>Full Legal Name / Business Name *</label>
-            <input type="text" class="form-control" placeholder="e.g. Mwangi James" required>
+            <label>Your Name or Business Name *</label>
+            <input type="text" id="verify-full-name" class="form-control" placeholder="e.g. James Mwangi" required>
           </div>
           <div class="form-group">
-            <label>National ID Number or Business Reg No *</label>
-            <input type="text" class="form-control" placeholder="e.g. 29384819" required>
+            <label>National ID Number *</label>
+            <input type="text" id="verify-id-number" class="form-control" placeholder="e.g. 29384819" required>
           </div>
           <div class="form-group">
-            <label>Upload Proof (National ID, Title Deed or Utility Bill)</label>
-            <input type="file" class="form-control" accept="image/*,.pdf" required>
+            <label>Your Safaricom Number *</label>
+            <input type="tel" id="verify-phone" class="form-control" placeholder="e.g. 0712345678" required>
           </div>
           <div class="form-group">
-            <label>Phone Number for OTP Verification</label>
-            <input type="tel" class="form-control" placeholder="+2547..." required>
+            <label>How many rental properties do you manage? <span style="font-weight:400; color:#64748b;">(optional)</span></label>
+            <select id="verify-property-count" class="form-control">
+              <option value="1">1 property</option>
+              <option value="2-5">2 – 5 properties</option>
+              <option value="6-20">6 – 20 properties</option>
+              <option value="20+">More than 20</option>
+            </select>
           </div>
           <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent;">
             <button type="button" class="btn-secondary" onclick="app.closeModal('modal-verification')">Cancel</button>
-            <button type="submit" class="btn-primary" style="background: #1976d2;"><i class="fas fa-check"></i> Submit Verification</button>
+            <button type="submit" class="btn-primary" style="background: #1976d2;"><i class="fas fa-check-circle"></i> Get My Verified Badge</button>
           </div>
         </form>
       </div>

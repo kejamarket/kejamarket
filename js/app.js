@@ -702,11 +702,39 @@ class NairobiRentalsApp {
 
     const thumbsContainer = document.getElementById('detail-thumbs-container');
     if (thumbsContainer) {
-      thumbsContainer.innerHTML = p.media.map((m, idx) => `
-        <div class="detail-thumb ${idx === 0 ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this)">
-          <img src="${m.url}" alt="${m.caption || 'Photo'}">
-        </div>
-      `).join('');
+      const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
+      thumbsContainer.innerHTML = p.media.map((m, idx) => {
+        if (idx === 0) {
+          // Always show first photo free
+          return `<div class="detail-thumb active" onclick="app.selectDetailPhoto('${m.url}', this)">
+            <img src="${m.url}" alt="${m.caption || 'Photo'}">
+          </div>`;
+        }
+        if (isLoggedIn) {
+          // Logged-in: show all photos normally
+          return `<div class="detail-thumb" onclick="app.selectDetailPhoto('${m.url}', this)">
+            <img src="${m.url}" alt="${m.caption || 'Photo'}">
+          </div>`;
+        }
+        // Locked: blurred thumb with lock icon
+        return `<div class="detail-thumb detail-thumb-locked" onclick="kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}'))" title="Sign in to view all photos">
+          <img src="${m.url}" alt="Locked photo" style="filter:blur(6px) brightness(0.55); pointer-events:none;">
+          <span class="thumb-lock-icon"><i class="fas fa-lock"></i></span>
+        </div>`;
+      }).join('');
+
+      // If not logged in and there are extra photos, show a sign-in nudge strip
+      if (!isLoggedIn && p.media.length > 1) {
+        const extraCount = p.media.length - 1;
+        thumbsContainer.insertAdjacentHTML('afterend', `
+          <div id="detail-photos-lock-banner" onclick="kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}'))"
+            style="display:flex;align-items:center;gap:10px;background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:8px;padding:10px 14px;margin-top:8px;cursor:pointer;font-size:0.85rem;color:#475569;">
+            <i class="fas fa-images" style="font-size:1.3rem;color:#00b53f;"></i>
+            <span><strong>+${extraCount} more photo${extraCount > 1 ? 's' : ''}</strong> — <span style="color:#00b53f;font-weight:700;">Sign in free</span> to view all</span>
+            <i class="fas fa-chevron-right" style="margin-left:auto;color:#94a3b8;"></i>
+          </div>
+        `);
+      }
     }
 
     // Amenities List
@@ -739,11 +767,63 @@ class NairobiRentalsApp {
     // Landlord & Contacts
     document.getElementById('detail-landlord-name').textContent = p.landlord.name;
     document.getElementById('detail-landlord-since').textContent = `Member since ${p.landlord.memberSince}`;
-    document.getElementById('detail-landlord-phone-display').textContent = p.landlord.phone;
-    document.getElementById('detail-btn-call').href = `tel:${p.landlord.phone}`;
 
-    // Google Maps Link
-    document.getElementById('detail-btn-directions').href = `https://www.google.com/maps/dir/?api=1&destination=${p.latitude},${p.longitude}`;
+    const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
+    const phoneDisplay = document.getElementById('detail-landlord-phone-display');
+    const callBtn = document.getElementById('detail-btn-call');
+    const chatBtn = document.getElementById('detail-btn-inbox-chat');
+
+    if (isLoggedIn) {
+      // Full access
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord.phone}`;
+      if (callBtn) {
+        callBtn.href = `tel:${p.landlord.phone}`;
+        callBtn.removeAttribute('onclick');
+        callBtn.style.opacity = '1';
+        callBtn.style.pointerEvents = 'auto';
+      }
+      if (chatBtn) {
+        chatBtn.onclick = () => app.openChatForCurrentProperty();
+        chatBtn.style.opacity = '1';
+        chatBtn.style.pointerEvents = 'auto';
+        chatBtn.innerHTML = '<i class="fas fa-comment-dots"></i> Message Landlord';
+      }
+    } else {
+      // Masked — show partial phone and lock UI
+      const masked = p.landlord.phone.replace(/(\+?2547|07)(\d{2})(\d{4})(\d{2})/, (_, pre, a, b, c) => `${pre}${a}••••${c}`);
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;letter-spacing:1px;">${masked}</span>`;
+      if (callBtn) {
+        callBtn.href = '#';
+        callBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}')); return false;`);
+        callBtn.style.opacity = '0.6';
+      }
+      if (chatBtn) {
+        chatBtn.onclick = (e) => { e.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(p.id)); };
+        chatBtn.style.opacity = '0.6';
+        chatBtn.innerHTML = '<i class="fas fa-lock"></i> Sign In to Message';
+      }
+    }
+
+    // Google Maps Link + Map visibility — gated behind login
+    const directionsBtn = document.getElementById('detail-btn-directions');
+    const mapSection = document.getElementById('detail-map-section');
+    const gpsLockOverlay = document.getElementById('detail-map-lock-overlay');
+
+    if (isLoggedIn) {
+      if (directionsBtn) {
+        directionsBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${p.latitude},${p.longitude}`;
+        directionsBtn.style.opacity = '1';
+        directionsBtn.style.pointerEvents = 'auto';
+      }
+      if (gpsLockOverlay) gpsLockOverlay.style.display = 'none';
+    } else {
+      if (directionsBtn) {
+        directionsBtn.href = '#';
+        directionsBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}')); return false;`);
+        directionsBtn.style.opacity = '0.5';
+      }
+      if (gpsLockOverlay) gpsLockOverlay.style.display = 'flex';
+    }
 
     // Community Reviews
     const reviewsList = document.getElementById('detail-reviews-list');
@@ -795,6 +875,59 @@ class NairobiRentalsApp {
 
     document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
     if (thumbEl) thumbEl.classList.add('active');
+  }
+
+  // Called after login to unlock contact details in the open detail modal
+  unlockDetailContact(p) {
+    if (!p) p = this.selectedPropertyForDetail;
+    if (!p) return;
+
+    const phoneDisplay = document.getElementById('detail-landlord-phone-display');
+    const callBtn = document.getElementById('detail-btn-call');
+    const chatBtn = document.getElementById('detail-btn-inbox-chat');
+    const directionsBtn = document.getElementById('detail-btn-directions');
+    const gpsLockOverlay = document.getElementById('detail-map-lock-overlay');
+
+    if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord.phone}`;
+    if (callBtn) {
+      callBtn.href = `tel:${p.landlord.phone}`;
+      callBtn.removeAttribute('onclick');
+      callBtn.style.opacity = '1';
+      callBtn.style.pointerEvents = 'auto';
+    }
+    if (chatBtn) {
+      chatBtn.onclick = () => app.openChatForCurrentProperty();
+      chatBtn.style.opacity = '1';
+      chatBtn.style.pointerEvents = 'auto';
+      chatBtn.innerHTML = '<i class="fas fa-comment-dots"></i> Message Landlord';
+    }
+    if (directionsBtn) {
+      directionsBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${p.latitude},${p.longitude}`;
+      directionsBtn.removeAttribute('onclick');
+      directionsBtn.style.opacity = '1';
+      directionsBtn.style.pointerEvents = 'auto';
+    }
+    if (gpsLockOverlay) gpsLockOverlay.style.display = 'none';
+  }
+    const p = propertyId
+      ? this.properties.find(x => x.id === propertyId)
+      : this.selectedPropertyForDetail;
+    if (!p) return;
+
+    const thumbsContainer = document.getElementById('detail-thumbs-container');
+    if (thumbsContainer) {
+      thumbsContainer.innerHTML = p.media.map((m, idx) => `
+        <div class="detail-thumb ${idx === 0 ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this)">
+          <img src="${m.url}" alt="${m.caption || 'Photo'}">
+        </div>
+      `).join('');
+    }
+    // Remove the lock banner if present
+    const lockBanner = document.getElementById('detail-photos-lock-banner');
+    if (lockBanner) lockBanner.remove();
+
+    // Also unlock contact section
+    this.unlockDetailContact(p);
   }
 
   submitReviewForm(e) {
@@ -878,6 +1011,13 @@ class NairobiRentalsApp {
   ───────────────────────────────────────── */
   openChatForProperty(propertyId, event) {
     if (event) event.stopPropagation();
+
+    // Require login before opening chat
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.openChatForProperty(propertyId));
+      return;
+    }
+
     const prop = this.properties.find(p => p.id === propertyId);
     if (!prop) return;
 
@@ -917,6 +1057,12 @@ class NairobiRentalsApp {
   }
 
   openChatForCurrentProperty() {
+    // Require login before opening chat
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.openChatForCurrentProperty());
+      return;
+    }
+
     if (this.selectedPropertyForDetail) {
       this.closeModal('modal-property-detail');
       this.openChatForProperty(this.selectedPropertyForDetail.id);

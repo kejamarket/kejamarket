@@ -157,6 +157,63 @@ class LandlordManager {
     }
   }
 
+  useLiveLocation() {
+    const btn = document.getElementById('btn-use-live-location');
+
+    if (!navigator.geolocation) {
+      if (window.app) window.app.showToast('GPS is not supported on this device.', 'error');
+      return;
+    }
+
+    // Show loading state on button
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting location...';
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        // Move map pin to live location
+        this.updatePostMapLocation(lat, lng);
+
+        // Reset button to success state
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-check-circle"></i> Location Set';
+          btn.style.background = '#dcfce7';
+          btn.style.color = '#166534';
+          btn.style.borderColor = '#86efac';
+          // Reset back after 3s
+          setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-location-arrow"></i> Use My Live Location';
+            btn.style.background = '#e0f2fe';
+            btn.style.color = '#0284c7';
+            btn.style.borderColor = '#7dd3fc';
+          }, 3000);
+        }
+
+        if (window.app) window.app.showToast('📍 Live location set on map. You can still drag the pin to adjust.', 'success');
+      },
+      (error) => {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-location-arrow"></i> Use My Live Location';
+        }
+
+        const messages = {
+          1: 'Location access denied. Please allow location in your browser settings.',
+          2: 'Could not detect your location. Try again or pin manually.',
+          3: 'Location request timed out. Try again or pin manually.'
+        };
+        if (window.app) window.app.showToast(messages[error.code] || 'Location unavailable.', 'error');
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  }
+
   setupFormSubmit() {
     const form = document.getElementById('post-ad-form');
     if (!form) return;
@@ -293,9 +350,10 @@ class LandlordManager {
 
     vForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const fullName = document.getElementById('verify-full-name')?.value || '';
       const idNumber = document.getElementById('verify-id-number')?.value || '';
+      const phone = document.getElementById('verify-phone')?.value || '';
       const propertyCount = document.getElementById('verify-property-count')?.value || '1';
-      const estate = document.getElementById('verify-estate')?.value || '';
 
       try {
         const headers = { 'Content-Type': 'application/json' };
@@ -305,7 +363,7 @@ class LandlordManager {
         await fetch('/api/auth/verify-landlord', {
           method: 'POST',
           headers,
-          body: JSON.stringify({ idNumber, propertyCount, estate })
+          body: JSON.stringify({ fullName, idNumber, phone, propertyCount })
         });
       } catch (err) {
         console.warn('Verification submit offline sync');
@@ -313,7 +371,7 @@ class LandlordManager {
 
       if (window.app) {
         window.app.closeModal('modal-verification');
-        window.app.showToast('ID Verification submitted! "Verified Landlord" badge activated.', 'success');
+        window.app.showToast('✅ Verified! Your "Verified Landlord" badge is now active on all listings.', 'success');
       }
       vForm.reset();
     });

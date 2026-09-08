@@ -414,10 +414,30 @@ const kejaAuth = (() => {
     signOut,
     togglePwd,
     requireLandlordForAction,
+    requireTenantAuth,
     getSession,
     getToken,
     getAuthHeaders
   };
+
+  /* ─────────────────────────────────────────
+     TENANT AUTH GUARD
+     Call with a callback — runs it if logged in,
+     otherwise nudges user to sign in as tenant.
+  ───────────────────────────────────────── */
+  function requireTenantAuth(callback) {
+    const session = getSession();
+    if (session) {
+      if (typeof callback === 'function') callback(session);
+      return true;
+    }
+    if (window.app) window.app.showToast('Sign in or create a free account to view contact details and photos.', 'info');
+    switchTab('signin');
+    setRole('tenant', 'signin');
+    openAuthModal();
+    return false;
+  }
+
 })();
 
 window.kejaAuth = kejaAuth;
