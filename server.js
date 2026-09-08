@@ -822,7 +822,7 @@ app.get('/api/stats', (req, res) => {
   });
 });
 
-// ─── START SERVER ────────────────────────────────────────────────────────────
+// ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`====================================================`);
@@ -830,4 +830,23 @@ app.listen(PORT, () => {
   console.log(`🔗 Web Application: http://localhost:${PORT}`);
   console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
   console.log(`====================================================`);
+
+  // Automatic self-ping to keep Render web service awake 24/7 (prevents spin-down screen)
+  const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.co.ke';
+  const PING_INTERVAL = 9 * 60 * 1000; // Ping every 9 minutes (Render free tier sleeps after 15 mins)
+
+  setInterval(() => {
+    try {
+      const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
+      httpModule.get(`${PUBLIC_URL}/api/health`, (res) => {
+        console.log(`[Keep-Alive Ping] Heartbeat to ${PUBLIC_URL}/api/health (Status: ${res.statusCode})`);
+      }).on('error', (err) => {
+        console.warn(`[Keep-Alive Ping] Warning: ${err.message}`);
+      });
+    } catch (err) {
+      console.warn(`[Keep-Alive Ping] Failed: ${err.message}`);
+    }
+  }, PING_INTERVAL);
+
+  console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
 });
