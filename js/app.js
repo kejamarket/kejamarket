@@ -287,6 +287,11 @@ class NairobiRentalsApp {
   }
 
   setViewMode(mode) {
+    if ((mode === 'map' || mode === 'split') && (!window.kejaAuth || !window.kejaAuth.getSession())) {
+      window.kejaAuth.requireTenantAuth(() => this.setViewMode(mode));
+      return;
+    }
+
     this.currentViewMode = mode;
 
     // Toggle button active states
@@ -691,14 +696,19 @@ class NairobiRentalsApp {
     document.getElementById('detail-modal-deposit').textContent = isBnb 
       ? `Short-Stay / Daily Booking (No Deposit Required)`
       : `Deposit: KSh ${p.depositKes ? p.depositKes.toLocaleString() : p.rentKes.toLocaleString()}`;
-    document.getElementById('detail-modal-location').innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.exactLocation || p.estateSuburb + ', ' + p.county}`;
-    document.getElementById('detail-modal-desc').textContent = p.description;
-
-    // GPS badge
+    // Location & GPS Gating
+    const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
+    const locationEl = document.getElementById('detail-modal-location');
     const gpsBadge = document.getElementById('detail-gps-badge');
-    if (gpsBadge) {
-      gpsBadge.textContent = `GPS: ${p.latitude.toFixed(5)}, ${p.longitude.toFixed(5)}`;
+
+    if (isLoggedIn) {
+      if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
+      if (gpsBadge) gpsBadge.textContent = `GPS: ${p.latitude.toFixed(5)}, ${p.longitude.toFixed(5)}`;
+    } else {
+      if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.estateSuburb}, ${p.county} <span style="font-size:0.75rem; color:#64748b; margin-left:6px;"><i class="fas fa-lock"></i> Exact landmark & pin protected</span>`;
+      if (gpsBadge) gpsBadge.textContent = 'GPS: Protected 🔒';
     }
+    document.getElementById('detail-modal-desc').textContent = p.description;
 
     // Specs
     document.getElementById('spec-category').textContent = p.category;
@@ -719,7 +729,6 @@ class NairobiRentalsApp {
 
     const thumbsContainer = document.getElementById('detail-thumbs-container');
     if (thumbsContainer) {
-      const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
       thumbsContainer.innerHTML = p.media.map((m, idx) => {
         if (idx === 0) {
           // Always show first photo free
@@ -782,22 +791,23 @@ class NairobiRentalsApp {
     }
 
     // Landlord & Contacts
-    document.getElementById('detail-landlord-name').textContent = p.landlord.name;
-    document.getElementById('detail-landlord-since').textContent = `Member since ${p.landlord.memberSince}`;
-
-    const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
     const phoneDisplay = document.getElementById('detail-landlord-phone-display');
+    const landlordName = document.getElementById('detail-landlord-name');
+    const landlordSince = document.getElementById('detail-landlord-since');
     const callBtn = document.getElementById('detail-btn-call');
     const chatBtn = document.getElementById('detail-btn-inbox-chat');
 
     if (isLoggedIn) {
       // Full access
+      if (landlordName) landlordName.textContent = p.landlord.name;
+      if (landlordSince) landlordSince.textContent = `Member since ${p.landlord.memberSince}`;
       if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord.phone}`;
       if (callBtn) {
         callBtn.href = `tel:${p.landlord.phone}`;
         callBtn.removeAttribute('onclick');
         callBtn.style.opacity = '1';
         callBtn.style.pointerEvents = 'auto';
+        callBtn.innerHTML = '<i class="fas fa-phone-alt"></i> Call Landlord';
       }
       if (chatBtn) {
         chatBtn.onclick = () => app.openChatForCurrentProperty();
@@ -806,17 +816,19 @@ class NairobiRentalsApp {
         chatBtn.innerHTML = '<i class="fas fa-comment-dots"></i> Message Landlord';
       }
     } else {
-      // Masked — show partial phone and lock UI
-      const masked = p.landlord.phone.replace(/(\+?2547|07)(\d{2})(\d{4})(\d{2})/, (_, pre, a, b, c) => `${pre}${a}••••${c}`);
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;letter-spacing:1px;">${masked}</span>`;
+      // Protected
+      if (landlordName) landlordName.innerHTML = `<i class="fas fa-user-shield" style="color:#00b53f;margin-right:6px;"></i><span style="color:#64748b;">Landlord Details Protected</span>`;
+      if (landlordSince) landlordSince.textContent = 'Sign in or create free account to view contact details';
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;letter-spacing:1px;">+254 7•• ••• ••• (Sign in to view)</span>`;
       if (callBtn) {
         callBtn.href = '#';
         callBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}')); return false;`);
-        callBtn.style.opacity = '0.6';
+        callBtn.style.opacity = '0.85';
+        callBtn.innerHTML = '<i class="fas fa-lock"></i> Sign In to Call';
       }
       if (chatBtn) {
         chatBtn.onclick = (e) => { e.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(p.id)); };
-        chatBtn.style.opacity = '0.6';
+        chatBtn.style.opacity = '0.85';
         chatBtn.innerHTML = '<i class="fas fa-lock"></i> Sign In to Message';
       }
     }
@@ -1029,18 +1041,27 @@ class NairobiRentalsApp {
     if (!p) p = this.selectedPropertyForDetail;
     if (!p) return;
 
+    const landlordName = document.getElementById('detail-landlord-name');
+    const landlordSince = document.getElementById('detail-landlord-since');
+    const locationEl = document.getElementById('detail-modal-location');
+    const gpsBadge = document.getElementById('detail-gps-badge');
     const phoneDisplay = document.getElementById('detail-landlord-phone-display');
     const callBtn = document.getElementById('detail-btn-call');
     const chatBtn = document.getElementById('detail-btn-inbox-chat');
     const directionsBtn = document.getElementById('detail-btn-directions');
     const gpsLockOverlay = document.getElementById('detail-map-lock-overlay');
 
+    if (landlordName) landlordName.textContent = p.landlord.name;
+    if (landlordSince) landlordSince.textContent = `Member since ${p.landlord.memberSince}`;
+    if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
+    if (gpsBadge) gpsBadge.textContent = `GPS: ${p.latitude.toFixed(5)}, ${p.longitude.toFixed(5)}`;
     if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord.phone}`;
     if (callBtn) {
       callBtn.href = `tel:${p.landlord.phone}`;
       callBtn.removeAttribute('onclick');
       callBtn.style.opacity = '1';
       callBtn.style.pointerEvents = 'auto';
+      callBtn.innerHTML = '<i class="fas fa-phone-alt"></i> Call Landlord';
     }
     if (chatBtn) {
       chatBtn.onclick = () => app.openChatForCurrentProperty();
