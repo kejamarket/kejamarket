@@ -83,14 +83,14 @@ class Store {
       console.warn('Could not auto-import seedListings.js, using default:', e.message);
     }
 
-    // Seed default demo admin & landlord accounts
+    // Seed production admin & verified landlord accounts
     const hashedPassword = bcrypt.hashSync('keja2026', 10);
     this.data.users = [
       {
         id: 'usr-admin-01',
-        name: 'Keja Admin',
+        name: 'KejaMarket Admin',
         phone: '0700000000',
-        email: 'admin@keja.co.ke',
+        email: 'admin@kejamarket.co.ke',
         password: hashedPassword,
         role: 'landlord',
         isVerified: true,

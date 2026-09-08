@@ -211,8 +211,25 @@ class BotAggregatorSimulator {
           photoCount: 6
         };
 
-        window.app.addProperty(newListing);
-        this.log(`✨ [AUTO-TAGGED] Mapped "${item.title.substring(0, 25)}..." -> [${matchedCategory}] in [${matchedSuburb.name}, ${matchedSuburb.county}]`, 'success');
+        // Persist to backend database via REST API
+        fetch('/api/properties', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newListing)
+        })
+        .then(res => res.json())
+        .then(resData => {
+          const savedProp = resData.property || newListing;
+          if (window.app && typeof window.app.addProperty === 'function') {
+            window.app.addProperty(savedProp);
+          }
+          this.log(`✨ [AUTO-TAGGED & SAVED] Mapped "${item.title.substring(0, 25)}..." -> [${matchedCategory}] in [${matchedSuburb.name}]`, 'success');
+        })
+        .catch(err => {
+          if (window.app) window.app.addProperty(newListing);
+          this.log(`✨ [AUTO-TAGGED] Mapped "${item.title.substring(0, 25)}..." -> [${matchedCategory}] in [${matchedSuburb.name}]`, 'success');
+        });
+
         this.log(`💧 [UTILITY DETECTED] Water: "${item.waterType}" | Power: "${item.electricityType}"`, 'info');
         this.log(`🏷️ [WATERMARK] Stamped platform watermark logo onto listing media.`, 'info');
       }

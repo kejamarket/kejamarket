@@ -2,9 +2,9 @@
   "users": [
     {
       "id": "usr-admin-01",
-      "name": "Keja Admin",
+      "name": "KejaMarket Admin",
       "phone": "0700000000",
-      "email": "admin@keja.co.ke",
+      "email": "admin@kejamarket.co.ke",
       "password": "$2b$10$F8kvQ8d27.DEGIyL.7omHOCRIDr/Rej5TMJ5jyWIUXoNjTS0PH3ji",
       "role": "landlord",
       "isVerified": true,
@@ -33,18 +33,6 @@
       "role": "tenant",
       "isVerified": true,
       "createdAt": "2026-09-07T22:08:35.440Z"
-    },
-    {
-      "id": "usr-1788818958823-416",
-      "name": "Test Landlord",
-      "phone": "254712684324",
-      "email": "test1788818958506@kejamarket.co.ke",
-      "password": "$2b$10$UeB5wbBZl8QgjZe04QOVmOpNpDnmK3MGoHKSJB.mo86cYlDfVSO/W",
-      "role": "landlord",
-      "isVerified": false,
-      "numProperties": "2-5",
-      "area": "Kilimani",
-      "createdAt": "2026-09-07T22:09:18.823Z"
     }
   ],
   "properties": [
@@ -1779,58 +1767,10 @@
       }
     ]
   },
-  "transactions": [
-    {
-      "id": "tx-1788819161685",
-      "checkoutRequestId": "ws_CO_SANDBOX_1788819161685_820",
-      "merchantRequestId": "MR_SIM_1788819161685",
-      "phone": "254712345678",
-      "amount": 499,
-      "itemType": "top_ad_7",
-      "itemName": "Top Ad 7 Days",
-      "targetPropertyId": "prop-nrb-007",
-      "userId": null,
-      "status": "SUCCESS",
-      "mpesaReceipt": "QKJ130052",
-      "resultDesc": "The service request is processed successfully.",
-      "createdAt": "2026-09-07T22:12:41.685Z",
-      "updatedAt": "2026-09-07T22:12:46.194Z"
-    },
-    {
-      "id": "tx-1788818958921",
-      "checkoutRequestId": "ws_CO_SANDBOX_1788818958921_3036",
-      "merchantRequestId": "MR_SIM_1788818958921",
-      "phone": "254712684324",
-      "amount": 100,
-      "itemType": "top_ad_7",
-      "itemName": "Top Ad (7 Days)",
-      "targetPropertyId": "prop-nrb-007",
-      "userId": "usr-1788818958823-416",
-      "status": "SUCCESS",
-      "mpesaReceipt": "QKJ952907",
-      "resultDesc": "The service request is processed successfully.",
-      "createdAt": "2026-09-07T22:09:18.921Z",
-      "updatedAt": "2026-09-07T22:09:23.429Z"
-    }
-  ],
+  "transactions": [],
   "alerts": [],
   "leads": [],
-  "messages": [
-    {
-      "id": "msg-1788820490406-837",
-      "propertyId": "prop-nrb-001",
-      "propertyTitle": "Executive 2 Bedroom in Ruaka",
-      "estateSuburb": "Ruaka",
-      "senderId": "guest-1788820490406",
-      "senderName": "Test Tenant",
-      "senderPhone": "",
-      "recipientId": "usr-landlord-01",
-      "recipientName": "James Mwangi",
-      "text": "Hi James, is this house available for viewing this Saturday?",
-      "isRead": false,
-      "createdAt": "2026-09-07T22:34:50.406Z"
-    }
-  ],
+  "messages": [],
   "comments": {
     "prop-nrb-001": [
       {

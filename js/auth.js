@@ -166,15 +166,9 @@ const kejaAuth = (() => {
       }
     } catch (err) {
       console.error('Sign up error:', err);
-      // Fallback local session if server is offline
-      const fallbackUser = { id: 'usr-local-' + Date.now(), name, phone, email, role, isVerified: role === 'tenant' };
-      saveSession(fallbackUser, 'mock_token_' + Date.now());
-      updateHeaderUI(fallbackUser);
-      showLoggedInPanel(fallbackUser);
       if (window.app) {
-        window.app.showToast(`🎉 Welcome to KejaMarket, ${name}! (Offline mode)`, 'success');
+        window.app.showToast('❌ Unable to reach server. Please check your connection and try again.', 'error');
       }
-      handleAuthSuccess(fallbackUser);
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;

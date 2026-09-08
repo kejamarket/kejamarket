@@ -14,6 +14,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const AfricasTalking = require('africastalking');
 const store = require('./db/store');
 
 const fetch = (...args) => import('node-fetch').then(({ default: f }) => f(...args));
@@ -33,12 +34,58 @@ const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET || '';
 const PAYBILL = process.env.MPESA_PAYBILL || '303030';
 const ACCOUNT_NUMBER = process.env.MPESA_ACCOUNT || '2057103992';
 const PASSKEY = process.env.MPESA_PASSKEY || '';
-const CALLBACK_URL = process.env.MPESA_CALLBACK_URL || 'https://keja.co.ke/api/mpesa/callback';
+const CALLBACK_URL = process.env.MPESA_CALLBACK_URL || 'https://kejamarket.co.ke/api/mpesa/callback';
 
 const MPESA_ENV = process.env.MPESA_ENV === 'live' ? 'live' : 'sandbox';
 const MPESA_BASE = MPESA_ENV === 'live'
   ? 'https://api.safaricom.co.ke'
   : 'https://sandbox.safaricom.co.ke';
+
+// ─── AFRICA'S TALKING SMS SERVICE ───────────────────────────────────────────
+const AT_USERNAME = process.env.AT_USERNAME || 'sandbox';
+const AT_API_KEY = process.env.AT_API_KEY || '';
+const AT_SENDER_ID = process.env.AT_SENDER_ID || '';
+
+let atSMS = null;
+if (AT_API_KEY && !AT_API_KEY.includes('YOUR_')) {
+  try {
+    const at = AfricasTalking({
+      apiKey: AT_API_KEY,
+      username: AT_USERNAME
+    });
+    atSMS = at.SMS;
+    console.log(`📱 Africa's Talking SMS engine initialized (Account: ${AT_USERNAME})`);
+  } catch (err) {
+    console.warn(`⚠️ Africa's Talking initialization note: ${err.message}`);
+  }
+}
+
+// Global real SMS dispatcher function
+async function sendRealSMS(toPhone, message) {
+  try {
+    const formatted = formatPhone(toPhone);
+    const recipient = '+' + formatted;
+
+    if (atSMS) {
+      const opts = {
+        to: [recipient],
+        message: message
+      };
+      if (AT_SENDER_ID && AT_SENDER_ID.trim() && !AT_SENDER_ID.includes('YOUR_')) {
+        opts.from = AT_SENDER_ID.trim();
+      }
+      const response = await atSMS.send(opts);
+      console.log(`📤 [REAL SMS SENT] To: ${recipient} | Body: "${message}"`);
+      return { success: true, response };
+    } else {
+      console.log(`📡 [SMS DISPATCH] To: ${recipient} | Body: "${message}"`);
+      return { success: true, localOnly: true };
+    }
+  } catch (smsErr) {
+    console.error(`❌ [SMS SEND FAILED] To: ${toPhone}:`, smsErr.message);
+    return { success: false, error: smsErr.message };
+  }
+}
 
 // Check if Daraja credentials are realistically configured
 const hasDarajaCredentials = () => {
@@ -159,6 +206,12 @@ app.post('/api/auth/register', async (req, res) => {
     });
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
+
+    // Send real welcome SMS notification
+    sendRealSMS(
+      cleanPhone,
+      `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your ${user.role === 'landlord' ? 'Landlord' : 'Tenant'} account is active. Explore verified listings across Nairobi.`
+    );
 
     res.status(201).json({
       success: true,
@@ -322,6 +375,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
       // 💡 REALISTIC SANDBOX TEST MODE (When Daraja keys are in setup mode)
       const simulatedCheckoutId = 'ws_CO_SANDBOX_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
       
+      // Create pending transaction record
       const tx = store.createTransaction({
         checkoutRequestId: simulatedCheckoutId,
         merchantRequestId: 'MR_SIM_' + Date.now(),
@@ -334,22 +388,11 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
         status: 'PENDING'
       });
 
-      // Auto-simulate confirmation after 4.5s for seamless interactive experience in sandbox
-      setTimeout(() => {
-        const receipt = 'QKJ' + Math.floor(100000 + Math.random() * 900000);
-        store.updateTransaction(simulatedCheckoutId, {
-          status: 'SUCCESS',
-          mpesaReceipt: receipt,
-          resultDesc: 'The service request is processed successfully.'
-        });
-        console.log(`[SIMULATED DARAJA] Payment confirmed for ${simulatedCheckoutId} -> Receipt ${receipt}`);
-      }, 4500);
-
       return res.json({
         success: true,
         isSandboxSimulation: true,
         checkoutRequestId: simulatedCheckoutId,
-        message: `M-Pesa STK prompt sent to +${formattedPhone}. Enter your PIN on your phone to complete.`
+        message: `M-Pesa prompt initiated for +${formattedPhone}. Please enter your M-Pesa PIN on your phone.`
       });
     }
   } catch (err) {
@@ -428,21 +471,33 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, (req, res) => {
       return res.status(400).json({ success: false, message: 'Checkout Request ID is required.' });
     }
 
+    if (!receiptCode || receiptCode.trim().length < 6) {
+      return res.status(400).json({ success: false, message: 'Please provide a valid M-Pesa receipt code (e.g. QKJ7XXXXXX).' });
+    }
+
     const tx = store.getTransactionByCheckoutId(checkoutRequestId);
     if (!tx) {
       return res.status(404).json({ success: false, message: 'Transaction not found.' });
     }
 
-    const receipt = receiptCode ? receiptCode.trim().toUpperCase() : ('QKJ' + Math.floor(100000 + Math.random() * 900000));
+    const receipt = receiptCode.trim().toUpperCase();
     
     // Mark as SUCCESS and auto-apply upgrades
     const updatedTx = store.updateTransaction(checkoutRequestId, {
       status: 'SUCCESS',
       mpesaReceipt: receipt,
-      resultDesc: 'Payment confirmed by user / Daraja verification.'
+      resultDesc: 'Payment confirmed via M-Pesa receipt verification.'
     });
 
     console.log(`✅ [CONFIRMED] Transaction ${checkoutRequestId} confirmed -> Receipt: ${receipt}`);
+
+    // Send real SMS payment confirmation
+    if (updatedTx.phone) {
+      sendRealSMS(
+        updatedTx.phone,
+        `[KejaMarket] Payment Confirmed! Receipt: ${receipt}. Your ${updatedTx.itemName || 'listing boost'} is active on kejamarket.co.ke. Asante!`
+      );
+    }
 
     res.json({
       success: true,
@@ -475,16 +530,25 @@ app.post('/api/mpesa/callback', (req, res) => {
       // Payment Successful
       const items = stkCallback.CallbackMetadata?.Item || [];
       const amount = items.find(i => i.Name === 'Amount')?.Value;
-      const receipt = items.find(i => i.Name === 'MpesaReceiptNumber')?.Value || ('QKJ' + Math.floor(Math.random() * 900000));
+      const receipt = items.find(i => i.Name === 'MpesaReceiptNumber')?.Value || ('MPESA' + Date.now());
       const phone = items.find(i => i.Name === 'PhoneNumber')?.Value;
 
       console.log(`✅ [DARAJA CONFIRMED] KSh ${amount} | Receipt: ${receipt} | Phone: ${phone}`);
 
-      store.updateTransaction(checkoutRequestId, {
+      const updatedTx = store.updateTransaction(checkoutRequestId, {
         status: 'SUCCESS',
         mpesaReceipt: receipt,
         resultDesc: resultDesc
       });
+
+      // Send real SMS payment receipt
+      const targetPhone = phone || (updatedTx ? updatedTx.phone : null);
+      if (targetPhone) {
+        sendRealSMS(
+          targetPhone,
+          `[KejaMarket] Payment Confirmed! Receipt: ${receipt}. KSh ${amount || ''} received for ${updatedTx?.itemName || 'Listing Boost'}. View at kejamarket.co.ke`
+        );
+      }
     } else {
       console.log(`❌ [DARAJA FAILED] ${resultDesc} (ResultCode: ${resultCode})`);
       store.updateTransaction(checkoutRequestId, {
@@ -525,7 +589,7 @@ app.get('/api/properties/:id', (req, res) => {
   res.json({ success: true, property });
 });
 
-// POST /api/properties (Landlords create new listings)
+// POST /api/properties (Landlords & Ingestion engine create new listings)
 app.post('/api/properties', optionalAuth, (req, res) => {
   try {
     const data = req.body;
@@ -731,7 +795,7 @@ app.get('/api/messages', optionalAuth, (req, res) => {
   }
 });
 
-// POST /api/messages (Send in-app inquiry to landlord)
+// POST /api/messages (Send in-app inquiry to landlord & dispatch real SMS)
 app.post('/api/messages', optionalAuth, (req, res) => {
   try {
     const { propertyId, propertyTitle, estateSuburb, recipientId, recipientName, text, senderName, senderPhone } = req.body;
@@ -740,6 +804,9 @@ app.post('/api/messages', optionalAuth, (req, res) => {
       return res.status(400).json({ success: false, message: 'Message text is required.' });
     }
 
+    const senderUserPhone = req.user ? req.user.phone : (senderPhone || '');
+    const senderUserName = req.user ? req.user.name : (senderName || 'Interested Tenant');
+
     const message = store.saveMessage({
       propertyId,
       propertyTitle,
@@ -747,14 +814,27 @@ app.post('/api/messages', optionalAuth, (req, res) => {
       recipientId,
       recipientName,
       senderId: req.user ? req.user.id : ('guest-' + Date.now()),
-      senderName: req.user ? req.user.name : (senderName || 'Interested Tenant'),
-      senderPhone: req.user ? req.user.phone : (senderPhone || ''),
-      text
+      senderName: senderUserName,
+      senderPhone: senderUserPhone,
+      text: text.trim()
     });
+
+    // Notify landlord via real SMS
+    const prop = propertyId ? store.getPropertyById(propertyId) : null;
+    const landlordUser = recipientId ? store.getUserById(recipientId) : null;
+    const landlordPhone = (landlordUser && landlordUser.phone) || (prop && prop.landlord && prop.landlord.phone);
+
+    if (landlordPhone) {
+      const houseName = propertyTitle || (prop ? prop.title : 'your listing');
+      sendRealSMS(
+        landlordPhone,
+        `[KejaMarket Inquiry] ${senderUserName} (${senderUserPhone || 'In-App'}) sent inquiry for "${houseName}": "${text.trim().substring(0, 90)}". Reply on kejamarket.co.ke`
+      );
+    }
 
     res.status(201).json({
       success: true,
-      message: 'Message sent directly to landlord inbox!',
+      message: 'Message sent directly to landlord inbox and SMS notification dispatched!',
       data: message
     });
   } catch (err) {
@@ -771,8 +851,16 @@ app.post('/api/alerts/whatsapp', (req, res) => {
     if (!phone) {
       return res.status(400).json({ success: false, message: 'Phone number is required.' });
     }
-    const alert = store.saveAlert({ phone, category, estate, budgetMin, budgetMax });
-    res.json({ success: true, message: 'WhatsApp alert registered.', alert });
+    const cleanPhone = formatPhone(phone);
+    const alert = store.saveAlert({ phone: cleanPhone, category, estate, budgetMin, budgetMax });
+
+    // Send confirmation SMS
+    sendRealSMS(
+      cleanPhone,
+      `[KejaMarket Alerts] You are now subscribed for ${estate || 'Nairobi'} rental alerts (${category || 'All categories'}). Instant notifications will be sent to your phone!`
+    );
+
+    res.json({ success: true, message: 'Rental alert registered. SMS confirmation sent.', alert });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
   }
@@ -782,8 +870,18 @@ app.post('/api/alerts/whatsapp', (req, res) => {
 app.post('/api/leads/movers', (req, res) => {
   try {
     const { name, phone, from, to } = req.body;
-    const lead = store.saveLead('movers', { name, phone, from, to });
-    res.json({ success: true, message: 'Movers quote request received.', lead });
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Phone number is required.' });
+    }
+    const cleanPhone = formatPhone(phone);
+    const lead = store.saveLead('movers', { name, phone: cleanPhone, from, to });
+
+    sendRealSMS(
+      cleanPhone,
+      `[KejaMarket Movers] Habari ${name || 'Neighbor'}, your moving quote request from ${from || 'your area'} to ${to || 'destination'} is received! Our Nairobi team will call you shortly.`
+    );
+
+    res.json({ success: true, message: 'Movers quote request received and dispatched.', lead });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
   }
@@ -793,10 +891,34 @@ app.post('/api/leads/movers', (req, res) => {
 app.post('/api/leads/fibre', (req, res) => {
   try {
     const { phone, estate, isp } = req.body;
-    const lead = store.saveLead('fibre', { phone, estate, isp });
-    res.json({ success: true, message: 'Fibre WiFi installation request received.', lead });
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Phone number is required.' });
+    }
+    const cleanPhone = formatPhone(phone);
+    const lead = store.saveLead('fibre', { phone: cleanPhone, estate, isp });
+
+    sendRealSMS(
+      cleanPhone,
+      `[KejaMarket Fibre] WiFi connection request for ${isp || 'Home Fibre'} in ${estate || 'Nairobi'} received! An installation engineer will contact you.`
+    );
+
+    res.json({ success: true, message: 'Fibre WiFi installation request received and dispatched.', lead });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/sms/send (Direct SMS dispatch API)
+app.post('/api/sms/send', optionalAuth, async (req, res) => {
+  try {
+    const { to, message } = req.body;
+    if (!to || !message) {
+      return res.status(400).json({ success: false, message: 'Recipient phone (to) and message are required.' });
+    }
+    const result = await sendRealSMS(to, message);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
