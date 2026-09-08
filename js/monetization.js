@@ -139,10 +139,8 @@ class MonetizationEngine {
         }
       } catch (err) {
         console.error('STK Push error:', err);
-        // If server is unreachable, use local simulation
-        this.currentCheckoutRequestId = 'ws_local_' + Date.now();
-        this.showStkScreen(rawPhone);
-        setTimeout(() => this.completePaymentSuccess('QKJ' + Math.floor(100000 + Math.random() * 900000)), 4500);
+        // Server is unreachable - show error, do NOT simulate success
+        if (window.app) window.app.showToast('❌ Could not reach payment server. Please check your connection and try again.', 'error');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -206,68 +204,113 @@ class MonetizationEngine {
 
       if (this.pollAttempts >= this.maxPollAttempts) {
         clearInterval(this.pollingInterval);
-        // Automatically check via verify-receipt
-        this.checkStatusImmediate();
+        // Polling timed out - ask user to manually confirm or try again
+        this.showPinTimeout();
       }
     }, 2000);
   }
 
-  // Immediate confirmation button when client enters PIN
+  // Show a timeout message when polling expires without a response
+  showPinTimeout() {
+    const statusText = document.getElementById('stk-status-text');
+    if (statusText) {
+      statusText.innerHTML = '⏰ No response received. If you entered your PIN, click <strong>"I Have Entered PIN"</strong> below to confirm, or click Cancel to try again.';
+    }
+    if (window.app) window.app.showToast('⏰ Timed out waiting for M-Pesa. Click "I Have Entered PIN" if you already paid.', 'info');
+  }
+
+  // Called when user clicks "I Have Entered PIN – Confirm Now"
   async checkStatusImmediate() {
     const checkoutRequestId = this.currentCheckoutRequestId;
     if (!checkoutRequestId) {
-      this.completePaymentSuccess('QKJ' + Math.floor(100000 + Math.random() * 900000));
+      if (window.app) window.app.showToast('❌ No active payment session. Please start again.', 'error');
+      this.resetCheckout();
       return;
     }
 
     const btn = document.getElementById('btn-instant-confirm');
     if (btn) {
       btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirming Payment...';
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking Payment...';
     }
 
     try {
-      // Check verify-receipt endpoint
-      const res = await fetch('/api/mpesa/verify-receipt', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ checkoutRequestId })
-      });
+      // Query live status from backend first
+      const statusRes = await fetch(`/api/mpesa/status/${encodeURIComponent(checkoutRequestId)}`);
+      if (statusRes.ok) {
+        const statusData = await statusRes.json();
+        if (statusData.status === 'SUCCESS') {
+          this.completePaymentSuccess(statusData.receipt || 'QKJ' + Math.floor(100000 + Math.random() * 900000));
+          return;
+        } else if (statusData.status === 'FAILED' || statusData.status === 'CANCELLED') {
+          if (window.app) window.app.showToast('❌ Payment was cancelled or failed on Safaricom side. Please try again.', 'error');
+          this.resetCheckout();
+          return;
+        }
+      }
 
-      const data = await res.json();
-      if (data.success && data.receipt) {
-        this.completePaymentSuccess(data.receipt);
-        return;
+      // Still PENDING - ask user to enter their SMS receipt code for manual verify
+      const code = prompt(
+        'Payment is still processing.\n\n' +
+        'If you received an M-Pesa SMS confirmation, paste the receipt code here (e.g. QKJ7XXXXXX).\n\n' +
+        'Leave empty and press Cancel to try again later.'
+      );
+      if (code && code.trim().length >= 6) {
+        const cleanCode = code.trim().toUpperCase();
+        // Verify the receipt code with backend
+        const verifyRes = await fetch('/api/mpesa/verify-receipt', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkoutRequestId, receiptCode: cleanCode })
+        });
+        const verifyData = await verifyRes.json();
+        if (verifyData.success) {
+          this.completePaymentSuccess(verifyData.receipt || cleanCode);
+          return;
+        } else {
+          if (window.app) window.app.showToast('⚠️ Receipt code could not be verified. Contact support if you were charged.', 'error');
+        }
+      } else {
+        // User cancelled - tell them to try again
+        if (window.app) window.app.showToast('Payment not confirmed. If you were charged, please contact support with your receipt code.', 'info');
       }
     } catch (err) {
       console.warn('Instant check error:', err);
+      if (window.app) window.app.showToast('❌ Could not verify payment. Check your connection and try again.', 'error');
     } finally {
       if (btn) {
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-check-double"></i> I Have Entered PIN – Confirm Now';
       }
     }
-
-    // Fallback confirmation
-    this.completePaymentSuccess('QKJ' + Math.floor(100000 + Math.random() * 900000));
   }
 
   // Prompt for manual receipt code from SMS
-  promptReceiptCode() {
-    const code = prompt('Enter the M-Pesa Receipt Code from your SMS (e.g. QKJ123456):');
-    if (code && code.trim()) {
-      const cleanCode = code.trim().toUpperCase();
-      if (this.currentCheckoutRequestId) {
-        fetch('/api/mpesa/verify-receipt', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            checkoutRequestId: this.currentCheckoutRequestId,
-            receiptCode: cleanCode
-          })
-        }).catch(e => console.warn(e));
+  async promptReceiptCode() {
+    const code = prompt('Enter the M-Pesa Receipt Code from your SMS (e.g. QKJ7XXXXXX):');
+    if (!code || !code.trim() || code.trim().length < 6) {
+      if (window.app) window.app.showToast('No receipt code entered. Payment not confirmed.', 'info');
+      return;
+    }
+    const cleanCode = code.trim().toUpperCase();
+    try {
+      const res = await fetch('/api/mpesa/verify-receipt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          checkoutRequestId: this.currentCheckoutRequestId,
+          receiptCode: cleanCode
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        this.completePaymentSuccess(data.receipt || cleanCode);
+      } else {
+        if (window.app) window.app.showToast('⚠️ Receipt code not verified. Contact support if you were charged.', 'error');
       }
-      this.completePaymentSuccess(cleanCode);
+    } catch (err) {
+      console.warn('Receipt verify error:', err);
+      if (window.app) window.app.showToast('❌ Could not verify. Check connection and try again.', 'error');
     }
   }
 
