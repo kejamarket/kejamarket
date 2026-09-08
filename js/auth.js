@@ -160,6 +160,7 @@ const kejaAuth = (() => {
         if (window.app) {
           window.app.showToast(`🎉 Welcome to KejaMarket, ${data.user.name}! Your account is active.`, 'success');
         }
+        handleAuthSuccess(data.user);
       } else {
         if (window.app) window.app.showToast(`❌ ${data.message || 'Registration failed'}`, 'error');
       }
@@ -173,6 +174,7 @@ const kejaAuth = (() => {
       if (window.app) {
         window.app.showToast(`🎉 Welcome to KejaMarket, ${name}! (Offline mode)`, 'success');
       }
+      handleAuthSuccess(fallbackUser);
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -221,6 +223,7 @@ const kejaAuth = (() => {
         if (window.app) {
           window.app.showToast(`👋 Welcome back, ${data.user.name}!`, 'success');
         }
+        handleAuthSuccess(data.user);
       } else {
         if (window.app) window.app.showToast(`❌ ${data.message || 'Incorrect credentials'}`, 'error');
       }
@@ -395,8 +398,39 @@ const kejaAuth = (() => {
   }
 
   /* ─────────────────────────────────────────
-     INIT
+     TENANT AUTH GUARD
+     Call with a callback — runs it if logged in,
+     otherwise nudges user to sign in as tenant.
   ───────────────────────────────────────── */
+  let pendingTenantAuthCallback = null;
+
+  function handleAuthSuccess(user) {
+    if (window.app && typeof window.app.closeModal === 'function') {
+      window.app.closeModal('modal-auth');
+    }
+    if (typeof pendingTenantAuthCallback === 'function') {
+      const cb = pendingTenantAuthCallback;
+      pendingTenantAuthCallback = null;
+      cb(user);
+    } else if (window.app && window.app.selectedPropertyForDetail) {
+      window.app.unlockDetailPhotos();
+    }
+  }
+
+  function requireTenantAuth(callback) {
+    const session = getSession();
+    if (session) {
+      if (typeof callback === 'function') callback(session);
+      return true;
+    }
+    pendingTenantAuthCallback = callback;
+    if (window.app) window.app.showToast('Please sign in or create a free account to view photos, live location, and landlord contacts.', 'info');
+    switchTab('signin');
+    setRole('tenant', 'signin');
+    openAuthModal();
+    return false;
+  }
+
   function init() {
     const session = getSession();
     if (session) updateHeaderUI(session);
@@ -420,24 +454,7 @@ const kejaAuth = (() => {
     getAuthHeaders
   };
 
-  /* ─────────────────────────────────────────
-     TENANT AUTH GUARD
-     Call with a callback — runs it if logged in,
-     otherwise nudges user to sign in as tenant.
-  ───────────────────────────────────────── */
-  function requireTenantAuth(callback) {
-    const session = getSession();
-    if (session) {
-      if (typeof callback === 'function') callback(session);
-      return true;
-    }
-    if (window.app) window.app.showToast('Sign in or create a free account to view contact details and photos.', 'info');
-    switchTab('signin');
-    setRole('tenant', 'signin');
-    openAuthModal();
-    return false;
-  }
-
 })();
 
 window.kejaAuth = kejaAuth;
+

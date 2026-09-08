@@ -550,6 +550,10 @@ class NairobiRentalsApp {
 
   focusPropertyOnMap(propertyId, event) {
     if (event) event.stopPropagation();
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.focusPropertyOnMap(propertyId));
+      return;
+    }
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 
@@ -624,6 +628,10 @@ class NairobiRentalsApp {
   }
 
   revealLandlordPhone(propertyId, btnEl) {
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.revealLandlordPhone(propertyId, btnEl));
+      return;
+    }
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 
@@ -915,6 +923,8 @@ class NairobiRentalsApp {
     }
     if (gpsLockOverlay) gpsLockOverlay.style.display = 'none';
   }
+
+  unlockDetailPhotos(propertyId) {
     const p = propertyId
       ? this.properties.find(x => x.id === propertyId)
       : this.selectedPropertyForDetail;
