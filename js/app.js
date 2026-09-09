@@ -534,6 +534,7 @@ class NairobiRentalsApp {
   generateCardHtml(p) {
     const isFav = this.favorites.has(p.id);
     const photoCount = p.photoCount || p.media.length || 1;
+    const thumbnail = p.media[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
     const isHourly = p.rentPeriod === 'hour' || p.category.includes('Boardroom');
     const isDaily = p.rentPeriod === 'day' || p.category.includes('Conference') || p.category.includes('Event') || p.category.includes('Hall');
