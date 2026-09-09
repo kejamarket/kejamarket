@@ -121,32 +121,45 @@ class NairobiRentalsApp {
 
   renderCategoryPills() {
     const container = document.getElementById('category-pills-container');
-    if (!container) return;
+    const sidebarList = document.getElementById('sidebar-category-list');
 
-    const allPill = `<button class="category-pill active" data-category="All" onclick="app.setCategory('All', this)"><i class="fas fa-th-large"></i> All Properties</button>`;
-    const pills = MASTER_CATEGORIES.map(cat => {
-      let icon = 'fa-home';
-      if (cat.includes('BnB') || cat.includes('Airbnb')) icon = 'fa-bed';
-      else if (cat.includes('Villa') || cat.includes('Vacation')) icon = 'fa-umbrella-beach';
-      else if (cat.includes('Conference') || cat.includes('Boardroom')) icon = 'fa-chalkboard-teacher';
-      else if (cat.includes('Meeting') || cat.includes('Event')) icon = 'fa-handshake';
-      else if (cat.includes('Office') || cat.includes('Co-Working') || cat.includes('Shop') || cat.includes('Commercial')) icon = 'fa-briefcase';
-      else if (cat.includes('Shared') || cat.includes('Hostel')) icon = 'fa-users';
-      else if (cat.includes('Bedsitter') || cat.includes('Single')) icon = 'fa-door-open';
-      else if (cat.includes('Maisonette') || cat.includes('Townhouse')) icon = 'fa-building';
-      else if (cat.includes('Penthouse') || cat.includes('Serviced')) icon = 'fa-crown';
+    const getCatIcon = (cat) => {
+      if (cat === 'All') return 'fa-th-large';
+      if (cat.includes('BnB') || cat.includes('Airbnb')) return 'fa-bed';
+      if (cat.includes('Villa') || cat.includes('Vacation')) return 'fa-umbrella-beach';
+      if (cat.includes('Conference') || cat.includes('Boardroom')) return 'fa-chalkboard-teacher';
+      if (cat.includes('Meeting') || cat.includes('Event')) return 'fa-handshake';
+      if (cat.includes('Office') || cat.includes('Co-Working') || cat.includes('Shop') || cat.includes('Commercial')) return 'fa-briefcase';
+      if (cat.includes('Shared') || cat.includes('Hostel')) return 'fa-users';
+      if (cat.includes('Bedsitter') || cat.includes('Single')) return 'fa-door-open';
+      if (cat.includes('Maisonette') || cat.includes('Townhouse')) return 'fa-building';
+      if (cat.includes('Penthouse') || cat.includes('Serviced')) return 'fa-crown';
+      return 'fa-home';
+    };
 
-      return `<button class="category-pill" data-category="${cat}" onclick="app.setCategory('${cat}', this)"><i class="fas ${icon}"></i> ${cat}</button>`;
-    }).join('');
+    // Horizontal scrolling pills (mobile / hidden on desktop)
+    if (container) {
+      const allPill = `<button class="category-pill active" data-category="All" onclick="app.setCategory('All', this)"><i class="fas fa-th-large"></i> All Properties</button>`;
+      const pills = MASTER_CATEGORIES.map(cat =>
+        `<button class="category-pill" data-category="${cat}" onclick="app.setCategory('${cat}', this)"><i class="fas ${getCatIcon(cat)}"></i> ${cat}</button>`
+      ).join('');
+      container.innerHTML = allPill + pills;
+    }
 
-    container.innerHTML = allPill + pills;
+    // Sidebar vertical category list
+    if (sidebarList) {
+      const allItem = `<button class="sidebar-cat-item active" data-category="All" onclick="app.setCategory('All', this)"><i class="fas fa-th-large"></i><span>All Properties</span></button>`;
+      const items = MASTER_CATEGORIES.map(cat =>
+        `<button class="sidebar-cat-item" data-category="${cat}" onclick="app.setCategory('${cat}', this)"><i class="fas ${getCatIcon(cat)}"></i><span>${cat}</span></button>`
+      ).join('');
+      sidebarList.innerHTML = allItem + items;
+    }
 
     // Header Category Dropdown
     const headerCatSelect = document.getElementById('header-category-select');
     if (headerCatSelect) {
       headerCatSelect.innerHTML = `<option value="All">All Categories</option>` + 
         MASTER_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
-      
       headerCatSelect.addEventListener('change', (e) => {
         this.setCategory(e.target.value);
       });
@@ -156,14 +169,14 @@ class NairobiRentalsApp {
   setCategory(categoryName, el) {
     this.activeCategory = categoryName;
     
-    // Update pills active class
-    const pills = document.querySelectorAll('.category-pill');
-    pills.forEach(p => {
-      if (p.getAttribute('data-category') === categoryName) {
-        p.classList.add('active');
-      } else {
-        p.classList.remove('active');
-      }
+    // Update horizontal pills active class
+    document.querySelectorAll('.category-pill').forEach(p => {
+      p.classList.toggle('active', p.getAttribute('data-category') === categoryName);
+    });
+
+    // Update sidebar list active class
+    document.querySelectorAll('.sidebar-cat-item').forEach(p => {
+      p.classList.toggle('active', p.getAttribute('data-category') === categoryName);
     });
 
     const headerCatSelect = document.getElementById('header-category-select');

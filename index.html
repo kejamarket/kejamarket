@@ -108,8 +108,8 @@
     </div>
   </header>
 
-  <!-- Category Quick Filter Pills Bar -->
-  <nav class="category-pills-bar" aria-label="Category Navigation">
+  <!-- Category Quick Filter Pills Bar (hidden on desktop, used on mobile) -->
+  <nav class="category-pills-bar category-pills-bar--mobile-only" aria-label="Category Navigation">
     <div class="pills-scroll-container" id="category-pills-container">
       <!-- Generated via JS -->
     </div>
@@ -128,13 +128,23 @@
   <!-- Main Application Layout -->
   <main class="main-app-layout">
 
-    <!-- Left Sidebar: Filters -->
+    <!-- Left Sidebar: Filters + Category List -->
     <aside class="sidebar-filters" id="sidebar-filters" aria-label="Rental Filters">
       <div class="filter-header">
         <h2><i class="fas fa-sliders-h" style="color: #00b53f;"></i> Filters</h2>
         <div style="display:flex; gap:8px; align-items:center;">
           <button class="btn-reset-filters" onclick="app.resetFilters()">Clear All</button>
           <button class="btn-close-mobile-filter" onclick="app.toggleMobileFilters()" style="display:none;">&times;</button>
+        </div>
+      </div>
+
+      <!-- Category Sidebar List -->
+      <div class="filter-group sidebar-category-group">
+        <div class="filter-title">
+          <span><i class="fas fa-th-list" style="color: #00b53f;"></i> Property Type</span>
+        </div>
+        <div id="sidebar-category-list" class="sidebar-category-list">
+          <!-- Populated by JS -->
         </div>
       </div>
 
