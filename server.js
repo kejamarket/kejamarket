@@ -1016,14 +1016,36 @@ app.put('/api/properties/:id/boost', optionalAuth, (req, res) => {
 app.patch('/api/properties/:id/status', optionalAuth, (req, res) => {
   const { id } = req.params;
   const { isTaken, status } = req.body;
+
+  const existing = store.getPropertyById(id);
+  if (!existing) {
+    return res.status(404).json({ success: false, message: 'Property listing not found.' });
+  }
+
+  // Security check: Only Admin or the listing Landlord owner can change occupancy status
+  const user = req.user;
+  const isOwnerOrAdmin = user && (
+    user.role === 'admin' ||
+    (existing.landlord && user.id === existing.landlord.id) ||
+    (user.phone && (
+      (existing.landlord && (user.phone === existing.landlord.phone || user.phone === existing.landlord.whatsapp)) ||
+      user.phone === existing.landlordPhone
+    ))
+  );
+
+  if (!isOwnerOrAdmin) {
+    return res.status(403).json({
+      success: false,
+      message: 'Unauthorized: Only the verified landlord owner of this listing or an admin can mark it as taken/available.'
+    });
+  }
+
   const newStatus = isTaken !== undefined ? isTaken : (status === 'taken');
   const property = store.updateProperty(id, {
     isTaken: newStatus,
     status: newStatus ? 'taken' : 'available'
   });
-  if (!property) {
-    return res.status(404).json({ success: false, message: 'Property not found.' });
-  }
+
   res.json({
     success: true,
     message: `Property status updated to ${newStatus ? 'TAKEN / OCCUPIED' : 'VACANT / AVAILABLE'}`,

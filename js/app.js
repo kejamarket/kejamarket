@@ -732,6 +732,26 @@ class NairobiRentalsApp {
     const takenBanner = document.getElementById('detail-taken-banner');
     const statusPill = document.getElementById('detail-status-pill');
     const toggleBtn = document.getElementById('btn-toggle-taken-status');
+    const landlordStatusBar = document.getElementById('detail-landlord-status-bar');
+
+    // Check if the current user is an Admin or the Landlord owner of this listing
+    const currentUser = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function')
+      ? window.kejaAuth.getSession()
+      : null;
+
+    const isOwnerOrAdmin = !!(currentUser && (
+      currentUser.role === 'admin' ||
+      (currentUser.id && p.landlord && currentUser.id === p.landlord.id) ||
+      (currentUser.phone && (
+        (p.landlord && (currentUser.phone === p.landlord.phone || currentUser.phone === p.landlord.whatsapp)) ||
+        currentUser.phone === p.landlordPhone
+      ))
+    ));
+
+    // Show status toggle control ONLY to verified owner or admin
+    if (landlordStatusBar) {
+      landlordStatusBar.style.display = isOwnerOrAdmin ? 'flex' : 'none';
+    }
 
     if (takenBanner) {
       takenBanner.style.display = isTaken ? 'flex' : 'none';
@@ -1536,29 +1556,49 @@ class NairobiRentalsApp {
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 
+    const currentUser = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function')
+      ? window.kejaAuth.getSession()
+      : null;
+
+    const isOwnerOrAdmin = !!(currentUser && (
+      currentUser.role === 'admin' ||
+      (currentUser.id && p.landlord && currentUser.id === p.landlord.id) ||
+      (currentUser.phone && (
+        (p.landlord && (currentUser.phone === p.landlord.phone || currentUser.phone === p.landlord.whatsapp)) ||
+        currentUser.phone === p.landlordPhone
+      ))
+    ));
+
+    if (!isOwnerOrAdmin) {
+      this.showToast('Security Alert: Only the verified landlord of this listing or an admin can update occupancy status.', 'error');
+      return;
+    }
+
     const newStatus = !(p.isTaken || p.status === 'taken');
+    const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
 
     try {
       const res = await fetch(`/api/properties/${propertyId}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ isTaken: newStatus, status: newStatus ? 'taken' : 'available' })
       });
 
-      if (res.ok) {
-        const data = await res.json();
+      const data = await res.json();
+      if (res.ok && data.success) {
         p.isTaken = newStatus;
         p.status = newStatus ? 'taken' : 'available';
         this.showToast(data.message || `Status updated to ${newStatus ? 'TAKEN / OCCUPIED' : 'VACANT / AVAILABLE'}!`, 'success');
       } else {
-        p.isTaken = newStatus;
-        p.status = newStatus ? 'taken' : 'available';
-        this.showToast(`Status updated to ${newStatus ? 'TAKEN / OCCUPIED' : 'VACANT / AVAILABLE'}!`, 'success');
+        this.showToast(data.message || 'Failed to update property status.', 'warning');
+        return;
       }
     } catch (err) {
-      p.isTaken = newStatus;
-      p.status = newStatus ? 'taken' : 'available';
-      this.showToast(`Status updated to ${newStatus ? 'TAKEN / OCCUPIED' : 'VACANT / AVAILABLE'}!`, 'info');
+      this.showToast('Network error while updating status.', 'error');
+      return;
     }
 
     if (this.selectedPropertyForDetail && this.selectedPropertyForDetail.id === propertyId) {
