@@ -66,17 +66,33 @@ async function sendRealSMS(toPhone, message) {
     const formatted = formatPhone(toPhone);
     const recipient = '+' + formatted;
 
-    if (atSMS) {
-      const opts = {
-        to: [recipient],
-        message: message
-      };
+    if (AT_API_KEY && !AT_API_KEY.includes('YOUR_')) {
+      const isSandbox = AT_USERNAME === 'sandbox';
+      const endpoint = isSandbox
+        ? 'https://api.sandbox.africastalking.com/version1/messaging'
+        : 'https://api.africastalking.com/version1/messaging';
+
+      const params = new URLSearchParams();
+      params.append('username', AT_USERNAME);
+      params.append('to', recipient);
+      params.append('message', message);
       if (AT_SENDER_ID && AT_SENDER_ID.trim() && !AT_SENDER_ID.includes('YOUR_')) {
-        opts.from = AT_SENDER_ID.trim();
+        params.append('from', AT_SENDER_ID.trim());
       }
-      const response = await atSMS.send(opts);
-      console.log(`📤 [REAL SMS SENT] To: ${recipient} | Body: "${message}"`);
-      return { success: true, response };
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'apiKey': AT_API_KEY,
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString()
+      });
+
+      const data = await res.json().catch(() => null);
+      console.log(`📤 [REAL SMS SENT] To: ${recipient} | Status: ${res.status} | Response:`, data ? JSON.stringify(data) : '');
+      return { success: res.status === 201 || res.status === 200, response: data };
     } else {
       console.log(`📡 [SMS DISPATCH] To: ${recipient} | Body: "${message}"`);
       return { success: true, localOnly: true };
