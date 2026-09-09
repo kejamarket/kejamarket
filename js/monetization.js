@@ -27,7 +27,7 @@ class MonetizationEngine {
   }
 
   // Open Checkout for a Specific Item
-  openMpesaCheckout(itemType, itemName, amountKes, targetPropertyId = null) {
+  openMpesaCheckout(itemType, itemName, amountKes, targetPropertyId = null, prefillPhone = null) {
     this.currentPendingOrder = {
       itemType,
       itemName,
@@ -37,11 +37,19 @@ class MonetizationEngine {
     };
     this.currentCheckoutRequestId = null;
 
-    // Pre-fill phone if user is logged in
+    // Pre-fill phone if provided or if user is logged in
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     const phoneInput = document.getElementById('mpesa-phone-number');
-    if (phoneInput && session && session.phone) {
-      phoneInput.value = session.phone;
+    if (phoneInput) {
+      if (prefillPhone) {
+        let clean = prefillPhone.replace(/\D/g, '');
+        if (clean.startsWith('254')) clean = '0' + clean.slice(3);
+        phoneInput.value = clean;
+      } else if (session && session.phone) {
+        let clean = session.phone.replace(/\D/g, '');
+        if (clean.startsWith('254')) clean = '0' + clean.slice(3);
+        phoneInput.value = clean;
+      }
     }
 
     // Update Checkout UI
@@ -545,7 +553,7 @@ class MonetizationEngine {
       }
 
       if (window.app) window.app.closeModal('modal-whatsapp-alerts');
-      this.openMpesaCheckout('whatsapp_alerts', `WhatsApp Alerts (${category} · ${estate} · ${budgetLabel}/mo)`, 100);
+      this.openMpesaCheckout('whatsapp_alerts', `WhatsApp Alerts (${category} · ${estate} · ${budgetLabel}/mo)`, 100, null, phone);
     });
   }
 
