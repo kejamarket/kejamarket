@@ -51,15 +51,14 @@ body {
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  min-width: 1180px;
+  overflow-x: auto;
   width: 100%;
-  max-width: 100vw;
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: auto;
   width: 100%;
-  max-width: 100vw;
 }
 
 a {
@@ -826,10 +825,10 @@ button, input, select, textarea {
   height: 100%;
 }
 
-/* Property Listings Grid (Fits 3 houses per row on desktop & laptop screens) */
+/* Property Listings Grid (Guaranteed 3 houses per row matching desktop picture) */
 .property-listings-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 14px;
 }
 
@@ -1761,261 +1760,41 @@ button, input, select, textarea {
   padding: 0 4px;
 }
 
-/* Responsive Media Queries */
-@media (max-width: 1024px) {
-  .main-app-layout {
-    grid-template-columns: 1fr;
-  }
-  .sidebar-filters {
-    position: static;
-    max-height: none;
-  }
-  .sidebar-filter-cols {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .sidebar-col-category,
-  .sidebar-col-other {
-    max-height: none;
-    overflow-y: visible;
-  }
-  .split-view-container {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-  .split-map-col {
-    height: 400px;
-  }
+/* Responsive Layout Preservation:
+   Maintains the unified desktop layout (2-column filters, 3 houses per row, sticky filters)
+   on mobile phones, tablets, laptops, and all desktops matching the design screenshot. */
+.category-pills-bar,
+.category-pills-bar--mobile-only,
+.mobile-filter-bar,
+.mobile-bottom-nav,
+.btn-close-mobile-filter {
+  display: none !important;
 }
 
-@media (max-width: 640px) {
-  .sidebar-filter-cols {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .sidebar-col-category {
-    border-right: none;
-    border-bottom: 1px solid #f1f5f9;
-    padding-right: 0;
-    padding-bottom: 12px;
-    max-height: 220px;
-    overflow-y: auto;
-  }
+.main-app-layout {
+  display: grid !important;
+  grid-template-columns: 335px 1fr !important;
+  gap: 16px !important;
 }
 
-@media (max-width: 768px) {
-  body {
-    padding-bottom: 70px; /* Space for fixed bottom nav */
-  }
-
-  .site-header {
-    padding: 8px 12px;
-  }
-
-  .header-container {
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 8px 12px;
-  }
-
-  .brand-wrapper {
-    flex: 1;
-  }
-
-  .brand-tagline {
-    display: none;
-  }
-
-  .header-actions {
-    display: flex;
-    gap: 6px;
-  }
-
-  .header-actions .btn-header-pricing,
-  .header-actions .btn-auth-trigger span {
-    display: none;
-  }
-
-  .btn-post-ad span {
-    display: none;
-  }
-
-  .btn-post-ad {
-    padding: 8px 12px;
-    font-size: 0.82rem;
-  }
-
-  .header-search-bar {
-    order: 3;
-    max-width: 100%;
-    width: 100%;
-    margin-top: 4px;
-  }
-
-  .search-category-select {
-    max-width: 100px;
-    font-size: 0.78rem;
-    padding: 6px 6px;
-  }
-
-  .search-input-field {
-    font-size: 0.85rem;
-    padding: 8px 10px;
-  }
-
-  .search-submit-btn {
-    padding: 8px 12px;
-    font-size: 0.82rem;
-  }
-
-  .search-submit-btn span {
-    display: none;
-  }
-
-  .category-pills-bar {
-    padding: 6px 12px;
-    background: #ffffff;
-    border-bottom: 1px solid #f1f5f9;
-  }
-
-  .pills-scroll-container {
-    gap: 6px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .pills-scroll-container::-webkit-scrollbar {
-    display: none;
-  }
-
-  .category-pill {
-    padding: 5px 10px;
-    font-size: 0.76rem;
-    white-space: nowrap;
-  }
-
-  .mobile-filter-bar {
-    display: flex;
-  }
-
-  .main-app-layout {
-    grid-template-columns: 1fr;
-    padding: 0 10px;
-    margin: 10px auto;
-  }
-
-  /* Sidebar Filters as Collapsible Drawer on Mobile */
-  .sidebar-filters {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2500;
-    background: #ffffff;
-    padding: 16px;
-    overflow-y: auto;
-    max-height: 100vh;
-  }
-
-  .sidebar-filters.mobile-open {
-    display: block;
-    animation: slideInUp 0.25s ease;
-  }
-
-  .sidebar-filters .btn-close-mobile-filter {
-    display: inline-block !important;
-  }
-
-  /* Compact Mobile Property Cards Grid */
-  .property-listings-grid, #property-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
-  }
-
-  .property-card {
-    border-radius: 10px;
-  }
-
-  .card-media-wrapper {
-    height: 170px;
-  }
-
-  .card-content {
-    padding: 12px;
-  }
-
-  .card-price {
-    font-size: 1.1rem;
-    font-weight: 800;
-  }
-
-  .card-title {
-    font-size: 0.88rem;
-    line-height: 1.35;
-    margin-bottom: 6px;
-  }
-
-  .card-location-row {
-    font-size: 0.78rem;
-    margin-bottom: 8px;
-  }
-
-  .card-action-buttons {
-    grid-template-columns: 1fr 1fr auto;
-    gap: 4px;
-    padding-top: 8px;
-  }
-
-  .btn-card-chat,
-  .btn-card-call,
-  .btn-card-map {
-    padding: 6px 6px;
-    font-size: 0.74rem;
-  }
-
-  .view-controls-bar {
-    padding: 8px 10px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .view-controls-bar .right-controls .view-mode-toggle {
-    display: none;
-  }
-
-  .mobile-bottom-nav {
-    display: flex;
-  }
-
-  .modal-dialog {
-    max-width: 95vw !important;
-    margin: 10px auto;
-    max-height: 90vh;
-  }
-
-  .detail-specs-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
-  }
-
-  .form-grid-2 {
-    grid-template-columns: 1fr !important;
-  }
+.sidebar-filters {
+  display: block !important;
+  position: sticky !important;
+  top: 80px !important;
+  max-height: calc(100vh - 100px) !important;
+  overflow-y: auto !important;
 }
 
-@media (max-width: 480px) {
-  .property-listings-grid, #property-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .card-media-wrapper {
-    height: 180px;
-  }
-  .card-price {
-    font-size: 1.15rem;
-  }
+.sidebar-filter-cols {
+  display: grid !important;
+  grid-template-columns: 135px 1fr !important;
+  gap: 10px !important;
+}
+
+.property-listings-grid, #property-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
 }
 
 /* Auth Modal Specific Styles */

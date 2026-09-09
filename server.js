@@ -1300,6 +1300,20 @@ app.post('/api/messages', optionalAuth, (req, res) => {
       text: text.trim()
     });
 
+    // Route Admin inquiries directly to Admin
+    if (recipientId === 'usr-admin-01' || !propertyId) {
+      console.log(`🛡️ [ADMIN INQUIRY] From: ${senderUserName} (${senderUserPhone}): ${text.trim()}`);
+      sendRealSMS(
+        '254180511492',
+        `[KejaMarket Admin Support] New message from ${senderUserName} (${senderUserPhone || 'In-App'}): "${text.trim().substring(0, 90)}". Reply on kejamarket.co.ke`
+      );
+      return res.status(201).json({
+        success: true,
+        message: 'Message sent directly to KejaMarket Admin Support!',
+        data: message
+      });
+    }
+
     // Notify landlord via real SMS
     const prop = propertyId ? store.getPropertyById(propertyId) : null;
     const landlordUser = recipientId ? store.getUserById(recipientId) : null;

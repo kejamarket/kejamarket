@@ -618,6 +618,7 @@ const kejaAuth = (() => {
     const mobileLabel = document.getElementById('mobile-nav-user-label');
     const adminHeaderBtn = document.getElementById('btn-admin-header');
     const postAdBtn = document.getElementById('btn-header-post-ad');
+    const pricingBtn = document.getElementById('btn-header-pricing');
     const whatsappAlertBanner = document.getElementById('tenant-whatsapp-alert-banner');
 
     if (session) {
@@ -627,6 +628,13 @@ const kejaAuth = (() => {
         session.isAdmin === true ||
         (session.email && session.email.toLowerCase().includes('admin')) ||
         (session.name && session.name.toLowerCase().includes('admin'))
+      );
+
+      const isLandlordOrAgent = Boolean(
+        session.role === 'landlord' ||
+        session.role === 'agency' ||
+        session.role === 'agent' ||
+        isAdmin
       );
 
       const initials = (session.name || 'User')
@@ -658,13 +666,13 @@ const kejaAuth = (() => {
       }
 
       // Role separation:
+      // Pricing & Pro and Post only appear for Landlord or Agent (never for Tenant)
+      if (postAdBtn) postAdBtn.style.display = isLandlordOrAgent ? 'inline-flex' : 'none';
+      if (pricingBtn) pricingBtn.style.display = isLandlordOrAgent ? 'inline-flex' : 'none';
+
       if (session.role === 'tenant') {
-        // Tenants are looking for houses: hide Post Ad, show WhatsApp Alerts
-        if (postAdBtn) postAdBtn.style.display = 'none';
         if (whatsappAlertBanner) whatsappAlertBanner.style.display = 'flex';
       } else {
-        // Landlords & Agencies: show Post Ad, hide Tenant WhatsApp alert
-        if (postAdBtn) postAdBtn.style.display = 'inline-flex';
         if (whatsappAlertBanner) whatsappAlertBanner.style.display = 'none';
       }
     } else {
@@ -675,7 +683,9 @@ const kejaAuth = (() => {
         btn.style.background = '';
         btn.style.color = '';
       }
-      if (postAdBtn) postAdBtn.style.display = 'inline-flex';
+      // When signed out: hide Post and Pricing & Pro (only landlords/agents have these)
+      if (postAdBtn) postAdBtn.style.display = 'none';
+      if (pricingBtn) pricingBtn.style.display = 'none';
       if (whatsappAlertBanner) whatsappAlertBanner.style.display = 'flex';
     }
 
@@ -795,14 +805,10 @@ const kejaAuth = (() => {
   function applyAuthWall(session) {
     const wall = document.getElementById('signin-wall');
     const mainLayout = document.getElementById('main-app-layout');
-    const mobilePills = document.querySelector('.category-pills-bar');
-    const mobileFilter = document.querySelector('.mobile-filter-bar');
 
     // Marketplace is always visible to everyone
     if (wall) wall.style.display = 'none';
     if (mainLayout) mainLayout.style.display = '';
-    if (mobilePills) mobilePills.style.display = '';
-    if (mobileFilter) mobileFilter.style.display = '';
 
     // Refresh properties display
     if (window.app && typeof window.app.applyFilters === 'function') {
@@ -834,7 +840,7 @@ const kejaAuth = (() => {
   function init() {
     const session = getSession();
     applyAuthWall(session);
-    if (session) updateHeaderUI(session);
+    updateHeaderUI(session);
     syncSession();
   }
 

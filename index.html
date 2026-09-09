@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=1200, user-scalable=yes">
   <title>KejaMarket | Kenya's #1 Real Estate & Rental Property Marketplace</title>
   <meta name="description" content="Find verified rental houses, bedsitters, apartments, and maisonettes across Nairobi, Ruaka, Kilimani, Roysambu, Westlands, and satellite towns with direct landlord contact.">
   <meta name="keywords" content="KejaMarket, Nairobi rentals, houses for rent Nairobi, bedsitter in Ruaka, apartments in Kilimani, Roysambu flats, Kenya rentals">
@@ -68,9 +68,9 @@
       <!-- Header Action Buttons -->
       <div class="header-actions">
         
-        <!-- Post Free Ad Button -->
-        <button class="btn-post-ad" id="btn-header-post-ad" onclick="kejaAuth.requireLandlordForAction('modal-post-ad')">
-          <i class="fas fa-plus-circle"></i> Post Free Ad
+        <!-- Post Ad Button (Landlord / Agent only) -->
+        <button class="btn-post-ad" id="btn-header-post-ad" style="display: none;" onclick="kejaAuth.requireLandlordForAction('modal-post-ad')">
+          <i class="fas fa-plus-circle"></i> Post
         </button>
 
         <!-- Favorites (Heart) -->
@@ -80,14 +80,14 @@
           <span class="badge-count" id="fav-count-badge">0</span>
         </button>
 
-        <!-- In-app Messages -->
-        <button class="btn-header-action" onclick="app.openModal('modal-messages')" title="Messages & Inquiries">
+        <!-- Reach out to Admin (Auth-Gated Messages) -->
+        <button class="btn-header-action" id="btn-header-messages" onclick="app.openAdminChat()" title="Reach out to Admin">
           <i class="fas fa-comment-dots" style="color: #00b53f;"></i>
           <span>Messages</span>
         </button>
 
-        <!-- Pricing & Landlord Pro -->
-        <button class="btn-header-action btn-header-pricing" onclick="app.openModal('modal-pricing-plans')" title="Boost Ads & Landlord Pro">
+        <!-- Pricing & Landlord Pro (Landlord / Agent only) -->
+        <button class="btn-header-action btn-header-pricing" id="btn-header-pricing" style="display: none;" onclick="app.openModal('modal-pricing-plans')" title="Boost Ads & Landlord Pro">
           <i class="fas fa-crown"></i>
           <span>Pricing & Pro</span>
         </button>
@@ -108,22 +108,11 @@
     </div>
   </header>
 
-  <!-- Category Quick Filter Pills Bar (hidden on desktop, used on mobile) -->
-  <nav class="category-pills-bar category-pills-bar--mobile-only" aria-label="Category Navigation">
-    <div class="pills-scroll-container" id="category-pills-container">
-      <!-- Generated via JS -->
-    </div>
+  <!-- Mobile elements disabled to preserve unified desktop display across phone and desktop -->
+  <nav class="category-pills-bar category-pills-bar--mobile-only" style="display: none !important;" aria-label="Category Navigation">
+    <div class="pills-scroll-container" id="category-pills-container"></div>
   </nav>
-
-  <!-- Mobile Quick Filter & Sort Bar (Jiji style) -->
-  <div class="mobile-filter-bar">
-    <button class="btn-mobile-filter-toggle" id="btn-mobile-filter-toggle" onclick="app.toggleMobileFilters()">
-      <i class="fas fa-sliders-h"></i> Filters
-    </button>
-    <button class="btn-mobile-view-toggle" onclick="app.cycleMobileView()">
-      <i class="fas fa-th-large" id="mobile-view-icon"></i> View
-    </button>
-  </div>
+  <div class="mobile-filter-bar" style="display: none !important;"></div>
 
   <!-- Main Application Layout (Always visible for seamless browsing) -->
   <main class="main-app-layout" id="main-app-layout">

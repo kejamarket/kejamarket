@@ -5,7 +5,7 @@
       "name": "KejaMarket Admin",
       "phone": "0700000000",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$kF0x38meVJvHgUOxpCDqquj7jRzIr7neMvjowsEOH9yDCsa60.nbe",
+      "password": "$2b$10$Nw0xByuk71/4foGqDIFSyuDLAHEs6ufHG5DQRJ7Yep6oFRdrB6fIO",
       "role": "admin",
       "isVerified": true,
       "numProperties": "10+",
@@ -2117,7 +2117,22 @@
       "createdAt": "2026-09-09T11:06:46.166Z"
     }
   ],
-  "messages": [],
+  "messages": [
+    {
+      "id": "msg-1788976638490-872",
+      "propertyId": null,
+      "propertyTitle": "",
+      "estateSuburb": "",
+      "senderId": "guest-1788976638490",
+      "senderName": "Test Tenant",
+      "senderPhone": "0712345678",
+      "recipientId": "usr-admin-01",
+      "recipientName": "Landlord",
+      "text": "Testing reach out to KejaMarket Admin",
+      "isRead": false,
+      "createdAt": "2026-09-09T17:57:18.490Z"
+    }
+  ],
   "comments": {
     "prop-nrb-001": [
       {

@@ -1346,6 +1346,21 @@ class NairobiRentalsApp {
     if (!prop) return;
 
     this.activeChatProperty = prop;
+    this.isAdminChat = false;
+
+    // Restore landlord quick replies
+    const quickReplies = document.getElementById('chat-quick-replies');
+    if (quickReplies) {
+      quickReplies.innerHTML = `
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Is this house still available?')">Is this available?</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Can I schedule a viewing today?')">📅 Book viewing</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Is borehole water continuous 24/7?')">💧 Water 24/7?</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('What is the deposit and token policy?')">💰 Deposit policy</button>
+      `;
+    }
+
+    const input = document.getElementById('chat-message-input');
+    if (input) input.placeholder = 'Type your message to the landlord...';
 
     // Update Chat Header
     const avatarEl = document.getElementById('chat-landlord-avatar');
@@ -1380,6 +1395,53 @@ class NairobiRentalsApp {
     }, 300);
   }
 
+  openAdminChat() {
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    if (!session) {
+      if (this.showToast) {
+        this.showToast('⚠️ Please sign in to reach out to KejaMarket Admin.', 'info');
+      }
+      if (window.kejaAuth) {
+        window.kejaAuth.requireTenantAuth(() => {
+          this.openAdminChat();
+        });
+      }
+      return;
+    }
+
+    this.isAdminChat = true;
+    this.activeChatProperty = null;
+
+    const avatarEl = document.getElementById('chat-landlord-avatar');
+    const titleEl = document.getElementById('chat-landlord-title');
+    const subEl = document.getElementById('chat-property-subtitle');
+    const banner = document.getElementById('chat-property-banner');
+    const input = document.getElementById('chat-message-input');
+    const quickReplies = document.getElementById('chat-quick-replies');
+
+    if (avatarEl) avatarEl.innerHTML = '🛡️';
+    if (titleEl) titleEl.innerHTML = '<i class="fas fa-headset" style="color: #00b53f; margin-right: 6px;"></i> KejaMarket Admin Support';
+    if (subEl) subEl.textContent = 'Reach out directly to Admin · Prompt assistance & replies';
+    if (banner) banner.style.display = 'none';
+    if (input) input.placeholder = 'Type your message to KejaMarket Admin...';
+
+    if (quickReplies) {
+      quickReplies.innerHTML = `
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Need help listing my property')">🏠 Help listing</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Payment or M-Pesa verification inquiry')">💰 Payment issue</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Report a fake or suspicious listing')">⚠️ Report listing</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('General inquiry regarding KejaMarket')">💬 General inquiry</button>
+      `;
+    }
+
+    this.renderChatMessages();
+    this.openModal('modal-messages');
+
+    setTimeout(() => {
+      if (input) input.focus();
+    }, 300);
+  }
+
   openChatForCurrentProperty() {
     // Require login before opening chat
     if (!window.kejaAuth || !window.kejaAuth.getSession()) {
@@ -1391,7 +1453,7 @@ class NairobiRentalsApp {
       this.closeModal('modal-property-detail');
       this.openChatForProperty(this.selectedPropertyForDetail.id);
     } else {
-      this.openModal('modal-messages');
+      this.openAdminChat();
     }
   }
 
@@ -1399,13 +1461,50 @@ class NairobiRentalsApp {
     const container = document.getElementById('chat-messages-container');
     if (!container) return;
 
-    const propId = this.activeChatProperty ? this.activeChatProperty.id : null;
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
 
-    // Filter relevant messages
+    if (this.isAdminChat) {
+      const adminMsgs = this.chatMessages.filter(m => m.isAdminMessage === true);
+      if (!adminMsgs || adminMsgs.length === 0) {
+        const userName = session && session.name ? session.name.split(' ')[0] : 'there';
+        container.innerHTML = `
+          <div style="text-align: center; padding: 24px 16px; color: #64748b;">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; font-size: 1.4rem;">
+              🛡️
+            </div>
+            <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem; margin-bottom: 4px;">Reach out to KejaMarket Admin</div>
+            <div style="font-size: 0.82rem; color: #64748b; max-width: 360px; margin: 0 auto; line-height: 1.5;">
+              Hello ${userName}! Send a message directly to the KejaMarket administrative team for support with listing your house, payment confirmation, reporting fake listings, or general assistance.
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = adminMsgs.map(m => {
+        const isMe = m.senderId === (session ? session.id : 'me') || m.isSenderMe;
+        const timeStr = m.createdAt ? new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now';
+
+        return `
+          <div style="display: flex; flex-direction: column; align-items: ${isMe ? 'flex-end' : 'flex-start'}; margin-bottom: 4px;">
+            <div style="font-size: 0.72rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
+              ${isMe ? 'You' : (m.senderName || 'KejaMarket Admin')} · ${timeStr}
+            </div>
+            <div style="max-width: 80%; padding: 10px 14px; border-radius: ${isMe ? '16px 16px 2px 16px' : '16px 16px 16px 2px'}; background: ${isMe ? '#00b53f' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.88rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
+              ${m.text}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.scrollTop = container.scrollHeight;
+      return;
+    }
+
+    const propId = this.activeChatProperty ? this.activeChatProperty.id : null;
     let msgs = this.chatMessages;
     if (propId) {
-      msgs = this.chatMessages.filter(m => m.propertyId === propId);
+      msgs = this.chatMessages.filter(m => m.propertyId === propId && !m.isAdminMessage);
     }
 
     if (!msgs || msgs.length === 0) {
@@ -1464,16 +1563,18 @@ class NairobiRentalsApp {
   async sendChatMessage(text) {
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     const prop = this.activeChatProperty;
+    const isAdminChat = this.isAdminChat || !prop;
 
     const newMsg = {
       id: 'msg-' + Date.now(),
+      isAdminMessage: isAdminChat,
       propertyId: prop ? prop.id : null,
-      propertyTitle: prop ? prop.title : '',
-      estateSuburb: prop ? prop.estateSuburb : '',
-      recipientId: prop ? prop.landlord.id : null,
-      recipientName: prop ? prop.landlord.name : 'Landlord',
+      propertyTitle: prop ? prop.title : 'Admin Inquiry',
+      estateSuburb: prop ? prop.estateSuburb : 'Nairobi',
+      recipientId: prop ? prop.landlord.id : 'usr-admin-01',
+      recipientName: prop ? prop.landlord.name : 'KejaMarket Admin',
       senderId: session ? session.id : 'me',
-      senderName: session ? session.name : 'Tenant',
+      senderName: session ? session.name : 'User',
       senderPhone: session ? session.phone : '',
       isSenderMe: true,
       text: text,
@@ -1499,8 +1600,29 @@ class NairobiRentalsApp {
       console.warn('Message offline sync');
     }
 
-    // Landlord Auto-Reply Simulation for realistic instant response
-    if (prop) {
+    if (isAdminChat) {
+      setTimeout(() => {
+        const userName = session && session.name ? session.name.split(' ')[0] : 'there';
+        const replyMsg = {
+          id: 'reply-admin-' + Date.now(),
+          isAdminMessage: true,
+          propertyId: null,
+          propertyTitle: 'Admin Support',
+          estateSuburb: 'Nairobi',
+          recipientId: session ? session.id : 'me',
+          recipientName: session ? session.name : 'User',
+          senderId: 'usr-admin-01',
+          senderName: 'KejaMarket Admin',
+          isSenderMe: false,
+          text: `Hello ${userName}! We have received your inquiry: "${text.length > 50 ? text.substring(0, 50) + '...' : text}". Our administrative team will attend to it and respond here or call/SMS you shortly. Asante for contacting KejaMarket!`,
+          createdAt: new Date().toISOString()
+        };
+        this.chatMessages.push(replyMsg);
+        this.saveChatMessages();
+        this.renderChatMessages();
+        this.showToast('🛡️ KejaMarket Admin received your message', 'success');
+      }, 1200);
+    } else if (prop) {
       this.simulateLandlordReply(text, prop);
     }
   }
