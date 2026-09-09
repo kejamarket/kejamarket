@@ -486,24 +486,24 @@ button, input, select, textarea {
 .sidebar-cat-item {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 6px;
   width: 100%;
-  padding: 7px 10px;
-  border-radius: 7px;
+  padding: 5px 6px;
+  border-radius: 6px;
   background: transparent;
   border: none;
-  font-size: 0.83rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
   text-align: left;
   transition: background 0.15s, color 0.15s;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .sidebar-cat-item i {
-  font-size: 0.82rem;
-  width: 16px;
+  font-size: 0.76rem;
+  width: 14px;
   text-align: center;
   flex-shrink: 0;
   color: #94a3b8;
@@ -524,21 +524,21 @@ button, input, select, textarea {
   color: var(--primary-dark);
   font-weight: 800;
   border-left: 3px solid var(--primary-color);
-  padding-left: 7px;
+  padding-left: 5px;
 }
 
 .sidebar-cat-item.active i {
   color: var(--primary-color);
 }
 
-/* App Main Layout Grid (Enhanced to support 2-column sidebar) */
+/* App Main Layout Grid (Optimized width so 3 houses per row fit cleanly) */
 .main-app-layout {
-  max-width: 1540px;
-  margin: 18px auto;
-  padding: 0 20px;
+  max-width: 1600px;
+  margin: 16px auto;
+  padding: 0 14px;
   display: grid;
-  grid-template-columns: 460px 1fr;
-  gap: 22px;
+  grid-template-columns: 335px 1fr;
+  gap: 16px;
   align-items: start;
 }
 
@@ -547,7 +547,7 @@ button, input, select, textarea {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
-  padding: 16px;
+  padding: 12px 10px;
   box-shadow: var(--shadow-sm);
   position: sticky;
   top: 80px;
@@ -558,14 +558,14 @@ button, input, select, textarea {
 /* 2-Column Sidebar Layout */
 .sidebar-filter-cols {
   display: grid;
-  grid-template-columns: 195px 1fr;
-  gap: 16px;
+  grid-template-columns: 135px 1fr;
+  gap: 10px;
   align-items: start;
 }
 
 .sidebar-col-category {
   border-right: 1px solid #f1f5f9;
-  padding-right: 12px;
+  padding-right: 8px;
   max-height: calc(100vh - 170px);
   overflow-y: auto;
   scrollbar-width: thin;
@@ -582,7 +582,7 @@ button, input, select, textarea {
 .sidebar-col-other {
   max-height: calc(100vh - 170px);
   overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 2px;
   scrollbar-width: thin;
 }
 
@@ -598,8 +598,8 @@ button, input, select, textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -826,11 +826,11 @@ button, input, select, textarea {
   height: 100%;
 }
 
-/* Property Listings Grid */
+/* Property Listings Grid (Fits 3 houses per row on desktop & laptop screens) */
 .property-listings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 14px;
 }
 
 /* Jiji Style Property Card */
@@ -854,7 +854,7 @@ button, input, select, textarea {
 
 .card-media-wrapper {
   position: relative;
-  height: 190px;
+  height: 165px;
   background: #e2e8f0;
   overflow: hidden;
   cursor: pointer;
@@ -962,7 +962,7 @@ button, input, select, textarea {
 
 /* Card Content Area */
 .card-content {
-  padding: 14px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -972,27 +972,27 @@ button, input, select, textarea {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .card-price {
-  font-size: 1.22rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--primary-color);
 }
 
 .card-price span.period {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: var(--text-muted);
 }
 
 .card-title {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.35;
-  margin-bottom: 6px;
+  line-height: 1.3;
+  margin-bottom: 5px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
