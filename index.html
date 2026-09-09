@@ -1178,6 +1178,96 @@
   </div>
 
   <!-- ====================================================================
+       MODAL 8b: WhatsApp Alerts Activated — Success Screen
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-whatsapp-success" style="z-index: 2700;">
+    <div class="modal-dialog" style="max-width: 460px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #075e54, #128c7e); padding: 20px 24px;">
+        <h3 style="color: white; font-size: 1.15rem; font-weight: 800;">
+          <i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Alerts Activated!
+        </h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-whatsapp-success')" style="color: white;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 28px 24px; text-align: center;">
+
+        <!-- Animated Check Circle -->
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #25d366, #128c7e); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; box-shadow: 0 8px 24px rgba(37,211,102,0.4); animation: wa-pulse 1.5s ease-in-out 3;">
+          <i class="fab fa-whatsapp" style="font-size: 2.4rem; color: white;"></i>
+        </div>
+
+        <h2 style="font-size: 1.35rem; font-weight: 900; color: #064e3b; margin-bottom: 6px;">You're all set! 🎉</h2>
+        <p style="font-size: 0.9rem; color: #475569; margin-bottom: 22px; line-height: 1.6;">
+          New matching rentals will be sent directly to your WhatsApp as soon as they're listed. You'll never miss a good house again!
+        </p>
+
+        <!-- Subscription Summary Card -->
+        <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid #86efac; border-radius: 14px; padding: 18px; text-align: left; margin-bottom: 20px;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #166534; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;">
+            <i class="fas fa-bell" style="color: #25d366;"></i> Your Active Alert Preferences
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #bbf7d0;">
+              <span style="color: #6b7280;"><i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Number</span>
+              <strong style="color: #0f172a;" id="wa-success-phone">—</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #bbf7d0;">
+              <span style="color: #6b7280;"><i class="fas fa-home" style="color: #25d366;"></i> House Category</span>
+              <strong style="color: #0f172a;" id="wa-success-category">—</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #bbf7d0;">
+              <span style="color: #6b7280;"><i class="fas fa-map-marker-alt" style="color: #25d366;"></i> Preferred Estate</span>
+              <strong style="color: #0f172a;" id="wa-success-estate">—</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #bbf7d0;">
+              <span style="color: #6b7280;"><i class="fas fa-wallet" style="color: #25d366;"></i> Budget Range</span>
+              <strong style="color: #0f172a;" id="wa-success-budget">—</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Receipt -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 20px; font-size: 0.82rem; color: #475569;">
+          <i class="fas fa-receipt" style="color: #00b53f;"></i>
+          M-Pesa Receipt: <strong style="font-family: monospace; font-size: 0.9rem; color: #166534;" id="wa-success-receipt">—</strong>
+          &nbsp;·&nbsp; <strong>KSh 100</strong> / month
+        </div>
+
+        <!-- Simulated WhatsApp preview -->
+        <div style="background: #e5ddd5; border-radius: 12px; padding: 14px; margin-bottom: 20px; text-align: left;">
+          <div style="font-size: 0.72rem; font-weight: 700; color: #075e54; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+            <i class="fab fa-whatsapp"></i> Preview: How alerts will look on WhatsApp
+          </div>
+          <div style="background: #dcf8c6; border-radius: 10px 10px 10px 0; padding: 10px 14px; font-size: 0.82rem; line-height: 1.6; color: #0f172a; max-width: 85%; box-shadow: 0 1px 2px rgba(0,0,0,0.15);">
+            🏠 <strong>New Match Found!</strong><br>
+            <span style="color: #075e54; font-weight: 700;">2 Bedroom · Kilimani</span><br>
+            KSh 28,000/mo · Available Now<br>
+            📍 Kirichwa Rd, Kilimani<br>
+            <a href="#" style="color: #0b5cad; font-weight: 700; text-decoration: none;">View &amp; Contact Landlord →</a>
+            <div style="font-size: 0.68rem; color: #8696a0; text-align: right; margin-top: 4px;">KejaMarket.co.ke ✓✓</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-secondary" style="flex: 1; font-weight: 700;" onclick="app.closeModal('modal-whatsapp-success')">
+            <i class="fas fa-check"></i> Done
+          </button>
+          <button class="btn-primary" style="flex: 1; font-weight: 700; background: #25d366; border: none; cursor: pointer;"
+            onclick="app.closeModal('modal-whatsapp-success'); setTimeout(() => app.openModal('modal-whatsapp-alerts'), 200);">
+            <i class="fas fa-edit"></i> Edit Preferences
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes wa-pulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(37,211,102,0.4); transform: scale(1); }
+      50% { box-shadow: 0 12px 32px rgba(37,211,102,0.7); transform: scale(1.06); }
+    }
+  </style>
+
+  <!-- ====================================================================
        MODAL 8: WhatsApp Tenant Alerts Subscription
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-whatsapp-alerts">

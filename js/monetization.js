@@ -26,8 +26,21 @@ class MonetizationEngine {
     this.setupAffiliateLeadForms();
   }
 
+  // Item Descriptions Helper
+  getItemDescription(itemType) {
+    const descs = {
+      whatsapp_alerts: 'Instant WhatsApp notifications as soon as matching rentals are listed.',
+      listing_boost: 'Boost this rental listing to top search placement for 7 days.',
+      top_ad_3: 'Top Ad placement for 3 days across all relevant searches.',
+      top_ad_7: 'Top Ad placement for 7 days across all relevant searches.',
+      top_ad_30: 'Top Ad placement for 30 days across all relevant searches.',
+      verified_badge: 'Verified Landlord green trust badge on profile & listings.'
+    };
+    return descs[itemType] || 'Direct Lipa Na M-Pesa transaction.';
+  }
+
   // Open Checkout for a Specific Item
-  openMpesaCheckout(itemType, itemName, amountKes, targetPropertyId = null, prefillPhone = null) {
+  openMpesaCheckout(itemType, itemName, amountKes, targetPropertyId = null, prefillPhone = null, autoTrigger = false) {
     this.currentPendingOrder = {
       itemType,
       itemName,
@@ -40,16 +53,12 @@ class MonetizationEngine {
     // Pre-fill phone if provided or if user is logged in
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     const phoneInput = document.getElementById('mpesa-phone-number');
-    if (phoneInput) {
-      if (prefillPhone) {
-        let clean = prefillPhone.replace(/\D/g, '');
-        if (clean.startsWith('254')) clean = '0' + clean.slice(3);
-        phoneInput.value = clean;
-      } else if (session && session.phone) {
-        let clean = session.phone.replace(/\D/g, '');
-        if (clean.startsWith('254')) clean = '0' + clean.slice(3);
-        phoneInput.value = clean;
-      }
+    let phoneToUse = prefillPhone || (session && session.phone) || '';
+    if (phoneInput && phoneToUse) {
+      let clean = phoneToUse.replace(/\D/g, '');
+      if (clean.startsWith('254')) clean = clean.slice(3);
+      if (clean.startsWith('0')) clean = clean.slice(1);
+      phoneInput.value = clean;
     }
 
     // Update Checkout UI
@@ -69,6 +78,13 @@ class MonetizationEngine {
 
     if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal('modal-mpesa-checkout');
+    }
+
+    // Auto-trigger STK push directly so user gets real prompt immediately
+    if (autoTrigger && phoneToUse) {
+      setTimeout(() => {
+        this.triggerStkPush();
+      }, 300);
     }
   }
 
@@ -178,77 +194,87 @@ class MonetizationEngine {
     }
   }
 
+  async triggerStkPush() {
+    const phoneInput = document.getElementById('mpesa-phone-number');
+    let rawPhone = phoneInput ? phoneInput.value.trim() : '';
+
+    if (!rawPhone || rawPhone.replace(/\D/g, '').length < 9) {
+      if (window.app) window.app.showToast('Please enter a valid Safaricom phone number (e.g. 0712345678)', 'info');
+      return;
+    }
+
+    // Format phone to 254...
+    let cleanPhone = rawPhone.replace(/\D/g, '');
+    if (cleanPhone.startsWith('0')) cleanPhone = '254' + cleanPhone.slice(1);
+    if (!cleanPhone.startsWith('254')) cleanPhone = '254' + cleanPhone;
+
+    if (!this.currentPendingOrder) {
+      if (window.app) window.app.showToast('No active item selected for checkout.', 'error');
+      return;
+    }
+
+    const form = document.getElementById('form-mpesa-stk-trigger');
+    const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+    const originalText = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Contacting Safaricom...';
+    }
+
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (window.kejaAuth && window.kejaAuth.getToken()) {
+        headers['Authorization'] = `Bearer ${window.kejaAuth.getToken()}`;
+      }
+
+      const res = await fetch('/api/mpesa/stk-push', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          phone: cleanPhone,
+          amount: this.currentPendingOrder.amountKes,
+          itemType: this.currentPendingOrder.itemType,
+          itemName: this.currentPendingOrder.itemName,
+          targetPropertyId: this.currentPendingOrder.targetPropertyId
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.hasDaraja && data.checkoutRequestId) {
+        this.currentCheckoutRequestId = data.checkoutRequestId;
+        // Show STK Prompt screen with real timer & spinner
+        this.showStkScreen(cleanPhone);
+        if (window.app) window.app.showToast('📲 Real Safaricom STK prompt sent! Enter your PIN on your phone.', 'success');
+        
+        // Start polling for real payment confirmation from Safaricom
+        this.startStatusPolling(data.checkoutRequestId);
+      } else if (data.requiresPaybill || !data.hasDaraja) {
+        // Live keys not yet configured: switch to Paybill 303030 immediately
+        this.switchCheckoutTab('paybill');
+        if (window.app) window.app.showToast('ℹ️ Complete payment via Paybill 303030 and enter receipt code below to confirm.', 'info');
+      } else {
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Payment initiation failed'}`, 'error');
+        this.resetCheckout();
+      }
+    } catch (err) {
+      console.error('STK Push error:', err);
+      if (window.app) window.app.showToast('❌ Could not reach payment server. Please check connection.', 'error');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    }
+  }
+
   setupMpesaForm() {
     const form = document.getElementById('form-mpesa-stk-trigger');
     if (!form) return;
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const phoneInput = document.getElementById('mpesa-phone-number');
-      const rawPhone = phoneInput ? phoneInput.value.trim() : '';
-
-      if (!rawPhone || rawPhone.replace(/\D/g, '').length < 9) {
-        if (window.app) window.app.showToast('Please enter a valid Safaricom phone number (e.g. 0712345678)', 'info');
-        return;
-      }
-
-      if (!this.currentPendingOrder) {
-        if (window.app) window.app.showToast('No active item selected for checkout.', 'error');
-        return;
-      }
-
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const originalText = submitBtn ? submitBtn.innerHTML : '';
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Contacting Safaricom...';
-      }
-
-      try {
-        const headers = { 'Content-Type': 'application/json' };
-        if (window.kejaAuth && window.kejaAuth.getToken()) {
-          headers['Authorization'] = `Bearer ${window.kejaAuth.getToken()}`;
-        }
-
-        const res = await fetch('/api/mpesa/stk-push', {
-          method: 'POST',
-          headers,
-          body: JSON.stringify({
-            phone: rawPhone,
-            amount: this.currentPendingOrder.amountKes,
-            itemType: this.currentPendingOrder.itemType,
-            itemName: this.currentPendingOrder.itemName,
-            targetPropertyId: this.currentPendingOrder.targetPropertyId
-          })
-        });
-
-        const data = await res.json();
-
-        if (data.success && data.hasDaraja && data.checkoutRequestId) {
-          this.currentCheckoutRequestId = data.checkoutRequestId;
-          // Show STK Prompt screen
-          this.showStkScreen(rawPhone);
-          if (window.app) window.app.showToast('📲 Real Safaricom STK prompt sent! Enter your PIN on your phone.', 'success');
-          
-          // Start polling for real payment confirmation from Safaricom
-          this.startStatusPolling(data.checkoutRequestId);
-        } else if (data.requiresPaybill || !data.hasDaraja) {
-          // Live keys not yet configured: switch to Paybill 303030 immediately
-          this.switchCheckoutTab('paybill');
-          if (window.app) window.app.showToast('ℹ️ Live Daraja keys needed for phone prompt. Pay via Paybill 303030 and enter code below.', 'info');
-        } else {
-          if (window.app) window.app.showToast(`❌ ${data.message || 'Payment initiation failed'}`, 'error');
-          this.resetCheckout();
-        }
-      } catch (err) {
-        console.error('STK Push error:', err);
-        if (window.app) window.app.showToast('❌ Could not reach payment server. Please check connection.', 'error');
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
-        }
-      }
+      this.triggerStkPush();
     });
   }
 
@@ -446,6 +472,38 @@ class MonetizationEngine {
 
     this.playSuccessChime();
 
+    // ── WhatsApp Alerts: show a dedicated WhatsApp activation success screen ──
+    if (order.itemType === 'whatsapp_alerts') {
+      const prefs = this._pendingWhatsAppPrefs || {};
+      const phone = prefs.phone || document.getElementById('mpesa-phone-number')?.value || '07xxxxxxxx';
+      const estate = prefs.estate || 'Any Estate';
+      const category = prefs.category || 'All Categories';
+      const budgetLabel = prefs.budgetLabel || 'Any Budget';
+
+      // Close M-Pesa modal and open WhatsApp success modal
+      if (window.app) window.app.closeModal('modal-mpesa-checkout');
+
+      // Populate and show the WhatsApp success modal
+      const waPhone = document.getElementById('wa-success-phone');
+      const waEstate = document.getElementById('wa-success-estate');
+      const waCat = document.getElementById('wa-success-category');
+      const waBudget = document.getElementById('wa-success-budget');
+      const waReceipt = document.getElementById('wa-success-receipt');
+      if (waPhone) waPhone.textContent = phone;
+      if (waEstate) waEstate.textContent = estate;
+      if (waCat) waCat.textContent = category;
+      if (waBudget) waBudget.textContent = budgetLabel + '/mo';
+      if (waReceipt) waReceipt.textContent = receiptCode;
+
+      setTimeout(() => {
+        if (window.app) window.app.openModal('modal-whatsapp-success');
+      }, 300);
+
+      if (window.app) window.app.showToast('🎉 WhatsApp Alerts Activated! First alert coming shortly.', 'success', 6000);
+      this._pendingWhatsAppPrefs = null;
+      return;
+    }
+
     const stepStk = document.getElementById('mpesa-step-stk');
     const stepSuccess = document.getElementById('mpesa-step-success');
     const receiptEl = document.getElementById('mpesa-success-receipt');
@@ -520,6 +578,7 @@ class MonetizationEngine {
       const catEl = document.getElementById('alert-tenant-category');
       const minEl = document.getElementById('alert-tenant-budget-min');
       const maxEl = document.getElementById('alert-tenant-budget-max');
+      const submitBtn = alertForm.querySelector('button[type="submit"]');
 
       const phone = phoneEl ? phoneEl.value.trim() : '';
       const estate = estateEl ? estateEl.value : 'Any Estate';
@@ -527,12 +586,32 @@ class MonetizationEngine {
       const budgetMin = minEl ? minEl.value.trim() : '';
       const budgetMax = maxEl ? maxEl.value.trim() : '';
 
+      // Validate phone number
+      if (!phone) {
+        if (window.app) window.app.showToast('⚠️ Please enter your WhatsApp phone number.', 'error');
+        if (phoneEl) phoneEl.focus();
+        return;
+      }
+      const cleanCheck = phone.replace(/\D/g, '');
+      if (cleanCheck.length < 9) {
+        if (window.app) window.app.showToast('⚠️ Please enter a valid Kenyan phone number (e.g. 0712345678).', 'error');
+        if (phoneEl) phoneEl.focus();
+        return;
+      }
+
       if (budgetMin && budgetMax && Number(budgetMax) < Number(budgetMin)) {
         if (window.app) window.app.showToast('Max budget must be greater than Min budget.', 'info');
         return;
       }
 
-      // Save alert to backend
+      // Show loading state on button
+      const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Setting up...';
+      }
+
+      // Save alert preferences to backend
       try {
         await fetch('/api/alerts/whatsapp', {
           method: 'POST',
@@ -541,6 +620,12 @@ class MonetizationEngine {
         });
       } catch (err) {
         console.warn('Could not sync alert to backend:', err);
+      }
+
+      // Restore button
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
       }
 
       let budgetLabel = 'Any Budget';
@@ -552,8 +637,20 @@ class MonetizationEngine {
         budgetLabel = `Up to KSh ${Number(budgetMax).toLocaleString()}`;
       }
 
+      // Store alert prefs so success screen can show them
+      this._pendingWhatsAppPrefs = { phone, estate, category, budgetMin, budgetMax, budgetLabel };
+
+      // Close alerts modal and open M-Pesa checkout
       if (window.app) window.app.closeModal('modal-whatsapp-alerts');
-      this.openMpesaCheckout('whatsapp_alerts', `WhatsApp Alerts (${category} · ${estate} · ${budgetLabel}/mo)`, 100, null, phone);
+      setTimeout(() => {
+        this.openMpesaCheckout(
+          'whatsapp_alerts',
+          `WhatsApp Alerts (${category} · ${estate} · ${budgetLabel}/mo)`,
+          100,
+          null,
+          phone
+        );
+      }, 200);
     });
   }
 
