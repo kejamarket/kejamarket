@@ -5,7 +5,7 @@
       "name": "KejaMarket Admin",
       "phone": "0700000000",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$29PQNcL2JndI4wy8Ty0vFuDpERyOVKNHppEV5ZhwpG/WzzJgo6DUq",
+      "password": "$2b$10$3PA4q42Gvz2J4PIs/ldhxOLGI2FscBSNzGqtHE8v/r4Na3eTZkNjO",
       "role": "admin",
       "isVerified": true,
       "numProperties": "10+",
@@ -80,6 +80,24 @@
       "registrationNo": "",
       "coverageArea": "Westlands, Parklands, Kilimani",
       "createdAt": "2026-09-09T10:45:14.099Z"
+    },
+    {
+      "id": "usr-1788963921284-100",
+      "name": "Brian Kariuki",
+      "phone": "254750596770",
+      "email": null,
+      "password": "$2b$10$ksXmubPVhSU88JJGHpcSpOVkvwJHagD6vTCmDLsU6RBgdXE7Uc8jm",
+      "role": "landlord",
+      "isPhoneVerified": true,
+      "isVerified": false,
+      "numProperties": "1",
+      "area": "Ruaka",
+      "agencyName": null,
+      "contactPerson": null,
+      "officeLocation": null,
+      "registrationNo": null,
+      "coverageArea": null,
+      "createdAt": "2026-09-09T14:25:21.284Z"
     }
   ],
   "properties": [

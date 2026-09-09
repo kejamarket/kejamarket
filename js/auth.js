@@ -202,11 +202,11 @@ const kejaAuth = (() => {
     const originalText = submitBtn ? submitBtn.innerHTML : '';
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending SMS OTP...';
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
     }
 
     try {
-      const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
+      const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -220,18 +220,20 @@ const kejaAuth = (() => {
 
       const data = await res.json();
 
-      if (data.success && data.phone) {
-        pendingPhone = data.phone;
-        pendingFlow = 'signup';
-        showOtpPanel(data.phone, 'signup');
+      if (data.success && data.user && data.token) {
+        saveSession(data.user, data.token);
+        updateHeaderUI(data.user);
+        showLoggedInPanel(data.user);
         if (window.app) {
-          window.app.showToast(`📲 4-digit code sent via SMS to +${data.phone}!`, 'success');
+          window.app.closeModal('modal-auth');
+          window.app.showToast(`🎉 Welcome to KejaMarket, ${data.user.name}!`, 'success');
         }
+        handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to send verification code.'}`, 'error');
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Registration failed.'}`, 'error');
       }
     } catch (err) {
-      console.error('Sign up send-otp error:', err);
+      console.error('Sign up error:', err);
       if (window.app) {
         window.app.showToast('❌ Unable to reach server. Please try again.', 'error');
       }
