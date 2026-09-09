@@ -125,8 +125,65 @@
     </button>
   </div>
 
+  <!-- =====================================================================
+       SIGN-IN WALL: Blocks all content until user is authenticated
+       ===================================================================== -->
+  <div id="signin-wall" style="
+    position: fixed; inset: 0; z-index: 1500;
+    background: linear-gradient(160deg, #0f172a 0%, #064e3b 60%, #0f172a 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px; text-align: center;
+  ">
+    <div style="max-width: 420px; width: 100%;">
+      <!-- Logo -->
+      <div style="margin-bottom: 24px;">
+        <div style="display: inline-flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <div style="width: 44px; height: 44px; background: #00b53f; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-home" style="font-size: 1.4rem; color: white;"></i>
+          </div>
+          <span style="font-size: 1.6rem; font-weight: 900; color: white; letter-spacing: -0.5px;">Keja<span style="color: #4ade80;">Market</span></span>
+        </div>
+        <div style="font-size: 0.85rem; color: #94a3b8; font-weight: 500;">Kenya's #1 Real Estate Marketplace</div>
+      </div>
+
+      <!-- Card -->
+      <div style="background: white; border-radius: 18px; padding: 32px 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.4);">
+        <div style="width: 56px; height: 56px; background: #f0fdf4; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+          <i class="fas fa-lock" style="font-size: 1.5rem; color: #00b53f;"></i>
+        </div>
+        <h2 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">Sign In to Browse Listings</h2>
+        <p style="font-size: 0.875rem; color: #64748b; line-height: 1.55; margin-bottom: 20px;">
+          Create a <strong>100% free account</strong> to view verified rentals, photos, GPS locations, landlord contacts and more — No SMS needed.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button onclick="kejaAuth.openAuthModal(); kejaAuth.switchTab('signin');"
+            style="width: 100%; padding: 13px; background: #00b53f; color: white; font-size: 1rem; font-weight: 800; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s;">
+            <i class="fas fa-sign-in-alt"></i> Sign In to My Account
+          </button>
+          <button onclick="kejaAuth.openAuthModal(); kejaAuth.switchTab('signup');"
+            style="width: 100%; padding: 13px; background: #f8fafc; color: #0f172a; font-size: 0.95rem; font-weight: 700; border: 2px solid #e2e8f0; border-radius: 10px; cursor: pointer;">
+            <i class="fas fa-user-plus"></i> Create Free Account
+          </button>
+          <button onclick="kejaAuth.demoSignIn('tenant')" 
+            style="width: 100%; padding: 11px; background: #ecfdf5; color: #065f46; font-size: 0.88rem; font-weight: 700; border: 1.5px dashed #059669; border-radius: 10px; cursor: pointer; transition: all 0.2s; margin-top: 4px;">
+            <i class="fas fa-bolt" style="color: #059669;"></i> 1-Click Instant Demo Login (Tenant)
+          </button>
+        </div>
+
+        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+          <div style="display: flex; justify-content: center; gap: 24px; font-size: 0.78rem; color: #94a3b8; font-weight: 600;">
+            <span><i class="fas fa-shield-alt" style="color: #00b53f;"></i> 100% Free</span>
+            <span><i class="fas fa-bolt" style="color: #f59e0b;"></i> Instant Access</span>
+            <span><i class="fas fa-ban" style="color: #ef4444;"></i> No SMS Needed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main Application Layout -->
-  <main class="main-app-layout">
+  <main class="main-app-layout" id="main-app-layout" style="display:none;">
 
     <!-- Left Sidebar: Filters + Category List -->
     <aside class="sidebar-filters" id="sidebar-filters" aria-label="Rental Filters">
@@ -1019,33 +1076,96 @@
   </div>
 
   <!-- ====================================================================
-       MODAL 7: M-Pesa STK Push Checkout
+       MODAL 7: M-Pesa STK Push & Lipa Na M-Pesa Checkout
        ==================================================================== -->
-  <div class="modal-backdrop" id="modal-mpesa-checkout">
-    <div class="modal-dialog" style="max-width: 480px;">
-      <div class="modal-header" style="background: linear-gradient(135deg, #4caf50, #00b53f);">
-        <h3 style="color: white;"><i class="fas fa-mobile-alt"></i> Lipa Na M-Pesa Checkout</h3>
+  <div class="modal-backdrop" id="modal-mpesa-checkout" style="z-index: 2600;">
+    <div class="modal-dialog" style="max-width: 490px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #059669, #00b53f);">
+        <h3 style="color: white; font-size: 1.15rem; font-weight: 800;"><i class="fas fa-mobile-alt"></i> Lipa Na M-Pesa Checkout</h3>
         <button class="modal-close-btn" onclick="app.closeModal('modal-mpesa-checkout')" style="color: white;">&times;</button>
       </div>
-      <div class="modal-body" style="padding: 24px;">
+      <div class="modal-body" style="padding: 20px 24px;">
         <!-- Order Summary -->
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 20px; text-align: center;">
-          <div style="font-size: 0.82rem; color: #64748b; margin-bottom: 4px;">You are paying for</div>
-          <div style="font-weight: 800; font-size: 1.1rem; color: #0f172a;" id="mpesa-checkout-item-title">-</div>
-          <div style="font-size: 2rem; font-weight: 800; color: #00b53f; margin: 8px 0;" id="mpesa-checkout-amount-badge">KSh 0</div>
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 14px; margin-bottom: 16px; text-align: center;">
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 2px;">You are paying for</div>
+          <div style="font-weight: 800; font-size: 1.12rem; color: #0f172a;" id="mpesa-checkout-item-title">-</div>
+          <div style="font-size: 1.85rem; font-weight: 900; color: #00b53f; margin: 4px 0;" id="mpesa-checkout-amount-badge">KSh 0</div>
           <div style="font-size: 0.8rem; color: #64748b;" id="mpesa-checkout-desc">-</div>
         </div>
 
-        <!-- Step 1: Phone Input -->
-        <div id="mpesa-step-input">
+        <!-- Payment Method Tabs -->
+        <div style="display: flex; gap: 8px; margin-bottom: 16px; background: #f1f5f9; padding: 4px; border-radius: 10px;">
+          <button type="button" id="tab-btn-mpesa-stk" onclick="monetization.switchCheckoutTab('stk')"
+            style="flex: 1; padding: 9px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; background: white; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.2s;">
+            <i class="fas fa-mobile-alt" style="color: #00b53f;"></i> STK Push (PIN Prompt)
+          </button>
+          <button type="button" id="tab-btn-mpesa-paybill" onclick="monetization.switchCheckoutTab('paybill')"
+            style="flex: 1; padding: 9px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; background: transparent; color: #64748b; transition: all 0.2s;">
+            <i class="fas fa-university" style="color: #4f46e5;"></i> Paybill 303030
+          </button>
+        </div>
+
+        <!-- TAB 1: STK Push Prompt -->
+        <div id="mpesa-tab-stk">
           <form id="form-mpesa-stk-trigger">
-            <div class="form-group">
-              <label style="font-weight: 700; font-size: 0.9rem;">Safaricom M-Pesa Number</label>
-              <input type="tel" id="mpesa-phone-number" class="form-control" placeholder="e.g. 0712345678" required style="font-size: 1.1rem; text-align: center; letter-spacing: 2px; font-weight: 700;">
-              <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">An STK Push will be sent to your phone. Enter your M-Pesa PIN to confirm.</div>
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label style="font-weight: 700; font-size: 0.88rem; color: #1e293b; display: block; margin-bottom: 6px;">Safaricom M-Pesa Phone Number</label>
+              <div style="position: relative;">
+                <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #64748b; font-size: 0.95rem;">🇰🇪 +254</span>
+                <input type="tel" id="mpesa-phone-number" class="form-control" placeholder="712345678" required
+                  style="font-size: 1.1rem; padding-left: 80px; letter-spacing: 1px; font-weight: 700; height: 48px; border: 2px solid #cbd5e1; border-radius: 10px; width: 100%;">
+              </div>
+              <div style="font-size: 0.75rem; color: #64748b; margin-top: 6px;">
+                <i class="fas fa-shield-alt" style="color: #00b53f;"></i> Real Safaricom Daraja integration sends an instant PIN prompt to your handset.
+              </div>
             </div>
-            <button type="submit" class="btn-primary" style="width: 100%; font-size: 1rem; padding: 14px; font-weight: 800; background: #00b53f; border: none; cursor: pointer;">
-              <i class="fas fa-paper-plane"></i> Send STK Push to My Phone
+            <button type="submit" class="btn-primary" style="width: 100%; font-size: 1rem; padding: 13px; font-weight: 800; background: #00b53f; border: none; border-radius: 10px; cursor: pointer;">
+              <i class="fas fa-paper-plane"></i> Send STK Prompt to Phone
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 2: Direct Lipa na M-Pesa Paybill -->
+        <div id="mpesa-tab-paybill" style="display: none;">
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+            <div style="font-size: 0.8rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
+              <i class="fas fa-list-ol" style="color: #00b53f;"></i> Follow these quick steps on your phone:
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="color: #64748b;">1. Paybill (Business No):</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="font-size: 1rem; color: #0f172a;">303030</strong>
+                  <button type="button" onclick="monetization.copyText('303030', 'Paybill Number')" style="padding: 3px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.72rem; cursor: pointer; font-weight: 700;">Copy</button>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="color: #64748b;">2. Account Number:</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="font-size: 1rem; color: #0f172a;" id="paybill-account-badge">2057103992</strong>
+                  <button type="button" onclick="monetization.copyText('2057103992', 'Account Number')" style="padding: 3px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.72rem; cursor: pointer; font-weight: 700;">Copy</button>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <span style="color: #64748b;">3. Amount to Pay:</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="font-size: 1rem; color: #00b53f;" id="paybill-amount-badge">KSh 0</strong>
+                  <button type="button" onclick="monetization.copyAmount()" style="padding: 3px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.72rem; cursor: pointer; font-weight: 700;">Copy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instant Receipt Verification -->
+          <form id="form-mpesa-receipt-verify" onsubmit="monetization.verifyDirectReceipt(event)">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label style="font-weight: 700; font-size: 0.85rem; color: #1e293b; display: block; margin-bottom: 6px;">Enter M-Pesa SMS Confirmation Code</label>
+              <input type="text" id="mpesa-receipt-code-input" class="form-control" placeholder="e.g. SKL89XYZ12" required
+                style="font-size: 1.1rem; text-align: center; text-transform: uppercase; font-family: monospace; letter-spacing: 2px; font-weight: 800; height: 46px; border: 2px solid #cbd5e1; border-radius: 10px; width: 100%;">
+              <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Found in the SMS Safaricom sends you right after paying.</div>
+            </div>
+            <button type="submit" id="btn-verify-receipt-submit" class="btn-primary" style="width: 100%; font-size: 0.95rem; padding: 13px; font-weight: 800; background: #4f46e5; border: none; border-radius: 10px; cursor: pointer;">
+              <i class="fas fa-check-circle"></i> Verify Code & Activate Immediately
             </button>
           </form>
         </div>
@@ -1084,9 +1204,9 @@
               </div>
             </div>
 
-            <!-- Manual Receipt Entry Option -->
+            <!-- Switch to Direct Receipt Entry -->
             <div style="margin-top: 12px; font-size: 0.78rem; color: #94a3b8;">
-              Already paid? <a href="#" onclick="monetization.promptReceiptCode(); return false;" style="color: #38bdf8; font-weight: 700; text-decoration: underline;">Enter M-Pesa Receipt Code</a>
+              Already paid? <a href="#" onclick="monetization.switchCheckoutTab('paybill'); return false;" style="color: #38bdf8; font-weight: 700; text-decoration: underline;">Enter M-Pesa Receipt Code</a>
             </div>
           </div>
         </div>
@@ -1442,7 +1562,7 @@
   <!-- ====================================================================
        AUTH MODAL: Sign In / Sign Up (Tenant & Landlord)
        ==================================================================== -->
-  <div class="modal-backdrop" id="modal-auth">
+  <div class="modal-backdrop" id="modal-auth" style="z-index: 2500;">
     <div class="modal-dialog" style="max-width:480px;">
 
       <!-- Header tabs -->
@@ -1851,6 +1971,57 @@
             <button class="btn-primary" style="background: #00b53f; border: none; font-weight: 700; cursor: pointer;" onclick="app.openModal('modal-bot-simulator'); app.closeModal('modal-admin-portal');">
               <i class="fas fa-play"></i> Launch Ingestion Engine
             </button>
+          </div>
+
+          <!-- M-Pesa Daraja Settings Card -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-top: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <h4 style="margin: 0; font-size: 1rem; color: #1e293b;"><i class="fas fa-mobile-alt" style="color: #00b53f;"></i> Safaricom M-Pesa Daraja STK Push Configuration</h4>
+              <span id="admin-daraja-status-badge" style="padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; background: #fee2e2; color: #991b1b;">
+                Keys Pending
+              </span>
+            </div>
+            <p style="font-size: 0.84rem; color: #64748b; line-height: 1.5; margin-bottom: 14px;">
+              Configure your credentials from the Safaricom Daraja Developer Portal (<a href="https://developer.safaricom.co.ke" target="_blank" style="color: #00b53f; font-weight: 600;">developer.safaricom.co.ke</a>). These are saved securely to <code>.env</code>.
+            </p>
+            <form id="form-admin-daraja-config" onsubmit="kejaAdmin.saveMpesaConfig(event)">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                <div>
+                  <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 4px;">Consumer Key</label>
+                  <input type="text" id="admin-mpesa-key" class="form-control" placeholder="Paste Consumer Key" style="width: 100%; font-size: 0.85rem;">
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 4px;">Consumer Secret</label>
+                  <input type="password" id="admin-mpesa-secret" class="form-control" placeholder="Paste Consumer Secret" style="width: 100%; font-size: 0.85rem;">
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                <div>
+                  <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 4px;">Daraja Passkey</label>
+                  <input type="password" id="admin-mpesa-passkey" class="form-control" placeholder="Paste Passkey" style="width: 100%; font-size: 0.85rem;">
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 4px;">Paybill / Shortcode</label>
+                  <input type="text" id="admin-mpesa-paybill" class="form-control" value="303030" style="width: 100%; font-size: 0.85rem; font-weight: 700;">
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 4px;">Account Number</label>
+                  <input type="text" id="admin-mpesa-account" class="form-control" value="2057103992" style="width: 100%; font-size: 0.85rem; font-weight: 700;">
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                  <label style="font-size: 0.82rem; font-weight: 700; color: #475569;">Environment:</label>
+                  <select id="admin-mpesa-env" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 0.85rem; font-weight: 600;">
+                    <option value="sandbox">Sandbox (Testing)</option>
+                    <option value="live">Live (Real Safaricom Production)</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn-primary" style="background: #00b53f; border: none; font-weight: 700; padding: 8px 18px; font-size: 0.88rem; cursor: pointer;">
+                  <i class="fas fa-save"></i> Save M-Pesa Settings
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 

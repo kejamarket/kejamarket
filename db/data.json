@@ -5,7 +5,7 @@
       "name": "KejaMarket Admin",
       "phone": "0700000000",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$A8mpQwfgz6u2EC7Md9Qbg.ii7rzOsm7RlEb1/yvSjUtFwhciNrIWS",
+      "password": "$2b$10$TraInumsLUXlA6/vZPtvU.86BsYqRkQHRLVLlhLu0E1USGZUjUJR.",
       "role": "admin",
       "isVerified": true,
       "numProperties": "10+",
@@ -1960,7 +1960,40 @@
       }
     ]
   },
-  "transactions": [],
+  "transactions": [
+    {
+      "id": "tx-1788969704422",
+      "checkoutRequestId": "ws_PAYBILL_SKE89XYZ20_1788969704422",
+      "merchantRequestId": "MR_PAYBILL_1788969704422",
+      "phone": "254712345678",
+      "amount": 500,
+      "itemType": "top_ad_7",
+      "itemName": "Direct M-Pesa Payment",
+      "targetPropertyId": null,
+      "userId": null,
+      "status": "SUCCESS",
+      "mpesaReceipt": "SKE89XYZ20",
+      "resultDesc": "Payment confirmed via M-Pesa receipt verification.",
+      "createdAt": "2026-09-09T16:01:44.422Z",
+      "updatedAt": "2026-09-09T16:01:44.426Z"
+    },
+    {
+      "id": "tx-1788969615162",
+      "checkoutRequestId": "ws_PAYBILL_SKL89XYZ12_1788969615162",
+      "merchantRequestId": "MR_PAYBILL_1788969615162",
+      "phone": "254712345678",
+      "amount": 100,
+      "itemType": "listing_boost",
+      "itemName": "Direct M-Pesa Payment",
+      "targetPropertyId": null,
+      "userId": null,
+      "status": "SUCCESS",
+      "mpesaReceipt": "SKL89XYZ12",
+      "resultDesc": "Payment confirmed via M-Pesa receipt verification.",
+      "createdAt": "2026-09-09T16:00:15.162Z",
+      "updatedAt": "2026-09-09T16:00:15.166Z"
+    }
+  ],
   "alerts": [],
   "leads": [
     {

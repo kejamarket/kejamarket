@@ -48,10 +48,14 @@ class MonetizationEngine {
     const titleEl = document.getElementById('mpesa-checkout-item-title');
     const badgeEl = document.getElementById('mpesa-checkout-amount-badge');
     const descEl = document.getElementById('mpesa-checkout-desc');
+    const paybillAmt = document.getElementById('paybill-amount-badge');
+    const paybillAcct = document.getElementById('paybill-account-badge');
 
     if (titleEl) titleEl.textContent = itemName;
     if (badgeEl) badgeEl.textContent = `KSh ${amountKes.toLocaleString()}`;
     if (descEl) descEl.textContent = this.getItemDescription(itemType);
+    if (paybillAmt) paybillAmt.textContent = `KSh ${amountKes.toLocaleString()}`;
+    if (paybillAcct) paybillAcct.textContent = '2057103992';
 
     this.resetCheckout();
 
@@ -60,22 +64,109 @@ class MonetizationEngine {
     }
   }
 
-  getItemDescription(itemType) {
-    switch (itemType) {
-      case 'top_ad_7':
-        return 'Places your listing at the top of Nairobi search results and highlights price tag in golden orange for 7 days.';
-      case 'top_ad_30':
-        return 'Top pinned ranking for 30 days across all Nairobi categories with 5x tenant inquiries.';
-      case 'verified_badge':
-        return 'Get a blue "VERIFIED LANDLORD" badge on all your listings for 1 year. Tenants trust verified landlords more and inquire faster.';
-      case 'agency_starter':
-        return 'Post up to 5 properties with priority ranking and direct WhatsApp leads.';
-      case 'agency_pro':
-        return 'Post up to 25 properties with auto-refresh and monthly analytics report.';
-      case 'whatsapp_alerts':
-        return 'Instant WhatsApp alerts sent directly to your phone when matching rental houses are posted.';
-      default:
-        return 'Premium platform listing upgrade.';
+  switchCheckoutTab(tab) {
+    const tabStk = document.getElementById('mpesa-tab-stk');
+    const tabPaybill = document.getElementById('mpesa-tab-paybill');
+    const btnStk = document.getElementById('tab-btn-mpesa-stk');
+    const btnPaybill = document.getElementById('tab-btn-mpesa-paybill');
+
+    if (tab === 'paybill') {
+      if (tabStk) tabStk.style.display = 'none';
+      if (tabPaybill) tabPaybill.style.display = 'block';
+      if (btnStk) {
+        btnStk.style.background = 'transparent';
+        btnStk.style.color = '#64748b';
+        btnStk.style.boxShadow = 'none';
+      }
+      if (btnPaybill) {
+        btnPaybill.style.background = 'white';
+        btnPaybill.style.color = '#0f172a';
+        btnPaybill.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+      }
+    } else {
+      if (tabStk) tabStk.style.display = 'block';
+      if (tabPaybill) tabPaybill.style.display = 'none';
+      if (btnStk) {
+        btnStk.style.background = 'white';
+        btnStk.style.color = '#0f172a';
+        btnStk.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+      }
+      if (btnPaybill) {
+        btnPaybill.style.background = 'transparent';
+        btnPaybill.style.color = '#64748b';
+        btnPaybill.style.boxShadow = 'none';
+      }
+    }
+  }
+
+  copyText(text, label) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (window.app) window.app.showToast(`📋 Copied ${label}: ${text}`, 'success');
+      }).catch(() => {
+        if (window.app) window.app.showToast(`Copied: ${text}`, 'info');
+      });
+    } else {
+      if (window.app) window.app.showToast(`Copied ${label}: ${text}`, 'info');
+    }
+  }
+
+  copyAmount() {
+    if (this.currentPendingOrder) {
+      this.copyText(String(this.currentPendingOrder.amountKes), 'Amount');
+    }
+  }
+
+  async verifyDirectReceipt(e) {
+    if (e) e.preventDefault();
+    const input = document.getElementById('mpesa-receipt-code-input');
+    const rawCode = input ? input.value.trim().toUpperCase() : '';
+
+    if (!rawCode || rawCode.length < 5) {
+      if (window.app) window.app.showToast('Please enter a valid M-Pesa receipt code (e.g. SKL89XYZ12).', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-verify-receipt-submit');
+    const originalText = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying Receipt...';
+    }
+
+    try {
+      const payload = {
+        checkoutRequestId: this.currentCheckoutRequestId || null,
+        receiptCode: rawCode,
+        amount: this.currentPendingOrder ? this.currentPendingOrder.amountKes : 100,
+        itemType: this.currentPendingOrder ? this.currentPendingOrder.itemType : 'listing_boost',
+        itemName: this.currentPendingOrder ? this.currentPendingOrder.itemName : 'Direct M-Pesa Payment',
+        targetPropertyId: this.currentPendingOrder ? this.currentPendingOrder.targetPropertyId : null,
+        phone: document.getElementById('mpesa-phone-number')?.value || null
+      };
+
+      const res = await fetch('/api/mpesa/verify-receipt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(window.kejaAuth && window.kejaAuth.getToken() ? { 'Authorization': `Bearer ${window.kejaAuth.getToken()}` } : {})
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        this.completePaymentSuccess(data.receipt || rawCode);
+      } else {
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Receipt verification failed.'}`, 'error');
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('❌ Could not verify receipt with server.', 'error');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
     }
   }
 
@@ -102,7 +193,7 @@ class MonetizationEngine {
       const originalText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending STK Prompt...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Contacting Safaricom...';
       }
 
       try {
@@ -125,22 +216,25 @@ class MonetizationEngine {
 
         const data = await res.json();
 
-        if (data.success && data.checkoutRequestId) {
+        if (data.success && data.hasDaraja && data.checkoutRequestId) {
           this.currentCheckoutRequestId = data.checkoutRequestId;
           // Show STK Prompt screen
           this.showStkScreen(rawPhone);
-          if (window.app) window.app.showToast('📲 M-Pesa prompt sent! Enter your PIN on your phone.', 'success');
+          if (window.app) window.app.showToast('📲 Real Safaricom STK prompt sent! Enter your PIN on your phone.', 'success');
           
-          // Start polling for payment confirmation from Safaricom
+          // Start polling for real payment confirmation from Safaricom
           this.startStatusPolling(data.checkoutRequestId);
+        } else if (data.requiresPaybill || !data.hasDaraja) {
+          // Live keys not yet configured: switch to Paybill 303030 immediately
+          this.switchCheckoutTab('paybill');
+          if (window.app) window.app.showToast('ℹ️ Live Daraja keys needed for phone prompt. Pay via Paybill 303030 and enter code below.', 'info');
         } else {
           if (window.app) window.app.showToast(`❌ ${data.message || 'Payment initiation failed'}`, 'error');
           this.resetCheckout();
         }
       } catch (err) {
         console.error('STK Push error:', err);
-        // Server is unreachable - show error, do NOT simulate success
-        if (window.app) window.app.showToast('❌ Could not reach payment server. Please check your connection and try again.', 'error');
+        if (window.app) window.app.showToast('❌ Could not reach payment server. Please check connection.', 'error');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -155,11 +249,13 @@ class MonetizationEngine {
     if (cleanPhone.startsWith('0')) cleanPhone = '254' + cleanPhone.slice(1);
     if (!cleanPhone.startsWith('254')) cleanPhone = '254' + cleanPhone;
 
-    const stepInput = document.getElementById('mpesa-step-input');
+    const tabStk = document.getElementById('mpesa-tab-stk');
+    const tabPaybill = document.getElementById('mpesa-tab-paybill');
     const stepStk = document.getElementById('mpesa-step-stk');
     const stepSuccess = document.getElementById('mpesa-step-success');
 
-    if (stepInput) stepInput.style.display = 'none';
+    if (tabStk) tabStk.style.display = 'none';
+    if (tabPaybill) tabPaybill.style.display = 'none';
     if (stepStk) stepStk.style.display = 'block';
     if (stepSuccess) stepSuccess.style.display = 'none';
 
@@ -393,13 +489,16 @@ class MonetizationEngine {
 
   resetCheckout() {
     if (this.pollingInterval) clearInterval(this.pollingInterval);
-    const stepInput = document.getElementById('mpesa-step-input');
+    const tabStk = document.getElementById('mpesa-tab-stk');
+    const tabPaybill = document.getElementById('mpesa-tab-paybill');
     const stepStk = document.getElementById('mpesa-step-stk');
     const stepSuccess = document.getElementById('mpesa-step-success');
 
-    if (stepInput) stepInput.style.display = 'block';
+    if (tabStk) tabStk.style.display = 'block';
+    if (tabPaybill) tabPaybill.style.display = 'none';
     if (stepStk) stepStk.style.display = 'none';
     if (stepSuccess) stepSuccess.style.display = 'none';
+    this.switchCheckoutTab('stk');
   }
 
   setupWhatsAppAlertsForm() {

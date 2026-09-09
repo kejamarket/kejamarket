@@ -89,6 +89,7 @@ class AdminPortalEngine {
 
     if (tabName === 'users') this.renderUsers();
     if (tabName === 'listings') this.renderListings();
+    if (tabName === 'system') this.loadMpesaConfig();
   }
 
   async refreshAllData() {
@@ -271,6 +272,78 @@ class AdminPortalEngine {
 
   downloadBackup() {
     window.open('/api/admin/download-db', '_blank');
+  }
+
+  async loadMpesaConfig() {
+    try {
+      const res = await fetch('/api/admin/mpesa-config');
+      if (res.ok) {
+        const data = await res.json();
+        const badge = document.getElementById('admin-daraja-status-badge');
+        const keyInput = document.getElementById('admin-mpesa-key');
+        const paybillInput = document.getElementById('admin-mpesa-paybill');
+        const accountInput = document.getElementById('admin-mpesa-account');
+        const envSelect = document.getElementById('admin-mpesa-env');
+
+        if (badge) {
+          if (data.hasDarajaCredentials) {
+            badge.textContent = `Active (${data.environment.toUpperCase()})`;
+            badge.style.background = '#dcfce7';
+            badge.style.color = '#15803d';
+          } else {
+            badge.textContent = 'Keys Pending';
+            badge.style.background = '#fee2e2';
+            badge.style.color = '#991b1b';
+          }
+        }
+        if (keyInput && data.consumerKeyMasked) keyInput.placeholder = data.consumerKeyMasked;
+        if (paybillInput && data.paybill) paybillInput.value = data.paybill;
+        if (accountInput && data.account) accountInput.value = data.account;
+        if (envSelect && data.environment) envSelect.value = data.environment;
+      }
+    } catch (e) {
+      console.warn('Could not load M-Pesa config:', e);
+    }
+  }
+
+  async saveMpesaConfig(e) {
+    if (e) e.preventDefault();
+    const key = document.getElementById('admin-mpesa-key')?.value.trim();
+    const secret = document.getElementById('admin-mpesa-secret')?.value.trim();
+    const passkey = document.getElementById('admin-mpesa-passkey')?.value.trim();
+    const paybill = document.getElementById('admin-mpesa-paybill')?.value.trim();
+    const account = document.getElementById('admin-mpesa-account')?.value.trim();
+    const env = document.getElementById('admin-mpesa-env')?.value;
+
+    const payload = {};
+    if (key) payload.consumerKey = key;
+    if (secret) payload.consumerSecret = secret;
+    if (passkey) payload.passkey = passkey;
+    if (paybill) payload.paybill = paybill;
+    if (account) payload.account = account;
+    if (env) payload.environment = env;
+
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch('/api/admin/mpesa-config', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) window.app.showToast('✅ Safaricom M-Pesa configuration saved!', 'success');
+        this.loadMpesaConfig();
+      } else {
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to save config'}`, 'error');
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('❌ Server error saving M-Pesa config.', 'error');
+    }
   }
 }
 

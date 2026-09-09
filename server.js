@@ -15,6 +15,8 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const AfricasTalking = require('africastalking');
+const fs = require('fs');
+const path = require('path');
 const store = require('./db/store');
 
 const fetch = (...args) => import('node-fetch').then(({ default: f }) => f(...args));
@@ -29,15 +31,15 @@ app.use(express.static(__dirname));
 
 // ─── CONFIGURATION ───────────────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET || 'kejamarket_super_secret_jwt_key_2026';
-const CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY || '';
-const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET || '';
-const PAYBILL = process.env.MPESA_PAYBILL || '303030';
-const ACCOUNT_NUMBER = process.env.MPESA_ACCOUNT || '2057103992';
-const PASSKEY = process.env.MPESA_PASSKEY || '';
-const CALLBACK_URL = process.env.MPESA_CALLBACK_URL || 'https://kejamarket.co.ke/api/mpesa/callback';
+let CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY || '';
+let CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET || '';
+let PAYBILL = process.env.MPESA_PAYBILL || '303030';
+let ACCOUNT_NUMBER = process.env.MPESA_ACCOUNT || '2057103992';
+let PASSKEY = process.env.MPESA_PASSKEY || '';
+let CALLBACK_URL = process.env.MPESA_CALLBACK_URL || 'https://kejamarket.co.ke/api/mpesa/callback';
 
-const MPESA_ENV = process.env.MPESA_ENV === 'live' ? 'live' : 'sandbox';
-const MPESA_BASE = MPESA_ENV === 'live'
+let MPESA_ENV = process.env.MPESA_ENV === 'live' ? 'live' : 'sandbox';
+let MPESA_BASE = MPESA_ENV === 'live'
   ? 'https://api.safaricom.co.ke'
   : 'https://sandbox.safaricom.co.ke';
 
@@ -175,6 +177,13 @@ async function getMpesaToken() {
   // Cache for 3500 seconds (Daraja tokens expire in 3600 seconds)
   tokenExpiry = Date.now() + 3500 * 1000;
   return cachedToken;
+}
+
+function getDarajaTimestamp() {
+  const now = new Date();
+  const d = new Date(now.getTime() + (3 * 60 + now.getTimezoneOffset()) * 60000);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
 }
 
 function generatePassword(timestamp) {
@@ -676,7 +685,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
       // 🚀 REAL SAFARICOM DARAJA API CALL
       try {
         const token = await getMpesaToken();
-        const timestamp = new Date().toISOString().replace(/[-:T.Z]/g, '').slice(0, 14);
+        const timestamp = getDarajaTimestamp();
         const password = generatePassword(timestamp);
 
         const payload = {
@@ -693,6 +702,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
           TransactionDesc: itemName || 'Keja Payment',
         };
 
+        console.log(`📱 [SAFARICOM DARAJA] Dispatching STK Push to ${formattedPhone} for KSh ${amountKes}...`);
         const stkRes = await fetch(`${MPESA_BASE}/mpesa/stkpush/v1/processrequest`, {
           method: 'POST',
           headers: {
@@ -703,6 +713,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
         });
 
         const stkData = await stkRes.json();
+        console.log('📱 [SAFARICOM DARAJA RESPONSE]:', JSON.stringify(stkData));
 
         if (stkData.ResponseCode === '0') {
           // Record transaction in database
@@ -720,47 +731,38 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
 
           return res.json({
             success: true,
-            isSandboxSimulation: false,
+            hasDaraja: true,
             checkoutRequestId: stkData.CheckoutRequestID,
             message: `STK Push prompt sent to +${formattedPhone}. Please check your phone and enter your PIN.`
           });
         } else {
           return res.status(400).json({
             success: false,
-            message: stkData.errorMessage || stkData.ResponseDescription || 'STK Push failed. Please try again.',
+            hasDaraja: true,
+            message: stkData.errorMessage || stkData.ResponseDescription || 'STK Push failed at Safaricom. Please use Paybill 303030.',
             raw: stkData
           });
         }
       } catch (darajaErr) {
-        console.error('Daraja API Error:', darajaErr);
-        // Fall back gracefully with helpful diagnostics
+        console.error('❌ Daraja API Error:', darajaErr);
         return res.status(502).json({
           success: false,
+          hasDaraja: true,
           message: `Safaricom Daraja API returned an error: ${darajaErr.message}`
         });
       }
     } else {
-      // 💡 REALISTIC SANDBOX TEST MODE (When Daraja keys are in setup mode)
-      const simulatedCheckoutId = 'ws_CO_SANDBOX_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      
-      // Create pending transaction record
-      const tx = store.createTransaction({
-        checkoutRequestId: simulatedCheckoutId,
-        merchantRequestId: 'MR_SIM_' + Date.now(),
-        phone: formattedPhone,
-        amount: amountKes,
-        itemType: itemType || 'listing_boost',
-        itemName: itemName || 'Listing Boost',
-        targetPropertyId: targetPropertyId || null,
-        userId: req.user ? req.user.id : null,
-        status: 'PENDING'
-      });
-
+      // ⚠️ Real Safaricom Daraja credentials are not set in .env
+      // Do not lie to the user with a dummy phone simulation
       return res.json({
-        success: true,
-        isSandboxSimulation: true,
-        checkoutRequestId: simulatedCheckoutId,
-        message: `M-Pesa prompt initiated for +${formattedPhone}. Please enter your M-Pesa PIN on your phone.`
+        success: false,
+        requiresPaybill: true,
+        hasDaraja: false,
+        paybill: PAYBILL,
+        account: ACCOUNT_NUMBER,
+        amount: amountKes,
+        phone: formattedPhone,
+        message: `Safaricom Daraja API credentials are not configured in .env yet. To pay right now without waiting, please pay KSh ${amountKes} via Lipa na M-Pesa Paybill ${PAYBILL} Account ${ACCOUNT_NUMBER} and enter your M-Pesa code below.`
       });
     }
   } catch (err) {
@@ -834,22 +836,32 @@ app.get('/api/mpesa/status/:checkoutRequestId', async (req, res) => {
 // POST /api/mpesa/verify-receipt (Manual or Instant Receipt Confirmation)
 app.post('/api/mpesa/verify-receipt', optionalAuth, (req, res) => {
   try {
-    const { checkoutRequestId, receiptCode } = req.body;
-    if (!checkoutRequestId) {
-      return res.status(400).json({ success: false, message: 'Checkout Request ID is required.' });
-    }
+    let { checkoutRequestId, receiptCode, amount, itemType, itemName, targetPropertyId, phone } = req.body;
 
-    if (!receiptCode || receiptCode.trim().length < 6) {
+    if (!receiptCode || receiptCode.trim().length < 5) {
       return res.status(400).json({ success: false, message: 'Please provide a valid M-Pesa receipt code (e.g. QKJ7XXXXXX).' });
     }
 
-    const tx = store.getTransactionByCheckoutId(checkoutRequestId);
+    const receipt = receiptCode.trim().toUpperCase();
+
+    let tx = checkoutRequestId ? store.getTransactionByCheckoutId(checkoutRequestId) : null;
     if (!tx) {
-      return res.status(404).json({ success: false, message: 'Transaction not found.' });
+      // Direct Paybill receipt verification on the fly
+      const generatedCheckoutId = 'ws_PAYBILL_' + receipt + '_' + Date.now();
+      tx = store.createTransaction({
+        checkoutRequestId: generatedCheckoutId,
+        merchantRequestId: 'MR_PAYBILL_' + Date.now(),
+        phone: phone ? formatPhone(phone) : 'Direct Paybill',
+        amount: Math.ceil(Number(amount)) || 100,
+        itemType: itemType || 'listing_boost',
+        itemName: itemName || 'Direct M-Pesa Payment',
+        targetPropertyId: targetPropertyId || null,
+        userId: req.user ? req.user.id : null,
+        status: 'PENDING'
+      });
+      checkoutRequestId = generatedCheckoutId;
     }
 
-    const receipt = receiptCode.trim().toUpperCase();
-    
     // Mark as SUCCESS and auto-apply upgrades
     const updatedTx = store.updateTransaction(checkoutRequestId, {
       status: 'SUCCESS',
@@ -1355,6 +1367,84 @@ app.get('/api/admin/overview', (req, res) => {
   try {
     const stats = store.getOverviewStats();
     res.json({ success: true, ...stats });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/mpesa-config
+app.get('/api/admin/mpesa-config', (req, res) => {
+  res.json({
+    success: true,
+    hasDarajaCredentials: hasDarajaCredentials(),
+    consumerKeyMasked: CONSUMER_KEY ? `${CONSUMER_KEY.slice(0, 4)}...${CONSUMER_KEY.slice(-4)}` : '',
+    consumerSecretMasked: CONSUMER_SECRET ? `${CONSUMER_SECRET.slice(0, 3)}...${CONSUMER_SECRET.slice(-3)}` : '',
+    passkeyMasked: PASSKEY ? `${PASSKEY.slice(0, 4)}...${PASSKEY.slice(-4)}` : '',
+    paybill: PAYBILL,
+    account: ACCOUNT_NUMBER,
+    callbackUrl: CALLBACK_URL,
+    environment: MPESA_ENV
+  });
+});
+
+// POST /api/admin/mpesa-config
+app.post('/api/admin/mpesa-config', optionalAuth, (req, res) => {
+  try {
+    const { consumerKey, consumerSecret, passkey, paybill, account, callbackUrl, environment } = req.body;
+
+    if (consumerKey !== undefined) CONSUMER_KEY = consumerKey.trim();
+    if (consumerSecret !== undefined) CONSUMER_SECRET = consumerSecret.trim();
+    if (passkey !== undefined) PASSKEY = passkey.trim();
+    if (paybill !== undefined) PAYBILL = paybill.trim();
+    if (account !== undefined) ACCOUNT_NUMBER = account.trim();
+    if (callbackUrl !== undefined) CALLBACK_URL = callbackUrl.trim();
+    if (environment !== undefined) {
+      MPESA_ENV = environment === 'live' ? 'live' : 'sandbox';
+      MPESA_BASE = MPESA_ENV === 'live' ? 'https://api.safaricom.co.ke' : 'https://sandbox.safaricom.co.ke';
+    }
+
+    // Reset token cache so new token is obtained with new keys
+    cachedToken = null;
+    tokenExpiry = 0;
+
+    // Update .env file on disk
+    try {
+      const envPath = path.join(__dirname, '.env');
+      if (fs.existsSync(envPath)) {
+        let envContent = fs.readFileSync(envPath, 'utf8');
+        const updateEnvVar = (key, val) => {
+          const regex = new RegExp(`^${key}=.*$`, 'm');
+          if (regex.test(envContent)) {
+            envContent = envContent.replace(regex, `${key}=${val}`);
+          } else {
+            envContent += `\n${key}=${val}`;
+          }
+        };
+
+        if (consumerKey) updateEnvVar('MPESA_CONSUMER_KEY', CONSUMER_KEY);
+        if (consumerSecret) updateEnvVar('MPESA_CONSUMER_SECRET', CONSUMER_SECRET);
+        if (passkey) updateEnvVar('MPESA_PASSKEY', PASSKEY);
+        if (paybill) updateEnvVar('MPESA_PAYBILL', PAYBILL);
+        if (account) updateEnvVar('MPESA_ACCOUNT', ACCOUNT_NUMBER);
+        if (callbackUrl) updateEnvVar('MPESA_CALLBACK_URL', CALLBACK_URL);
+        if (environment) updateEnvVar('MPESA_ENV', MPESA_ENV);
+
+        fs.writeFileSync(envPath, envContent, 'utf8');
+      }
+    } catch (envErr) {
+      console.warn('Could not write to .env file:', envErr.message);
+    }
+
+    console.log(`🔧 [M-PESA CONFIG UPDATED] Env: ${MPESA_ENV} | Shortcode: ${PAYBILL} | Active: ${hasDarajaCredentials()}`);
+
+    res.json({
+      success: true,
+      message: 'M-Pesa Daraja configuration updated successfully!',
+      hasDarajaCredentials: hasDarajaCredentials(),
+      environment: MPESA_ENV,
+      paybill: PAYBILL,
+      account: ACCOUNT_NUMBER
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -37,11 +37,13 @@ const kejaAuth = (() => {
   function saveSession(user, token) {
     if (token) localStorage.setItem('keja_token', token);
     if (user) localStorage.setItem('keja_session', JSON.stringify(user));
+    if (typeof applyAuthWall === 'function') applyAuthWall(user);
   }
 
   function clearSession() {
     localStorage.removeItem('keja_token');
     localStorage.removeItem('keja_session');
+    if (typeof applyAuthWall === 'function') applyAuthWall(null);
   }
 
   function getAuthHeaders() {
@@ -610,6 +612,7 @@ const kejaAuth = (() => {
      HEADER UI UPDATE & ROLE SEPARATION
   ───────────────────────────────────────── */
   function updateHeaderUI(session) {
+    applyAuthWall(session);
     const label = document.getElementById('auth-header-label');
     const btn = document.getElementById('btn-auth-header');
     const mobileLabel = document.getElementById('mobile-nav-user-label');
@@ -757,8 +760,13 @@ const kejaAuth = (() => {
   let pendingTenantAuthCallback = null;
 
   function handleAuthSuccess(user) {
+    applyAuthWall(user);
+    updateHeaderUI(user);
     if (window.app && typeof window.app.closeModal === 'function') {
       window.app.closeModal('modal-auth');
+    }
+    if (window.app && typeof window.app.applyFilters === 'function') {
+      window.app.applyFilters();
     }
     if (typeof pendingTenantAuthCallback === 'function') {
       const cb = pendingTenantAuthCallback;
@@ -783,8 +791,57 @@ const kejaAuth = (() => {
     return false;
   }
 
+  // Controls the sign-in wall overlay visibility
+  function applyAuthWall(session) {
+    const wall = document.getElementById('signin-wall');
+    const mainLayout = document.getElementById('main-app-layout');
+    const mobilePills = document.querySelector('.category-pills-bar');
+    const mobileFilter = document.querySelector('.mobile-filter-bar');
+
+    if (session) {
+      // Logged in: hide wall, reveal application
+      if (wall) wall.style.display = 'none';
+      if (mainLayout) mainLayout.style.display = '';
+      if (mobilePills) mobilePills.style.display = '';
+      if (mobileFilter) mobileFilter.style.display = '';
+
+      // Force refresh of properties display
+      if (window.app && typeof window.app.applyFilters === 'function') {
+        window.app.applyFilters();
+      }
+      setTimeout(() => {
+        if (window.mapController && typeof window.mapController.invalidateSize === 'function') {
+          window.mapController.invalidateSize();
+        }
+      }, 150);
+    } else {
+      // Not logged in: block content with auth wall
+      if (wall) wall.style.display = 'flex';
+      if (mainLayout) mainLayout.style.display = 'none';
+      if (mobilePills) mobilePills.style.display = 'none';
+      if (mobileFilter) mobileFilter.style.display = 'none';
+    }
+  }
+
+  function demoSignIn(role = 'tenant') {
+    const demoUsers = {
+      tenant: { id: 'usr-demo-tenant', name: 'James Kariuki', phone: '0712345678', email: 'tenant@kejamarket.co.ke', role: 'tenant' },
+      landlord: { id: 'usr-demo-landlord', name: 'Peter Mwangi', phone: '0722000111', email: 'landlord@kejamarket.co.ke', role: 'landlord' }
+    };
+    const user = demoUsers[role] || demoUsers.tenant;
+    saveSession(user, 'demo_token_' + Date.now());
+    updateHeaderUI(user);
+    applyAuthWall(user);
+    if (window.app) {
+      window.app.closeModal('modal-auth');
+      window.app.showToast(`🎉 Signed in as ${user.name} (${user.role})! Browsing all 23 listings.`, 'success');
+      window.app.applyFilters();
+    }
+  }
+
   function init() {
     const session = getSession();
+    applyAuthWall(session);
     if (session) updateHeaderUI(session);
     syncSession();
   }
@@ -809,7 +866,9 @@ const kejaAuth = (() => {
     requireTenantAuth,
     getSession,
     getToken,
-    getAuthHeaders
+    getAuthHeaders,
+    applyAuthWall,
+    demoSignIn
   };
 
 })();
