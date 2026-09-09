@@ -27,16 +27,21 @@ const SEED_PROPERTIES = [
     "isTopAd": true,
     "isVerified": true,
     "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "HassConsult Real Estate",
+    "caretakerName": "Samuel (Gate Caretaker)",
+    "caretakerPhone": "0711223344",
     "postedTimeAgo": "12m ago on Facebook Marketplace",
     "landlord": {
-      "id": "usr-landlord-01",
-      "name": "James Mwangi Properties",
-      "phone": "+254712345678",
-      "whatsapp": "+254712345678",
+      "id": "usr-agency-01",
+      "name": "HassConsult Real Estate",
+      "phone": "+254733112233",
+      "whatsapp": "+254733112233",
       "isVerified": true,
-      "memberSince": "March 2023",
+      "isAgency": true,
+      "memberSince": "January 2023",
       "rating": 4.9,
-      "reviewCount": 14
+      "reviewCount": 28
     },
     "amenities": {
       "hasBalcony": true,
@@ -109,6 +114,9 @@ const SEED_PROPERTIES = [
     "isTopAd": false,
     "isVerified": true,
     "source": "direct",
+    "managedBy": "landlord",
+    "caretakerName": "Peter Kamau (Caretaker)",
+    "caretakerPhone": "0722114455",
     "postedTimeAgo": "35m ago",
     "landlord": {
       "id": "usr-landlord-08",

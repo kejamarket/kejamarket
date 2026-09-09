@@ -179,8 +179,9 @@ function formatPhone(phone) {
   return clean;
 }
 
-// ─── OTP MEMORY STORE & UTILITIES ──────────────────────────────────────────
-const pendingOtps = new Map();
+// ─── OTP MEMORY STORES & UTILITIES ──────────────────────────────────────────
+const pendingOtps = new Map(); // Registration OTPs: cleanPhone -> { otp, expiresAt, attempts, signupData }
+const pendingLoginOtps = new Map(); // Login OTPs: cleanPhone -> { otp, expiresAt, attempts, userId }
 
 // Helper to generate a 4-digit numeric OTP code
 function generateOtpCode() {
@@ -195,14 +196,23 @@ setInterval(() => {
       pendingOtps.delete(phone);
     }
   }
+  for (const [phone, data] of pendingLoginOtps.entries()) {
+    if (data.expiresAt < now) {
+      pendingLoginOtps.delete(phone);
+    }
+  }
 }, 5 * 60 * 1000);
 
 // ─── AUTHENTICATION ROUTES ───────────────────────────────────────────────────
 
-// POST /api/auth/send-otp (Step 1 of Phone-Verified Registration)
+// POST /api/auth/send-otp (Step 1 of Phone-Verified Registration: Tenant, Landlord, Agency)
 app.post('/api/auth/send-otp', async (req, res) => {
   try {
-    const { name, phone, email, password, role, numProperties, area } = req.body;
+    const { 
+      name, phone, email, password, role, 
+      numProperties, area, 
+      agencyName, contactPerson, officeLocation, registrationNo, coverageArea 
+    } = req.body;
 
     if (!name || !phone || !password) {
       return res.status(400).json({ success: false, message: 'Full name, phone number, and password are required.' });
@@ -221,6 +231,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
     const cleanEmail = email ? email.trim().toLowerCase() : null;
     const existingUser = store.data.users.find(u => 
       u.phone === cleanPhone || 
+      (u.phone && u.phone.replace(/^254/, '0') === cleanPhone.replace(/^254/, '0')) ||
       (cleanEmail && u.email && u.email.toLowerCase() === cleanEmail)
     );
 
@@ -246,21 +257,25 @@ app.post('/api/auth/send-otp', async (req, res) => {
         password,
         role: role || 'tenant',
         numProperties,
-        area
+        area,
+        agencyName,
+        contactPerson,
+        officeLocation,
+        registrationNo,
+        coverageArea
       }
     });
 
     // Send Real SMS via Africa's Talking / SMS Gateway
-    const smsMessage = `Your KejaMarket verification code is ${otp}. Valid for 5 minutes. Enter this code to verify your account.`;
-    const smsResult = await sendRealSMS(cleanPhone, smsMessage);
+    const smsMessage = `Your KejaMarket verification code is ${otp}. Valid for 5 minutes. Enter this code to verify your ${role === 'agency' ? 'Agency' : (role === 'landlord' ? 'Landlord' : 'Tenant')} account.`;
+    await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`🔑 [OTP GENERATED] Phone: +${cleanPhone} | OTP: ${otp} | Expires in: 5m`);
+    console.log(`🔑 [SIGNUP OTP] Phone: +${cleanPhone} | OTP: ${otp} | Role: ${role}`);
 
     res.json({
       success: true,
       message: `Verification code sent to +${cleanPhone}.`,
       phone: cleanPhone,
-      // Provide dev OTP if running in sandbox without SMS credentials for immediate testing
       devOtp: (!atSMS ? otp : undefined)
     });
   } catch (err) {
@@ -269,7 +284,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
   }
 });
 
-// POST /api/auth/verify-otp (Step 2: Confirm OTP & Create Account)
+// POST /api/auth/verify-otp (Step 2: Confirm Registration OTP & Create Account)
 app.post('/api/auth/verify-otp', async (req, res) => {
   try {
     const { phone, otp } = req.body;
@@ -326,12 +341,12 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     // Send Welcome SMS confirmation
     sendRealSMS(
       cleanPhone,
-      `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your ${user.role === 'landlord' ? 'Landlord' : 'Tenant'} account is now verified and active.`
+      `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your ${user.role === 'agency' ? 'Real Estate Agency' : (user.role === 'landlord' ? 'Landlord' : 'Tenant')} account is now phone-verified and active.`
     );
 
     res.status(201).json({
       success: true,
-      message: `🎉 Account verified and created successfully! Welcome to KejaMarket, ${user.name}!`,
+      message: `🎉 Phone verified! Welcome to KejaMarket, ${user.name}!`,
       user,
       token
     });
@@ -341,25 +356,164 @@ app.post('/api/auth/verify-otp', async (req, res) => {
   }
 });
 
+// POST /api/auth/login-send-otp (Send SMS OTP for Phone-Verified Login)
+app.post('/api/auth/login-send-otp', async (req, res) => {
+  try {
+    const { identifier } = req.body;
+
+    if (!identifier) {
+      return res.status(400).json({ success: false, message: 'Please enter your registered phone number or email.' });
+    }
+
+    const user = store.findUserByIdentifier(identifier);
+    if (!user) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'No registered account found with this phone number or email. Please sign up.' 
+      });
+    }
+
+    const cleanPhone = formatPhone(user.phone);
+    const otp = generateOtpCode();
+    const expiresAt = Date.now() + 5 * 60 * 1000;
+
+    pendingLoginOtps.set(cleanPhone, {
+      otp,
+      expiresAt,
+      attempts: 0,
+      userId: user.id
+    });
+
+    const smsMessage = `Your KejaMarket sign-in verification code is ${otp}. Valid for 5 minutes. Do not share this code.`;
+    await sendRealSMS(cleanPhone, smsMessage);
+
+    console.log(`🔑 [LOGIN OTP] User: ${user.name} | Phone: +${cleanPhone} | OTP: ${otp}`);
+
+    res.json({
+      success: true,
+      message: `Login verification code sent to +${cleanPhone}.`,
+      phone: cleanPhone,
+      userName: user.name,
+      devOtp: (!atSMS ? otp : undefined)
+    });
+  } catch (err) {
+    console.error('Error in login-send-otp:', err);
+    res.status(500).json({ success: false, message: 'Failed to send login code. Please try again.' });
+  }
+});
+
+// POST /api/auth/login-verify-otp (Confirm SMS OTP and Sign In User)
+app.post('/api/auth/login-verify-otp', async (req, res) => {
+  try {
+    const { phone, otp } = req.body;
+
+    if (!phone || !otp) {
+      return res.status(400).json({ success: false, message: 'Phone number and verification code are required.' });
+    }
+
+    const cleanPhone = formatPhone(phone);
+    const entry = pendingLoginOtps.get(cleanPhone);
+
+    if (!entry) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Login code expired or not found. Please request a new code.' 
+      });
+    }
+
+    if (Date.now() > entry.expiresAt) {
+      pendingLoginOtps.delete(cleanPhone);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Login code has expired. Please request a new code.' 
+      });
+    }
+
+    if (entry.attempts >= 5) {
+      pendingLoginOtps.delete(cleanPhone);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Too many incorrect attempts. Please request a new code.' 
+      });
+    }
+
+    if (entry.otp !== otp.trim()) {
+      entry.attempts += 1;
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid verification code. Please check and try again.' 
+      });
+    }
+
+    // Valid OTP!
+    const user = store.getUserById(entry.userId);
+    pendingLoginOtps.delete(cleanPhone);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User account not found.' });
+    }
+
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
+
+    console.log(`✅ [LOGIN VERIFIED] User: ${user.name} (${user.role}) via Phone OTP`);
+
+    res.json({
+      success: true,
+      message: `Welcome back, ${user.name}!`,
+      user,
+      token
+    });
+  } catch (err) {
+    console.error('Error in login-verify-otp:', err);
+    res.status(500).json({ success: false, message: 'Verification failed.' });
+  }
+});
+
 // POST /api/auth/resend-otp
 app.post('/api/auth/resend-otp', async (req, res) => {
   try {
-    const { phone } = req.body;
+    const { phone, type } = req.body;
     if (!phone) {
       return res.status(400).json({ success: false, message: 'Phone number is required.' });
     }
 
     const cleanPhone = formatPhone(phone);
-    const entry = pendingOtps.get(cleanPhone);
+    const otp = generateOtpCode();
+    const expiresAt = Date.now() + 5 * 60 * 1000;
 
+    if (type === 'login' || pendingLoginOtps.has(cleanPhone)) {
+      const entry = pendingLoginOtps.get(cleanPhone);
+      if (entry) {
+        entry.otp = otp;
+        entry.expiresAt = expiresAt;
+        entry.attempts = 0;
+      } else {
+        const user = store.findUserByIdentifier(cleanPhone);
+        if (!user) {
+          return res.status(404).json({ success: false, message: 'No user found for this number.' });
+        }
+        pendingLoginOtps.set(cleanPhone, { otp, expiresAt, attempts: 0, userId: user.id });
+      }
+
+      const smsMessage = `Your new KejaMarket login code is ${otp}. Valid for 5 minutes.`;
+      await sendRealSMS(cleanPhone, smsMessage);
+
+      return res.json({
+        success: true,
+        message: `New login code sent to +${cleanPhone}.`,
+        phone: cleanPhone,
+        devOtp: (!atSMS ? otp : undefined)
+      });
+    }
+
+    // Default signup resend
+    const entry = pendingOtps.get(cleanPhone);
     if (!entry) {
       return res.status(400).json({ success: false, message: 'No pending registration found for this number. Please fill out the sign up form.' });
     }
 
-    // Generate new OTP
-    const otp = generateOtpCode();
     entry.otp = otp;
-    entry.expiresAt = Date.now() + 5 * 60 * 1000;
+    entry.expiresAt = expiresAt;
     entry.attempts = 0;
 
     const smsMessage = `Your new KejaMarket verification code is ${otp}. Valid for 5 minutes.`;
@@ -381,7 +535,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
 // POST /api/auth/register (Direct registration fallback)
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, phone, email, password, role, numProperties, area } = req.body;
+    const { name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea } = req.body;
 
     if (!name || !phone || !password) {
       return res.status(400).json({ success: false, message: 'Name, phone number, and password are required.' });
@@ -400,6 +554,11 @@ app.post('/api/auth/register', async (req, res) => {
       role: role || 'tenant',
       numProperties,
       area,
+      agencyName,
+      contactPerson,
+      officeLocation,
+      registrationNo,
+      coverageArea,
       isPhoneVerified: true
     });
 
@@ -407,7 +566,7 @@ app.post('/api/auth/register', async (req, res) => {
 
     sendRealSMS(
       cleanPhone,
-      `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your ${user.role === 'landlord' ? 'Landlord' : 'Tenant'} account is active.`
+      `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your account is active.`
     );
 
     res.status(201).json({
@@ -786,7 +945,7 @@ app.get('/api/properties/:id', (req, res) => {
   res.json({ success: true, property });
 });
 
-// POST /api/properties (Landlords & Ingestion engine create new listings)
+// POST /api/properties (Landlords, Agencies & Ingestion engine create new listings)
 app.post('/api/properties', optionalAuth, (req, res) => {
   try {
     const data = req.body;
@@ -794,18 +953,29 @@ app.post('/api/properties', optionalAuth, (req, res) => {
       return res.status(400).json({ success: false, message: 'Title, category, and monthly rent are required.' });
     }
 
-    // Attach landlord info if user is authenticated
+    // Attach landlord / agency info if user is authenticated
     if (req.user) {
+      const isAgency = req.user.role === 'agency';
+      data.managedBy = isAgency ? 'agency' : (data.managedBy || 'landlord');
+      data.agencyName = isAgency ? (req.user.agencyName || req.user.name) : (data.agencyName || null);
+
       data.landlord = {
         id: req.user.id,
-        name: req.user.name,
+        name: isAgency ? (req.user.agencyName || req.user.name) : req.user.name,
         phone: req.user.phone,
         whatsapp: req.user.phone,
         isVerified: req.user.isVerified,
+        isAgency: isAgency,
+        agencyName: isAgency ? (req.user.agencyName || req.user.name) : null,
         memberSince: 'September 2026',
         rating: 5.0,
         reviewCount: 1
       };
+    }
+
+    // Caretaker on-site details (optional)
+    if (data.caretakerPhone) {
+      data.caretakerPhone = formatPhone(data.caretakerPhone);
     }
 
     const newProperty = store.addProperty(data);
@@ -1066,16 +1236,20 @@ app.post('/api/alerts/whatsapp', (req, res) => {
 // POST /api/leads/movers
 app.post('/api/leads/movers', (req, res) => {
   try {
-    const { name, phone, from, to } = req.body;
+    const { name, phone, from, to, size, partner } = req.body;
     if (!phone) {
       return res.status(400).json({ success: false, message: 'Phone number is required.' });
     }
     const cleanPhone = formatPhone(phone);
-    const lead = store.saveLead('movers', { name, phone: cleanPhone, from, to });
+    const lead = store.saveLead('movers', { name, phone: cleanPhone, from, to, size, partner });
+
+    const partnerLabel = (!partner || partner === 'All Verified Partners')
+      ? 'Nellions, Cube Movers, Taylor & Alpha Movers'
+      : partner;
 
     sendRealSMS(
       cleanPhone,
-      `[KejaMarket Movers] Habari ${name || 'Neighbor'}, your moving quote request from ${from || 'your area'} to ${to || 'destination'} is received! Our Nairobi team will call you shortly.`
+      `[KejaMarket Movers] Habari ${name || 'Neighbor'}! Your ${size || ''} moving quote from ${from || 'your area'} to ${to || 'destination'} has been sent to ${partnerLabel}. They will call you within 15 mins. - kejamarket.co.ke`
     );
 
     res.json({ success: true, message: 'Movers quote request received and dispatched.', lead });
@@ -1087,16 +1261,17 @@ app.post('/api/leads/movers', (req, res) => {
 // POST /api/leads/fibre
 app.post('/api/leads/fibre', (req, res) => {
   try {
-    const { phone, estate, isp } = req.body;
+    const { phone, estate, isp, timing } = req.body;
     if (!phone) {
       return res.status(400).json({ success: false, message: 'Phone number is required.' });
     }
     const cleanPhone = formatPhone(phone);
-    const lead = store.saveLead('fibre', { phone: cleanPhone, estate, isp });
+    const ispShort = isp ? isp.split('(')[0].trim() : 'Home Fibre';
+    const lead = store.saveLead('fibre', { phone: cleanPhone, estate, isp, timing });
 
     sendRealSMS(
       cleanPhone,
-      `[KejaMarket Fibre] WiFi connection request for ${isp || 'Home Fibre'} in ${estate || 'Nairobi'} received! An installation engineer will contact you.`
+      `[KejaMarket Fibre] Your ${ispShort} installation request at ${estate || 'your location'} is confirmed! Timing: ${timing || 'Within 24 Hours'}. A certified technician will call you shortly. - kejamarket.co.ke`
     );
 
     res.json({ success: true, message: 'Fibre WiFi installation request received and dispatched.', lead });

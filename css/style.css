@@ -128,17 +128,18 @@ button, input, select, textarea {
 .header-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 12px 20px;
+  padding: 10px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
 .brand-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .brand-logo {
@@ -146,7 +147,7 @@ button, input, select, textarea {
   align-items: center;
   gap: 8px;
   font-weight: 800;
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   color: #0f172a;
   letter-spacing: -0.5px;
 }
@@ -154,13 +155,13 @@ button, input, select, textarea {
 .brand-logo .logo-icon {
   background: var(--primary-color);
   color: white;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   box-shadow: 0 4px 8px rgba(0, 181, 63, 0.25);
 }
 
@@ -169,18 +170,25 @@ button, input, select, textarea {
 }
 
 .brand-tagline {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   font-weight: 500;
+  line-height: 1;
 }
 
-/* Header Search Form */
-.header-search-bar {
+/* Header Search Form & Floating Suggestions */
+.header-search-wrapper {
   flex: 1;
-  max-width: 640px;
+  max-width: 580px;
+  min-width: 220px;
+  position: relative;
+}
+
+.header-search-bar {
+  width: 100%;
   display: flex;
   background: #f1f5f9;
-  border: 2px solid transparent;
+  border: 1.5px solid #e2e8f0;
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: var(--transition);
@@ -195,65 +203,169 @@ button, input, select, textarea {
 .search-category-select {
   border: none;
   background: transparent;
-  padding: 10px 14px;
-  font-size: 0.88rem;
+  padding: 8px 10px;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-secondary);
   border-right: 1px solid #cbd5e1;
   outline: none;
   cursor: pointer;
-  max-width: 150px;
+  max-width: 135px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .search-input-field {
   flex: 1;
+  min-width: 80px;
   border: none;
   background: transparent;
-  padding: 10px 14px;
-  font-size: 0.92rem;
+  padding: 8px 12px;
+  font-size: 0.88rem;
   color: var(--text-primary);
   outline: none;
+}
+
+.btn-clear-search {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.btn-clear-search:hover {
+  color: #ef4444;
 }
 
 .search-submit-btn {
   background: var(--primary-color);
   color: white;
   border: none;
-  padding: 0 20px;
+  padding: 0 16px;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .search-submit-btn:hover {
   background: var(--primary-hover);
 }
 
+/* Floating Real-time Suggestions Dropdown */
+.search-suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+  z-index: 1200;
+  max-height: 420px;
+  overflow-y: auto;
+  display: none;
+}
+
+.suggestion-section-title {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: #64748b;
+  padding: 8px 14px 4px;
+  letter-spacing: 0.5px;
+  background: #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f8fafc;
+  transition: background 0.15s ease;
+}
+
+.suggestion-item:hover {
+  background: #f0fdf4;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.suggestion-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestion-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-meta {
+  font-size: 0.75rem;
+  color: #64748b;
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.suggestion-price {
+  font-weight: 800;
+  color: var(--primary-color);
+  font-size: 0.85rem;
+}
+
 /* Header Actions */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .btn-header-action {
   background: transparent;
   border: 1px solid var(--border-color);
   color: var(--text-secondary);
-  padding: 8px 14px;
+  padding: 7px 11px;
   border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   position: relative;
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .btn-header-action:hover {
@@ -264,43 +376,47 @@ button, input, select, textarea {
 
 .badge-count {
   position: absolute;
-  top: -6px;
-  right: -6px;
+  top: -5px;
+  right: -5px;
   background: #ef4444;
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: var(--radius-full);
+  min-width: 18px;
+  text-align: center;
 }
 
 .btn-post-ad {
   background: var(--primary-color);
   color: white;
   border: none;
-  padding: 10px 18px;
+  padding: 8px 14px;
   border-radius: var(--radius-md);
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 4px 10px rgba(0, 181, 63, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 181, 63, 0.25);
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .btn-post-ad:hover {
   background: var(--primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(0, 181, 63, 0.4);
+  box-shadow: 0 6px 14px rgba(0, 181, 63, 0.35);
 }
 
 /* Category Quick Filter Pills Bar */
 .category-pills-bar {
   background: #ffffff;
   border-bottom: 1px solid var(--border-color);
-  padding: 8px 20px;
+  padding: 6px 18px;
+  position: relative;
 }
 
 .pills-scroll-container {
@@ -310,13 +426,19 @@ button, input, select, textarea {
   align-items: center;
   gap: 8px;
   overflow-x: auto;
-  scrollbar-width: thin;
-  padding-bottom: 2px;
+  scrollbar-width: none; /* Firefox: hide scrollbar */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding: 2px 0;
+  scroll-behavior: smooth;
+}
+
+.pills-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .category-pill {
   white-space: nowrap;
-  padding: 6px 14px;
+  padding: 6px 13px;
   background: #f1f5f9;
   border-radius: var(--radius-full);
   font-size: 0.83rem;

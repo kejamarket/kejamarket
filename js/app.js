@@ -204,24 +204,45 @@ class NairobiRentalsApp {
     });
   }
 
-  setupEventListeners() {
+   setupEventListeners() {
     // Search form in header
     const searchForm = document.getElementById('header-search-form');
     const searchInput = document.getElementById('header-search-input');
+    const clearSearchBtn = document.getElementById('btn-clear-search');
+    const suggestionsDropdown = document.getElementById('header-search-suggestions');
+
     if (searchForm && searchInput) {
       searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
         this.searchQuery = searchInput.value.trim();
         this.currentPage = 1;
         this.applyFilters();
+        if (suggestionsDropdown) suggestionsDropdown.style.display = 'none';
       });
 
       searchInput.addEventListener('input', (e) => {
         this.searchQuery = e.target.value.trim();
+        if (clearSearchBtn) {
+          clearSearchBtn.style.display = this.searchQuery ? 'flex' : 'none';
+        }
+        this.showSearchSuggestions(this.searchQuery);
         this.currentPage = 1;
         this.applyFilters();
       });
+
+      searchInput.addEventListener('focus', () => {
+        if (this.searchQuery && this.searchQuery.length >= 2) {
+          this.showSearchSuggestions(this.searchQuery);
+        }
+      });
     }
+
+    // Close suggestions dropdown on outside click
+    document.addEventListener('click', (e) => {
+      if (suggestionsDropdown && !e.target.closest('.header-search-wrapper')) {
+        suggestionsDropdown.style.display = 'none';
+      }
+    });
 
     // Price Slider & Inputs
     const priceSlider = document.getElementById('price-slider');
@@ -400,14 +421,42 @@ class NairobiRentalsApp {
       if (this.filters.tiles && !p.amenities.hasTiles) return false;
       if (this.filters.ensuite && !p.amenities.isMasterEnsuite) return false;
 
-      // Search query filter (matches title, description, suburb, county)
+      // Enhanced Multi-Attribute Real-time Search query filter
       if (this.searchQuery) {
         const q = this.searchQuery.toLowerCase();
+        
         const matchTitle = p.title.toLowerCase().includes(q);
         const matchDesc = p.description.toLowerCase().includes(q);
         const matchEstate = p.estateSuburb.toLowerCase().includes(q);
         const matchCounty = p.county.toLowerCase().includes(q);
-        if (!matchTitle && !matchDesc && !matchEstate && !matchCounty) return false;
+        const matchCategory = p.category.toLowerCase().includes(q);
+        const matchCorridor = p.corridorId ? p.corridorId.toLowerCase().includes(q) : false;
+        const matchAgency = (p.agencyName && p.agencyName.toLowerCase().includes(q)) || (p.landlord?.name && p.landlord.name.toLowerCase().includes(q));
+
+        // Keywords for bedrooms
+        const matchBedsitter = (q.includes('bedsitter') || q.includes('studio')) && (p.category.includes('Bedsitter') || p.bedrooms === 0);
+        const matchSingle = (q.includes('single') || q.includes('single room')) && p.category.includes('Single Room');
+        const match1Bed = (q.includes('1 bed') || q.includes('one bed')) && p.bedrooms === 1;
+        const match2Bed = (q.includes('2 bed') || q.includes('two bed')) && p.bedrooms === 2;
+        const match3Bed = (q.includes('3 bed') || q.includes('three bed')) && p.bedrooms === 3;
+        const matchBnb = (q.includes('bnb') || q.includes('airbnb') || q.includes('daily')) && (p.isBnb || p.rentPeriod === 'night');
+
+        // Keywords for agency / caretaker
+        const matchAgencyWord = (q.includes('agency') || q.includes('agent')) && (p.managedBy === 'agency' || p.landlord?.isAgency);
+        const matchCaretakerWord = q.includes('caretaker') && (p.caretakerPhone || p.caretakerName);
+
+        // Keywords for utilities
+        const matchBorehole = q.includes('borehole') && p.waterSupplyType.toLowerCase().includes('borehole');
+        const matchTokens = (q.includes('token') || q.includes('prepaid')) && p.electricityMeterType.toLowerCase().includes('token');
+
+        if (
+          !matchTitle && !matchDesc && !matchEstate && !matchCounty && 
+          !matchCategory && !matchCorridor && !matchAgency && 
+          !matchBedsitter && !matchSingle && !match1Bed && !match2Bed && !match3Bed && !matchBnb &&
+          !matchAgencyWord && !matchCaretakerWord && !matchBorehole && !matchTokens
+        ) {
+          return false;
+        }
       }
 
       return true;
@@ -464,7 +513,9 @@ class NairobiRentalsApp {
 
     const total = this.filteredProperties.length;
     let label = `${total} Rental Listings`;
-    if (this.activeSuburb !== 'all') {
+    if (this.searchQuery) {
+      label += ` for <span class="highlight">"${this.searchQuery}"</span>`;
+    } else if (this.activeSuburb !== 'all') {
       label += ` in <span class="highlight">${this.activeSuburb}</span>`;
     } else if (this.activeCorridor !== 'all') {
       const corridorObj = NAIROBI_REGIONS.find(r => r.corridorId === this.activeCorridor);
@@ -482,12 +533,9 @@ class NairobiRentalsApp {
     const thumbnail = p.media[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
     const isTaken = p.isTaken || p.status === 'taken';
+    const isAgency = p.managedBy === 'agency' || p.landlord?.isAgency;
     const pricePeriod = isBnb ? '/ night' : '/ month';
     
-    // WhatsApp click-to-chat text
-    const waText = encodeURIComponent(`Hello, I am inquiring about your listing: "${p.title}" (KSh ${p.rentKes.toLocaleString()}${pricePeriod}) on Nairobi Rentals Live.`);
-    const waPhone = p.landlord.whatsapp.replace(/[^0-9]/g, '');
-
     return `
       <div class="property-card ${isTaken ? 'property-card-taken' : ''}" data-id="${p.id}">
         <div class="card-media-wrapper" onclick="app.openPropertyDetail('${p.id}')">
@@ -496,20 +544,21 @@ class NairobiRentalsApp {
           <div class="card-badges-top">
             ${isTaken ? '<span class="badge-taken" style="background: #dc2626; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;"><i class="fas fa-ban"></i> TAKEN / OCCUPIED</span>' : ''}
             ${isBnb ? '<span class="badge-top-ad" style="background: #ff5a5f;"><i class="fas fa-bed"></i> BNB / AIRBNB</span>' : (p.isTopAd ? '<span class="badge-top-ad"><i class="fas fa-bolt"></i> TOP AD</span>' : '')}
-            ${p.landlord.isVerified ? '<span class="badge-verified-landlord"><i class="fas fa-shield-alt"></i> VERIFIED</span>' : ''}
+            ${isAgency ? `<span class="badge-verified-landlord" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);"><i class="fas fa-building"></i> ${p.agencyName ? (p.agencyName.length > 18 ? p.agencyName.substring(0, 16) + '...' : p.agencyName) : 'AGENCY'}</span>` : (p.landlord?.isVerified ? '<span class="badge-verified-landlord"><i class="fas fa-shield-alt"></i> VERIFIED</span>' : '')}
           </div>
 
           <button class="btn-favorite-heart ${isFav ? 'active' : ''}" onclick="app.toggleFavorite('${p.id}', event)" title="Save to Favorites">
             <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i>
           </button>
 
-          <span class="card-watermark"><i class="fas fa-home"></i> NAIROBI RENTALS LIVE</span>
+          <span class="card-watermark"><i class="fas fa-home"></i> KEJAMARKET VERIFIED</span>
           <span class="card-photo-count"><i class="fas fa-camera"></i> ${photoCount} Photos</span>
         </div>
 
         <div class="card-content">
           <div class="card-price-row">
             <div class="card-price" style="${isTaken ? 'color: #64748b;' : ''}">KSh ${p.rentKes.toLocaleString()} <span class="period">${pricePeriod}</span></div>
+            ${p.caretakerPhone ? '<span style="font-size:0.72rem; color:#b45309; background:#fef3c7; border:1px solid #fde68a; padding:1px 6px; border-radius:4px; font-weight:700;"><i class="fas fa-key"></i> Caretaker</span>' : ''}
           </div>
 
           <h3 class="card-title" onclick="app.openPropertyDetail('${p.id}')" title="${p.title}">
@@ -544,7 +593,7 @@ class NairobiRentalsApp {
               </button>
             ` : `
               <button class="btn-card-call" onclick="app.revealLandlordPhone('${p.id}', this)">
-                <i class="fas fa-phone-alt"></i> ${isBnb ? 'Call Host' : 'Call'}
+                <i class="fas fa-phone-alt"></i> ${isAgency ? 'Call Agency' : (isBnb ? 'Call Host' : 'Call')}
               </button>
               <button class="btn-card-chat" onclick="app.openChatForProperty('${p.id}', event)">
                 <i class="fas fa-comment-dots"></i> Chat
@@ -733,9 +782,15 @@ class NairobiRentalsApp {
     document.getElementById('spec-bedrooms').textContent = p.bedrooms === 0 ? (isBnb ? 'Studio BnB' : 'Bedsitter') : `${p.bedrooms} Bedroom`;
     document.getElementById('spec-water').textContent = p.waterSupplyType;
     document.getElementById('spec-electricity').textContent = p.electricityMeterType;
-    document.getElementById('spec-garbage').textContent = isBnb ? 'Free Cleaning' : (p.garbageFeeKes ? `KSh ${p.garbageFeeKes}/mo` : 'Included');
+    const isAgencyListing = p.managedBy === 'agency' || p.landlord?.isAgency;
+    const specSource = document.getElementById('spec-source');
+    if (specSource) {
+      specSource.innerHTML = isAgencyListing
+        ? `<span style="color:#7c3aed;font-weight:700;"><i class="fas fa-building"></i> Real Estate Agency</span>`
+        : `<span style="color:#00b53f;font-weight:700;"><i class="fas fa-user-check"></i> Direct Landlord</span>`;
+    }
     document.getElementById('spec-verified').innerHTML = p.landlord.isVerified 
-      ? `<span style="color:#1976d2;"><i class="fas fa-check-circle"></i> ${isBnb ? 'Superhost' : 'Verified Landlord'}</span>` 
+      ? `<span style="color:#1976d2;"><i class="fas fa-check-circle"></i> ${isBnb ? 'Superhost' : (isAgencyListing ? 'Verified Agency' : 'Verified Landlord')}</span>` 
       : '<span style="color:#64748b;">Direct Listing</span>';
 
     // Gallery
@@ -808,6 +863,20 @@ class NairobiRentalsApp {
         : '<span style="color:#64748b;">Standard amenities available</span>';
     }
 
+    // Management Badge
+    const mgmtBadge = document.getElementById('detail-management-badge');
+    if (mgmtBadge) {
+      if (isAgencyListing) {
+        mgmtBadge.textContent = '🏢 Managed by ' + (p.agencyName || p.landlord.name || 'Agency');
+        mgmtBadge.style.background = '#f3e8ff';
+        mgmtBadge.style.color = '#7c3aed';
+      } else {
+        mgmtBadge.textContent = '👤 Direct Landlord';
+        mgmtBadge.style.background = '#dcfce7';
+        mgmtBadge.style.color = '#15803d';
+      }
+    }
+
     // Landlord & Contacts
     const phoneDisplay = document.getElementById('detail-landlord-phone-display');
     const landlordName = document.getElementById('detail-landlord-name');
@@ -815,9 +884,11 @@ class NairobiRentalsApp {
     const callBtn = document.getElementById('detail-btn-call');
     const chatBtn = document.getElementById('detail-btn-inbox-chat');
 
+    const contactName = isAgencyListing ? (p.agencyName || p.landlord.name) : p.landlord.name;
+
     if (isLoggedIn) {
       // Full access
-      if (landlordName) landlordName.textContent = p.landlord.name;
+      if (landlordName) landlordName.textContent = contactName;
       if (landlordSince) landlordSince.textContent = `Member since ${p.landlord.memberSince}`;
       if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord.phone}`;
       if (callBtn) {
@@ -825,29 +896,54 @@ class NairobiRentalsApp {
         callBtn.removeAttribute('onclick');
         callBtn.style.opacity = '1';
         callBtn.style.pointerEvents = 'auto';
-        callBtn.innerHTML = '<i class="fas fa-phone-alt"></i> Call Landlord';
+        callBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call ${isAgencyListing ? 'Agency' : 'Landlord'}`;
       }
       if (chatBtn) {
         chatBtn.onclick = () => app.openChatForCurrentProperty();
         chatBtn.style.opacity = '1';
         chatBtn.style.pointerEvents = 'auto';
-        chatBtn.innerHTML = '<i class="fas fa-comment-dots"></i> Message Landlord';
+        chatBtn.innerHTML = `<i class="fas fa-comment-dots"></i> Message ${isAgencyListing ? 'Agency' : 'Landlord'}`;
       }
     } else {
       // Protected
-      if (landlordName) landlordName.innerHTML = `<i class="fas fa-user-shield" style="color:#00b53f;margin-right:6px;"></i><span style="color:#64748b;">Landlord Details Protected</span>`;
+      if (landlordName) landlordName.innerHTML = `<i class="fas fa-user-shield" style="color:#00b53f;margin-right:6px;"></i><span style="color:#64748b;">${isAgencyListing ? 'Agency' : 'Landlord'} Details Protected</span>`;
       if (landlordSince) landlordSince.textContent = 'Sign in or create free account to view contact details';
       if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;letter-spacing:1px;">+254 7•• ••• ••• (Sign in to view)</span>`;
       if (callBtn) {
         callBtn.href = '#';
         callBtn.setAttribute('onclick', `event.preventDefault(); app.callLandlordDirect('${p.id}'); return false;`);
         callBtn.style.opacity = '0.9';
-        callBtn.innerHTML = '<i class="fas fa-lock"></i> Sign In to Call';
+        callBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Call ${isAgencyListing ? 'Agency' : 'Landlord'}`;
       }
       if (chatBtn) {
         chatBtn.onclick = (e) => { e.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(p.id)); };
         chatBtn.style.opacity = '0.85';
-        chatBtn.innerHTML = '<i class="fas fa-lock"></i> Sign In to Message';
+        chatBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Message`;
+      }
+    }
+
+    // Caretaker Card Population
+    const caretakerCard = document.getElementById('detail-caretaker-card');
+    const caretakerNameEl = document.getElementById('detail-caretaker-name');
+    const caretakerCallBtn = document.getElementById('detail-btn-caretaker-call');
+
+    if (caretakerCard) {
+      if (p.caretakerPhone || p.caretakerName) {
+        caretakerCard.style.display = 'block';
+        if (caretakerNameEl) caretakerNameEl.textContent = p.caretakerName || 'Building Caretaker';
+        if (caretakerCallBtn) {
+          if (isLoggedIn) {
+            caretakerCallBtn.href = `tel:${p.caretakerPhone || ''}`;
+            caretakerCallBtn.removeAttribute('onclick');
+            caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${p.caretakerPhone || ''})`;
+          } else {
+            caretakerCallBtn.href = '#';
+            caretakerCallBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}')); return false;`);
+            caretakerCallBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Call Caretaker`;
+          }
+        }
+      } else {
+        caretakerCard.style.display = 'none';
       }
     }
 

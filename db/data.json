@@ -5,7 +5,7 @@
       "name": "KejaMarket Admin",
       "phone": "0700000000",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$rObxGQYjVOWGpNcdkATP5uCfc9DqoQqLzLrn45nJ/bxZ/67qTwroK",
+      "password": "$2b$10$58uEa57dwkZyOr1KI0zfdubjcLokw.NzRxw4X/GF4dMX7AlYtHEWC",
       "role": "admin",
       "isVerified": true,
       "numProperties": "10+",
@@ -36,6 +36,21 @@
       "createdAt": "2026-09-07T22:08:35.440Z"
     },
     {
+      "id": "usr-agency-01",
+      "name": "HassConsult Real Estate Agency",
+      "agencyName": "HassConsult Real Estate",
+      "contactPerson": "David Mutua (Director)",
+      "phone": "0733112233",
+      "email": "properties@hassconsult.co.ke",
+      "password": "$2b$10$F8kvQ8d27.DEGIyL.7omHOCRIDr/Rej5TMJ5jyWIUXoNjTS0PH3ji",
+      "role": "agency",
+      "isVerified": true,
+      "isPhoneVerified": true,
+      "numProperties": "50+",
+      "area": "Nairobi Metro & Environs",
+      "createdAt": "2026-09-08T10:00:00.000Z"
+    },
+    {
       "id": "usr-1788903033874-223",
       "name": "Eric Test Tenant",
       "phone": "254711223344",
@@ -47,6 +62,24 @@
       "numProperties": null,
       "area": null,
       "createdAt": "2026-09-08T21:30:33.874Z"
+    },
+    {
+      "id": "usr-1788950714099-730",
+      "name": "Nairobi Prime Properties Ltd",
+      "phone": "254712999888",
+      "email": "prime@nairobiltd.com",
+      "password": "$2b$10$GYXlVmctKSZGxkRdvT6ebuEjl5GNPam8CQ3uH3ynDcw0uEe0L6t52",
+      "role": "agency",
+      "isPhoneVerified": true,
+      "isVerified": true,
+      "numProperties": null,
+      "area": null,
+      "agencyName": "Nairobi Prime Properties Ltd",
+      "contactPerson": "Dennis Ochieng",
+      "officeLocation": "Westlands Commercial Center",
+      "registrationNo": "",
+      "coverageArea": "Westlands, Parklands, Kilimani",
+      "createdAt": "2026-09-09T10:45:14.099Z"
     }
   ],
   "properties": [
@@ -74,16 +107,21 @@
       "isTopAd": true,
       "isVerified": true,
       "source": "direct",
+      "managedBy": "agency",
+      "agencyName": "HassConsult Real Estate",
+      "caretakerName": "Samuel (Gate Caretaker)",
+      "caretakerPhone": "0711223344",
       "postedTimeAgo": "12m ago on Facebook Marketplace",
       "landlord": {
-        "id": "usr-landlord-01",
-        "name": "James Mwangi Properties",
-        "phone": "+254712345678",
-        "whatsapp": "+254712345678",
+        "id": "usr-agency-01",
+        "name": "HassConsult Real Estate",
+        "phone": "+254733112233",
+        "whatsapp": "+254733112233",
         "isVerified": true,
-        "memberSince": "March 2023",
+        "isAgency": true,
+        "memberSince": "January 2023",
         "rating": 4.9,
-        "reviewCount": 14
+        "reviewCount": 28
       },
       "amenities": {
         "hasBalcony": true,
@@ -1783,7 +1821,30 @@
   },
   "transactions": [],
   "alerts": [],
-  "leads": [],
+  "leads": [
+    {
+      "id": "lead-1788952006129-494",
+      "type": "movers",
+      "name": "Brian Omondi",
+      "phone": "254712999888",
+      "from": "Roysambu, Thika Rd",
+      "to": "Ruaka, Kiambu Rd",
+      "size": "2 Bedroom Apartment",
+      "partner": "Nellions Moving",
+      "status": "pending",
+      "createdAt": "2026-09-09T11:06:46.130Z"
+    },
+    {
+      "id": "lead-1788952006166-381",
+      "type": "fibre",
+      "phone": "254712999888",
+      "estate": "Ruaka, Joyland Court Hse B4",
+      "isp": "Safaricom Home Fibre (Silver 60Mbps - KSh 4,100/mo)",
+      "timing": "Immediately (Within 24 Hours)",
+      "status": "pending",
+      "createdAt": "2026-09-09T11:06:46.166Z"
+    }
+  ],
   "messages": [],
   "comments": {
     "prop-nrb-001": [

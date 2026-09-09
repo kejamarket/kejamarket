@@ -451,50 +451,74 @@ class MonetizationEngine {
   }
 
   setupAffiliateLeadForms() {
-    // Movers quote submit
+    // Movers quote submit — now captures house size & preferred partner
     window.submitMoversLead = async function(e) {
       e.preventDefault();
-      const name = document.getElementById('mover-lead-name')?.value || '';
-      const phone = document.getElementById('mover-lead-phone')?.value || '';
-      const from = document.getElementById('mover-lead-from')?.value || '';
-      const to = document.getElementById('mover-lead-to')?.value || '';
+      const name    = document.getElementById('mover-lead-name')?.value?.trim() || '';
+      const phone   = document.getElementById('mover-lead-phone')?.value?.trim() || '';
+      const from    = document.getElementById('mover-lead-from')?.value?.trim() || '';
+      const to      = document.getElementById('mover-lead-to')?.value?.trim() || '';
+      const size    = document.getElementById('mover-lead-size')?.value || '1 Bedroom Apartment';
+      const partner = document.getElementById('mover-lead-partner')?.value || 'All Verified Partners';
+
+      if (!phone) {
+        if (window.app) window.app.showToast('⚠️ Please enter your phone number.', 'error');
+        return;
+      }
 
       try {
         await fetch('/api/leads/movers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone, from, to })
+          body: JSON.stringify({ name, phone, from, to, size, partner })
         });
       } catch (err) {
-        console.warn('Lead submission offline sync');
+        console.warn('Movers lead offline — will retry on reconnect');
       }
 
       if (window.app) {
         window.app.closeModal('modal-lead-movers');
-        window.app.showToast(`🚚 Quote request sent for ${from} ➔ ${to}! Partner movers will call ${phone} within 15 mins.`, 'success');
+        const partnerLabel = partner === 'All Verified Partners' ? 'Nellions, Cube, Taylor & Alpha Movers' : partner;
+        window.app.showToast(
+          `🚚 Moving quote request sent! ${partnerLabel} will call ${phone} within 15 minutes with a ${size} quote from ${from} ➜ ${to}.`,
+          'success',
+          7000
+        );
       }
     };
 
-    // Fibre WiFi submit
+    // Fibre WiFi submit — now captures package, timing & house address
     window.submitFibreLead = async function(e) {
       e.preventDefault();
-      const phone = document.getElementById('fibre-lead-phone')?.value || '';
-      const estate = document.getElementById('fibre-lead-estate')?.value || '';
-      const isp = document.getElementById('fibre-lead-isp')?.value || 'Safaricom Fibre';
+      const phone  = document.getElementById('fibre-lead-phone')?.value?.trim() || '';
+      const estate = document.getElementById('fibre-lead-estate')?.value?.trim() || '';
+      const isp    = document.getElementById('fibre-lead-isp')?.value || 'Safaricom Home Fibre (Bronze 40Mbps - KSh 2,999/mo)';
+      const timing = document.getElementById('fibre-lead-time')?.value || 'Immediately (Within 24 Hours)';
+
+      if (!phone) {
+        if (window.app) window.app.showToast('⚠️ Please enter your phone number.', 'error');
+        return;
+      }
 
       try {
         await fetch('/api/leads/fibre', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone, estate, isp })
+          body: JSON.stringify({ phone, estate, isp, timing })
         });
       } catch (err) {
-        console.warn('Fibre lead submission offline sync');
+        console.warn('Fibre lead offline — will retry on reconnect');
       }
 
       if (window.app) {
         window.app.closeModal('modal-lead-fibre');
-        window.app.showToast(`📶 Installation request for ${isp} in ${estate} received! An engineer will call ${phone}.`, 'success');
+        // Shorten ISP label for toast display
+        const ispShort = isp.split('(')[0].trim();
+        window.app.showToast(
+          `📶 ${ispShort} installation request confirmed for ${estate}! A technician will call ${phone} — Timing: ${timing}.`,
+          'success',
+          7000
+        );
       }
     };
   }

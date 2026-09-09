@@ -121,7 +121,7 @@ class Store {
       console.warn('Could not auto-import seedListings.js, using default:', e.message);
     }
 
-    // Seed production admin & verified landlord accounts
+    // Seed production admin, verified landlord, verified agency, and tenant accounts
     const hashedPassword = bcrypt.hashSync('keja2026', 10);
     this.data.users = [
       {
@@ -138,6 +138,22 @@ class Store {
         createdAt: new Date().toISOString()
       },
       {
+        id: 'usr-agency-01',
+        name: 'HassConsult Real Estate Agency',
+        agencyName: 'HassConsult Real Estate',
+        contactPerson: 'David Mutua (Director)',
+        phone: '0733112233',
+        email: 'properties@hassconsult.co.ke',
+        password: hashedPassword,
+        role: 'agency',
+        isVerified: true,
+        isPhoneVerified: true,
+        officeLocation: 'ABC Place, Waiyaki Way, Westlands',
+        registrationNo: 'REG/EARB/2026/0441',
+        coverageArea: 'Westlands, Kilimani, Lavington, Ruaka',
+        createdAt: new Date().toISOString()
+      },
+      {
         id: 'usr-landlord-01',
         name: 'James Mwangi',
         phone: '0712345678',
@@ -145,6 +161,7 @@ class Store {
         password: hashedPassword,
         role: 'landlord',
         isVerified: true,
+        isPhoneVerified: true,
         numProperties: '2-5',
         area: 'Ruaka & Westlands',
         createdAt: new Date().toISOString()
@@ -157,18 +174,19 @@ class Store {
         password: hashedPassword,
         role: 'tenant',
         isVerified: true,
+        isPhoneVerified: true,
         createdAt: new Date().toISOString()
       }
     ];
   }
 
   // ─── USER METHODS ──────────────────────────────────────────────────────────
-  async createUser({ name, phone, email, password, role, numProperties, area }) {
+  async createUser({ name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea }) {
     const cleanPhone = phone.replace(/\s+/g, '');
     const cleanEmail = email ? email.trim().toLowerCase() : null;
 
     // Check duplicate phone
-    const existingPhone = this.data.users.find(u => u.phone === cleanPhone);
+    const existingPhone = this.data.users.find(u => u.phone === cleanPhone || (u.phone && u.phone.replace(/^254/, '0') === cleanPhone.replace(/^254/, '0')));
     if (existingPhone) {
       throw new Error('An account with this phone number already exists.');
     }
@@ -182,23 +200,46 @@ class Store {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const userRole = role || 'tenant';
     const user = {
       id: 'usr-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
       name: name.trim(),
       phone: cleanPhone,
       email: cleanEmail,
       password: hashedPassword,
-      role: role || 'tenant',
+      role: userRole,
       isPhoneVerified: true,
-      isVerified: role === 'tenant',
-      numProperties: role === 'landlord' ? (numProperties || '1') : null,
-      area: role === 'landlord' ? (area || '') : null,
+      isVerified: userRole === 'tenant' || userRole === 'agency',
+      // Landlord specific fields
+      numProperties: userRole === 'landlord' ? (numProperties || '1') : null,
+      area: userRole === 'landlord' ? (area || '') : null,
+      // Agency specific fields
+      agencyName: userRole === 'agency' ? (agencyName || name.trim()) : null,
+      contactPerson: userRole === 'agency' ? (contactPerson || name.trim()) : null,
+      officeLocation: userRole === 'agency' ? (officeLocation || '') : null,
+      registrationNo: userRole === 'agency' ? (registrationNo || '') : null,
+      coverageArea: userRole === 'agency' ? (coverageArea || area || '') : null,
       createdAt: new Date().toISOString()
     };
 
     this.data.users.push(user);
     this.save();
     return this.sanitizeUser(user);
+  }
+
+  findUserByIdentifier(identifier) {
+    if (!identifier) return null;
+    const clean = identifier.trim().toLowerCase();
+    const cleanNumeric = clean.replace(/[\s+-]/g, '');
+
+    return this.data.users.find(u => {
+      if (u.phone === cleanNumeric) return true;
+      if (cleanNumeric.startsWith('0') && u.phone === '254' + cleanNumeric.slice(1)) return true;
+      if (cleanNumeric.startsWith('254') && u.phone === '0' + cleanNumeric.slice(3)) return true;
+      if (u.email && u.email.toLowerCase() === clean) return true;
+      if (clean === 'admin' && (u.id === 'usr-admin-01' || u.role === 'admin')) return true;
+      return false;
+    }) || null;
   }
 
   async authenticateUser(identifier, password, role = null) {
@@ -526,6 +567,28 @@ class Store {
     comment.replies.push(reply);
     this.save();
     return reply;
+  }
+
+  // ─── LEADS & VALUE-ADD PARTNERS (MOVERS & INTERNET) ─────────────────────
+  addLead(leadData) {
+    this.data.leads = this.data.leads || [];
+    const lead = {
+      id: 'lead-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      ...leadData,
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    };
+    this.data.leads.push(lead);
+    this.save();
+    return lead;
+  }
+
+  saveLead(type, leadData = {}) {
+    return this.addLead({ type, ...leadData });
+  }
+
+  getAllLeads() {
+    return (this.data.leads || []).slice().reverse();
   }
 
   // ─── ADMIN & OWNER METHODS ────────────────────────────────────────────────

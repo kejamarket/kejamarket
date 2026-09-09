@@ -1,15 +1,23 @@
 /**
- * KejaMarket – Real Authentication Engine
+ * KejaMarket – Real Authentication Engine & Anti-Fraud Phone Verification
  * Connected to live backend JWT + Bcrypt API (/api/auth)
- * Handles tenant & landlord sign-up, sign-in, session sync, and role permissions.
+ * Handles phone SMS OTP verification for Tenant, Landlord, and Agency sign-up & sign-in.
  */
 
 const kejaAuth = (() => {
-  // Current selected role per panel
-  const state = { signinRole: 'tenant', signupRole: 'tenant' };
+  // Current selected role per panel: 'tenant', 'landlord', or 'agency'
+  const state = { 
+    signinRole: 'tenant', 
+    signupRole: 'tenant',
+    signinMode: 'otp' // 'otp' | 'password'
+  };
 
   // API Base URL (defaults to relative path or current host)
   const API_BASE = '';
+
+  let pendingPhone = '';
+  let pendingFlow = 'signup'; // 'signup' | 'login'
+  let otpTimerInterval = null;
 
   /* ─────────────────────────────────────────
      SESSION & TOKEN HELPERS
@@ -68,9 +76,6 @@ const kejaAuth = (() => {
     showPanel(tab);
   }
 
-  let pendingSignupPhone = '';
-  let otpTimerInterval = null;
-
   function showPanel(tab) {
     const signinEl = document.getElementById('auth-panel-signin');
     const signupEl = document.getElementById('auth-panel-signup');
@@ -93,29 +98,71 @@ const kejaAuth = (() => {
   }
 
   /* ─────────────────────────────────────────
-     ROLE SELECTION
+     SIGN-IN MODE TOGGLE (PHONE OTP vs PASSWORD)
+  ───────────────────────────────────────── */
+  function setSigninMode(mode) {
+    state.signinMode = mode;
+    const formOtp = document.getElementById('form-signin-otp');
+    const formPassword = document.getElementById('form-signin-password');
+    const btnOtp = document.getElementById('signin-mode-otp');
+    const btnPassword = document.getElementById('signin-mode-password');
+
+    if (formOtp) formOtp.style.display = mode === 'otp' ? 'block' : 'none';
+    if (formPassword) formPassword.style.display = mode === 'password' ? 'block' : 'none';
+
+    if (btnOtp) {
+      btnOtp.style.background = mode === 'otp' ? '#ffffff' : 'transparent';
+      btnOtp.style.color = mode === 'otp' ? '#0f172a' : '#64748b';
+      btnOtp.style.fontWeight = mode === 'otp' ? '700' : '600';
+      btnOtp.style.boxShadow = mode === 'otp' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none';
+    }
+
+    if (btnPassword) {
+      btnPassword.style.background = mode === 'password' ? '#ffffff' : 'transparent';
+      btnPassword.style.color = mode === 'password' ? '#0f172a' : '#64748b';
+      btnPassword.style.fontWeight = mode === 'password' ? '700' : '600';
+      btnPassword.style.boxShadow = mode === 'password' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none';
+    }
+  }
+
+  /* ─────────────────────────────────────────
+     ROLE SELECTION (TENANT, LANDLORD, AGENCY)
   ───────────────────────────────────────── */
   function setRole(role, panel) {
     state[`${panel}Role`] = role;
 
-    const other = role === 'tenant' ? 'landlord' : 'tenant';
-    const btnRole = document.getElementById(`role-${panel}-${role}`);
-    const btnOther = document.getElementById(`role-${panel}-${other}`);
+    const roles = ['tenant', 'landlord', 'agency'];
+    roles.forEach(r => {
+      const btn = document.getElementById(`role-${panel}-${r}`);
+      if (btn) {
+        if (r === role) {
+          btn.classList.add('role-btn-active');
+        } else {
+          btn.classList.remove('role-btn-active');
+        }
+      }
+    });
 
-    if (btnRole) btnRole.classList.add('role-btn-active');
-    if (btnOther) btnOther.classList.remove('role-btn-active');
-
-    // Show/hide landlord-only fields on signup
+    // Show/hide role-specific fields on signup
     if (panel === 'signup') {
       const landlordFields = document.getElementById('signup-landlord-fields');
+      const agencyFields = document.getElementById('signup-agency-fields');
+      const nameLabel = document.getElementById('signup-name-label');
+
       if (landlordFields) {
         landlordFields.style.display = role === 'landlord' ? 'block' : 'none';
+      }
+      if (agencyFields) {
+        agencyFields.style.display = role === 'agency' ? 'block' : 'none';
+      }
+      if (nameLabel) {
+        nameLabel.textContent = role === 'agency' ? 'Director / Principal Agent Name *' : 'Full Name *';
       }
     }
   }
 
   /* ─────────────────────────────────────────
-     SIGN UP (STEP 1: SEND OTP VIA SMS)
+     SIGN UP (STEP 1: SEND SMS OTP)
   ───────────────────────────────────────── */
   async function handleSignUp(e) {
     e.preventDefault();
@@ -147,27 +194,41 @@ const kejaAuth = (() => {
       ? document.getElementById('signup-landlord-area').value.trim()
       : null;
 
+    const agencyName = role === 'agency' && document.getElementById('signup-agency-name')
+      ? document.getElementById('signup-agency-name').value.trim()
+      : null;
+    const officeLocation = role === 'agency' && document.getElementById('signup-agency-location')
+      ? document.getElementById('signup-agency-location').value.trim()
+      : null;
+
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn ? submitBtn.innerHTML : '';
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending SMS code...';
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending SMS OTP...';
     }
 
     try {
       const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, email, password, role, numProperties, area })
+        body: JSON.stringify({ 
+          name, phone, email, password, role, 
+          numProperties, area, 
+          agencyName: agencyName || name, 
+          contactPerson: name, 
+          officeLocation 
+        })
       });
 
       const data = await res.json();
 
       if (data.success && data.phone) {
-        pendingSignupPhone = data.phone;
-        showOtpPanel(data.phone, data.devOtp);
+        pendingPhone = data.phone;
+        pendingFlow = 'signup';
+        showOtpPanel(data.phone, data.devOtp, 'signup');
         if (window.app) {
-          window.app.showToast(`📲 Verification code sent to +${data.phone}! Enter the 4-digit code.`, 'success');
+          window.app.showToast(`📲 4-digit code sent via SMS to +${data.phone}!`, 'success');
         }
       } else {
         if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to send verification code.'}`, 'error');
@@ -175,7 +236,59 @@ const kejaAuth = (() => {
     } catch (err) {
       console.error('Sign up send-otp error:', err);
       if (window.app) {
-        window.app.showToast('❌ Unable to reach server. Please check your connection and try again.', 'error');
+        window.app.showToast('❌ Unable to reach server. Please try again.', 'error');
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    }
+  }
+
+  /* ─────────────────────────────────────────
+     SIGN IN VIA PHONE SMS OTP (ANTI-FRAUD LOGIN)
+  ───────────────────────────────────────── */
+  async function handleSendLoginOtp(e) {
+    e.preventDefault();
+    const phoneEl = document.getElementById('signin-otp-phone');
+    const identifier = phoneEl ? phoneEl.value.trim() : '';
+
+    if (!identifier) {
+      if (window.app) window.app.showToast('Please enter your registered phone number.', 'info');
+      return;
+    }
+
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending SMS Code...';
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/login-send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier })
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.phone) {
+        pendingPhone = data.phone;
+        pendingFlow = 'login';
+        showOtpPanel(data.phone, data.devOtp, 'login');
+        if (window.app) {
+          window.app.showToast(`📲 Sign-in code sent to +${data.phone}!`, 'success');
+        }
+      } else {
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Account not found.'}`, 'error');
+      }
+    } catch (err) {
+      console.error('Login send-otp error:', err);
+      if (window.app) {
+        window.app.showToast('❌ Unable to connect to server. Please try again.', 'error');
       }
     } finally {
       if (submitBtn) {
@@ -188,11 +301,18 @@ const kejaAuth = (() => {
   /* ─────────────────────────────────────────
      OTP VERIFICATION UI & COUNTDOWN
   ───────────────────────────────────────── */
-  function showOtpPanel(phone, devOtp) {
+  function showOtpPanel(phone, devOtp, flow = 'signup') {
     showPanel('otp');
     const phoneDisplay = document.getElementById('otp-display-phone');
-    if (phoneDisplay) {
-      phoneDisplay.textContent = `+${phone}`;
+    const panelTitle = document.getElementById('otp-panel-title');
+    const submitBtnLabel = document.getElementById('btn-submit-otp-label');
+
+    if (phoneDisplay) phoneDisplay.textContent = `+${phone}`;
+    if (panelTitle) {
+      panelTitle.textContent = flow === 'login' ? 'Confirm Sign-In Code' : 'Verify Your Phone Number';
+    }
+    if (submitBtnLabel) {
+      submitBtnLabel.textContent = flow === 'login' ? 'Verify & Sign In' : 'Verify & Complete Registration';
     }
 
     // Dev/Sandbox helper banner
@@ -265,7 +385,7 @@ const kejaAuth = (() => {
   }
 
   /* ─────────────────────────────────────────
-     CONFIRM OTP (STEP 2: VERIFY & LOG IN)
+     CONFIRM OTP (VERIFY FOR SIGNUP OR LOGIN)
   ───────────────────────────────────────── */
   async function handleVerifyOtp(e) {
     if (e) e.preventDefault();
@@ -276,7 +396,7 @@ const kejaAuth = (() => {
     const otp = `${d1}${d2}${d3}${d4}`.trim();
 
     if (otp.length !== 4) {
-      if (window.app) window.app.showToast('Please enter the full 4-digit verification code.', 'info');
+      if (window.app) window.app.showToast('Please enter the full 4-digit code.', 'info');
       return;
     }
 
@@ -287,11 +407,15 @@ const kejaAuth = (() => {
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
     }
 
+    const endpoint = pendingFlow === 'login' 
+      ? `${API_BASE}/api/auth/login-verify-otp` 
+      : `${API_BASE}/api/auth/verify-otp`;
+
     try {
-      const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: pendingSignupPhone, otp })
+        body: JSON.stringify({ phone: pendingPhone, otp })
       });
 
       const data = await res.json();
@@ -302,12 +426,11 @@ const kejaAuth = (() => {
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
         if (window.app) {
-          window.app.showToast(`🎉 Phone verified! Welcome to KejaMarket, ${data.user.name}!`, 'success');
+          window.app.showToast(`🎉 Phone verified! Welcome, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
         if (window.app) window.app.showToast(`❌ ${data.message || 'Invalid verification code.'}`, 'error');
-        // Clear digits for retry
         for (let i = 1; i <= 4; i++) {
           const el = document.getElementById(`otp-${i}`);
           if (el) el.value = '';
@@ -330,8 +453,8 @@ const kejaAuth = (() => {
      RESEND OTP
   ───────────────────────────────────────── */
   async function handleResendOtp() {
-    if (!pendingSignupPhone) {
-      switchTab('signup');
+    if (!pendingPhone) {
+      switchTab(pendingFlow === 'login' ? 'signin' : 'signup');
       return;
     }
 
@@ -342,7 +465,7 @@ const kejaAuth = (() => {
       const res = await fetch(`${API_BASE}/api/auth/resend-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: pendingSignupPhone })
+        body: JSON.stringify({ phone: pendingPhone, type: pendingFlow })
       });
 
       const data = await res.json();
@@ -357,7 +480,7 @@ const kejaAuth = (() => {
           }
         }
         startOtpCountdown(60);
-        if (window.app) window.app.showToast(`🔄 New verification code sent to +${pendingSignupPhone}!`, 'success');
+        if (window.app) window.app.showToast(`🔄 New verification code sent to +${pendingPhone}!`, 'success');
       } else {
         if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to resend code.'}`, 'error');
         if (resendBtn) resendBtn.disabled = false;
@@ -369,7 +492,7 @@ const kejaAuth = (() => {
   }
 
   /* ─────────────────────────────────────────
-     SIGN IN (REAL BACKEND API)
+     PASSWORD SIGN IN
   ───────────────────────────────────────── */
   async function handleSignIn(e) {
     e.preventDefault();
@@ -449,7 +572,6 @@ const kejaAuth = (() => {
     if (signupEl) signupEl.style.display = 'none';
     if (loggedinEl) loggedinEl.style.display = 'block';
 
-    // Avatar initials
     const initials = (session.name || 'User')
       .split(' ')
       .map(w => w[0])
@@ -464,7 +586,6 @@ const kejaAuth = (() => {
     if (avatarEl) avatarEl.textContent = initials;
     if (greetingEl) greetingEl.textContent = `Hi, ${session.name}!`;
 
-    // Role badge & Admin detection
     const isAdmin = Boolean(
       session && (
         session.id === 'usr-admin-01' || 
@@ -480,8 +601,12 @@ const kejaAuth = (() => {
         badgeEl.textContent = '👑 Administrator';
         badgeEl.style.background = 'linear-gradient(135deg, #7c3aed, #4f46e5)';
         badgeEl.style.color = '#ffffff';
+      } else if (session.role === 'agency') {
+        badgeEl.textContent = '🏢 Real Estate Agency';
+        badgeEl.style.background = '#f3e8ff';
+        badgeEl.style.color = '#7c3aed';
       } else if (session.role === 'landlord') {
-        badgeEl.textContent = '🏠 Landlord';
+        badgeEl.textContent = '🏠 Direct Landlord';
         badgeEl.style.background = '#e0e7ff';
         badgeEl.style.color = '#4f46e5';
       } else {
@@ -493,10 +618,12 @@ const kejaAuth = (() => {
 
     // Show correct dashboard links
     const adminLinks = document.getElementById('auth-admin-links');
+    const agencyLinks = document.getElementById('auth-agency-links');
     const tenantLinks = document.getElementById('auth-tenant-links');
     const landlordLinks = document.getElementById('auth-landlord-links');
 
     if (adminLinks) adminLinks.style.display = isAdmin ? 'block' : 'none';
+    if (agencyLinks) agencyLinks.style.display = session.role === 'agency' ? 'block' : 'none';
     if (tenantLinks) tenantLinks.style.display = session.role === 'tenant' ? 'block' : 'none';
     if (landlordLinks) landlordLinks.style.display = (session.role === 'landlord' || isAdmin) ? 'block' : 'none';
 
@@ -539,10 +666,14 @@ const kejaAuth = (() => {
           btn.style.background = 'linear-gradient(135deg, #7c3aed, #4f46e5)';
           btn.style.color = '#ffd700';
           btn.style.fontWeight = '700';
+        } else if (session.role === 'agency') {
+          btn.style.background = 'linear-gradient(135deg, #7c3aed, #6366f1)';
+          btn.style.color = 'white';
+        } else if (session.role === 'landlord') {
+          btn.style.background = 'linear-gradient(135deg, #4f46e5, #7c3aed)';
+          btn.style.color = 'white';
         } else {
-          btn.style.background = session.role === 'landlord'
-            ? 'linear-gradient(135deg,#4f46e5,#7c3aed)'
-            : 'linear-gradient(135deg,#10b981,#059669)';
+          btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
           btn.style.color = 'white';
         }
       }
@@ -573,32 +704,35 @@ const kejaAuth = (() => {
   }
 
   /* ─────────────────────────────────────────
-     ROLE GUARD
+     ROLE GUARD (LANDLORD OR AGENCY)
   ───────────────────────────────────────── */
   function requireLandlordForAction(modalId) {
     const session = getSession();
     if (!session) {
-      if (window.app) window.app.showToast('Please sign in as a Landlord to post a property.', 'info');
+      if (window.app) window.app.showToast('Please sign in to post a property.', 'info');
       switchTab('signin');
       setRole('landlord', 'signin');
       openAuthModal();
       return;
     }
-    // Admins have full landlord access
+
     const isAdmin = Boolean(
       session.id === 'usr-admin-01' ||
       session.role === 'admin' ||
       session.isAdmin === true ||
       (session.email && session.email.toLowerCase().includes('admin'))
     );
-    if (session.role !== 'landlord' && !isAdmin) {
-      if (window.app) window.app.showToast('Only landlord accounts can post properties. Please switch or create a Landlord account.', 'info');
+
+    const isAuthorized = session.role === 'landlord' || session.role === 'agency' || isAdmin;
+
+    if (!isAuthorized) {
+      if (window.app) window.app.showToast('Only landlord or agency accounts can post properties.', 'info');
       switchTab('signup');
       setRole('landlord', 'signup');
       openAuthModal();
       return;
     }
-    // Verified or active landlord
+
     if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal(modalId);
     }
@@ -626,17 +760,11 @@ const kejaAuth = (() => {
         updateHeaderUI(null);
       }
     } catch {
-      // Offline fallback: keep existing localStorage session
       const session = getSession();
       if (session) updateHeaderUI(session);
     }
   }
 
-  /* ─────────────────────────────────────────
-     TENANT AUTH GUARD
-     Call with a callback — runs it if logged in,
-     otherwise nudges user to sign in as tenant.
-  ───────────────────────────────────────── */
   let pendingTenantAuthCallback = null;
 
   function handleAuthSuccess(user) {
@@ -659,7 +787,7 @@ const kejaAuth = (() => {
       return true;
     }
     pendingTenantAuthCallback = callback;
-    if (window.app) window.app.showToast('Please sign in or create a free account to view photos, live location, and landlord contacts.', 'info');
+    if (window.app) window.app.showToast('Please sign in or create a free account to view photos, live location, and contacts.', 'info');
     switchTab('signin');
     setRole('tenant', 'signin');
     openAuthModal();
@@ -678,6 +806,8 @@ const kejaAuth = (() => {
     openAuthModal,
     switchTab,
     setRole,
+    setSigninMode,
+    handleSendLoginOtp,
     handleSignIn,
     handleSignUp,
     handleVerifyOtp,
@@ -696,4 +826,3 @@ const kejaAuth = (() => {
 })();
 
 window.kejaAuth = kejaAuth;
-

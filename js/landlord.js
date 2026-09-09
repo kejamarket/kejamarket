@@ -214,6 +214,24 @@ class LandlordManager {
     );
   }
 
+  toggleManagedByFields(managedBy) {
+    const agencyRow = document.getElementById('post-agency-name-row');
+    const contactLabel = document.getElementById('post-contact-name-label');
+    const nameInput = document.getElementById('post-landlord-name');
+    const agencyInput = document.getElementById('post-agency-name');
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+
+    if (agencyRow) {
+      agencyRow.style.display = managedBy === 'agency' ? 'grid' : 'none';
+    }
+    if (contactLabel) {
+      contactLabel.textContent = managedBy === 'agency' ? 'Principal Agent / Contact Person *' : 'Your Full Name / Landlord *';
+    }
+    if (session && session.role === 'agency' && agencyInput) {
+      agencyInput.value = session.agencyName || session.name;
+    }
+  }
+
   setupFormSubmit() {
     const form = document.getElementById('post-ad-form');
     if (!form) return;
@@ -223,6 +241,11 @@ class LandlordManager {
 
       const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
 
+      const managedBy = document.getElementById('post-managed-by')?.value || (session && session.role === 'agency' ? 'agency' : 'landlord');
+      const agencyName = document.getElementById('post-agency-name')?.value.trim() || (session?.agencyName || session?.name || '');
+      const caretakerName = document.getElementById('post-caretaker-name')?.value.trim() || '';
+      const caretakerPhone = document.getElementById('post-caretaker-phone')?.value.trim() || '';
+
       const title = document.getElementById('post-title')?.value.trim() || '';
       const rent = parseFloat(document.getElementById('post-rent')?.value) || 0;
       const deposit = parseFloat(document.getElementById('post-deposit')?.value) || rent;
@@ -231,7 +254,7 @@ class LandlordManager {
       const description = document.getElementById('post-description')?.value.trim() || '';
       const waterType = document.getElementById('post-water')?.value || 'Borehole Water';
       const electricityType = document.getElementById('post-electricity')?.value || 'Prepaid (Tokens)';
-      const landlordName = document.getElementById('post-landlord-name')?.value.trim() || (session ? session.name : 'Direct Landlord');
+      const landlordName = document.getElementById('post-landlord-name')?.value.trim() || (session ? session.name : (managedBy === 'agency' ? 'Verified Agency' : 'Direct Landlord'));
       const phone = document.getElementById('post-phone')?.value.trim() || (session ? session.phone : '+254700000000');
 
       const suburbObj = (typeof ALL_SUBURBS !== 'undefined' && ALL_SUBURBS.find(s => s.name === suburb)) || { county: 'Nairobi', corridorId: 'nairobi_central' };
@@ -272,14 +295,20 @@ class LandlordManager {
         isFeatured: false,
         isTopAd: false,
         isVerified: true,
-        source: 'direct',
+        source: managedBy === 'agency' ? 'agency' : 'direct',
+        managedBy: managedBy,
+        agencyName: managedBy === 'agency' ? (agencyName || landlordName) : null,
+        caretakerName: caretakerName || null,
+        caretakerPhone: caretakerPhone || null,
         postedTimeAgo: 'Just now',
         landlord: {
           id: session ? session.id : ('usr-' + Date.now()),
-          name: landlordName,
+          name: managedBy === 'agency' ? (agencyName || landlordName) : landlordName,
           phone,
           whatsapp: phone,
           isVerified: session ? session.isVerified : true,
+          isAgency: managedBy === 'agency',
+          agencyName: managedBy === 'agency' ? (agencyName || landlordName) : null,
           memberSince: 'September 2026',
           rating: 5.0,
           reviewCount: 1

@@ -40,22 +40,30 @@
         </a>
       </div>
 
-      <!-- Header Search Form -->
-      <form class="header-search-bar" id="header-search-form" onsubmit="return false;">
-        <select class="search-category-select" id="header-category-select" aria-label="Search Category">
-          <option value="All">All Categories</option>
-        </select>
-        <input 
-          type="text" 
-          id="header-search-input" 
-          class="search-input-field" 
-          placeholder="Search bedsitter, 1 bedroom, Kilimani, Ruaka, Roysambu..." 
-          aria-label="Search listings"
-        >
-        <button type="submit" class="search-submit-btn">
-          <i class="fas fa-search"></i> Search
-        </button>
-      </form>
+      <!-- Header Search Form & Floating Suggestions -->
+      <div class="header-search-wrapper">
+        <form class="header-search-bar" id="header-search-form" onsubmit="return false;">
+          <select class="search-category-select" id="header-category-select" aria-label="Search Category">
+            <option value="All">All Categories</option>
+          </select>
+          <input 
+            type="text" 
+            id="header-search-input" 
+            class="search-input-field" 
+            placeholder="Search bedsitter, 1 bedroom, Kilimani, Ruaka, Roysambu..." 
+            aria-label="Search listings"
+            autocomplete="off"
+          >
+          <button type="button" id="btn-clear-search" class="btn-clear-search" style="display: none;" title="Clear search" onclick="app.clearSearchInput()">
+            <i class="fas fa-times-circle"></i>
+          </button>
+          <button type="submit" class="search-submit-btn">
+            <i class="fas fa-search"></i> Search
+          </button>
+        </form>
+        <!-- Floating Live Search Suggestions Dropdown -->
+        <div id="header-search-suggestions" class="search-suggestions-dropdown"></div>
+      </div>
 
       <!-- Header Action Buttons -->
       <div class="header-actions">
@@ -338,31 +346,48 @@
           <!-- STEP 1: Core details -->
           <div class="form-grid-2">
             <div class="form-group">
-              <label>Your Name / Agency *</label>
+              <label>Listing Managed By *</label>
+              <select id="post-managed-by" class="form-control" onchange="landlordManager.toggleManagedByFields(this.value)">
+                <option value="landlord">Direct Landlord / Property Owner</option>
+                <option value="agency">Real Estate Agency / Management Firm</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="post-contact-name-label">Your Full Name / Landlord *</label>
               <input type="text" id="post-landlord-name" class="form-control" placeholder="e.g. Mwangi James" required>
             </div>
+          </div>
+
+          <div class="form-grid-2" id="post-agency-name-row" style="display: none;">
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>Agency / Company Name *</label>
+              <input type="text" id="post-agency-name" class="form-control" placeholder="e.g. HassConsult Real Estate Ltd">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
             <div class="form-group">
               <label>WhatsApp / Call Number *</label>
               <input type="tel" id="post-phone" class="form-control" placeholder="e.g. 0712345678" required>
             </div>
-          </div>
-
-          <div class="form-grid-2">
             <div class="form-group">
               <label>House Type *</label>
               <select id="post-category" class="form-control" required></select>
             </div>
-            <div class="form-group">
-              <label>Estate / Area *</label>
-              <select id="post-suburb" class="form-control" required></select>
-            </div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
+              <label>Estate / Area *</label>
+              <select id="post-suburb" class="form-control" required></select>
+            </div>
+            <div class="form-group">
               <label>Rent (KES) *</label>
               <input type="number" id="post-rent" class="form-control" placeholder="e.g. 15000" required>
             </div>
+          </div>
+
+          <div class="form-grid-2">
             <div class="form-group">
               <label>Rental Type *</label>
               <select id="post-price-type" class="form-control">
@@ -370,11 +395,10 @@
                 <option value="night">Per Night (BnB / Airbnb)</option>
               </select>
             </div>
-          </div>
-
-          <div class="form-group">
-            <label>Ad Title *</label>
-            <input type="text" id="post-title" class="form-control" placeholder="e.g. 2 Bedroom with Parking in Ruaka" required>
+            <div class="form-group">
+              <label>Ad Title *</label>
+              <input type="text" id="post-title" class="form-control" placeholder="e.g. 2 Bedroom with Parking in Ruaka" required>
+            </div>
           </div>
 
           <!-- STEP 2: Photos -->
@@ -389,10 +413,27 @@
             <div class="photo-preview-grid" id="post-photos-preview"></div>
           </div>
 
-          <!-- STEP 3: Optional extras -->
-          <details style="margin-bottom: 14px;">
-            <summary style="cursor:pointer; font-size:0.88rem; font-weight:700; color:#00b53f; padding: 6px 0;">+ Add more details (optional)</summary>
+          <!-- STEP 3: Caretaker & Optional extras -->
+          <details style="margin-bottom: 14px;" open>
+            <summary style="cursor:pointer; font-size:0.88rem; font-weight:700; color:#00b53f; padding: 6px 0;">+ On-Site Caretaker & Property Features (Optional)</summary>
             <div style="padding-top: 12px;">
+
+              <!-- On-Site Caretaker Section -->
+              <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
+                <div style="font-weight: 700; font-size: 0.85rem; color: #1e293b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-key" style="color: #f59e0b;"></i> On-Site Caretaker Contact <span style="font-weight: 400; color: #64748b; font-size: 0.78rem;">(For Gate Entry & Physical Room Viewing)</span>
+                </div>
+                <div class="form-grid-2">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.8rem;">Caretaker Name</label>
+                    <input type="text" id="post-caretaker-name" class="form-control" placeholder="e.g. Samuel (Gate / Keys)">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.8rem;">Caretaker Phone</label>
+                    <input type="tel" id="post-caretaker-phone" class="form-control" placeholder="e.g. 0711998877">
+                  </div>
+                </div>
+              </div>
 
               <div class="form-group">
                 <label>Security Deposit (KES)</label>
@@ -536,8 +577,8 @@
             <span class="spec-value" id="spec-electricity">-</span>
           </div>
           <div class="spec-item">
-            <span class="spec-label">Garbage Fee</span>
-            <span class="spec-value" id="spec-garbage">-</span>
+            <span class="spec-label">Listing Source</span>
+            <span class="spec-value" id="spec-source">-</span>
           </div>
           <div class="spec-item">
             <span class="spec-label">Verification</span>
@@ -578,20 +619,23 @@
           </div>
         </div>
 
-        <!-- Landlord Contacts Box -->
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 22px;">
+        <!-- Landlord / Agency Contacts Box -->
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 14px;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
             <div>
-              <div style="font-weight: 800; font-size: 1.05rem; color: #166534;" id="detail-landlord-name">-</div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-weight: 800; font-size: 1.05rem; color: #166534;" id="detail-landlord-name">-</span>
+                <span id="detail-management-badge" style="background: #dcfce7; color: #15803d; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 20px;">Direct Landlord</span>
+              </div>
               <div style="font-size: 0.8rem; color: #15803d;" id="detail-landlord-since">-</div>
               <div style="font-size: 0.88rem; font-weight: 700; margin-top: 4px; color: #0f172a;" id="detail-landlord-phone-display">-</div>
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
               <button id="detail-btn-inbox-chat" class="btn-primary" style="padding: 10px 18px; font-size: 0.9rem; border-radius: 8px; background: #00b53f; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="app.openChatForCurrentProperty()">
-                <i class="fas fa-comment-dots"></i> Message Landlord
+                <i class="fas fa-comment-dots"></i> Message
               </button>
               <a id="detail-btn-call" href="#" class="btn-secondary" style="padding: 10px 18px; font-size: 0.9rem; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px;">
-                <i class="fas fa-phone-alt"></i> Call Landlord
+                <i class="fas fa-phone-alt"></i> Call
               </a>
               <a id="detail-btn-directions" href="#" target="_blank" class="btn-secondary" style="padding: 10px 14px; font-size: 0.88rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 6px;">
                 <i class="fas fa-directions"></i> Maps
@@ -600,40 +644,72 @@
           </div>
         </div>
 
+        <!-- On-Site Caretaker Contact Card (If available) -->
+        <div id="detail-caretaker-card" style="display: none; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 16px; margin-bottom: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 38px; height: 38px; border-radius: 50%; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <i class="fas fa-key"></i>
+              </div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.92rem; color: #92400e;">
+                  🔑 On-Site Caretaker: <span id="detail-caretaker-name" style="color: #78350f;">Mwangi</span>
+                </div>
+                <div style="font-size: 0.78rem; color: #b45309;">
+                  Available at the building gate for instant physical room viewing & keys
+                </div>
+              </div>
+            </div>
+            <a id="detail-btn-caretaker-call" href="#" class="btn-primary" style="padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; background: #d97706; border: none; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px;">
+              <i class="fas fa-phone-alt"></i> Call Caretaker
+            </a>
+          </div>
+        </div>
+
         <!-- Value-Add Affiliate Cards (Monetization: Lead Generation) -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px;">
-          <!-- Nairobi Movers Card -->
-          <div style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1px solid #fed7aa; border-radius: 12px; padding: 16px; cursor: pointer;" onclick="app.openModal('modal-lead-movers')">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-              <div style="width: 38px; height: 38px; border-radius: 10px; background: #f97316; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-truck-moving" style="color: white; font-size: 1rem;"></i>
+          <!-- Real Nairobi Moving Partners Card -->
+          <div style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1.5px solid #fed7aa; border-radius: 12px; padding: 16px; cursor: pointer; transition: transform 0.2s ease;" onclick="app.openModal('modal-lead-movers')">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: #ea580c; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-truck-moving" style="color: white; font-size: 1rem;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 800; font-size: 0.92rem; color: #9a3412;">🚚 Nairobi Movers Network</div>
+                  <div style="font-size: 0.75rem; color: #c2410c; font-weight: 600;">Nellions, Cube, Taylor & Alpha Movers</div>
+                </div>
               </div>
-              <div>
-                <div style="font-weight: 800; font-size: 0.92rem; color: #9a3412;">🚚 Moving to This Estate?</div>
-                <div style="font-size: 0.75rem; color: #c2410c;">Nairobi Movers Partner</div>
-              </div>
+              <span style="background: #ffedd5; color: #c2410c; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #fdba74;">VERIFIED</span>
             </div>
-            <p style="font-size: 0.8rem; color: #78350f; line-height: 1.5; margin-bottom: 10px;">Get a free quote for professional movers within Nairobi. Same-day & weekend moves available.</p>
-            <button class="btn-primary" style="width: 100%; background: #f97316; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
-              <i class="fas fa-arrow-right"></i> Get Free Moving Quote
-            </button>
+            <p style="font-size: 0.8rem; color: #78350f; line-height: 1.5; margin-bottom: 10px;">Professional packing, careful transport & unpacking across Nairobi estates. Free instant quotes & same-day moves.</p>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-primary" style="flex: 1; background: #ea580c; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
+                <i class="fas fa-calculator"></i> Get Moving Quotes
+              </button>
+            </div>
           </div>
 
-          <!-- Fibre WiFi Connection Card -->
-          <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #93c5fd; border-radius: 12px; padding: 16px; cursor: pointer;" onclick="app.openModal('modal-lead-fibre')">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-              <div style="width: 38px; height: 38px; border-radius: 10px; background: #2563eb; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-wifi" style="color: white; font-size: 1rem;"></i>
+          <!-- Real Home Fibre & 5G Connection Card -->
+          <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 16px; cursor: pointer; transition: transform 0.2s ease;" onclick="app.openModal('modal-lead-fibre')">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: #0284c7; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-wifi" style="color: white; font-size: 1rem;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 800; font-size: 0.92rem; color: #075985;">📡 Home Fibre & 5G Internet</div>
+                  <div style="font-size: 0.75rem; color: #0369a1; font-weight: 600;">Safaricom, Zuku, Airtel 5G & Faiba</div>
+                </div>
               </div>
-              <div>
-                <div style="font-weight: 800; font-size: 0.92rem; color: #1e3a8a;">📡 Need WiFi Connection?</div>
-                <div style="font-size: 0.75rem; color: #1d4ed8;">Safaricom & Zuku Fibre</div>
-              </div>
+              <span style="background: #e0f2fe; color: #0284c7; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #7dd3fc;">OFFICIAL</span>
             </div>
-            <p style="font-size: 0.8rem; color: #1e3a5f; line-height: 1.5; margin-bottom: 10px;">Install high-speed fibre internet in your new house. From KSh 2,500/mo for 20Mbps.</p>
-            <button class="btn-primary" style="width: 100%; background: #2563eb; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
-              <i class="fas fa-arrow-right"></i> Request WiFi Installation
-            </button>
+            <p style="font-size: 0.8rem; color: #0c4a6e; line-height: 1.5; margin-bottom: 10px;">Fast 24-hr technician installation. Safaricom from KSh 2,999 (40Mbps), Airtel 5G from KSh 1,999 (15Mbps), Zuku & Faiba.</p>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-primary" style="flex: 1; background: #0284c7; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
+                <i class="fas fa-bolt"></i> Check Coverage & Book
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1093,92 +1169,230 @@
   </div>
 
   <!-- ====================================================================
-       MODAL 9: Nairobi Movers Lead Form (Affiliate)
+       MODAL 9: Verified Nairobi Movers Network (Real Relocation Partners)
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-lead-movers">
-    <div class="modal-dialog" style="max-width: 520px;">
-      <div class="modal-header" style="background: linear-gradient(135deg, #ea580c, #f97316);">
-        <h3 style="color: white;"><i class="fas fa-truck-moving"></i> Nairobi Moving Quote</h3>
+    <div class="modal-dialog" style="max-width: 680px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #c2410c, #ea580c);">
+        <h3 style="color: white;"><i class="fas fa-truck-moving"></i> Verified Nairobi Movers Network</h3>
         <button class="modal-close-btn" onclick="app.closeModal('modal-lead-movers')" style="color: white;">&times;</button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 14px;">
-          Get a free quote from our vetted Nairobi movers. Professional packing, transport, and unpacking. Same-day & weekend moves available.
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 12px; line-height: 1.5;">
+          Connect directly with Nairobi’s top-rated licensed moving companies. Get professional packing boxes, fragile item protection, and same-day relocation across all Nairobi estates.
         </p>
 
-        <form onsubmit="submitMoversLead(event)">
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label>Your Name *</label>
-              <input type="text" id="mover-lead-name" class="form-control" placeholder="e.g. John Kamau" required>
-            </div>
-            <div class="form-group">
-              <label>Phone Number *</label>
-              <input type="tel" id="mover-lead-phone" class="form-control" placeholder="e.g. 0722123456" required>
-            </div>
+        <!-- Top Verified Mover Partners Quick-Call Strip -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px;">
+          <!-- Nellions -->
+          <div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="font-weight: 800; font-size: 0.85rem; color: #9a3412;">Nellions Moving</div>
+            <div style="font-size: 0.72rem; color: #c2410c; margin-bottom: 6px;">Premier Relocations</div>
+            <a href="tel:+254700000002" class="btn-secondary" style="display: block; font-size: 0.75rem; padding: 4px; border-radius: 4px; text-decoration: none; font-weight: 700; color: #9a3412; border-color: #fdba74;">
+              <i class="fas fa-phone-alt"></i> 0700 000 002
+            </a>
           </div>
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label>Moving From *</label>
-              <input type="text" id="mover-lead-from" class="form-control" placeholder="e.g. Pipeline, Embakasi" required>
-            </div>
-            <div class="form-group">
-              <label>Moving To *</label>
-              <input type="text" id="mover-lead-to" class="form-control" placeholder="e.g. Ruaka, Kiambu Rd" required>
-            </div>
+          <!-- Cube Movers -->
+          <div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="font-weight: 800; font-size: 0.85rem; color: #9a3412;">Cube Movers</div>
+            <div style="font-size: 0.72rem; color: #c2410c; margin-bottom: 6px;">Home & Office</div>
+            <a href="tel:+254727773663" class="btn-secondary" style="display: block; font-size: 0.75rem; padding: 4px; border-radius: 4px; text-decoration: none; font-weight: 700; color: #9a3412; border-color: #fdba74;">
+              <i class="fas fa-phone-alt"></i> 0727 773 663
+            </a>
           </div>
-          <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent;">
-            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-lead-movers')">Cancel</button>
-            <button type="submit" class="btn-primary" style="background: #f97316; border: none; font-weight: 700; cursor: pointer;">
-              <i class="fas fa-paper-plane"></i> Get Free Quote
-            </button>
+          <!-- Taylor Movers -->
+          <div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="font-weight: 800; font-size: 0.85rem; color: #9a3412;">Taylor Movers</div>
+            <div style="font-size: 0.72rem; color: #c2410c; margin-bottom: 6px;">Nairobi & Environs</div>
+            <a href="tel:+254721410517" class="btn-secondary" style="display: block; font-size: 0.75rem; padding: 4px; border-radius: 4px; text-decoration: none; font-weight: 700; color: #9a3412; border-color: #fdba74;">
+              <i class="fas fa-phone-alt"></i> 0721 410 517
+            </a>
           </div>
-        </form>
+          <!-- Alpha Movers -->
+          <div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="font-weight: 800; font-size: 0.85rem; color: #9a3412;">Alpha Movers</div>
+            <div style="font-size: 0.72rem; color: #c2410c; margin-bottom: 6px;">Budget & Reliable</div>
+            <a href="tel:+254722979922" class="btn-secondary" style="display: block; font-size: 0.75rem; padding: 4px; border-radius: 4px; text-decoration: none; font-weight: 700; color: #9a3412; border-color: #fdba74;">
+              <i class="fas fa-phone-alt"></i> 0722 979 922
+            </a>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid #fed7aa; padding-top: 14px; margin-top: 10px;">
+          <h4 style="font-size: 0.95rem; font-weight: 800; color: #9a3412; margin-bottom: 10px;">
+            <i class="fas fa-calculator"></i> Request Instant Quotation from Partners
+          </h4>
+          <form onsubmit="submitMoversLead(event)">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Your Full Name *</label>
+                <input type="text" id="mover-lead-name" class="form-control" placeholder="e.g. Brian Omondi" required>
+              </div>
+              <div class="form-group">
+                <label>Kenyan Phone Number (for SMS & Call) *</label>
+                <input type="tel" id="mover-lead-phone" class="form-control" placeholder="e.g. 0712345678" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>House Size / Volume *</label>
+                <select id="mover-lead-size" class="form-control">
+                  <option value="Single Room / Bedsitter">Single Room / Bedsitter (Avg KSh 6,500 - 9,500)</option>
+                  <option value="1 Bedroom Apartment" selected>1 Bedroom Apartment (Avg KSh 10,000 - 14,000)</option>
+                  <option value="2 Bedroom Apartment">2 Bedroom Apartment (Avg KSh 14,000 - 20,000)</option>
+                  <option value="3 Bedroom Apartment">3 Bedroom Apartment (Avg KSh 20,000 - 28,000)</option>
+                  <option value="4 Bedroom / Townhouse / Villa">4+ Bedroom / Maisonette / Villa</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Preferred Moving Partner</label>
+                <select id="mover-lead-partner" class="form-control">
+                  <option value="All Verified Partners" selected>Compare All 4 Verified Mover Quotes (Best Deal)</option>
+                  <option value="Nellions Moving">Nellions Moving & Relocations</option>
+                  <option value="Cube Movers">Cube Movers Kenya</option>
+                  <option value="Taylor Movers">Taylor Movers Kenya</option>
+                  <option value="Alpha Movers">Alpha Movers Kenya</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Moving From (Current Estate) *</label>
+                <input type="text" id="mover-lead-from" class="form-control" placeholder="e.g. Roysambu, Thika Rd" required>
+              </div>
+              <div class="form-group">
+                <label>Moving To (New Estate) *</label>
+                <input type="text" id="mover-lead-to" class="form-control" placeholder="e.g. Ruaka, Kiambu Rd" required>
+              </div>
+            </div>
+            <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent; display: flex; justify-content: space-between; align-items: center;">
+              <button type="button" class="btn-secondary" onclick="app.closeModal('modal-lead-movers')">Cancel</button>
+              <button type="submit" class="btn-primary" style="background: #ea580c; border: none; font-weight: 700; cursor: pointer; padding: 10px 20px;">
+                <i class="fas fa-paper-plane"></i> Send Free Quote Request
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- ====================================================================
-       MODAL 10: Fibre WiFi Installation Lead (Affiliate)
+       MODAL 10: Verified Nairobi Home Fibre & 5G Internet Providers
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-lead-fibre">
-    <div class="modal-dialog" style="max-width: 520px;">
-      <div class="modal-header" style="background: linear-gradient(135deg, #1d4ed8, #2563eb);">
-        <h3 style="color: white;"><i class="fas fa-wifi"></i> Fibre WiFi Installation</h3>
+    <div class="modal-dialog" style="max-width: 720px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0369a1, #0284c7);">
+        <h3 style="color: white;"><i class="fas fa-wifi"></i> Official Nairobi Home Fibre & 5G ISP Center</h3>
         <button class="modal-close-btn" onclick="app.closeModal('modal-lead-fibre')" style="color: white;">&times;</button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 14px;">
-          Get high-speed Safaricom Fibre or Zuku Internet installed in your new house. Plans from KSh 2,500/mo.
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 12px; line-height: 1.5;">
+          Check real-time coverage and schedule 24-hour technician installation with verified internet service providers in your Nairobi neighborhood.
         </p>
 
-        <form onsubmit="submitFibreLead(event)">
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label>Your Phone Number *</label>
-              <input type="tel" id="fibre-lead-phone" class="form-control" placeholder="e.g. 0712345678" required>
+        <!-- Official ISP Packages Overview -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px;">
+          <!-- Safaricom Fibre -->
+          <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <span style="font-weight: 800; font-size: 0.85rem; color: #166534;">Safaricom Fibre</span>
+              <span style="font-size: 0.68rem; background: #dcfce7; color: #15803d; padding: 1px 4px; border-radius: 3px; font-weight: 700;">40-1000M</span>
             </div>
-            <div class="form-group">
-              <label>Estate / Suburb *</label>
-              <input type="text" id="fibre-lead-estate" class="form-control" placeholder="e.g. Ruaka, Kiambu" required>
+            <div style="font-size: 0.75rem; color: #166534; margin-bottom: 6px;">From <strong>KSh 2,999/mo</strong> (40Mbps)</div>
+            <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 6px;">USSD: <strong style="color:#0f172a;">*400#</strong></div>
+            <a href="tel:400" class="btn-secondary" style="display: block; text-align: center; font-size: 0.72rem; padding: 3px; border-radius: 4px; text-decoration: none; font-weight: 700; color: #166534; border-color: #86efac;">
+              <i class="fas fa-phone-alt"></i> Call 400
+            </a>
+          </div>
+
+          <!-- Zuku Fiber -->
+          <div style="background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 8px; padding: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <span style="font-weight: 800; font-size: 0.85rem; color: #1e40af;">Zuku Fiber</span>
+              <span style="font-size: 0.68rem; background: #dbeafe; color: #1d4ed8; padding: 1px 4px; border-radius: 3px; font-weight: 700;">Triple Play</span>
             </div>
+            <div style="font-size: 0.75rem; color: #1e40af; margin-bottom: 6px;">From <strong>KSh 2,999/mo</strong> (40Mbps)</div>
+            <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 6px;">Includes Free TV Option</div>
+            <a href="tel:+254719028200" class="btn-secondary" style="display: block; text-align: center; font-size: 0.72rem; padding: 3px; border-radius: 4px; text-decoration: none; font-weight: 700; color: #1e40af; border-color: #93c5fd;">
+              <i class="fas fa-phone-alt"></i> 0719 028 200
+            </a>
           </div>
-          <div class="form-group">
-            <label>Preferred ISP</label>
-            <select id="fibre-lead-isp" class="form-control">
-              <option value="Safaricom Fibre">Safaricom Fibre (Home)</option>
-              <option value="Zuku Fibre">Zuku Fibre</option>
-              <option value="JTL Faiba">JTL Faiba</option>
-              <option value="Any Provider">Any Provider (Best Deal)</option>
-            </select>
+
+          <!-- Airtel 5G & Xstream -->
+          <div style="background: #fef2f2; border: 1.5px solid #fca5a5; border-radius: 8px; padding: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <span style="font-weight: 800; font-size: 0.85rem; color: #991b1b;">Airtel 5G & Fibre</span>
+              <span style="font-size: 0.68rem; background: #fee2e2; color: #b91c1c; padding: 1px 4px; border-radius: 3px; font-weight: 700;">Wireless 5G</span>
+            </div>
+            <div style="font-size: 0.75rem; color: #991b1b; margin-bottom: 6px;">From <strong>KSh 1,999/mo</strong> (15Mbps)</div>
+            <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 6px;">Instant Plug & Play</div>
+            <a href="tel:+254733100400" class="btn-secondary" style="display: block; text-align: center; font-size: 0.72rem; padding: 3px; border-radius: 4px; text-decoration: none; font-weight: 700; color: #991b1b; border-color: #fca5a5;">
+              <i class="fas fa-phone-alt"></i> 0733 100 400
+            </a>
           </div>
-          <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent;">
-            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-lead-fibre')">Cancel</button>
-            <button type="submit" class="btn-primary" style="background: #2563eb; border: none; font-weight: 700; cursor: pointer;">
-              <i class="fas fa-wifi"></i> Request Installation
-            </button>
+
+          <!-- Faiba JTL -->
+          <div style="background: #faf5ff; border: 1.5px solid #d8b4fe; border-radius: 8px; padding: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <span style="font-weight: 800; font-size: 0.85rem; color: #6b21a8;">Faiba JTL Home</span>
+              <span style="font-size: 0.68rem; background: #f3e8ff; color: #7e22ce; padding: 1px 4px; border-radius: 3px; font-weight: 700;">Ultra High</span>
+            </div>
+            <div style="font-size: 0.75rem; color: #6b21a8; margin-bottom: 6px;">From <strong>KSh 5,000/mo</strong> (90Mbps)</div>
+            <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 6px;">+ Free 4G Mobile Sim Data</div>
+            <a href="tel:+254747585100" class="btn-secondary" style="display: block; text-align: center; font-size: 0.72rem; padding: 3px; border-radius: 4px; text-decoration: none; font-weight: 700; color: #6b21a8; border-color: #d8b4fe;">
+              <i class="fas fa-phone-alt"></i> 0747 585 100
+            </a>
           </div>
-        </form>
+        </div>
+
+        <div style="border-top: 1px solid #bae6fd; padding-top: 14px; margin-top: 10px;">
+          <h4 style="font-size: 0.95rem; font-weight: 800; color: #0369a1; margin-bottom: 10px;">
+            <i class="fas fa-calendar-check"></i> Request Technician Installation & Coverage Confirmation
+          </h4>
+          <form onsubmit="submitFibreLead(event)">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Your Phone Number *</label>
+                <input type="tel" id="fibre-lead-phone" class="form-control" placeholder="e.g. 0712345678" required>
+              </div>
+              <div class="form-group">
+                <label>Estate / Apartment / House No. *</label>
+                <input type="text" id="fibre-lead-estate" class="form-control" placeholder="e.g. Ruaka, Joyland Court Hse B4" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Preferred ISP Provider</label>
+                <select id="fibre-lead-isp" class="form-control">
+                  <option value="Safaricom Home Fibre (Bronze 40Mbps - KSh 2,999/mo)">Safaricom Fibre (Bronze 40Mbps @ KSh 2,999/mo)</option>
+                  <option value="Safaricom Home Fibre (Silver 60Mbps - KSh 4,100/mo)">Safaricom Fibre (Silver 60Mbps @ KSh 4,100/mo)</option>
+                  <option value="Safaricom Home Fibre (Gold 150Mbps - KSh 6,299/mo)">Safaricom Fibre (Gold 150Mbps @ KSh 6,299/mo)</option>
+                  <option value="Zuku Fiber (Shujaa 40Mbps - KSh 2,999/mo)">Zuku Fiber (Shujaa 40Mbps @ KSh 2,999/mo)</option>
+                  <option value="Zuku Fiber (Bingwa 80Mbps - KSh 3,999/mo)">Zuku Fiber (Bingwa 80Mbps @ KSh 3,999/mo)</option>
+                  <option value="Airtel Xstream Fibre (15Mbps - KSh 1,999/mo)">Airtel Xstream Fibre (15Mbps @ KSh 1,999/mo)</option>
+                  <option value="Airtel 5G Wireless Unlimited Router">Airtel 5G Wireless Home Router (Plug & Play)</option>
+                  <option value="Faiba JTL Home Plus (90Mbps - KSh 5,000/mo)">Faiba JTL Home (90Mbps @ KSh 5,000/mo)</option>
+                  <option value="Check Best Coverage (Any Available Provider)">Any Available ISP (Best Signal in My Building)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Desired Installation Timing</label>
+                <select id="fibre-lead-time" class="form-control">
+                  <option value="Immediately (Within 24 Hours)">Immediately (Within 24 Hours)</option>
+                  <option value="This Weekend">This Weekend</option>
+                  <option value="Next Week / On Move-In Day">On Move-In Day</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer" style="padding: 12px 0 0 0; background: transparent; display: flex; justify-content: space-between; align-items: center;">
+              <button type="button" class="btn-secondary" onclick="app.closeModal('modal-lead-fibre')">Cancel</button>
+              <button type="submit" class="btn-primary" style="background: #0284c7; border: none; font-weight: 700; cursor: pointer; padding: 10px 20px;">
+                <i class="fas fa-wifi"></i> Book Installation Request
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -1213,32 +1427,65 @@
         <!-- ── SIGN IN PANEL ── -->
         <div id="auth-panel-signin">
           <!-- Role chooser -->
-          <div style="display:flex; gap:12px; margin-bottom:20px;">
+          <div style="display:flex; gap:8px; margin-bottom:16px;">
             <button onclick="kejaAuth.setRole('tenant','signin')" id="role-signin-tenant"
-              class="role-btn role-btn-active" style="flex:1;">
-              <i class="fas fa-user"></i><br>I'm a Tenant
+              class="role-btn role-btn-active" style="flex:1; padding:8px 4px; font-size:0.82rem;">
+              <i class="fas fa-user"></i><br>Tenant
             </button>
             <button onclick="kejaAuth.setRole('landlord','signin')" id="role-signin-landlord"
-              class="role-btn" style="flex:1;">
-              <i class="fas fa-building"></i><br>I'm a Landlord
+              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
+              <i class="fas fa-building"></i><br>Landlord
+            </button>
+            <button onclick="kejaAuth.setRole('agency','signin')" id="role-signin-agency"
+              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
+              <i class="fas fa-briefcase"></i><br>Agency / Agent
             </button>
           </div>
-          <form id="form-signin" onsubmit="kejaAuth.handleSignIn(event)">
+
+          <!-- Sign-in Submode Toggle (Phone SMS OTP vs Password) -->
+          <div style="display:flex; background:#f1f5f9; border-radius:8px; padding:3px; margin-bottom:16px;">
+            <button type="button" id="signin-mode-otp" onclick="kejaAuth.setSigninMode('otp')" style="flex:1; border:none; background:#ffffff; color:#0f172a; font-weight:700; font-size:0.82rem; padding:7px; border-radius:6px; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+              <i class="fas fa-mobile-alt"></i> Phone SMS OTP
+            </button>
+            <button type="button" id="signin-mode-password" onclick="kejaAuth.setSigninMode('password')" style="flex:1; border:none; background:transparent; color:#64748b; font-weight:600; font-size:0.82rem; padding:7px; border-radius:6px; cursor:pointer;">
+              <i class="fas fa-lock"></i> Password Sign In
+            </button>
+          </div>
+
+          <!-- Mode 1: Fast Phone SMS OTP Login (Anti-Fraud Phone Proof) -->
+          <form id="form-signin-otp" onsubmit="kejaAuth.handleSendLoginOtp(event)">
+            <div class="form-group">
+              <label>Registered Phone Number <span style="font-weight:400; color:#64748b;">(SMS code will be sent)</span></label>
+              <input type="tel" id="signin-otp-phone" class="form-control" placeholder="0712345678 or 254712345678" required autofocus>
+            </div>
+            <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:8px 12px; margin-bottom:14px; font-size:0.78rem; color:#166534;">
+              <i class="fas fa-shield-alt"></i> <strong>Anti-Fraud Protection:</strong> An instant 4-digit SMS OTP code will be sent to your phone to confirm your active SIM.
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;margin-top:4px;">
+              <i class="fas fa-paper-plane"></i> Send SMS Login Code
+            </button>
+            <p style="text-align:center;margin-top:14px;font-size:0.85rem;color:#6b7280;">
+              No account? <a href="#" onclick="kejaAuth.switchTab('signup');return false;" style="color:#4f46e5;font-weight:600;">Create one free</a>
+            </p>
+          </form>
+
+          <!-- Mode 2: Password Sign In -->
+          <form id="form-signin-password" onsubmit="kejaAuth.handleSignIn(event)" style="display:none;">
             <div class="form-group">
               <label>Phone / Email</label>
-              <input type="text" id="signin-identifier" class="form-control" placeholder="0712345678 or name@email.com" required>
+              <input type="text" id="signin-identifier" class="form-control" placeholder="0712345678 or name@email.com">
             </div>
             <div class="form-group">
               <label>Password</label>
               <div style="position:relative;">
-                <input type="password" id="signin-password" class="form-control" placeholder="Enter password" required style="padding-right:42px;">
+                <input type="password" id="signin-password" class="form-control" placeholder="Enter password" style="padding-right:42px;">
                 <button type="button" onclick="kejaAuth.togglePwd('signin-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;">
                   <i class="fas fa-eye"></i>
                 </button>
               </div>
             </div>
             <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;margin-top:4px;">
-              <i class="fas fa-sign-in-alt"></i> Sign In
+              <i class="fas fa-sign-in-alt"></i> Sign In with Password
             </button>
             <p style="text-align:center;margin-top:14px;font-size:0.85rem;color:#6b7280;">
               No account? <a href="#" onclick="kejaAuth.switchTab('signup');return false;" style="color:#4f46e5;font-weight:600;">Create one free</a>
@@ -1249,29 +1496,50 @@
         <!-- ── SIGN UP PANEL ── -->
         <div id="auth-panel-signup" style="display:none;">
           <!-- Role chooser -->
-          <div style="display:flex; gap:12px; margin-bottom:20px;">
+          <div style="display:flex; gap:8px; margin-bottom:16px;">
             <button onclick="kejaAuth.setRole('tenant','signup')" id="role-signup-tenant"
-              class="role-btn role-btn-active" style="flex:1;">
-              <i class="fas fa-user"></i><br>I'm a Tenant
+              class="role-btn role-btn-active" style="flex:1; padding:8px 4px; font-size:0.82rem;">
+              <i class="fas fa-user"></i><br>Tenant
             </button>
             <button onclick="kejaAuth.setRole('landlord','signup')" id="role-signup-landlord"
-              class="role-btn" style="flex:1;">
-              <i class="fas fa-building"></i><br>I'm a Landlord
+              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
+              <i class="fas fa-building"></i><br>Landlord
+            </button>
+            <button onclick="kejaAuth.setRole('agency','signup')" id="role-signup-agency"
+              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
+              <i class="fas fa-briefcase"></i><br>Agency / Agent
             </button>
           </div>
+
           <form id="form-signup" onsubmit="kejaAuth.handleSignUp(event)">
-            <div class="form-group">
-              <label>Full Name *</label>
+            <!-- Tenant & Landlord Name -->
+            <div class="form-group" id="signup-name-group">
+              <label id="signup-name-label">Full Name *</label>
               <input type="text" id="signup-name" class="form-control" placeholder="e.g. John Mwangi" required>
             </div>
-            <div class="form-group">
-              <label>Phone Number *</label>
-              <input type="tel" id="signup-phone" class="form-control" placeholder="0712345678" required>
+
+            <!-- Agency-specific fields -->
+            <div id="signup-agency-fields" style="display:none;">
+              <div class="form-group">
+                <label>Real Estate Agency / Company Name *</label>
+                <input type="text" id="signup-agency-name" class="form-control" placeholder="e.g. HassConsult Real Estate Ltd">
+              </div>
+              <div class="form-group">
+                <label>Office Location / Headquarters</label>
+                <input type="text" id="signup-agency-location" class="form-control" placeholder="e.g. ABC Place, Westlands">
+              </div>
             </div>
+
             <div class="form-group">
-              <label>Email (optional)</label>
+              <label>Phone Number * <span style="font-weight:400; color:#64748b;">(SMS OTP sent here)</span></label>
+              <input type="tel" id="signup-phone" class="form-control" placeholder="0712345678 or 0112345678" required>
+            </div>
+
+            <div class="form-group">
+              <label>Email Address</label>
               <input type="email" id="signup-email" class="form-control" placeholder="name@email.com">
             </div>
+
             <!-- Landlord-only fields -->
             <div id="signup-landlord-fields" style="display:none;">
               <div class="form-group">
@@ -1280,14 +1548,15 @@
                   <option value="1">1 Property</option>
                   <option value="2-5">2–5 Properties</option>
                   <option value="6-10">6–10 Properties</option>
-                  <option value="10+">10+ Properties (Agency)</option>
+                  <option value="10+">10+ Properties</option>
                 </select>
               </div>
               <div class="form-group">
                 <label>Primary Area / Estate</label>
-                <input type="text" id="signup-landlord-area" class="form-control" placeholder="e.g. Kilimani, Ruaka">
+                <input type="text" id="signup-landlord-area" class="form-control" placeholder="e.g. Kilimani, Ruaka, Roysambu">
               </div>
             </div>
+
             <div class="form-group">
               <label>Password *</label>
               <div style="position:relative;">
@@ -1297,8 +1566,9 @@
                 </button>
               </div>
             </div>
+
             <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;margin-top:4px;">
-              <i class="fas fa-user-plus"></i> Create Account
+              <i class="fas fa-paper-plane"></i> Verify Phone & Create Account
             </button>
             <p style="text-align:center;margin-top:14px;font-size:0.85rem;color:#6b7280;">
               Already have an account? <a href="#" onclick="kejaAuth.switchTab('signin');return false;" style="color:#4f46e5;font-weight:600;">Sign In</a>
@@ -1306,12 +1576,12 @@
           </form>
         </div>
 
-        <!-- ── OTP PHONE VERIFICATION PANEL ── -->
+        <!-- ── OTP PHONE VERIFICATION PANEL (FOR BOTH SIGNUP & LOGIN) ── -->
         <div id="auth-panel-otp" style="display:none; text-align:center;">
           <div style="width:64px; height:64px; border-radius:50%; background:#e0e7ff; color:#4f46e5; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.8rem;">
             <i class="fas fa-sms"></i>
           </div>
-          <h3 style="margin:0 0 6px 0; color:#1e1b4b; font-size:1.2rem; font-weight:800;">Verify Your Phone</h3>
+          <h3 id="otp-panel-title" style="margin:0 0 6px 0; color:#1e1b4b; font-size:1.2rem; font-weight:800;">Verify Your Phone Number</h3>
           <p style="font-size:0.88rem; color:#64748b; margin-bottom:16px;">
             We sent a 4-digit verification code via SMS to <strong id="otp-display-phone" style="color:#1e1b4b;">+254...</strong>
           </p>
@@ -1330,7 +1600,7 @@
             </div>
 
             <button type="submit" id="btn-submit-otp" class="btn-primary" style="width:100%; border:none; font-weight:700; cursor:pointer; padding:12px; font-size:0.95rem; background:linear-gradient(135deg,#4f46e5,#7c3aed);">
-              <i class="fas fa-check-circle"></i> Verify & Complete Registration
+              <i class="fas fa-check-circle"></i> <span id="btn-submit-otp-label">Verify & Continue</span>
             </button>
           </form>
 
@@ -1338,8 +1608,8 @@
             <button type="button" onclick="kejaAuth.handleResendOtp()" id="btn-resend-otp" style="background:none; border:none; color:#4f46e5; font-weight:700; cursor:pointer; padding:0;">
               <i class="fas fa-redo"></i> Resend Code <span id="otp-countdown">(60s)</span>
             </button>
-            <a href="#" onclick="kejaAuth.switchTab('signup'); return false;" style="color:#64748b; text-decoration:underline;">
-              Edit Phone Number
+            <a href="#" onclick="kejaAuth.switchTab('signin'); return false;" style="color:#64748b; text-decoration:underline;">
+              Back to Sign In
             </a>
           </div>
         </div>
@@ -1360,6 +1630,16 @@
             </button>
             <button class="btn-secondary" style="width:100%; border:1px solid #cbd5e1; margin-bottom:8px; cursor:pointer; font-size:0.82rem;" onclick="kejaAdmin.downloadBackup()">
               <i class="fas fa-download"></i> Download Database Backup
+            </button>
+          </div>
+
+          <!-- Agency dashboard links -->
+          <div id="auth-agency-links" style="display:none;">
+            <button class="btn-primary" style="width:100%;border:none;margin-bottom:10px;cursor:pointer;background:linear-gradient(135deg,#7c3aed,#4f46e5);" onclick="app.openModal('modal-post-ad');app.closeModal('modal-auth');">
+              <i class="fas fa-plus-circle"></i> Post Property as Agency
+            </button>
+            <button class="btn-secondary" style="width:100%;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-pricing-plans');app.closeModal('modal-auth');">
+              <i class="fas fa-crown"></i> Agency Pro & Bulk Boost
             </button>
           </div>
 
