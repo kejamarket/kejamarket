@@ -5,7 +5,7 @@
       "name": "KejaMarket Admin",
       "phone": "0700000000",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$TraInumsLUXlA6/vZPtvU.86BsYqRkQHRLVLlhLu0E1USGZUjUJR.",
+      "password": "$2b$10$kF0x38meVJvHgUOxpCDqquj7jRzIr7neMvjowsEOH9yDCsa60.nbe",
       "role": "admin",
       "isVerified": true,
       "numProperties": "10+",
@@ -1962,6 +1962,86 @@
   },
   "transactions": [
     {
+      "id": "tx-1788975505245",
+      "checkoutRequestId": "ws_PAYBILL_SKE89XYZ99_1788975505245",
+      "merchantRequestId": "MR_PAYBILL_1788975505245",
+      "phone": "254712345678",
+      "amount": 100,
+      "itemType": "whatsapp_alerts",
+      "itemName": "WhatsApp Alerts (1 Bedroom · Kilimani)",
+      "targetPropertyId": null,
+      "userId": null,
+      "status": "SUCCESS",
+      "mpesaReceipt": "SKE89XYZ99",
+      "resultDesc": "Payment confirmed via M-Pesa receipt verification.",
+      "createdAt": "2026-09-09T17:38:25.245Z",
+      "updatedAt": "2026-09-09T17:38:25.247Z"
+    },
+    {
+      "id": "tx-1788975492703",
+      "checkoutRequestId": "ws_PAYBILL_SKE89XYZ99_1788975492703",
+      "merchantRequestId": "MR_PAYBILL_1788975492703",
+      "phone": "254712345678",
+      "amount": 100,
+      "itemType": "whatsapp_alerts",
+      "itemName": "WhatsApp Alerts (1 Bedroom · Kilimani)",
+      "targetPropertyId": null,
+      "userId": null,
+      "status": "SUCCESS",
+      "mpesaReceipt": "SKE89XYZ99",
+      "resultDesc": "Payment confirmed via M-Pesa receipt verification.",
+      "createdAt": "2026-09-09T17:38:12.703Z",
+      "updatedAt": "2026-09-09T17:38:12.705Z"
+    },
+    {
+      "id": "tx-1788975462533",
+      "checkoutRequestId": "ws_PAYBILL_SKE89XYZ99_1788975462533",
+      "merchantRequestId": "MR_PAYBILL_1788975462533",
+      "phone": "254712345678",
+      "amount": 100,
+      "itemType": "whatsapp_alerts",
+      "itemName": "WhatsApp Alerts (1 Bedroom · Kilimani)",
+      "targetPropertyId": null,
+      "userId": null,
+      "status": "SUCCESS",
+      "mpesaReceipt": "SKE89XYZ99",
+      "resultDesc": "Payment confirmed via M-Pesa receipt verification.",
+      "createdAt": "2026-09-09T17:37:42.533Z",
+      "updatedAt": "2026-09-09T17:37:42.535Z"
+    },
+    {
+      "id": "tx-1788975432412",
+      "checkoutRequestId": "ws_PAYBILL_SKE89XYZ99_1788975432412",
+      "merchantRequestId": "MR_PAYBILL_1788975432412",
+      "phone": "254712345678",
+      "amount": 100,
+      "itemType": "whatsapp_alerts",
+      "itemName": "WhatsApp Alerts (1 Bedroom · Kilimani)",
+      "targetPropertyId": null,
+      "userId": null,
+      "status": "SUCCESS",
+      "mpesaReceipt": "SKE89XYZ99",
+      "resultDesc": "Payment confirmed via M-Pesa receipt verification.",
+      "createdAt": "2026-09-09T17:37:12.412Z",
+      "updatedAt": "2026-09-09T17:37:12.414Z"
+    },
+    {
+      "id": "tx-1788974727588",
+      "checkoutRequestId": "ws_PAYBILL_JGYFJFFJFJJC_1788974727587",
+      "merchantRequestId": "MR_PAYBILL_1788974727587",
+      "phone": "254180511492",
+      "amount": 100,
+      "itemType": "whatsapp_alerts",
+      "itemName": "WhatsApp Alerts (Any Category · Any Estate · Up to KSh 100,000/mo)",
+      "targetPropertyId": null,
+      "userId": null,
+      "status": "SUCCESS",
+      "mpesaReceipt": "JGYFJFFJFJJC",
+      "resultDesc": "Payment confirmed via M-Pesa receipt verification.",
+      "createdAt": "2026-09-09T17:25:27.588Z",
+      "updatedAt": "2026-09-09T17:25:27.590Z"
+    },
+    {
       "id": "tx-1788969704422",
       "checkoutRequestId": "ws_PAYBILL_SKE89XYZ20_1788969704422",
       "merchantRequestId": "MR_PAYBILL_1788969704422",
@@ -1994,7 +2074,25 @@
       "updatedAt": "2026-09-09T16:00:15.166Z"
     }
   ],
-  "alerts": [],
+  "alerts": [
+    {
+      "id": "alert-1788974659571",
+      "phone": "254792409540",
+      "category": "Any Category",
+      "estate": "Any Estate",
+      "budgetMin": "",
+      "budgetMax": "100000",
+      "createdAt": "2026-09-09T17:24:19.571Z"
+    },
+    {
+      "id": "alert-1788975505239",
+      "phone": "254712345678",
+      "category": "1 Bedroom",
+      "estate": "Kilimani",
+      "budgetMax": 25000,
+      "createdAt": "2026-09-09T17:38:25.239Z"
+    }
+  ],
   "leads": [
     {
       "id": "lead-1788952006129-494",

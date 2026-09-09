@@ -262,7 +262,7 @@
             <div style="font-size: 0.8rem; opacity: 0.9;">Be the first to receive verified rentals directly on your phone.</div>
           </div>
         </div>
-        <button class="btn-primary" style="background: #25d366; color: #075e54; font-weight: 800; font-size: 0.85rem; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);" onclick="app.openModal('modal-whatsapp-alerts')">
+        <button class="btn-primary" style="background: #25d366; color: #075e54; font-weight: 800; font-size: 0.85rem; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);" onclick="openWhatsAppAlertsWithAuth()">
           <i class="fab fa-whatsapp"></i> Set Alert (KSh 100)
         </button>
       </div>
@@ -946,7 +946,7 @@
               <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> 3x more tenant inquiries</li>
               <li><i class="fas fa-check-circle" style="color: #00b53f;"></i> "TOP AD" badge on listing</li>
             </ul>
-            <button class="btn-primary" style="width: 100%; background: #ff9800; border: none; font-weight: 700; cursor: pointer;" onclick="monetization.openMpesaCheckout('whatsapp_alerts', `WhatsApp House Alerts (${document.getElementById('alert-tenant-estate').value} - KSh ${document.getElementById('alert-tenant-budget').value}/mo)`, 100)">
+            <button class="btn-primary" style="width: 100%; background: #ff9800; border: none; font-weight: 700; cursor: pointer;" onclick="monetization.openMpesaCheckout('top_ad_7', 'TOP AD Boost (7 Days)', 499)">
               <i class="fas fa-mobile-alt"></i> Pay Now
             </button>
           </div>
@@ -1196,7 +1196,7 @@
             <i class="fas fa-check"></i> Done
           </button>
           <button class="btn-primary" style="flex: 1; font-weight: 700; background: #25d366; border: none; cursor: pointer;"
-            onclick="app.closeModal('modal-whatsapp-success'); setTimeout(() => app.openModal('modal-whatsapp-alerts'), 200);">
+            onclick="app.closeModal('modal-whatsapp-success'); setTimeout(() => openWhatsAppAlertsWithAuth(), 200);">
             <i class="fas fa-edit"></i> Edit Preferences
           </button>
         </div>

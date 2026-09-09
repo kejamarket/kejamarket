@@ -573,6 +573,20 @@ class MonetizationEngine {
 
     alertForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // ── Require sign-in before subscribing ──
+      const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+      if (!session) {
+        if (window.app) window.app.showToast('⚠️ Please sign in to subscribe to WhatsApp alerts.', 'info');
+        if (window.kejaAuth) {
+          window.kejaAuth.requireTenantAuth(() => {
+            // Re-open WhatsApp alerts modal after sign-in
+            if (window.app) window.app.openModal('modal-whatsapp-alerts');
+          });
+        }
+        return;
+      }
+
       const phoneEl = document.getElementById('alert-tenant-phone');
       const estateEl = document.getElementById('alert-tenant-estate');
       const catEl = document.getElementById('alert-tenant-category');
@@ -613,9 +627,13 @@ class MonetizationEngine {
 
       // Save alert preferences to backend
       try {
+        const authHeaders = { 'Content-Type': 'application/json' };
+        if (window.kejaAuth && window.kejaAuth.getToken()) {
+          authHeaders['Authorization'] = `Bearer ${window.kejaAuth.getToken()}`;
+        }
         await fetch('/api/alerts/whatsapp', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders,
           body: JSON.stringify({ phone, estate, category, budgetMin, budgetMax })
         });
       } catch (err) {
@@ -732,3 +750,29 @@ window.monetization = new MonetizationEngine();
 document.addEventListener('DOMContentLoaded', () => {
   window.monetization.init();
 });
+
+// Global auth-gated opener for WhatsApp Alerts modal
+window.openWhatsAppAlertsWithAuth = function() {
+  const fillPhone = (s) => {
+    const phoneEl = document.getElementById('alert-tenant-phone');
+    if (phoneEl && s && s.user && s.user.phone && !phoneEl.value) {
+      phoneEl.value = s.user.phone;
+    }
+  };
+
+  const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+  if (session) {
+    fillPhone(session);
+    if (window.app) window.app.openModal('modal-whatsapp-alerts');
+  } else {
+    if (window.app) window.app.showToast('⚠️ Please sign in to set up WhatsApp house alerts.', 'info');
+    if (window.kejaAuth) {
+      window.kejaAuth.requireTenantAuth(() => {
+        const freshSession = window.kejaAuth.getSession();
+        fillPhone(freshSession);
+        if (window.app) window.app.openModal('modal-whatsapp-alerts');
+      });
+    }
+  }
+};
+
