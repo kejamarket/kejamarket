@@ -226,7 +226,7 @@ const kejaAuth = (() => {
       if (data.success && data.phone) {
         pendingPhone = data.phone;
         pendingFlow = 'signup';
-        showOtpPanel(data.phone, data.devOtp, 'signup');
+        showOtpPanel(data.phone, 'signup');
         if (window.app) {
           window.app.showToast(`📲 4-digit code sent via SMS to +${data.phone}!`, 'success');
         }
@@ -278,7 +278,7 @@ const kejaAuth = (() => {
       if (data.success && data.phone) {
         pendingPhone = data.phone;
         pendingFlow = 'login';
-        showOtpPanel(data.phone, data.devOtp, 'login');
+        showOtpPanel(data.phone, 'login');
         if (window.app) {
           window.app.showToast(`📲 Sign-in code sent to +${data.phone}!`, 'success');
         }
@@ -301,7 +301,7 @@ const kejaAuth = (() => {
   /* ─────────────────────────────────────────
      OTP VERIFICATION UI & COUNTDOWN
   ───────────────────────────────────────── */
-  function showOtpPanel(phone, devOtp, flow = 'signup') {
+  function showOtpPanel(phone, flow = 'signup') {
     showPanel('otp');
     const phoneDisplay = document.getElementById('otp-display-phone');
     const panelTitle = document.getElementById('otp-panel-title');
@@ -313,16 +313,6 @@ const kejaAuth = (() => {
     }
     if (submitBtnLabel) {
       submitBtnLabel.textContent = flow === 'login' ? 'Verify & Sign In' : 'Verify & Complete Registration';
-    }
-
-    // Dev/Sandbox helper banner
-    const devBanner = document.getElementById('otp-dev-banner');
-    const devCode = document.getElementById('otp-dev-code');
-    if (devOtp && devBanner && devCode) {
-      devBanner.style.display = 'block';
-      devCode.textContent = devOtp;
-    } else if (devBanner) {
-      devBanner.style.display = 'none';
     }
 
     // Reset digit boxes
@@ -471,14 +461,6 @@ const kejaAuth = (() => {
       const data = await res.json();
 
       if (data.success) {
-        if (data.devOtp) {
-          const devBanner = document.getElementById('otp-dev-banner');
-          const devCode = document.getElementById('otp-dev-code');
-          if (devBanner && devCode) {
-            devBanner.style.display = 'block';
-            devCode.textContent = data.devOtp;
-          }
-        }
         startOtpCountdown(60);
         if (window.app) window.app.showToast(`🔄 New verification code sent to +${pendingPhone}!`, 'success');
       } else {

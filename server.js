@@ -275,8 +275,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
     res.json({
       success: true,
       message: `Verification code sent to +${cleanPhone}.`,
-      phone: cleanPhone,
-      devOtp: (!atSMS ? otp : undefined)
+      phone: cleanPhone
     });
   } catch (err) {
     console.error('Error in send-otp:', err);
@@ -393,8 +392,7 @@ app.post('/api/auth/login-send-otp', async (req, res) => {
       success: true,
       message: `Login verification code sent to +${cleanPhone}.`,
       phone: cleanPhone,
-      userName: user.name,
-      devOtp: (!atSMS ? otp : undefined)
+      userName: user.name
     });
   } catch (err) {
     console.error('Error in login-send-otp:', err);
@@ -501,8 +499,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
       return res.json({
         success: true,
         message: `New login code sent to +${cleanPhone}.`,
-        phone: cleanPhone,
-        devOtp: (!atSMS ? otp : undefined)
+        phone: cleanPhone
       });
     }
 
@@ -524,8 +521,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
     res.json({
       success: true,
       message: `New verification code sent to +${cleanPhone}.`,
-      phone: cleanPhone,
-      devOtp: (!atSMS ? otp : undefined)
+      phone: cleanPhone
     });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Failed to resend code.' });
