@@ -531,13 +531,13 @@ button, input, select, textarea {
   color: var(--primary-color);
 }
 
-/* App Main Layout Grid */
+/* App Main Layout Grid (Enhanced to support 2-column sidebar) */
 .main-app-layout {
-  max-width: 1440px;
+  max-width: 1540px;
   margin: 18px auto;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: 290px 1fr;
+  grid-template-columns: 460px 1fr;
   gap: 22px;
   align-items: start;
 }
@@ -547,12 +547,51 @@ button, input, select, textarea {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
-  padding: 18px;
+  padding: 16px;
   box-shadow: var(--shadow-sm);
   position: sticky;
   top: 80px;
   max-height: calc(100vh - 100px);
   overflow-y: auto;
+}
+
+/* 2-Column Sidebar Layout */
+.sidebar-filter-cols {
+  display: grid;
+  grid-template-columns: 195px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.sidebar-col-category {
+  border-right: 1px solid #f1f5f9;
+  padding-right: 12px;
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.sidebar-col-category::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-col-category::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.sidebar-col-other {
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+}
+
+.sidebar-col-other::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-col-other::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
 .filter-header {
@@ -1731,12 +1770,36 @@ button, input, select, textarea {
     position: static;
     max-height: none;
   }
+  .sidebar-filter-cols {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .sidebar-col-category,
+  .sidebar-col-other {
+    max-height: none;
+    overflow-y: visible;
+  }
   .split-view-container {
     grid-template-columns: 1fr;
     height: auto;
   }
   .split-map-col {
     height: 400px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar-filter-cols {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .sidebar-col-category {
+    border-right: none;
+    border-bottom: 1px solid #f1f5f9;
+    padding-right: 0;
+    padding-bottom: 12px;
+    max-height: 220px;
+    overflow-y: auto;
   }
 }
 
