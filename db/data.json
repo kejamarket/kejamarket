@@ -5,7 +5,7 @@
       "name": "KejaMarket Admin",
       "phone": "0700000000",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$B1qNTd7ix4cIG4HdLMeit.1Wf3yM4mwlW0PWVi1QNS3jroHUOITVm",
+      "password": "$2b$10$A8mpQwfgz6u2EC7Md9Qbg.ii7rzOsm7RlEb1/yvSjUtFwhciNrIWS",
       "role": "admin",
       "isVerified": true,
       "numProperties": "10+",
@@ -101,6 +101,129 @@
     }
   ],
   "properties": [
+    {
+      "title": "Spacious Single Room with Wi-Fi & Tiles (Ngara / Parklands)",
+      "description": "Affordable and clean single room for rent in Ngara, just 5 minutes from Nairobi CBD and Parklands. Tiled floors, large windows with natural sunlight, continuous borehole water supply, high-speed WiFi included in rent, prepaid tokens, perimeter security wall with electric fence. Clean shared washrooms cleaned daily. Ideal for students, working professionals, and city commuters.",
+      "category": "Single Room",
+      "rentPeriod": "month",
+      "isBnb": false,
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "floorLevel": 2,
+      "rentKes": 7500,
+      "depositKes": 7500,
+      "county": "Nairobi",
+      "corridorId": "nairobi_central",
+      "estateSuburb": "Ngara (Fig Tree / Musindi Rd)",
+      "exactLocation": "Musindi Rd, Near Fig Tree Market",
+      "latitude": -1.275,
+      "longitude": 36.822,
+      "waterSupplyType": "Borehole Water",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "isFeatured": false,
+      "isTopAd": true,
+      "isVerified": true,
+      "source": "direct",
+      "managedBy": "landlord",
+      "caretakerName": "Kiprono (Caretaker)",
+      "caretakerPhone": "0714556677",
+      "landlord": {
+        "id": "usr-landlord-02",
+        "name": "Mama Lucy Rentals",
+        "phone": "+254714556677",
+        "isVerified": true,
+        "isAgency": false,
+        "memberSince": "August 2026",
+        "rating": 4.8,
+        "reviewCount": 6
+      },
+      "amenities": {
+        "hasBalcony": false,
+        "hasParking": false,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": false,
+        "hasGym": false,
+        "hasSwimmingPool": false
+      },
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Clean Tiled Room View"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Window & Natural Light"
+        }
+      ],
+      "id": "prop-usr-1788964869334",
+      "createdAt": "2026-09-09T14:41:09.334Z",
+      "postedTimeAgo": "Just now"
+    },
+    {
+      "title": "Executive 20-Seater Boardroom & Conference Hall (Westlands)",
+      "description": "Modern, fully-equipped corporate boardroom & meeting facility in Westlands (Near Sarit Centre). Includes 4K UHD smart projector, ultra-fast 100Mbps dedicated fiber WiFi, surround sound audio, Polycom HD video conferencing setup, magnetic whiteboard, ergonomic executive chairs, backup generator, climate control air conditioning, and tea/coffee lounge. Available for corporate meetings, workshops, team retreats, trainings and interviews.",
+      "category": "Conference Room / Boardroom",
+      "rentPeriod": "day",
+      "isBnb": false,
+      "bedrooms": 0,
+      "bathrooms": 2,
+      "floorLevel": 2,
+      "rentKes": 25000,
+      "depositKes": 0,
+      "county": "Nairobi",
+      "corridorId": "westlands_waiyaki",
+      "estateSuburb": "Westlands (Waiyaki Way)",
+      "exactLocation": "Parklands Road, opposite Sarit Centre",
+      "latitude": -1.2644,
+      "longitude": 36.8045,
+      "waterSupplyType": "Borehole + Council Backup",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "isFeatured": true,
+      "isTopAd": true,
+      "isVerified": true,
+      "source": "direct",
+      "managedBy": "agency",
+      "agencyName": "Nairobi Executive Spaces",
+      "caretakerName": "Wilson (Front Desk & IT)",
+      "caretakerPhone": "0722119988",
+      "landlord": {
+        "id": "usr-conf-01",
+        "name": "Nairobi Executive Spaces",
+        "phone": "+254722119988",
+        "isVerified": true,
+        "isAgency": true,
+        "memberSince": "September 2026",
+        "rating": 5,
+        "reviewCount": 14
+      },
+      "amenities": {
+        "hasBalcony": false,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": false,
+        "hasGym": false,
+        "hasSwimmingPool": false
+      },
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1200&q=80",
+          "caption": "20-Seater Boardroom with 4K Display"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Modern Breakout Space & Lounge"
+        }
+      ],
+      "id": "prop-usr-1788964860864",
+      "createdAt": "2026-09-09T14:41:00.864Z",
+      "postedTimeAgo": "Just now"
+    },
     {
       "id": "prop-nrb-001",
       "title": "Executive 2 Bedroom Master Ensuite with Balcony in Ruaka (Near Two Rivers)",

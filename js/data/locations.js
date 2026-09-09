@@ -256,7 +256,7 @@ const ALL_SUBURBS = NAIROBI_REGIONS.flatMap(region =>
   }))
 );
 
-// Master categories list starting with Single Rooms and ascending up to BnBs
+// Master categories list starting with Single Rooms, Shared Rooms, Apartments, Commercial/Conference Rooms up to BnBs
 const MASTER_CATEGORIES = [
   'Single Room',
   'Bedsitter / Studio',
@@ -267,10 +267,15 @@ const MASTER_CATEGORIES = [
   'Maisonette / Townhouse',
   'Bungalow',
   'Penthouse',
+  'Room in Shared Apartment',
+  'Hostels / Student Room',
+  'Conference Room / Boardroom',
+  'Meeting & Event Hall',
+  'Commercial Office / Co-Working',
+  'Commercial Shop / Stall',
   'BnB / Airbnb (Daily Stay)',
   'Studio BnB (Short-Stay)',
   '1 & 2 Bedroom BnB (Furnished)',
   'Luxury Villa / Vacation Stay',
-  'Serviced / Furnished',
-  'Hostels / Shared'
+  'Serviced / Furnished'
 ];

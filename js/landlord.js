@@ -379,6 +379,9 @@ class LandlordManager {
 
       const priceType = document.getElementById('post-price-type')?.value || 'monthly';
       const isBnb = priceType === 'night' || category.includes('BnB') || category.includes('Airbnb') || category.includes('Villa');
+      const isDaily = priceType === 'day' || category.includes('Conference') || category.includes('Event') || category.includes('Hall');
+      const isHourly = priceType === 'hour' || category.includes('Boardroom');
+      const rentPeriod = isHourly ? 'hour' : (isDaily ? 'day' : (isBnb ? 'night' : 'month'));
 
       const media = this.uploadedImages.length > 0 
         ? this.uploadedImages.map(url => ({ url, caption: title }))
@@ -389,12 +392,12 @@ class LandlordManager {
         description,
         category,
         isBnb,
-        rentPeriod: isBnb ? 'night' : 'month',
+        rentPeriod,
         bedrooms: category.includes('1 Bedroom') || category.includes('1 & 2') ? 1 : category.includes('2 Bedroom') ? 2 : category.includes('3 Bedroom') ? 3 : category.includes('4 Bedroom') ? 4 : 0,
         bathrooms: 1,
         floorLevel: 1,
         rentKes: rent,
-        depositKes: isBnb ? 0 : deposit,
+        depositKes: (isBnb || isDaily || isHourly) ? 0 : deposit,
         county: suburbObj.county,
         corridorId: suburbObj.corridorId,
         estateSuburb: suburb,

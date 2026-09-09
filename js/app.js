@@ -127,10 +127,14 @@ class NairobiRentalsApp {
     const pills = MASTER_CATEGORIES.map(cat => {
       let icon = 'fa-home';
       if (cat.includes('BnB') || cat.includes('Airbnb')) icon = 'fa-bed';
-      if (cat.includes('Villa') || cat.includes('Vacation')) icon = 'fa-umbrella-beach';
-      if (cat.includes('Bedsitter') || cat.includes('Single')) icon = 'fa-door-open';
-      if (cat.includes('Maisonette') || cat.includes('Townhouse')) icon = 'fa-building';
-      if (cat.includes('Penthouse') || cat.includes('Serviced')) icon = 'fa-crown';
+      else if (cat.includes('Villa') || cat.includes('Vacation')) icon = 'fa-umbrella-beach';
+      else if (cat.includes('Conference') || cat.includes('Boardroom')) icon = 'fa-chalkboard-teacher';
+      else if (cat.includes('Meeting') || cat.includes('Event')) icon = 'fa-handshake';
+      else if (cat.includes('Office') || cat.includes('Co-Working') || cat.includes('Shop') || cat.includes('Commercial')) icon = 'fa-briefcase';
+      else if (cat.includes('Shared') || cat.includes('Hostel')) icon = 'fa-users';
+      else if (cat.includes('Bedsitter') || cat.includes('Single')) icon = 'fa-door-open';
+      else if (cat.includes('Maisonette') || cat.includes('Townhouse')) icon = 'fa-building';
+      else if (cat.includes('Penthouse') || cat.includes('Serviced')) icon = 'fa-crown';
 
       return `<button class="category-pill" data-category="${cat}" onclick="app.setCategory('${cat}', this)"><i class="fas ${icon}"></i> ${cat}</button>`;
     }).join('');
@@ -530,11 +534,15 @@ class NairobiRentalsApp {
   generateCardHtml(p) {
     const isFav = this.favorites.has(p.id);
     const photoCount = p.photoCount || p.media.length || 1;
-    const thumbnail = p.media[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
+    const isHourly = p.rentPeriod === 'hour' || p.category.includes('Boardroom');
+    const isDaily = p.rentPeriod === 'day' || p.category.includes('Conference') || p.category.includes('Event') || p.category.includes('Hall');
+    let pricePeriod = '/ month';
+    if (p.rentPeriod === 'hour' || isHourly) pricePeriod = '/ hour';
+    else if (p.rentPeriod === 'day' || isDaily) pricePeriod = '/ day';
+    else if (p.rentPeriod === 'night' || isBnb) pricePeriod = '/ night';
     const isTaken = p.isTaken || p.status === 'taken';
     const isAgency = p.managedBy === 'agency' || p.landlord?.isAgency;
-    const pricePeriod = isBnb ? '/ night' : '/ month';
     
     return `
       <div class="property-card ${isTaken ? 'property-card-taken' : ''}" data-id="${p.id}">
@@ -725,8 +733,13 @@ class NairobiRentalsApp {
 
     this.selectedPropertyForDetail = p;
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
+    const isHourly = p.rentPeriod === 'hour' || p.category.includes('Boardroom');
+    const isDaily = p.rentPeriod === 'day' || p.category.includes('Conference') || p.category.includes('Event') || p.category.includes('Hall');
+    let pricePeriod = '/ month';
+    if (p.rentPeriod === 'hour' || isHourly) pricePeriod = '/ hour';
+    else if (p.rentPeriod === 'day' || isDaily) pricePeriod = '/ day';
+    else if (p.rentPeriod === 'night' || isBnb) pricePeriod = '/ night';
     const isTaken = p.isTaken || p.status === 'taken';
-    const pricePeriod = isBnb ? '/ night' : '/ month';
 
     // Taken Status Banner & Control Bar
     const takenBanner = document.getElementById('detail-taken-banner');
