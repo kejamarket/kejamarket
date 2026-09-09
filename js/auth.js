@@ -791,36 +791,28 @@ const kejaAuth = (() => {
     return false;
   }
 
-  // Controls the sign-in wall overlay visibility
+  // Controls auth state UI: marketplace and listings are always open for seamless browsing
   function applyAuthWall(session) {
     const wall = document.getElementById('signin-wall');
     const mainLayout = document.getElementById('main-app-layout');
     const mobilePills = document.querySelector('.category-pills-bar');
     const mobileFilter = document.querySelector('.mobile-filter-bar');
 
-    if (session) {
-      // Logged in: hide wall, reveal application
-      if (wall) wall.style.display = 'none';
-      if (mainLayout) mainLayout.style.display = '';
-      if (mobilePills) mobilePills.style.display = '';
-      if (mobileFilter) mobileFilter.style.display = '';
+    // Marketplace is always visible to everyone
+    if (wall) wall.style.display = 'none';
+    if (mainLayout) mainLayout.style.display = '';
+    if (mobilePills) mobilePills.style.display = '';
+    if (mobileFilter) mobileFilter.style.display = '';
 
-      // Force refresh of properties display
-      if (window.app && typeof window.app.applyFilters === 'function') {
-        window.app.applyFilters();
-      }
-      setTimeout(() => {
-        if (window.mapController && typeof window.mapController.invalidateSize === 'function') {
-          window.mapController.invalidateSize();
-        }
-      }, 150);
-    } else {
-      // Not logged in: block content with auth wall
-      if (wall) wall.style.display = 'flex';
-      if (mainLayout) mainLayout.style.display = 'none';
-      if (mobilePills) mobilePills.style.display = 'none';
-      if (mobileFilter) mobileFilter.style.display = 'none';
+    // Refresh properties display
+    if (window.app && typeof window.app.applyFilters === 'function') {
+      window.app.applyFilters();
     }
+    setTimeout(() => {
+      if (window.mapController && typeof window.mapController.invalidateSize === 'function') {
+        window.mapController.invalidateSize();
+      }
+    }, 150);
   }
 
   function demoSignIn(role = 'tenant') {
