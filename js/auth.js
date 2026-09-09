@@ -187,9 +187,6 @@ const kejaAuth = (() => {
       return;
     }
 
-    const numProperties = role === 'landlord' && document.getElementById('signup-num-properties')
-      ? document.getElementById('signup-num-properties').value
-      : null;
     const area = role === 'landlord' && document.getElementById('signup-landlord-area')
       ? document.getElementById('signup-landlord-area').value.trim()
       : null;
@@ -214,7 +211,7 @@ const kejaAuth = (() => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           name, phone, email, password, role, 
-          numProperties, area, 
+          area, 
           agencyName: agencyName || name, 
           contactPerson: name, 
           officeLocation 
@@ -548,10 +545,12 @@ const kejaAuth = (() => {
   function showLoggedInPanel(session) {
     const signinEl = document.getElementById('auth-panel-signin');
     const signupEl = document.getElementById('auth-panel-signup');
+    const otpEl = document.getElementById('auth-panel-otp');
     const loggedinEl = document.getElementById('auth-panel-loggedin');
 
     if (signinEl) signinEl.style.display = 'none';
     if (signupEl) signupEl.style.display = 'none';
+    if (otpEl) otpEl.style.display = 'none';
     if (loggedinEl) loggedinEl.style.display = 'block';
 
     const initials = (session.name || 'User')
@@ -563,10 +562,12 @@ const kejaAuth = (() => {
 
     const avatarEl = document.getElementById('auth-user-avatar');
     const greetingEl = document.getElementById('auth-user-greeting');
+    const phoneDisplayEl = document.getElementById('auth-user-phone-display');
     const badgeEl = document.getElementById('auth-user-role-badge');
 
     if (avatarEl) avatarEl.textContent = initials;
     if (greetingEl) greetingEl.textContent = `Hi, ${session.name}!`;
+    if (phoneDisplayEl) phoneDisplayEl.textContent = session.phone ? `+${session.phone}` : (session.email || '');
 
     const isAdmin = Boolean(
       session && (
@@ -598,30 +599,21 @@ const kejaAuth = (() => {
       }
     }
 
-    // Show correct dashboard links
-    const adminLinks = document.getElementById('auth-admin-links');
-    const agencyLinks = document.getElementById('auth-agency-links');
-    const tenantLinks = document.getElementById('auth-tenant-links');
-    const landlordLinks = document.getElementById('auth-landlord-links');
-
-    if (adminLinks) adminLinks.style.display = isAdmin ? 'block' : 'none';
-    if (agencyLinks) agencyLinks.style.display = session.role === 'agency' ? 'block' : 'none';
-    if (tenantLinks) tenantLinks.style.display = session.role === 'tenant' ? 'block' : 'none';
-    if (landlordLinks) landlordLinks.style.display = (session.role === 'landlord' || isAdmin) ? 'block' : 'none';
-
     if (window.kejaAdmin && typeof window.kejaAdmin.checkAdminSession === 'function') {
       window.kejaAdmin.checkAdminSession();
     }
   }
 
   /* ─────────────────────────────────────────
-     HEADER UI UPDATE
+     HEADER UI UPDATE & ROLE SEPARATION
   ───────────────────────────────────────── */
   function updateHeaderUI(session) {
     const label = document.getElementById('auth-header-label');
     const btn = document.getElementById('btn-auth-header');
     const mobileLabel = document.getElementById('mobile-nav-user-label');
     const adminHeaderBtn = document.getElementById('btn-admin-header');
+    const postAdBtn = document.getElementById('btn-header-post-ad');
+    const whatsappAlertBanner = document.getElementById('tenant-whatsapp-alert-banner');
 
     if (session) {
       const isAdmin = Boolean(
@@ -659,6 +651,17 @@ const kejaAuth = (() => {
           btn.style.color = 'white';
         }
       }
+
+      // Role separation:
+      if (session.role === 'tenant') {
+        // Tenants are looking for houses: hide Post Ad, show WhatsApp Alerts
+        if (postAdBtn) postAdBtn.style.display = 'none';
+        if (whatsappAlertBanner) whatsappAlertBanner.style.display = 'flex';
+      } else {
+        // Landlords & Agencies: show Post Ad, hide Tenant WhatsApp alert
+        if (postAdBtn) postAdBtn.style.display = 'inline-flex';
+        if (whatsappAlertBanner) whatsappAlertBanner.style.display = 'none';
+      }
     } else {
       if (label) label.textContent = 'Sign In';
       if (mobileLabel) mobileLabel.textContent = 'Profile';
@@ -667,6 +670,8 @@ const kejaAuth = (() => {
         btn.style.background = '';
         btn.style.color = '';
       }
+      if (postAdBtn) postAdBtn.style.display = 'inline-flex';
+      if (whatsappAlertBanner) whatsappAlertBanner.style.display = 'flex';
     }
 
     if (window.kejaAdmin && typeof window.kejaAdmin.checkAdminSession === 'function') {

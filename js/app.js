@@ -836,6 +836,35 @@ class NairobiRentalsApp {
       }
     }
 
+    // Video Tours Walkthrough
+    const videosContainer = document.getElementById('detail-videos-container');
+    if (videosContainer) {
+      if (p.videos && Array.isArray(p.videos) && p.videos.length > 0) {
+        videosContainer.style.display = 'block';
+        videosContainer.innerHTML = `
+          <div style="background: #faf5ff; border: 1.5px solid #e9d5ff; border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+            <div style="font-weight: 700; font-size: 0.9rem; color: #6b21a8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+              <i class="fas fa-video" style="color: #9333ea;"></i> Verified Video Walkthrough (${p.videos.length} clip${p.videos.length > 1 ? 's' : ''})
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              ${p.videos.map((v, i) => `
+                <div style="flex: 1; min-width: 240px; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                  <video src="${v.url || v}" controls playsinline style="width: 100%; max-height: 220px; object-fit: contain; display: block;"></video>
+                  <div style="padding: 6px 10px; background: #1e1b4b; color: #c084fc; font-size: 0.75rem; font-weight: 600; display: flex; justify-content: space-between;">
+                    <span><i class="fas fa-play-circle"></i> Video Tour #${i + 1}</span>
+                    <span>${v.duration ? `⏱ ${Math.floor(v.duration / 60)}:${(v.duration % 60).toString().padStart(2, '0')}` : 'Max 1m 30s'}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        videosContainer.style.display = 'none';
+        videosContainer.innerHTML = '';
+      }
+    }
+
     // Amenities List
     const amenitiesContainer = document.getElementById('detail-amenities-list');
     if (amenitiesContainer) {

@@ -69,7 +69,7 @@
       <div class="header-actions">
         
         <!-- Post Free Ad Button -->
-        <button class="btn-post-ad" onclick="kejaAuth.requireLandlordForAction('modal-post-ad')">
+        <button class="btn-post-ad" id="btn-header-post-ad" onclick="kejaAuth.requireLandlordForAction('modal-post-ad')">
           <i class="fas fa-plus-circle"></i> Post Free Ad
         </button>
 
@@ -239,7 +239,7 @@
     <section class="content-area-wrapper">
 
       <!-- WhatsApp Tenant Alerts Banner -->
-      <div class="whatsapp-alert-banner" style="background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 10px 16px; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 8px rgba(18, 140, 126, 0.2);">
+      <div class="whatsapp-alert-banner" id="tenant-whatsapp-alert-banner" style="background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 10px 16px; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 8px rgba(18, 140, 126, 0.2);">
         <div style="display: flex; align-items: center; gap: 12px;">
           <i class="fab fa-whatsapp" style="font-size: 1.8rem; color: #25d366;"></i>
           <div>
@@ -413,6 +413,18 @@
             <div class="photo-preview-grid" id="post-photos-preview"></div>
           </div>
 
+          <!-- STEP 2B: Video Tours (Max 2 videos, max 1.5 mins / 90s each) -->
+          <div class="form-group" style="margin-top: 14px;">
+            <label>Video Tours <span style="font-weight:400; color:#64748b;">(optional — max 2 videos, up to 1.5 minutes each)</span></label>
+            <div class="photo-dropzone" id="video-dropzone" style="background: #faf5ff; border: 2px dashed #c084fc; cursor: pointer; text-align: center; padding: 16px; border-radius: 8px;">
+              <i class="fas fa-video" style="font-size: 1.8rem; color: #7c3aed; margin-bottom: 6px;"></i>
+              <div style="font-weight: 700; font-size: 0.9rem; color: #581c87;">Tap to upload video tour (Max 2 clips)</div>
+              <div style="font-size: 0.78rem; color: #6b7280;">Max duration: 1 minute 30 seconds per video (MP4, WebM, MOV)</div>
+            </div>
+            <input type="file" id="post-videos-input" multiple accept="video/mp4,video/webm,video/quicktime,video/*" style="display: none;">
+            <div class="photo-preview-grid" id="post-videos-preview" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
+          </div>
+
           <!-- STEP 3: Caretaker & Optional extras -->
           <details style="margin-bottom: 14px;" open>
             <summary style="cursor:pointer; font-size:0.88rem; font-weight:700; color:#00b53f; padding: 6px 0;">+ On-Site Caretaker & Property Features (Optional)</summary>
@@ -548,6 +560,7 @@
           <span class="card-watermark"><i class="fas fa-home"></i> NAIROBI RENTALS LIVE</span>
         </div>
         <div class="detail-thumbs-strip" id="detail-thumbs-container"></div>
+        <div id="detail-videos-container" style="display:none; margin: 12px 0;"></div>
 
         <!-- Price & Location Overview -->
         <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 12px;">
@@ -1543,15 +1556,6 @@
             <!-- Landlord-only fields -->
             <div id="signup-landlord-fields" style="display:none;">
               <div class="form-group">
-                <label>Number of Properties You Own</label>
-                <select id="signup-num-properties" class="form-control">
-                  <option value="1">1 Property</option>
-                  <option value="2-5">2–5 Properties</option>
-                  <option value="6-10">6–10 Properties</option>
-                  <option value="10+">10+ Properties</option>
-                </select>
-              </div>
-              <div class="form-group">
                 <label>Primary Area / Estate</label>
                 <input type="text" id="signup-landlord-area" class="form-control" placeholder="e.g. Kilimani, Ruaka, Roysambu">
               </div>
@@ -1586,8 +1590,6 @@
             We sent a 4-digit verification code via SMS to <strong id="otp-display-phone" style="color:#1e1b4b;">+254...</strong>
           </p>
 
-
-
           <form id="form-otp-verify" onsubmit="kejaAuth.handleVerifyOtp(event)">
             <div style="display:flex; justify-content:center; gap:10px; margin-bottom:18px;">
               <input type="text" maxlength="1" class="otp-digit form-control" id="otp-1" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required autofocus oninput="kejaAuth.onOtpDigitInput(1, this, event)" onkeydown="kejaAuth.onOtpKeyDown(1, this, event)">
@@ -1611,61 +1613,21 @@
           </div>
         </div>
 
-        <!-- ── LOGGED IN PANEL ── -->
-        <div id="auth-panel-loggedin" style="display:none; text-align:center;">
-          <div id="auth-user-avatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:2rem;color:white;"></div>
-          <div id="auth-user-greeting" style="font-size:1.1rem;font-weight:700;color:#1f2937;margin-bottom:4px;"></div>
-          <div id="auth-user-role-badge" style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.78rem;font-weight:700;margin-bottom:20px;"></div>
+        <!-- ── LOGGED IN PANEL (CLEAN SIGN OUT ONLY) ── -->
+        <div id="auth-panel-loggedin" style="display:none; text-align:center; padding: 10px 0 6px;">
+          <div id="auth-user-avatar" style="width:76px; height:76px; border-radius:50%; background:linear-gradient(135deg,#4f46e5,#7c3aed); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:2rem; color:white; font-weight:800; box-shadow: 0 4px 12px rgba(79,70,229,0.3);"></div>
+          <div id="auth-user-greeting" style="font-size:1.2rem; font-weight:800; color:#1e1b4b; margin-bottom:4px;"></div>
+          <div id="auth-user-phone-display" style="font-size:0.88rem; color:#64748b; margin-bottom:10px;"></div>
+          <div id="auth-user-role-badge" style="display:inline-block; padding:4px 14px; border-radius:20px; font-size:0.82rem; font-weight:700; margin-bottom:24px;"></div>
 
-          <!-- Administrator control links -->
-          <div id="auth-admin-links" style="display:none; margin-bottom:14px; background:#faf5ff; border:1px solid #e9d5ff; border-radius:10px; padding:12px; text-align:left;">
-            <div style="font-size:0.75rem; font-weight:800; color:#7c3aed; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
-              <i class="fas fa-crown" style="color:#ffd700;"></i> Administrator Controls
-            </div>
-            <button class="btn-primary" style="width:100%; background:linear-gradient(135deg,#7c3aed,#4f46e5); border:none; margin-bottom:8px; cursor:pointer; font-weight:700; font-size:0.85rem;" onclick="kejaAdmin.openAdminModal(); app.closeModal('modal-auth');">
-              <i class="fas fa-tachometer-alt"></i> Open Admin Control Center
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button onclick="kejaAuth.signOut()" style="width:100%; background:#ef4444; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.95rem; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow: 0 2px 6px rgba(239,68,68,0.3);">
+              <i class="fas fa-sign-out-alt"></i> Sign Out
             </button>
-            <button class="btn-secondary" style="width:100%; border:1px solid #cbd5e1; margin-bottom:8px; cursor:pointer; font-size:0.82rem;" onclick="kejaAdmin.downloadBackup()">
-              <i class="fas fa-download"></i> Download Database Backup
+            <button onclick="app.closeModal('modal-auth')" style="width:100%; background:none; border:1px solid #e2e8f0; padding:10px; border-radius:8px; cursor:pointer; color:#64748b; font-weight:600; font-size:0.85rem;">
+              Close
             </button>
           </div>
-
-          <!-- Agency dashboard links -->
-          <div id="auth-agency-links" style="display:none;">
-            <button class="btn-primary" style="width:100%;border:none;margin-bottom:10px;cursor:pointer;background:linear-gradient(135deg,#7c3aed,#4f46e5);" onclick="app.openModal('modal-post-ad');app.closeModal('modal-auth');">
-              <i class="fas fa-plus-circle"></i> Post Property as Agency
-            </button>
-            <button class="btn-secondary" style="width:100%;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-pricing-plans');app.closeModal('modal-auth');">
-              <i class="fas fa-crown"></i> Agency Pro & Bulk Boost
-            </button>
-          </div>
-
-          <!-- Tenant dashboard links -->
-          <div id="auth-tenant-links" style="display:none;">
-            <button class="btn-primary" style="width:100%;border:none;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-whatsapp-alerts');app.closeModal('modal-auth');">
-              <i class="fab fa-whatsapp"></i> My WhatsApp Alerts
-            </button>
-            <button class="btn-secondary" style="width:100%;margin-bottom:10px;cursor:pointer;" onclick="app.toggleFavoritesView();app.closeModal('modal-auth');">
-              <i class="fas fa-heart"></i> My Saved Houses
-            </button>
-          </div>
-
-          <!-- Landlord dashboard links -->
-          <div id="auth-landlord-links" style="display:none;">
-            <button class="btn-primary" style="width:100%;border:none;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-post-ad');app.closeModal('modal-auth');">
-              <i class="fas fa-plus-circle"></i> Post a Property
-            </button>
-            <button class="btn-secondary" style="width:100%;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-pricing-plans');app.closeModal('modal-auth');">
-              <i class="fas fa-crown"></i> Boost My Listing
-            </button>
-            <button class="btn-secondary" style="width:100%;margin-bottom:10px;cursor:pointer;" onclick="app.openModal('modal-verification');app.closeModal('modal-auth');">
-              <i class="fas fa-user-check"></i> Get Verified Badge
-            </button>
-          </div>
-
-          <button onclick="kejaAuth.signOut()" style="margin-top:8px;background:none;border:1px solid #e5e7eb;padding:8px 24px;border-radius:6px;cursor:pointer;color:#6b7280;font-size:0.85rem;">
-            <i class="fas fa-sign-out-alt"></i> Sign Out
-          </button>
         </div>
 
       </div>

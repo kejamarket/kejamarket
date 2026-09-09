@@ -6,6 +6,7 @@
 class LandlordManager {
   constructor() {
     this.uploadedImages = [];
+    this.uploadedVideos = [];
     this.selectedCoords = { lat: -1.286389, lng: 36.817223 }; // Default Nairobi CBD
     this.postMap = null;
     this.postMarker = null;
@@ -14,6 +15,7 @@ class LandlordManager {
   initModal() {
     this.populateSelects();
     this.setupDropzone();
+    this.setupVideoDropzone();
     this.setupFormSubmit();
     this.setupVerificationModal();
   }
@@ -78,6 +80,38 @@ class LandlordManager {
     });
   }
 
+  setupVideoDropzone() {
+    const videoDropzone = document.getElementById('video-dropzone');
+    const videoInput = document.getElementById('post-videos-input');
+
+    if (!videoDropzone || !videoInput) return;
+
+    videoDropzone.addEventListener('click', () => videoInput.click());
+
+    videoDropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      videoDropzone.style.borderColor = '#7c3aed';
+    });
+
+    videoDropzone.addEventListener('dragleave', () => {
+      videoDropzone.style.borderColor = '#c084fc';
+    });
+
+    videoDropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      videoDropzone.style.borderColor = '#c084fc';
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        this.handleVideoFiles(e.dataTransfer.files);
+      }
+    });
+
+    videoInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        this.handleVideoFiles(e.target.files);
+      }
+    });
+  }
+
   handleFiles(files) {
     const previewGrid = document.getElementById('post-photos-preview');
     if (!previewGrid) return;
@@ -90,6 +124,61 @@ class LandlordManager {
         this.renderPhotoPreviews();
       };
       reader.readAsDataURL(file);
+    });
+  }
+
+  handleVideoFiles(files) {
+    const videoFiles = Array.from(files).filter(f => f.type.startsWith('video/'));
+    if (videoFiles.length === 0) {
+      if (window.app) window.app.showToast('Please select valid video files (MP4, WebM, MOV).', 'info');
+      return;
+    }
+
+    videoFiles.forEach(file => {
+      if (this.uploadedVideos.length >= 2) {
+        if (window.app) window.app.showToast('Maximum 2 video tours allowed per listing.', 'info');
+        return;
+      }
+
+      // Check video duration (max 1m 30s / 90 seconds)
+      const videoEl = document.createElement('video');
+      videoEl.preload = 'metadata';
+      const blobUrl = URL.createObjectURL(file);
+      videoEl.src = blobUrl;
+
+      videoEl.onloadedmetadata = () => {
+        URL.revokeObjectURL(blobUrl);
+        const duration = videoEl.duration;
+
+        if (duration > 91) { // 1m 30s + 1s tolerance
+          const mins = Math.floor(duration / 60);
+          const secs = Math.floor(duration % 60);
+          if (window.app) {
+            window.app.showToast(`❌ Video exceeds max duration! Allowed: 1 min 30 sec (1m 30s). Uploaded: ${mins}m ${secs}s.`, 'error');
+          }
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const videoDataUrl = e.target.result;
+          this.uploadedVideos.push({
+            url: videoDataUrl,
+            duration: Math.round(duration),
+            name: file.name
+          });
+          this.renderVideoPreviews();
+          if (window.app) {
+            window.app.showToast(`🎥 Video tour added (${Math.round(duration)}s)!`, 'success');
+          }
+        };
+        reader.readAsDataURL(file);
+      };
+
+      videoEl.onerror = () => {
+        URL.revokeObjectURL(blobUrl);
+        if (window.app) window.app.showToast('Could not process video file. Please try another format.', 'error');
+      };
     });
   }
 
@@ -108,9 +197,33 @@ class LandlordManager {
     `).join('');
   }
 
+  renderVideoPreviews() {
+    const previewGrid = document.getElementById('post-videos-preview');
+    if (!previewGrid) return;
+
+    previewGrid.innerHTML = this.uploadedVideos.map((v, idx) => {
+      const mins = Math.floor(v.duration / 60);
+      const secs = (v.duration % 60).toString().padStart(2, '0');
+      return `
+        <div class="video-preview-item" style="position:relative; border-radius:8px; overflow:hidden; border:2px solid #c084fc; width:140px; height:90px; background:#000;">
+          <video src="${v.url}" style="width:100%; height:100%; object-fit:cover;" muted></video>
+          <span style="position:absolute; bottom:4px; left:4px; background:rgba(124,58,237,0.85); color:#fff; font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:4px; display:flex; align-items:center; gap:4px;">
+            <i class="fas fa-play" style="font-size:0.55rem;"></i> ${mins}:${secs}
+          </span>
+          <button type="button" onclick="landlordManager.removeVideo(${idx})" style="position:absolute; top:3px; right:3px; background:rgba(239,68,68,0.9); color:white; border:none; border-radius:50%; width:22px; height:22px; font-size:0.75rem; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:5;">&times;</button>
+        </div>
+      `;
+    }).join('');
+  }
+
   removePhoto(index) {
     this.uploadedImages.splice(index, 1);
     this.renderPhotoPreviews();
+  }
+
+  removeVideo(index) {
+    this.uploadedVideos.splice(index, 1);
+    this.renderVideoPreviews();
   }
 
   initPostMap() {
@@ -325,6 +438,8 @@ class LandlordManager {
           hasSwimmingPool: false
         },
         media,
+        videos: this.uploadedVideos || [],
+        videoCount: (this.uploadedVideos || []).length,
         photoCount: media.length
       };
 
@@ -368,7 +483,9 @@ class LandlordManager {
         }
         form.reset();
         this.uploadedImages = [];
+        this.uploadedVideos = [];
         this.renderPhotoPreviews();
+        this.renderVideoPreviews();
       }
     });
   }
