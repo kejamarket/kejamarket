@@ -1027,139 +1027,79 @@
        MODAL 7: M-Pesa STK Push & Lipa Na M-Pesa Checkout
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-mpesa-checkout" style="z-index: 2600;">
-    <div class="modal-dialog" style="max-width: 490px;">
+    <div class="modal-dialog" style="max-width: 460px;">
       <div class="modal-header" style="background: linear-gradient(135deg, #059669, #00b53f);">
-        <h3 style="color: white; font-size: 1.15rem; font-weight: 800;"><i class="fas fa-mobile-alt"></i> Lipa Na M-Pesa Checkout</h3>
+        <h3 style="color: white; font-size: 1.15rem; font-weight: 800;"><i class="fas fa-university"></i> Lipa Na M-Pesa — Paybill</h3>
         <button class="modal-close-btn" onclick="app.closeModal('modal-mpesa-checkout')" style="color: white;">&times;</button>
       </div>
       <div class="modal-body" style="padding: 20px 24px;">
+
         <!-- Order Summary -->
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 14px; margin-bottom: 16px; text-align: center;">
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 14px; margin-bottom: 18px; text-align: center;">
           <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 2px;">You are paying for</div>
-          <div style="font-weight: 800; font-size: 1.12rem; color: #0f172a;" id="mpesa-checkout-item-title">-</div>
+          <div style="font-weight: 800; font-size: 1.1rem; color: #0f172a;" id="mpesa-checkout-item-title">-</div>
           <div style="font-size: 1.85rem; font-weight: 900; color: #00b53f; margin: 4px 0;" id="mpesa-checkout-amount-badge">KSh 0</div>
           <div style="font-size: 0.8rem; color: #64748b;" id="mpesa-checkout-desc">-</div>
         </div>
 
-        <!-- Payment Method Tabs -->
-        <div style="display: flex; gap: 8px; margin-bottom: 16px; background: #f1f5f9; padding: 4px; border-radius: 10px;">
-          <button type="button" id="tab-btn-mpesa-stk" onclick="monetization.switchCheckoutTab('stk')"
-            style="flex: 1; padding: 9px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; background: white; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.2s;">
-            <i class="fas fa-mobile-alt" style="color: #00b53f;"></i> STK Push (PIN Prompt)
-          </button>
-          <button type="button" id="tab-btn-mpesa-paybill" onclick="monetization.switchCheckoutTab('paybill')"
-            style="flex: 1; padding: 9px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; background: transparent; color: #64748b; transition: all 0.2s;">
-            <i class="fas fa-university" style="color: #4f46e5;"></i> Paybill 303030
-          </button>
-        </div>
-
-        <!-- TAB 1: STK Push Prompt -->
-        <div id="mpesa-tab-stk">
-          <form id="form-mpesa-stk-trigger">
-            <div class="form-group" style="margin-bottom: 14px;">
-              <label style="font-weight: 700; font-size: 0.88rem; color: #1e293b; display: block; margin-bottom: 6px;">Safaricom M-Pesa Phone Number</label>
-              <div style="position: relative;">
-                <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #64748b; font-size: 0.95rem;">🇰🇪 +254</span>
-                <input type="tel" id="mpesa-phone-number" class="form-control" placeholder="712345678" required
-                  style="font-size: 1.1rem; padding-left: 80px; letter-spacing: 1px; font-weight: 700; height: 48px; border: 2px solid #cbd5e1; border-radius: 10px; width: 100%;">
-              </div>
-              <div style="font-size: 0.75rem; color: #64748b; margin-top: 6px;">
-                <i class="fas fa-shield-alt" style="color: #00b53f;"></i> Real Safaricom Daraja integration sends an instant PIN prompt to your handset.
-              </div>
-            </div>
-            <button type="submit" class="btn-primary" style="width: 100%; font-size: 1rem; padding: 13px; font-weight: 800; background: #00b53f; border: none; border-radius: 10px; cursor: pointer;">
-              <i class="fas fa-paper-plane"></i> Send STK Prompt to Phone
-            </button>
-          </form>
-        </div>
-
-        <!-- TAB 2: Direct Lipa na M-Pesa Paybill -->
-        <div id="mpesa-tab-paybill" style="display: none;">
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 14px;">
-            <div style="font-size: 0.8rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
-              <i class="fas fa-list-ol" style="color: #00b53f;"></i> Follow these quick steps on your phone:
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <span style="color: #64748b;">1. Paybill (Business No):</span>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <strong style="font-size: 1rem; color: #0f172a;">303030</strong>
-                  <button type="button" onclick="monetization.copyText('303030', 'Paybill Number')" style="padding: 3px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.72rem; cursor: pointer; font-weight: 700;">Copy</button>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <span style="color: #64748b;">2. Account Number:</span>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <strong style="font-size: 1rem; color: #0f172a;" id="paybill-account-badge">2057103992</strong>
-                  <button type="button" onclick="monetization.copyText('2057103992', 'Account Number')" style="padding: 3px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.72rem; cursor: pointer; font-weight: 700;">Copy</button>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <span style="color: #64748b;">3. Amount to Pay:</span>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <strong style="font-size: 1rem; color: #00b53f;" id="paybill-amount-badge">KSh 0</strong>
-                  <button type="button" onclick="monetization.copyAmount()" style="padding: 3px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.72rem; cursor: pointer; font-weight: 700;">Copy</button>
-                </div>
-              </div>
-            </div>
+        <!-- Paybill Steps -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 12px;">
+            <i class="fas fa-list-ol" style="color: #00b53f;"></i> Follow these steps on your phone:
           </div>
-
-          <!-- Instant Receipt Verification -->
-          <form id="form-mpesa-receipt-verify" onsubmit="monetization.verifyDirectReceipt(event)">
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label style="font-weight: 700; font-size: 0.85rem; color: #1e293b; display: block; margin-bottom: 6px;">Enter M-Pesa SMS Confirmation Code</label>
-              <input type="text" id="mpesa-receipt-code-input" class="form-control" placeholder="e.g. SKL89XYZ12" required
-                style="font-size: 1.1rem; text-align: center; text-transform: uppercase; font-family: monospace; letter-spacing: 2px; font-weight: 800; height: 46px; border: 2px solid #cbd5e1; border-radius: 10px; width: 100%;">
-              <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Found in the SMS Safaricom sends you right after paying.</div>
-            </div>
-            <button type="submit" id="btn-verify-receipt-submit" class="btn-primary" style="width: 100%; font-size: 0.95rem; padding: 13px; font-weight: 800; background: #4f46e5; border: none; border-radius: 10px; cursor: pointer;">
-              <i class="fas fa-check-circle"></i> Verify Code & Activate Immediately
-            </button>
-          </form>
-        </div>
-
-        <!-- Step 2: STK Push Active Status Screen -->
-        <div id="mpesa-step-stk" style="display: none;">
-          <div style="background: #1a1a2e; border-radius: 20px; padding: 24px 18px; text-align: center; color: white; max-width: 320px; margin: 0 auto; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
-            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px; letter-spacing: 1px; font-weight: 700;">SAFARICOM M-PESA DARAJA</div>
-            <div style="font-size: 0.85rem; margin-bottom: 4px;">Pay to: <strong>KejaMarket</strong></div>
-            <div style="font-size: 0.82rem; color: #a5b4fc;" id="stk-sim-phone">+254...</div>
-            <div style="font-size: 1.8rem; font-weight: 800; color: #25d366; margin: 10px 0;" id="stk-sim-amount">KSh 0</div>
-            <div style="border-top: 1px solid #334155; padding-top: 12px; margin-top: 8px;">
-              <div style="font-size: 0.78rem; color: #94a3b8;">STK Prompt Sent to Your Phone</div>
-              <div style="font-size: 1.6rem; letter-spacing: 6px; font-weight: 800; margin: 6px 0; color: #38bdf8;" id="stk-pin-display">••••</div>
-            </div>
-            <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 10px;">
-              <div class="mpesa-spinner" style="width: 18px; height: 18px; border: 3px solid #334155; border-top-color: #25d366; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
-              <span style="font-size: 0.8rem; color: #cbd5e1;" id="stk-status-text">Waiting for PIN entry on phone...</span>
-            </div>
-
-            <!-- Instant Verification Button -->
-            <button type="button" class="btn-primary" id="btn-instant-confirm" style="margin-top: 16px; width: 100%; background: #25d366; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem; padding: 10px 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,211,102,0.3);" onclick="monetization.checkStatusImmediate()">
-              <i class="fas fa-check-double"></i> I Have Entered PIN – Confirm Now
-            </button>
-
-            <!-- Manual Paybill Instruction Card -->
-            <div style="margin-top: 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; padding: 12px; text-align: left; font-size: 0.78rem;">
-              <div style="font-weight: 700; color: #fde047; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-                <i class="fas fa-info-circle"></i> Prompt not popping up on phone?
-              </div>
-              <div style="color: #cbd5e1; line-height: 1.5;">
-                1. Go to <strong>M-Pesa</strong> &gt; <strong>Lipa na M-Pesa</strong> &gt; <strong>Paybill</strong><br>
-                2. Business No: <strong style="color: #fff; font-size: 0.85rem;">303030</strong><br>
-                3. Account No: <strong style="color: #fff; font-size: 0.85rem;">2057103992</strong><br>
-                4. Enter Amount &amp; PIN
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <span style="color: #64748b;">1. Business No (Paybill):</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <strong style="font-size: 1.05rem; color: #0f172a; letter-spacing: 1px;">303030</strong>
+                <button type="button" onclick="monetization.copyText('303030', 'Paybill Number')" style="padding: 4px 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.75rem; cursor: pointer; font-weight: 700; color: #475569;">Copy</button>
               </div>
             </div>
-
-            <!-- Switch to Direct Receipt Entry -->
-            <div style="margin-top: 12px; font-size: 0.78rem; color: #94a3b8;">
-              Already paid? <a href="#" onclick="monetization.switchCheckoutTab('paybill'); return false;" style="color: #38bdf8; font-weight: 700; text-decoration: underline;">Enter M-Pesa Receipt Code</a>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <span style="color: #64748b;">2. Account Number:</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <strong style="font-size: 1.05rem; color: #0f172a; letter-spacing: 1px;" id="paybill-account-badge">2057103992</strong>
+                <button type="button" onclick="monetization.copyText('2057103992', 'Account Number')" style="padding: 4px 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.75rem; cursor: pointer; font-weight: 700; color: #475569;">Copy</button>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <span style="color: #64748b;">3. Amount:</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <strong style="font-size: 1.05rem; color: #00b53f;" id="paybill-amount-badge">KSh 0</strong>
+                <button type="button" onclick="monetization.copyAmount()" style="padding: 4px 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f1f5f9; font-size: 0.75rem; cursor: pointer; font-weight: 700; color: #475569;">Copy</button>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; padding: 10px 12px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <span style="color: #64748b;">4. Enter your M-Pesa PIN &amp; confirm.</span>
             </div>
           </div>
         </div>
 
-        <!-- Step 3: Payment Success -->
+        <!-- Receipt Verification -->
+        <form id="form-mpesa-receipt-verify" onsubmit="monetization.verifyDirectReceipt(event)">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label style="font-weight: 700; font-size: 0.88rem; color: #1e293b; display: block; margin-bottom: 6px;">
+              <i class="fas fa-sms" style="color: #00b53f;"></i> Enter M-Pesa SMS Code to Confirm
+            </label>
+            <input type="text" id="mpesa-receipt-code-input" class="form-control" placeholder="e.g. SKL89XYZ12" required
+              style="font-size: 1.15rem; text-align: center; text-transform: uppercase; font-family: monospace; letter-spacing: 3px; font-weight: 800; height: 50px; border: 2px solid #cbd5e1; border-radius: 10px; width: 100%;">
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 5px; text-align: center;">
+              <i class="fas fa-info-circle"></i> Safaricom sends this code via SMS immediately after payment.
+            </div>
+          </div>
+          <button type="submit" id="btn-verify-receipt-submit" class="btn-primary"
+            style="width: 100%; font-size: 1rem; padding: 14px; font-weight: 800; background: linear-gradient(135deg, #059669, #00b53f); border: none; border-radius: 10px; cursor: pointer; letter-spacing: 0.3px;">
+            <i class="fas fa-check-circle"></i> Confirm Payment &amp; Activate
+          </button>
+        </form>
+
+        <!-- Hidden elements kept for JS compatibility -->
+        <div id="mpesa-tab-stk" style="display:none;"></div>
+        <div id="mpesa-tab-paybill" style="display:none;"></div>
+        <input type="hidden" id="mpesa-phone-number">
+        <form id="form-mpesa-stk-trigger" style="display:none;"></form>
+
+        <!-- Payment Success Screen -->
         <div id="mpesa-step-success" style="display: none; text-align: center;">
           <div style="width: 70px; height: 70px; border-radius: 50%; background: #dcfce7; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
             <i class="fas fa-check-circle" style="font-size: 2.5rem; color: #00b53f;"></i>
@@ -1173,6 +1113,10 @@
             <i class="fas fa-check"></i> Done
           </button>
         </div>
+
+        <!-- STK step kept hidden for JS compatibility -->
+        <div id="mpesa-step-stk" style="display:none;"></div>
+
       </div>
     </div>
   </div>
