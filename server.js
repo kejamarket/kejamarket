@@ -1733,6 +1733,93 @@ app.get('/api/admin/download-db', (req, res) => {
   }
 });
 
+// ─── LANDLORD PORTAL ROUTES ──────────────────────────────────────────────────
+
+// GET /api/landlord/my-listings (Get all listings for logged-in landlord)
+app.get('/api/landlord/my-listings', requireAuth, (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userPhone = req.user.phone;
+    
+    // Get all properties where landlord matches user
+    const allProperties = store.getAllProperties();
+    const myListings = allProperties.filter(p => 
+      (p.landlord && p.landlord.id === userId) ||
+      (p.landlord && p.landlord.phone === userPhone) ||
+      p.landlordPhone === userPhone ||
+      p.postedBy === userId
+    );
+
+    res.json({ 
+      success: true, 
+      listings: myListings,
+      count: myListings.length
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/landlord/messages (Get messages for landlord)
+app.get('/api/landlord/messages', requireAuth, (req, res) => {
+  try {
+    const userId = req.user.id;
+    
+    // Get messages from store (you'll need to add this to store.js)
+    const messages = store.getLandlordMessages(userId);
+
+    res.json({ 
+      success: true, 
+      messages: messages || [],
+      count: messages ? messages.length : 0
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/landlord/send-message (Send message to admin)
+app.post('/api/landlord/send-message', requireAuth, async (req, res) => {
+  try {
+    const { message, propertyId } = req.body;
+    const user = req.user;
+
+    if (!message) {
+      return res.status(400).json({ success: false, message: 'Message is required.' });
+    }
+
+    // Save message to store
+    const savedMessage = store.saveLandlordMessage({
+      fromUserId: user.id,
+      fromUserName: user.name,
+      fromRole: user.role,
+      toRole: 'admin',
+      message,
+      propertyId,
+      createdAt: new Date().toISOString(),
+      isRead: false
+    });
+
+    // Send SMS notification to admin (optional)
+    const adminPhone = '+254733112233'; // Configure this
+    try {
+      await sendSMS(adminPhone, 
+        `New message from landlord ${user.name}: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}`
+      );
+    } catch (err) {
+      console.error('Failed to send admin notification SMS:', err.message);
+    }
+
+    res.json({ 
+      success: true, 
+      message: 'Message sent successfully!',
+      data: savedMessage
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

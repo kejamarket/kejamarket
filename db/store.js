@@ -626,6 +626,31 @@ class Store {
   getDbFilePath() {
     return DB_FILE;
   }
+
+  // ─── LANDLORD MESSAGES ─────────────────────────────────────────────────────
+  saveLandlordMessage(message) {
+    this.data.messages = this.data.messages || [];
+    message.id = 'msg-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    this.data.messages.unshift(message);
+    
+    // Keep only last 500 messages
+    if (this.data.messages.length > 500) {
+      this.data.messages = this.data.messages.slice(0, 500);
+    }
+    
+    this.save();
+    return message;
+  }
+
+  getLandlordMessages(userId) {
+    return (this.data.messages || []).filter(m => 
+      m.fromUserId === userId || m.toUserId === userId
+    );
+  }
+
+  getAllMessages() {
+    return this.data.messages || [];
+  }
 }
 
 module.exports = new Store();
