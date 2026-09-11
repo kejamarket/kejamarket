@@ -68,7 +68,12 @@ class NairobiRentalsApp {
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.properties) && data.properties.length > 0) {
-          this.properties = data.properties;
+          // TENANT PORTAL: Show ONLY verified/approved listings
+          this.properties = data.properties.filter(p => 
+            p.status === 'approved' || 
+            p.isApproved === true ||
+            p.status === 'active'
+          );
         }
       }
     } catch (err) {
