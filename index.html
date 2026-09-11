@@ -2080,6 +2080,27 @@
             </button>
           </div>
 
+          <!-- Activity Logs Section -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-top: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="margin: 0; font-size: 1rem; color: #1e293b;">
+                <i class="fas fa-history" style="color: #7c3aed;"></i> Admin Activity Logs
+              </h4>
+              <button class="category-pill" style="font-size: 0.8rem; padding: 4px 10px; cursor: pointer;" onclick="kejaAdmin.loadActivityLogs()">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+            </div>
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 14px;">
+              Track all administrative actions including approvals, rejections, and user management.
+            </p>
+            <div id="admin-activity-logs-container" style="max-height: 400px; overflow-y: auto; background: white; border-radius: 8px; padding: 12px;">
+              <div style="text-align: center; padding: 24px; color: #94a3b8;">
+                <i class="fas fa-hourglass-half" style="font-size: 2rem; margin-bottom: 8px;"></i>
+                <div>Click Refresh to load activity logs</div>
+              </div>
+            </div>
+          </div>
+
           <!-- M-Pesa Daraja Settings Card -->
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-top: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">

@@ -91,7 +91,10 @@ class AdminPortalEngine {
 
     if (tabName === 'users') this.renderUsers();
     if (tabName === 'listings') this.renderListings();
-    if (tabName === 'system') this.loadMpesaConfig();
+    if (tabName === 'system') {
+      this.loadMpesaConfig();
+      this.loadActivityLogs();
+    }
     if (tabName === 'overview') this.renderStats();
   }
 
@@ -632,6 +635,80 @@ class AdminPortalEngine {
 
   downloadBackup() {
     window.open('/api/admin/download-db', '_blank');
+  }
+
+  async loadActivityLogs() {
+    const container = document.getElementById('admin-activity-logs-container');
+    if (!container) return;
+
+    try {
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      const res = await fetch('/api/admin/activity-logs?limit=50', {
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : ''
+        }
+      });
+      
+      const data = await res.json();
+      if (!data.success || !data.logs || data.logs.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 24px; color: #94a3b8;">
+            <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 8px;"></i>
+            <div>No activity logs found</div>
+          </div>
+        `;
+        return;
+      }
+
+      const actionIcons = {
+        'APPROVED_LISTING': '✅',
+        'REJECTED_LISTING': '❌',
+        'BANNED_USER': '🚫',
+        'UNBANNED_USER': '✓',
+      };
+
+      const actionColors = {
+        'APPROVED_LISTING': '#dcfce7; color: #166534',
+        'REJECTED_LISTING': '#fee2e2; color: #991b1b',
+        'BANNED_USER': '#fef3c7; color: #92400e',
+        'UNBANNED_USER': '#dbeafe; color: #1e40af',
+      };
+
+      container.innerHTML = data.logs.map(log => {
+        const date = new Date(log.timestamp);
+        const icon = actionIcons[log.action] || '📝';
+        const color = actionColors[log.action] || '#f1f5f9; color: #475569';
+        
+        let detailsText = '';
+        if (log.details) {
+          if (log.details.propertyTitle) detailsText = `Property: ${log.details.propertyTitle}`;
+          if (log.details.userName) detailsText = `User: ${log.details.userName}`;
+          if (log.details.reason) detailsText += ` | Reason: ${log.details.reason}`;
+        }
+
+        return `
+          <div style="background: #f8fafc; border-left: 3px solid #7c3aed; padding: 12px; margin-bottom: 8px; border-radius: 6px;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="background: ${color}; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">
+                  ${icon} ${log.action.replace(/_/g, ' ')}
+                </span>
+              </div>
+              <span style="font-size: 0.75rem; color: #64748b;">${date.toLocaleString()}</span>
+            </div>
+            ${detailsText ? `<div style="font-size: 0.85rem; color: #475569; margin-top: 6px;">${detailsText}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+
+    } catch (err) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 24px; color: #ef4444;">
+          <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 8px;"></i>
+          <div>Failed to load activity logs</div>
+        </div>
+      `;
+    }
   }
 
   async loadMpesaConfig() {
