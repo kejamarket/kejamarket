@@ -281,7 +281,7 @@ class LandlordPortal {
 
     let html = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="margin: 0; color: #1e293b;">Messages</h3>
+        <h3 style="margin: 0; color: #1e293b;">Messages (${this.messages.length})</h3>
         <button class="btn-primary" style="background: #7c3aed; padding: 8px 16px; font-size: 0.9rem;" onclick="kejaLandlordPortal.sendMessageToAdmin()">
           <i class="fas fa-paper-plane"></i> New Message
         </button>
@@ -291,22 +291,37 @@ class LandlordPortal {
 
     this.messages.forEach(msg => {
       const isFromAdmin = msg.fromRole === 'admin';
+      const isApproval = msg.message.includes('APPROVED');
+      const isRejection = msg.message.includes('NOT approved');
+      
+      let bgColor = isFromAdmin ? '#f0f9ff' : '#f8fafc';
+      let borderColor = isFromAdmin ? '#3b82f6' : '#7c3aed';
+      
+      if (isApproval) {
+        bgColor = '#f0fdf4';
+        borderColor = '#10b981';
+      } else if (isRejection) {
+        bgColor = '#fef2f2';
+        borderColor = '#ef4444';
+      }
+
       html += `
-        <div style="background: ${isFromAdmin ? '#f0f9ff' : '#f8fafc'}; border-left: 4px solid ${isFromAdmin ? '#3b82f6' : '#7c3aed'}; padding: 16px; border-radius: 8px;">
+        <div style="background: ${bgColor}; border-left: 4px solid ${borderColor}; padding: 16px; border-radius: 8px; ${!msg.isRead ? 'box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);' : ''}">
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
             <span style="font-weight: 700; color: #1e293b;">
               ${isFromAdmin ? '👑 Admin Team' : '📤 You'}
+              ${!msg.isRead ? '<span style="background: #ef4444; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 8px; margin-left: 8px;">NEW</span>' : ''}
             </span>
             <span style="font-size: 0.85rem; color: #64748b;">
               ${new Date(msg.createdAt).toLocaleString()}
             </span>
           </div>
-          <div style="color: #475569; line-height: 1.6;">
+          <div style="color: #475569; line-height: 1.6; white-space: pre-wrap;">
             ${msg.message}
           </div>
           ${msg.propertyId ? `
             <div style="margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 4px; font-size: 0.85rem;">
-              <i class="fas fa-home"></i> Related to listing: ${msg.propertyTitle || msg.propertyId}
+              <i class="fas fa-home"></i> Related to: ${msg.propertyTitle || msg.propertyId}
             </div>
           ` : ''}
         </div>
@@ -315,6 +330,9 @@ class LandlordPortal {
 
     html += `</div>`;
     container.innerHTML = html;
+
+    // Mark messages as read after displaying
+    this.markMessagesAsRead();
   }
 
   sendMessageToAdmin() {
@@ -359,6 +377,18 @@ class LandlordPortal {
       window.app.showToast('Opening M-Pesa payment...', 'info');
       // TODO: Integrate with monetization module
     }
+  }
+
+  markMessagesAsRead() {
+    // Mark all messages as read (could call API endpoint)
+    const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+    fetch('/api/landlord/messages/mark-read', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : ''
+      }
+    }).catch(err => console.log('Could not mark messages as read'));
   }
 }
 
