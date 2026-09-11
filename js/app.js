@@ -68,12 +68,15 @@ class NairobiRentalsApp {
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.properties) && data.properties.length > 0) {
-          // TENANT PORTAL: Show ONLY verified/approved listings
+          // TENANT PORTAL: Show ONLY verified/approved listings (exclude test/placeholder data)
           this.properties = data.properties.filter(p => 
-            p.status === 'approved' || 
+            (p.status === 'approved' || 
             p.isApproved === true ||
             p.isVerified === true ||
-            p.status === 'active'
+            p.status === 'active') &&
+            !p.title?.includes('BEYOND SUNDAY') &&  // Exclude test data
+            !p.isTest &&  // Exclude test properties
+            !p.isPlaceholder  // Exclude placeholders
           );
         }
       }
@@ -81,10 +84,13 @@ class NairobiRentalsApp {
       console.log('Using seed properties (offline fallback)');
       // Filter seed properties too
       this.properties = SEED_PROPERTIES.filter(p => 
-        p.status === 'approved' || 
+        (p.status === 'approved' || 
         p.isApproved === true ||
         p.isVerified === true ||
-        p.status === 'active'
+        p.status === 'active') &&
+        !p.title?.includes('BEYOND SUNDAY') &&
+        !p.isTest &&
+        !p.isPlaceholder
       );
     }
   }
