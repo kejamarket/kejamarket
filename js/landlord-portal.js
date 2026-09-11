@@ -364,9 +364,19 @@ class LandlordPortal {
 
   viewMyListingDetails(propId) {
     const property = this.myListings.find(p => p.id === propId);
-    if (property && window.app) {
-      window.app.openPropertyDetail(propId);
+    if (!property) return;
+
+    // Close the landlord portal
+    if (window.app && typeof window.app.closeModal === 'function') {
+      window.app.closeModal('modal-landlord-portal');
     }
+
+    // Open the property detail modal
+    setTimeout(() => {
+      if (window.app && typeof window.app.openPropertyDetail === 'function') {
+        window.app.openPropertyDetail(propId);
+      }
+    }, 300); // Small delay to allow portal to close smoothly
   }
 
   boostListing(propId) {
