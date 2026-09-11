@@ -13,6 +13,16 @@ class LandlordPortal {
 
   init() {
     this.checkLandlordSession();
+    
+    // AUTO-OPEN: If already logged in as landlord on page load, open portal automatically
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    if (session && (session.role === 'landlord' || session.role === 'agency') && 
+        session.role !== 'admin' && !session.isAdmin && session.id !== 'usr-admin-01') {
+      // Open landlord portal automatically after a short delay
+      setTimeout(() => {
+        this.openLandlordPortal();
+      }, 1000);
+    }
   }
 
   checkLandlordSession() {

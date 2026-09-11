@@ -15,6 +15,15 @@ class AdminPortalEngine {
 
   init() {
     this.checkAdminSession();
+    
+    // AUTO-OPEN: If already logged in as admin on page load, open portal automatically
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    if (session && (session.role === 'admin' || session.isAdmin || session.id === 'usr-admin-01')) {
+      // Open admin portal automatically after a short delay
+      setTimeout(() => {
+        this.openAdminModal();
+      }, 1000);
+    }
   }
 
   checkAdminSession() {

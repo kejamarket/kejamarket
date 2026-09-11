@@ -778,6 +778,24 @@ const kejaAuth = (() => {
     if (window.app && typeof window.app.applyFilters === 'function') {
       window.app.applyFilters();
     }
+    
+    // AUTO-OPEN PORTAL: Automatically open appropriate portal after login
+    setTimeout(() => {
+      // Admin users → Open Admin Portal automatically
+      if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
+        if (window.kejaAdmin && typeof window.kejaAdmin.openAdminModal === 'function') {
+          window.kejaAdmin.openAdminModal();
+        }
+      }
+      // Landlord/Agency users → Open Landlord Portal automatically
+      else if (user.role === 'landlord' || user.role === 'agency') {
+        if (window.kejaLandlordPortal && typeof window.kejaLandlordPortal.openLandlordPortal === 'function') {
+          window.kejaLandlordPortal.openLandlordPortal();
+        }
+      }
+      // Tenants → Stay on main browsing page (default)
+    }, 500); // Small delay to ensure modals are ready
+
     if (typeof pendingTenantAuthCallback === 'function') {
       const cb = pendingTenantAuthCallback;
       pendingTenantAuthCallback = null;
