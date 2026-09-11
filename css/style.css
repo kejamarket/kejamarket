@@ -853,7 +853,7 @@ button, input, select, textarea {
 .card-media-wrapper {
   position: relative;
   height: 165px;
-  background: #e2e8f0;
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
   overflow: hidden;
   cursor: pointer;
 }
@@ -863,6 +863,8 @@ button, input, select, textarea {
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  background: #e2e8f0;
+  will-change: transform;
 }
 
 .property-card:hover .card-media-wrapper img {
@@ -1226,7 +1228,8 @@ button, input, select, textarea {
   padding: 20px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.15s ease-out;
+  will-change: opacity;
 }
 
 .modal-backdrop.open {
@@ -1244,8 +1247,9 @@ button, input, select, textarea {
   flex-direction: column;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
-  transform: translateY(15px);
-  transition: transform 0.2s ease;
+  transform: translateY(10px);
+  transition: transform 0.15s ease-out;
+  will-change: transform;
 }
 
 .modal-backdrop.open .modal-dialog {
