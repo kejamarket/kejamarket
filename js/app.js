@@ -1071,6 +1071,9 @@ class NairobiRentalsApp {
       window.commentManager.renderCommentsSection(p.id, commentsContainer);
     }
 
+    // Load verified services to show in property detail
+    this.loadPropertyDetailServices();
+
     this.openModal('modal-property-detail');
 
     // Initialize or refresh Detail Map Canvas
@@ -1793,6 +1796,93 @@ class NairobiRentalsApp {
       toast.style.transform = 'translateY(10px)';
       setTimeout(() => toast.remove(), 300);
     }, 3500);
+  }
+
+  async loadPropertyDetailServices() {
+    const container = document.getElementById('detail-services-container');
+    if (!container) return;
+
+    try {
+      const res = await fetch('/api/properties');
+      const data = await res.json();
+      
+      if (data.success && data.properties) {
+        // Filter for verified services only
+        const services = data.properties.filter(p => 
+          p.listingType === 'service' && 
+          p.isVerified === true &&
+          p.availability !== 'taken'
+        );
+
+        if (services.length === 0) {
+          container.innerHTML = '';
+          return;
+        }
+
+        // Group services by category
+        const servicesByCategory = {
+          wifi: [],
+          movers: [],
+          laundry: [],
+          garbage: [],
+          gas: [],
+          water: []
+        };
+
+        services.forEach(s => {
+          if (servicesByCategory[s.category]) {
+            servicesByCategory[s.category].push(s);
+          }
+        });
+
+        const categoryInfo = {
+          wifi: { icon: 'wifi', color: '#0284c7', bg: '#e0f2fe', name: 'WiFi / Internet' },
+          movers: { icon: 'truck-moving', color: '#ea580c', bg: '#fed7aa', name: 'Moving Services' },
+          laundry: { icon: 'tshirt', color: '#8b5cf6', bg: '#ede9fe', name: 'Laundry Services' },
+          garbage: { icon: 'trash', color: '#059669', bg: '#d1fae5', name: 'Garbage Collection' },
+          gas: { icon: 'fire', color: '#dc2626', bg: '#fee2e2', name: 'Gas Refills' },
+          water: { icon: 'tint', color: '#06b6d4', bg: '#cffafe', name: 'Water Delivery' }
+        };
+
+        let html = '<h4 style="margin: 0 0 12px 0; color: #1e293b; font-size: 1.1rem;"><i class="fas fa-concierge-bell"></i> Verified Services</h4>';
+
+        Object.keys(servicesByCategory).forEach(category => {
+          const categoryServices = servicesByCategory[category];
+          if (categoryServices.length > 0) {
+            const info = categoryInfo[category];
+            const service = categoryServices[0]; // Show first provider
+            
+            html += `
+              <div style="background: linear-gradient(135deg, ${info.bg}, ${info.bg}dd); border: 1.5px solid ${info.color}44; border-radius: 12px; padding: 14px; margin-bottom: 10px; cursor: pointer; transition: transform 0.2s ease;" onclick="app.showServiceProviders('${category}')">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: ${info.color}; display: flex; align-items: center; justify-content: center;">
+                      <i class="fas fa-${info.icon}" style="color: white; font-size: 0.9rem;"></i>
+                    </div>
+                    <div>
+                      <div style="font-weight: 800; font-size: 0.9rem; color: ${info.color};">${info.name}</div>
+                      <div style="font-size: 0.72rem; color: ${info.color}dd; font-weight: 600;">${categoryServices.length} Verified Provider${categoryServices.length > 1 ? 's' : ''}</div>
+                    </div>
+                  </div>
+                  <span style="background: white; color: ${info.color}; font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 6px;">VIEW</span>
+                </div>
+                <p style="font-size: 0.78rem; color: ${info.color}; line-height: 1.4; margin: 0;">${service.description || service.businessName}</p>
+              </div>
+            `;
+          }
+        });
+
+        container.innerHTML = html;
+      }
+    } catch (err) {
+      console.log('Could not load services:', err);
+      container.innerHTML = '';
+    }
+  }
+
+  showServiceProviders(category) {
+    // Show modal with all providers in this category
+    alert(`Showing all ${category} service providers. Modal implementation coming...`);
   }
 }
 
