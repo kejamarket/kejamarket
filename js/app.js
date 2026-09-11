@@ -68,12 +68,13 @@ class NairobiRentalsApp {
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.properties) && data.properties.length > 0) {
-          // TENANT PORTAL: Show ONLY verified/approved listings (exclude test/placeholder data)
+          // TENANT PORTAL: Show ONLY verified/approved + VACANT listings (hide taken properties)
           this.properties = data.properties.filter(p => 
             (p.status === 'approved' || 
             p.isApproved === true ||
             p.isVerified === true ||
             p.status === 'active') &&
+            p.availability !== 'taken' &&  // Hide taken properties from tenant view
             !p.title?.includes('BEYOND SUNDAY') &&  // Exclude test data
             !p.isTest &&  // Exclude test properties
             !p.isPlaceholder  // Exclude placeholders
@@ -88,6 +89,7 @@ class NairobiRentalsApp {
         p.isApproved === true ||
         p.isVerified === true ||
         p.status === 'active') &&
+        p.availability !== 'taken' &&  // Hide taken properties
         !p.title?.includes('BEYOND SUNDAY') &&
         !p.isTest &&
         !p.isPlaceholder

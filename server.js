@@ -1880,6 +1880,53 @@ app.post('/api/landlord/send-message', requireAuth, async (req, res) => {
   }
 });
 
+// PUT /api/landlord/availability/:id (Toggle property availability: vacant/taken)
+app.put('/api/landlord/availability/:id', requireAuth, (req, res) => {
+  try {
+    const propertyId = req.params.id;
+    const { availability } = req.body;
+    const userId = req.user.id;
+
+    if (!availability || !['vacant', 'taken'].includes(availability)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Availability must be "vacant" or "taken".' 
+      });
+    }
+
+    // Get property
+    const properties = store.getListings();
+    const property = properties.find(p => p.id === propertyId);
+
+    if (!property) {
+      return res.status(404).json({ success: false, message: 'Property not found.' });
+    }
+
+    // Verify ownership
+    if (property.postedBy !== userId) {
+      return res.status(403).json({ 
+        success: false, 
+        message: 'You can only update your own properties.' 
+      });
+    }
+
+    // Update availability
+    property.availability = availability;
+    property.updatedAt = new Date().toISOString();
+
+    // Save to store
+    store.saveProperty(property);
+
+    res.json({ 
+      success: true, 
+      message: `Property marked as ${availability}.`,
+      property
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ════════════════════════════════════════════════════════════════════════════════
 // SERVICE PROVIDER ENDPOINTS
 // ════════════════════════════════════════════════════════════════════════════════

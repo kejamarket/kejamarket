@@ -198,6 +198,14 @@ class LandlordPortal {
       ? '<span style="background: #fbbf24; color: #78350f; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">⏳ Pending</span>'
       : '<span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">✓ Live</span>';
 
+    // Availability status (only for approved listings)
+    const isTaken = property.availability === 'taken';
+    const availabilityBadge = status === 'approved' ? `
+      <span style="background: ${isTaken ? '#ef4444' : '#10b981'}; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">
+        ${isTaken ? '🔒 Taken' : '✓ Vacant'}
+      </span>
+    ` : '';
+
     return `
       <div style="background: white; border-radius: 8px; padding: 16px; display: flex; gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         ${property.images && property.images[0] ? `
@@ -206,7 +214,10 @@ class LandlordPortal {
         <div style="flex: 1;">
           <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
             <h4 style="margin: 0; font-size: 1rem; color: #1e293b;">${property.title}</h4>
-            ${statusBadge}
+            <div style="display: flex; gap: 6px;">
+              ${statusBadge}
+              ${availabilityBadge}
+            </div>
           </div>
           <div style="color: #64748b; font-size: 0.9rem; margin-bottom: 8px;">
             <i class="fas fa-map-marker-alt"></i> ${property.estateSuburb || property.area || '-'}
@@ -214,11 +225,14 @@ class LandlordPortal {
           <div style="font-size: 1.2rem; font-weight: 800; color: #00b53f; margin-bottom: 8px;">
             KSh ${Number(property.rentKes || property.price || 0).toLocaleString()}/month
           </div>
-          <div style="display: flex; gap: 8px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button class="category-pill" style="font-size: 0.8rem; padding: 6px 12px; background: #6366f1; color: white;" onclick="kejaLandlordPortal.viewMyListingDetails('${property.id}')">
               <i class="fas fa-eye"></i> View
             </button>
             ${status === 'approved' ? `
+              <button class="category-pill" style="font-size: 0.8rem; padding: 6px 12px; background: ${isTaken ? '#10b981' : '#ef4444'}; color: white;" onclick="kejaLandlordPortal.toggleAvailability('${property.id}', '${isTaken ? 'vacant' : 'taken'}')">
+                <i class="fas fa-${isTaken ? 'unlock' : 'lock'}"></i> Mark as ${isTaken ? 'Vacant' : 'Taken'}
+              </button>
               <button class="category-pill" style="font-size: 0.8rem; padding: 6px 12px; background: #f59e0b; color: white;" onclick="kejaLandlordPortal.boostListing('${property.id}')">
                 <i class="fas fa-rocket"></i> Boost
               </button>
@@ -399,6 +413,52 @@ class LandlordPortal {
     if (window.app) {
       window.app.showToast('Opening M-Pesa payment...', 'info');
       // TODO: Integrate with monetization module
+    }
+  }
+
+  async toggleAvailability(propId, newStatus) {
+    const action = newStatus === 'taken' ? 'taken (hide from tenants)' : 'vacant (show to tenants)';
+    if (!confirm(`Mark this property as ${action}?`)) return;
+
+    const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+    if (!token) {
+      if (window.app) window.app.showToast('Please sign in to update availability.', 'error');
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/landlord/availability/${propId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ availability: newStatus })
+      });
+
+      const data = await res.json();
+      
+      if (data.success) {
+        if (window.app) {
+          const message = newStatus === 'taken' 
+            ? '🔒 Property marked as TAKEN. It will be hidden from tenant searches.'
+            : '✅ Property marked as VACANT. It will appear in tenant searches again!';
+          window.app.showToast(message, 'success');
+        }
+        
+        // Reload listings to show updated status
+        this.loadMyListings();
+        
+        // Refresh main app listings if available
+        if (window.app && typeof window.app.loadProperties === 'function') {
+          window.app.loadProperties();
+        }
+      } else {
+        if (window.app) window.app.showToast(data.message || 'Failed to update availability.', 'error');
+      }
+    } catch (err) {
+      console.error('Toggle availability error:', err);
+      if (window.app) window.app.showToast('Failed to update availability. Please try again.', 'error');
     }
   }
 
