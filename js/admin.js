@@ -1,6 +1,7 @@
 /**
- * KejaMarket - Official Administrator Control Center Engine
- * Provides live analytics, user management, listings moderation, and database tools.
+ * KejaMarket - Administrator Control Center Engine
+ * Complete admin dashboard with analytics, user management, and listing moderation
+ * SAFE VERSION: Does not interfere with main site functionality
  */
 
 class AdminPortalEngine {
@@ -8,10 +9,11 @@ class AdminPortalEngine {
     this.activeTab = 'overview';
     this.users = [];
     this.stats = null;
+    this.pendingListings = [];
+    this.recentActivity = [];
   }
 
   init() {
-    // Check if current user is admin and update UI
     this.checkAdminSession();
   }
 
@@ -90,6 +92,7 @@ class AdminPortalEngine {
     if (tabName === 'users') this.renderUsers();
     if (tabName === 'listings') this.renderListings();
     if (tabName === 'system') this.loadMpesaConfig();
+    if (tabName === 'overview') this.renderStats();
   }
 
   async refreshAllData() {
@@ -112,6 +115,21 @@ class AdminPortalEngine {
         this.users = data.users || [];
         if (this.activeTab === 'users') this.renderUsers();
       }
+
+      // Fetch pending listings
+      const pendingRes = await fetch('/api/admin/pending-listings', { headers });
+      if (pendingRes.ok) {
+        const data = await pendingRes.json();
+        this.pendingListings = data.listings || [];
+        if (this.activeTab === 'listings') this.renderListings();
+        
+        // Update pending count badge
+        const pendingBadge = document.getElementById('admin-pending-count');
+        if (pendingBadge) {
+          pendingBadge.textContent = this.pendingListings.length;
+          pendingBadge.style.display = this.pendingListings.length > 0 ? 'inline-block' : 'none';
+        }
+      }
     } catch (err) {
       console.warn('Admin fetch error:', err);
     }
@@ -121,6 +139,7 @@ class AdminPortalEngine {
     if (!this.stats) return;
     const s = this.stats;
 
+    // Update basic stat cards
     const elTotalUsers = document.getElementById('admin-stat-total-users');
     const elLandlords = document.getElementById('admin-stat-landlords');
     const elTenants = document.getElementById('admin-stat-tenants');
@@ -131,7 +150,7 @@ class AdminPortalEngine {
     if (elTotalUsers) elTotalUsers.textContent = s.totalUsers || (this.users ? this.users.length : 0);
     if (elLandlords) elLandlords.textContent = s.landlords || 0;
     if (elTenants) elTenants.textContent = s.tenants || 0;
-    if (elTotalProps) elTotalProps.textContent = s.totalProperties || (window.app?.state?.properties?.length || 0);
+    if (elTotalProps) elTotalProps.textContent = s.totalProperties || (window.app?.properties?.length || 0);
     if (elAvailableProps) elAvailableProps.textContent = s.availableProperties || 0;
     if (elTakenProps) elTakenProps.textContent = s.takenProperties || 0;
   }
@@ -141,7 +160,7 @@ class AdminPortalEngine {
     if (!container) return;
 
     if (!this.users || this.users.length === 0) {
-      container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 24px; color: #64748b;">No registered users found in database.</td></tr>`;
+      container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 24px; color: #64748b;">No registered users found.</td></tr>`;
       return;
     }
 
@@ -155,7 +174,7 @@ class AdminPortalEngine {
         <td style="padding: 12px; color: #475569; font-size: 0.82rem;">${u.email || '-'}</td>
         <td style="padding: 12px;">
           <span style="display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; background: ${u.role === 'landlord' ? '#e0e7ff; color: #4338ca;' : '#d1fae5; color: #065f46;'}">
-            ${u.role === 'landlord' ? 'Landlord' : 'Tenant'}
+            ${u.role === 'landlord' ? 'Landlord' : u.role === 'agency' ? 'Agency' : 'Tenant'}
           </span>
         </td>
         <td style="padding: 12px;">
@@ -165,7 +184,7 @@ class AdminPortalEngine {
         </td>
         <td style="padding: 12px; text-align: right;">
           <button class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0; cursor: pointer; background: ${u.isVerified ? '#f87171; color: white;' : '#10b981; color: white;'}" onclick="kejaAdmin.toggleUserVerification('${u.id}')">
-            ${u.isVerified ? 'Revoke Verify' : 'Verify Landlord'}
+            ${u.isVerified ? 'Revoke' : 'Verify'}
           </button>
         </td>
       </tr>
@@ -177,36 +196,72 @@ class AdminPortalEngine {
     if (!container) return;
 
     const properties = (window.app && window.app.properties) || [];
-    if (properties.length === 0) {
-      container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 24px; color: #64748b;">No listings in database.</td></tr>`;
+    const pending = this.pendingListings || [];
+    
+    if (properties.length === 0 && pending.length === 0) {
+      container.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 24px; color: #64748b;">No listings in database.</td></tr>`;
       return;
     }
 
-    container.innerHTML = properties.slice(0, 30).map(p => `
-      <tr style="border-bottom: 1px solid #f1f5f9;">
-        <td style="padding: 12px; font-weight: 600; color: #1e293b; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${p.title}">
-          ${p.title}
-        </td>
-        <td style="padding: 12px; color: #475569;">${p.estateSuburb || p.county || '-'}</td>
-        <td style="padding: 12px; font-weight: 700; color: #00b53f;">KSh ${Number(p.rentKes || 0).toLocaleString()}</td>
-        <td style="padding: 12px;">
-          ${p.isTopAd ? '<span style="background: #fef08a; color: #854d0e; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">TOP AD</span>' : '<span style="color:#94a3b8; font-size:0.75rem;">Standard</span>'}
-        </td>
-        <td style="padding: 12px;">
-          <span style="font-size: 0.75rem; font-weight: 700; color: ${p.isTaken ? '#ef4444' : '#00b53f'}">
-            ${p.isTaken ? '🔴 Taken' : '🟢 Vacant'}
-          </span>
-        </td>
-        <td style="padding: 12px; text-align: right; display: flex; gap: 6px; justify-content: flex-end;">
-          <button class="category-pill" style="font-size: 0.72rem; padding: 4px 8px; margin: 0; background: #ff9800; color: white; cursor: pointer;" onclick="kejaAdmin.boostListing('${p.id}')">
-            ⚡ Boost
-          </button>
-          <button class="category-pill" style="font-size: 0.72rem; padding: 4px 8px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.deleteListing('${p.id}')">
-            🗑 Delete
-          </button>
-        </td>
-      </tr>
-    `).join('');
+    let html = '';
+
+    // Show PENDING listings FIRST
+    if (pending.length > 0) {
+      html += `
+        <tr style="background: #fef3c7; border-bottom: 2px solid #f59e0b;">
+          <td colspan="7" style="padding: 12px; font-weight: 800; color: #92400e; font-size: 0.9rem;">
+            <i class="fas fa-clock"></i> PENDING APPROVAL (${pending.length})
+          </td>
+        </tr>
+      `;
+
+      pending.forEach(p => {
+        html += `
+          <tr style="background: #fffbeb; border-bottom: 1px solid #fde68a;">
+            <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.title}</td>
+            <td style="padding: 12px; color: #475569;">${p.estateSuburb || p.sublocation || '-'}</td>
+            <td style="padding: 12px; font-weight: 700; color: #00b53f;">KSh ${Number(p.rentKes || 0).toLocaleString()}</td>
+            <td style="padding: 12px;"><span style="background: #fbbf24; color: #78350f; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">⏳ PENDING</span></td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${p.landlord?.name || 'Unknown'}</td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
+            <td style="padding: 12px; text-align: right;">
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #00b53f; color: white; cursor: pointer;" onclick="kejaAdmin.approveListing('${p.id}')">✓ Approve</button>
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.rejectListing('${p.id}')">✗ Reject</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // Show APPROVED listings
+    if (properties.length > 0) {
+      html += `
+        <tr style="background: #f8fafc; border-bottom: 2px solid #cbd5e1;">
+          <td colspan="7" style="padding: 12px; font-weight: 800; color: #475569; font-size: 0.9rem;">
+            <i class="fas fa-check-circle"></i> LIVE LISTINGS (${properties.length})
+          </td>
+        </tr>
+      `;
+
+      properties.slice(0, 30).forEach(p => {
+        html += `
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.title}</td>
+            <td style="padding: 12px; color: #475569;">${p.estateSuburb || p.sublocation || '-'}</td>
+            <td style="padding: 12px; font-weight: 700; color: #00b53f;">KSh ${Number(p.rentKes || 0).toLocaleString()}</td>
+            <td style="padding: 12px;">${p.isTopAd ? '<span style="background: #fef08a; color: #854d0e; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px;">TOP AD</span>' : '<span style="color:#94a3b8; font-size:0.75rem;">Standard</span>'}</td>
+            <td style="padding: 12px;"><span style="font-weight: 700; color: ${p.isTaken ? '#ef4444' : '#00b53f'}">${p.isTaken ? '🔴 Taken' : '🟢 Vacant'}</span></td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
+            <td style="padding: 12px; text-align: right;">
+              <button class="category-pill" style="font-size: 0.72rem; padding: 4px 8px; margin: 0 4px; background: #ff9800; color: white; cursor: pointer;" onclick="kejaAdmin.boostListing('${p.id}')">⚡ Boost</button>
+              <button class="category-pill" style="font-size: 0.72rem; padding: 4px 8px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.deleteListing('${p.id}')">🗑 Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    container.innerHTML = html;
   }
 
   async toggleUserVerification(userId) {
@@ -227,7 +282,59 @@ class AdminPortalEngine {
         if (window.app) window.app.showToast(data.message || 'Action failed', 'error');
       }
     } catch (err) {
-      if (window.app) window.app.showToast('Network error updating user', 'error');
+      if (window.app) window.app.showToast('Network error', 'error');
+    }
+  }
+
+  async approveListing(propId) {
+    if (!confirm('Approve this listing? It will go live immediately.')) return;
+    try {
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      const res = await fetch(`/api/properties/${encodeURIComponent(propId)}/approve`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) {
+          window.app.showToast('✅ Listing approved & published!', 'success');
+          window.app.loadProperties();
+        }
+        await this.refreshAllData();
+      } else {
+        if (window.app) window.app.showToast(data.message || 'Approval failed', 'error');
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('Network error', 'error');
+    }
+  }
+
+  async rejectListing(propId) {
+    const reason = prompt('Why are you rejecting this listing?\n(Optional - will be sent to landlord)');
+    if (reason === null) return;
+
+    try {
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      const res = await fetch(`/api/properties/${encodeURIComponent(propId)}/reject`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify({ reason })
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) window.app.showToast('❌ Listing rejected', 'info');
+        await this.refreshAllData();
+      } else {
+        if (window.app) window.app.showToast(data.message || 'Rejection failed', 'error');
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('Network error', 'error');
     }
   }
 
@@ -252,7 +359,7 @@ class AdminPortalEngine {
   }
 
   async deleteListing(propId) {
-    if (!confirm('Are you sure you want to delete this listing from the database?')) return;
+    if (!confirm('Are you sure you want to delete this listing?')) return;
     try {
       const res = await fetch(`/api/properties/${encodeURIComponent(propId)}`, {
         method: 'DELETE'
@@ -260,7 +367,7 @@ class AdminPortalEngine {
       const data = await res.json();
       if (data.success) {
         if (window.app) {
-          window.app.showToast('Listing removed from database', 'info');
+          window.app.showToast('Listing removed', 'info');
           window.app.loadProperties();
         }
         this.renderListings();
@@ -280,14 +387,10 @@ class AdminPortalEngine {
       if (res.ok) {
         const data = await res.json();
         const badge = document.getElementById('admin-daraja-status-badge');
-        const keyInput = document.getElementById('admin-mpesa-key');
-        const paybillInput = document.getElementById('admin-mpesa-paybill');
-        const accountInput = document.getElementById('admin-mpesa-account');
-        const envSelect = document.getElementById('admin-mpesa-env');
-
+        
         if (badge) {
           if (data.hasDarajaCredentials) {
-            badge.textContent = `Active (${data.environment.toUpperCase()})`;
+            badge.textContent = `Active (${data.environment?.toUpperCase() || 'PROD'})`;
             badge.style.background = '#dcfce7';
             badge.style.color = '#15803d';
           } else {
@@ -296,10 +399,6 @@ class AdminPortalEngine {
             badge.style.color = '#991b1b';
           }
         }
-        if (keyInput && data.consumerKeyMasked) keyInput.placeholder = data.consumerKeyMasked;
-        if (paybillInput && data.paybill) paybillInput.value = data.paybill;
-        if (accountInput && data.account) accountInput.value = data.account;
-        if (envSelect && data.environment) envSelect.value = data.environment;
       }
     } catch (e) {
       console.warn('Could not load M-Pesa config:', e);
@@ -336,17 +435,18 @@ class AdminPortalEngine {
 
       const data = await res.json();
       if (data.success) {
-        if (window.app) window.app.showToast('✅ Safaricom M-Pesa configuration saved!', 'success');
+        if (window.app) window.app.showToast('✅ M-Pesa configuration saved!', 'success');
         this.loadMpesaConfig();
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to save config'}`, 'error');
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to save'}`, 'error');
       }
     } catch (err) {
-      if (window.app) window.app.showToast('❌ Server error saving M-Pesa config.', 'error');
+      if (window.app) window.app.showToast('❌ Server error', 'error');
     }
   }
 }
 
+// Initialize admin engine
 window.kejaAdmin = new AdminPortalEngine();
 document.addEventListener('DOMContentLoaded', () => {
   window.kejaAdmin.init();
