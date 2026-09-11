@@ -72,12 +72,20 @@ class NairobiRentalsApp {
           this.properties = data.properties.filter(p => 
             p.status === 'approved' || 
             p.isApproved === true ||
+            p.isVerified === true ||
             p.status === 'active'
           );
         }
       }
     } catch (err) {
       console.log('Using seed properties (offline fallback)');
+      // Filter seed properties too
+      this.properties = SEED_PROPERTIES.filter(p => 
+        p.status === 'approved' || 
+        p.isApproved === true ||
+        p.isVerified === true ||
+        p.status === 'active'
+      );
     }
   }
 
