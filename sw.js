@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v11';
+const CACHE_NAME = 'kejamarket-v12';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
