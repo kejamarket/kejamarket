@@ -496,8 +496,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label id="post-contact-name-label">Your Full Name / Landlord *</label>
-              <input type="text" id="post-landlord-name" class="form-control" placeholder="e.g. Mwangi James" required>
+              <label>House Type *</label>
+              <select id="post-category" class="form-control" required></select>
             </div>
           </div>
 
@@ -510,19 +510,10 @@
 
           <div class="form-grid-2">
             <div class="form-group">
-              <label>WhatsApp / Call Number *</label>
-              <input type="tel" id="post-phone" class="form-control" placeholder="e.g. 0712345678" required>
-            </div>
-            <div class="form-group">
-              <label>House Type *</label>
-              <select id="post-category" class="form-control" required></select>
-            </div>
-          </div>
-
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label>Estate / Area *</label>
-              <select id="post-suburb" class="form-control" required></select>
+              <label>Estate / Area / Suburb * <small style="color: #64748b;">(Start typing...)</small></label>
+              <input type="text" id="post-suburb-search" class="form-control" placeholder="Type estate name (e.g. Ruaka, Kilimani...)" autocomplete="off" required>
+              <select id="post-suburb" class="form-control" style="display: none;"></select>
+              <div id="suburb-suggestions" style="position: absolute; background: white; border: 1px solid #e2e8f0; border-radius: 8px; max-height: 200px; overflow-y: auto; width: 100%; z-index: 1000; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
             </div>
             <div class="form-group">
               <label>Rent (KES) *</label>

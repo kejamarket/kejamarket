@@ -18,6 +18,87 @@ class LandlordManager {
     this.setupVideoDropzone();
     this.setupFormSubmit();
     this.setupVerificationModal();
+    this.setupSuburbAutocomplete();
+    this.autoFillUserDetails();
+  }
+
+  autoFillUserDetails() {
+    // Auto-fill landlord name and phone from logged-in user
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    if (session) {
+      // Phone is auto-filled from session (no need for input field)
+      this.landlordPhone = session.phone;
+      this.landlordName = session.name;
+    }
+  }
+
+  setupSuburbAutocomplete() {
+    const searchInput = document.getElementById('post-suburb-search');
+    const suggestionsDiv = document.getElementById('suburb-suggestions');
+    const hiddenSelect = document.getElementById('post-suburb');
+
+    if (!searchInput || !suggestionsDiv) return;
+
+    let allSuburbs = [];
+    if (typeof ALL_SUBURBS !== 'undefined') {
+      allSuburbs = ALL_SUBURBS;
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      
+      if (query.length < 2) {
+        suggestionsDiv.style.display = 'none';
+        return;
+      }
+
+      const matches = allSuburbs.filter(s => 
+        s.name.toLowerCase().includes(query) ||
+        s.county.toLowerCase().includes(query)
+      ).slice(0, 10);
+
+      if (matches.length === 0) {
+        suggestionsDiv.style.display = 'none';
+        return;
+      }
+
+      suggestionsDiv.innerHTML = matches.map(s => `
+        <div style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f1f5f9; hover:background: #f8fafc;" 
+             onmouseover="this.style.background='#f8fafc'" 
+             onmouseout="this.style.background='white'"
+             onclick="landlordManager.selectSuburb('${s.name}', ${s.lat}, ${s.lng}, '${s.county}', '${s.corridorId}')">
+          <div style="font-weight: 600; color: #1e293b;">${s.name}</div>
+          <div style="font-size: 0.85rem; color: #64748b;">${s.county}</div>
+        </div>
+      `).join('');
+
+      suggestionsDiv.style.display = 'block';
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+        suggestionsDiv.style.display = 'none';
+      }
+    });
+  }
+
+  selectSuburb(name, lat, lng, county, corridorId) {
+    const searchInput = document.getElementById('post-suburb-search');
+    const suggestionsDiv = document.getElementById('suburb-suggestions');
+    const hiddenSelect = document.getElementById('post-suburb');
+
+    if (searchInput) searchInput.value = `${name} (${county})`;
+    if (suggestionsDiv) suggestionsDiv.style.display = 'none';
+    
+    // Store selected suburb data
+    this.selectedSuburb = { name, lat, lng, county, corridorId };
+    this.updatePostMapLocation(lat, lng);
+
+    // Update hidden select for form submission
+    if (hiddenSelect) {
+      hiddenSelect.innerHTML = `<option value="${name}" selected>${name}</option>`;
+    }
   }
 
   populateSelects() {
@@ -367,10 +448,12 @@ class LandlordManager {
       const description = document.getElementById('post-description')?.value.trim() || '';
       const waterType = document.getElementById('post-water')?.value || 'Borehole Water';
       const electricityType = document.getElementById('post-electricity')?.value || 'Prepaid (Tokens)';
-      const landlordName = document.getElementById('post-landlord-name')?.value.trim() || (session ? session.name : (managedBy === 'agency' ? 'Verified Agency' : 'Direct Landlord'));
-      const phone = document.getElementById('post-phone')?.value.trim() || (session ? session.phone : '+254700000000');
+      
+      // Auto-fill landlord details from session (no form fields needed)
+      const landlordName = this.landlordName || (session ? session.name : (managedBy === 'agency' ? 'Verified Agency' : 'Direct Landlord'));
+      const phone = this.landlordPhone || (session ? session.phone : '+254700000000');
 
-      const suburbObj = (typeof ALL_SUBURBS !== 'undefined' && ALL_SUBURBS.find(s => s.name === suburb)) || { county: 'Nairobi', corridorId: 'nairobi_central' };
+      const suburbObj = this.selectedSuburb || (typeof ALL_SUBURBS !== 'undefined' && ALL_SUBURBS.find(s => s.name === suburb)) || { county: 'Nairobi', corridorId: 'nairobi_central' };
 
       const defaultPhotos = [
         { url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80', caption: 'Living Area' },
