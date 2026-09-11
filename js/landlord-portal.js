@@ -17,11 +17,14 @@ class LandlordPortal {
 
   checkLandlordSession() {
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    
+    // IMPORTANT: Admins should NOT see landlord portal, only their own admin portal
     const isLandlord = Boolean(
-      session && (
-        session.role === 'landlord' || 
-        session.role === 'agency'
-      )
+      session && 
+      (session.role === 'landlord' || session.role === 'agency') &&
+      session.role !== 'admin' &&  // Exclude admins
+      !session.isAdmin &&  // Exclude admin flag
+      session.id !== 'usr-admin-01'  // Exclude default admin
     );
 
     const landlordHeaderBtn = document.getElementById('btn-landlord-header');
