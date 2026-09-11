@@ -2317,7 +2317,7 @@
         <div style="font-size: 0.8rem; opacity: 0.9;">Get faster access & offline support</div>
       </div>
     </div>
-    <button onclick="installPWA()" style="margin-top: 12px; width: 100%; background: white; color: #4f46e5; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem;">
+    <button onclick="installPWA()" id="pwa-install-btn" style="margin-top: 12px; width: 100%; background: white; color: #4f46e5; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem;">
       <i class="fas fa-download"></i> Install Now
     </button>
   </div>
@@ -2326,17 +2326,43 @@
     // PWA Install Prompt
     let deferredPrompt;
     
+    // Check if already installed or dismissed
+    function shouldShowBanner() {
+      // Don't show if already dismissed in last 7 days
+      const dismissed = localStorage.getItem('pwa-banner-dismissed');
+      if (dismissed) {
+        const dismissedTime = parseInt(dismissed);
+        const daysSince = (Date.now() - dismissedTime) / (1000 * 60 * 60 * 24);
+        if (daysSince < 7) return false;
+      }
+      
+      // Don't show if already installed (running in standalone mode)
+      if (window.matchMedia('(display-mode: standalone)').matches) return false;
+      if (window.navigator.standalone === true) return false; // iOS
+      
+      return true;
+    }
+
+    // Show banner immediately on mobile devices
+    window.addEventListener('load', () => {
+      if (shouldShowBanner()) {
+        // Show after 2 seconds for better UX
+        setTimeout(() => {
+          document.getElementById('pwa-install-banner').style.display = 'block';
+        }, 2000);
+      }
+    });
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      // Show banner if not dismissed before
-      if (!localStorage.getItem('pwa-banner-dismissed')) {
-        document.getElementById('pwa-install-banner').style.display = 'block';
-      }
+      // Update button to trigger native prompt
+      document.getElementById('pwa-install-btn').style.display = 'block';
     });
 
     function installPWA() {
       if (deferredPrompt) {
+        // Native install available
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
@@ -2344,20 +2370,22 @@
           }
           deferredPrompt = null;
           document.getElementById('pwa-install-banner').style.display = 'none';
+          localStorage.setItem('pwa-banner-dismissed', Date.now().toString());
         });
+      } else {
+        // Fallback: Show manual instructions
+        if (navigator.userAgent.match(/iPhone|iPad|iPod/)) {
+          alert('To install: Tap the Share button, then "Add to Home Screen"');
+        } else {
+          alert('To install: Tap the menu (⋮) and select "Add to Home screen" or "Install app"');
+        }
+        closePWABanner();
       }
     }
 
     function closePWABanner() {
       document.getElementById('pwa-install-banner').style.display = 'none';
-      localStorage.setItem('pwa-banner-dismissed', 'true');
-    }
-
-    // Show banner again after 7 days if dismissed
-    if (localStorage.getItem('pwa-banner-dismissed')) {
-      setTimeout(() => {
-        localStorage.removeItem('pwa-banner-dismissed');
-      }, 7 * 24 * 60 * 60 * 1000);
+      localStorage.setItem('pwa-banner-dismissed', Date.now().toString());
     }
   </script>
 
