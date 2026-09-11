@@ -1038,7 +1038,7 @@ app.get('/api/properties/:id', (req, res) => {
 });
 
 // POST /api/properties (Landlords, Agencies & Ingestion engine create new listings)
-app.post('/api/properties', optionalAuth, (req, res) => {
+app.post('/api/properties', optionalAuth, async (req, res) => {
   try {
     const data = req.body;
     if (!data.title || !data.rentKes || !data.category) {
