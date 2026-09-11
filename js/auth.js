@@ -128,12 +128,12 @@ const kejaAuth = (() => {
   }
 
   /* ─────────────────────────────────────────
-     ROLE SELECTION (TENANT, LANDLORD, AGENCY)
+     ROLE SELECTION (TENANT, LANDLORD, AGENCY, SERVICE)
   ───────────────────────────────────────── */
   function setRole(role, panel) {
     state[`${panel}Role`] = role;
 
-    const roles = ['tenant', 'landlord', 'agency'];
+    const roles = ['tenant', 'landlord', 'agency', 'service'];
     roles.forEach(r => {
       const btn = document.getElementById(`role-${panel}-${r}`);
       if (btn) {
@@ -149,6 +149,7 @@ const kejaAuth = (() => {
     if (panel === 'signup') {
       const landlordFields = document.getElementById('signup-landlord-fields');
       const agencyFields = document.getElementById('signup-agency-fields');
+      const serviceFields = document.getElementById('signup-service-fields');
       const nameLabel = document.getElementById('signup-name-label');
 
       if (landlordFields) {
@@ -157,8 +158,17 @@ const kejaAuth = (() => {
       if (agencyFields) {
         agencyFields.style.display = role === 'agency' ? 'block' : 'none';
       }
+      if (serviceFields) {
+        serviceFields.style.display = role === 'service' ? 'block' : 'none';
+      }
       if (nameLabel) {
-        nameLabel.textContent = role === 'agency' ? 'Director / Principal Agent Name *' : 'Full Name *';
+        if (role === 'agency') {
+          nameLabel.textContent = 'Director / Principal Agent Name *';
+        } else if (role === 'service') {
+          nameLabel.textContent = 'Service Provider Name *';
+        } else {
+          nameLabel.textContent = 'Full Name *';
+        }
       }
     }
   }
@@ -200,6 +210,16 @@ const kejaAuth = (() => {
       ? document.getElementById('signup-agency-location').value.trim()
       : null;
 
+    const serviceCategory = role === 'service' && document.getElementById('signup-service-category')
+      ? document.getElementById('signup-service-category').value
+      : null;
+    const serviceBusiness = role === 'service' && document.getElementById('signup-service-business')
+      ? document.getElementById('signup-service-business').value.trim()
+      : null;
+    const serviceAreas = role === 'service' && document.getElementById('signup-service-areas')
+      ? document.getElementById('signup-service-areas').value.trim()
+      : null;
+
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn ? submitBtn.innerHTML : '';
     if (submitBtn) {
@@ -216,7 +236,10 @@ const kejaAuth = (() => {
           area, 
           agencyName: agencyName || name, 
           contactPerson: name, 
-          officeLocation 
+          officeLocation,
+          serviceCategory,
+          serviceBusiness,
+          serviceAreas
         })
       });
 
@@ -617,6 +640,8 @@ const kejaAuth = (() => {
     const btn = document.getElementById('btn-auth-header');
     const mobileLabel = document.getElementById('mobile-nav-user-label');
     const adminHeaderBtn = document.getElementById('btn-admin-header');
+    const landlordHeaderBtn = document.getElementById('btn-landlord-header');
+    const serviceHeaderBtn = document.getElementById('btn-service-header');
     const postAdBtn = document.getElementById('btn-header-post-ad');
     const pricingBtn = document.getElementById('btn-header-pricing');
     const whatsappAlertBanner = document.getElementById('tenant-whatsapp-alert-banner');
@@ -637,6 +662,8 @@ const kejaAuth = (() => {
         isAdmin
       );
 
+      const isServiceProvider = Boolean(session.role === 'service');
+
       const initials = (session.name || 'User')
         .split(' ')
         .map(w => w[0])
@@ -647,6 +674,16 @@ const kejaAuth = (() => {
       if (label) label.textContent = isAdmin ? '👑 Admin' : initials;
       if (mobileLabel) mobileLabel.textContent = isAdmin ? 'Admin' : session.name.split(' ')[0];
       if (adminHeaderBtn) adminHeaderBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+      
+      // Show Landlord Portal button ONLY for landlords/agents (NOT admin, NOT service)
+      if (landlordHeaderBtn) {
+        landlordHeaderBtn.style.display = (isLandlordOrAgent && !isAdmin && !isServiceProvider) ? 'inline-flex' : 'none';
+      }
+      
+      // Show Service Portal button ONLY for service providers
+      if (serviceHeaderBtn) {
+        serviceHeaderBtn.style.display = isServiceProvider ? 'inline-flex' : 'none';
+      }
 
       if (btn) {
         if (isAdmin) {
@@ -659,6 +696,9 @@ const kejaAuth = (() => {
         } else if (session.role === 'landlord') {
           btn.style.background = 'linear-gradient(135deg, #4f46e5, #7c3aed)';
           btn.style.color = 'white';
+        } else if (session.role === 'service') {
+          btn.style.background = 'linear-gradient(135deg, #0891b2, #06b6d4)';
+          btn.style.color = 'white';
         } else {
           btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
           btn.style.color = 'white';
@@ -666,7 +706,7 @@ const kejaAuth = (() => {
       }
 
       // Role separation:
-      // Pricing & Pro and Post only appear for Landlord or Agent (never for Tenant)
+      // Pricing & Pro and Post only appear for Landlord or Agent (never for Tenant or Service Provider)
       if (postAdBtn) postAdBtn.style.display = isLandlordOrAgent ? 'inline-flex' : 'none';
       if (pricingBtn) pricingBtn.style.display = isLandlordOrAgent ? 'inline-flex' : 'none';
 
@@ -679,6 +719,8 @@ const kejaAuth = (() => {
       if (label) label.textContent = 'Sign In';
       if (mobileLabel) mobileLabel.textContent = 'Profile';
       if (adminHeaderBtn) adminHeaderBtn.style.display = 'none';
+      if (landlordHeaderBtn) landlordHeaderBtn.style.display = 'none';
+      if (serviceHeaderBtn) serviceHeaderBtn.style.display = 'none';
       if (btn) {
         btn.style.background = '';
         btn.style.color = '';
@@ -791,6 +833,12 @@ const kejaAuth = (() => {
       else if (user.role === 'landlord' || user.role === 'agency') {
         if (window.kejaLandlordPortal && typeof window.kejaLandlordPortal.openLandlordPortal === 'function') {
           window.kejaLandlordPortal.openLandlordPortal();
+        }
+      }
+      // Service Provider users → Open Service Portal automatically
+      else if (user.role === 'service') {
+        if (window.kejaServicePortal && typeof window.kejaServicePortal.openServicePortal === 'function') {
+          window.kejaServicePortal.openServicePortal();
         }
       }
       // Tenants → Stay on main browsing page (default)

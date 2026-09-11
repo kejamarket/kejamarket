@@ -1880,6 +1880,127 @@ app.post('/api/landlord/send-message', requireAuth, async (req, res) => {
   }
 });
 
+// ════════════════════════════════════════════════════════════════════════════════
+// SERVICE PROVIDER ENDPOINTS
+// ════════════════════════════════════════════════════════════════════════════════
+
+// GET /api/service/my-services (Get all services for logged-in service provider)
+app.get('/api/service/my-services', requireAuth, (req, res) => {
+  try {
+    const userId = req.user.id;
+    const allListings = store.getListings();
+    
+    // Filter services posted by this service provider
+    const myServices = allListings.filter(listing => 
+      listing.postedBy === userId && listing.listingType === 'service'
+    );
+
+    res.json({ 
+      success: true, 
+      services: myServices,
+      total: myServices.length
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/service/messages (Get messages for service provider)
+app.get('/api/service/messages', requireAuth, (req, res) => {
+  try {
+    const userId = req.user.id;
+    const messages = store.getLandlordMessages(); // Reuse message store
+    
+    // Filter messages for this service provider
+    const myMessages = messages.filter(msg => 
+      msg.fromUserId === userId || msg.toUserId === userId
+    );
+
+    res.json({ success: true, messages: myMessages });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/service/post (Service provider posts a new service)
+app.post('/api/service/post', requireAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    
+    if (user.role !== 'service') {
+      return res.status(403).json({ 
+        success: false, 
+        message: 'Only service providers can post services.' 
+      });
+    }
+
+    const {
+      category,
+      businessName,
+      description,
+      serviceAreas,
+      price,
+      phone
+    } = req.body;
+
+    if (!category || !businessName || !phone) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Category, business name, and phone are required.' 
+      });
+    }
+
+    // Create service listing
+    const newService = {
+      id: `srv-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      listingType: 'service',
+      category,
+      businessName,
+      providerName: user.name,
+      description: description || '',
+      serviceAreas: serviceAreas || '',
+      price: price || null,
+      phone: phone || user.phone,
+      postedBy: user.id,
+      isVerified: false,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const saved = store.saveProperty(newService);
+
+    // Send SMS to provider confirming submission
+    try {
+      await sendSMS(user.phone, 
+        `KejaMarket: Your service "${businessName}" has been submitted for admin approval. You'll be notified once verified!`
+      );
+    } catch (err) {
+      console.error('SMS notification failed:', err.message);
+    }
+
+    // Create auto-message to admin
+    store.saveLandlordMessage({
+      fromUserId: user.id,
+      fromUserName: user.name,
+      fromRole: 'service',
+      toRole: 'admin',
+      message: `New service posted: ${businessName} (${category}). Awaiting verification.`,
+      propertyId: saved.id,
+      createdAt: new Date().toISOString(),
+      isRead: false
+    });
+
+    res.json({ 
+      success: true, 
+      message: 'Service posted successfully! Awaiting admin approval.',
+      service: saved
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
