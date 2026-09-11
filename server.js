@@ -1133,6 +1133,91 @@ app.patch('/api/properties/:id/status', optionalAuth, (req, res) => {
   });
 });
 
+// PUT /api/properties/:id/approve (Admin approves listing)
+app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+
+  // Admin check
+  if (user.role !== 'admin') {
+    return res.status(403).json({ success: false, message: 'Admin access required.' });
+  }
+
+  const property = store.getPropertyById(id);
+  if (!property) {
+    return res.status(404).json({ success: false, message: 'Property not found.' });
+  }
+
+  // Update property status to approved
+  const updated = store.updateProperty(id, { 
+    status: 'approved', 
+    isApproved: true,
+    approvedAt: new Date().toISOString(),
+    approvedBy: user.id
+  });
+
+  // Send SMS notification to landlord
+  if (property.landlordPhone) {
+    try {
+      await sendSMS(property.landlordPhone, 
+        `✅ Great news! Your property listing "${property.title}" has been approved and is now live on KejaMarket. Potential tenants can now view and contact you.`
+      );
+    } catch (err) {
+      console.error('Failed to send approval SMS:', err.message);
+    }
+  }
+
+  res.json({ 
+    success: true, 
+    message: 'Listing approved successfully!',
+    property: updated 
+  });
+});
+
+// PUT /api/properties/:id/reject (Admin rejects listing)
+app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const { reason } = req.body;
+  const user = req.user;
+
+  // Admin check
+  if (user.role !== 'admin') {
+    return res.status(403).json({ success: false, message: 'Admin access required.' });
+  }
+
+  const property = store.getPropertyById(id);
+  if (!property) {
+    return res.status(404).json({ success: false, message: 'Property not found.' });
+  }
+
+  // Update property status to rejected
+  const updated = store.updateProperty(id, { 
+    status: 'rejected', 
+    isApproved: false,
+    rejectedAt: new Date().toISOString(),
+    rejectedBy: user.id,
+    rejectionReason: reason || 'Does not meet listing requirements'
+  });
+
+  // Send SMS notification to landlord
+  if (property.landlordPhone) {
+    try {
+      const reasonText = reason ? `\n\nReason: ${reason}` : '';
+      await sendSMS(property.landlordPhone, 
+        `❌ Your property listing "${property.title}" was not approved for publication on KejaMarket.${reasonText}\n\nPlease review our listing guidelines and resubmit.`
+      );
+    } catch (err) {
+      console.error('Failed to send rejection SMS:', err.message);
+    }
+  }
+
+  res.json({ 
+    success: true, 
+    message: 'Listing rejected.',
+    property: updated 
+  });
+});
+
 // ─── REVIEWS ROUTES ─────────────────────────────────────────────────────────
 
 // GET /api/properties/:id/reviews
@@ -1552,6 +1637,61 @@ app.post('/api/admin/users/:id/toggle-verify', optionalAuth, (req, res) => {
     res.json({
       success: true,
       message: `User ${user.name} is now ${updated.isVerified ? 'VERIFIED' : 'UNVERIFIED'}`,
+      user: updated
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/users/:id/ban (Ban/Unban user)
+app.post('/api/admin/users/:id/ban', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { action } = req.body;
+    
+    // Admin check
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+
+    const user = store.getUserById(id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    // Cannot ban admin
+    if (user.id === 'usr-admin-01' || user.role === 'admin') {
+      return res.status(403).json({ success: false, message: 'Cannot ban administrator accounts.' });
+    }
+
+    const shouldBan = action === 'ban';
+    const updated = store.updateUser(id, { 
+      isBanned: shouldBan,
+      bannedAt: shouldBan ? new Date().toISOString() : null,
+      bannedBy: shouldBan ? req.user.id : null
+    });
+
+    // Send SMS notification
+    if (user.phone) {
+      try {
+        if (shouldBan) {
+          await sendSMS(user.phone, 
+            `Your KejaMarket account has been suspended. Please contact support for more information.`
+          );
+        } else {
+          await sendSMS(user.phone, 
+            `Your KejaMarket account has been reactivated. You can now access all features again.`
+          );
+        }
+      } catch (err) {
+        console.error('Failed to send ban/unban SMS:', err.message);
+      }
+    }
+
+    res.json({
+      success: true,
+      message: shouldBan ? `User ${user.name} has been BANNED` : `User ${user.name} has been UNBANNED`,
       user: updated
     });
   } catch (err) {
