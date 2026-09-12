@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v16'; // Auto boost expiry, payment history, analytics, renewal reminders
+const CACHE_NAME = 'kejamarket-v17'; // PWA auto-install fix, admin portal verified
 const STATIC_ASSETS = [
   '/',
   '/index.html',

@@ -2394,24 +2394,27 @@
 
     function installPWA() {
       if (deferredPrompt) {
+        // Automatically trigger install prompt
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('PWA installed successfully');
-            if (window.app) window.app.showToast('✅ App installed successfully!', 'success');
+            if (window.app) window.app.showToast('✅ App installed!', 'success');
+          } else {
+            console.log('User dismissed install prompt');
           }
           deferredPrompt = null;
           const banner = document.getElementById('pwa-install-banner');
           if (banner) banner.style.display = 'none';
         });
       } else {
-        // Show platform-specific instructions
-        if (navigator.userAgent.match(/iPhone|iPad|iPod/)) {
-          alert('📱 To install on iOS:\n\n1. Tap the Share button (⬆️)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" to confirm');
-        } else {
-          alert('📱 To install:\n\n1. Tap the menu button (⋮)\n2. Select "Add to Home screen" or "Install app"\n3. Tap "Install" to confirm');
+        // Fallback: Show instructions (browser doesn't support prompt)
+        const banner = document.getElementById('pwa-install-banner');
+        if (banner) banner.style.display = 'none';
+        
+        if (window.app) {
+          window.app.showToast('To install: Tap browser menu → Add to Home screen', 'info');
         }
-        closePWABanner();
       }
     }
 
