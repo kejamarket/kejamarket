@@ -541,6 +541,30 @@ class LandlordManager {
           headers['Authorization'] = `Bearer ${window.kejaAuth.getToken()}`;
         }
 
+        // Upload photos to Cloudinary CDN if there are any base64 images
+        if (this.uploadedImages.length > 0) {
+          try {
+            if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt fa-spin"></i> Uploading photos...';
+            const uploadRes = await fetch('/api/upload/images', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({ images: this.uploadedImages, folder: 'kejamarket/properties' })
+            });
+            if (uploadRes.ok) {
+              const uploadData = await uploadRes.json();
+              if (uploadData.urls && uploadData.urls.length > 0) {
+                // Replace base64 with CDN URLs
+                newListing.media = uploadData.urls.map((url, i) => ({ url, caption: `${title} - Photo ${i + 1}` }));
+                newListing.photos = uploadData.urls;
+                newListing.photoCount = uploadData.urls.length;
+              }
+            }
+          } catch (uploadErr) {
+            console.warn('Photo CDN upload failed, using base64 fallback:', uploadErr.message);
+          }
+          if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing listing...';
+        }
+
         const res = await fetch('/api/properties', {
           method: 'POST',
           headers,

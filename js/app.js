@@ -114,6 +114,27 @@ class NairobiRentalsApp {
       }
     }
     this.updateFavoritesCounter();
+    // Sync from server if logged in
+    this.syncFavoritesFromServer();
+  }
+
+  async syncFavoritesFromServer() {
+    try {
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      if (!token) return;
+      const res = await fetch('/api/favourites', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.favourites && data.favourites.length > 0) {
+        // Merge server favourites with local
+        data.favourites.forEach(id => this.favorites.add(id));
+        this.saveFavorites();
+      }
+    } catch (e) {
+      // Silent — offline fallback to localStorage
+    }
   }
 
   saveFavorites() {
@@ -130,6 +151,7 @@ class NairobiRentalsApp {
 
   toggleFavorite(propertyId, event) {
     if (event) event.stopPropagation();
+    const wasAdded = !this.favorites.has(propertyId);
     if (this.favorites.has(propertyId)) {
       this.favorites.delete(propertyId);
       this.showToast('Removed from saved favorites', 'info');
@@ -139,6 +161,16 @@ class NairobiRentalsApp {
     }
     this.saveFavorites();
     this.applyFilters();
+
+    // Persist to server if logged in
+    const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+    if (token) {
+      const method = wasAdded ? 'POST' : 'DELETE';
+      fetch(`/api/favourites/${encodeURIComponent(propertyId)}`, {
+        method,
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).catch(() => {}); // Silent — localStorage is fallback
+    }
   }
 
   renderCategoryPills() {
@@ -1332,6 +1364,10 @@ class NairobiRentalsApp {
     if (modal) {
       modal.classList.remove('open');
     }
+    // Stop chat polling when messages modal closes
+    if (modalId === 'modal-messages') {
+      this.stopChatPolling();
+    }
   }
 
   toggleMobileFilters() {
@@ -1412,6 +1448,8 @@ class NairobiRentalsApp {
 
     this.renderChatMessages();
     this.openModal('modal-messages');
+    // Start polling for new messages from server
+    this.startChatPolling(prop.id);
 
     // Auto-focus message input
     setTimeout(() => {
@@ -1685,6 +1723,7 @@ class NairobiRentalsApp {
   }
 
   loadChatMessages() {
+    // Load from localStorage as cache first
     const saved = localStorage.getItem('kejamarket_chat_messages');
     if (saved) {
       try {
@@ -1693,25 +1732,72 @@ class NairobiRentalsApp {
         this.chatMessages = [];
       }
     } else {
-      // Default initial welcome conversations
-      this.chatMessages = [
-        {
-          id: 'seed-msg-1',
-          propertyId: 'prop-nrb-001',
-          propertyTitle: 'Executive 2 Bedroom in Ruaka',
-          estateSuburb: 'Ruaka',
-          senderId: 'usr-landlord-01',
-          senderName: 'James Mwangi',
-          isSenderMe: false,
-          text: 'Hello! The house is available for viewing today between 10am and 5pm. Borehole water is running 24/7.',
-          createdAt: new Date(Date.now() - 3600000).toISOString()
-        }
-      ];
+      this.chatMessages = [];
     }
   }
 
   saveChatMessages() {
-    localStorage.setItem('kejamarket_chat_messages', JSON.stringify(this.chatMessages));
+    localStorage.setItem('kejamarket_chat_messages', JSON.stringify(this.chatMessages.slice(-100)));
+  }
+
+  // Poll server for new messages every 5 seconds when chat is open
+  startChatPolling(propertyId) {
+    this.stopChatPolling();
+    this._chatPollPropertyId = propertyId;
+    this._chatPollSince = new Date().toISOString();
+
+    this._chatPollInterval = setInterval(async () => {
+      try {
+        const headers = {};
+        if (window.kejaAuth && window.kejaAuth.getToken()) {
+          headers['Authorization'] = `Bearer ${window.kejaAuth.getToken()}`;
+        }
+        const pid = this._chatPollPropertyId;
+        const since = encodeURIComponent(this._chatPollSince);
+        const url = pid
+          ? `/api/messages?propertyId=${encodeURIComponent(pid)}&since=${since}`
+          : `/api/messages?since=${since}`;
+
+        const res = await fetch(url, { headers });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (data.messages && data.messages.length > 0) {
+          this._chatPollSince = data.serverTime || new Date().toISOString();
+
+          data.messages.forEach(msg => {
+            const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+            const myId = session ? session.id : null;
+            // Don't add messages we already sent
+            if (msg.sender_id === myId || msg.senderId === myId) return;
+            // Don't duplicate
+            if (this.chatMessages.some(m => m.id === msg.id)) return;
+
+            this.chatMessages.push({
+              id: msg.id,
+              propertyId: msg.property_id || msg.propertyId,
+              senderId: msg.sender_id || msg.senderId,
+              senderName: msg.sender_name || msg.senderName || 'Landlord',
+              isSenderMe: false,
+              text: msg.text,
+              createdAt: msg.created_at || msg.createdAt
+            });
+          });
+
+          this.saveChatMessages();
+          this.renderChatMessages();
+        }
+      } catch (err) {
+        // Silent fail — polling in background
+      }
+    }, 5000); // Poll every 5 seconds
+  }
+
+  stopChatPolling() {
+    if (this._chatPollInterval) {
+      clearInterval(this._chatPollInterval);
+      this._chatPollInterval = null;
+    }
   }
 
   showTakenToast(event) {

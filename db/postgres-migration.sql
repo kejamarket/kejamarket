@@ -1,8 +1,4 @@
--- Clean rebuild for the new, incomplete KejaMarket PostgreSQL database.
--- WARNING: This removes these tables and their data before recreating them.
-DROP TABLE IF EXISTS comments, messages, leads, alerts, transactions,
-property_reviews, property_media, properties, users CASCADE;
-
+C:\Users\Administrator\Documents\nai\db\postgres-migration.sql
 -- KejaMarket PostgreSQL migration schema
 -- Designed to preserve the existing JSON IDs and JSON fields.
 -- DO NOT replace this with the older UUID-only schema.sql.
@@ -166,3 +162,49 @@ CREATE TABLE IF NOT EXISTS comments (
 );
 
 CREATE INDEX IF NOT EXISTS idx_comments_property ON comments(property_id);
+CREATE INDEX IF NOT EXISTS idx_comments_property ON comments(property_id);
+
+-- ════════════════════════════════════════
+-- PASSWORD RESET TOKENS
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  token TEXT NOT NULL UNIQUE,
+  expires_at TIMESTAMPTZ NOT NULL,
+  used BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_reset_tokens_token ON password_reset_tokens(token);
+CREATE INDEX IF NOT EXISTS idx_reset_tokens_user ON password_reset_tokens(user_id);
+
+-- ════════════════════════════════════════
+-- FAVOURITES
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS favourites (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  property_id TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, property_id)
+);
+CREATE INDEX IF NOT EXISTS idx_favourites_user ON favourites(user_id);
+
+-- ════════════════════════════════════════
+-- WHATSAPP ALERT SUBSCRIPTIONS
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS whatsapp_alert_subs (
+  id TEXT PRIMARY KEY,
+  user_id TEXT,
+  phone TEXT NOT NULL,
+  category TEXT,
+  estate TEXT,
+  budget_min NUMERIC,
+  budget_max NUMERIC,
+  is_active BOOLEAN DEFAULT TRUE,
+  paid_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_wa_subs_phone ON whatsapp_alert_subs(phone);
+CREATE INDEX IF NOT EXISTS idx_wa_subs_active ON whatsapp_alert_subs(is_active);

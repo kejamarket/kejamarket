@@ -989,9 +989,114 @@ const kejaAuth = (() => {
     }
   }
 
+  /* ─────────────────────────────────────────
+     PASSWORD RESET FLOW
+  ───────────────────────────────────────── */
+
+  let forgotIdentifier = '';
+
+  function showForgotPassword() {
+    // Hide all panels, show forgot panel
+    ['signin', 'signup', 'otp', 'loggedin', 'reset'].forEach(p => {
+      const el = document.getElementById(`auth-panel-${p}`);
+      if (el) el.style.display = 'none';
+    });
+    const forgot = document.getElementById('auth-panel-forgot');
+    if (forgot) forgot.style.display = 'block';
+    const input = document.getElementById('forgot-identifier');
+    if (input) { input.value = ''; input.focus(); }
+  }
+
+  async function handleForgotPassword(e) {
+    e.preventDefault();
+    const identifierEl = document.getElementById('forgot-identifier');
+    const identifier = identifierEl ? identifierEl.value.trim() : '';
+    if (!identifier) return;
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    const orig = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'; }
+
+    try {
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        forgotIdentifier = identifier;
+        // Switch to reset panel
+        const forgot = document.getElementById('auth-panel-forgot');
+        const reset = document.getElementById('auth-panel-reset');
+        if (forgot) forgot.style.display = 'none';
+        if (reset) reset.style.display = 'block';
+        if (window.app) window.app.showToast(`✅ Reset code sent! Check your SMS${data.phone ? ` ending in ...${data.phone}` : ''}.`, 'success');
+      } else {
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to send reset code.'}`, 'error');
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('❌ Could not reach server. Try again.', 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+    }
+  }
+
+  async function handleResetPassword(e) {
+    e.preventDefault();
+    const otp = document.getElementById('reset-otp-code')?.value.trim() || '';
+    const newPassword = document.getElementById('reset-new-password')?.value || '';
+    const confirmPassword = document.getElementById('reset-confirm-password')?.value || '';
+
+    if (!otp || otp.length < 6) {
+      if (window.app) window.app.showToast('Enter the 6-digit reset code from your SMS.', 'info');
+      return;
+    }
+    if (newPassword.length < 6) {
+      if (window.app) window.app.showToast('Password must be at least 6 characters.', 'info');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      if (window.app) window.app.showToast('Passwords do not match.', 'error');
+      return;
+    }
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    const orig = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...'; }
+
+    try {
+      const res = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: forgotIdentifier, otp, newPassword })
+      });
+      const data = await res.json();
+
+      if (data.success && data.user && data.token) {
+        saveSession(data.user, data.token);
+        updateHeaderUI(data.user);
+        showLoggedInPanel(data.user);
+        if (window.app) {
+          window.app.closeModal('modal-auth');
+          window.app.showToast(`✅ Password reset! Welcome back, ${data.user.name}!`, 'success');
+        }
+        handleAuthSuccess(data.user);
+      } else {
+        if (window.app) window.app.showToast(`❌ ${data.message || 'Reset failed.'}`, 'error');
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('❌ Reset failed. Check your connection.', 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+    }
+  }
+
   return {
     openAuthModal,
     switchTab,
+    showPanel,
     setRole,
     setSigninMode,
     handleSendLoginOtp,
@@ -1010,7 +1115,10 @@ const kejaAuth = (() => {
     getAuthHeaders,
     applyAuthWall,
     toggleProfileDropdown,
-    closeProfileDropdown
+    closeProfileDropdown,
+    showForgotPassword,
+    handleForgotPassword,
+    handleResetPassword
   };
 
 })();

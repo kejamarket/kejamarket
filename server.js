@@ -21,6 +21,10 @@ const path = require('path');
 // Use require for node-fetch v2 compatibility
 const fetch = require('node-fetch');
 
+// Email & Upload services
+const emailService = require('./db/email-service');
+const uploadService = require('./db/upload-service');
+
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '20mb' }));
@@ -40,8 +44,18 @@ async function initializeDatabase() {
       console.log('🐘 Attempting PostgreSQL connection...');
       store = require('./db/postgres-store.js');
       const success = await store.init();
-      
+
       if (success) {
+        // Run schema additions for new tables
+        try {
+          const { Pool } = require('pg');
+          const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+          const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
+          await pool.query(schemaSql);
+          await pool.end();
+        } catch (schemaErr) {
+          console.warn('Schema update warning:', schemaErr.message);
+        }
         console.log('✅ PostgreSQL database initialized successfully');
       } else {
         console.log('🔄 Falling back to JSON file database');
@@ -56,6 +70,10 @@ async function initializeDatabase() {
     console.log('🔄 Using JSON file database as fallback');
     store = require('./db/store');
   }
+
+  // Initialize email and image upload services
+  emailService.initEmailService();
+  uploadService.initCloudinary();
 }
 
 // ─── CONFIGURATION ───────────────────────────────────────────────────────────
@@ -398,6 +416,11 @@ app.post('/api/auth/verify-otp', async (req, res) => {
       `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your ${user.role === 'agency' ? 'Real Estate Agency' : (user.role === 'landlord' ? 'Landlord' : 'Tenant')} account is now phone-verified and active.`
     );
 
+    // Send welcome email
+    if (user.email) {
+      emailService.sendWelcomeEmail(user.email, user.name, user.role).catch(() => {});
+    }
+
     res.status(201).json({
       success: true,
       message: `🎉 Phone verified! Welcome to KejaMarket, ${user.name}!`,
@@ -620,6 +643,11 @@ app.post('/api/auth/register', async (req, res) => {
       `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your account is active.`
     );
 
+    // Send welcome email
+    if (user.email) {
+      emailService.sendWelcomeEmail(user.email, user.name, user.role).catch(() => {});
+    }
+
     res.status(201).json({
       success: true,
       message: `Welcome to KejaMarket, ${user.name}!`,
@@ -686,6 +714,128 @@ app.post('/api/auth/verify-landlord', optionalAuth, (req, res) => {
     });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+// ─── PASSWORD RESET ROUTES ────────────────────────────────────────────────────
+
+// POST /api/auth/forgot-password — send reset OTP via SMS + email
+app.post('/api/auth/forgot-password', async (req, res) => {
+  try {
+    const { identifier } = req.body;
+    if (!identifier) {
+      return res.status(400).json({ success: false, message: 'Phone number or email is required.' });
+    }
+
+    const user = await store.findUserByIdentifier(identifier.trim());
+    // Always respond success to prevent user enumeration
+    if (!user) {
+      return res.json({ success: true, message: 'If this account exists, a reset code has been sent.' });
+    }
+
+    // Generate 6-digit reset OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString(); // 30 min
+
+    // Store token in DB (or in-memory for JSON fallback)
+    if (store.createPasswordResetToken) {
+      await store.createPasswordResetToken(user.id, otp, expiresAt);
+    } else {
+      // In-memory fallback
+      pendingOtps.set('reset_' + formatPhone(user.phone), {
+        otp, expiresAt: Date.now() + 30 * 60 * 1000, attempts: 0, userId: user.id
+      });
+    }
+
+    // Send SMS
+    const cleanPhone = formatPhone(user.phone);
+    await sendRealSMS(cleanPhone,
+      `KejaMarket: Your password reset code is ${otp}. Valid for 30 minutes. Do NOT share this code.`
+    );
+
+    // Send email if available
+    if (user.email) {
+      await emailService.sendPasswordResetEmail(user.email, user.name, otp);
+    }
+
+    console.log(`🔑 [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
+
+    res.json({
+      success: true,
+      message: 'Reset code sent to your registered phone and email.',
+      phone: cleanPhone.slice(-4) // only last 4 digits for display
+    });
+  } catch (err) {
+    console.error('Forgot password error:', err);
+    res.status(500).json({ success: false, message: 'Failed to send reset code.' });
+  }
+});
+
+// POST /api/auth/reset-password — verify OTP and set new password
+app.post('/api/auth/reset-password', async (req, res) => {
+  try {
+    const { identifier, otp, newPassword } = req.body;
+
+    if (!identifier || !otp || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Phone/email, reset code, and new password are required.' });
+    }
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters.' });
+    }
+
+    const user = await store.findUserByIdentifier(identifier.trim());
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Account not found.' });
+    }
+
+    // Verify token
+    let tokenValid = false;
+    if (store.getPasswordResetToken) {
+      const tokenRecord = await store.getPasswordResetToken(otp);
+      if (tokenRecord && tokenRecord.user_id === user.id) {
+        tokenValid = true;
+        await store.markResetTokenUsed(otp);
+      }
+    } else {
+      // In-memory fallback
+      const key = 'reset_' + formatPhone(user.phone);
+      const entry = pendingOtps.get(key);
+      if (entry && entry.otp === otp && entry.userId === user.id && Date.now() < entry.expiresAt) {
+        tokenValid = true;
+        pendingOtps.delete(key);
+      }
+    }
+
+    if (!tokenValid) {
+      return res.status(400).json({ success: false, message: 'Invalid or expired reset code.' });
+    }
+
+    // Set new password
+    const bcrypt = require('bcryptjs');
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    if (store.resetUserPassword) {
+      await store.resetUserPassword(user.id, hashedPassword);
+    } else {
+      store.updateUser(user.id, { password: hashedPassword });
+    }
+
+    // Send confirmation SMS
+    await sendRealSMS(formatPhone(user.phone), 'KejaMarket: Your password has been reset successfully. If you did not do this, contact support immediately.');
+
+    const jwt = require('jsonwebtoken');
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
+    const updatedUser = await store.getUserById(user.id);
+
+    res.json({
+      success: true,
+      message: 'Password reset successfully! You are now signed in.',
+      user: updatedUser,
+      token
+    });
+  } catch (err) {
+    console.error('Reset password error:', err);
+    res.status(500).json({ success: false, message: 'Password reset failed.' });
   }
 });
 
@@ -973,6 +1123,13 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
         updatedTx.phone,
         `[KejaMarket] Payment Confirmed! Receipt: ${receipt}. Your ${updatedTx.itemName || 'subscription'} is now active on kejamarket.co.ke. Asante!`
       );
+      // Also send email receipt if user email available
+      if (req.user && req.user.email) {
+        emailService.sendPaymentReceiptEmail(
+          req.user.email, req.user.name, receipt,
+          updatedTx.amount, updatedTx.itemName || 'KejaMarket Service'
+        );
+      }
     }
 
     res.json({
@@ -1044,15 +1201,33 @@ app.post('/api/mpesa/callback', (req, res) => {
 
 // ─── PROPERTIES & LISTINGS ROUTES ───────────────────────────────────────────
 
-// GET /api/properties
+// GET /api/properties — server-side search, filtering, pagination
 app.get('/api/properties', async (req, res) => {
   try {
+    const {
+      category, suburb, corridor, minPrice, maxPrice,
+      q, page, pageSize, sort
+    } = req.query;
+
+    // If postgres store supports server-side search, use it
+    if (store.searchProperties) {
+      const result = await store.searchProperties({
+        category: category || null,
+        suburb: suburb || null,
+        corridor: corridor || null,
+        minPrice: minPrice ? Number(minPrice) : null,
+        maxPrice: maxPrice ? Number(maxPrice) : null,
+        query: q || null,
+        page: page ? parseInt(page) : 1,
+        pageSize: pageSize ? parseInt(pageSize) : 50,
+        sort: sort || 'newest'
+      });
+      return res.json({ success: true, ...result });
+    }
+
+    // Fallback: return all properties
     const properties = await store.getAllProperties();
-    res.json({
-      success: true,
-      count: properties.length,
-      properties
-    });
+    res.json({ success: true, count: properties.length, properties });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -1073,6 +1248,35 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
     const data = req.body;
     if (!data.title || !data.rentKes || !data.category) {
       return res.status(400).json({ success: false, message: 'Title, category, and monthly rent are required.' });
+    }
+
+    // ── Duplicate detection ──────────────────────────────────────────
+    if (req.user && store.findDuplicateListing) {
+      const duplicate = await store.findDuplicateListing(
+        req.user.id, data.estateSuburb || '', data.category, data.rentKes
+      );
+      if (duplicate) {
+        return res.status(409).json({
+          success: false,
+          message: `A very similar listing already exists: "${duplicate.title}". Please check your listings before posting again.`,
+          duplicateId: duplicate.id
+        });
+      }
+    }
+
+    // ── Upload photos to Cloudinary CDN ─────────────────────────────
+    if (data.photos && Array.isArray(data.photos) && data.photos.length > 0) {
+      try {
+        const cdnUrls = await uploadService.uploadMultipleImages(
+          data.photos.slice(0, 16), 'kejamarket/properties'
+        );
+        data.photos = cdnUrls;
+        // Update media array too
+        if (!data.media) data.media = [];
+        data.media = cdnUrls.map((url, i) => ({ url, caption: `Photo ${i + 1}` }));
+      } catch (uploadErr) {
+        console.warn('Photo upload error (keeping original):', uploadErr.message);
+      }
     }
 
     // Attach landlord / agency info if user is authenticated
@@ -1205,21 +1409,44 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
   }
 
   // Update property status to approved
-  const updated = store.updateProperty(id, { 
-    status: 'approved', 
+  const updated = await store.updateProperty(id, {
+    status: 'approved',
     isApproved: true,
     approvedAt: new Date().toISOString(),
     approvedBy: user.id
   });
 
-  // Send SMS notification to landlord
-  if (property.landlordPhone) {
+  // ── Deliver WhatsApp alerts to matching subscribers ──────────────
+  if (store.getMatchingWhatsAppSubs) {
     try {
-      await sendSMS(property.landlordPhone, 
+      const subs = await store.getMatchingWhatsAppSubs(property);
+      for (const sub of subs) {
+        const msg = `🏠 *New Rental Alert!*\n\n*${property.title}*\n📍 ${property.estateSuburb}, ${property.county || 'Nairobi'}\n💰 KSh ${(property.rentKes || property.rent || 0).toLocaleString()}/mo\n\nView on KejaMarket: https://kejamarket.co.ke`;
+        // Send via Africa's Talking WhatsApp or SMS fallback
+        await sendRealSMS(sub.phone, msg);
+        console.log(`📲 [WHATSAPP ALERT] Sent to ${sub.phone} for "${property.title}"`);
+      }
+      if (subs.length > 0) console.log(`✅ [ALERTS] Delivered to ${subs.length} subscriber(s)`);
+    } catch (alertErr) {
+      console.warn('WhatsApp alert delivery error:', alertErr.message);
+    }
+  }
+
+  // Send SMS notification to landlord
+  if (property.landlordPhone || (property.landlord && property.landlord.phone)) {
+    const lPhone = property.landlordPhone || property.landlord.phone;
+    try {
+      await sendSMS(lPhone,
         `✅ Great news! Your property listing "${property.title}" has been approved and is now live on KejaMarket. Potential tenants can now view and contact you.`
       );
     } catch (err) {
       console.error('Failed to send approval SMS:', err.message);
+    }
+
+    // Send approval email
+    const landlordUser = property.landlord?.id ? await store.getUserById(property.landlord.id) : null;
+    if (landlordUser?.email) {
+      await emailService.sendListingApprovedEmail(landlordUser.email, landlordUser.name, property.title);
     }
   }
 
@@ -1439,20 +1666,27 @@ app.post('/api/properties/:id/comments/:commentId/reply', optionalAuth, (req, re
 
 // ─── IN-APP CHAT & INBOX MESSAGES ROUTES ────────────────────────────────────
 
-// GET /api/messages
-app.get('/api/messages', optionalAuth, (req, res) => {
+// GET /api/messages — fetch messages with real DB polling support
+app.get('/api/messages', optionalAuth, async (req, res) => {
   try {
-    const { propertyId } = req.query;
+    const { propertyId, since } = req.query;
     const userId = req.user ? req.user.id : null;
-    const messages = store.getMessages(propertyId, userId);
-    res.json({ success: true, count: messages.length, messages });
+    let messages = await store.getMessages(propertyId, userId);
+
+    // Support polling: only return messages newer than 'since' timestamp
+    if (since) {
+      const sinceDate = new Date(since);
+      messages = messages.filter(m => new Date(m.createdAt || m.created_at) > sinceDate);
+    }
+
+    res.json({ success: true, count: messages.length, messages, serverTime: new Date().toISOString() });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
 // POST /api/messages (Send in-app inquiry to landlord & dispatch real SMS)
-app.post('/api/messages', optionalAuth, (req, res) => {
+app.post('/api/messages', optionalAuth, async (req, res) => {
   try {
     const { propertyId, propertyTitle, estateSuburb, recipientId, recipientName, text, senderName, senderPhone } = req.body;
 
@@ -1463,7 +1697,7 @@ app.post('/api/messages', optionalAuth, (req, res) => {
     const senderUserPhone = req.user ? req.user.phone : (senderPhone || '');
     const senderUserName = req.user ? req.user.name : (senderName || 'Interested Tenant');
 
-    const message = store.saveMessage({
+    const message = await store.saveMessage({
       propertyId,
       propertyTitle,
       estateSuburb,
@@ -1490,8 +1724,8 @@ app.post('/api/messages', optionalAuth, (req, res) => {
     }
 
     // Notify landlord via real SMS
-    const prop = propertyId ? store.getPropertyById(propertyId) : null;
-    const landlordUser = recipientId ? store.getUserById(recipientId) : null;
+    const prop = propertyId ? await store.getPropertyById(propertyId) : null;
+    const landlordUser = recipientId ? await store.getUserById(recipientId) : null;
     const landlordPhone = (landlordUser && landlordUser.phone) || (prop && prop.landlord && prop.landlord.phone);
 
     if (landlordPhone) {
@@ -1514,23 +1748,30 @@ app.post('/api/messages', optionalAuth, (req, res) => {
 
 // ─── LEADS & ALERTS ROUTES ───────────────────────────────────────────────────
 
-// POST /api/alerts/whatsapp (requires authentication)
-app.post('/api/alerts/whatsapp', requireAuth, (req, res) => {
+// POST /api/alerts/whatsapp — save subscription + use saveWhatsAppSub for PostgreSQL
+app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
   try {
     const { phone, category, estate, budgetMin, budgetMax } = req.body;
     if (!phone) {
       return res.status(400).json({ success: false, message: 'Phone number is required.' });
     }
     const cleanPhone = formatPhone(phone);
-    const alert = store.saveAlert({ phone: cleanPhone, category, estate, budgetMin, budgetMax });
+    const userId = req.user ? req.user.id : null;
+
+    // Use WhatsApp sub table if available, else fall back to generic alerts
+    let sub;
+    if (store.saveWhatsAppSub) {
+      sub = await store.saveWhatsAppSub({ phone: cleanPhone, userId, category, estate, budgetMin, budgetMax });
+    } else {
+      sub = await store.saveAlert({ phone: cleanPhone, category, estate, budgetMin, budgetMax });
+    }
 
     // Send confirmation SMS
-    sendRealSMS(
-      cleanPhone,
-      `[KejaMarket Alerts] You are now subscribed for ${estate || 'Nairobi'} rental alerts (${category || 'All categories'}). Instant notifications will be sent to your phone!`
+    await sendRealSMS(cleanPhone,
+      `[KejaMarket Alerts] ✅ Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}–${budgetMax || 'any'}/mo). Valid 30 days.`
     );
 
-    res.json({ success: true, message: 'Rental alert registered. SMS confirmation sent.', alert });
+    res.json({ success: true, message: 'Rental alert registered. SMS confirmation sent.', sub });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
   }
@@ -1597,7 +1838,40 @@ app.post('/api/sms/send', optionalAuth, async (req, res) => {
   }
 });
 
-// ─── PLATFORM STATUS & STATS ────────────────────────────────────────────────
+// ─── IMAGE UPLOAD ENDPOINT (Cloudinary CDN) ──────────────────────────────────
+
+// POST /api/upload/images — upload 1-16 images to Cloudinary, return CDN URLs
+app.post('/api/upload/images', optionalAuth, async (req, res) => {
+  try {
+    const { images, folder } = req.body;
+    if (!images || !Array.isArray(images) || images.length === 0) {
+      return res.status(400).json({ success: false, message: 'No images provided.' });
+    }
+    if (images.length > 16) {
+      return res.status(400).json({ success: false, message: 'Maximum 16 images allowed.' });
+    }
+    const uploadFolder = folder || 'kejamarket/properties';
+    const urls = await uploadService.uploadMultipleImages(images, uploadFolder);
+    res.json({ success: true, urls, cdn: uploadService.isConfigured(), count: urls.length });
+  } catch (err) {
+    console.error('Image upload error:', err);
+    res.status(500).json({ success: false, message: 'Image upload failed: ' + err.message });
+  }
+});
+
+// POST /api/upload/single — upload single image
+app.post('/api/upload/single', optionalAuth, async (req, res) => {
+  try {
+    const { image, folder } = req.body;
+    if (!image) return res.status(400).json({ success: false, message: 'No image provided.' });
+    const result = await uploadService.uploadImage(image, folder || 'kejamarket/misc');
+    res.json({ success: true, ...result });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/health
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
@@ -1654,6 +1928,67 @@ app.get('/api/admin/overview', async (req, res) => {
   try {
     const stats = await store.getOverviewStats();
     res.json({ success: true, ...stats });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ─── FAVOURITES ROUTES ──────────────────────────────────────────────────────
+
+// GET /api/favourites — get all favourites for logged-in user
+app.get('/api/favourites', requireAuth, async (req, res) => {
+  try {
+    let propertyIds = [];
+    if (store.getUserFavourites) {
+      propertyIds = await store.getUserFavourites(req.user.id);
+    }
+    res.json({ success: true, favourites: propertyIds });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/favourites/:propertyId — add a favourite
+app.post('/api/favourites/:propertyId', requireAuth, async (req, res) => {
+  try {
+    const { propertyId } = req.params;
+    if (store.addFavourite) {
+      await store.addFavourite(req.user.id, propertyId);
+    }
+    res.json({ success: true, message: 'Added to favourites.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/favourites/:propertyId — remove a favourite
+app.delete('/api/favourites/:propertyId', requireAuth, async (req, res) => {
+  try {
+    const { propertyId } = req.params;
+    if (store.removeFavourite) {
+      await store.removeFavourite(req.user.id, propertyId);
+    }
+    res.json({ success: true, message: 'Removed from favourites.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ─── ADMIN ANALYTICS ────────────────────────────────────────────────────────
+
+// GET /api/admin/analytics — real server-side analytics from PostgreSQL
+app.get('/api/admin/analytics', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    if (store.getAdminAnalytics) {
+      const analytics = await store.getAdminAnalytics();
+      return res.json({ success: true, ...analytics });
+    }
+    // Fallback: use overview stats
+    const stats = await store.getOverviewStats();
+    res.json({ success: true, users: { total: stats.totalUsers }, properties: { total: stats.totalProperties } });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -1737,9 +2072,13 @@ app.post('/api/admin/mpesa-config', optionalAuth, (req, res) => {
   }
 });
 
-app.get('/api/admin/users', (req, res) => {
+app.get('/api/admin/users', requireAuth, async (req, res) => {
   try {
-    const users = store.getAllUsers();
+    // Only admin can access user list
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const users = await store.getAllUsers();
     res.json({ success: true, count: users.length, users });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

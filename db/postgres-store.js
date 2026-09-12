@@ -715,3 +715,303 @@ class PostgreSQLStore {
 }
 
 module.exports = new PostgreSQLStore();
+
+  // ═══════════════════════════════════════════════════════════════════
+  // PASSWORD RESET TOKENS
+  // ═══════════════════════════════════════════════════════════════════
+
+  async createPasswordResetToken(userId, token, expiresAt) {
+    if (!this.isConnected) return null;
+    const id = 'prt-' + Date.now();
+    await this.query(
+      `INSERT INTO password_reset_tokens (id, user_id, token, expires_at, used, created_at)
+       VALUES ($1, $2, $3, $4, false, NOW())
+       ON CONFLICT (token) DO NOTHING`,
+      [id, userId, token, expiresAt]
+    );
+    return { id, userId, token, expiresAt };
+  }
+
+  async getPasswordResetToken(token) {
+    if (!this.isConnected) return null;
+    const result = await this.query(
+      `SELECT * FROM password_reset_tokens WHERE token = $1 AND used = false AND expires_at > NOW()`,
+      [token]
+    );
+    return result.rows.length > 0 ? result.rows[0] : null;
+  }
+
+  async markResetTokenUsed(token) {
+    if (!this.isConnected) return;
+    await this.query(
+      `UPDATE password_reset_tokens SET used = true WHERE token = $1`,
+      [token]
+    );
+  }
+
+  async resetUserPassword(userId, hashedPassword) {
+    if (!this.isConnected) return null;
+    const result = await this.query(
+      `UPDATE users SET password = $1 WHERE id = $2 RETURNING *`,
+      [hashedPassword, userId]
+    );
+    return result.rows.length > 0 ? this.sanitizeUser(result.rows[0]) : null;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // FAVOURITES
+  // ═══════════════════════════════════════════════════════════════════
+
+  async addFavourite(userId, propertyId) {
+    if (!this.isConnected) return null;
+    const id = 'fav-' + Date.now();
+    try {
+      await this.query(
+        `INSERT INTO favourites (id, user_id, property_id, created_at)
+         VALUES ($1, $2, $3, NOW())
+         ON CONFLICT (user_id, property_id) DO NOTHING`,
+        [id, userId, propertyId]
+      );
+      return { id, userId, propertyId };
+    } catch (err) {
+      return null;
+    }
+  }
+
+  async removeFavourite(userId, propertyId) {
+    if (!this.isConnected) return false;
+    const result = await this.query(
+      `DELETE FROM favourites WHERE user_id = $1 AND property_id = $2`,
+      [userId, propertyId]
+    );
+    return result.rowCount > 0;
+  }
+
+  async getUserFavourites(userId) {
+    if (!this.isConnected) return [];
+    const result = await this.query(
+      `SELECT property_id FROM favourites WHERE user_id = $1 ORDER BY created_at DESC`,
+      [userId]
+    );
+    return result.rows.map(r => r.property_id);
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // WHATSAPP ALERT SUBSCRIPTIONS
+  // ═══════════════════════════════════════════════════════════════════
+
+  async saveWhatsAppSub(sub) {
+    if (!this.isConnected) return this.fallbackStore ? this.fallbackStore.saveAlert(sub) : sub;
+    const id = 'wa-' + Date.now();
+    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
+    await this.query(
+      `INSERT INTO whatsapp_alert_subs (id, user_id, phone, category, estate, budget_min, budget_max, is_active, paid_at, expires_at, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, true, NOW(), $8, NOW())
+       ON CONFLICT DO NOTHING`,
+      [id, sub.userId || null, sub.phone, sub.category, sub.estate, sub.budgetMin || null, sub.budgetMax || null, expiresAt]
+    );
+    return { id, ...sub, expiresAt };
+  }
+
+  async getActiveWhatsAppSubs() {
+    if (!this.isConnected) return [];
+    const result = await this.query(
+      `SELECT * FROM whatsapp_alert_subs WHERE is_active = true AND expires_at > NOW()`
+    );
+    return result.rows;
+  }
+
+  async getMatchingWhatsAppSubs(property) {
+    if (!this.isConnected) return [];
+    const result = await this.query(
+      `SELECT * FROM whatsapp_alert_subs 
+       WHERE is_active = true AND expires_at > NOW()
+       AND (category IS NULL OR category = 'All Categories' OR category = $1)
+       AND (estate IS NULL OR estate = 'Any Estate' OR estate ILIKE $2)
+       AND (budget_min IS NULL OR $3 >= budget_min)
+       AND (budget_max IS NULL OR $3 <= budget_max)`,
+      [property.category, `%${property.estateSuburb}%`, property.rentKes || property.rent || 0]
+    );
+    return result.rows;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // SERVER-SIDE SEARCH & FILTERING
+  // ═══════════════════════════════════════════════════════════════════
+
+  async searchProperties({ category, suburb, corridor, minPrice, maxPrice, query, page = 1, pageSize = 12, sort = 'newest', landlordId } = {}) {
+    if (!this.isConnected) {
+      const all = this.fallbackStore.getAllProperties();
+      return { properties: all, total: all.length, page: 1, pageSize: all.length, totalPages: 1 };
+    }
+
+    const conditions = [];
+    const values = [];
+    let idx = 1;
+
+    if (category && category !== 'All') {
+      conditions.push(`category = $${idx++}`);
+      values.push(category);
+    }
+    if (suburb && suburb !== 'all') {
+      conditions.push(`estate_suburb ILIKE $${idx++}`);
+      values.push(`%${suburb}%`);
+    }
+    if (corridor && corridor !== 'all') {
+      conditions.push(`corridor_id = $${idx++}`);
+      values.push(corridor);
+    }
+    if (minPrice) {
+      conditions.push(`rent_kes >= $${idx++}`);
+      values.push(Number(minPrice));
+    }
+    if (maxPrice) {
+      conditions.push(`rent_kes <= $${idx++}`);
+      values.push(Number(maxPrice));
+    }
+    if (query) {
+      conditions.push(`(title ILIKE $${idx} OR estate_suburb ILIKE $${idx} OR description ILIKE $${idx})`);
+      values.push(`%${query}%`);
+      idx++;
+    }
+    if (landlordId) {
+      conditions.push(`landlord_id = $${idx++}`);
+      values.push(landlordId);
+    }
+
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    const orderMap = {
+      newest: 'created_at DESC',
+      price_asc: 'rent_kes ASC',
+      price_desc: 'rent_kes DESC',
+      featured: 'is_featured DESC, is_top_ad DESC, created_at DESC',
+      category_asc: 'category ASC, rent_kes ASC'
+    };
+    const orderBy = orderMap[sort] || 'created_at DESC';
+
+    // Count total
+    const countResult = await this.query(`SELECT COUNT(*) FROM properties ${where}`, values);
+    const total = parseInt(countResult.rows[0].count);
+
+    // Fetch page
+    const offset = (page - 1) * pageSize;
+    const dataResult = await this.query(
+      `SELECT * FROM properties ${where} ORDER BY ${orderBy} LIMIT $${idx++} OFFSET $${idx++}`,
+      [...values, pageSize, offset]
+    );
+
+    const properties = dataResult.rows.map(row => ({
+      ...row.raw_data,
+      id: row.id,
+      title: row.title,
+      rent: row.rent_kes,
+      rentKes: row.rent_kes,
+      category: row.category,
+      estateSuburb: row.estate_suburb,
+      isFeatured: row.is_featured,
+      isTopAd: row.is_top_ad,
+      isVerified: row.is_verified,
+      createdAt: row.created_at
+    }));
+
+    return {
+      properties,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize)
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // DUPLICATE DETECTION
+  // ═══════════════════════════════════════════════════════════════════
+
+  async findDuplicateListing(landlordId, estateSuburb, category, rentKes) {
+    if (!this.isConnected) return null;
+    const result = await this.query(
+      `SELECT id, title FROM properties
+       WHERE landlord_id = $1
+         AND estate_suburb ILIKE $2
+         AND category = $3
+         AND ABS(rent_kes - $4) < 500
+         AND created_at > NOW() - INTERVAL '30 days'
+       LIMIT 1`,
+      [landlordId, `%${estateSuburb}%`, category, rentKes]
+    );
+    return result.rows.length > 0 ? result.rows[0] : null;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // SERVER-SIDE ADMIN ANALYTICS
+  // ═══════════════════════════════════════════════════════════════════
+
+  async getAdminAnalytics() {
+    if (!this.isConnected) return null;
+
+    const [userStats, propStats, revenueStats, topSuburbs, topCategories, growth] = await Promise.all([
+      this.query(`
+        SELECT
+          COUNT(*) as total,
+          COUNT(*) FILTER (WHERE role = 'tenant') as tenants,
+          COUNT(*) FILTER (WHERE role = 'landlord') as landlords,
+          COUNT(*) FILTER (WHERE role = 'agency') as agencies,
+          COUNT(*) FILTER (WHERE role = 'service') as service_providers,
+          COUNT(*) FILTER (WHERE is_verified = true) as verified,
+          COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '7 days') as new_this_week,
+          COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '30 days') as new_this_month
+        FROM users
+      `),
+      this.query(`
+        SELECT
+          COUNT(*) as total,
+          COUNT(*) FILTER (WHERE is_featured = true OR is_top_ad = true) as boosted,
+          COUNT(*) FILTER (WHERE (raw_data->>'availability') = 'taken' OR (raw_data->>'isTaken')::boolean = true) as taken,
+          COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '7 days') as new_this_week,
+          ROUND(AVG(rent_kes)) as avg_rent,
+          MIN(rent_kes) as min_rent,
+          MAX(rent_kes) as max_rent
+        FROM properties
+      `),
+      this.query(`
+        SELECT
+          COUNT(*) FILTER (WHERE status = 'SUCCESS') as confirmed,
+          COALESCE(SUM(amount) FILTER (WHERE status = 'SUCCESS'), 0) as total_revenue,
+          COALESCE(SUM(amount) FILTER (WHERE status = 'SUCCESS' AND created_at > NOW() - INTERVAL '30 days'), 0) as revenue_this_month
+        FROM transactions
+      `),
+      this.query(`
+        SELECT estate_suburb, COUNT(*) as count
+        FROM properties
+        GROUP BY estate_suburb
+        ORDER BY count DESC
+        LIMIT 8
+      `),
+      this.query(`
+        SELECT category, COUNT(*) as count
+        FROM properties
+        GROUP BY category
+        ORDER BY count DESC
+        LIMIT 8
+      `),
+      this.query(`
+        SELECT
+          DATE_TRUNC('day', created_at) as day,
+          COUNT(*) as signups
+        FROM users
+        WHERE created_at > NOW() - INTERVAL '30 days'
+        GROUP BY day
+        ORDER BY day ASC
+      `)
+    ]);
+
+    return {
+      users: userStats.rows[0],
+      properties: propStats.rows[0],
+      revenue: revenueStats.rows[0],
+      topSuburbs: topSuburbs.rows,
+      topCategories: topCategories.rows,
+      signupTrend: growth.rows
+    };
+  }
