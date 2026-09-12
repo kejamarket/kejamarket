@@ -735,25 +735,25 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
     // Generate 6-digit reset OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString(); // 30 min
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
 
-    // Store token in DB (or in-memory for JSON fallback)
+    // Store token
     if (store.createPasswordResetToken) {
       await store.createPasswordResetToken(user.id, otp, expiresAt);
     } else {
-      // In-memory fallback
       pendingOtps.set('reset_' + formatPhone(user.phone), {
         otp, expiresAt: Date.now() + 30 * 60 * 1000, attempts: 0, userId: user.id
       });
     }
 
-    // Send SMS (with timeout to prevent hanging)
-    const smsPromise = sendRealSMS(cleanPhone,
-      `KejaMarket: Your password reset code is ${otp}. Valid for 30 minutes. Do NOT share this code.`
-    );
-    await Promise.race([smsPromise, new Promise(r => setTimeout(r, 8000))]);
+    const cleanPhone = formatPhone(user.phone);
 
-    // Send email if available (non-blocking)
+    // Send SMS (non-blocking with timeout)
+    sendRealSMS(cleanPhone,
+      `KejaMarket: Your password reset code is ${otp}. Valid for 30 minutes. Do NOT share this code.`
+    ).catch(e => console.warn('Reset SMS failed:', e.message));
+
+    // Send email (completely non-blocking — never blocks response)
     if (user.email) {
       emailService.sendPasswordResetEmail(user.email, user.name, otp).catch(e => {
         console.warn('Password reset email failed:', e.message);
@@ -762,10 +762,11 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
     console.log(`🔑 [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
 
+    // Respond immediately — don't wait for SMS/email
     res.json({
       success: true,
-      message: 'Reset code sent to your registered phone and email.',
-      phone: cleanPhone.slice(-4) // only last 4 digits for display
+      message: 'Reset code sent to your registered phone' + (user.email ? ' and email' : '') + '.',
+      phone: cleanPhone.slice(-4)
     });
   } catch (err) {
     console.error('Forgot password error:', err);
