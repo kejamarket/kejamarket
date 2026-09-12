@@ -43,7 +43,8 @@ class AdminPortalEngine {
     const roleBadge = document.getElementById('auth-user-role-badge');
 
     if (isAdmin) {
-      if (adminHeaderBtn) adminHeaderBtn.style.display = 'inline-flex';
+      // Hide admin portal button since it opens automatically
+      if (adminHeaderBtn) adminHeaderBtn.style.display = 'none';
       if (adminLinks) adminLinks.style.display = 'block';
       if (roleBadge) {
         roleBadge.textContent = '👑 Administrator';

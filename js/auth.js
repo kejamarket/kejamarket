@@ -837,7 +837,7 @@ const kejaAuth = (() => {
     
     // AUTO-OPEN PORTAL: Automatically open appropriate portal after login
     setTimeout(() => {
-      // Admin users → Open Admin Portal automatically
+      // Admin users → Open Admin Portal automatically (no button needed)
       if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
         if (window.kejaAdmin && typeof window.kejaAdmin.openAdminModal === 'function') {
           window.kejaAdmin.openAdminModal();
@@ -950,11 +950,6 @@ const kejaAuth = (() => {
           ${session.role === 'service' ? `
             <button onclick="kejaServicePortal.openServicePortal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
               <i class="fas fa-tools" style="width: 16px;"></i> Service Portal
-            </button>
-          ` : ''}
-          ${session.role === 'admin' || session.isAdmin ? `
-            <button onclick="kejaAdmin.openAdminModal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
-              <i class="fas fa-crown" style="width: 16px; color: #fbbf24;"></i> Admin Portal
             </button>
           ` : ''}
           <button onclick="window.app.openModal('modal-saved-properties'); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
