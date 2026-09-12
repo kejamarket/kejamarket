@@ -90,6 +90,13 @@ class LandlordPortal {
       }
     });
 
+    // Show/hide availability filter based on tab
+    const availabilityFilter = document.getElementById('landlord-availability-filter');
+    if (availabilityFilter) {
+      // Only show in Browse tab for landlords
+      availabilityFilter.style.display = (tabName === 'browse') ? 'block' : 'none';
+    }
+
     if (tabName === 'my-listings') this.renderMyListings();
     if (tabName === 'browse') this.renderBrowseListings();
     if (tabName === 'messages') this.renderMessages();
