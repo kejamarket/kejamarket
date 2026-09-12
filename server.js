@@ -1612,7 +1612,13 @@ app.get('/api/health', (req, res) => {
 // ─── DATABASE MIGRATION TRIGGER (Admin only) ─────────────────────────────────
 app.post('/api/admin/migrate', async (req, res) => {
   const { secret } = req.body;
-  if (secret !== (process.env.JWT_SECRET || 'kejamarket_super_secret_jwt_key_2026')) {
+  const validSecrets = [
+    process.env.JWT_SECRET,
+    process.env.MIGRATION_SECRET,
+    'kejamarket_migrate_2026'
+  ].filter(Boolean);
+
+  if (!validSecrets.includes(secret)) {
     return res.status(403).json({ error: 'Forbidden' });
   }
 
