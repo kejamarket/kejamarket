@@ -651,10 +651,6 @@ class Store {
   getAllMessages() {
     return this.data.messages || [];
   }
-}
-
-module.exports = new Store();
-
 
   // ═══════════════════════════════════════════════════════════
   // PAYMENT MANAGEMENT
@@ -686,3 +682,16 @@ module.exports = new Store();
   getAllPayments() {
     return this.data.payments || [];
   }
+
+  getPaymentsByUser(userId) {
+    if (!this.data.payments) return [];
+    return this.data.payments.filter(p => p.userId === userId);
+  }
+
+  getPaymentsByService(serviceId) {
+    if (!this.data.payments) return [];
+    return this.data.payments.filter(p => p.serviceId === serviceId);
+  }
+}
+
+module.exports = new Store();

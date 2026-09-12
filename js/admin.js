@@ -296,71 +296,127 @@ class AdminPortalEngine {
   }
 
   renderUsers() {
-    const container = document.getElementById('admin-users-table-body');
+    const container = document.getElementById('admin-users-container');
     if (!container) return;
 
     if (!this.users || this.users.length === 0) {
-      container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 24px; color: #64748b;">No registered users found.</td></tr>`;
+      container.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #64748b;">
+          <i class="fas fa-users" style="font-size: 3rem; opacity: 0.3; margin-bottom: 16px;"></i>
+          <div style="font-size: 1.1rem; font-weight: 600;">No users found</div>
+          <div style="margin-top: 8px;">Users will appear here once they sign up</div>
+        </div>
+      `;
       return;
     }
 
     // Separate users by role
-    const tenants = this.users.filter(u => u.role === 'tenant');
+    const admins = this.users.filter(u => u.role === 'admin' || u.isAdmin || u.id === 'usr-admin-01');
     const landlords = this.users.filter(u => u.role === 'landlord' || u.role === 'agency');
     const serviceProviders = this.users.filter(u => u.role === 'service');
-    const admins = this.users.filter(u => u.role === 'admin' || u.isAdmin || u.id === 'usr-admin-01');
+    const tenants = this.users.filter(u => u.role === 'tenant' || !u.role);
 
     let html = '';
 
     // ADMINS Section
     if (admins.length > 0) {
       html += `
-        <tr style="background: linear-gradient(135deg, #fef08a, #fde047); border-bottom: 2px solid #eab308;">
-          <td colspan="6" style="padding: 12px; font-weight: 800; color: #713f12; font-size: 0.95rem;">
-            <i class="fas fa-crown"></i> ADMINISTRATORS (${admins.length})
-          </td>
-        </tr>
+        <div style="background: #fef3c7; border: 2px solid #f59e0b; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 16px; color: #92400e; font-size: 1rem; font-weight: 700;">
+            👑 ADMINISTRATORS (${admins.length})
+          </h4>
+          <div style="display: grid; gap: 12px;">
+            ${admins.map(u => this.renderUserCard(u)).join('')}
+          </div>
+        </div>
       `;
-      html += admins.map(u => this.renderUserRow(u)).join('');
     }
 
     // LANDLORDS & AGENTS Section
     if (landlords.length > 0) {
       html += `
-        <tr style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe); border-bottom: 2px solid #818cf8; margin-top: 20px;">
-          <td colspan="6" style="padding: 12px; font-weight: 800; color: #3730a3; font-size: 0.95rem;">
-            <i class="fas fa-building"></i> LANDLORDS & AGENCIES (${landlords.length})
-          </td>
-        </tr>
+        <div style="background: #e0e7ff; border: 2px solid #6366f1; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 16px; color: #3730a3; font-size: 1rem; font-weight: 700;">
+            🏢 LANDLORDS & AGENCIES (${landlords.length})
+          </h4>
+          <div style="display: grid; gap: 12px;">
+            ${landlords.map(u => this.renderUserCard(u)).join('')}
+          </div>
+        </div>
       `;
-      html += landlords.map(u => this.renderUserRow(u)).join('');
     }
 
     // SERVICE PROVIDERS Section
     if (serviceProviders.length > 0) {
       html += `
-        <tr style="background: linear-gradient(135deg, #cffafe, #a5f3fc); border-bottom: 2px solid #06b6d4;">
-          <td colspan="6" style="padding: 12px; font-weight: 800; color: #164e63; font-size: 0.95rem;">
-            <i class="fas fa-tools"></i> SERVICE PROVIDERS (${serviceProviders.length})
-          </td>
-        </tr>
+        <div style="background: #cffafe; border: 2px solid #06b6d4; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 16px; color: #155e75; font-size: 1rem; font-weight: 700;">
+            🔧 SERVICE PROVIDERS (${serviceProviders.length})
+          </h4>
+          <div style="display: grid; gap: 12px;">
+            ${serviceProviders.map(u => this.renderUserCard(u)).join('')}
+          </div>
+        </div>
       `;
-      html += serviceProviders.map(u => this.renderUserRow(u)).join('');
     }
 
     // TENANTS Section
     if (tenants.length > 0) {
       html += `
-        <tr style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-bottom: 2px solid #10b981;">
-          <td colspan="6" style="padding: 12px; font-weight: 800; color: #065f46; font-size: 0.95rem;">
-            <i class="fas fa-users"></i> TENANTS (${tenants.length})
-          </td>
-        </tr>
+        <div style="background: #d1fae5; border: 2px solid #10b981; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 16px; color: #065f46; font-size: 1rem; font-weight: 700;">
+            🏠 TENANTS (${tenants.length})
+          </h4>
+          <div style="display: grid; gap: 12px;">
+            ${tenants.map(u => this.renderUserCard(u)).join('')}
+          </div>
+        </div>
       `;
-      html += tenants.map(u => this.renderUserRow(u)).join('');
     }
 
     container.innerHTML = html;
+  }
+
+  renderUserCard(u) {
+    const roleIcons = {
+      admin: '👑',
+      landlord: '🏢',
+      agency: '🏢',
+      service: '🔧',
+      tenant: '🏠'
+    };
+
+    const actualRole = u.role || (u.isAdmin ? 'admin' : 'tenant');
+
+    return `
+      <div style="background: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+        <div style="font-size: 1.5rem;">${roleIcons[actualRole] || '👤'}</div>
+        <div style="flex: 1;">
+          <div style="font-weight: 700; color: #1e293b; margin-bottom: 2px;">
+            ${u.name || 'Anonymous'}
+            ${u.isAdmin || u.role === 'admin' ? '<span style="background: #fef08a; color: #854d0e; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">ADMIN</span>' : ''}
+          </div>
+          <div style="font-size: 0.8rem; color: #64748b;">📞 ${u.phone || 'No phone'} • 📧 ${u.email || 'No email'}</div>
+          <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">
+            ${u.isVerified ? '✅ Verified' : '⏳ Pending'} • 
+            ${u.isBanned ? '🚫 Banned' : '✅ Active'}
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <button onclick="kejaAdmin.contactUser('${u.id}', '${actualRole}')" style="background: #4f46e5; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">
+            💬 Contact
+          </button>
+          ${actualRole !== 'admin' && !u.isAdmin ? `
+            <button onclick="kejaAdmin.toggleUserVerification('${u.id}')" style="background: ${u.isVerified ? '#f59e0b' : '#10b981'}; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">
+              ${u.isVerified ? 'Unverify' : 'Verify'}
+            </button>
+            <button onclick="kejaAdmin.toggleUserBan('${u.id}')" style="background: ${u.isBanned ? '#10b981' : '#ef4444'}; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">
+              ${u.isBanned ? 'Unban' : 'Ban'}
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    `;
   }
 
   renderUserRow(u) {
@@ -409,7 +465,7 @@ class AdminPortalEngine {
   }
 
   renderListings() {
-    const container = document.getElementById('admin-listings-table-body');
+    const container = document.getElementById('admin-listings-container');
     if (!container) return;
 
     const properties = (window.app && window.app.properties) || [];
@@ -422,124 +478,82 @@ class AdminPortalEngine {
     const approvedServices = properties.filter(p => p.listingType === 'service');
     
     if (properties.length === 0 && pending.length === 0) {
-      container.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 24px; color: #64748b;">No listings in database.</td></tr>`;
+      container.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #64748b;">
+          <i class="fas fa-home" style="font-size: 3rem; opacity: 0.3; margin-bottom: 16px;"></i>
+          <div style="font-size: 1.1rem; font-weight: 600;">No listings found</div>
+          <div style="margin-top: 8px;">Properties and services will appear here once posted</div>
+        </div>
+      `;
       return;
     }
 
     let html = '';
 
-    // ═══ PENDING PROPERTIES ═══
+    // PENDING PROPERTIES Section
     if (pendingProperties.length > 0) {
       html += `
-        <tr style="background: linear-gradient(135deg, #fef3c7, #fde047); border-bottom: 2px solid #f59e0b;">
-          <td colspan="7" style="padding: 12px; font-weight: 800; color: #92400e; font-size: 0.95rem;">
-            <i class="fas fa-home"></i> PENDING PROPERTIES (${pendingProperties.length})
-          </td>
-        </tr>
+        <div style="background: #fef3c7; border: 2px solid #f59e0b; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 16px; color: #92400e; font-size: 1rem; font-weight: 700;">
+            ⏳ PENDING PROPERTIES (${pendingProperties.length})
+          </h4>
+          <div style="display: grid; gap: 12px;">
+            ${pendingProperties.map(p => this.renderListingCard(p, true)).join('')}
+          </div>
+        </div>
       `;
-
-      pendingProperties.forEach(p => {
-        html += `
-          <tr style="background: #fffbeb; border-bottom: 1px solid #fde68a;">
-            <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.title}</td>
-            <td style="padding: 12px; color: #475569;">${p.estateSuburb || p.sublocation || '-'}</td>
-            <td style="padding: 12px; font-weight: 700; color: #00b53f;">KSh ${Number(p.rentKes || 0).toLocaleString()}</td>
-            <td style="padding: 12px;"><span style="background: #fbbf24; color: #78350f; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">⏳ PENDING</span></td>
-            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${p.landlord?.name || 'Unknown'}</td>
-            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
-            <td style="padding: 12px; text-align: right;">
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #6366f1; color: white; cursor: pointer;" onclick="kejaAdmin.viewListingDetails('${p.id}')">👁️ View</button>
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #00b53f; color: white; cursor: pointer;" onclick="kejaAdmin.approveListing('${p.id}')">✓ Approve</button>
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.rejectListing('${p.id}')">✗ Reject</button>
-            </td>
-          </tr>
-        `;
-      });
     }
 
-    // ═══ PENDING SERVICES ═══
+    // PENDING SERVICES Section
     if (pendingServices.length > 0) {
       html += `
-        <tr style="background: linear-gradient(135deg, #bae6fd, #7dd3fc); border-bottom: 2px solid #0284c7; margin-top: 20px;">
-          <td colspan="7" style="padding: 12px; font-weight: 800; color: #0c4a6e; font-size: 0.95rem;">
-            <i class="fas fa-tools"></i> PENDING SERVICES (${pendingServices.length})
-          </td>
-        </tr>
+        <div style="background: #fee2e2; border: 2px solid #f87171; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 16px; color: #991b1b; font-size: 1rem; font-weight: 700;">
+            ⏳ PENDING SERVICES (${pendingServices.length})
+          </h4>
+          <div style="display: grid; gap: 12px;">
+            ${pendingServices.map(p => this.renderListingCard(p, true)).join('')}
+          </div>
+        </div>
       `;
-
-      pendingServices.forEach(p => {
-        html += `
-          <tr style="background: #f0f9ff; border-bottom: 1px solid #bae6fd;">
-            <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.businessName || p.title}</td>
-            <td style="padding: 12px; color: #475569;">${p.category || '-'}</td>
-            <td style="padding: 12px; font-weight: 700; color: #0284c7;">${p.serviceAreas || '-'}</td>
-            <td style="padding: 12px;"><span style="background: #fbbf24; color: #78350f; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">⏳ PENDING</span></td>
-            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${p.providerName || 'Unknown'}</td>
-            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
-            <td style="padding: 12px; text-align: right;">
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #6366f1; color: white; cursor: pointer;" onclick="kejaAdmin.viewListingDetails('${p.id}')">👁️ View</button>
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #00b53f; color: white; cursor: pointer;" onclick="kejaAdmin.approveListing('${p.id}')">✓ Approve</button>
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.rejectListing('${p.id}')">✗ Reject</button>
-            </td>
-          </tr>
-        `;
-      });
     }
 
-    // ═══ APPROVED PROPERTIES ═══
+    // LIVE PROPERTIES Section
     if (approvedProperties.length > 0) {
       html += `
-        <tr style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-bottom: 2px solid #10b981; margin-top: 20px;">
-          <td colspan="7" style="padding: 12px; font-weight: 800; color: #065f46; font-size: 0.95rem;">
-            <i class="fas fa-check-circle"></i> LIVE PROPERTIES (${approvedProperties.length})
-          </td>
-        </tr>
+        <div style="background: #d1fae5; border: 2px solid #10b981; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 16px; color: #065f46; font-size: 1rem; font-weight: 700;">
+            ✅ LIVE PROPERTIES (${approvedProperties.length})
+          </h4>
+          <div style="display: grid; gap: 12px;">
+            ${approvedProperties.map(p => this.renderListingCard(p, false)).join('')}
+          </div>
+        </div>
       `;
-
-      approvedProperties.slice(0, 20).forEach(p => {
-        html += `
-          <tr style="border-bottom: 1px solid #f1f5f9;">
-            <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.title}</td>
-            <td style="padding: 12px; color: #475569;">${p.estateSuburb || p.sublocation || '-'}</td>
-            <td style="padding: 12px; font-weight: 700; color: #00b53f;">KSh ${Number(p.rentKes || 0).toLocaleString()}</td>
-            <td style="padding: 12px;"><span style="background: #dcfce7; color: #166534; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">✓ LIVE</span></td>
-            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${p.landlord?.name || '-'}</td>
-            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
-            <td style="padding: 12px; text-align: right;">
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #6366f1; color: white; cursor: pointer;" onclick="window.app.openPropertyDetail('${p.id}')">👁️ View</button>
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.deleteListing('${p.id}')">🗑️ Delete</button>
-            </td>
-          </tr>
-        `;
-      });
     }
 
-    // ═══ APPROVED SERVICES ═══
+    // LIVE SERVICES Section
     if (approvedServices.length > 0) {
       html += `
-        <tr style="background: linear-gradient(135deg, #cffafe, #a5f3fc); border-bottom: 2px solid #06b6d4; margin-top: 20px;">
-          <td colspan="7" style="padding: 12px; font-weight: 800; color: #164e63; font-size: 0.95rem;">
-            <i class="fas fa-check-circle"></i> LIVE SERVICES (${approvedServices.length})
-          </td>
-        </tr>
+        <div style="background: #e0f2fe; border: 2px solid #0ea5e9; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 16px; color: #0c4a6e; font-size: 1rem; font-weight: 700;">
+            ✅ LIVE SERVICES (${approvedServices.length})
+          </h4>
+          <div style="display: grid; gap: 12px;">
+            ${approvedServices.map(p => this.renderListingCard(p, false)).join('')}
+          </div>
+        </div>
       `;
+    }
 
-      approvedServices.forEach(p => {
-        html += `
-          <tr style="border-bottom: 1px solid #f1f5f9;">
-            <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.businessName || p.title}</td>
-            <td style="padding: 12px; color: #475569;">${p.category || '-'}</td>
-            <td style="padding: 12px; font-weight: 700; color: #0284c7;">${p.serviceAreas || '-'}</td>
-            <td style="padding: 12px;"><span style="background: #dcfce7; color: #166534; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">✓ LIVE</span></td>
-            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${p.providerName || '-'}</td>
-            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
-            <td style="padding: 12px; text-align: right;">
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #6366f1; color: white; cursor: pointer;" onclick="alert('Service details')">👁️ View</button>
-              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.deleteListing('${p.id}')">🗑️ Delete</button>
-            </td>
-          </tr>
-        `;
-      });
+    if (html === '') {
+      html = `
+        <div style="text-align: center; padding: 40px; color: #64748b;">
+          <i class="fas fa-home" style="font-size: 3rem; opacity: 0.3; margin-bottom: 16px;"></i>
+          <div style="font-size: 1.1rem; font-weight: 600;">No listings found</div>
+          <div style="margin-top: 8px;">Properties and services will appear here once posted</div>
+        </div>
+      `;
     }
 
     container.innerHTML = html;
@@ -1334,3 +1348,47 @@ window.kejaAdmin = new AdminPortalEngine();
 document.addEventListener('DOMContentLoaded', () => {
   window.kejaAdmin.init();
 });
+
+  renderListingCard(p, isPending) {
+    const isService = p.listingType === 'service';
+    
+    return `
+      <div style="background: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+        <div style="font-size: 1.5rem;">${isService ? '🔧' : '🏠'}</div>
+        <div style="flex: 1;">
+          <div style="font-weight: 700; color: #1e293b; margin-bottom: 2px;">
+            ${p.title || p.businessName || 'Untitled'}
+            ${p.isTopAd ? ' <span style="background: #fef08a; color: #854d0e; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px;">🚀 BOOSTED</span>' : ''}
+          </div>
+          <div style="font-size: 0.8rem; color: #64748b;">
+            📍 ${p.area || p.location || p.serviceAreas || 'Location not specified'} • 
+            💰 KSh ${Number(p.rentKes || p.price || 0).toLocaleString()}
+          </div>
+          <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">
+            ${isService ? `Category: ${p.category}` : `Type: ${p.category || 'Property'}`} • 
+            Posted: ${new Date(p.createdAt || Date.now()).toLocaleDateString()}
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <button onclick="kejaAdmin.viewListingDetails('${p.id}')" style="background: #4f46e5; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">
+            👁️ View
+          </button>
+          ${isPending ? `
+            <button onclick="kejaAdmin.approveListing('${p.id}')" style="background: #10b981; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">
+              ✅ Approve
+            </button>
+            <button onclick="kejaAdmin.rejectListing('${p.id}')" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">
+              ❌ Reject
+            </button>
+          ` : `
+            <button onclick="kejaAdmin.boostListing('${p.id}')" style="background: #f59e0b; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">
+              🚀 Boost
+            </button>
+            <button onclick="kejaAdmin.deleteListing('${p.id}')" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">
+              🗑️ Delete
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+  }

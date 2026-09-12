@@ -2,10 +2,10 @@
   "users": [
     {
       "id": "usr-admin-01",
-      "name": "KejaMarket Admin",
+      "name": "KejaMarket Administrator",
       "phone": "0700000000",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$Nw0xByuk71/4foGqDIFSyuDLAHEs6ufHG5DQRJ7Yep6oFRdrB6fIO",
+      "password": "$2b$10$iJ0wVu/nmpLbP4yWDX9zku.6MUXPHwBPvLLI5JiIV3HrpbJF0A.2S",
       "role": "admin",
       "isVerified": true,
       "numProperties": "10+",

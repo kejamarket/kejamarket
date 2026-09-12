@@ -19,7 +19,8 @@ const fs = require('fs');
 const path = require('path');
 const store = require('./db/store');
 
-const fetch = (...args) => import('node-fetch').then(({ default: f }) => f(...args));
+// Use require for node-fetch v2 compatibility
+const fetch = require('node-fetch');
 
 const app = express();
 app.use(cors());
@@ -49,17 +50,24 @@ const AT_API_KEY = process.env.AT_API_KEY || '';
 const AT_SENDER_ID = process.env.AT_SENDER_ID || '';
 
 let atSMS = null;
-if (AT_API_KEY && !AT_API_KEY.includes('YOUR_')) {
-  try {
-    const at = AfricasTalking({
+let smsService = null;
+
+// Initialize Africa's Talking with error handling
+try {
+  if (AT_API_KEY && AT_API_KEY.trim() && !AT_API_KEY.includes('YOUR_')) {
+    const africastalking = AfricasTalking({
       apiKey: AT_API_KEY,
       username: AT_USERNAME
     });
-    atSMS = at.SMS;
+    
+    smsService = africastalking.SMS;
     console.log(`📱 Africa's Talking SMS engine initialized (Account: ${AT_USERNAME})`);
-  } catch (err) {
-    console.warn(`⚠️ Africa's Talking initialization note: ${err.message}`);
+  } else {
+    console.log(`📱 Africa's Talking SMS: API Key not provided - SMS disabled`);
   }
+} catch (error) {
+  console.warn(`⚠️ Africa's Talking initialization failed:`, error.message);
+  smsService = null;
 }
 
 // Global real SMS dispatcher function
@@ -68,35 +76,26 @@ async function sendRealSMS(toPhone, message) {
     const formatted = formatPhone(toPhone);
     const recipient = '+' + formatted;
 
-    if (AT_API_KEY && !AT_API_KEY.includes('YOUR_')) {
-      const isSandbox = AT_USERNAME === 'sandbox';
-      const endpoint = isSandbox
-        ? 'https://api.sandbox.africastalking.com/version1/messaging'
-        : 'https://api.africastalking.com/version1/messaging';
-
-      const params = new URLSearchParams();
-      params.append('username', AT_USERNAME);
-      params.append('to', recipient);
-      params.append('message', message);
+    if (smsService && AT_API_KEY && !AT_API_KEY.includes('YOUR_')) {
+      const options = {
+        to: [recipient],
+        message: message
+      };
+      
       if (AT_SENDER_ID && AT_SENDER_ID.trim() && !AT_SENDER_ID.includes('YOUR_')) {
-        params.append('from', AT_SENDER_ID.trim());
+        options.from = AT_SENDER_ID.trim();
       }
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'apiKey': AT_API_KEY,
-          'Accept': 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params.toString()
-      });
-
-      const data = await res.json().catch(() => null);
-      console.log(`📤 [REAL SMS SENT] To: ${recipient} | Status: ${res.status} | Response:`, data ? JSON.stringify(data) : '');
-      return { success: res.status === 201 || res.status === 200, response: data };
+      try {
+        const result = await smsService.send(options);
+        console.log(`📤 [REAL SMS SENT] To: ${recipient} | Status: Success | Response:`, result);
+        return { success: true, response: result };
+      } catch (apiError) {
+        console.error(`❌ [SMS API FAILED] To: ${recipient}:`, apiError.message);
+        return { success: false, error: apiError.message };
+      }
     } else {
-      console.log(`📡 [SMS DISPATCH] To: ${recipient} | Body: "${message}"`);
+      console.log(`📡 [SMS DISPATCH] To: ${recipient} | Body: "${message}" (SMS service not available)`);
       return { success: true, localOnly: true };
     }
   } catch (smsErr) {
@@ -104,6 +103,9 @@ async function sendRealSMS(toPhone, message) {
     return { success: false, error: smsErr.message };
   }
 }
+
+// Alias for backwards compatibility
+const sendSMS = sendRealSMS;
 
 // Check if Daraja credentials are realistically configured
 const hasDarajaCredentials = () => {
@@ -2606,7 +2608,9 @@ function trackBoostClick(propertyId) {
 
 // ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+
+// Add error handling for server startup  
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`====================================================`);
   console.log(`🚀 KejaMarket Production API Server running on port ${PORT}`);
   console.log(`🔗 Web Application: http://localhost:${PORT}`);
@@ -2614,21 +2618,53 @@ app.listen(PORT, () => {
   console.log(`====================================================`);
 
   // Automatic self-ping to keep Render web service awake 24/7 (prevents spin-down screen)
-  const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.co.ke';
+  const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || `https://kejamarket.onrender.com` || 'https://kejamarket.co.ke';
   const PING_INTERVAL = 9 * 60 * 1000; // Ping every 9 minutes (Render free tier sleeps after 15 mins)
 
-  setInterval(() => {
-    try {
-      const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
-      httpModule.get(`${PUBLIC_URL}/api/health`, (res) => {
-        console.log(`[Keep-Alive Ping] Heartbeat to ${PUBLIC_URL}/api/health (Status: ${res.statusCode})`);
-      }).on('error', (err) => {
-        console.warn(`[Keep-Alive Ping] Warning: ${err.message}`);
-      });
-    } catch (err) {
-      console.warn(`[Keep-Alive Ping] Failed: ${err.message}`);
-    }
-  }, PING_INTERVAL);
+  if (process.env.NODE_ENV === 'production') {
+    console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+    
+    setInterval(() => {
+      try {
+        const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
+        httpModule.get(`${PUBLIC_URL}/api/health`, (res) => {
+          console.log(`[Keep-Alive Ping] Heartbeat to ${PUBLIC_URL}/api/health (Status: ${res.statusCode})`);
+        }).on('error', (err) => {
+          console.warn(`[Keep-Alive Ping] Warning: ${err.message}`);
+        });
+      } catch (err) {
+        console.warn(`[Keep-Alive Ping] Failed: ${err.message}`);
+      }
+    }, PING_INTERVAL);
+  } else {
+    console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+  }
+});
 
-  console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+// Handle server errors
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use`);
+    process.exit(1);
+  } else {
+    console.error(`❌ Server error:`, err);
+    process.exit(1);
+  }
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('🔄 SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('🔄 SIGINT received, shutting down gracefully');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
 });

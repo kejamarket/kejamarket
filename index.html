@@ -2104,35 +2104,33 @@
         
         <!-- PANE 1: OVERVIEW & STATS -->
         <div id="admin-tab-pane-overview">
+          <!-- Stats Dashboard -->
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 24px;">
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
               <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Total Users</div>
-              <div style="font-size: 1.6rem; font-weight: 800; color: #4f46e5;" id="admin-stat-total-users">-</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #4f46e5;" id="admin-stat-total-users">0</div>
             </div>
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
-              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Registered Landlords</div>
-              <div style="font-size: 1.6rem; font-weight: 800; color: #7c3aed;" id="admin-stat-landlords">-</div>
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Landlords</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #7c3aed;" id="admin-stat-landlords">0</div>
             </div>
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
-              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Active Tenants</div>
-              <div style="font-size: 1.6rem; font-weight: 800; color: #00b53f;" id="admin-stat-tenants">-</div>
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Tenants</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #00b53f;" id="admin-stat-tenants">0</div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Service Providers</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #0284c7;" id="admin-stat-services">0</div>
             </div>
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
               <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Total Properties</div>
-              <div style="font-size: 1.6rem; font-weight: 800; color: #0284c7;" id="admin-stat-total-props">-</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #16a34a;" id="admin-stat-total-props">0</div>
             </div>
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
-              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Vacant / Available</div>
-              <div style="font-size: 1.6rem; font-weight: 800; color: #16a34a;" id="admin-stat-available-props">-</div>
-            </div>
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center;">
-              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Occupied / Taken</div>
-              <div style="font-size: 1.6rem; font-weight: 800; color: #dc2626;" id="admin-stat-taken-props">-</div>
+              <div style="font-size: 0.78rem; color: #64748b; font-weight: 600;">Pending Approval</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: #dc2626;" id="admin-stat-pending">0</div>
             </div>
           </div>
-
-          <!-- Advanced Analytics Dashboard -->
-          <div id="admin-analytics-container"></div>
 
           <!-- Quick Admin Actions -->
           <div style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 2px solid #c084fc;">
@@ -2152,34 +2150,27 @@
               </button>
             </div>
           </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 16px;">
-              <h4 style="margin: 0 0 8px 0; color: #1e40af; font-size: 0.95rem;"><i class="fas fa-bolt"></i> Quick Operations</h4>
-              <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px;">Trigger automated tasks and platform maintenance routines.</p>
-              <div style="display: flex; flex-direction: column; gap: 8px;">
-                <button class="btn-primary" style="background: #2563eb; border: none; font-size: 0.85rem; font-weight: 600; cursor: pointer;" onclick="app.openModal('modal-bot-simulator')">
-                  <i class="fas fa-robot"></i> Open Scraper & Ingestion Bot
-                </button>
-                <button class="btn-secondary" style="border: 1px solid #cbd5e1; font-size: 0.85rem; cursor: pointer;" onclick="kejaAdmin.downloadBackup()">
-                  <i class="fas fa-download"></i> Download Full Database Backup (.json)
-                </button>
-              </div>
-            </div>
-
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px;">
-              <h4 style="margin: 0 0 8px 0; color: #166534; font-size: 0.95rem;"><i class="fas fa-satellite-dish"></i> Gateways Status</h4>
-              <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.82rem; color: #334155; display: flex; flex-direction: column; gap: 6px;">
-                <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <strong>Safaricom M-Pesa Daraja:</strong> Webhook active (`/api/mpesa/callback`)</li>
-                <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <strong>Africa's Talking SMS:</strong> Dispatch service ready</li>
-                <li><i class="fas fa-check-circle" style="color: #16a34a;"></i> <strong>JSON Data Store:</strong> Read/Write persistent disk</li>
-              </ul>
-            </div>
-          </div>
         </div>
 
         <!-- PANE 2: USERS REGISTRY -->
         <div id="admin-tab-pane-users" style="display: none;">
+          <div style="margin-bottom: 20px;">
+            <h3 style="margin: 0 0 12px; color: #1e293b; font-size: 1.1rem;"><i class="fas fa-users"></i> Registered Platform Users</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <span style="color: #64748b; font-size: 0.9rem;">Users separated by role for easy management</span>
+              <button onclick="kejaAdmin.refreshAllData()" style="background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+            </div>
+          </div>
+          
+          <div id="admin-users-container">
+            <div style="text-align: center; padding: 40px; color: #64748b;">
+              <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 12px;"></i>
+              <div>Loading users...</div>
+            </div>
+          </div>
+        </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Registered Platform Users</div>
             <button class="category-pill" style="font-size: 0.8rem; padding: 4px 10px; cursor: pointer;" onclick="kejaAdmin.refreshAllData()">
@@ -2207,6 +2198,23 @@
 
         <!-- PANE 3: LISTINGS MODERATION -->
         <div id="admin-tab-pane-listings" style="display: none;">
+          <div style="margin-bottom: 20px;">
+            <h3 style="margin: 0 0 12px; color: #1e293b; font-size: 1.1rem;"><i class="fas fa-home"></i> Listings Moderation</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <span style="color: #64748b; font-size: 0.9rem;">Properties and services separated by status for easy moderation</span>
+              <button onclick="kejaAdmin.renderListings()" style="background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+            </div>
+          </div>
+          
+          <div id="admin-listings-container">
+            <div style="text-align: center; padding: 40px; color: #64748b;">
+              <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 12px;"></i>
+              <div>Loading listings...</div>
+            </div>
+          </div>
+        </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div style="font-size: 0.9rem; font-weight: 700; color: #1e293b;">Live Property Listings</div>
             <button class="category-pill" style="font-size: 0.8rem; padding: 4px 10px; cursor: pointer;" onclick="kejaAdmin.renderListings()">
@@ -2397,23 +2405,23 @@
         // Automatically trigger install prompt
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('PWA installed successfully');
-            if (window.app) window.app.showToast('✅ App installed!', 'success');
-          } else {
-            console.log('User dismissed install prompt');
-          }
+          console.log('PWA install choice:', choiceResult.outcome);
           deferredPrompt = null;
           const banner = document.getElementById('pwa-install-banner');
           if (banner) banner.style.display = 'none';
+          
+          if (choiceResult.outcome === 'accepted') {
+            if (window.app) window.app.showToast('✅ App installed successfully!', 'success');
+          }
         });
       } else {
-        // Fallback: Show instructions (browser doesn't support prompt)
+        // Fallback: Hide banner and show brief instruction
         const banner = document.getElementById('pwa-install-banner');
         if (banner) banner.style.display = 'none';
         
+        // Show manual install instructions
         if (window.app) {
-          window.app.showToast('To install: Tap browser menu → Add to Home screen', 'info');
+          window.app.showToast('📱 To install: Browser menu → Add to Home screen', 'info');
         }
       }
     }
