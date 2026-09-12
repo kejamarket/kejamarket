@@ -375,6 +375,9 @@ class AdminPortalEngine {
           </span>
         </td>
         <td style="padding: 12px; text-align: right;">
+          <button class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0 4px; cursor: pointer; background: #4f46e5; color: white;" onclick="kejaAdmin.contactUser('${u.id}', '${u.role}')">
+            <i class="fas fa-comments"></i> Contact
+          </button>
           <button class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0 4px; cursor: pointer; background: ${u.isVerified ? '#f87171; color: white;' : '#10b981; color: white;'}" onclick="kejaAdmin.toggleUserVerification('${u.id}')">
             ${u.isVerified ? 'Revoke' : 'Verify'}
           </button>
@@ -653,91 +656,154 @@ class AdminPortalEngine {
       return;
     }
 
+    const isPending = !property.isVerified && property.status !== 'approved';
+    const isService = property.listingType === 'service';
+
+    // Build photo gallery
+    let photoGallery = '';
+    if (property.images && property.images.length > 0) {
+      photoGallery = `
+        <div style="margin-bottom: 20px;">
+          <div style="position: relative; margin-bottom: 12px;">
+            <img id="admin-preview-main-photo" src="${property.images[0]}" alt="Property" style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+            <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+              <i class="fas fa-images"></i> ${property.images.length} Photos
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;">
+            ${property.images.map((img, idx) => `
+              <img src="${img}" onclick="document.getElementById('admin-preview-main-photo').src='${img}'" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid ${idx === 0 ? '#4f46e5' : 'transparent'}; transition: all 0.2s;" onmouseover="this.style.borderColor='#4f46e5'" onmouseout="this.style.borderColor='${idx === 0 ? '#4f46e5' : 'transparent'}'" />
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // Build video section
+    let videoSection = '';
+    if (property.videoUrl) {
+      videoSection = `
+        <div style="margin-bottom: 20px;">
+          <h4 style="margin: 0 0 12px; color: #1e293b; font-size: 1rem;"><i class="fas fa-video"></i> Video Tour</h4>
+          <video controls style="width: 100%; max-height: 400px; border-radius: 12px;">
+            <source src="${property.videoUrl}" type="video/mp4">
+            Your browser does not support video playback.
+          </video>
+        </div>
+      `;
+    }
+
+    // Landlord/Provider contact info
+    const contactInfo = isService 
+      ? `
+        <div style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #0284c7;">
+          <h4 style="margin: 0 0 12px; color: #0c4a6e; font-size: 1rem;"><i class="fas fa-user-tie"></i> Service Provider</h4>
+          <div style="display: grid; gap: 8px;">
+            <div><strong>Name:</strong> ${property.providerName || 'N/A'}</div>
+            <div><strong>Business:</strong> ${property.businessName || 'N/A'}</div>
+            <div><strong>Phone:</strong> <a href="tel:${property.phone}" style="color: #0284c7; font-weight: 600;"><i class="fas fa-phone"></i> ${property.phone}</a></div>
+            <div><strong>Category:</strong> ${property.category || 'N/A'}</div>
+            <div><strong>Service Areas:</strong> ${property.serviceAreas || 'N/A'}</div>
+          </div>
+          <button onclick="kejaAdmin.contactUser('${property.postedBy}', 'service')" style="margin-top: 12px; width: 100%; background: #0284c7; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer;">
+            <i class="fas fa-comments"></i> Message Provider
+          </button>
+        </div>
+      `
+      : `
+        <div style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #6366f1;">
+          <h4 style="margin: 0 0 12px; color: #3730a3; font-size: 1rem;"><i class="fas fa-user-tie"></i> Landlord Contact</h4>
+          <div style="display: grid; gap: 8px;">
+            <div><strong>Name:</strong> ${property.landlord?.name || 'N/A'}</div>
+            <div><strong>Phone:</strong> <a href="tel:${property.landlord?.phone}" style="color: #4f46e5; font-weight: 600;"><i class="fas fa-phone"></i> ${property.landlord?.phone}</a></div>
+            <div><strong>WhatsApp:</strong> <a href="https://wa.me/${property.landlord?.whatsapp?.replace(/[^0-9]/g, '')}" target="_blank" style="color: #25d366; font-weight: 600;"><i class="fab fa-whatsapp"></i> ${property.landlord?.whatsapp}</a></div>
+            <div><strong>Email:</strong> ${property.landlord?.email || 'N/A'}</div>
+            ${property.landlord?.isAgency ? `<div><strong>Agency:</strong> ${property.agencyName || 'Yes'}</div>` : ''}
+          </div>
+          <button onclick="kejaAdmin.contactUser('${property.postedBy}', 'landlord')" style="margin-top: 12px; width: 100%; background: #6366f1; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer;">
+            <i class="fas fa-comments"></i> Message Landlord
+          </button>
+        </div>
+      `;
+
     const modalHtml = `
-      <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="this.remove()">
-        <div style="background: white; border-radius: 16px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 0; box-shadow: 0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+      <div id="admin-listing-preview-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto;" onclick="if(event.target.id==='admin-listing-preview-modal') this.remove()">
+        <div style="background: white; border-radius: 16px; max-width: 900px; width: 100%; max-height: 95vh; overflow-y: auto; padding: 0; box-shadow: 0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
           
           <!-- Header -->
-          <div style="background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); padding: 24px; color: white; border-radius: 16px 16px 0 0; position: relative;">
-            <button onclick="this.closest('[style*=position]').remove()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
-            <h2 style="margin: 0; font-size: 1.5rem;">📋 Listing Details</h2>
-            <p style="margin: 8px 0 0; opacity: 0.9; font-size: 0.9rem;">Review before approval</p>
+          <div style="background: linear-gradient(135deg, ${isPending ? '#f59e0b' : '#10b981'} 0%, ${isPending ? '#d97706' : '#059669'} 100%); padding: 24px; color: white; border-radius: 16px 16px 0 0; position: sticky; top: 0; z-index: 100;">
+            <button onclick="document.getElementById('admin-listing-preview-modal').remove()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
+            <h2 style="margin: 0; font-size: 1.5rem;">${isPending ? '⏳ Pending Verification' : '✅ Verified Listing'}</h2>
+            <p style="margin: 8px 0 0; opacity: 0.9; font-size: 0.9rem;">${isService ? 'Service Provider' : 'Property'} • Posted ${new Date(property.createdAt || Date.now()).toLocaleDateString()}</p>
           </div>
 
           <!-- Content -->
           <div style="padding: 24px;">
             
-            <!-- Images -->
-            ${property.images && property.images.length > 0 ? `
-              <div style="margin-bottom: 20px;">
-                <img src="${property.images[0]}" alt="Property" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
-              </div>
-            ` : ''}
+            ${photoGallery}
+            ${videoSection}
 
             <!-- Title & Price -->
-            <h3 style="margin: 0 0 16px; font-size: 1.4rem; color: #1e293b;">${property.title}</h3>
-            <div style="display: flex; align-items: center; margin-bottom: 20px;">
-              <span style="font-size: 1.8rem; font-weight: 800; color: #00b53f; margin-right: 12px;">KSh ${Number(property.rentKes || property.price || 0).toLocaleString()}</span>
-              <span style="background: #e0e7ff; color: #4338ca; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;">${property.type || 'Property'}</span>
-            </div>
-
-            <!-- Location -->
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px;">
-              <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
-                <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">📍 Location</div>
-                <div style="font-weight: 600; color: #1e293b;">${property.area || property.location || '-'}</div>
-              </div>
-              <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
-                <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">🏘️ Estate/Suburb</div>
-                <div style="font-weight: 600; color: #1e293b;">${property.estateSuburb || property.sublocation || '-'}</div>
-              </div>
-              <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
-                <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">🛏️ Bedrooms</div>
-                <div style="font-weight: 600; color: #1e293b;">${property.bedrooms || '-'}</div>
-              </div>
-              <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
-                <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">🚿 Bathrooms</div>
-                <div style="font-weight: 600; color: #1e293b;">${property.bathrooms || '-'}</div>
-              </div>
-            </div>
-
-            <!-- Description -->
-            ${property.description ? `
-              <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
-                <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; margin-bottom: 8px;">📝 Description</div>
-                <div style="color: #475569; line-height: 1.6; font-size: 0.95rem;">${property.description}</div>
+            <h3 style="margin: 0 0 16px; font-size: 1.6rem; color: #1e293b;">${isService ? property.businessName : property.title}</h3>
+            
+            ${!isService ? `
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+                <span style="font-size: 2rem; font-weight: 800; color: #00b53f;">KSh ${Number(property.rentKes || property.price || 0).toLocaleString()}</span>
+                <span style="background: #e0e7ff; color: #4338ca; padding: 6px 14px; border-radius: 12px; font-size: 0.9rem; font-weight: 600;">${property.category || 'Property'}</span>
+                <span style="background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 12px; font-size: 0.9rem; font-weight: 600;">${property.bedrooms} Bedroom</span>
               </div>
             ` : ''}
 
-            <!-- Amenities -->
-            ${property.amenities && property.amenities.length > 0 ? `
-              <div style="margin-bottom: 20px;">
-                <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; margin-bottom: 8px;">✨ Amenities</div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                  ${property.amenities.map(a => `<span style="background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem;">✓ ${a}</span>`).join('')}
+            ${contactInfo}
+
+            <!-- Description -->
+            <div style="background: #f8fafc; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+              <h4 style="margin: 0 0 12px; color: #1e293b; font-size: 1rem;"><i class="fas fa-align-left"></i> Description</h4>
+              <p style="margin: 0; color: #475569; line-height: 1.6;">${property.description || 'No description provided.'}</p>
+            </div>
+
+            <!-- Location Details -->
+            ${!isService ? `
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px;">
+                <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
+                  <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">📍 Location</div>
+                  <div style="font-weight: 600; color: #1e293b;">${property.area || property.location || '-'}</div>
+                </div>
+                <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
+                  <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">🏘️ Estate/Suburb</div>
+                  <div style="font-weight: 600; color: #1e293b;">${property.estateSuburb || property.sublocation || '-'}</div>
+                </div>
+                <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
+                  <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">💧 Water</div>
+                  <div style="font-weight: 600; color: #1e293b;">${property.waterSupplyType || '-'}</div>
+                </div>
+                <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
+                  <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">⚡ Electricity</div>
+                  <div style="font-weight: 600; color: #1e293b;">${property.electricityMeterType || '-'}</div>
                 </div>
               </div>
             ` : ''}
 
-            <!-- Landlord Info -->
-            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
-              <div style="font-size: 0.85rem; font-weight: 600; color: #92400e; margin-bottom: 8px;">👤 Landlord Contact</div>
-              <div style="color: #78350f;">
-                <div style="margin-bottom: 4px;"><strong>Name:</strong> ${property.landlord?.name || property.landlordName || '-'}</div>
-                <div style="margin-bottom: 4px;"><strong>Phone:</strong> ${property.landlordPhone || property.landlord?.phone || '-'}</div>
-                <div><strong>WhatsApp:</strong> ${property.landlord?.whatsapp || property.landlordPhone || '-'}</div>
+            <!-- Action Buttons -->
+            ${isPending ? `
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 2px solid #e5e7eb;">
+                <button onclick="kejaAdmin.approveListing('${property.id}'); document.getElementById('admin-listing-preview-modal').remove();" style="background: #10b981; color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 1rem;">
+                  <i class="fas fa-check-circle"></i> Approve & Publish
+                </button>
+                <button onclick="kejaAdmin.rejectListing('${property.id}'); document.getElementById('admin-listing-preview-modal').remove();" style="background: #ef4444; color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 1rem;">
+                  <i class="fas fa-times-circle"></i> Reject Listing
+                </button>
               </div>
-            </div>
-
-            <!-- Actions -->
-            <div style="display: flex; gap: 12px;">
-              <button class="btn-primary" style="flex: 1; padding: 12px; font-size: 1rem; font-weight: 600; background: #00b53f; color: white; border: none; border-radius: 8px; cursor: pointer;" onclick="kejaAdmin.approveListing('${property.id}'); this.closest('[style*=position]').remove();">
-                ✓ Approve Listing
-              </button>
-              <button class="btn-primary" style="flex: 1; padding: 12px; font-size: 1rem; font-weight: 600; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer;" onclick="kejaAdmin.rejectListing('${property.id}'); this.closest('[style*=position]').remove();">
-                ✗ Reject Listing
-              </button>
-            </div>
+            ` : `
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 2px solid #e5e7eb;">
+                <button onclick="kejaAdmin.boostListing('${property.id}')" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 1rem;">
+                  <i class="fas fa-rocket"></i> Boost This Listing
+                </button>
+                <button onclick="if(confirm('Delete this listing permanently?')) { kejaAdmin.deleteListing('${property.id}'); document.getElementById('admin-listing-preview-modal').remove(); }" style="background: #ef4444; color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 1rem;">
+                  <i class="fas fa-trash"></i> Delete Listing
+                </button>
+              </div>
+            `}
 
           </div>
         </div>
@@ -925,6 +991,323 @@ class AdminPortalEngine {
       }
     } catch (err) {
       if (window.app) window.app.showToast('❌ Server error', 'error');
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // COMMUNICATION SYSTEM
+  // ═══════════════════════════════════════════════════════════
+
+  contactUser(userId, userType) {
+    // Find user details
+    const user = this.users.find(u => u.id === userId);
+    if (!user) {
+      if (window.app) window.app.showToast('User not found', 'error');
+      return;
+    }
+
+    const modalHtml = `
+      <div id="admin-contact-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="if(event.target.id==='admin-contact-modal') this.remove()">
+        <div style="background: white; border-radius: 16px; max-width: 600px; width: 100%; padding: 0; box-shadow: 0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+          
+          <!-- Header -->
+          <div style="background: linear-gradient(135deg, #6366f1, #4f46e5); padding: 24px; color: white; border-radius: 16px 16px 0 0;">
+            <button onclick="document.getElementById('admin-contact-modal').remove()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;">×</button>
+            <h2 style="margin: 0; font-size: 1.4rem;"><i class="fas fa-comments"></i> Contact User</h2>
+            <p style="margin: 8px 0 0; opacity: 0.9; font-size: 0.9rem;">${user.name || 'User'} • ${userType}</p>
+          </div>
+
+          <!-- Content -->
+          <div style="padding: 24px;">
+            
+            <!-- User Info -->
+            <div style="background: #f8fafc; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+              <div style="display: grid; gap: 8px;">
+                <div><strong>Name:</strong> ${user.name || 'N/A'}</div>
+                <div><strong>Email:</strong> ${user.email || 'N/A'}</div>
+                <div><strong>Phone:</strong> ${user.phone || 'N/A'}</div>
+                <div><strong>User ID:</strong> ${user.id}</div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+              <a href="tel:${user.phone}" style="background: #10b981; color: white; padding: 12px; border-radius: 10px; text-align: center; text-decoration: none; font-weight: 700;">
+                <i class="fas fa-phone"></i> Call
+              </a>
+              <a href="https://wa.me/${user.phone?.replace(/[^0-9]/g, '')}" target="_blank" style="background: #25d366; color: white; padding: 12px; border-radius: 10px; text-align: center; text-decoration: none; font-weight: 700;">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+              </a>
+            </div>
+
+            <!-- Message Form -->
+            <form onsubmit="event.preventDefault(); kejaAdmin.sendDirectMessage('${user.id}', document.getElementById('admin-message-text').value);">
+              <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e293b;">Send Message (SMS/Email)</label>
+              <textarea id="admin-message-text" placeholder="Type your message here..." style="width: 100%; min-height: 120px; padding: 12px; border: 2px solid #e5e7eb; border-radius: 10px; font-family: inherit; resize: vertical; margin-bottom: 12px;" required></textarea>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <button type="submit" style="background: #4f46e5; color: white; padding: 12px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">
+                  <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+                <button type="button" onclick="document.getElementById('admin-contact-modal').remove()" style="background: #6b7280; color: white; padding: 12px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer;">
+                  Cancel
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+  }
+
+  async sendDirectMessage(userId, message) {
+    if (!message || !message.trim()) {
+      if (window.app) window.app.showToast('Please enter a message', 'error');
+      return;
+    }
+
+    try {
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      const res = await fetch('/api/admin/send-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify({
+          userId,
+          message: message.trim(),
+          method: 'both' // Send via both SMS and Email
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) window.app.showToast('✅ Message sent successfully!', 'success');
+        document.getElementById('admin-contact-modal')?.remove();
+      } else {
+        if (window.app) window.app.showToast(data.message || 'Failed to send message', 'error');
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('Network error', 'error');
+    }
+  }
+
+  openBroadcastModal() {
+    const modalHtml = `
+      <div id="admin-broadcast-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="if(event.target.id==='admin-broadcast-modal') this.remove()">
+        <div style="background: white; border-radius: 16px; max-width: 700px; width: 100%; padding: 0; box-shadow: 0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+          
+          <!-- Header -->
+          <div style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 24px; color: white; border-radius: 16px 16px 0 0;">
+            <button onclick="document.getElementById('admin-broadcast-modal').remove()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;">×</button>
+            <h2 style="margin: 0; font-size: 1.4rem;"><i class="fas fa-bullhorn"></i> Broadcast Message</h2>
+            <p style="margin: 8px 0 0; opacity: 0.9; font-size: 0.9rem;">Send message to all users in a role</p>
+          </div>
+
+          <!-- Content -->
+          <div style="padding: 24px;">
+            
+            <form onsubmit="event.preventDefault(); kejaAdmin.sendBroadcast();">
+              
+              <!-- Target Role -->
+              <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e293b;">Target Audience</label>
+                <select id="broadcast-target-role" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 10px; font-family: inherit;" required>
+                  <option value="">-- Select Role --</option>
+                  <option value="tenant">All Tenants (${this.users.filter(u => u.role === 'tenant').length} users)</option>
+                  <option value="landlord">All Landlords (${this.users.filter(u => u.role === 'landlord').length} users)</option>
+                  <option value="agency">All Agencies (${this.users.filter(u => u.role === 'agency').length} users)</option>
+                  <option value="service">All Service Providers (${this.users.filter(u => u.role === 'service').length} users)</option>
+                  <option value="all">Everyone (${this.users.length} users)</option>
+                </select>
+              </div>
+
+              <!-- Message -->
+              <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e293b;">Message</label>
+                <textarea id="broadcast-message-text" placeholder="Type your broadcast message..." style="width: 100%; min-height: 150px; padding: 12px; border: 2px solid #e5e7eb; border-radius: 10px; font-family: inherit; resize: vertical;" required></textarea>
+              </div>
+
+              <!-- Delivery Method -->
+              <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e293b;">Delivery Method</label>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                  <label style="background: #f8fafc; padding: 12px; border-radius: 10px; border: 2px solid #e5e7eb; cursor: pointer; text-align: center;">
+                    <input type="radio" name="delivery-method" value="email" checked style="margin-right: 6px;">
+                    <i class="fas fa-envelope"></i> Email
+                  </label>
+                  <label style="background: #f8fafc; padding: 12px; border-radius: 10px; border: 2px solid #e5e7eb; cursor: pointer; text-align: center;">
+                    <input type="radio" name="delivery-method" value="sms" style="margin-right: 6px;">
+                    <i class="fas fa-sms"></i> SMS
+                  </label>
+                  <label style="background: #f8fafc; padding: 12px; border-radius: 10px; border: 2px solid #e5e7eb; cursor: pointer; text-align: center;">
+                    <input type="radio" name="delivery-method" value="both" style="margin-right: 6px;">
+                    <i class="fas fa-check-double"></i> Both
+                  </label>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <button type="submit" style="background: #f59e0b; color: white; padding: 14px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 1rem;">
+                  <i class="fas fa-paper-plane"></i> Send Broadcast
+                </button>
+                <button type="button" onclick="document.getElementById('admin-broadcast-modal').remove()" style="background: #6b7280; color: white; padding: 14px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 1rem;">
+                  Cancel
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+  }
+
+  async sendBroadcast() {
+    const targetRole = document.getElementById('broadcast-target-role')?.value;
+    const message = document.getElementById('broadcast-message-text')?.value.trim();
+    const deliveryMethod = document.querySelector('input[name="delivery-method"]:checked')?.value || 'email';
+
+    if (!targetRole || !message) {
+      if (window.app) window.app.showToast('Please fill in all fields', 'error');
+      return;
+    }
+
+    if (!confirm(`Send this message to all ${targetRole === 'all' ? 'users' : targetRole + 's'}?`)) {
+      return;
+    }
+
+    try {
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      const res = await fetch('/api/admin/broadcast', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify({
+          targetRole,
+          message,
+          method: deliveryMethod
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) window.app.showToast(`✅ Broadcast sent to ${data.recipientCount || 0} users!`, 'success');
+        document.getElementById('admin-broadcast-modal')?.remove();
+      } else {
+        if (window.app) window.app.showToast(data.message || 'Failed to send broadcast', 'error');
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('Network error', 'error');
+    }
+  }
+
+  openBoostManagementModal() {
+    const modalHtml = `
+      <div id="admin-boost-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="if(event.target.id==='admin-boost-modal') this.remove()">
+        <div style="background: white; border-radius: 16px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 0; box-shadow: 0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+          
+          <!-- Header -->
+          <div style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 24px; color: white; border-radius: 16px 16px 0 0; position: sticky; top: 0; z-index: 100;">
+            <button onclick="document.getElementById('admin-boost-modal').remove()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;">×</button>
+            <h2 style="margin: 0; font-size: 1.4rem;"><i class="fas fa-rocket"></i> Boost Management</h2>
+            <p style="margin: 8px 0 0; opacity: 0.9; font-size: 0.9rem;">Manage boosted listings and top ads</p>
+          </div>
+
+          <!-- Content -->
+          <div style="padding: 24px;">
+            <div id="boost-listings-container"></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    this.loadBoostedListings();
+  }
+
+  async loadBoostedListings() {
+    const container = document.getElementById('boost-listings-container');
+    if (!container) return;
+
+    container.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #f59e0b;"></i></div>';
+
+    try {
+      const properties = window.app?.properties || [];
+      const boosted = properties.filter(p => p.isTopAd || p.boosted);
+
+      if (boosted.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px; color: #64748b;">
+            <i class="fas fa-rocket" style="font-size: 3rem; opacity: 0.3; margin-bottom: 16px;"></i>
+            <div style="font-size: 1.1rem; font-weight: 600;">No boosted listings</div>
+            <div style="margin-top: 8px;">Boosted listings will appear here</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background: #f8fafc;">
+              <th style="padding: 12px; text-align: left; font-size: 0.85rem; color: #64748b; border-bottom: 2px solid #e5e7eb;">Property</th>
+              <th style="padding: 12px; text-align: left; font-size: 0.85rem; color: #64748b; border-bottom: 2px solid #e5e7eb;">Location</th>
+              <th style="padding: 12px; text-align: left; font-size: 0.85rem; color: #64748b; border-bottom: 2px solid #e5e7eb;">Price</th>
+              <th style="padding: 12px; text-align: left; font-size: 0.85rem; color: #64748b; border-bottom: 2px solid #e5e7eb;">Status</th>
+              <th style="padding: 12px; text-align: right; font-size: 0.85rem; color: #64748b; border-bottom: 2px solid #e5e7eb;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${boosted.map(p => `
+              <tr style="border-bottom: 1px solid #e5e7eb;">
+                <td style="padding: 12px;">${p.title || 'Untitled'}</td>
+                <td style="padding: 12px; font-size: 0.85rem; color: #64748b;">${p.area || p.location || 'N/A'}</td>
+                <td style="padding: 12px; font-weight: 700; color: #00b53f;">KSh ${Number(p.rentKes || p.price || 0).toLocaleString()}</td>
+                <td style="padding: 12px;"><span style="background: #fef08a; color: #854d0e; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">🚀 BOOSTED</span></td>
+                <td style="padding: 12px; text-align: right;">
+                  <button onclick="kejaAdmin.unboostListing('${p.id}')" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">
+                    <i class="fas fa-times"></i> Un-boost
+                  </button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    } catch (err) {
+      container.innerHTML = '<div style="text-align: center; padding: 40px; color: #ef4444;">Error loading boosted listings</div>';
+    }
+  }
+
+  async unboostListing(propId) {
+    if (!confirm('Remove boost from this listing?')) return;
+
+    try {
+      const res = await fetch(`/api/properties/${encodeURIComponent(propId)}/unboost`, {
+        method: 'PUT'
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) {
+          window.app.showToast('Boost removed', 'info');
+          window.app.loadProperties();
+        }
+        this.loadBoostedListings();
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('Failed to remove boost', 'error');
     }
   }
 }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v12';
+const CACHE_NAME = 'kejamarket-v13'; // Admin verification & communication system
 const STATIC_ASSETS = [
   '/',
   '/index.html',

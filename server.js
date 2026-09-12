@@ -1793,6 +1793,201 @@ app.get('/api/admin/download-db', (req, res) => {
   }
 });
 
+// POST /api/admin/send-message (Send message to individual user)
+app.post('/api/admin/send-message', requireAuth, async (req, res) => {
+  try {
+    const { userId, message, method = 'email' } = req.body;
+
+    if (!userId || !message) {
+      return res.status(400).json({ success: false, message: 'User ID and message are required.' });
+    }
+
+    // Get user details
+    const user = store.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    // Send via email (simulated - you'll integrate real email service)
+    if (method === 'email' || method === 'both') {
+      console.log(`[EMAIL] To: ${user.email || 'No email'}`);
+      console.log(`Subject: Message from KejaMarket Admin`);
+      console.log(`Body: ${message}`);
+      // TODO: Integrate with SendGrid/Mailgun/AWS SES
+    }
+
+    // Send via SMS
+    if (method === 'sms' || method === 'both') {
+      if (user.phone) {
+        try {
+          await sendSMS(user.phone, `KejaMarket Admin: ${message}`);
+        } catch (err) {
+          console.error('SMS send failed:', err.message);
+        }
+      }
+    }
+
+    // Log activity
+    store.logActivity({
+      action: 'admin_message_sent',
+      userId: req.user.id,
+      details: {
+        recipientId: userId,
+        recipientName: user.name,
+        method
+      },
+      timestamp: Date.now()
+    });
+
+    res.json({ 
+      success: true, 
+      message: 'Message sent successfully!',
+      sentTo: user.name
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/broadcast (Send broadcast message to role group)
+app.post('/api/admin/broadcast', requireAuth, async (req, res) => {
+  try {
+    const { targetRole, message, method = 'email' } = req.body;
+
+    if (!targetRole || !message) {
+      return res.status(400).json({ success: false, message: 'Target role and message are required.' });
+    }
+
+    // Get all users or filter by role
+    let users = store.getAllUsers();
+    if (targetRole !== 'all') {
+      users = users.filter(u => u.role === targetRole);
+    }
+
+    if (users.length === 0) {
+      return res.status(404).json({ success: false, message: 'No users found for this role.' });
+    }
+
+    // Send to all users
+    let sentCount = 0;
+    for (const user of users) {
+      try {
+        if (method === 'email' || method === 'both') {
+          console.log(`[BROADCAST EMAIL] To: ${user.email || 'No email'}, Role: ${user.role}`);
+          // TODO: Integrate email service
+        }
+
+        if (method === 'sms' || method === 'both') {
+          if (user.phone) {
+            await sendSMS(user.phone, `KejaMarket: ${message}`);
+          }
+        }
+        sentCount++;
+      } catch (err) {
+        console.error(`Failed to send to ${user.name}:`, err.message);
+      }
+    }
+
+    // Log activity
+    store.logActivity({
+      action: 'admin_broadcast_sent',
+      userId: req.user.id,
+      details: {
+        targetRole,
+        recipientCount: sentCount,
+        method
+      },
+      timestamp: Date.now()
+    });
+
+    res.json({ 
+      success: true, 
+      message: `Broadcast sent successfully!`,
+      recipientCount: sentCount
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/properties/:id/boost (Boost a listing)
+app.put('/api/properties/:id/boost', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { boostType = 'top_ad' } = req.body;
+
+    const property = store.getPropertyById(id);
+    if (!property) {
+      return res.status(404).json({ success: false, message: 'Property not found.' });
+    }
+
+    // Update property
+    property.isTopAd = true;
+    property.boosted = true;
+    property.boostType = boostType;
+    property.boostedAt = new Date().toISOString();
+    store.updateProperty(id, property);
+
+    // Log activity
+    store.logActivity({
+      action: 'listing_boosted',
+      userId: req.user?.id || 'admin',
+      details: {
+        propertyId: id,
+        propertyTitle: property.title,
+        boostType
+      },
+      timestamp: Date.now()
+    });
+
+    res.json({ 
+      success: true, 
+      message: 'Listing boosted successfully!',
+      property
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/properties/:id/unboost (Remove boost from listing)
+app.put('/api/properties/:id/unboost', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const property = store.getPropertyById(id);
+    if (!property) {
+      return res.status(404).json({ success: false, message: 'Property not found.' });
+    }
+
+    // Update property
+    property.isTopAd = false;
+    property.boosted = false;
+    property.boostType = null;
+    property.boostedAt = null;
+    store.updateProperty(id, property);
+
+    // Log activity
+    store.logActivity({
+      action: 'listing_unboosted',
+      userId: req.user?.id || 'admin',
+      details: {
+        propertyId: id,
+        propertyTitle: property.title
+      },
+      timestamp: Date.now()
+    });
+
+    res.json({ 
+      success: true, 
+      message: 'Boost removed successfully!',
+      property
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ─── LANDLORD PORTAL ROUTES ──────────────────────────────────────────────────
 
 // GET /api/landlord/my-listings (Get all listings for logged-in landlord)

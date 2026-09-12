@@ -2126,6 +2126,25 @@
           <!-- Advanced Analytics Dashboard -->
           <div id="admin-analytics-container"></div>
 
+          <!-- Quick Admin Actions -->
+          <div style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 2px solid #c084fc;">
+            <h3 style="margin: 0 0 16px; color: #581c87; font-size: 1.1rem;"><i class="fas fa-bolt"></i> Quick Admin Actions</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+              <button onclick="kejaAdmin.openBroadcastModal()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; text-align: center;">
+                <i class="fas fa-bullhorn"></i><br>Broadcast Message
+              </button>
+              <button onclick="kejaAdmin.openBoostManagementModal()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; text-align: center;">
+                <i class="fas fa-rocket"></i><br>Manage Boosts
+              </button>
+              <button onclick="kejaAdmin.switchTab('users')" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; text-align: center;">
+                <i class="fas fa-users"></i><br>Contact Users
+              </button>
+              <button onclick="kejaAdmin.downloadBackup()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; text-align: center;">
+                <i class="fas fa-download"></i><br>Backup Database
+              </button>
+            </div>
+          </div>
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 16px;">
               <h4 style="margin: 0 0 8px 0; color: #1e40af; font-size: 0.95rem;"><i class="fas fa-bolt"></i> Quick Operations</h4>
