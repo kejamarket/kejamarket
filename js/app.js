@@ -1423,9 +1423,7 @@ class NairobiRentalsApp {
   openAdminChat() {
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     if (!session) {
-      if (this.showToast) {
-        this.showToast('⚠️ Please sign in to reach out to KejaMarket Admin.', 'info');
-      }
+      // Removed toast - cleaner UX, just open auth
       if (window.kejaAuth) {
         window.kejaAuth.requireTenantAuth(() => {
           this.openAdminChat();

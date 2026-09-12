@@ -56,7 +56,7 @@ class Store {
   }
 
   ensureAdminUser() {
-    const adminPasswordHash = bcrypt.hashSync('keja2026', 10);
+    const adminPasswordHash = bcrypt.hashSync('Stallon@jevugwe4', 10);
     const existingAdmin = this.data.users.find(u => 
       u.id === 'usr-admin-01' || 
       u.email === 'admin@kejamarket.co.ke' || 
@@ -66,7 +66,7 @@ class Store {
 
     if (existingAdmin) {
       existingAdmin.email = 'admin@kejamarket.co.ke';
-      existingAdmin.name = 'KejaMarket Admin';
+      existingAdmin.name = 'KejaMarket Administrator';
       existingAdmin.phone = '0700000000';
       existingAdmin.role = 'admin';
       existingAdmin.isAdmin = true;
@@ -75,7 +75,7 @@ class Store {
     } else {
       this.data.users.unshift({
         id: 'usr-admin-01',
-        name: 'KejaMarket Admin',
+        name: 'KejaMarket Administrator',
         phone: '0700000000',
         email: 'admin@kejamarket.co.ke',
         password: adminPasswordHash,

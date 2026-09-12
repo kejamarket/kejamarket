@@ -93,6 +93,8 @@ const kejaServicePortal = (() => {
     const statusColor = service.isVerified ? '#10b981' : '#f59e0b';
     const statusText = service.isVerified ? 'Verified ✓' : 'Pending Approval';
     const isBoosted = service.isTopAd || service.boosted;
+    const isAvailable = service.isAvailable !== false; // Default to available
+    
     const categoryNames = {
       wifi: 'WiFi / Internet',
       movers: 'Moving Services',
@@ -107,13 +109,21 @@ const kejaServicePortal = (() => {
         ${isBoosted ? '<div style="position:absolute;top:8px;right:8px;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;"><i class="fas fa-rocket"></i> BOOSTED</div>' : ''}
         
         <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;${isBoosted ? 'margin-top:28px;' : ''}">
-          <div>
+          <div style="flex:1;">
             <h4 style="margin:0 0 4px 0;color:#1e1b4b;font-size:1.05rem;font-weight:700;">${service.businessName || service.providerName}</h4>
             <p style="margin:0;color:#64748b;font-size:0.85rem;"><i class="fas fa-tools"></i> ${categoryNames[service.category] || service.category}</p>
           </div>
-          <span style="padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;background:${statusColor}22;color:${statusColor};">
-            ${statusText}
-          </span>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span style="padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;background:${statusColor}22;color:${statusColor};">
+              ${statusText}
+            </span>
+            ${service.isVerified ? `
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;background:${isAvailable ? '#dcfce7' : '#fee2e2'};color:${isAvailable ? '#166534' : '#991b1b'};">
+                <input type="checkbox" ${isAvailable ? 'checked' : ''} onchange="kejaServicePortal.toggleAvailability('${service.id}', this.checked)" style="width:14px;height:14px;cursor:pointer;">
+                ${isAvailable ? '✓ Available' : '✗ Not Available'}
+              </label>
+            ` : ''}
+          </div>
         </div>
         
         ${service.description ? `<p style="margin:8px 0;color:#475569;font-size:0.9rem;">${service.description}</p>` : ''}
@@ -492,6 +502,37 @@ const kejaServicePortal = (() => {
     }
   }
 
+  async function toggleAvailability(serviceId, isAvailable) {
+    try {
+      const token = kejaAuth.getToken();
+      const res = await fetch(`/api/service/availability/${encodeURIComponent(serviceId)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ isAvailable })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) {
+          window.app.showToast(
+            isAvailable ? '✅ Service marked as Available' : '⏸️ Service marked as Not Available',
+            'success'
+          );
+        }
+        loadMyServices(); // Refresh list
+      } else {
+        if (window.app) window.app.showToast('Failed to update availability', 'error');
+        loadMyServices(); // Refresh to revert checkbox
+      }
+    } catch (err) {
+      if (window.app) window.app.showToast('Failed to update availability', 'error');
+      loadMyServices(); // Refresh to revert checkbox
+    }
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
@@ -510,6 +551,7 @@ const kejaServicePortal = (() => {
     loadPaymentHistory,
     openBoostPayment,
     initiateBoostPayment,
-    unboostService
+    unboostService,
+    toggleAvailability
   };
 })();

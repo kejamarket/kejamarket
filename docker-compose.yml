@@ -14,3 +14,4 @@ services:
     volumes:
       - ./db:/app/db
       - ./.env:/app/.env
+ere are things repeating.once lanlor

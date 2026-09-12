@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v19'; // Admin portal auto-opens, button hidden, full implementation
+const CACHE_NAME = 'kejamarket-v20'; // Final: Admin credentials updated, service availability toggle, popups removed
 const STATIC_ASSETS = [
   '/',
   '/index.html',

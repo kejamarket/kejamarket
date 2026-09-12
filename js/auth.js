@@ -874,7 +874,7 @@ const kejaAuth = (() => {
       return true;
     }
     pendingTenantAuthCallback = callback;
-    if (window.app) window.app.showToast('Please sign in or create a free account to view photos, live location, and contacts.', 'info');
+    // Removed toast - cleaner UX
     switchTab('signin');
     setRole('tenant', 'signin');
     openAuthModal();

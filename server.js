@@ -2436,6 +2436,44 @@ app.post('/api/properties/:id/track-click', (req, res) => {
   }
 });
 
+// PUT /api/service/availability/:id (Toggle service availability)
+app.put('/api/service/availability/:id', requireAuth, (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isAvailable } = req.body;
+    const userId = req.user.id;
+
+    // Get service
+    const service = store.getPropertyById(id);
+    if (!service || service.postedBy !== userId) {
+      return res.status(404).json({ success: false, message: 'Service not found or unauthorized.' });
+    }
+
+    // Update availability
+    service.isAvailable = isAvailable;
+    store.updateProperty(id, service);
+
+    // Log activity
+    store.logActivity({
+      action: 'service_availability_updated',
+      userId,
+      details: {
+        serviceId: id,
+        isAvailable
+      },
+      timestamp: Date.now()
+    });
+
+    res.json({ 
+      success: true, 
+      message: `Service marked as ${isAvailable ? 'Available' : 'Not Available'}`,
+      service
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 
 // ═══════════════════════════════════════════════════════════
 // CRON JOBS & AUTOMATED TASKS
