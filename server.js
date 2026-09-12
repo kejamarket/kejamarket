@@ -771,10 +771,18 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
 
-    // Store token
-    if (store.createPasswordResetToken) {
-      await store.createPasswordResetToken(user.id, otp, expiresAt);
-    } else {
+    // Store token — use in-memory if DB table not ready
+    try {
+      if (store.createPasswordResetToken) {
+        await store.createPasswordResetToken(user.id, otp, expiresAt);
+      } else {
+        pendingOtps.set('reset_' + formatPhone(user.phone), {
+          otp, expiresAt: Date.now() + 30 * 60 * 1000, attempts: 0, userId: user.id
+        });
+      }
+    } catch (tokenErr) {
+      // Table might not exist yet — fall back to in-memory
+      console.warn('Token DB storage failed, using memory fallback:', tokenErr.message);
       pendingOtps.set('reset_' + formatPhone(user.phone), {
         otp, expiresAt: Date.now() + 30 * 60 * 1000, attempts: 0, userId: user.id
       });
@@ -825,16 +833,22 @@ app.post('/api/auth/reset-password', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Account not found.' });
     }
 
-    // Verify token
+    // Verify token — check DB first, fall back to in-memory
     let tokenValid = false;
-    if (store.getPasswordResetToken) {
-      const tokenRecord = await store.getPasswordResetToken(otp);
-      if (tokenRecord && tokenRecord.user_id === user.id) {
-        tokenValid = true;
-        await store.markResetTokenUsed(otp);
+    try {
+      if (store.getPasswordResetToken) {
+        const tokenRecord = await store.getPasswordResetToken(otp);
+        if (tokenRecord && tokenRecord.user_id === user.id) {
+          tokenValid = true;
+          await store.markResetTokenUsed(otp).catch(() => {});
+        }
       }
-    } else {
-      // In-memory fallback
+    } catch (e) {
+      console.warn('Token DB lookup failed, checking memory:', e.message);
+    }
+
+    // Also check in-memory fallback
+    if (!tokenValid) {
       const key = 'reset_' + formatPhone(user.phone);
       const entry = pendingOtps.get(key);
       if (entry && entry.otp === otp && entry.userId === user.id && Date.now() < entry.expiresAt) {
