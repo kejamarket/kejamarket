@@ -100,6 +100,7 @@ class NairobiRentalsApp {
   // Alias called by admin.js after listing boost/delete
   async loadProperties() {
     await this.fetchLiveProperties();
+    await this.loadMainServicesSection(); // Load services section
     this.applyFilters();
   }
 
@@ -1872,6 +1873,88 @@ class NairobiRentalsApp {
           }
         });
 
+        container.innerHTML = html;
+      }
+    } catch (err) {
+      console.log('Could not load services:', err);
+      container.innerHTML = '';
+    }
+  }
+
+  async loadMainServicesSection() {
+    const container = document.getElementById('services-section');
+    if (!container) return;
+
+    try {
+      const res = await fetch('/api/properties');
+      const data = await res.json();
+      
+      if (data.success && data.properties) {
+        const services = data.properties.filter(p => 
+          p.listingType === 'service' && 
+          p.isVerified === true &&
+          p.availability !== 'taken'
+        );
+
+        if (services.length === 0) {
+          container.innerHTML = '';
+          return;
+        }
+
+        const servicesByCategory = {
+          wifi: [],
+          movers: [],
+          laundry: [],
+          garbage: [],
+          gas: [],
+          water: []
+        };
+
+        services.forEach(s => {
+          if (servicesByCategory[s.category]) {
+            servicesByCategory[s.category].push(s);
+          }
+        });
+
+        const categoryInfo = {
+          wifi: { icon: 'wifi', color: '#0284c7', bg: '#e0f2fe', name: 'WiFi / Internet' },
+          movers: { icon: 'truck-moving', color: '#ea580c', bg: '#fed7aa', name: 'Moving Services' },
+          laundry: { icon: 'tshirt', color: '#8b5cf6', bg: '#ede9fe', name: 'Laundry Services' },
+          garbage: { icon: 'trash', color: '#059669', bg: '#d1fae5', name: 'Garbage Collection' },
+          gas: { icon: 'fire', color: '#dc2626', bg: '#fee2e2', name: 'Gas Refills' },
+          water: { icon: 'tint', color: '#06b6d4', bg: '#cffafe', name: 'Water Delivery' }
+        };
+
+        let html = `
+          <div style="background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 16px; padding: 20px; margin-bottom: 24px; border: 1px solid #e2e8f0;">
+            <h3 style="margin: 0 0 16px 0; color: #1e293b; font-size: 1.3rem; font-weight: 800;"><i class="fas fa-concierge-bell" style="color: #4f46e5;"></i> Verified Services</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+        `;
+
+        Object.keys(servicesByCategory).forEach(category => {
+          const categoryServices = servicesByCategory[category];
+          if (categoryServices.length > 0) {
+            const info = categoryInfo[category];
+            html += `
+              <div style="background: white; border: 2px solid ${info.color}44; border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease;" onclick="app.showServiceProviders('${category}')" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.12)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                  <div style="width: 48px; height: 48px; border-radius: 12px; background: ${info.color}; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-${info.icon}" style="color: white; font-size: 1.2rem;"></i>
+                  </div>
+                  <div style="flex: 1;">
+                    <div style="font-weight: 800; font-size: 1rem; color: #1e293b;">${info.name}</div>
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">${categoryServices.length} Provider${categoryServices.length > 1 ? 's' : ''}</div>
+                  </div>
+                </div>
+                <button style="width: 100%; background: ${info.color}; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem;">
+                  <i class="fas fa-arrow-right"></i> View Providers
+                </button>
+              </div>
+            `;
+          }
+        });
+
+        html += `</div></div>`;
         container.innerHTML = html;
       }
     } catch (err) {

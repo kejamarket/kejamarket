@@ -189,13 +189,27 @@ const kejaAuth = (() => {
     const password = passwordEl ? passwordEl.value : '';
     const role = state.signupRole;
 
-    if (!name || !phone || !password) {
-      if (window.app) window.app.showToast('Please fill in all required fields.', 'info');
+    // STRICT VALIDATION: All fields required
+    if (!name || !phone || !email || !password) {
+      if (window.app) window.app.showToast('❌ All fields are required including email.', 'error');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      if (window.app) window.app.showToast('❌ Please enter a valid email address.', 'error');
+      return;
+    }
+
+    // Phone validation
+    if (phone.length < 10) {
+      if (window.app) window.app.showToast('❌ Please enter a valid phone number.', 'error');
       return;
     }
 
     if (password.length < 6) {
-      if (window.app) window.app.showToast('Password must be at least 6 characters long.', 'info');
+      if (window.app) window.app.showToast('❌ Password must be at least 6 characters long.', 'error');
       return;
     }
 
@@ -912,6 +926,90 @@ const kejaAuth = (() => {
 
   document.addEventListener('DOMContentLoaded', init);
 
+  /* ─────────────────────────────────────────
+     PROFILE DROPDOWN (Small popup near button)
+  ───────────────────────────────────────── */
+  function toggleProfileDropdown() {
+    const session = getSession();
+    
+    // Not logged in -> Open auth modal
+    if (!session) {
+      openAuthModal();
+      return;
+    }
+
+    // Logged in -> Show small dropdown
+    const dropdown = document.getElementById('profile-dropdown');
+    if (!dropdown) return;
+
+    // Toggle visibility
+    if (dropdown.style.display === 'block') {
+      dropdown.style.display = 'none';
+      return;
+    }
+
+    // Build dropdown content
+    const content = document.getElementById('profile-dropdown-content');
+    if (content) {
+      content.innerHTML = `
+        <div style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">
+          <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem;">${session.name}</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">${session.email || session.phone}</div>
+          <div style="font-size: 0.75rem; color: #6366f1; margin-top: 4px; text-transform: uppercase; font-weight: 600;">${session.role}</div>
+        </div>
+        <div style="padding: 8px 0;">
+          ${session.role === 'landlord' || session.role === 'agency' ? `
+            <button onclick="kejaLandlordPortal.openLandlordPortal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
+              <i class="fas fa-home" style="width: 16px;"></i> Landlord Portal
+            </button>
+          ` : ''}
+          ${session.role === 'service' ? `
+            <button onclick="kejaServicePortal.openServicePortal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
+              <i class="fas fa-tools" style="width: 16px;"></i> Service Portal
+            </button>
+          ` : ''}
+          ${session.role === 'admin' || session.isAdmin ? `
+            <button onclick="kejaAdmin.openAdminModal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
+              <i class="fas fa-crown" style="width: 16px; color: #fbbf24;"></i> Admin Portal
+            </button>
+          ` : ''}
+          <button onclick="window.app.openModal('modal-saved-properties'); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
+            <i class="fas fa-heart" style="width: 16px;"></i> Saved Properties
+          </button>
+          <button onclick="window.app.openModal('modal-whatsapp-alerts'); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
+            <i class="fab fa-whatsapp" style="width: 16px; color: #25d366;"></i> WhatsApp Alerts
+          </button>
+        </div>
+        <div style="border-top: 1px solid #e5e7eb; padding: 8px 0;">
+          <button onclick="kejaAuth.signOut(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #dc2626; font-weight: 600; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
+            <i class="fas fa-sign-out-alt" style="width: 16px;"></i> Sign Out
+          </button>
+        </div>
+      `;
+    }
+
+    dropdown.style.display = 'block';
+
+    // Close dropdown when clicking outside
+    setTimeout(() => {
+      document.addEventListener('click', closeDropdownOnClickOutside);
+    }, 100);
+  }
+
+  function closeProfileDropdown() {
+    const dropdown = document.getElementById('profile-dropdown');
+    if (dropdown) dropdown.style.display = 'none';
+    document.removeEventListener('click', closeDropdownOnClickOutside);
+  }
+
+  function closeDropdownOnClickOutside(e) {
+    const dropdown = document.getElementById('profile-dropdown');
+    const button = document.getElementById('btn-auth-header');
+    if (dropdown && button && !dropdown.contains(e.target) && !button.contains(e.target)) {
+      closeProfileDropdown();
+    }
+  }
+
   return {
     openAuthModal,
     switchTab,
@@ -932,7 +1030,9 @@ const kejaAuth = (() => {
     getToken,
     getAuthHeaders,
     applyAuthWall,
-    demoSignIn
+    demoSignIn,
+    toggleProfileDropdown,
+    closeProfileDropdown
   };
 
 })();

@@ -244,10 +244,15 @@
         </button>
 
         <!-- Sign In / Sign Up (dynamic based on session) -->
-        <button class="btn-header-action btn-auth-trigger" id="btn-auth-header" onclick="kejaAuth.openAuthModal()">
+        <button class="btn-header-action btn-auth-trigger" id="btn-auth-header" onclick="kejaAuth.toggleProfileDropdown()">
           <i class="fas fa-user-circle"></i>
           <span id="auth-header-label">Sign In</span>
         </button>
+
+        <!-- Profile Dropdown (Small popup near button) -->
+        <div id="profile-dropdown" style="display: none; position: absolute; top: 60px; right: 20px; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); min-width: 220px; z-index: 3000; padding: 12px 0;">
+          <div id="profile-dropdown-content"></div>
+        </div>
 
       </div>
     </div>
@@ -431,6 +436,9 @@
           </div>
         </div>
       </div>
+
+      <!-- VERIFIED SERVICES SECTION (Above property listings) -->
+      <div id="services-section" style="margin: 0 0 24px 0;"></div>
 
       <!-- VIEW 1: Standard Grid View -->
       <div class="view-container" id="view-grid-container">
@@ -1806,8 +1814,8 @@
             </div>
 
             <div class="form-group">
-              <label>Email Address</label>
-              <input type="email" id="signup-email" class="form-control" placeholder="name@email.com">
+              <label>Email Address *</label>
+              <input type="email" id="signup-email" class="form-control" placeholder="name@email.com" required>
             </div>
 
             <!-- Landlord-only fields -->
