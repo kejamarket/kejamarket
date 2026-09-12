@@ -43,6 +43,8 @@ const kejaServicePortal = (() => {
 
     if (tab === 'my-services') {
       loadMyServices();
+    } else if (tab === 'payments') {
+      loadPaymentHistory();
     } else if (tab === 'messages') {
       loadMessages();
     }
@@ -199,6 +201,102 @@ const kejaServicePortal = (() => {
     } catch (err) {
       console.error('Load messages error:', err);
       container.innerHTML = '<div style="text-align:center;padding:20px;color:#ef4444;">Error loading messages.</div>';
+    }
+  }
+
+  async function loadPaymentHistory() {
+    const container = document.getElementById('service-payment-history-list');
+    if (!container) return;
+
+    container.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading payment history...</div>';
+
+    try {
+      const token = kejaAuth.getToken();
+      const res = await fetch('/api/service/payment-history', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+
+      if (data.success && data.payments) {
+        if (data.payments.length === 0) {
+          container.innerHTML = `
+            <div style="text-align:center;padding:40px 20px;">
+              <i class="fas fa-credit-card" style="font-size:3rem;color:#cbd5e1;margin-bottom:12px;"></i>
+              <p style="color:#64748b;margin:0;">No payment history yet.</p>
+              <p style="color:#94a3b8;font-size:0.85rem;margin-top:8px;">Boost your services to appear at the top!</p>
+            </div>
+          `;
+        } else {
+          const totalSpent = data.payments
+            .filter(p => p.status === 'completed')
+            .reduce((sum, p) => sum + (p.amount || 0), 0);
+
+          container.innerHTML = `
+            <!-- Summary Card -->
+            <div style="background:linear-gradient(135deg,#10b981,#059669);color:white;padding:20px;border-radius:12px;margin-bottom:20px;">
+              <h3 style="margin:0 0 8px;font-size:1.2rem;">Payment Summary</h3>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-top:12px;">
+                <div>
+                  <div style="font-size:0.85rem;opacity:0.9;">Total Spent</div>
+                  <div style="font-size:1.6rem;font-weight:800;">KSh ${totalSpent.toLocaleString()}</div>
+                </div>
+                <div>
+                  <div style="font-size:0.85rem;opacity:0.9;">Total Payments</div>
+                  <div style="font-size:1.6rem;font-weight:800;">${data.payments.length}</div>
+                </div>
+                <div>
+                  <div style="font-size:0.85rem;opacity:0.9;">Successful</div>
+                  <div style="font-size:1.6rem;font-weight:800;">${data.payments.filter(p => p.status === 'completed').length}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment List -->
+            <h4 style="margin:0 0 12px;color:#1e293b;font-size:0.95rem;">Transaction History</h4>
+            ${data.payments.map(payment => {
+              const statusColors = {
+                completed: { bg: '#dcfce7', color: '#166534', icon: 'check-circle' },
+                pending: { bg: '#fef3c7', color: '#92400e', icon: 'clock' },
+                failed: { bg: '#fee2e2', color: '#991b1b', icon: 'times-circle' }
+              };
+              const status = statusColors[payment.status] || statusColors.pending;
+              
+              return `
+                <div style="background:white;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
+                  <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                    <div>
+                      <div style="font-weight:700;color:#1e293b;margin-bottom:4px;">Boost Payment</div>
+                      <div style="font-size:0.8rem;color:#64748b;">Service ID: ${payment.serviceId}</div>
+                      <div style="font-size:0.8rem;color:#64748b;">${new Date(payment.createdAt).toLocaleString()}</div>
+                    </div>
+                    <div style="text-align:right;">
+                      <div style="font-size:1.3rem;font-weight:800;color:#10b981;">KSh ${payment.amount.toLocaleString()}</div>
+                      <span style="display:inline-block;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;background:${status.bg};color:${status.color};margin-top:4px;">
+                        <i class="fas fa-${status.icon}"></i> ${payment.status.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                  ${payment.status === 'failed' && payment.failureReason ? `
+                    <div style="background:#fef2f2;padding:8px 12px;border-radius:8px;margin-top:8px;font-size:0.85rem;color:#991b1b;">
+                      <i class="fas fa-exclamation-triangle"></i> ${payment.failureReason}
+                    </div>
+                  ` : ''}
+                  ${payment.status === 'completed' && payment.completedAt ? `
+                    <div style="background:#f0fdf4;padding:8px 12px;border-radius:8px;margin-top:8px;font-size:0.85rem;color:#166534;">
+                      <i class="fas fa-check"></i> Completed: ${new Date(payment.completedAt).toLocaleString()}
+                    </div>
+                  ` : ''}
+                </div>
+              `;
+            }).join('')}
+          `;
+        }
+      } else {
+        container.innerHTML = '<div style="text-align:center;padding:20px;color:#64748b;">Failed to load payment history.</div>';
+      }
+    } catch (err) {
+      console.error('Load payment history error:', err);
+      container.innerHTML = '<div style="text-align:center;padding:20px;color:#ef4444;">Error loading payment history.</div>';
     }
   }
 
@@ -409,6 +507,7 @@ const kejaServicePortal = (() => {
     editService,
     loadMyServices,
     loadMessages,
+    loadPaymentHistory,
     openBoostPayment,
     initiateBoostPayment,
     unboostService

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v15'; // Service provider boost payments with M-Pesa
+const CACHE_NAME = 'kejamarket-v16'; // Auto boost expiry, payment history, analytics, renewal reminders
 const STATIC_ASSETS = [
   '/',
   '/index.html',

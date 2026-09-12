@@ -2346,6 +2346,7 @@ app.get('/api/service/payment-status/:checkoutRequestId', requireAuth, async (re
         service.boostType = 'paid';
         service.boostedAt = new Date().toISOString();
         service.boostExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
+        service.boostAnalytics = { views: 0, clicks: 0, inquiries: 0 }; // Initialize analytics
         store.updateProperty(payment.serviceId, service);
 
         // Update payment status
@@ -2393,6 +2394,177 @@ app.get('/api/service/payment-status/:checkoutRequestId', requireAuth, async (re
   }
 });
 
+// GET /api/service/payment-history (Get payment history for service provider)
+app.get('/api/service/payment-history', requireAuth, (req, res) => {
+  try {
+    const userId = req.user.id;
+    const allPayments = store.getAllPayments();
+    const userPayments = allPayments.filter(p => p.userId === userId);
+
+    // Sort by date (newest first)
+    userPayments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json({
+      success: true,
+      payments: userPayments,
+      count: userPayments.length
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/properties/:id/track-view (Track property/service view for analytics)
+app.post('/api/properties/:id/track-view', (req, res) => {
+  try {
+    const { id } = req.params;
+    trackBoostView(id);
+    res.json({ success: true });
+  } catch (err) {
+    res.json({ success: false });
+  }
+});
+
+// POST /api/properties/:id/track-click (Track property/service click for analytics)
+app.post('/api/properties/:id/track-click', (req, res) => {
+  try {
+    const { id } = req.params;
+    trackBoostClick(id);
+    res.json({ success: true });
+  } catch (err) {
+    res.json({ success: false });
+  }
+});
+
+
+// ═══════════════════════════════════════════════════════════
+// CRON JOBS & AUTOMATED TASKS
+// ═══════════════════════════════════════════════════════════
+
+// Check for expired boosts every hour
+setInterval(() => {
+  try {
+    console.log('[CRON] Checking for expired boosts...');
+    const properties = store.getAllProperties();
+    let expiredCount = 0;
+
+    properties.forEach(property => {
+      if (property.boosted && property.boostExpiresAt) {
+        const expiryDate = new Date(property.boostExpiresAt);
+        const now = new Date();
+
+        // Check if boost has expired
+        if (now > expiryDate) {
+          property.isTopAd = false;
+          property.boosted = false;
+          property.boostType = null;
+          property.boostedAt = null;
+          property.boostExpiresAt = null;
+          store.updateProperty(property.id, property);
+          expiredCount++;
+
+          // Log activity
+          store.logActivity({
+            action: 'boost_expired',
+            userId: 'system',
+            details: {
+              propertyId: property.id,
+              propertyTitle: property.title || property.businessName,
+              expiredAt: now.toISOString()
+            },
+            timestamp: Date.now()
+          });
+
+          console.log(`[CRON] Expired boost removed: ${property.id}`);
+        }
+      }
+    });
+
+    if (expiredCount > 0) {
+      console.log(`[CRON] Removed ${expiredCount} expired boost(s)`);
+    }
+  } catch (err) {
+    console.error('[CRON] Boost expiry check failed:', err);
+  }
+}, 60 * 60 * 1000); // Run every hour
+
+// Send renewal reminders 3 days before expiry
+setInterval(async () => {
+  try {
+    console.log('[CRON] Checking for boost renewal reminders...');
+    const properties = store.getAllProperties();
+    const users = store.getAllUsers();
+    const now = new Date();
+    const threeDaysFromNow = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
+
+    for (const property of properties) {
+      if (property.boosted && property.boostExpiresAt) {
+        const expiryDate = new Date(property.boostExpiresAt);
+
+        // Check if expiry is within 3 days
+        if (expiryDate > now && expiryDate <= threeDaysFromNow) {
+          // Check if we already sent reminder
+          const reminderKey = `reminder_sent_${property.id}`;
+          if (!property[reminderKey]) {
+            // Find owner
+            const owner = users.find(u => u.id === property.postedBy);
+            if (owner && owner.phone) {
+              const daysLeft = Math.ceil((expiryDate - now) / (24 * 60 * 60 * 1000));
+              
+              try {
+                await sendSMS(
+                  owner.phone,
+                  `KejaMarket: Your boost for "${property.title || property.businessName}" expires in ${daysLeft} days. Renew now to maintain top visibility! Reply YES to renew.`
+                );
+
+                // Mark reminder as sent
+                property[reminderKey] = true;
+                store.updateProperty(property.id, property);
+
+                console.log(`[CRON] Renewal reminder sent to ${owner.phone}`);
+              } catch (err) {
+                console.error(`[CRON] Failed to send renewal reminder:`, err);
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('[CRON] Renewal reminder check failed:', err);
+  }
+}, 12 * 60 * 60 * 1000); // Run every 12 hours
+
+// Track boost analytics (views/clicks) - Increment on property view
+function trackBoostView(propertyId) {
+  try {
+    const property = store.getPropertyById(propertyId);
+    if (property && property.boosted) {
+      if (!property.boostAnalytics) {
+        property.boostAnalytics = { views: 0, clicks: 0, inquiries: 0 };
+      }
+      property.boostAnalytics.views++;
+      store.updateProperty(propertyId, property);
+    }
+  } catch (err) {
+    console.error('Analytics tracking error:', err);
+  }
+}
+
+function trackBoostClick(propertyId) {
+  try {
+    const property = store.getPropertyById(propertyId);
+    if (property && property.boosted) {
+      if (!property.boostAnalytics) {
+        property.boostAnalytics = { views: 0, clicks: 0, inquiries: 0 };
+      }
+      property.boostAnalytics.clicks++;
+      store.updateProperty(propertyId, property);
+    }
+  } catch (err) {
+    console.error('Analytics tracking error:', err);
+  }
+}
 
 // ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
