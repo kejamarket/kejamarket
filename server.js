@@ -1045,9 +1045,9 @@ app.post('/api/mpesa/callback', (req, res) => {
 // ─── PROPERTIES & LISTINGS ROUTES ───────────────────────────────────────────
 
 // GET /api/properties
-app.get('/api/properties', (req, res) => {
+app.get('/api/properties', async (req, res) => {
   try {
-    const properties = store.getAllProperties();
+    const properties = await store.getAllProperties();
     res.json({
       success: true,
       count: properties.length,
@@ -1059,8 +1059,8 @@ app.get('/api/properties', (req, res) => {
 });
 
 // GET /api/properties/:id
-app.get('/api/properties/:id', (req, res) => {
-  const property = store.getPropertyById(req.params.id);
+app.get('/api/properties/:id', async (req, res) => {
+  const property = await store.getPropertyById(req.params.id);
   if (!property) {
     return res.status(404).json({ success: false, message: 'Property not found.' });
   }
@@ -1311,8 +1311,8 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
 // ─── REVIEWS ROUTES ─────────────────────────────────────────────────────────
 
 // GET /api/properties/:id/reviews
-app.get('/api/properties/:id/reviews', (req, res) => {
-  const reviews = store.getReviewsForProperty(req.params.id);
+app.get('/api/properties/:id/reviews', async (req, res) => {
+  const reviews = await store.getReviewsForProperty(req.params.id);
   res.json({ success: true, reviews });
 });
 
@@ -1633,22 +1633,26 @@ app.post('/api/admin/migrate', async (req, res) => {
   }
 });
 
-app.get('/api/stats', (req, res) => {
-  const properties = store.getAllProperties();
-  const transactions = store.getAllTransactions();
-  res.json({
-    totalProperties: properties.length,
-    activeListings: properties.filter(p => !p.isArchived).length,
-    boostedListings: properties.filter(p => p.isTopAd || p.isFeatured).length,
-    totalTransactions: transactions.length,
-    confirmedTransactions: transactions.filter(t => t.status === 'SUCCESS').length
-  });
+app.get('/api/stats', async (req, res) => {
+  try {
+    const properties = await store.getAllProperties();
+    const transactions = await store.getAllTransactions();
+    res.json({
+      totalProperties: properties.length,
+      activeListings: properties.filter(p => !p.isArchived).length,
+      boostedListings: properties.filter(p => p.isTopAd || p.isFeatured).length,
+      totalTransactions: transactions.length,
+      confirmedTransactions: transactions.filter(t => t.status === 'SUCCESS').length
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ─── OWNER / ADMIN DATABASE PORTAL ROUTES ──────────────────────────────────
-app.get('/api/admin/overview', (req, res) => {
+app.get('/api/admin/overview', async (req, res) => {
   try {
-    const stats = store.getOverviewStats();
+    const stats = await store.getOverviewStats();
     res.json({ success: true, ...stats });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
