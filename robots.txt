@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /api/admin/
+Disallow: /db/
+
+Sitemap: https://kejamarket.co.ke/sitemap.xml
+
+# KejaMarket - Kenya's #1 Rental Property Marketplace
+# kejamarket.co.ke

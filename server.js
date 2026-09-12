@@ -25,6 +25,38 @@ const fetch = require('node-fetch');
 const emailService = require('./db/email-service');
 const uploadService = require('./db/upload-service');
 
+// ─── RATE LIMITING ────────────────────────────────────────────────────────────
+const rateLimit = require('express-rate-limit');
+
+// Auth endpoints: max 10 attempts per 15 minutes per IP
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { success: false, message: 'Too many attempts. Please try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => {
+    // Skip rate limiting for admin in development
+    return process.env.NODE_ENV !== 'production';
+  }
+});
+
+// OTP endpoints: stricter — max 5 per 10 minutes
+const otpLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 5,
+  message: { success: false, message: 'Too many OTP requests. Please wait 10 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+// Upload endpoint: max 30 per minute
+const uploadLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  message: { success: false, message: 'Too many upload requests. Please slow down.' }
+});
+
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '20mb' }));
@@ -32,6 +64,12 @@ app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
 // Serve static frontend files (HTML, CSS, JS, icons)
 app.use(express.static(__dirname));
+
+// ─── LEGAL & STATIC PAGE ROUTES ──────────────────────────────────────────────
+app.get('/privacy-policy', (req, res) => res.sendFile(path.join(__dirname, 'privacy-policy.html')));
+app.get('/terms', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
+app.get('/terms-and-conditions', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
+app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.html')));
 
 // ═════════════════════════════════════════════════════════════════════════════════════════
 // INITIALIZE DATABASE (PostgreSQL with JSON fallback)
@@ -279,7 +317,7 @@ setInterval(() => {
 // ─── AUTHENTICATION ROUTES ───────────────────────────────────────────────────
 
 // POST /api/auth/send-otp (Step 1 of Phone-Verified Registration: Tenant, Landlord, Agency)
-app.post('/api/auth/send-otp', async (req, res) => {
+app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
   try {
     const { 
       name, phone, email, password, role, 
@@ -434,7 +472,7 @@ app.post('/api/auth/verify-otp', async (req, res) => {
 });
 
 // POST /api/auth/login-send-otp (Send SMS OTP for Phone-Verified Login)
-app.post('/api/auth/login-send-otp', async (req, res) => {
+app.post('/api/auth/login-send-otp', otpLimiter, async (req, res) => {
   try {
     const { identifier } = req.body;
 
@@ -660,7 +698,7 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 // POST /api/auth/login
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', authLimiter, async (req, res) => {
   try {
     const { identifier, password, role } = req.body;
 
@@ -720,7 +758,7 @@ app.post('/api/auth/verify-landlord', optionalAuth, (req, res) => {
 // ─── PASSWORD RESET ROUTES ────────────────────────────────────────────────────
 
 // POST /api/auth/forgot-password — send reset OTP via SMS + email
-app.post('/api/auth/forgot-password', async (req, res) => {
+app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
   try {
     const { identifier } = req.body;
     if (!identifier) {
@@ -1844,7 +1882,7 @@ app.post('/api/sms/send', optionalAuth, async (req, res) => {
 // ─── IMAGE UPLOAD ENDPOINT (Cloudinary CDN) ──────────────────────────────────
 
 // POST /api/upload/images — upload 1-16 images to Cloudinary, return CDN URLs
-app.post('/api/upload/images', optionalAuth, async (req, res) => {
+app.post('/api/upload/images', uploadLimiter, optionalAuth, async (req, res) => {
   try {
     const { images, folder } = req.body;
     if (!images || !Array.isArray(images) || images.length === 0) {
@@ -1927,8 +1965,11 @@ app.get('/api/stats', async (req, res) => {
 });
 
 // ─── OWNER / ADMIN DATABASE PORTAL ROUTES ──────────────────────────────────
-app.get('/api/admin/overview', async (req, res) => {
+app.get('/api/admin/overview', requireAuth, async (req, res) => {
   try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
     const stats = await store.getOverviewStats();
     res.json({ success: true, ...stats });
   } catch (err) {
@@ -2876,6 +2917,20 @@ app.put('/api/service/availability/:id', requireAuth, (req, res) => {
   }
 });
 
+
+// ─── 404 HANDLER ─────────────────────────────────────────────────────────────
+app.use((req, res) => {
+  // API routes get JSON 404
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ success: false, message: `Route ${req.method} ${req.path} not found.` });
+  }
+  // All other routes serve the custom 404 page
+  const notFoundPath = require('path').join(__dirname, '404.html');
+  if (require('fs').existsSync(notFoundPath)) {
+    return res.status(404).sendFile(notFoundPath);
+  }
+  res.status(404).send('<h1>404 — Page Not Found</h1><p><a href="/">← Back to KejaMarket</a></p>');
+});
 
 // ═══════════════════════════════════════════════════════════
 // CRON JOBS & AUTOMATED TASKS
