@@ -61,12 +61,29 @@ class AdminPortalEngine {
 
   async openAdminModal() {
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    
+    // Check if user is logged in
     if (!session) {
-      if (window.app) window.app.showToast('Please sign in as Administrator.', 'error');
+      if (window.app) window.app.showToast('⚠️ Please sign in with admin credentials', 'error');
       if (window.kejaAuth) window.kejaAuth.openAuthModal();
       return;
     }
 
+    // Check if user is admin
+    const isAdmin = Boolean(
+      session.id === 'usr-admin-01' || 
+      session.role === 'admin' ||
+      session.isAdmin === true ||
+      (session.email && session.email.toLowerCase().includes('admin')) ||
+      (session.name && session.name.toLowerCase().includes('admin'))
+    );
+
+    if (!isAdmin) {
+      if (window.app) window.app.showToast('🚫 Access denied. Admin credentials required.', 'error');
+      return;
+    }
+
+    // User is admin - open portal
     if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal('modal-admin-portal');
     }

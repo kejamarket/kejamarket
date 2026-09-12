@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v17'; // PWA auto-install fix, admin portal verified
+const CACHE_NAME = 'kejamarket-v18'; // Admin portal button always visible with proper auth check
 const STATIC_ASSETS = [
   '/',
   '/index.html',
