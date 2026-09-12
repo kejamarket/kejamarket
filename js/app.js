@@ -188,6 +188,7 @@ class NairobiRentalsApp {
       if (cat.includes('Bedsitter') || cat.includes('Single')) return 'fa-door-open';
       if (cat.includes('Maisonette') || cat.includes('Townhouse')) return 'fa-building';
       if (cat.includes('Penthouse') || cat.includes('Serviced')) return 'fa-crown';
+      if (cat.includes('Marketplace')) return 'fa-shopping-bag';
       return 'fa-home';
     };
 
@@ -273,6 +274,93 @@ class NairobiRentalsApp {
       this.activeSuburb = e.target.value;
       this.applyFilters();
     });
+  }
+
+  switchFilterTab(tab) {
+    const propertiesFilters = document.getElementById('sidebar-properties-filters');
+    const servicesFilters = document.getElementById('sidebar-services-filters');
+    const propertiesBtn = document.getElementById('filter-tab-properties');
+    const servicesBtn = document.getElementById('filter-tab-services');
+
+    if (tab === 'properties') {
+      propertiesFilters.style.display = 'block';
+      servicesFilters.style.display = 'none';
+      propertiesBtn.style.background = '#00b53f';
+      propertiesBtn.style.color = 'white';
+      servicesBtn.style.background = 'transparent';
+      servicesBtn.style.color = '#475569';
+      servicesBtn.style.border = '1px solid #e2e8f0';
+    } else if (tab === 'services') {
+      propertiesFilters.style.display = 'none';
+      servicesFilters.style.display = 'block';
+      propertiesBtn.style.background = 'transparent';
+      propertiesBtn.style.color = '#475569';
+      propertiesBtn.style.border = '1px solid #e2e8f0';
+      servicesBtn.style.background = '#00b53f';
+      servicesBtn.style.color = 'white';
+      this.populateServicesFilters();
+    }
+  }
+
+  populateServicesFilters() {
+    const serviceList = document.getElementById('sidebar-service-list');
+    if (!serviceList) return;
+
+    const getServiceIcon = (service) => {
+      if (service.includes('Plumb')) return 'fa-wrench';
+      if (service.includes('Electric')) return 'fa-bolt';
+      if (service.includes('Clean')) return 'fa-broom';
+      if (service.includes('Paint') || service.includes('Renovation')) return 'fa-paint-brush';
+      if (service.includes('Pest')) return 'fa-bug';
+      if (service.includes('Security')) return 'fa-shield-alt';
+      if (service.includes('Handyman')) return 'fa-hammer';
+      if (service.includes('Carpentry') || service.includes('Furniture')) return 'fa-hammer-paw';
+      if (service.includes('Appliance')) return 'fa-microchip';
+      if (service.includes('Water')) return 'fa-water';
+      if (service.includes('Garden')) return 'fa-leaf';
+      if (service.includes('Pet') || service.includes('Sitting')) return 'fa-dog';
+      return 'fa-tools';
+    };
+
+    const allItem = `<button class="sidebar-cat-item active" data-service="All" onclick="app.setServiceCategory('All', this)"><i class="fas fa-th-large"></i><span>All Services</span></button>`;
+    const items = SERVICE_CATEGORIES.map(service =>
+      `<button class="sidebar-cat-item" data-service="${service}" onclick="app.setServiceCategory('${service}', this)"><i class="fas ${getServiceIcon(service)}"></i><span>${service}</span></button>`
+    ).join('');
+    serviceList.innerHTML = allItem + items;
+
+    // Populate service corridor and suburb filters
+    const serviceCorridorSelect = document.getElementById('filter-service-corridor');
+    if (serviceCorridorSelect) {
+      serviceCorridorSelect.innerHTML = `<option value="all">All Nairobi Corridors & Satellite Towns</option>` +
+        NAIROBI_REGIONS.map(r => `<option value="${r.corridorId}">${r.corridorName} (${r.county})</option>`).join('');
+      serviceCorridorSelect.addEventListener('change', (e) => {
+        this.activeServiceCorridor = e.target.value;
+        this.updateServiceSuburbOptions();
+      });
+    }
+
+    this.updateServiceSuburbOptions();
+  }
+
+  updateServiceSuburbOptions() {
+    const serviceSuburbSelect = document.getElementById('filter-service-suburb');
+    if (!serviceSuburbSelect) return;
+
+    let availableSuburbs = ALL_SUBURBS;
+    if (this.activeServiceCorridor && this.activeServiceCorridor !== 'all') {
+      availableSuburbs = ALL_SUBURBS.filter(s => s.corridorId === this.activeServiceCorridor);
+    }
+
+    serviceSuburbSelect.innerHTML = `<option value="all">All Suburbs & Estates (${availableSuburbs.length})</option>` +
+      availableSuburbs.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+  }
+
+  setServiceCategory(service, btn) {
+    const allButtons = document.querySelectorAll('#sidebar-service-list .sidebar-cat-item');
+    allButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    this.activeServiceCategory = service;
+    this.showToast(`📍 Filtering services: ${service}`, 'info');
   }
 
    setupEventListeners() {
@@ -1662,65 +1750,15 @@ class NairobiRentalsApp {
     }
 
     if (isAdminChat) {
-      setTimeout(() => {
-        const userName = session && session.name ? session.name.split(' ')[0] : 'there';
-        const replyMsg = {
-          id: 'reply-admin-' + Date.now(),
-          isAdminMessage: true,
-          propertyId: null,
-          propertyTitle: 'Admin Support',
-          estateSuburb: 'Nairobi',
-          recipientId: session ? session.id : 'me',
-          recipientName: session ? session.name : 'User',
-          senderId: 'usr-admin-01',
-          senderName: 'KejaMarket Admin',
-          isSenderMe: false,
-          text: `Hello ${userName}! We have received your inquiry: "${text.length > 50 ? text.substring(0, 50) + '...' : text}". Our administrative team will attend to it and respond here or call/SMS you shortly. Asante for contacting KejaMarket!`,
-          createdAt: new Date().toISOString()
-        };
-        this.chatMessages.push(replyMsg);
-        this.saveChatMessages();
-        this.renderChatMessages();
-        this.showToast('🛡️ KejaMarket Admin received your message', 'success');
-      }, 1200);
+      // No auto-reply — admin responds manually through the admin portal
+      this.showToast('🛡️ Message sent to KejaMarket Admin. We will respond via SMS shortly.', 'success');
     } else if (prop) {
-      this.simulateLandlordReply(text, prop);
+      // No auto-reply — landlord replies manually through their portal
+      this.showToast(`📨 Message sent to ${prop.landlord?.name || 'landlord'}. They will reply shortly.`, 'info');
     }
   }
 
-  simulateLandlordReply(tenantText, prop) {
-    setTimeout(() => {
-      let replyText = `Hello! Thank you for inquiring about ${prop.title}. The house is available for viewing today.`;
-      
-      const lower = tenantText.toLowerCase();
-      if (lower.includes('water')) {
-        replyText = `Yes, water is supplied via ${prop.waterSupplyType} with overhead storage tanks. Always running!`;
-      } else if (lower.includes('view') || lower.includes('book') || lower.includes('schedule')) {
-        replyText = `You are welcome for a viewing today! You can reach me at ${prop.landlord.phone} once you arrive at ${prop.estateSuburb}.`;
-      } else if (lower.includes('deposit') || lower.includes('token') || lower.includes('rent')) {
-        replyText = `Rent is KSh ${prop.rentKes.toLocaleString()}/month, deposit is KSh ${prop.depositKes.toLocaleString()}, and electricity is ${prop.electricityMeterType}.`;
-      }
-
-      const replyMsg = {
-        id: 'reply-' + Date.now(),
-        propertyId: prop.id,
-        propertyTitle: prop.title,
-        estateSuburb: prop.estateSuburb,
-        recipientId: 'me',
-        recipientName: 'Tenant',
-        senderId: prop.landlord.id,
-        senderName: prop.landlord.name,
-        isSenderMe: false,
-        text: replyText,
-        createdAt: new Date().toISOString()
-      };
-
-      this.chatMessages.push(replyMsg);
-      this.saveChatMessages();
-      this.renderChatMessages();
-      this.showToast(`💬 New reply from ${prop.landlord.name}`, 'info');
-    }, 1500);
-  }
+  // simulateLandlordReply removed — landlords reply manually
 
   loadChatMessages() {
     // Load from localStorage as cache first

@@ -277,5 +277,22 @@ const MASTER_CATEGORIES = [
   'Studio BnB (Short-Stay)',
   '1 & 2 Bedroom BnB (Furnished)',
   'Luxury Villa / Vacation Stay',
-  'Serviced / Furnished'
+  'Serviced / Furnished',
+  'Marketplace (Used Items)'
+];
+
+// Service categories for service providers
+const SERVICE_CATEGORIES = [
+  'Plumbing Services',
+  'Electrical Services',
+  'Cleaning Services',
+  'Painting & Renovation',
+  'Pest Control',
+  'Security Services',
+  'Handyman Services',
+  'Carpentry & Furniture',
+  'Appliance Repair',
+  'Water Tank Cleaning',
+  'Garden Maintenance',
+  'House Sitting / Pet Care'
 ];
