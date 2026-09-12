@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v18'; // Admin portal button always visible with proper auth check
+const CACHE_NAME = 'kejamarket-v19'; // Admin portal auto-opens, button hidden, full implementation
 const STATIC_ASSETS = [
   '/',
   '/index.html',
