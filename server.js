@@ -747,15 +747,17 @@ app.post('/api/auth/forgot-password', async (req, res) => {
       });
     }
 
-    // Send SMS
-    const cleanPhone = formatPhone(user.phone);
-    await sendRealSMS(cleanPhone,
+    // Send SMS (with timeout to prevent hanging)
+    const smsPromise = sendRealSMS(cleanPhone,
       `KejaMarket: Your password reset code is ${otp}. Valid for 30 minutes. Do NOT share this code.`
     );
+    await Promise.race([smsPromise, new Promise(r => setTimeout(r, 8000))]);
 
-    // Send email if available
+    // Send email if available (non-blocking)
     if (user.email) {
-      await emailService.sendPasswordResetEmail(user.email, user.name, otp);
+      emailService.sendPasswordResetEmail(user.email, user.name, otp).catch(e => {
+        console.warn('Password reset email failed:', e.message);
+      });
     }
 
     console.log(`🔑 [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
