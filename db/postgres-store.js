@@ -15,12 +15,15 @@ class PostgreSQLStore {
 
   async init() {
     // Initialize PostgreSQL connection
+    const isRender = !!(process.env.RENDER || process.env.RENDER_EXTERNAL_URL || process.env.DATABASE_URL?.includes('render.com'));
     const config = {
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-      max: 20, // Maximum connections in pool
+      ssl: (process.env.NODE_ENV === 'production' || isRender)
+        ? { rejectUnauthorized: false }
+        : false,
+      max: 20,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 10000,
+      connectionTimeoutMillis: 15000,
     };
 
     try {
@@ -40,11 +43,10 @@ class PostgreSQLStore {
       return true;
     } catch (err) {
       console.error('❌ PostgreSQL connection failed:', err.message);
-      
-      // Fallback to JSON store for development
+      console.error('❌ Connection string starts with:', process.env.DATABASE_URL?.substring(0, 40));
+      // Fallback to JSON store
       this.fallbackStore = require('./store.js');
       console.log('🔄 Using JSON file fallback');
-      
       return false;
     }
   }
@@ -712,9 +714,6 @@ class PostgreSQLStore {
       await this.pool.end();
     }
   }
-}
-
-module.exports = new PostgreSQLStore();
 
   // ═══════════════════════════════════════════════════════════════════
   // PASSWORD RESET TOKENS
@@ -1015,3 +1014,7 @@ module.exports = new PostgreSQLStore();
       signupTrend: growth.rows
     };
   }
+
+}
+
+module.exports = new PostgreSQLStore();
