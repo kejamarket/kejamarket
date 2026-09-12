@@ -655,3 +655,34 @@ class Store {
 
 module.exports = new Store();
 
+
+  // ═══════════════════════════════════════════════════════════
+  // PAYMENT MANAGEMENT
+  // ═══════════════════════════════════════════════════════════
+
+  savePayment(payment) {
+    if (!this.data.payments) this.data.payments = [];
+    this.data.payments.push(payment);
+    this.save();
+    return payment;
+  }
+
+  getPaymentByCheckout(checkoutRequestId) {
+    if (!this.data.payments) return null;
+    return this.data.payments.find(p => p.checkoutRequestId === checkoutRequestId);
+  }
+
+  updatePayment(paymentId, updatedData) {
+    if (!this.data.payments) this.data.payments = [];
+    const idx = this.data.payments.findIndex(p => p.id === paymentId);
+    if (idx !== -1) {
+      this.data.payments[idx] = { ...this.data.payments[idx], ...updatedData };
+      this.save();
+      return this.data.payments[idx];
+    }
+    return null;
+  }
+
+  getAllPayments() {
+    return this.data.payments || [];
+  }

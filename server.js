@@ -2243,6 +2243,157 @@ app.post('/api/service/post', requireAuth, async (req, res) => {
   }
 });
 
+// POST /api/service/boost-payment (Initiate M-Pesa payment for boost)
+app.post('/api/service/boost-payment', requireAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    const { serviceId, phone, amount } = req.body;
+
+    if (!serviceId || !phone || !amount) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Service ID, phone, and amount are required.' 
+      });
+    }
+
+    // Verify service exists and belongs to user
+    const service = store.getPropertyById(serviceId);
+    if (!service || service.postedBy !== user.id) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Service not found or unauthorized.' 
+      });
+    }
+
+    // Normalize phone number
+    let phoneNumber = phone.replace(/\s/g, '');
+    if (phoneNumber.startsWith('0')) {
+      phoneNumber = '254' + phoneNumber.substring(1);
+    } else if (!phoneNumber.startsWith('254')) {
+      phoneNumber = '254' + phoneNumber;
+    }
+
+    // Initiate M-Pesa STK Push
+    const mpesaResponse = await initiateMpesaPayment({
+      amount,
+      phoneNumber,
+      accountReference: serviceId,
+      transactionDesc: 'Service Boost Payment'
+    });
+
+    if (mpesaResponse.success) {
+      // Save payment record
+      const paymentRecord = {
+        id: `pay-${Date.now()}`,
+        userId: user.id,
+        serviceId,
+        amount,
+        phone: phoneNumber,
+        checkoutRequestId: mpesaResponse.CheckoutRequestID,
+        merchantRequestId: mpesaResponse.MerchantRequestID,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+      
+      store.savePayment(paymentRecord);
+
+      res.json({ 
+        success: true, 
+        message: 'Payment initiated. Check your phone to complete.',
+        checkoutRequestId: mpesaResponse.CheckoutRequestID
+      });
+    } else {
+      res.status(500).json({ 
+        success: false, 
+        message: mpesaResponse.message || 'Payment initiation failed.'
+      });
+    }
+  } catch (err) {
+    console.error('Boost payment error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/service/payment-status/:checkoutRequestId (Check payment status)
+app.get('/api/service/payment-status/:checkoutRequestId', requireAuth, async (req, res) => {
+  try {
+    const { checkoutRequestId } = req.params;
+    
+    // Get payment record
+    const payment = store.getPaymentByCheckout(checkoutRequestId);
+    
+    if (!payment) {
+      return res.json({ status: 'unknown' });
+    }
+
+    // If already completed, return immediately
+    if (payment.status === 'completed') {
+      return res.json({ status: 'completed' });
+    }
+
+    // Query M-Pesa for status
+    const mpesaStatus = await queryMpesaPaymentStatus(
+      checkoutRequestId, 
+      payment.merchantRequestId
+    );
+
+    if (mpesaStatus.success && mpesaStatus.ResultCode === '0') {
+      // Payment successful - boost the service
+      const service = store.getPropertyById(payment.serviceId);
+      if (service) {
+        service.isTopAd = true;
+        service.boosted = true;
+        service.boostType = 'paid';
+        service.boostedAt = new Date().toISOString();
+        service.boostExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
+        store.updateProperty(payment.serviceId, service);
+
+        // Update payment status
+        payment.status = 'completed';
+        payment.completedAt = new Date().toISOString();
+        store.updatePayment(payment.id, payment);
+
+        // Send confirmation SMS
+        try {
+          await sendSMS(payment.phone, 
+            `KejaMarket: Payment successful! Your service is now BOOSTED for 30 days. Thank you!`
+          );
+        } catch (err) {
+          console.error('SMS confirmation failed:', err);
+        }
+
+        // Log activity
+        store.logActivity({
+          action: 'service_boost_paid',
+          userId: payment.userId,
+          details: {
+            serviceId: payment.serviceId,
+            amount: payment.amount,
+            boostDuration: '30 days'
+          },
+          timestamp: Date.now()
+        });
+      }
+
+      res.json({ status: 'completed' });
+    } else if (mpesaStatus.ResultCode) {
+      // Payment failed
+      payment.status = 'failed';
+      payment.failureReason = mpesaStatus.ResultDesc;
+      store.updatePayment(payment.id, payment);
+      
+      res.json({ status: 'failed', reason: mpesaStatus.ResultDesc });
+    } else {
+      // Still pending
+      res.json({ status: 'pending' });
+    }
+  } catch (err) {
+    console.error('Payment status check error:', err);
+    res.json({ status: 'unknown' });
+  }
+});
+
+
 // ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

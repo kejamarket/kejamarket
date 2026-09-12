@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v14'; // Production ready - PWA always visible, no demo data
+const CACHE_NAME = 'kejamarket-v15'; // Service provider boost payments with M-Pesa
 const STATIC_ASSETS = [
   '/',
   '/index.html',
