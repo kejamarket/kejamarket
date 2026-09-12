@@ -17,7 +17,6 @@ const jwt = require('jsonwebtoken');
 const AfricasTalking = require('africastalking');
 const fs = require('fs');
 const path = require('path');
-const store = require('./db/store');
 
 // Use require for node-fetch v2 compatibility
 const fetch = require('node-fetch');
@@ -29,6 +28,35 @@ app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
 // Serve static frontend files (HTML, CSS, JS, icons)
 app.use(express.static(__dirname));
+
+// ═════════════════════════════════════════════════════════════════════════════════════════
+// INITIALIZE DATABASE (PostgreSQL with JSON fallback)
+// ═════════════════════════════════════════════════════════════════════════════════════════
+
+let store;
+async function initializeDatabase() {
+  try {
+    if (process.env.DATABASE_URL) {
+      console.log('🐘 Attempting PostgreSQL connection...');
+      store = require('./db/postgres-store.js');
+      const success = await store.init();
+      
+      if (success) {
+        console.log('✅ PostgreSQL database initialized successfully');
+      } else {
+        console.log('🔄 Falling back to JSON file database');
+        store = require('./db/store');
+      }
+    } else {
+      console.log('📁 Using JSON file database (set DATABASE_URL for PostgreSQL)');
+      store = require('./db/store');
+    }
+  } catch (error) {
+    console.error('❌ Database initialization error:', error.message);
+    console.log('🔄 Using JSON file database as fallback');
+    store = require('./db/store');
+  }
+}
 
 // ─── CONFIGURATION ───────────────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET || 'kejamarket_super_secret_jwt_key_2026';
@@ -1575,8 +1603,28 @@ app.get('/api/health', (req, res) => {
     status: 'online',
     timestamp: new Date().toISOString(),
     mpesaEnvironment: MPESA_ENV,
-    hasDarajaCredentials: hasDarajaCredentials()
+    hasDarajaCredentials: hasDarajaCredentials(),
+    database: (store && store.isConnected) ? 'postgresql' : 'json-file',
+    dbReady: store ? true : false
   });
+});
+
+// ─── DATABASE MIGRATION TRIGGER (Admin only) ─────────────────────────────────
+app.post('/api/admin/migrate', async (req, res) => {
+  const { secret } = req.body;
+  if (secret !== (process.env.JWT_SECRET || 'kejamarket_super_secret_jwt_key_2026')) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  try {
+    console.log('🚀 Starting database migration via API...');
+    const runMigration = require('./db/migrate-to-postgres');
+    await runMigration();
+    res.json({ success: true, message: 'Migration completed successfully' });
+  } catch (err) {
+    console.error('Migration error:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 app.get('/api/stats', (req, res) => {
@@ -2609,62 +2657,67 @@ function trackBoostClick(propertyId) {
 // ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
 const PORT = process.env.PORT || 3001;
 
-// Add error handling for server startup  
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`====================================================`);
-  console.log(`🚀 KejaMarket Production API Server running on port ${PORT}`);
-  console.log(`🔗 Web Application: http://localhost:${PORT}`);
-  console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
-  console.log(`====================================================`);
+// Initialize database and start server
+async function startServer() {
+  await initializeDatabase();
 
-  // Automatic self-ping to keep Render web service awake 24/7 (prevents spin-down screen)
-  const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || `https://kejamarket.onrender.com` || 'https://kejamarket.co.ke';
-  const PING_INTERVAL = 9 * 60 * 1000; // Ping every 9 minutes (Render free tier sleeps after 15 mins)
+  const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`====================================================`);
+    console.log(`🚀 KejaMarket Production API Server running on port ${PORT}`);
+    console.log(`🔗 Web Application: http://localhost:${PORT}`);
+    console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
+    console.log(`====================================================`);
 
-  if (process.env.NODE_ENV === 'production') {
-    console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
-    
-    setInterval(() => {
-      try {
-        const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
-        httpModule.get(`${PUBLIC_URL}/api/health`, (res) => {
-          console.log(`[Keep-Alive Ping] Heartbeat to ${PUBLIC_URL}/api/health (Status: ${res.statusCode})`);
-        }).on('error', (err) => {
-          console.warn(`[Keep-Alive Ping] Warning: ${err.message}`);
-        });
-      } catch (err) {
-        console.warn(`[Keep-Alive Ping] Failed: ${err.message}`);
-      }
-    }, PING_INTERVAL);
-  } else {
-    console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
-  }
-});
+    const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
+    const PING_INTERVAL = 9 * 60 * 1000;
 
-// Handle server errors
-server.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`❌ Port ${PORT} is already in use`);
-    process.exit(1);
-  } else {
-    console.error(`❌ Server error:`, err);
-    process.exit(1);
-  }
-});
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('🔄 SIGTERM received, shutting down gracefully');
-  server.close(() => {
-    console.log('✅ Server closed');
-    process.exit(0);
+    if (process.env.NODE_ENV === 'production') {
+      console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+      setInterval(() => {
+        try {
+          const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
+          httpModule.get(`${PUBLIC_URL}/api/health`, (res) => {
+            console.log(`[Keep-Alive Ping] Status: ${res.statusCode}`);
+          }).on('error', (err) => {
+            console.warn(`[Keep-Alive Ping] Warning: ${err.message}`);
+          });
+        } catch (err) {
+          console.warn(`[Keep-Alive Ping] Failed: ${err.message}`);
+        }
+      }, PING_INTERVAL);
+    } else {
+      console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+    }
   });
-});
 
-process.on('SIGINT', () => {
-  console.log('🔄 SIGINT received, shutting down gracefully');
-  server.close(() => {
-    console.log('✅ Server closed');
-    process.exit(0);
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Port ${PORT} is already in use`);
+      process.exit(1);
+    } else {
+      console.error(`❌ Server error:`, err);
+      process.exit(1);
+    }
   });
-});
+
+  process.on('SIGTERM', () => {
+    console.log('🔄 SIGTERM received, shutting down gracefully');
+    server.close(async () => {
+      if (store && store.close) await store.close();
+      console.log('✅ Server closed');
+      process.exit(0);
+    });
+  });
+
+  process.on('SIGINT', () => {
+    console.log('🔄 SIGINT received, shutting down gracefully');
+    server.close(async () => {
+      if (store && store.close) await store.close();
+      console.log('✅ Server closed');
+      process.exit(0);
+    });
+  });
+}
+
+// Start the server
+startServer().catch(console.error);

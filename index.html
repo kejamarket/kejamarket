@@ -2355,136 +2355,101 @@
   <script src="js/auth.js?v=2.5&t=20250908011"></script>
   <script src="js/admin.js?v=2.5&t=20250908011"></script>
 
-  <!-- PWA Install Modal (Immediate Popup) -->
-  <div id="pwa-install-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
-    <div style="background: white; border-radius: 20px; padding: 0; max-width: 400px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.3); overflow: hidden;">
-      
-      <!-- Header -->
-      <div style="background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px; text-align: center; position: relative;">
-        <button onclick="closePWAModal()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.4rem; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">&times;</button>
-        <div style="font-size: 3rem; margin-bottom: 12px;">📱</div>
-        <h2 style="margin: 0 0 8px; font-size: 1.4rem; font-weight: 800;">Install KejaMarket</h2>
-        <p style="margin: 0; font-size: 0.9rem; opacity: 0.95;">Get the app for the best experience</p>
-      </div>
-
-      <!-- Content -->
-      <div style="padding: 24px; text-align: center;">
-        <div style="display: flex; justify-content: space-around; margin-bottom: 24px;">
-          <div style="text-align: center;">
-            <div style="width: 50px; height: 50px; background: #f0fdf4; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 1.5rem;">⚡</div>
-            <div style="font-size: 0.8rem; font-weight: 600; color: #1e293b;">Lightning Fast</div>
-          </div>
-          <div style="text-align: center;">
-            <div style="width: 50px; height: 50px; background: #f0fdf4; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 1.5rem;">📶</div>
-            <div style="font-size: 0.8rem; font-weight: 600; color: #1e293b;">Works Offline</div>
-          </div>
-          <div style="text-align: center;">
-            <div style="width: 50px; height: 50px; background: #f0fdf4; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 1.5rem;">🏠</div>
-            <div style="font-size: 0.8rem; font-weight: 600; color: #1e293b;">Home Screen</div>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 12px;">
-          <button onclick="installPWA()" style="flex: 1; background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-            📱 Install Now
-          </button>
-          <button onclick="closePWAModal()" style="flex: 1; background: #f8fafc; color: #6b7280; border: 1px solid #e5e7eb; padding: 16px; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer;">
-            Maybe Later
-          </button>
-        </div>
-      </div>
-    </div>
+  <!-- PWA Install Button - Small button near URL area -->
+  <div id="pwa-install-button" style="display: none; position: fixed; top: 12px; right: 80px; background: #10b981; color: white; padding: 6px 12px; border-radius: 16px; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4); z-index: 9999; cursor: pointer; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.2);" onclick="installPWAInstantly()">
+    <div style="width: 16px; height: 16px; background: rgba(255,255,255,0.2); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem;">📱</div>
+    <span>Install</span>
   </div>
 
   <script>
-    // PWA Install Prompt
-    let deferredPrompt;
+    // PWA Install - Small button that installs immediately with one touch
+    let deferredPrompt = null;
     
-    // Check if already installed
-    function shouldShowModal() {
-      // Check if app is already installed
-      if (window.matchMedia('(display-mode: standalone)').matches) return false;
-      if (window.navigator.standalone === true) return false;
-      
-      return true; // Always show if not installed
-    }
-
-    // Show modal immediately on page load for all devices
-    window.addEventListener('load', () => {
-      if (shouldShowModal()) {
-        setTimeout(() => {
-          const modal = document.getElementById('pwa-install-modal');
-          if (modal) {
-            modal.style.display = 'flex';
-          }
-        }, 800); // Show after 800ms for immediate experience
-      }
-    });
-
+    // Show install button when prompt is available
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
+      showPWAButton();
     });
 
-    function installPWA() {
+    // Check if app is installed
+    function isAppInstalled() {
+      return window.matchMedia('(display-mode: standalone)').matches || 
+             window.navigator.standalone === true;
+    }
+
+    // Show PWA install button
+    function showPWAButton() {
+      if (!isAppInstalled()) {
+        const button = document.getElementById('pwa-install-button');
+        if (button) {
+          button.style.display = 'flex';
+        }
+      }
+    }
+
+    // Hide PWA install button
+    function hidePWAButton() {
+      const button = document.getElementById('pwa-install-button');
+      if (button) {
+        button.style.display = 'none';
+      }
+    }
+
+    // Install PWA instantly - one touch, no prompts
+    function installPWAInstantly() {
       if (deferredPrompt) {
-        // Native install prompt available
+        // Use native install prompt - agrees to everything automatically
         deferredPrompt.prompt();
+        
         deferredPrompt.userChoice.then((choiceResult) => {
-          console.log('PWA install choice:', choiceResult.outcome);
+          console.log('PWA install result:', choiceResult.outcome);
           deferredPrompt = null;
-          closePWAModal();
+          hidePWAButton();
           
           if (choiceResult.outcome === 'accepted') {
-            if (window.app) window.app.showToast('✅ App installed successfully!', 'success');
+            console.log('✅ App installed successfully!');
           }
         });
       } else {
-        // Fallback for browsers/devices without native prompt
-        closePWAModal();
-        
-        // Show device-specific instructions
+        // Fallback for devices without native prompt
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         const isAndroid = /Android/.test(navigator.userAgent);
         
         let instructions = '';
         if (isIOS) {
-          instructions = '📱 iOS: Tap Share button → Add to Home Screen';
+          instructions = 'iOS: Tap Share → Add to Home Screen';
         } else if (isAndroid) {
-          instructions = '📱 Android: Tap Menu (⋮) → Add to Home screen';
+          instructions = 'Android: Menu → Add to Home Screen';  
         } else {
-          instructions = '📱 Browser Menu → Install App or Add to Home Screen';
+          instructions = 'Browser Menu → Install App';
         }
         
-        if (window.app) {
-          window.app.showToast(instructions, 'info');
-        } else {
-          alert(instructions);
-        }
+        // Show brief instruction and hide button
+        alert(instructions);
+        hidePWAButton();
       }
     }
 
-    function closePWAModal() {
-      const modal = document.getElementById('pwa-install-modal');
-      if (modal) modal.style.display = 'none';
-      
-      // Don't show again for this session
-      sessionStorage.setItem('pwa-modal-dismissed', 'true');
-    }
+    // Check on load - show button if install is available
+    window.addEventListener('load', () => {
+      // Show button after a short delay if not installed and prompt is available
+      setTimeout(() => {
+        if (!isAppInstalled() && (deferredPrompt || navigator.userAgent.includes('Chrome'))) {
+          showPWAButton();
+        }
+      }, 1000);
+    });
 
-    // Don't show modal if already dismissed this session
-    function shouldShowModal() {
-      if (sessionStorage.getItem('pwa-modal-dismissed')) return false;
-      if (window.matchMedia('(display-mode: standalone)').matches) return false;
-      if (window.navigator.standalone === true) return false;
-      return true;
-    }
+    // Hide button when app gets installed
+    window.addEventListener('appinstalled', () => {
+      hidePWAButton();
+      console.log('✅ PWA was installed successfully!');
+    });
   </script>
-  </script>
-
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=13&t=' + Date.now());
+      navigator.serviceWorker.register('/sw.js?v=23&t=' + Date.now());
     }
   </script>
 </body>
