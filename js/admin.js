@@ -287,18 +287,86 @@ class AdminPortalEngine {
       return;
     }
 
-    container.innerHTML = this.users.map(u => `
+    // Separate users by role
+    const tenants = this.users.filter(u => u.role === 'tenant');
+    const landlords = this.users.filter(u => u.role === 'landlord' || u.role === 'agency');
+    const serviceProviders = this.users.filter(u => u.role === 'service');
+    const admins = this.users.filter(u => u.role === 'admin' || u.isAdmin || u.id === 'usr-admin-01');
+
+    let html = '';
+
+    // ADMINS Section
+    if (admins.length > 0) {
+      html += `
+        <tr style="background: linear-gradient(135deg, #fef08a, #fde047); border-bottom: 2px solid #eab308;">
+          <td colspan="6" style="padding: 12px; font-weight: 800; color: #713f12; font-size: 0.95rem;">
+            <i class="fas fa-crown"></i> ADMINISTRATORS (${admins.length})
+          </td>
+        </tr>
+      `;
+      html += admins.map(u => this.renderUserRow(u)).join('');
+    }
+
+    // LANDLORDS & AGENTS Section
+    if (landlords.length > 0) {
+      html += `
+        <tr style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe); border-bottom: 2px solid #818cf8; margin-top: 20px;">
+          <td colspan="6" style="padding: 12px; font-weight: 800; color: #3730a3; font-size: 0.95rem;">
+            <i class="fas fa-building"></i> LANDLORDS & AGENCIES (${landlords.length})
+          </td>
+        </tr>
+      `;
+      html += landlords.map(u => this.renderUserRow(u)).join('');
+    }
+
+    // SERVICE PROVIDERS Section
+    if (serviceProviders.length > 0) {
+      html += `
+        <tr style="background: linear-gradient(135deg, #cffafe, #a5f3fc); border-bottom: 2px solid #06b6d4;">
+          <td colspan="6" style="padding: 12px; font-weight: 800; color: #164e63; font-size: 0.95rem;">
+            <i class="fas fa-tools"></i> SERVICE PROVIDERS (${serviceProviders.length})
+          </td>
+        </tr>
+      `;
+      html += serviceProviders.map(u => this.renderUserRow(u)).join('');
+    }
+
+    // TENANTS Section
+    if (tenants.length > 0) {
+      html += `
+        <tr style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-bottom: 2px solid #10b981;">
+          <td colspan="6" style="padding: 12px; font-weight: 800; color: #065f46; font-size: 0.95rem;">
+            <i class="fas fa-users"></i> TENANTS (${tenants.length})
+          </td>
+        </tr>
+      `;
+      html += tenants.map(u => this.renderUserRow(u)).join('');
+    }
+
+    container.innerHTML = html;
+  }
+
+  renderUserRow(u) {
+    const roleColors = {
+      admin: 'background: #fef3c7; color: #92400e;',
+      landlord: 'background: #e0e7ff; color: #4338ca;',
+      agency: 'background: #ddd6fe; color: #5b21b6;',
+      service: 'background: #cffafe; color: #155e75;',
+      tenant: 'background: #d1fae5; color: #065f46;'
+    };
+
+    return `
       <tr style="border-bottom: 1px solid #f1f5f9;">
         <td style="padding: 12px; font-weight: 700; color: #1e293b;">
           ${u.name}
-          ${u.id === 'usr-admin-01' ? '<span style="background: #fef08a; color: #854d0e; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">ADMIN</span>' : ''}
+          ${u.id === 'usr-admin-01' || u.role === 'admin' || u.isAdmin ? '<span style="background: #fef08a; color: #854d0e; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">ADMIN</span>' : ''}
           ${u.isBanned ? '<span style="background: #fecaca; color: #991b1b; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">BANNED</span>' : ''}
         </td>
         <td style="padding: 12px; color: #475569;">${u.phone || '-'}</td>
         <td style="padding: 12px; color: #475569; font-size: 0.82rem;">${u.email || '-'}</td>
         <td style="padding: 12px;">
-          <span style="display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; background: ${u.role === 'landlord' ? '#e0e7ff; color: #4338ca;' : '#d1fae5; color: #065f46;'}">
-            ${u.role === 'landlord' ? 'Landlord' : u.role === 'agency' ? 'Agency' : 'Tenant'}
+          <span style="display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; ${roleColors[u.role] || roleColors.tenant}">
+            ${u.role === 'agency' ? 'Agency' : u.role}
           </span>
         </td>
         <td style="padding: 12px;">
@@ -310,14 +378,14 @@ class AdminPortalEngine {
           <button class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0 4px; cursor: pointer; background: ${u.isVerified ? '#f87171; color: white;' : '#10b981; color: white;'}" onclick="kejaAdmin.toggleUserVerification('${u.id}')">
             ${u.isVerified ? 'Revoke' : 'Verify'}
           </button>
-          ${u.id !== 'usr-admin-01' ? `
+          ${u.id !== 'usr-admin-01' && !u.isAdmin && u.role !== 'admin' ? `
             <button class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0; cursor: pointer; background: ${u.isBanned ? '#10b981; color: white;' : '#ef4444; color: white;'}" onclick="kejaAdmin.toggleUserBan('${u.id}')">
               ${u.isBanned ? 'Unban' : 'Ban'}
             </button>
           ` : ''}
         </td>
       </tr>
-    `).join('');
+    `;
   }
 
   renderListings() {
@@ -327,6 +395,12 @@ class AdminPortalEngine {
     const properties = (window.app && window.app.properties) || [];
     const pending = this.pendingListings || [];
     
+    // Separate properties and services
+    const pendingProperties = pending.filter(p => !p.listingType || p.listingType === 'property');
+    const pendingServices = pending.filter(p => p.listingType === 'service');
+    const approvedProperties = properties.filter(p => !p.listingType || p.listingType === 'property');
+    const approvedServices = properties.filter(p => p.listingType === 'service');
+    
     if (properties.length === 0 && pending.length === 0) {
       container.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 24px; color: #64748b;">No listings in database.</td></tr>`;
       return;
@@ -334,17 +408,17 @@ class AdminPortalEngine {
 
     let html = '';
 
-    // Show PENDING listings FIRST
-    if (pending.length > 0) {
+    // ═══ PENDING PROPERTIES ═══
+    if (pendingProperties.length > 0) {
       html += `
-        <tr style="background: #fef3c7; border-bottom: 2px solid #f59e0b;">
-          <td colspan="7" style="padding: 12px; font-weight: 800; color: #92400e; font-size: 0.9rem;">
-            <i class="fas fa-clock"></i> PENDING APPROVAL (${pending.length})
+        <tr style="background: linear-gradient(135deg, #fef3c7, #fde047); border-bottom: 2px solid #f59e0b;">
+          <td colspan="7" style="padding: 12px; font-weight: 800; color: #92400e; font-size: 0.95rem;">
+            <i class="fas fa-home"></i> PENDING PROPERTIES (${pendingProperties.length})
           </td>
         </tr>
       `;
 
-      pending.forEach(p => {
+      pendingProperties.forEach(p => {
         html += `
           <tr style="background: #fffbeb; border-bottom: 1px solid #fde68a;">
             <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.title}</td>
@@ -363,23 +437,93 @@ class AdminPortalEngine {
       });
     }
 
-    // Show APPROVED listings
-    if (properties.length > 0) {
+    // ═══ PENDING SERVICES ═══
+    if (pendingServices.length > 0) {
       html += `
-        <tr style="background: #f8fafc; border-bottom: 2px solid #cbd5e1;">
-          <td colspan="7" style="padding: 12px; font-weight: 800; color: #475569; font-size: 0.9rem;">
-            <i class="fas fa-check-circle"></i> LIVE LISTINGS (${properties.length})
+        <tr style="background: linear-gradient(135deg, #bae6fd, #7dd3fc); border-bottom: 2px solid #0284c7; margin-top: 20px;">
+          <td colspan="7" style="padding: 12px; font-weight: 800; color: #0c4a6e; font-size: 0.95rem;">
+            <i class="fas fa-tools"></i> PENDING SERVICES (${pendingServices.length})
           </td>
         </tr>
       `;
 
-      properties.slice(0, 30).forEach(p => {
+      pendingServices.forEach(p => {
+        html += `
+          <tr style="background: #f0f9ff; border-bottom: 1px solid #bae6fd;">
+            <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.businessName || p.title}</td>
+            <td style="padding: 12px; color: #475569;">${p.category || '-'}</td>
+            <td style="padding: 12px; font-weight: 700; color: #0284c7;">${p.serviceAreas || '-'}</td>
+            <td style="padding: 12px;"><span style="background: #fbbf24; color: #78350f; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">⏳ PENDING</span></td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${p.providerName || 'Unknown'}</td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
+            <td style="padding: 12px; text-align: right;">
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #6366f1; color: white; cursor: pointer;" onclick="kejaAdmin.viewListingDetails('${p.id}')">👁️ View</button>
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #00b53f; color: white; cursor: pointer;" onclick="kejaAdmin.approveListing('${p.id}')">✓ Approve</button>
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.rejectListing('${p.id}')">✗ Reject</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // ═══ APPROVED PROPERTIES ═══
+    if (approvedProperties.length > 0) {
+      html += `
+        <tr style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-bottom: 2px solid #10b981; margin-top: 20px;">
+          <td colspan="7" style="padding: 12px; font-weight: 800; color: #065f46; font-size: 0.95rem;">
+            <i class="fas fa-check-circle"></i> LIVE PROPERTIES (${approvedProperties.length})
+          </td>
+        </tr>
+      `;
+
+      approvedProperties.slice(0, 20).forEach(p => {
         html += `
           <tr style="border-bottom: 1px solid #f1f5f9;">
             <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.title}</td>
             <td style="padding: 12px; color: #475569;">${p.estateSuburb || p.sublocation || '-'}</td>
             <td style="padding: 12px; font-weight: 700; color: #00b53f;">KSh ${Number(p.rentKes || 0).toLocaleString()}</td>
-            <td style="padding: 12px;">${p.isTopAd ? '<span style="background: #fef08a; color: #854d0e; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px;">TOP AD</span>' : '<span style="color:#94a3b8; font-size:0.75rem;">Standard</span>'}</td>
+            <td style="padding: 12px;"><span style="background: #dcfce7; color: #166534; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">✓ LIVE</span></td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${p.landlord?.name || '-'}</td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
+            <td style="padding: 12px; text-align: right;">
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #6366f1; color: white; cursor: pointer;" onclick="window.app.openPropertyDetail('${p.id}')">👁️ View</button>
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.deleteListing('${p.id}')">🗑️ Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // ═══ APPROVED SERVICES ═══
+    if (approvedServices.length > 0) {
+      html += `
+        <tr style="background: linear-gradient(135deg, #cffafe, #a5f3fc); border-bottom: 2px solid #06b6d4; margin-top: 20px;">
+          <td colspan="7" style="padding: 12px; font-weight: 800; color: #164e63; font-size: 0.95rem;">
+            <i class="fas fa-check-circle"></i> LIVE SERVICES (${approvedServices.length})
+          </td>
+        </tr>
+      `;
+
+      approvedServices.forEach(p => {
+        html += `
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 12px; font-weight: 600; color: #1e293b;">${p.businessName || p.title}</td>
+            <td style="padding: 12px; color: #475569;">${p.category || '-'}</td>
+            <td style="padding: 12px; font-weight: 700; color: #0284c7;">${p.serviceAreas || '-'}</td>
+            <td style="padding: 12px;"><span style="background: #dcfce7; color: #166534; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700;">✓ LIVE</span></td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${p.providerName || '-'}</td>
+            <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
+            <td style="padding: 12px; text-align: right;">
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0 4px; background: #6366f1; color: white; cursor: pointer;" onclick="alert('Service details')">👁️ View</button>
+              <button class="category-pill" style="font-size: 0.75rem; padding: 6px 12px; margin: 0; background: #ef4444; color: white; cursor: pointer;" onclick="kejaAdmin.deleteListing('${p.id}')">🗑️ Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    container.innerHTML = html;
+  }            <td style="padding: 12px;">${p.isTopAd ? '<span style="background: #fef08a; color: #854d0e; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px;">TOP AD</span>' : '<span style="color:#94a3b8; font-size:0.75rem;">Standard</span>'}</td>
             <td style="padding: 12px;"><span style="font-weight: 700; color: ${p.isTaken ? '#ef4444' : '#00b53f'}">${p.isTaken ? '🔴 Taken' : '🟢 Vacant'}</span></td>
             <td style="padding: 12px; font-size: 0.75rem; color: #64748b;">${new Date(p.createdAt || Date.now()).toLocaleDateString()}</td>
             <td style="padding: 12px; text-align: right;">
