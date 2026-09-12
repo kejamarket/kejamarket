@@ -79,20 +79,18 @@ const kejaAuth = (() => {
   }
 
   function showPanel(tab) {
-    const signinEl = document.getElementById('auth-panel-signin');
-    const signupEl = document.getElementById('auth-panel-signup');
-    const otpEl = document.getElementById('auth-panel-otp');
-    const loggedinEl = document.getElementById('auth-panel-loggedin');
+    const panels = ['signin', 'signup', 'otp', 'loggedin', 'forgot', 'reset'];
+    panels.forEach(p => {
+      const el = document.getElementById(`auth-panel-${p}`);
+      if (el) el.style.display = 'none';
+    });
 
-    if (signinEl) signinEl.style.display = tab === 'signin' ? 'block' : 'none';
-    if (signupEl) signupEl.style.display = tab === 'signup' ? 'block' : 'none';
-    if (otpEl) otpEl.style.display = tab === 'otp' ? 'block' : 'none';
-    if (loggedinEl) loggedinEl.style.display = 'none';
+    const target = document.getElementById(`auth-panel-${tab}`);
+    if (target) target.style.display = 'block';
 
-    // Tab button styles
+    // Update tab button active states for main tabs only
     const activeStyle = 'background:transparent; color:white; border-bottom:3px solid white;';
     const inactiveStyle = 'background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.75); border-bottom:3px solid transparent;';
-
     const tabSignIn = document.getElementById('auth-tab-signin');
     const tabSignUp = document.getElementById('auth-tab-signup');
     if (tabSignIn) tabSignIn.style.cssText += (tab === 'signin' ? activeStyle : inactiveStyle);
@@ -996,15 +994,16 @@ const kejaAuth = (() => {
   let forgotIdentifier = '';
 
   function showForgotPassword() {
-    // Hide all panels, show forgot panel
-    ['signin', 'signup', 'otp', 'loggedin', 'reset'].forEach(p => {
+    // Hide ALL panels completely
+    ['signin', 'signup', 'otp', 'loggedin', 'reset', 'forgot'].forEach(p => {
       const el = document.getElementById(`auth-panel-${p}`);
       if (el) el.style.display = 'none';
     });
+    // Show only forgot panel
     const forgot = document.getElementById('auth-panel-forgot');
     if (forgot) forgot.style.display = 'block';
     const input = document.getElementById('forgot-identifier');
-    if (input) { input.value = ''; input.focus(); }
+    if (input) { input.value = ''; setTimeout(() => input.focus(), 100); }
   }
 
   async function handleForgotPassword(e) {
@@ -1027,12 +1026,19 @@ const kejaAuth = (() => {
 
       if (data.success) {
         forgotIdentifier = identifier;
-        // Switch to reset panel
-        const forgot = document.getElementById('auth-panel-forgot');
+        // Hide forgot, show reset panel cleanly
+        ['signin', 'signup', 'otp', 'loggedin', 'forgot'].forEach(p => {
+          const el = document.getElementById(`auth-panel-${p}`);
+          if (el) el.style.display = 'none';
+        });
         const reset = document.getElementById('auth-panel-reset');
-        if (forgot) forgot.style.display = 'none';
         if (reset) reset.style.display = 'block';
-        if (window.app) window.app.showToast(`✅ Reset code sent! Check your SMS${data.phone ? ` ending in ...${data.phone}` : ''}.`, 'success');
+        // Pre-focus the code input
+        setTimeout(() => {
+          const codeInput = document.getElementById('reset-otp-code');
+          if (codeInput) codeInput.focus();
+        }, 100);
+        if (window.app) window.app.showToast(`✅ Reset code sent to your phone!`, 'success');
       } else {
         if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to send reset code.'}`, 'error');
       }
