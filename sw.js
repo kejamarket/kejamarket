@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v13'; // Admin verification & communication system
+const CACHE_NAME = 'kejamarket-v14'; // Production ready - PWA always visible, no demo data
 const STATIC_ASSETS = [
   '/',
   '/index.html',

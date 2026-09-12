@@ -901,22 +901,6 @@ const kejaAuth = (() => {
     }, 150);
   }
 
-  function demoSignIn(role = 'tenant') {
-    const demoUsers = {
-      tenant: { id: 'usr-demo-tenant', name: 'James Kariuki', phone: '0712345678', email: 'tenant@kejamarket.co.ke', role: 'tenant' },
-      landlord: { id: 'usr-demo-landlord', name: 'Peter Mwangi', phone: '0722000111', email: 'landlord@kejamarket.co.ke', role: 'landlord' }
-    };
-    const user = demoUsers[role] || demoUsers.tenant;
-    saveSession(user, 'demo_token_' + Date.now());
-    updateHeaderUI(user);
-    applyAuthWall(user);
-    if (window.app) {
-      window.app.closeModal('modal-auth');
-      window.app.showToast(`🎉 Signed in as ${user.name} (${user.role})! Browsing all 23 listings.`, 'success');
-      window.app.applyFilters();
-    }
-  }
-
   function init() {
     const session = getSession();
     applyAuthWall(session);
@@ -1030,7 +1014,6 @@ const kejaAuth = (() => {
     getToken,
     getAuthHeaders,
     applyAuthWall,
-    demoSignIn,
     toggleProfileDropdown,
     closeProfileDropdown
   };

@@ -2360,27 +2360,22 @@
     // PWA Install Prompt
     let deferredPrompt;
     
-    // Check if already installed or dismissed
+  // Check if already installed
     function shouldShowBanner() {
-      const dismissed = localStorage.getItem('pwa-banner-dismissed');
-      if (dismissed) {
-        const dismissedTime = parseInt(dismissed);
-        const daysSince = (Date.now() - dismissedTime) / (1000 * 60 * 60 * 24);
-        if (daysSince < 7) return false;
-      }
-      
+      // Check if app is already installed
       if (window.matchMedia('(display-mode: standalone)').matches) return false;
       if (window.navigator.standalone === true) return false;
       
-      return true;
+      return true; // Always show if not installed
     }
 
     // Show banner immediately on page load
     window.addEventListener('load', () => {
       if (shouldShowBanner()) {
         setTimeout(() => {
-          document.getElementById('pwa-install-banner').style.display = 'block';
-        }, 2000);
+          const banner = document.getElementById('pwa-install-banner');
+          if (banner) banner.style.display = 'block';
+        }, 1500); // Show after 1.5 seconds
       }
     });
 
@@ -2394,31 +2389,34 @@
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
-            console.log('PWA installed');
+            console.log('PWA installed successfully');
+            if (window.app) window.app.showToast('✅ App installed successfully!', 'success');
           }
           deferredPrompt = null;
-          document.getElementById('pwa-install-banner').style.display = 'none';
-          localStorage.setItem('pwa-banner-dismissed', Date.now().toString());
+          const banner = document.getElementById('pwa-install-banner');
+          if (banner) banner.style.display = 'none';
         });
       } else {
+        // Show platform-specific instructions
         if (navigator.userAgent.match(/iPhone|iPad|iPod/)) {
-          alert('To install:\n1. Tap the Share button (⬆️)\n2. Select "Add to Home Screen"');
+          alert('📱 To install on iOS:\n\n1. Tap the Share button (⬆️)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" to confirm');
         } else {
-          alert('To install:\n1. Tap the menu (⋮)\n2. Select "Add to Home screen" or "Install app"');
+          alert('📱 To install:\n\n1. Tap the menu button (⋮)\n2. Select "Add to Home screen" or "Install app"\n3. Tap "Install" to confirm');
         }
         closePWABanner();
       }
     }
 
     function closePWABanner() {
-      document.getElementById('pwa-install-banner').style.display = 'none';
-      localStorage.setItem('pwa-banner-dismissed', Date.now().toString());
+      const banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'none';
+      // Don't save dismissal - let it show again next time
     }
   </script>
 
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=2.5&t=20250908011');
+      navigator.serviceWorker.register('/sw.js?v=13&t=' + Date.now());
     }
   </script>
 </body>
