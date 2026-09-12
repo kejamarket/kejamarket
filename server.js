@@ -34,11 +34,7 @@ const authLimiter = rateLimit({
   max: 10,
   message: { success: false, message: 'Too many attempts. Please try again in 15 minutes.' },
   standardHeaders: true,
-  legacyHeaders: false,
-  skip: (req) => {
-    // Skip rate limiting for admin in development
-    return process.env.NODE_ENV !== 'production';
-  }
+  legacyHeaders: false
 });
 
 // OTP endpoints: stricter — max 5 per 10 minutes
@@ -2217,11 +2213,12 @@ app.delete('/api/properties/:id', optionalAuth, (req, res) => {
 });
 
 
-// GET /api/admin/download-db (Backup full JSON database)
-app.get('/api/admin/download-db', (req, res) => {
+// GET /api/admin/download-db (Backup — admin only)
+app.get('/api/admin/download-db', requireAuth, async (req, res) => {
   try {
-    const fs = require('fs');
-    const path = require('path');
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
     const dbPath = path.join(__dirname, 'db', 'data.json');
     if (!fs.existsSync(dbPath)) {
       return res.status(404).json({ success: false, message: 'Database file not found.' });
@@ -2231,6 +2228,26 @@ app.get('/api/admin/download-db', (req, res) => {
     res.setHeader('Content-Disposition', `attachment; filename="kejamarket-db-backup-${timestamp}.json"`);
     const stream = fs.createReadStream(dbPath);
     stream.pipe(res);
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/pending-listings — listings awaiting approval
+app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const all = await store.getAllProperties();
+    const pending = all.filter(p =>
+      !p.isApproved &&
+      p.status !== 'approved' &&
+      p.status !== 'rejected' &&
+      !p.isPlaceholder &&
+      !p.isTest
+    );
+    res.json({ success: true, count: pending.length, listings: pending });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
