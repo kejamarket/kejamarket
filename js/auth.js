@@ -683,9 +683,9 @@ const kejaAuth = (() => {
         .toUpperCase()
         .slice(0, 2);
 
-      if (label) label.textContent = isAdmin ? '👑 Admin' : initials;
-      if (mobileLabel) mobileLabel.textContent = isAdmin ? 'Admin' : session.name.split(' ')[0];
-      if (adminHeaderBtn) adminHeaderBtn.style.display = 'none'; // Always hidden, opens automatically
+      if (label) label.textContent = initials;
+      if (mobileLabel) mobileLabel.textContent = session.name.split(' ')[0];
+      if (adminHeaderBtn) adminHeaderBtn.style.display = 'none'; // Always hidden, auto-opens on login
       
       // Show Landlord Portal button ONLY for landlords/agents (NOT admin, NOT service)
       if (landlordHeaderBtn) {

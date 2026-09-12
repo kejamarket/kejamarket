@@ -305,8 +305,18 @@ class PostgreSQLStore {
       id: row.id,
       title: row.title,
       rent: row.rent_kes,
+      rentKes: row.rent_kes,
+      depositKes: row.deposit_kes,
       category: row.category,
       estateSuburb: row.estate_suburb,
+      county: row.county || (row.raw_data && row.raw_data.county) || 'Nairobi',
+      isFeatured: row.is_featured,
+      isTopAd: row.is_top_ad,
+      isVerified: row.is_verified,
+      corridorId: row.corridor_id,
+      waterSupplyType: row.water_supply_type || (row.raw_data && row.raw_data.waterSupplyType) || '',
+      electricityMeterType: row.electricity_meter_type || (row.raw_data && row.raw_data.electricityMeterType) || '',
+      postedTimeAgo: row.posted_time_ago || 'Today',
       photos: row.photos || []
     }));
   }
@@ -325,8 +335,17 @@ class PostgreSQLStore {
       id: property.id,
       title: property.title,
       rent: property.rent_kes,
+      rentKes: property.rent_kes,
+      depositKes: property.deposit_kes,
       category: property.category,
-      estateSuburb: property.estate_suburb
+      estateSuburb: property.estate_suburb,
+      county: property.county || (property.raw_data && property.raw_data.county) || 'Nairobi',
+      isFeatured: property.is_featured,
+      isTopAd: property.is_top_ad,
+      isVerified: property.is_verified,
+      waterSupplyType: property.water_supply_type || '',
+      electricityMeterType: property.electricity_meter_type || '',
+      postedTimeAgo: property.posted_time_ago || 'Today'
     };
   }
 
