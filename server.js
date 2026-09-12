@@ -1,5 +1,5 @@
-/**
- * KejaMarket – Production Backend API & M-Pesa Daraja Integration
+﻿/**
+ * KejaMarket â€“ Production Backend API & M-Pesa Daraja Integration
  * ===============================================================
  * Provides:
  *  1. Full User Authentication (JWT + Bcrypt) for Tenants & Landlords
@@ -25,7 +25,7 @@ const fetch = require('node-fetch');
 const emailService = require('./db/email-service');
 const uploadService = require('./db/upload-service');
 
-// ─── RATE LIMITING ────────────────────────────────────────────────────────────
+// â”€â”€â”€ RATE LIMITING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const rateLimit = require('express-rate-limit');
 
 // Auth endpoints: max 10 attempts per 15 minutes per IP
@@ -37,7 +37,7 @@ const authLimiter = rateLimit({
   legacyHeaders: false
 });
 
-// OTP endpoints: stricter — max 5 per 10 minutes
+// OTP endpoints: stricter â€” max 5 per 10 minutes
 const otpLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 5,
@@ -61,21 +61,21 @@ app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 // Serve static frontend files (HTML, CSS, JS, icons)
 app.use(express.static(__dirname));
 
-// ─── LEGAL & STATIC PAGE ROUTES ──────────────────────────────────────────────
+// â”€â”€â”€ LEGAL & STATIC PAGE ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/privacy-policy', (req, res) => res.sendFile(path.join(__dirname, 'privacy-policy.html')));
 app.get('/terms', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
 app.get('/terms-and-conditions', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
 app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.html')));
 
-// ═════════════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INITIALIZE DATABASE (PostgreSQL with JSON fallback)
-// ═════════════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 let store;
 async function initializeDatabase() {
   try {
     if (process.env.DATABASE_URL) {
-      console.log('🐘 Attempting PostgreSQL connection...');
+      console.log('ðŸ˜ Attempting PostgreSQL connection...');
       store = require('./db/postgres-store.js');
       const success = await store.init();
 
@@ -90,18 +90,18 @@ async function initializeDatabase() {
         } catch (schemaErr) {
           console.warn('Schema update warning:', schemaErr.message);
         }
-        console.log('✅ PostgreSQL database initialized successfully');
+        console.log('âœ… PostgreSQL database initialized successfully');
       } else {
-        console.log('🔄 Falling back to JSON file database');
+        console.log('ðŸ”„ Falling back to JSON file database');
         store = require('./db/store');
       }
     } else {
-      console.log('📁 Using JSON file database (set DATABASE_URL for PostgreSQL)');
+      console.log('ðŸ“ Using JSON file database (set DATABASE_URL for PostgreSQL)');
       store = require('./db/store');
     }
   } catch (error) {
-    console.error('❌ Database initialization error:', error.message);
-    console.log('🔄 Using JSON file database as fallback');
+    console.error('âŒ Database initialization error:', error.message);
+    console.log('ðŸ”„ Using JSON file database as fallback');
     store = require('./db/store');
   }
 
@@ -110,7 +110,7 @@ async function initializeDatabase() {
   uploadService.initCloudinary();
 }
 
-// ─── CONFIGURATION ───────────────────────────────────────────────────────────
+// â”€â”€â”€ CONFIGURATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const JWT_SECRET = process.env.JWT_SECRET || 'kejamarket_super_secret_jwt_key_2026';
 let CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY || '';
 let CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET || '';
@@ -124,7 +124,7 @@ let MPESA_BASE = MPESA_ENV === 'live'
   ? 'https://api.safaricom.co.ke'
   : 'https://sandbox.safaricom.co.ke';
 
-// ─── AFRICA'S TALKING SMS SERVICE ───────────────────────────────────────────
+// â”€â”€â”€ AFRICA'S TALKING SMS SERVICE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const AT_USERNAME = process.env.AT_USERNAME || 'sandbox';
 const AT_API_KEY = process.env.AT_API_KEY || '';
 const AT_SENDER_ID = process.env.AT_SENDER_ID || '';
@@ -141,12 +141,12 @@ try {
     });
     
     smsService = africastalking.SMS;
-    console.log(`📱 Africa's Talking SMS engine initialized (Account: ${AT_USERNAME})`);
+    console.log(`ðŸ“± Africa's Talking SMS engine initialized (Account: ${AT_USERNAME})`);
   } else {
-    console.log(`📱 Africa's Talking SMS: API Key not provided - SMS disabled`);
+    console.log(`ðŸ“± Africa's Talking SMS: API Key not provided - SMS disabled`);
   }
 } catch (error) {
-  console.warn(`⚠️ Africa's Talking initialization failed:`, error.message);
+  console.warn(`âš ï¸ Africa's Talking initialization failed:`, error.message);
   smsService = null;
 }
 
@@ -168,18 +168,18 @@ async function sendRealSMS(toPhone, message) {
 
       try {
         const result = await smsService.send(options);
-        console.log(`📤 [REAL SMS SENT] To: ${recipient} | Status: Success | Response:`, result);
+        console.log(`ðŸ“¤ [REAL SMS SENT] To: ${recipient} | Status: Success | Response:`, result);
         return { success: true, response: result };
       } catch (apiError) {
-        console.error(`❌ [SMS API FAILED] To: ${recipient}:`, apiError.message);
+        console.error(`âŒ [SMS API FAILED] To: ${recipient}:`, apiError.message);
         return { success: false, error: apiError.message };
       }
     } else {
-      console.log(`📡 [SMS DISPATCH] To: ${recipient} | Body: "${message}" (SMS service not available)`);
+      console.log(`ðŸ“¡ [SMS DISPATCH] To: ${recipient} | Body: "${message}" (SMS service not available)`);
       return { success: true, localOnly: true };
     }
   } catch (smsErr) {
-    console.error(`❌ [SMS SEND FAILED] To: ${toPhone}:`, smsErr.message);
+    console.error(`âŒ [SMS SEND FAILED] To: ${toPhone}:`, smsErr.message);
     return { success: false, error: smsErr.message };
   }
 }
@@ -199,7 +199,7 @@ const hasDarajaCredentials = () => {
   );
 };
 
-// ─── AUTH MIDDLEWARE ─────────────────────────────────────────────────────────
+// â”€â”€â”€ AUTH MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -235,7 +235,7 @@ function optionalAuth(req, res, next) {
   next();
 }
 
-// ─── DARAJA HELPER FUNCTIONS ─────────────────────────────────────────────────
+// â”€â”€â”€ DARAJA HELPER FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let cachedToken = null;
 let tokenExpiry = 0;
 
@@ -286,7 +286,7 @@ function formatPhone(phone) {
   return clean;
 }
 
-// ─── OTP MEMORY STORES & UTILITIES ──────────────────────────────────────────
+// â”€â”€â”€ OTP MEMORY STORES & UTILITIES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const pendingOtps = new Map(); // Registration OTPs: cleanPhone -> { otp, expiresAt, attempts, signupData }
 const pendingLoginOtps = new Map(); // Login OTPs: cleanPhone -> { otp, expiresAt, attempts, userId }
 
@@ -310,7 +310,7 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000);
 
-// ─── AUTHENTICATION ROUTES ───────────────────────────────────────────────────
+// â”€â”€â”€ AUTHENTICATION ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // POST /api/auth/send-otp (Step 1 of Phone-Verified Registration: Tenant, Landlord, Agency)
 app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
@@ -377,7 +377,7 @@ app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket verification code is ${otp}. Valid for 5 minutes. Enter this code to verify your ${role === 'agency' ? 'Agency' : (role === 'landlord' ? 'Landlord' : 'Tenant')} account.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`🔑 [SIGNUP OTP] Phone: +${cleanPhone} | OTP: ${otp} | Role: ${role}`);
+    console.log(`ðŸ”‘ [SIGNUP OTP] Phone: +${cleanPhone} | OTP: ${otp} | Role: ${role}`);
 
     res.json({
       success: true,
@@ -457,7 +457,7 @@ app.post('/api/auth/verify-otp', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: `🎉 Phone verified! Welcome to KejaMarket, ${user.name}!`,
+      message: `ðŸŽ‰ Phone verified! Welcome to KejaMarket, ${user.name}!`,
       user,
       token
     });
@@ -498,7 +498,7 @@ app.post('/api/auth/login-send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket sign-in verification code is ${otp}. Valid for 5 minutes. Do not share this code.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`🔑 [LOGIN OTP] User: ${user.name} | Phone: +${cleanPhone} | OTP: ${otp}`);
+    console.log(`ðŸ”‘ [LOGIN OTP] User: ${user.name} | Phone: +${cleanPhone} | OTP: ${otp}`);
 
     res.json({
       success: true,
@@ -565,7 +565,7 @@ app.post('/api/auth/login-verify-otp', async (req, res) => {
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
 
-    console.log(`✅ [LOGIN VERIFIED] User: ${user.name} (${user.role}) via Phone OTP`);
+    console.log(`âœ… [LOGIN VERIFIED] User: ${user.name} (${user.role}) via Phone OTP`);
 
     res.json({
       success: true,
@@ -628,7 +628,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
     const smsMessage = `Your new KejaMarket verification code is ${otp}. Valid for 5 minutes.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`🔄 [OTP RESENT] Phone: +${cleanPhone} | OTP: ${otp}`);
+    console.log(`ðŸ”„ [OTP RESENT] Phone: +${cleanPhone} | OTP: ${otp}`);
 
     res.json({
       success: true,
@@ -751,9 +751,9 @@ app.post('/api/auth/verify-landlord', optionalAuth, (req, res) => {
   }
 });
 
-// ─── PASSWORD RESET ROUTES ────────────────────────────────────────────────────
+// â”€â”€â”€ PASSWORD RESET ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/auth/forgot-password — send reset OTP via SMS + email
+// POST /api/auth/forgot-password â€” send reset OTP via SMS + email
 app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
   try {
     const { identifier } = req.body;
@@ -787,16 +787,16 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
       `KejaMarket: Your password reset code is ${otp}. Valid for 30 minutes. Do NOT share this code.`
     ).catch(e => console.warn('Reset SMS failed:', e.message));
 
-    // Send email (completely non-blocking — never blocks response)
+    // Send email (completely non-blocking â€” never blocks response)
     if (user.email) {
       emailService.sendPasswordResetEmail(user.email, user.name, otp).catch(e => {
         console.warn('Password reset email failed:', e.message);
       });
     }
 
-    console.log(`🔑 [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
+    console.log(`ðŸ”‘ [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
 
-    // Respond immediately — don't wait for SMS/email
+    // Respond immediately â€” don't wait for SMS/email
     res.json({
       success: true,
       message: 'Reset code sent to your registered phone' + (user.email ? ' and email' : '') + '.',
@@ -808,7 +808,7 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
   }
 });
 
-// POST /api/auth/reset-password — verify OTP and set new password
+// POST /api/auth/reset-password â€” verify OTP and set new password
 app.post('/api/auth/reset-password', async (req, res) => {
   try {
     const { identifier, otp, newPassword } = req.body;
@@ -876,7 +876,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
   }
 });
 
-// ─── M-PESA DARAJA STK PUSH & PAYMENT ROUTES ─────────────────────────────────
+// â”€â”€â”€ M-PESA DARAJA STK PUSH & PAYMENT ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // POST /api/mpesa/stk-push
 // Body: { phone, amount, itemType, itemName, targetPropertyId }
@@ -899,7 +899,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
     const isLiveDarajaConfigured = hasDarajaCredentials();
 
     if (isLiveDarajaConfigured) {
-      // 🚀 REAL SAFARICOM DARAJA API CALL
+      // ðŸš€ REAL SAFARICOM DARAJA API CALL
       try {
         const token = await getMpesaToken();
         const timestamp = getDarajaTimestamp();
@@ -919,7 +919,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
           TransactionDesc: itemName || 'Keja Payment',
         };
 
-        console.log(`📱 [SAFARICOM DARAJA] Dispatching STK Push to ${formattedPhone} for KSh ${amountKes}...`);
+        console.log(`ðŸ“± [SAFARICOM DARAJA] Dispatching STK Push to ${formattedPhone} for KSh ${amountKes}...`);
         const stkRes = await fetch(`${MPESA_BASE}/mpesa/stkpush/v1/processrequest`, {
           method: 'POST',
           headers: {
@@ -930,7 +930,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
         });
 
         const stkData = await stkRes.json();
-        console.log('📱 [SAFARICOM DARAJA RESPONSE]:', JSON.stringify(stkData));
+        console.log('ðŸ“± [SAFARICOM DARAJA RESPONSE]:', JSON.stringify(stkData));
 
         if (stkData.ResponseCode === '0') {
           // Record transaction in database
@@ -961,7 +961,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
           });
         }
       } catch (darajaErr) {
-        console.error('❌ Daraja API Error:', darajaErr);
+        console.error('âŒ Daraja API Error:', darajaErr);
         return res.status(502).json({
           success: false,
           hasDaraja: true,
@@ -969,7 +969,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
         });
       }
     } else {
-      // ⚠️ Real Safaricom Daraja credentials are not set in .env
+      // âš ï¸ Real Safaricom Daraja credentials are not set in .env
       // Do not lie to the user with a dummy phone simulation
       return res.json({
         success: false,
@@ -1061,7 +1061,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
 
     const receipt = receiptCode.trim().toUpperCase();
 
-    // ── Validate Safaricom receipt code format ──
+    // â”€â”€ Validate Safaricom receipt code format â”€â”€
     // Real Safaricom receipt codes are exactly 10 alphanumeric characters
     const RECEIPT_REGEX = /^[A-Z0-9]{10}$/;
     if (!RECEIPT_REGEX.test(receipt)) {
@@ -1071,20 +1071,20 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
       });
     }
 
-    // ── Validate amount is reasonable ──
+    // â”€â”€ Validate amount is reasonable â”€â”€
     const expectedAmount = Math.ceil(Number(amount)) || 100;
     if (isNaN(expectedAmount) || expectedAmount <= 0) {
       return res.status(400).json({ success: false, message: 'Invalid payment amount.' });
     }
 
-    // ── When Daraja is configured, query Transaction Status API to verify receipt is genuine ──
+    // â”€â”€ When Daraja is configured, query Transaction Status API to verify receipt is genuine â”€â”€
     if (hasDarajaCredentials()) {
       try {
         const token = await getMpesaToken();
         const timestamp = getDarajaTimestamp();
         const password = generatePassword(timestamp);
 
-        console.log(`🔍 [DARAJA] Querying Transaction Status for receipt: ${receipt}...`);
+        console.log(`ðŸ” [DARAJA] Querying Transaction Status for receipt: ${receipt}...`);
         const statusRes = await fetch(`${MPESA_BASE}/mpesa/transactionstatus/v1/query`, {
           method: 'POST',
           headers: {
@@ -1106,7 +1106,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
         });
 
         const statusData = await statusRes.json();
-        console.log(`🔍 [DARAJA STATUS RESPONSE]:`, JSON.stringify(statusData));
+        console.log(`ðŸ” [DARAJA STATUS RESPONSE]:`, JSON.stringify(statusData));
 
         // ResponseCode 0 = request accepted for processing by Safaricom
         if (statusData.ResponseCode !== '0' && statusData.errorCode) {
@@ -1117,17 +1117,17 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
         }
         // Note: the actual result comes asynchronously to the ResultURL callback.
         // For now, if Safaricom accepted the query (ResponseCode 0), proceed with provisional confirmation.
-        console.log(`✅ [DARAJA] Receipt ${receipt} accepted for verification by Safaricom.`);
+        console.log(`âœ… [DARAJA] Receipt ${receipt} accepted for verification by Safaricom.`);
       } catch (darajaErr) {
-        console.warn('⚠️ Daraja transaction status query failed:', darajaErr.message);
+        console.warn('âš ï¸ Daraja transaction status query failed:', darajaErr.message);
         // Fallback: proceed with format-validated receipt if Daraja call fails
       }
     } else {
-      // No Daraja credentials — log warning, format already validated above
-      console.warn(`⚠️ [RECEIPT] No Daraja creds — accepting format-validated receipt: ${receipt} (amount: KSh ${expectedAmount})`);
+      // No Daraja credentials â€” log warning, format already validated above
+      console.warn(`âš ï¸ [RECEIPT] No Daraja creds â€” accepting format-validated receipt: ${receipt} (amount: KSh ${expectedAmount})`);
     }
 
-    // ── Create or fetch the transaction record ──
+    // â”€â”€ Create or fetch the transaction record â”€â”€
     let tx = checkoutRequestId ? store.getTransactionByCheckoutId(checkoutRequestId) : null;
     if (!tx) {
       const generatedCheckoutId = 'ws_PAYBILL_' + receipt + '_' + Date.now();
@@ -1152,7 +1152,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
       resultDesc: 'Payment confirmed via M-Pesa receipt verification.'
     });
 
-    console.log(`✅ [CONFIRMED] Transaction ${checkoutRequestId} → Receipt: ${receipt} | KSh ${expectedAmount}`);
+    console.log(`âœ… [CONFIRMED] Transaction ${checkoutRequestId} â†’ Receipt: ${receipt} | KSh ${expectedAmount}`);
 
     // Send real SMS payment confirmation
     if (updatedTx.phone && updatedTx.phone !== 'Direct Paybill') {
@@ -1205,7 +1205,7 @@ app.post('/api/mpesa/callback', (req, res) => {
       const receipt = items.find(i => i.Name === 'MpesaReceiptNumber')?.Value || ('MPESA' + Date.now());
       const phone = items.find(i => i.Name === 'PhoneNumber')?.Value;
 
-      console.log(`✅ [DARAJA CONFIRMED] KSh ${amount} | Receipt: ${receipt} | Phone: ${phone}`);
+      console.log(`âœ… [DARAJA CONFIRMED] KSh ${amount} | Receipt: ${receipt} | Phone: ${phone}`);
 
       const updatedTx = store.updateTransaction(checkoutRequestId, {
         status: 'SUCCESS',
@@ -1222,7 +1222,7 @@ app.post('/api/mpesa/callback', (req, res) => {
         );
       }
     } else {
-      console.log(`❌ [DARAJA FAILED] ${resultDesc} (ResultCode: ${resultCode})`);
+      console.log(`âŒ [DARAJA FAILED] ${resultDesc} (ResultCode: ${resultCode})`);
       store.updateTransaction(checkoutRequestId, {
         status: 'FAILED',
         resultDesc: resultDesc
@@ -1236,9 +1236,9 @@ app.post('/api/mpesa/callback', (req, res) => {
   }
 });
 
-// ─── PROPERTIES & LISTINGS ROUTES ───────────────────────────────────────────
+// â”€â”€â”€ PROPERTIES & LISTINGS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /api/properties — server-side search, filtering, pagination
+// GET /api/properties â€” server-side search, filtering, pagination
 app.get('/api/properties', async (req, res) => {
   try {
     const {
@@ -1287,7 +1287,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Title, category, and monthly rent are required.' });
     }
 
-    // ── Duplicate detection ──────────────────────────────────────────
+    // â”€â”€ Duplicate detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (req.user && store.findDuplicateListing) {
       const duplicate = await store.findDuplicateListing(
         req.user.id, data.estateSuburb || '', data.category, data.rentKes
@@ -1301,7 +1301,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
       }
     }
 
-    // ── Upload photos to Cloudinary CDN ─────────────────────────────
+    // â”€â”€ Upload photos to Cloudinary CDN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (data.photos && Array.isArray(data.photos) && data.photos.length > 0) {
       try {
         const cdnUrls = await uploadService.uploadMultipleImages(
@@ -1347,7 +1347,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
     if (req.user && req.user.phone) {
       try {
         await sendSMS(req.user.phone, 
-          `✅ Your property listing "${data.title}" has been submitted to KejaMarket!\n\n⏳ Status: PENDING VERIFICATION\n\nOur admin team will review and approve it within 24 hours. You'll be notified once it's live.\n\nView status in your Landlord Portal.`
+          `âœ… Your property listing "${data.title}" has been submitted to KejaMarket!\n\nâ³ Status: PENDING VERIFICATION\n\nOur admin team will review and approve it within 24 hours. You'll be notified once it's live.\n\nView status in your Landlord Portal.`
         );
       } catch (err) {
         console.error('Failed to send landlord confirmation SMS:', err.message);
@@ -1453,17 +1453,17 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
     approvedBy: user.id
   });
 
-  // ── Deliver WhatsApp alerts to matching subscribers ──────────────
+  // â”€â”€ Deliver WhatsApp alerts to matching subscribers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (store.getMatchingWhatsAppSubs) {
     try {
       const subs = await store.getMatchingWhatsAppSubs(property);
       for (const sub of subs) {
-        const msg = `🏠 *New Rental Alert!*\n\n*${property.title}*\n📍 ${property.estateSuburb}, ${property.county || 'Nairobi'}\n💰 KSh ${(property.rentKes || property.rent || 0).toLocaleString()}/mo\n\nView on KejaMarket: https://kejamarket.co.ke`;
+        const msg = `ðŸ  *New Rental Alert!*\n\n*${property.title}*\nðŸ“ ${property.estateSuburb}, ${property.county || 'Nairobi'}\nðŸ’° KSh ${(property.rentKes || property.rent || 0).toLocaleString()}/mo\n\nView on KejaMarket: https://kejamarket.co.ke`;
         // Send via Africa's Talking WhatsApp or SMS fallback
         await sendRealSMS(sub.phone, msg);
-        console.log(`📲 [WHATSAPP ALERT] Sent to ${sub.phone} for "${property.title}"`);
+        console.log(`ðŸ“² [WHATSAPP ALERT] Sent to ${sub.phone} for "${property.title}"`);
       }
-      if (subs.length > 0) console.log(`✅ [ALERTS] Delivered to ${subs.length} subscriber(s)`);
+      if (subs.length > 0) console.log(`âœ… [ALERTS] Delivered to ${subs.length} subscriber(s)`);
     } catch (alertErr) {
       console.warn('WhatsApp alert delivery error:', alertErr.message);
     }
@@ -1474,7 +1474,7 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
     const lPhone = property.landlordPhone || property.landlord.phone;
     try {
       await sendSMS(lPhone,
-        `✅ Great news! Your property listing "${property.title}" has been approved and is now live on KejaMarket. Potential tenants can now view and contact you.`
+        `âœ… Great news! Your property listing "${property.title}" has been approved and is now live on KejaMarket. Potential tenants can now view and contact you.`
       );
     } catch (err) {
       console.error('Failed to send approval SMS:', err.message);
@@ -1495,7 +1495,7 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
       fromRole: 'admin',
       toUserId: property.landlord.id,
       toRole: property.landlord.isAgency ? 'agency' : 'landlord',
-      message: `✅ Your property "${property.title}" has been APPROVED and is now live! Tenants can now view and contact you.`,
+      message: `âœ… Your property "${property.title}" has been APPROVED and is now live! Tenants can now view and contact you.`,
       propertyId: property.id,
       propertyTitle: property.title,
       createdAt: new Date().toISOString(),
@@ -1541,7 +1541,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
     try {
       const reasonText = reason ? `\n\nReason: ${reason}` : '';
       await sendSMS(property.landlordPhone, 
-        `❌ Your property listing "${property.title}" was not approved for publication on KejaMarket.${reasonText}\n\nPlease review our listing guidelines and resubmit.`
+        `âŒ Your property listing "${property.title}" was not approved for publication on KejaMarket.${reasonText}\n\nPlease review our listing guidelines and resubmit.`
       );
     } catch (err) {
       console.error('Failed to send rejection SMS:', err.message);
@@ -1556,7 +1556,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
       fromRole: 'admin',
       toUserId: property.landlord.id,
       toRole: property.landlord.isAgency ? 'agency' : 'landlord',
-      message: `❌ Your property "${property.title}" was NOT approved.\n\nReason: ${reason || 'Does not meet listing requirements'}\n\nPlease review our guidelines and resubmit with corrections.`,
+      message: `âŒ Your property "${property.title}" was NOT approved.\n\nReason: ${reason || 'Does not meet listing requirements'}\n\nPlease review our guidelines and resubmit with corrections.`,
       propertyId: property.id,
       propertyTitle: property.title,
       createdAt: new Date().toISOString(),
@@ -1572,7 +1572,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
   });
 });
 
-// ─── REVIEWS ROUTES ─────────────────────────────────────────────────────────
+// â”€â”€â”€ REVIEWS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/properties/:id/reviews
 app.get('/api/properties/:id/reviews', async (req, res) => {
@@ -1611,13 +1611,13 @@ app.post('/api/properties/:id/reviews', optionalAuth, (req, res) => {
   }
 });
 
-// ─── LIVE FACEBOOK-STYLE PUBLIC COMMENTS ROUTES ─────────────────────────────
+// â”€â”€â”€ LIVE FACEBOOK-STYLE PUBLIC COMMENTS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/properties/:id/comments
-app.get('/api/properties/:id/comments', (req, res) => {
+app.get('/api/properties/:id/comments', async (req, res) => {
   try {
     const { id } = req.params;
-    const comments = store.getComments(id);
+    const comments = await store.getComments(id);
     res.json({ success: true, count: comments.length, comments });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -1625,7 +1625,7 @@ app.get('/api/properties/:id/comments', (req, res) => {
 });
 
 // POST /api/properties/:id/comments (Anyone can post a public live comment)
-app.post('/api/properties/:id/comments', optionalAuth, (req, res) => {
+app.post('/api/properties/:id/comments', optionalAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { author, text } = req.body;
@@ -1637,7 +1637,7 @@ app.post('/api/properties/:id/comments', optionalAuth, (req, res) => {
     const commentAuthor = req.user ? req.user.name : (author || 'Nairobi Resident');
     const isLandlord = req.user && req.user.role === 'landlord';
 
-    const newComment = store.addComment(id, {
+    const newComment = await store.addComment(id, {
       author: commentAuthor,
       text: text.trim(),
       userId: req.user ? req.user.id : null,
@@ -1701,9 +1701,9 @@ app.post('/api/properties/:id/comments/:commentId/reply', optionalAuth, (req, re
   }
 });
 
-// ─── IN-APP CHAT & INBOX MESSAGES ROUTES ────────────────────────────────────
+// â”€â”€â”€ IN-APP CHAT & INBOX MESSAGES ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /api/messages — fetch messages with real DB polling support
+// GET /api/messages â€” fetch messages with real DB polling support
 app.get('/api/messages', optionalAuth, async (req, res) => {
   try {
     const { propertyId, since } = req.query;
@@ -1748,7 +1748,7 @@ app.post('/api/messages', optionalAuth, async (req, res) => {
 
     // Route Admin inquiries directly to Admin
     if (recipientId === 'usr-admin-01' || !propertyId) {
-      console.log(`🛡️ [ADMIN INQUIRY] From: ${senderUserName} (${senderUserPhone}): ${text.trim()}`);
+      console.log(`ðŸ›¡ï¸ [ADMIN INQUIRY] From: ${senderUserName} (${senderUserPhone}): ${text.trim()}`);
       sendRealSMS(
         '254180511492',
         `[KejaMarket Admin Support] New message from ${senderUserName} (${senderUserPhone || 'In-App'}): "${text.trim().substring(0, 90)}". Reply on kejamarket.co.ke`
@@ -1783,9 +1783,9 @@ app.post('/api/messages', optionalAuth, async (req, res) => {
   }
 });
 
-// ─── LEADS & ALERTS ROUTES ───────────────────────────────────────────────────
+// â”€â”€â”€ LEADS & ALERTS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/alerts/whatsapp — save subscription + use saveWhatsAppSub for PostgreSQL
+// POST /api/alerts/whatsapp â€” save subscription + use saveWhatsAppSub for PostgreSQL
 app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
   try {
     const { phone, category, estate, budgetMin, budgetMax } = req.body;
@@ -1805,7 +1805,7 @@ app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
 
     // Send confirmation SMS
     await sendRealSMS(cleanPhone,
-      `[KejaMarket Alerts] ✅ Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}–${budgetMax || 'any'}/mo). Valid 30 days.`
+      `[KejaMarket Alerts] âœ… Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}â€“${budgetMax || 'any'}/mo). Valid 30 days.`
     );
 
     res.json({ success: true, message: 'Rental alert registered. SMS confirmation sent.', sub });
@@ -1815,14 +1815,14 @@ app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
 });
 
 // POST /api/leads/movers
-app.post('/api/leads/movers', (req, res) => {
+app.post('/api/leads/movers', async (req, res) => {
   try {
     const { name, phone, from, to, size, partner } = req.body;
     if (!phone) {
       return res.status(400).json({ success: false, message: 'Phone number is required.' });
     }
     const cleanPhone = formatPhone(phone);
-    const lead = store.saveLead('movers', { name, phone: cleanPhone, from, to, size, partner });
+    const lead = await store.saveLead('movers', { name, phone: cleanPhone, from, to, size, partner });
 
     const partnerLabel = (!partner || partner === 'All Verified Partners')
       ? 'Nellions, Cube Movers, Taylor & Alpha Movers'
@@ -1840,7 +1840,7 @@ app.post('/api/leads/movers', (req, res) => {
 });
 
 // POST /api/leads/fibre
-app.post('/api/leads/fibre', (req, res) => {
+app.post('/api/leads/fibre', async (req, res) => {
   try {
     const { phone, estate, isp, timing } = req.body;
     if (!phone) {
@@ -1848,7 +1848,7 @@ app.post('/api/leads/fibre', (req, res) => {
     }
     const cleanPhone = formatPhone(phone);
     const ispShort = isp ? isp.split('(')[0].trim() : 'Home Fibre';
-    const lead = store.saveLead('fibre', { phone: cleanPhone, estate, isp, timing });
+    const lead = await store.saveLead('fibre', { phone: cleanPhone, estate, isp, timing });
 
     sendRealSMS(
       cleanPhone,
@@ -1875,9 +1875,9 @@ app.post('/api/sms/send', optionalAuth, async (req, res) => {
   }
 });
 
-// ─── IMAGE UPLOAD ENDPOINT (Cloudinary CDN) ──────────────────────────────────
+// â”€â”€â”€ IMAGE UPLOAD ENDPOINT (Cloudinary CDN) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/upload/images — upload 1-16 images to Cloudinary, return CDN URLs
+// POST /api/upload/images â€” upload 1-16 images to Cloudinary, return CDN URLs
 app.post('/api/upload/images', uploadLimiter, optionalAuth, async (req, res) => {
   try {
     const { images, folder } = req.body;
@@ -1896,7 +1896,7 @@ app.post('/api/upload/images', uploadLimiter, optionalAuth, async (req, res) => 
   }
 });
 
-// POST /api/upload/single — upload single image
+// POST /api/upload/single â€” upload single image
 app.post('/api/upload/single', optionalAuth, async (req, res) => {
   try {
     const { image, folder } = req.body;
@@ -1920,7 +1920,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// ─── DATABASE MIGRATION TRIGGER (Admin only) ─────────────────────────────────
+// â”€â”€â”€ DATABASE MIGRATION TRIGGER (Admin only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.post('/api/admin/migrate', async (req, res) => {
   const { secret } = req.body;
   const validSecrets = [
@@ -1934,7 +1934,7 @@ app.post('/api/admin/migrate', async (req, res) => {
   }
 
   try {
-    console.log('🚀 Starting database migration via API...');
+    console.log('ðŸš€ Starting database migration via API...');
     const runMigration = require('./db/migrate-to-postgres');
     await runMigration();
     res.json({ success: true, message: 'Migration completed successfully' });
@@ -1960,7 +1960,7 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// ─── OWNER / ADMIN DATABASE PORTAL ROUTES ──────────────────────────────────
+// â”€â”€â”€ OWNER / ADMIN DATABASE PORTAL ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/api/admin/overview', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -1973,9 +1973,9 @@ app.get('/api/admin/overview', requireAuth, async (req, res) => {
   }
 });
 
-// ─── FAVOURITES ROUTES ──────────────────────────────────────────────────────
+// â”€â”€â”€ FAVOURITES ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /api/favourites — get all favourites for logged-in user
+// GET /api/favourites â€” get all favourites for logged-in user
 app.get('/api/favourites', requireAuth, async (req, res) => {
   try {
     let propertyIds = [];
@@ -1988,7 +1988,7 @@ app.get('/api/favourites', requireAuth, async (req, res) => {
   }
 });
 
-// POST /api/favourites/:propertyId — add a favourite
+// POST /api/favourites/:propertyId â€” add a favourite
 app.post('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -2001,7 +2001,7 @@ app.post('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   }
 });
 
-// DELETE /api/favourites/:propertyId — remove a favourite
+// DELETE /api/favourites/:propertyId â€” remove a favourite
 app.delete('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -2014,9 +2014,9 @@ app.delete('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   }
 });
 
-// ─── ADMIN ANALYTICS ────────────────────────────────────────────────────────
+// â”€â”€â”€ ADMIN ANALYTICS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /api/admin/analytics — real server-side analytics from PostgreSQL
+// GET /api/admin/analytics â€” real server-side analytics from PostgreSQL
 app.get('/api/admin/analytics', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2097,7 +2097,7 @@ app.post('/api/admin/mpesa-config', optionalAuth, (req, res) => {
       console.warn('Could not write to .env file:', envErr.message);
     }
 
-    console.log(`🔧 [M-PESA CONFIG UPDATED] Env: ${MPESA_ENV} | Shortcode: ${PAYBILL} | Active: ${hasDarajaCredentials()}`);
+    console.log(`ðŸ”§ [M-PESA CONFIG UPDATED] Env: ${MPESA_ENV} | Shortcode: ${PAYBILL} | Active: ${hasDarajaCredentials()}`);
 
     res.json({
       success: true,
@@ -2213,7 +2213,7 @@ app.delete('/api/properties/:id', optionalAuth, (req, res) => {
 });
 
 
-// GET /api/admin/download-db (Backup — admin only)
+// GET /api/admin/download-db (Backup â€” admin only)
 app.get('/api/admin/download-db', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2233,7 +2233,7 @@ app.get('/api/admin/download-db', requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/admin/pending-listings — listings awaiting approval
+// GET /api/admin/pending-listings â€” listings awaiting approval
 app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2287,18 +2287,6 @@ app.post('/api/admin/send-message', requireAuth, async (req, res) => {
       }
     }
 
-    // Log activity
-    store.logActivity({
-      action: 'admin_message_sent',
-      userId: req.user.id,
-      details: {
-        recipientId: userId,
-        recipientName: user.name,
-        method
-      },
-      timestamp: Date.now()
-    });
-
     res.json({ 
       success: true, 
       message: 'Message sent successfully!',
@@ -2319,7 +2307,7 @@ app.post('/api/admin/broadcast', requireAuth, async (req, res) => {
     }
 
     // Get all users or filter by role
-    let users = store.getAllUsers();
+    let users = await store.getAllUsers();
     if (targetRole !== 'all') {
       users = users.filter(u => u.role === targetRole);
     }
@@ -2347,18 +2335,6 @@ app.post('/api/admin/broadcast', requireAuth, async (req, res) => {
         console.error(`Failed to send to ${user.name}:`, err.message);
       }
     }
-
-    // Log activity
-    store.logActivity({
-      action: 'admin_broadcast_sent',
-      userId: req.user.id,
-      details: {
-        targetRole,
-        recipientCount: sentCount,
-        method
-      },
-      timestamp: Date.now()
-    });
 
     res.json({ 
       success: true, 
@@ -2388,18 +2364,6 @@ app.put('/api/properties/:id/boost', async (req, res) => {
     property.boostedAt = new Date().toISOString();
     store.updateProperty(id, property);
 
-    // Log activity
-    store.logActivity({
-      action: 'listing_boosted',
-      userId: req.user?.id || 'admin',
-      details: {
-        propertyId: id,
-        propertyTitle: property.title,
-        boostType
-      },
-      timestamp: Date.now()
-    });
-
     res.json({ 
       success: true, 
       message: 'Listing boosted successfully!',
@@ -2427,17 +2391,6 @@ app.put('/api/properties/:id/unboost', async (req, res) => {
     property.boostedAt = null;
     store.updateProperty(id, property);
 
-    // Log activity
-    store.logActivity({
-      action: 'listing_unboosted',
-      userId: req.user?.id || 'admin',
-      details: {
-        propertyId: id,
-        propertyTitle: property.title
-      },
-      timestamp: Date.now()
-    });
-
     res.json({ 
       success: true, 
       message: 'Boost removed successfully!',
@@ -2448,20 +2401,20 @@ app.put('/api/properties/:id/unboost', async (req, res) => {
   }
 });
 
-// ─── LANDLORD PORTAL ROUTES ──────────────────────────────────────────────────
+// â”€â”€â”€ LANDLORD PORTAL ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/landlord/my-listings (Get all listings for logged-in landlord)
-app.get('/api/landlord/my-listings', requireAuth, (req, res) => {
+app.get('/api/landlord/my-listings', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
     const userPhone = req.user.phone;
-    
-    // Get all properties where landlord matches user
-    const allProperties = store.getAllProperties();
-    const myListings = allProperties.filter(p => 
+
+    const allProperties = await store.getAllProperties();
+    const myListings = allProperties.filter(p =>
       (p.landlord && p.landlord.id === userId) ||
       (p.landlord && p.landlord.phone === userPhone) ||
       p.landlordPhone === userPhone ||
+      p.landlordId === userId ||
       p.postedBy === userId
     );
 
@@ -2536,7 +2489,7 @@ app.post('/api/landlord/send-message', requireAuth, async (req, res) => {
 });
 
 // PUT /api/landlord/availability/:id (Toggle property availability: vacant/taken)
-app.put('/api/landlord/availability/:id', requireAuth, (req, res) => {
+app.put('/api/landlord/availability/:id', requireAuth, async (req, res) => {
   try {
     const propertyId = req.params.id;
     const { availability } = req.body;
@@ -2550,75 +2503,60 @@ app.put('/api/landlord/availability/:id', requireAuth, (req, res) => {
     }
 
     // Get property
-    const properties = store.getListings();
-    const property = properties.find(p => p.id === propertyId);
+    const property = await store.getPropertyById(propertyId);
 
     if (!property) {
       return res.status(404).json({ success: false, message: 'Property not found.' });
     }
 
     // Verify ownership
-    if (property.postedBy !== userId) {
-      return res.status(403).json({ 
-        success: false, 
-        message: 'You can only update your own properties.' 
+    if (property.postedBy !== userId && property.landlordId !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: 'You can only update your own properties.'
       });
     }
 
     // Update availability
-    property.availability = availability;
-    property.updatedAt = new Date().toISOString();
+    await store.updateProperty(propertyId, {
+      availability,
+      updatedAt: new Date().toISOString()
+    });
 
-    // Save to store
-    store.saveProperty(property);
-
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: `Property marked as ${availability}.`,
-      property
+      property: { ...property, availability }
     });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SERVICE PROVIDER ENDPOINTS
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 // GET /api/service/my-services (Get all services for logged-in service provider)
-app.get('/api/service/my-services', requireAuth, (req, res) => {
+app.get('/api/service/my-services', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
-    const allListings = store.getListings();
-    
-    // Filter services posted by this service provider
-    const myServices = allListings.filter(listing => 
-      listing.postedBy === userId && listing.listingType === 'service'
+    const allListings = await store.getAllProperties();
+    const myServices = allListings.filter(listing =>
+      (listing.postedBy === userId || listing.landlordId === userId) && listing.listingType === 'service'
     );
-
-    res.json({ 
-      success: true, 
-      services: myServices,
-      total: myServices.length
-    });
+    res.json({ success: true, services: myServices, total: myServices.length });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
 // GET /api/service/messages (Get messages for service provider)
-app.get('/api/service/messages', requireAuth, (req, res) => {
+app.get('/api/service/messages', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
-    const messages = store.getLandlordMessages(); // Reuse message store
-    
-    // Filter messages for this service provider
-    const myMessages = messages.filter(msg => 
-      msg.fromUserId === userId || msg.toUserId === userId
-    );
-
-    res.json({ success: true, messages: myMessages });
+    const messages = await store.getMessages(null, userId);
+    res.json({ success: true, messages });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -2670,7 +2608,7 @@ app.post('/api/service/post', requireAuth, async (req, res) => {
       updatedAt: new Date().toISOString()
     };
 
-    const saved = store.saveProperty(newService);
+    const saved = await store.addProperty(newService);
 
     // Send SMS to provider confirming submission
     try {
@@ -2822,18 +2760,6 @@ app.get('/api/service/payment-status/:checkoutRequestId', requireAuth, async (re
         } catch (err) {
           console.error('SMS confirmation failed:', err);
         }
-
-        // Log activity
-        store.logActivity({
-          action: 'service_boost_paid',
-          userId: payment.userId,
-          details: {
-            serviceId: payment.serviceId,
-            amount: payment.amount,
-            boostDuration: '30 days'
-          },
-          timestamp: Date.now()
-        });
       }
 
       res.json({ status: 'completed' });
@@ -2913,17 +2839,6 @@ app.put('/api/service/availability/:id', requireAuth, (req, res) => {
     service.isAvailable = isAvailable;
     store.updateProperty(id, service);
 
-    // Log activity
-    store.logActivity({
-      action: 'service_availability_updated',
-      userId,
-      details: {
-        serviceId: id,
-        isAvailable
-      },
-      timestamp: Date.now()
-    });
-
     res.json({ 
       success: true, 
       message: `Service marked as ${isAvailable ? 'Available' : 'Not Available'}`,
@@ -2935,7 +2850,7 @@ app.put('/api/service/availability/:id', requireAuth, (req, res) => {
 });
 
 
-// ─── 404 HANDLER ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ 404 HANDLER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.use((req, res) => {
   // API routes get JSON 404
   if (req.path.startsWith('/api/')) {
@@ -2946,12 +2861,12 @@ app.use((req, res) => {
   if (require('fs').existsSync(notFoundPath)) {
     return res.status(404).sendFile(notFoundPath);
   }
-  res.status(404).send('<h1>404 — Page Not Found</h1><p><a href="/">← Back to KejaMarket</a></p>');
+  res.status(404).send('<h1>404 â€” Page Not Found</h1><p><a href="/">â† Back to KejaMarket</a></p>');
 });
 
-// ═══════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CRON JOBS & AUTOMATED TASKS
-// ═══════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 // Check for expired boosts every hour
 setInterval(() => {
@@ -2974,18 +2889,6 @@ setInterval(() => {
           property.boostExpiresAt = null;
           store.updateProperty(property.id, property);
           expiredCount++;
-
-          // Log activity
-          store.logActivity({
-            action: 'boost_expired',
-            userId: 'system',
-            details: {
-              propertyId: property.id,
-              propertyTitle: property.title || property.businessName,
-              expiredAt: now.toISOString()
-            },
-            timestamp: Date.now()
-          });
 
           console.log(`[CRON] Expired boost removed: ${property.id}`);
         }
@@ -3078,7 +2981,7 @@ function trackBoostClick(propertyId) {
   }
 }
 
-// ─── START SERVER & KEEP-ALIVE HEARTBEAT ─────────────────────────────────────
+// â”€â”€â”€ START SERVER & KEEP-ALIVE HEARTBEAT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const PORT = process.env.PORT || 3001;
 
 // Initialize database and start server
@@ -3087,16 +2990,16 @@ async function startServer() {
 
   const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`====================================================`);
-    console.log(`🚀 KejaMarket Production API Server running on port ${PORT}`);
-    console.log(`🔗 Web Application: http://localhost:${PORT}`);
-    console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
+    console.log(`ðŸš€ KejaMarket Production API Server running on port ${PORT}`);
+    console.log(`ðŸ”— Web Application: http://localhost:${PORT}`);
+    console.log(`ðŸ“± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
     console.log(`====================================================`);
 
     const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
     const PING_INTERVAL = 9 * 60 * 1000;
 
     if (process.env.NODE_ENV === 'production') {
-      console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+      console.log(`ðŸ“¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
       setInterval(() => {
         try {
           const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
@@ -3110,34 +3013,34 @@ async function startServer() {
         }
       }, PING_INTERVAL);
     } else {
-      console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+      console.log(`ðŸ“¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
     }
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`❌ Port ${PORT} is already in use`);
+      console.error(`âŒ Port ${PORT} is already in use`);
       process.exit(1);
     } else {
-      console.error(`❌ Server error:`, err);
+      console.error(`âŒ Server error:`, err);
       process.exit(1);
     }
   });
 
   process.on('SIGTERM', () => {
-    console.log('🔄 SIGTERM received, shutting down gracefully');
+    console.log('ðŸ”„ SIGTERM received, shutting down gracefully');
     server.close(async () => {
       if (store && store.close) await store.close();
-      console.log('✅ Server closed');
+      console.log('âœ… Server closed');
       process.exit(0);
     });
   });
 
   process.on('SIGINT', () => {
-    console.log('🔄 SIGINT received, shutting down gracefully');
+    console.log('ðŸ”„ SIGINT received, shutting down gracefully');
     server.close(async () => {
       if (store && store.close) await store.close();
-      console.log('✅ Server closed');
+      console.log('âœ… Server closed');
       process.exit(0);
     });
   });
