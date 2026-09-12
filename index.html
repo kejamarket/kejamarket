@@ -2421,11 +2421,8 @@
   <script src="js/auth.js?v=2.5&t=20250908011"></script>
   <script src="js/admin.js?v=2.5&t=20250908011"></script>
 
-  <!-- PWA Install Button - Small button near URL area -->
-  <div id="pwa-install-button" style="display: none; position: fixed; top: 12px; right: 80px; background: #10b981; color: white; padding: 6px 12px; border-radius: 16px; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4); z-index: 9999; cursor: pointer; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.2);" onclick="installPWAInstantly()">
-    <div style="width: 16px; height: 16px; background: rgba(255,255,255,0.2); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem;">📱</div>
-    <span>Install</span>
-  </div>
+  <!-- PWA Install Button - Hidden (PWA installs via browser's built-in prompt) -->
+  <div id="pwa-install-button" style="display: none !important;" onclick="installPWAInstantly()"></div>
 
   <script>
     // PWA Install - Small button that installs immediately with one touch
@@ -2444,14 +2441,9 @@
              window.navigator.standalone === true;
     }
 
-    // Show PWA install button
+    // Show PWA install button — disabled, browser handles install natively
     function showPWAButton() {
-      if (!isAppInstalled()) {
-        const button = document.getElementById('pwa-install-button');
-        if (button) {
-          button.style.display = 'flex';
-        }
-      }
+      // Button permanently hidden — browser's own install prompt handles this
     }
 
     // Hide PWA install button
