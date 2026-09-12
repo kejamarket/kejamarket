@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v21'; // Admin portal buttons removed, auto-open only
+const CACHE_NAME = 'kejamarket-v22'; // PWA install popup modal, immediate install prompt
 const STATIC_ASSETS = [
   '/',
   '/index.html',
