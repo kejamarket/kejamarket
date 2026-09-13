@@ -5,22 +5,3 @@
     buildCommand: npm install
     startCommand: node start.js
     plan: free
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
-      - key: DATABASE_URL
-        generateValue: true
-      - key: JWT_SECRET
-        sync: false
-      - key: AT_USERNAME
-        sync: false
-      - key: AT_API_KEY
-        sync: false
-      - key: MPESA_ENV
-        value: sandbox
-      - key: SUPABASE_HOST
-        value: db.yvosarkfeukzdjxoenwe.supabase.co
-      - key: SUPABASE_PASSWORD
-        value: Stallon@jevugwe4
