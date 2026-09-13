@@ -704,10 +704,17 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
     const user = await store.authenticateUser(identifier, password, role);
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
 
+    // Add isAdmin flag for admin users
+    const userResponse = { ...user };
+    if (user.role === 'admin' || user.id === 'usr-admin-01' || 
+        (user.email && user.email.toLowerCase() === 'admin@kejamarket.co.ke')) {
+      userResponse.isAdmin = true;
+    }
+
     res.json({
       success: true,
       message: `Welcome back, ${user.name}!`,
-      user,
+      user: userResponse,
       token
     });
   } catch (err) {
