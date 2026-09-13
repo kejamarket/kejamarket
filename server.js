@@ -3062,3 +3062,201 @@ async function startServer() {
 
 // Start the server
 startServer().catch(console.error);
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// SERVICES API ENDPOINTS
+// ════════════════════════════════════════════════════════════════════════════════
+
+// GET /api/services - List all services with filters
+app.get('/api/services', async (req, res) => {
+  try {
+    const { serviceType, verified, limit = 50, offset = 0 } = req.query;
+    
+    let query = 'SELECT * FROM services WHERE status = $1';
+    const params = ['active'];
+    let paramCount = 2;
+
+    if (serviceType) {
+      query += ` AND service_type = $${paramCount}`;
+      params.push(serviceType);
+      paramCount++;
+    }
+
+    if (verified === 'true') {
+      query += ` AND is_verified = true`;
+    }
+
+    query += ` ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    const result = await pool.query(query, params);
+    
+    res.json({
+      success: true,
+      services: result.rows,
+      count: result.rows.length
+    });
+  } catch (err) {
+    console.error('Services fetch error:', err);
+    res.json({ success: false, services: [], error: err.message });
+  }
+});
+
+// GET /api/services/:id - Get single service
+app.get('/api/services/:id', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM services WHERE id = $1', [req.params.id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Service not found' });
+    }
+    res.json({ success: true, service: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/services - Create new service (requires auth)
+app.post('/api/services', authenticate, async (req, res) => {
+  try {
+    const { title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours, images } = req.body;
+    const serviceId = 'svc-' + Date.now();
+
+    await pool.query(
+      `INSERT INTO services (id, title, description, service_type, provider_id, provider_name, provider_phone, price_min, price_max, coverage_area, service_hours, images)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
+      [serviceId, title, description, serviceType, req.user.id, req.user.name, req.user.phone, priceMin, priceMax, coverageArea, serviceHours, JSON.stringify(images || [])]
+    );
+
+    res.status(201).json({ success: true, serviceId, message: 'Service created successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/services/:id/reviews - Get service reviews
+app.get('/api/services/:id/reviews', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM service_reviews WHERE service_id = $1 ORDER BY created_at DESC',
+      [req.params.id]
+    );
+    res.json({ success: true, reviews: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/services/:id/reviews - Add service review
+app.post('/api/services/:id/reviews', authenticate, async (req, res) => {
+  try {
+    const { rating, reviewText } = req.body;
+    const reviewId = 'svr-' + Date.now();
+
+    await pool.query(
+      `INSERT INTO service_reviews (id, service_id, reviewer_id, reviewer_name, rating, review_text)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [reviewId, req.params.id, req.user.id, req.user.name, rating, reviewText]
+    );
+
+    res.status(201).json({ success: true, message: 'Review submitted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════════════════
+// MARKETPLACE API ENDPOINTS
+// ════════════════════════════════════════════════════════════════════════════════
+
+// GET /api/marketplace - List all marketplace items with filters
+app.get('/api/marketplace', async (req, res) => {
+  try {
+    const { category, condition, maxPrice, limit = 50, offset = 0 } = req.query;
+    
+    let query = 'SELECT * FROM marketplace_items WHERE status = $1';
+    const params = ['active'];
+    let paramCount = 2;
+
+    if (category) {
+      query += ` AND category = $${paramCount}`;
+      params.push(category);
+      paramCount++;
+    }
+
+    if (condition) {
+      query += ` AND condition = $${paramCount}`;
+      params.push(condition);
+      paramCount++;
+    }
+
+    if (maxPrice) {
+      query += ` AND price_kes <= $${paramCount}`;
+      params.push(parseInt(maxPrice));
+      paramCount++;
+    }
+
+    query += ` ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    const result = await pool.query(query, params);
+    
+    res.json({
+      success: true,
+      items: result.rows,
+      count: result.rows.length
+    });
+  } catch (err) {
+    console.error('Marketplace fetch error:', err);
+    res.json({ success: false, items: [], error: err.message });
+  }
+});
+
+// GET /api/marketplace/:id - Get single marketplace item
+app.get('/api/marketplace/:id', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM marketplace_items WHERE id = $1', [req.params.id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Item not found' });
+    }
+    res.json({ success: true, item: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/marketplace - Create new marketplace item (requires auth)
+app.post('/api/marketplace', authenticate, async (req, res) => {
+  try {
+    const { title, description, category, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, images } = req.body;
+    const itemId = 'mkt-' + Date.now();
+
+    await pool.query(
+      `INSERT INTO marketplace_items (id, title, description, category, seller_id, seller_name, seller_phone, price_kes, condition, item_type, is_negotiable, location_suburb, location_corridor, images)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
+      [itemId, title, description, category, req.user.id, req.user.name, req.user.phone, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, JSON.stringify(images || [])]
+    );
+
+    res.status(201).json({ success: true, itemId, message: 'Item posted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// DELETE /api/marketplace/:id - Delete marketplace item (owner only)
+app.delete('/api/marketplace/:id', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT seller_id FROM marketplace_items WHERE id = $1', [req.params.id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Item not found' });
+    }
+    if (result.rows[0].seller_id !== req.user.id && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Unauthorized' });
+    }
+
+    await pool.query('DELETE FROM marketplace_items WHERE id = $1', [req.params.id]);
+    res.json({ success: true, message: 'Item deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});

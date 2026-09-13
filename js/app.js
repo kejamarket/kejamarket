@@ -452,6 +452,7 @@ class NairobiRentalsApp {
     allButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     this.activeServiceCategory = service;
+    this.applyFilters(); // Apply filters and refresh UI
     this.showToast(`📍 Filtering services: ${service}`, 'info');
   }
 
@@ -460,6 +461,7 @@ class NairobiRentalsApp {
     allButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     this.activeMarketplaceItem = item;
+    this.applyFilters(); // Apply filters and refresh UI
     this.showToast(`🛍️ Filtering items: ${item}`, 'info');
   }
 
@@ -647,6 +649,16 @@ class NairobiRentalsApp {
   }
 
   applyFilters() {
+    // Load correct data source based on filter mode
+    if (this.currentFilterMode === 'services') {
+      this.loadServicesData();
+      return;
+    } else if (this.currentFilterMode === 'marketplace') {
+      this.loadMarketplaceData();
+      return;
+    }
+
+    // Otherwise proceed with properties filtering
     let result = this.properties.filter(p => {
       // Hide taken / occupied properties filter
       if (this.hideTaken && (p.isTaken || p.status === 'taken')) return false;
@@ -2002,6 +2014,48 @@ class NairobiRentalsApp {
     }
 
     this.applyFilters();
+  }
+
+  async loadServicesData() {
+    try {
+      const query = this.activeServiceCategory && this.activeServiceCategory !== 'All' 
+        ? `?serviceType=${encodeURIComponent(this.activeServiceCategory)}`
+        : '';
+      
+      const res = await fetch(`/api/services${query}`);
+      if (res.ok) {
+        const data = await res.json();
+        this.services = data.services || [];
+      }
+    } catch (err) {
+      console.warn('Services fetch error:', err);
+      this.services = [];
+    }
+
+    this.renderListingsGrid(); // Reuse grid rendering with services
+  }
+
+  async loadMarketplaceData() {
+    try {
+      const params = new URLSearchParams();
+      if (this.activeMarketplaceItem && this.activeMarketplaceItem !== 'All') {
+        params.append('category', this.activeMarketplaceItem);
+      }
+      if (this.maxPrice && this.maxPrice < 100000) {
+        params.append('maxPrice', this.maxPrice);
+      }
+
+      const res = await fetch(`/api/marketplace?${params}`);
+      if (res.ok) {
+        const data = await res.json();
+        this.marketplaceItems = data.items || [];
+      }
+    } catch (err) {
+      console.warn('Marketplace fetch error:', err);
+      this.marketplaceItems = [];
+    }
+
+    this.renderListingsGrid(); // Reuse grid rendering with items
   }
 
   showToast(message, type = 'success') {

@@ -208,3 +208,80 @@ CREATE TABLE IF NOT EXISTS whatsapp_alert_subs (
 );
 CREATE INDEX IF NOT EXISTS idx_wa_subs_phone ON whatsapp_alert_subs(phone);
 CREATE INDEX IF NOT EXISTS idx_wa_subs_active ON whatsapp_alert_subs(is_active);
+
+
+-- ════════════════════════════════════════
+-- SERVICES (Service Providers)
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS services (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  service_type TEXT NOT NULL,
+  provider_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  provider_name TEXT,
+  provider_phone TEXT,
+  provider_rating NUMERIC(2,1) DEFAULT 0,
+  review_count INTEGER DEFAULT 0,
+  price_min NUMERIC(12,2),
+  price_max NUMERIC(12,2),
+  is_verified BOOLEAN DEFAULT FALSE,
+  coverage_area TEXT,
+  service_hours TEXT,
+  images JSONB NOT NULL DEFAULT '[]'::jsonb,
+  status TEXT DEFAULT 'active',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  raw_data JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+
+CREATE INDEX IF NOT EXISTS idx_services_type ON services(service_type);
+CREATE INDEX IF NOT EXISTS idx_services_provider ON services(provider_id);
+CREATE INDEX IF NOT EXISTS idx_services_verified ON services(is_verified);
+CREATE INDEX IF NOT EXISTS idx_services_status ON services(status);
+
+-- ════════════════════════════════════════
+-- SERVICE REVIEWS & RATINGS
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS service_reviews (
+  id TEXT PRIMARY KEY,
+  service_id TEXT NOT NULL REFERENCES services(id) ON DELETE CASCADE,
+  reviewer_id TEXT NOT NULL,
+  reviewer_name TEXT,
+  rating NUMERIC(2,1) NOT NULL,
+  review_text TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  raw_data JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+
+CREATE INDEX IF NOT EXISTS idx_service_reviews_service ON service_reviews(service_id);
+
+-- ════════════════════════════════════════
+-- MARKETPLACE (Used Items for Sale)
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS marketplace_items (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  category TEXT NOT NULL,
+  seller_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  seller_name TEXT,
+  seller_phone TEXT,
+  price_kes NUMERIC(12,2),
+  condition TEXT,
+  item_type TEXT,
+  is_negotiable BOOLEAN DEFAULT FALSE,
+  location_suburb TEXT,
+  location_corridor TEXT,
+  images JSONB NOT NULL DEFAULT '[]'::jsonb,
+  status TEXT DEFAULT 'active',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  raw_data JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+
+CREATE INDEX IF NOT EXISTS idx_marketplace_category ON marketplace_items(category);
+CREATE INDEX IF NOT EXISTS idx_marketplace_seller ON marketplace_items(seller_id);
+CREATE INDEX IF NOT EXISTS idx_marketplace_price ON marketplace_items(price_kes);
+CREATE INDEX IF NOT EXISTS idx_marketplace_status ON marketplace_items(status);
+CREATE INDEX IF NOT EXISTS idx_marketplace_condition ON marketplace_items(condition);
