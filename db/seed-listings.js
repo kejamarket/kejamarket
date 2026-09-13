@@ -22,7 +22,11 @@ const seedListings = {
       landlordId: 'landlord-001',
       landlordName: 'John Mwangi',
       landlordPhone: '+254712345678',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1516156008625-3dca27954986?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1540932239986-310128078ceb?w=500&h=400&fit=crop'
+      ],
       amenities: ['WiFi', 'Parking', 'Backup Power', 'Security'],
       posted: new Date('2025-01-15'),
       is_verified: false,
@@ -42,7 +46,12 @@ const seedListings = {
       landlordId: 'landlord-002',
       landlordName: 'Prime Property Ltd',
       landlordPhone: '+254722999888',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1519167758993-5797e2c67e72?w=500&h=400&fit=crop'
+      ],
       amenities: ['Gym', 'WiFi', 'Parking', 'Security', 'Elevator'],
       posted: new Date('2025-01-10'),
       is_verified: false,
@@ -62,7 +71,11 @@ const seedListings = {
       landlordId: 'landlord-003',
       landlordName: 'Sarah Kariuki',
       landlordPhone: '+254731123456',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1570129477492-45a003537e1b?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500&h=400&fit=crop'
+      ],
       amenities: ['Garden', 'Parking', 'Security', 'DSQ'],
       posted: new Date('2025-01-12'),
       is_verified: false,
@@ -82,7 +95,10 @@ const seedListings = {
       landlordId: 'landlord-004',
       landlordName: 'Runda Properties Co',
       landlordPhone: '+254756789012',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1532323544529-c0cea9014313?w=500&h=400&fit=crop'
+      ],
       amenities: ['Furnished', 'Security', 'Parking'],
       posted: new Date('2025-01-08'),
       is_verified: false,
@@ -102,7 +118,11 @@ const seedListings = {
       landlordId: 'landlord-005',
       landlordName: 'Kilimani Estate',
       landlordPhone: '+254702456789',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1493857671505-72967e2e2760?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=500&h=400&fit=crop'
+      ],
       amenities: ['Garden', 'DSQ', 'Parking', 'Security', 'Mature Trees'],
       posted: new Date('2025-01-14'),
       is_verified: false,
@@ -122,7 +142,10 @@ const seedListings = {
       landlordId: 'landlord-006',
       landlordName: 'Runda Cottages',
       landlordPhone: '+254798765432',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1516156008625-3dca27954986?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1537051527528-e9c0671cf6d0?w=500&h=400&fit=crop'
+      ],
       amenities: ['Security', 'Quiet', 'Parking'],
       posted: new Date('2025-01-11'),
       is_verified: false,
@@ -142,7 +165,11 @@ const seedListings = {
       landlordId: 'landlord-007',
       landlordName: 'Karen Developments Ltd',
       landlordPhone: '+254721654321',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1570129477492-45a003537e1b?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=500&h=400&fit=crop'
+      ],
       amenities: ['Modern Design', 'Parking', 'Security'],
       posted: new Date('2025-01-13'),
       is_verified: false,
@@ -162,7 +189,12 @@ const seedListings = {
       landlordId: 'landlord-008',
       landlordName: 'Prestige Homes',
       landlordPhone: '+254732111222',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1493857671505-72967e2e2760?w=500&h=400&fit=crop'
+      ],
       amenities: ['Gated Estate', 'Security', 'Garden', 'Parking'],
       posted: new Date('2025-01-09'),
       is_verified: false,
@@ -182,7 +214,10 @@ const seedListings = {
       landlordId: 'landlord-009',
       landlordName: 'Garden Estate Homes',
       landlordPhone: '+254743222333',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1570129477492-45a003537e1b?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=400&fit=crop'
+      ],
       amenities: ['Solar Heating', 'DSQ', 'Security', 'Modern'],
       posted: new Date('2025-01-07'),
       is_verified: false,
@@ -202,7 +237,11 @@ const seedListings = {
       landlordId: 'landlord-010',
       landlordName: 'Brookside Properties',
       landlordPhone: '+254754444555',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1519167758993-5797e2c67e72?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1532323544529-c0cea9014313?w=500&h=400&fit=crop'
+      ],
       amenities: ['Furnished', 'Modern Kitchen', 'Parking', 'Security'],
       posted: new Date('2025-01-06'),
       is_verified: false,
@@ -222,7 +261,10 @@ const seedListings = {
       landlordId: 'landlord-011',
       landlordName: 'Kahawa Properties',
       landlordPhone: '+254765555666',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1516156008625-3dca27954986?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1493857671505-72967e2e2760?w=500&h=400&fit=crop'
+      ],
       amenities: ['River View', 'Quiet', 'Space'],
       posted: new Date('2025-01-05'),
       is_verified: false,
@@ -242,7 +284,11 @@ const seedListings = {
       landlordId: 'landlord-012',
       landlordName: 'Northlands City Ltd',
       landlordPhone: '+254776666777',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1537051527528-e9c0671cf6d0?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=400&fit=crop'
+      ],
       amenities: ['Modern', 'Secure', 'Family-Friendly'],
       posted: new Date('2025-01-04'),
       is_verified: false,
@@ -264,7 +310,10 @@ const seedListings = {
       priceMax: 50000,
       coverageArea: 'All Nairobi',
       serviceHours: '24/7 Emergency',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-10'),
       is_verified: false,
       source: 'franciorsplumbing.co.ke'
@@ -281,7 +330,11 @@ const seedListings = {
       priceMax: 80000,
       coverageArea: 'All 47 Counties',
       serviceHours: 'Mon-Sun 8am-5pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1537462715957-aaed4a3c5200?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1621905251336-48416bdf1ea3?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-08'),
       is_verified: false,
       source: 'prologictechnologies.co.ke'
@@ -298,7 +351,10 @@ const seedListings = {
       priceMax: 15000,
       coverageArea: 'Nairobi & Kiambu',
       serviceHours: 'Mon-Sat 7am-6pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1581578731414-51c570dc53b3?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1527482797697-8795b1a4b5f8?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-12'),
       is_verified: false,
       source: 'zuuri.co.ke'
@@ -315,7 +371,10 @@ const seedListings = {
       priceMax: 25000,
       coverageArea: 'Nairobi CBD & Suburbs',
       serviceHours: 'Mon-Sun 6am-9pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1634429542364-16b8b1dcf91e?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-14'),
       is_verified: false,
       source: 'bestcarehandyman.co.ke'
@@ -332,7 +391,11 @@ const seedListings = {
       priceMax: 60000,
       coverageArea: 'Nairobi & environs',
       serviceHours: 'Mon-Fri 8am-5pm, Sat by arrangement',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-11'),
       is_verified: false,
       source: 'rissanhomes.com'
@@ -349,7 +412,10 @@ const seedListings = {
       priceMax: 100000,
       coverageArea: 'Nairobi & Western Kenya',
       serviceHours: 'Mon-Sun 6am-8pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1633431842437-138ec5142d28?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-09'),
       is_verified: false,
       source: 'zuuri.co.ke'
@@ -366,7 +432,10 @@ const seedListings = {
       priceMax: 20000,
       coverageArea: 'All Nairobi',
       serviceHours: 'Mon-Sat 8am-5pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1576091160550-112173f31c77?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1585420364456-abfa4a70f5d5?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-15'),
       is_verified: false,
       source: 'bestcarehandyman.co.ke'
@@ -383,7 +452,10 @@ const seedListings = {
       priceMax: 15000,
       coverageArea: 'All Nairobi',
       serviceHours: 'Mon-Sun 8am-6pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1584621674722-412a9d0f2a6a?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1551632786-de41eccbecd3?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-13'),
       is_verified: false,
       source: 'prologictechnologies.co.ke'
@@ -400,7 +472,10 @@ const seedListings = {
       priceMax: 10000,
       coverageArea: 'Nairobi Metro',
       serviceHours: 'Daily 8am-6pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1607330289024-1535c066f128?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1521314040809-c1a9ff68d57e?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-16'),
       is_verified: false,
       source: 'hinairobi.com'
@@ -417,7 +492,9 @@ const seedListings = {
       priceMax: 2000,
       coverageArea: 'All Nairobi',
       serviceHours: '24/7 Emergency',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1556014827-0ce5b34ff098?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-17'),
       is_verified: false,
       source: 'hinairobi.com'
@@ -434,7 +511,10 @@ const seedListings = {
       priceMax: 20000,
       coverageArea: 'All Nairobi',
       serviceHours: 'Daily 6am-6pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1581092549786-e37db3a4a5ba?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-18'),
       is_verified: false,
       source: 'hinairobi.com'
@@ -451,7 +531,10 @@ const seedListings = {
       priceMax: 5000,
       coverageArea: 'Nairobi & Kiambu',
       serviceHours: 'Mon-Sat 7am-6pm',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1559028615-cd4628902d4a?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-19'),
       is_verified: false,
       source: 'hinairobi.com'
@@ -472,7 +555,10 @@ const seedListings = {
       condition: 'like_new',
       isNegotiable: true,
       locationSuburb: 'Nairobi Central',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1588872657328-8e4438f90c51?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-14'),
       is_verified: false,
       source: 'chiro.co.ke'
@@ -489,7 +575,10 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Kahawa West',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1505693314967-38190f2a4b47?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-12'),
       is_verified: false,
       source: 'chiro.co.ke'
@@ -506,7 +595,10 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Kahawa West',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-11'),
       is_verified: false,
       source: 'chiro.co.ke'
@@ -523,7 +615,9 @@ const seedListings = {
       condition: 'good',
       isNegotiable: false,
       locationSuburb: 'Kahawa Wendani',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-10'),
       is_verified: false,
       source: 'chiro.co.ke'
@@ -540,7 +634,11 @@ const seedListings = {
       condition: 'excellent',
       isNegotiable: true,
       locationSuburb: 'Loresho',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1505693314967-38190f2a4b47?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1540932239986-310128078ceb?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-13'),
       is_verified: false,
       source: 'chiro.co.ke'
@@ -557,7 +655,9 @@ const seedListings = {
       condition: 'like_new',
       isNegotiable: true,
       locationSuburb: 'Kabarak/Rafiki',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1609042231396-b9a88dc2e5ef?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-15'),
       is_verified: false,
       source: 'chiro.co.ke'
@@ -574,7 +674,10 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Kabarak',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-08'),
       is_verified: false,
       source: 'chiro.co.ke'
@@ -591,7 +694,9 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Olrongai',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-09'),
       is_verified: false,
       source: 'chiro.co.ke'
@@ -608,7 +713,11 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Westlands',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1516623318033-44fdd5e19a89?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1540932239986-310128078ceb?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-07'),
       is_verified: false,
       source: 'craftedtkfurnitures.com'
@@ -625,7 +734,10 @@ const seedListings = {
       condition: 'excellent',
       isNegotiable: false,
       locationSuburb: 'Kilimani',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-14'),
       is_verified: false,
       source: 'corido.co.ke'
@@ -642,7 +754,10 @@ const seedListings = {
       condition: 'like_new',
       isNegotiable: true,
       locationSuburb: 'Lavington',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-16'),
       is_verified: false,
       source: 'nboresale.com'
@@ -659,7 +774,10 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Kilimani',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1631910478292-9b34a50b5e8e?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-17'),
       is_verified: false,
       source: 'hinairobi.com'
@@ -676,7 +794,11 @@ const seedListings = {
       condition: 'excellent',
       isNegotiable: true,
       locationSuburb: 'Upper Hill',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1606986628025-35d57e735ae0?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-18'),
       is_verified: false,
       source: 'hinairobi.com'
@@ -693,7 +815,10 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Nyali',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1582735689369-6efecae9cee5?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-19'),
       is_verified: false,
       source: 'hinairobi.com'
@@ -710,7 +835,9 @@ const seedListings = {
       condition: 'new',
       isNegotiable: false,
       locationSuburb: 'Westlands',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1567998620282-92d6a3cf3d3b?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-20'),
       is_verified: false,
       source: 'hinairobi.com'
@@ -727,7 +854,10 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Mombasa Road',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1600432773413-69e4bfacfb4c?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1534693975821-a9d2a6a6a8c5?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-21'),
       is_verified: false,
       source: 'corido.co.ke'
@@ -744,7 +874,9 @@ const seedListings = {
       condition: 'excellent',
       isNegotiable: false,
       locationSuburb: 'Kileleshwa',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1507842620342-583eccf3f3ef?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-22'),
       is_verified: false,
       source: 'nboresale.com'
@@ -761,7 +893,10 @@ const seedListings = {
       condition: 'good',
       isNegotiable: true,
       locationSuburb: 'Runda',
-      images: [],
+      images: [
+        'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=400&fit=crop'
+      ],
       posted: new Date('2025-01-23'),
       is_verified: false,
       source: 'hinairobi.com'

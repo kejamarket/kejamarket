@@ -3272,21 +3272,22 @@ app.get('/api/admin/pending', requireAuth, async (req, res) => {
     // Get pending properties
     const propsResult = await pool.query(
       `SELECT id, title, description, rent_kes as price, estate_suburb as location, 
-              created_at, landlord_id as posted_by 
+              created_at, landlord_id as posted_by, raw_data,
+              COALESCE((raw_data->>'images')::jsonb, '[]'::jsonb) as images
        FROM properties WHERE is_verified = false ORDER BY created_at ASC`
     );
 
     // Get pending services
     const svcsResult = await pool.query(
       `SELECT id, title, description, price_min, price_max, service_type, 
-              created_at, provider_id as posted_by 
+              created_at, provider_id as posted_by, images
        FROM services WHERE is_verified = false ORDER BY created_at ASC`
     );
 
     // Get pending marketplace items
     const itemsResult = await pool.query(
       `SELECT id, title, description, price_kes as price, category, location_suburb as location,
-              created_at, seller_id as posted_by 
+              created_at, seller_id as posted_by, images
        FROM marketplace_items WHERE is_verified = false ORDER BY created_at ASC`
     );
 
