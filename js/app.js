@@ -42,6 +42,7 @@ class NairobiRentalsApp {
 
   async init() {
     this.loadFavorites();
+    this.currentFilterMode = 'properties'; // Default to properties
     this.renderCategoryPills();
     this.populateSidebarFilters();
     this.setupEventListeners();
@@ -277,36 +278,86 @@ class NairobiRentalsApp {
   }
 
   switchFilterTab(tab) {
-    const propertiesFilters = document.getElementById('sidebar-properties-filters');
-    const servicesFilters = document.getElementById('sidebar-services-filters');
+    const categoryLabel = document.getElementById('filter-category-label');
+    const categoryList = document.getElementById('sidebar-category-list');
+    const propertyFiltersExtra = document.getElementById('sidebar-property-filters-extra');
+    const serviceFiltersExtra = document.getElementById('sidebar-service-filters-extra');
+    const marketplaceFiltersExtra = document.getElementById('sidebar-marketplace-filters-extra');
     const propertiesBtn = document.getElementById('filter-tab-properties');
     const servicesBtn = document.getElementById('filter-tab-services');
+    const marketplaceBtn = document.getElementById('filter-tab-marketplace');
+
+    // Reset all tabs to inactive style
+    [propertiesBtn, servicesBtn, marketplaceBtn].forEach(btn => {
+      btn.style.background = 'transparent';
+      btn.style.color = '#475569';
+      btn.style.border = '1px solid #e2e8f0';
+    });
+
+    // Hide all extra filter sections
+    if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'none';
+    if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'none';
+    if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'none';
 
     if (tab === 'properties') {
-      propertiesFilters.style.display = 'block';
-      servicesFilters.style.display = 'none';
       propertiesBtn.style.background = '#00b53f';
       propertiesBtn.style.color = 'white';
-      servicesBtn.style.background = 'transparent';
-      servicesBtn.style.color = '#475569';
-      servicesBtn.style.border = '1px solid #e2e8f0';
+      propertiesBtn.style.border = 'none';
+      categoryLabel.innerHTML = '<i class="fas fa-th-list" style="color: #00b53f;"></i> Property Type';
+      this.currentFilterMode = 'properties';
+      this.renderPropertyCategories();
+      if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'block';
     } else if (tab === 'services') {
-      propertiesFilters.style.display = 'none';
-      servicesFilters.style.display = 'block';
-      propertiesBtn.style.background = 'transparent';
-      propertiesBtn.style.color = '#475569';
-      propertiesBtn.style.border = '1px solid #e2e8f0';
       servicesBtn.style.background = '#00b53f';
       servicesBtn.style.color = 'white';
-      this.populateServicesFilters();
+      servicesBtn.style.border = 'none';
+      categoryLabel.innerHTML = '<i class="fas fa-tools" style="color: #00b53f;"></i> Service Type';
+      this.currentFilterMode = 'services';
+      this.renderServiceCategories();
+      if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'block';
+    } else if (tab === 'marketplace') {
+      marketplaceBtn.style.background = '#00b53f';
+      marketplaceBtn.style.color = 'white';
+      marketplaceBtn.style.border = 'none';
+      categoryLabel.innerHTML = '<i class="fas fa-shopping-bag" style="color: #00b53f;"></i> House Item Type';
+      this.currentFilterMode = 'marketplace';
+      this.renderMarketplaceCategories();
+      if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'block';
     }
   }
 
-  populateServicesFilters() {
-    const serviceList = document.getElementById('sidebar-service-list');
-    if (!serviceList) return;
+  renderPropertyCategories() {
+    const categoryList = document.getElementById('sidebar-category-list');
+    if (!categoryList) return;
 
-    const getServiceIcon = (service) => {
+    const getIcon = (cat) => {
+      if (cat === 'All') return 'fa-th-large';
+      if (cat.includes('BnB') || cat.includes('Airbnb')) return 'fa-bed';
+      if (cat.includes('Villa') || cat.includes('Vacation')) return 'fa-umbrella-beach';
+      if (cat.includes('Conference') || cat.includes('Boardroom')) return 'fa-chalkboard-teacher';
+      if (cat.includes('Meeting') || cat.includes('Event')) return 'fa-handshake';
+      if (cat.includes('Office') || cat.includes('Co-Working') || cat.includes('Shop') || cat.includes('Commercial')) return 'fa-briefcase';
+      if (cat.includes('Shared') || cat.includes('Hostel')) return 'fa-users';
+      if (cat.includes('Bedsitter') || cat.includes('Single')) return 'fa-door-open';
+      if (cat.includes('Maisonette') || cat.includes('Townhouse')) return 'fa-building';
+      if (cat.includes('Penthouse') || cat.includes('Serviced')) return 'fa-crown';
+      if (cat.includes('Marketplace')) return 'fa-shopping-bag';
+      return 'fa-home';
+    };
+
+    const allItem = `<button class="sidebar-cat-item active" data-category="All" onclick="app.setCategory('All', this)"><i class="fas fa-th-large"></i><span>All Properties</span></button>`;
+    const items = MASTER_CATEGORIES
+      .filter(cat => !cat.includes('Marketplace'))
+      .map(cat => `<button class="sidebar-cat-item" data-category="${cat}" onclick="app.setCategory('${cat}', this)"><i class="fas ${getIcon(cat)}"></i><span>${cat}</span></button>`)
+      .join('');
+    categoryList.innerHTML = allItem + items;
+  }
+
+  renderServiceCategories() {
+    const categoryList = document.getElementById('sidebar-category-list');
+    if (!categoryList) return;
+
+    const getIcon = (service) => {
       if (service.includes('Plumb')) return 'fa-wrench';
       if (service.includes('Electric')) return 'fa-bolt';
       if (service.includes('Clean')) return 'fa-broom';
@@ -324,43 +375,60 @@ class NairobiRentalsApp {
 
     const allItem = `<button class="sidebar-cat-item active" data-service="All" onclick="app.setServiceCategory('All', this)"><i class="fas fa-th-large"></i><span>All Services</span></button>`;
     const items = SERVICE_CATEGORIES.map(service =>
-      `<button class="sidebar-cat-item" data-service="${service}" onclick="app.setServiceCategory('${service}', this)"><i class="fas ${getServiceIcon(service)}"></i><span>${service}</span></button>`
+      `<button class="sidebar-cat-item" data-service="${service}" onclick="app.setServiceCategory('${service}', this)"><i class="fas ${getIcon(service)}"></i><span>${service}</span></button>`
     ).join('');
-    serviceList.innerHTML = allItem + items;
-
-    // Populate service corridor and suburb filters
-    const serviceCorridorSelect = document.getElementById('filter-service-corridor');
-    if (serviceCorridorSelect) {
-      serviceCorridorSelect.innerHTML = `<option value="all">All Nairobi Corridors & Satellite Towns</option>` +
-        NAIROBI_REGIONS.map(r => `<option value="${r.corridorId}">${r.corridorName} (${r.county})</option>`).join('');
-      serviceCorridorSelect.addEventListener('change', (e) => {
-        this.activeServiceCorridor = e.target.value;
-        this.updateServiceSuburbOptions();
-      });
-    }
-
-    this.updateServiceSuburbOptions();
+    categoryList.innerHTML = allItem + items;
   }
 
-  updateServiceSuburbOptions() {
-    const serviceSuburbSelect = document.getElementById('filter-service-suburb');
-    if (!serviceSuburbSelect) return;
+  renderMarketplaceCategories() {
+    const categoryList = document.getElementById('sidebar-category-list');
+    if (!categoryList) return;
 
-    let availableSuburbs = ALL_SUBURBS;
-    if (this.activeServiceCorridor && this.activeServiceCorridor !== 'all') {
-      availableSuburbs = ALL_SUBURBS.filter(s => s.corridorId === this.activeServiceCorridor);
-    }
+    const getIcon = (item) => {
+      if (item.includes('Kitchen')) return 'fa-utensils';
+      if (item.includes('Furniture') || item.includes('Sofas') || item.includes('Chair')) return 'fa-couch';
+      if (item.includes('Bed') || item.includes('Mattress')) return 'fa-bed';
+      if (item.includes('Dining')) return 'fa-chair';
+      if (item.includes('Wardrobe') || item.includes('Cabinet')) return 'fa-square';
+      if (item.includes('Electronics') || item.includes('TV')) return 'fa-tv';
+      if (item.includes('Air')) return 'fa-wind';
+      if (item.includes('Water Heater') || item.includes('Tank')) return 'fa-shower';
+      if (item.includes('Cook') || item.includes('Stove')) return 'fa-fire';
+      if (item.includes('Washing')) return 'fa-water';
+      if (item.includes('Fridge') || item.includes('Freezer')) return 'fa-snowflake';
+      if (item.includes('Mirror') || item.includes('Decor')) return 'fa-mirror';
+      if (item.includes('Light') || item.includes('Fixture')) return 'fa-lightbulb';
+      if (item.includes('Door') || item.includes('Lock')) return 'fa-door-closed';
+      if (item.includes('Paint') || item.includes('Wallpaper')) return 'fa-palette';
+      if (item.includes('Building')) return 'fa-hammer';
+      if (item.includes('Tools')) return 'fa-toolbox';
+      if (item.includes('Book')) return 'fa-book';
+      if (item.includes('Sport')) return 'fa-basketball';
+      if (item.includes('Garden')) return 'fa-leaf';
+      return 'fa-shopping-bag';
+    };
 
-    serviceSuburbSelect.innerHTML = `<option value="all">All Suburbs & Estates (${availableSuburbs.length})</option>` +
-      availableSuburbs.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+    const allItem = `<button class="sidebar-cat-item active" data-item="All" onclick="app.setMarketplaceItem('All', this)"><i class="fas fa-th-large"></i><span>All House Items</span></button>`;
+    const items = HOUSE_ITEMS.map(item =>
+      `<button class="sidebar-cat-item" data-item="${item}" onclick="app.setMarketplaceItem('${item}', this)"><i class="fas ${getIcon(item)}"></i><span>${item}</span></button>`
+    ).join('');
+    categoryList.innerHTML = allItem + items;
   }
 
   setServiceCategory(service, btn) {
-    const allButtons = document.querySelectorAll('#sidebar-service-list .sidebar-cat-item');
+    const allButtons = document.querySelectorAll('#sidebar-category-list .sidebar-cat-item');
     allButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     this.activeServiceCategory = service;
     this.showToast(`📍 Filtering services: ${service}`, 'info');
+  }
+
+  setMarketplaceItem(item, btn) {
+    const allButtons = document.querySelectorAll('#sidebar-category-list .sidebar-cat-item');
+    allButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    this.activeMarketplaceItem = item;
+    this.showToast(`🛍️ Filtering items: ${item}`, 'info');
   }
 
    setupEventListeners() {

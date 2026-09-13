@@ -277,13 +277,16 @@
         </div>
       </div>
 
-      <!-- Filter Type Tabs: Properties vs Services -->
-      <div style="display:flex; gap:6px; padding:12px 0; border-bottom:2px solid #e2e8f0; margin-bottom:12px;">
-        <button id="filter-tab-properties" class="category-pill active" style="flex:1;font-size:0.85rem;padding:8px 12px;margin:0;background:#00b53f;color:white;cursor:pointer;font-weight:700;border-radius:6px;" onclick="app.switchFilterTab('properties')">
-          <i class="fas fa-home"></i> Properties
+      <!-- Filter Type Tabs: Properties vs Services vs Marketplace -->
+      <div style="display:flex; gap:6px; padding:12px 0; border-bottom:2px solid #e2e8f0; margin-bottom:12px; flex-wrap:wrap;">
+        <button id="filter-tab-properties" class="category-pill active" style="flex:1;min-width:100px;font-size:0.85rem;padding:8px 12px;margin:0;background:#00b53f;color:white;cursor:pointer;font-weight:700;border-radius:6px;border:none;" onclick="app.switchFilterTab('properties')">
+          <i class="fas fa-home"></i> Property Type
         </button>
-        <button id="filter-tab-services" class="category-pill" style="flex:1;font-size:0.85rem;padding:8px 12px;margin:0;background:transparent;color:#475569;cursor:pointer;font-weight:700;border-radius:6px;border:1px solid #e2e8f0;" onclick="app.switchFilterTab('services')">
-          <i class="fas fa-tools"></i> Services
+        <button id="filter-tab-services" class="category-pill" style="flex:1;min-width:100px;font-size:0.85rem;padding:8px 12px;margin:0;background:transparent;color:#475569;cursor:pointer;font-weight:700;border-radius:6px;border:1px solid #e2e8f0;" onclick="app.switchFilterTab('services')">
+          <i class="fas fa-tools"></i> Service Type
+        </button>
+        <button id="filter-tab-marketplace" class="category-pill" style="flex:1;min-width:100px;font-size:0.85rem;padding:8px 12px;margin:0;background:transparent;color:#475569;cursor:pointer;font-weight:700;border-radius:6px;border:1px solid #e2e8f0;" onclick="app.switchFilterTab('marketplace')">
+          <i class="fas fa-shopping-bag"></i> House Items
         </button>
       </div>
 

@@ -296,3 +296,27 @@ const SERVICE_CATEGORIES = [
   'Garden Maintenance',
   'House Sitting / Pet Care'
 ];
+
+// House items for marketplace (used items for sale)
+const HOUSE_ITEMS = [
+  'Kitchen Appliances',
+  'Furniture & Sofas',
+  'Beds & Mattresses',
+  'Dining Tables & Chairs',
+  'Wardrobes & Cabinets',
+  'Electronics & TV',
+  'Air Conditioning Units',
+  'Water Heaters & Tanks',
+  'Cooking Stoves & Cookers',
+  'Washing Machines',
+  'Fridges & Freezers',
+  'Wall Mirrors & Decorations',
+  'Lighting & Fixtures',
+  'Door Handles & Locks',
+  'Paint & Wallpaper',
+  'Building Materials',
+  'Tools & Equipment',
+  'Books & Media',
+  'Sports Equipment',
+  'Garden Tools'
+];
