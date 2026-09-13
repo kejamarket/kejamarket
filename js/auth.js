@@ -38,12 +38,20 @@ const kejaAuth = (() => {
     if (token) localStorage.setItem('keja_token', token);
     if (user) localStorage.setItem('keja_session', JSON.stringify(user));
     if (typeof applyAuthWall === 'function') applyAuthWall(user);
+    // Update post button visibility when session changes
+    if (window.app && typeof window.app.updatePostButtonsVisibility === 'function') {
+      window.app.updatePostButtonsVisibility();
+    }
   }
 
   function clearSession() {
     localStorage.removeItem('keja_token');
     localStorage.removeItem('keja_session');
     if (typeof applyAuthWall === 'function') applyAuthWall(null);
+    // Update post button visibility when session is cleared
+    if (window.app && typeof window.app.updatePostButtonsVisibility === 'function') {
+      window.app.updatePostButtonsVisibility();
+    }
   }
 
   function getAuthHeaders() {
@@ -795,6 +803,29 @@ const kejaAuth = (() => {
   }
 
   /* ─────────────────────────────────────────
+     ROLE GUARD (ANY AUTHENTICATED USER)
+  ───────────────────────────────────────── */
+  function requireAuthForAction(modalId, actionType) {
+    const session = getSession();
+    if (!session) {
+      const msgMap = {
+        'service': 'Please sign in to post a service.',
+        'marketplace': 'Please sign in to sell an item.'
+      };
+      const msg = msgMap[actionType] || 'Please sign in to continue.';
+      if (window.app) window.app.showToast(msg, 'info');
+      switchTab('signin');
+      openAuthModal();
+      return;
+    }
+
+    // Any authenticated user can post services and marketplace items
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal(modalId);
+    }
+  }
+
+  /* ─────────────────────────────────────────
      SYNC SESSION WITH SERVER ON BOOT
   ───────────────────────────────────────── */
   async function syncSession() {
@@ -1115,6 +1146,7 @@ const kejaAuth = (() => {
     signOut,
     togglePwd,
     requireLandlordForAction,
+    requireAuthForAction,
     requireTenantAuth,
     getSession,
     getToken,

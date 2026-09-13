@@ -203,7 +203,17 @@
         
         <!-- Post Ad Button (Landlord / Agent only) -->
         <button class="btn-post-ad" id="btn-header-post-ad" style="display: none;" onclick="kejaAuth.requireLandlordForAction('modal-post-ad')">
-          <i class="fas fa-plus-circle"></i> Post
+          <i class="fas fa-plus-circle"></i> Post Rental
+        </button>
+
+        <!-- Post Service Button (Service Providers) -->
+        <button class="btn-post-ad" id="btn-header-post-service" style="display: none; background: #7c3aed;" onclick="kejaAuth.requireAuthForAction('modal-post-service', 'service')">
+          <i class="fas fa-tools"></i> Post Service
+        </button>
+
+        <!-- Post Marketplace Button (Tenants/Anyone) -->
+        <button class="btn-post-ad" id="btn-header-post-marketplace" style="display: none; background: #f59e0b;" onclick="kejaAuth.requireAuthForAction('modal-post-marketplace', 'marketplace')">
+          <i class="fas fa-shopping-bag"></i> Sell Item
         </button>
 
         <!-- Favorites (Heart) -->
@@ -740,8 +750,158 @@
   </div>
 
   <!-- ====================================================================
-       MODAL 2: Property Detail & Community Transparency Review
+       MODAL 1b: Post Service (Service Provider)
        ==================================================================== -->
+  <div class="modal-backdrop" id="modal-post-service">
+    <div class="modal-dialog" style="max-width: 700px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-tools" style="color: #7c3aed;"></i> Post a Service</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-post-service')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-post-service" onsubmit="app.submitServicePost(event)">
+          
+          <div class="form-group">
+            <label>Service Type *</label>
+            <select id="service-type" class="form-control" required>
+              <option value="">-- Select Service Type --</option>
+              <option value="Plumbing Services">Plumbing Services</option>
+              <option value="Electrical Services">Electrical Services</option>
+              <option value="Cleaning Services">Cleaning Services</option>
+              <option value="Painting & Renovation">Painting & Renovation</option>
+              <option value="Pest Control">Pest Control</option>
+              <option value="Security Services">Security Services</option>
+              <option value="Handyman Services">Handyman Services</option>
+              <option value="Carpentry & Furniture">Carpentry & Furniture</option>
+              <option value="Appliance Repair">Appliance Repair</option>
+              <option value="Water Tank Cleaning">Water Tank Cleaning</option>
+              <option value="Garden Maintenance">Garden Maintenance</option>
+              <option value="House Sitting / Pet Care">House Sitting / Pet Care</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Service Title *</label>
+            <input type="text" id="service-title" class="form-control" placeholder="e.g. Professional Plumbing & Water Repair" required>
+          </div>
+
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="service-description" class="form-control" placeholder="Describe your service, experience, and what you offer..." required></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>Price Range (Min) KES</label>
+              <input type="number" id="service-price-min" class="form-control" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+              <label>Price Range (Max) KES</label>
+              <input type="number" id="service-price-max" class="form-control" placeholder="50000" min="0">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Coverage Area (Suburb/Estate)</label>
+            <input type="text" placeholder="e.g. Kilimani, Ruaka, Westlands" class="form-control" id="service-area">
+          </div>
+
+          <div class="form-group">
+            <label>Service Hours</label>
+            <input type="text" placeholder="e.g. Mon-Fri 8AM-6PM, Emergency 24/7" class="form-control" id="service-hours">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-post-service')">Cancel</button>
+            <button type="submit" class="btn-primary" style="background: #7c3aed;"><i class="fas fa-check-circle"></i> Post Service</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 1c: Post Marketplace Item (Used Items for Sale)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-post-marketplace">
+    <div class="modal-dialog" style="max-width: 700px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-shopping-bag" style="color: #f59e0b;"></i> Sell Used Item</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-post-marketplace')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-post-marketplace" onsubmit="app.submitMarketplacePost(event)">
+          
+          <div class="form-group">
+            <label>Item Category *</label>
+            <select id="marketplace-category" class="form-control" required>
+              <option value="">-- Select Category --</option>
+              <option value="Kitchen Appliances">Kitchen Appliances</option>
+              <option value="Furniture & Sofas">Furniture & Sofas</option>
+              <option value="Beds & Mattresses">Beds & Mattresses</option>
+              <option value="Dining Tables & Chairs">Dining Tables & Chairs</option>
+              <option value="Wardrobes & Cabinets">Wardrobes & Cabinets</option>
+              <option value="Electronics & TV">Electronics & TV</option>
+              <option value="Air Conditioning Units">Air Conditioning Units</option>
+              <option value="Water Heaters & Tanks">Water Heaters & Tanks</option>
+              <option value="Cooking Stoves & Cookers">Cooking Stoves & Cookers</option>
+              <option value="Washing Machines">Washing Machines</option>
+              <option value="Fridges & Freezers">Fridges & Freezers</option>
+              <option value="Wall Mirrors & Decorations">Wall Mirrors & Decorations</option>
+              <option value="Lighting & Fixtures">Lighting & Fixtures</option>
+              <option value="Door Handles & Locks">Door Handles & Locks</option>
+              <option value="Paint & Wallpaper">Paint & Wallpaper</option>
+              <option value="Building Materials">Building Materials</option>
+              <option value="Tools & Equipment">Tools & Equipment</option>
+              <option value="Books & Media">Books & Media</option>
+              <option value="Sports Equipment">Sports Equipment</option>
+              <option value="Garden Tools">Garden Tools</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Item Title *</label>
+            <input type="text" id="marketplace-title" class="form-control" placeholder="e.g. Almost New LG Refrigerator, 3-Door" required>
+          </div>
+
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="marketplace-description" class="form-control" placeholder="Describe the item condition, features, why you're selling..." required></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>Price (KES) *</label>
+              <input type="number" id="marketplace-price" class="form-control" placeholder="10000" min="0" required>
+            </div>
+            <div class="form-group">
+              <label>Condition *</label>
+              <select id="marketplace-condition" class="form-control" required>
+                <option value="">-- Select --</option>
+                <option value="Like New">✨ Like New</option>
+                <option value="Good">👍 Good Condition</option>
+                <option value="Fair">🔧 Used / Fair</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><input type="checkbox" id="marketplace-negotiable"> Price Negotiable</label>
+          </div>
+
+          <div class="form-group">
+            <label>Location (Suburb/Estate)</label>
+            <input type="text" placeholder="e.g. Kilimani, Ruaka" class="form-control" id="marketplace-location">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-post-marketplace')">Cancel</button>
+            <button type="submit" class="btn-primary" style="background: #f59e0b;"><i class="fas fa-check-circle"></i> Post Item for Sale</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <div class="modal-backdrop" id="modal-property-detail">
     <div class="modal-dialog" style="max-width: 860px;">
       <div class="modal-header">
