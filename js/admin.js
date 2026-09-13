@@ -732,7 +732,7 @@ class AdminPortalEngine {
       document.getElementById('pending-total-count').textContent = data.counts.total;
 
       // Update pending badge in nav
-      document.getElementById('admin-nav-pending').textContent = data.counts.total;
+      document.getElementById('admin-nav-verification-pending').textContent = data.counts.total;
 
       this.renderPendingItems(data.pending);
     } catch (err) {
