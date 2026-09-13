@@ -3113,7 +3113,7 @@ app.get('/api/services/:id', async (req, res) => {
 });
 
 // POST /api/services - Create new service (requires auth)
-app.post('/api/services', authenticate, async (req, res) => {
+app.post('/api/services', requireAuth, async (req, res) => {
   try {
     const { title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours, images } = req.body;
     const serviceId = 'svc-' + Date.now();
@@ -3144,7 +3144,7 @@ app.get('/api/services/:id/reviews', async (req, res) => {
 });
 
 // POST /api/services/:id/reviews - Add service review
-app.post('/api/services/:id/reviews', authenticate, async (req, res) => {
+app.post('/api/services/:id/reviews', requireAuth, async (req, res) => {
   try {
     const { rating, reviewText } = req.body;
     const reviewId = 'svr-' + Date.now();
@@ -3222,7 +3222,7 @@ app.get('/api/marketplace/:id', async (req, res) => {
 });
 
 // POST /api/marketplace - Create new marketplace item (requires auth)
-app.post('/api/marketplace', authenticate, async (req, res) => {
+app.post('/api/marketplace', requireAuth, async (req, res) => {
   try {
     const { title, description, category, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, images } = req.body;
     const itemId = 'mkt-' + Date.now();
@@ -3240,7 +3240,7 @@ app.post('/api/marketplace', authenticate, async (req, res) => {
 });
 
 // DELETE /api/marketplace/:id - Delete marketplace item (owner only)
-app.delete('/api/marketplace/:id', authenticate, async (req, res) => {
+app.delete('/api/marketplace/:id', requireAuth, async (req, res) => {
   try {
     const result = await pool.query('SELECT seller_id FROM marketplace_items WHERE id = $1', [req.params.id]);
     if (result.rows.length === 0) {
@@ -3262,7 +3262,7 @@ app.delete('/api/marketplace/:id', authenticate, async (req, res) => {
 // ════════════════════════════════════════════════════════════════════════════════
 
 // GET /api/admin/pending - Get all pending items awaiting verification (requires admin)
-app.get('/api/admin/pending', authenticate, async (req, res) => {
+app.get('/api/admin/pending', requireAuth, async (req, res) => {
   try {
     const session = req.user;
     if (!session || !session.isAdmin) {
@@ -3310,7 +3310,7 @@ app.get('/api/admin/pending', authenticate, async (req, res) => {
 });
 
 // POST /api/admin/approve - Approve a pending item (requires admin)
-app.post('/api/admin/approve', authenticate, async (req, res) => {
+app.post('/api/admin/approve', requireAuth, async (req, res) => {
   try {
     const session = req.user;
     if (!session || !session.isAdmin) {
@@ -3370,7 +3370,7 @@ app.post('/api/admin/approve', authenticate, async (req, res) => {
 });
 
 // POST /api/admin/reject - Reject a pending item (requires admin)
-app.post('/api/admin/reject', authenticate, async (req, res) => {
+app.post('/api/admin/reject', requireAuth, async (req, res) => {
   try {
     const session = req.user;
     if (!session || !session.isAdmin) {
