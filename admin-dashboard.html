@@ -348,20 +348,10 @@
           return;
         }
       } else {
-        // No session - create a dev admin session for testing
-        if (window.kejaAuth && window.kejaAuth.setSession) {
-          const devAdminSession = {
-            id: 'usr-admin-01',
-            name: 'Administrator',
-            email: 'admin@kejamarket.co.ke',
-            role: 'admin',
-            isAdmin: true,
-            phone: '+254180511492',
-            isVerified: true
-          };
-          window.kejaAuth.setSession(devAdminSession);
-          console.log('Dev admin session created');
-        }
+        // No session - this is a security issue, redirect to main page
+        console.log('No session found - redirecting');
+        window.location.href = '/';
+        return;
       }
 
       // Initialize admin dashboard

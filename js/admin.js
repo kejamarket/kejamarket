@@ -82,9 +82,8 @@ class AdminPortalEngine {
       if (window.app) window.app.showToast('🚫 Admin access only.', 'error');
       return;
     }
-    if (window.app) window.app.openModal('modal-admin-portal');
-    this.switchTab('overview');
-    await this.refreshAllData();
+    // Navigate to full admin dashboard page
+    window.location.href = '/admin-dashboard.html';
   }
 
   switchTab(tabName) {
