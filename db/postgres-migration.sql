@@ -1,4 +1,3 @@
-C:\Users\Administrator\Documents\nai\db\postgres-migration.sql
 -- KejaMarket PostgreSQL migration schema
 -- Designed to preserve the existing JSON IDs and JSON fields.
 -- DO NOT replace this with the older UUID-only schema.sql.
