@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KejaMarket Diagnostics</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: monospace; padding: 20px; background: #1e1e1e; color: #d4d4d4; }
+    h1 { color: #4ec9b0; margin-bottom: 20px; }
+    .test-section { background: #252526; border: 1px solid #3e3e42; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .test-section h2 { color: #dcdcaa; margin-bottom: 12px; font-size: 1.1rem; }
+    .result { padding: 12px; background: #1e1e1e; border-left: 4px solid #4ec9b0; margin: 8px 0; border-radius: 4px; }
+    .result.error { border-left-color: #f48771; }
+    .result.warning { border-left-color: #ce9178; }
+    .result.success { border-left-color: #4ec9b0; }
+    button { background: #0e639c; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-family: inherit; margin: 5px; }
+    button:hover { background: #1177bb; }
+    pre { overflow-x: auto; background: #1e1e1e; padding: 10px; border-radius: 4px; }
+    .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+    .status.ok { background: #4ec9b0; color: #1e1e1e; }
+    .status.fail { background: #f48771; color: #1e1e1e; }
+  </style>
+</head>
+<body>
+  <h1>🔍 KejaMarket System Diagnostics</h1>
+
+  <div class="test-section">
+    <h2>1. API Connection Test</h2>
+    <button onclick="testAPIConnection()">Test API</button>
+    <div id="api-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>2. Database Test (Properties)</h2>
+    <button onclick="testProperties()">Load Properties</button>
+    <div id="properties-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>3. Admin Auth Test</h2>
+    <button onclick="testAdminAuth()">Check Session</button>
+    <button onclick="clearSessionTest()">Clear Session</button>
+    <div id="auth-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>4. Click Event Test</h2>
+    <div style="width: 200px; height: 150px; background: #0e639c; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin: 10px 0;" onclick="testClick(event)">
+      CLICK ME
+    </div>
+    <div id="click-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>5. JavaScript Errors</h2>
+    <div id="errors-result">No errors detected yet. Check console for details.</div>
+  </div>
+
+  <script>
+    // Error tracking
+    const errors = [];
+    window.addEventListener('error', (e) => {
+      errors.push(`${e.message} at ${e.filename}:${e.lineno}`);
+      updateErrors();
+    });
+
+    function updateErrors() {
+      const el = document.getElementById('errors-result');
+      if (errors.length > 0) {
+        el.innerHTML = errors.map(e => `<div class="result error">❌ ${e}</div>`).join('');
+      }
+    }
+
+    async function testAPIConnection() {
+      const el = document.getElementById('api-result');
+      el.innerHTML = '<div class="result">Testing...</div>';
+      
+      try {
+        const res = await fetch('/api/properties?page=1&limit=5');
+        const data = await res.json();
+        
+        let html = `<div class="result success">
+          ✅ API Response: <span class="status ${data.success ? 'ok' : 'fail'}">${data.success ? 'SUCCESS' : 'FAIL'}</span>
+          <br>Properties Count: <strong>${data.count || 0}</strong>
+          <br>Total: <strong>${data.total || 0}</strong>
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        </div>`;
+        
+        if (data.count === 0) {
+          html += '<div class="result warning">⚠️ WARNING: API returns 0 properties. Database connection issue likely.</div>';
+        }
+        
+        el.innerHTML = html;
+      } catch (err) {
+        el.innerHTML = `<div class="result error">❌ API Error: ${err.message}</div>`;
+      }
+    }
+
+    async function testProperties() {
+      const el = document.getElementById('properties-result');
+      el.innerHTML = '<div class="result">Loading properties...</div>';
+      
+      try {
+        const res = await fetch('/api/properties');
+        const data = await res.json();
+        
+        let html = `<div class="result ${data.properties && data.properties.length > 0 ? 'success' : 'error'}">
+          ${data.properties && data.properties.length > 0 ? '✅' : '❌'} 
+          Found <strong>${data.properties ? data.properties.length : 0}</strong> properties
+        </div>`;
+        
+        if (data.properties && data.properties.length > 0) {
+          html += '<div class="result success">Sample Property:<pre>' + JSON.stringify(data.properties[0], null, 2).substring(0, 500) + '...</pre></div>';
+        } else {
+          html += '<div class="result error">❌ No properties found. Server is using empty JSON storage instead of PostgreSQL.</div>';
+        }
+        
+        el.innerHTML = html;
+      } catch (err) {
+        el.innerHTML = `<div class="result error">❌ Error: ${err.message}</div>`;
+      }
+    }
+
+    function testAdminAuth() {
+      const el = document.getElementById('auth-result');
+      
+      const token = localStorage.getItem('keja_token');
+      const sessionStr = localStorage.getItem('keja_session');
+      const session = sessionStr ? JSON.parse(sessionStr) : null;
+      
+      let html = '<div class="result">';
+      html += `Token: <span class="status ${token ? 'ok' : 'fail'}">${token ? 'EXISTS' : 'MISSING'}</span><br>`;
+      
+      if (session) {
+        html += `Session exists:<br>`;
+        html += `- ID: ${session.id}<br>`;
+        html += `- Email: ${session.email}<br>`;
+        html += `- Role: ${session.role}<br>`;
+        html += `- isAdmin: <span class="status ${session.isAdmin ? 'ok' : 'fail'}">${session.isAdmin ? 'TRUE' : 'FALSE'}</span><br>`;
+        
+        const isAdmin = session.id === 'usr-admin-01' || 
+                        session.role === 'admin' || 
+                        session.isAdmin === true ||
+                        (session.email && session.email.toLowerCase() === 'admin@kejamarket.co.ke');
+        
+        html += `<br>Admin Check Result: <span class="status ${isAdmin ? 'ok' : 'fail'}">${isAdmin ? 'IS ADMIN' : 'NOT ADMIN'}</span>`;
+        html += '<pre>' + JSON.stringify(session, null, 2) + '</pre>';
+      } else {
+        html += '<br><span class="status fail">NO SESSION</span> - User not logged in';
+      }
+      html += '</div>';
+      
+      el.innerHTML = html;
+    }
+
+    function clearSessionTest() {
+      localStorage.removeItem('keja_token');
+      localStorage.removeItem('keja_session');
+      document.getElementById('auth-result').innerHTML = '<div class="result success">✅ Session cleared. Login again to test.</div>';
+    }
+
+    function testClick(event) {
+      const el = document.getElementById('click-result');
+      el.innerHTML = `<div class="result success">✅ Click detected at (${event.clientX}, ${event.clientY})</div>`;
+      setTimeout(() => {
+        el.innerHTML = '';
+      }, 3000);
+    }
+
+    // Auto-run basic tests on load
+    window.addEventListener('load', () => {
+      console.log('🔍 Diagnostics page loaded');
+      testAPIConnection();
+      testAdminAuth();
+    });
+  </script>
+</body>
+</html>
