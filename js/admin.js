@@ -23,21 +23,44 @@ class AdminPortalEngine {
     }
   }
 
+  initFullPage() {
+    // Full-page admin dashboard initialization
+    this.checkAdminSession();
+    this.switchTab('overview');
+    this.refreshAllData();
+  }
+
   checkAdminSession() {
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     const isAdmin = this._isAdmin(session);
+    
+    // Update sidebar admin links (if in main app)
     const adminHeaderBtn = document.getElementById('btn-admin-header');
     const adminLinks = document.getElementById('auth-admin-links');
     const roleBadge = document.getElementById('auth-user-role-badge');
 
-    if (adminHeaderBtn) adminHeaderBtn.style.display = 'none'; // always hidden
+    if (adminHeaderBtn) adminHeaderBtn.style.display = isAdmin ? 'block' : 'none'; // Show button to admins
     if (adminLinks) adminLinks.style.display = isAdmin ? 'block' : 'none';
     if (roleBadge && isAdmin) {
       roleBadge.textContent = '👑 Administrator';
       roleBadge.style.background = 'linear-gradient(135deg, #7c3aed, #4f46e5)';
       roleBadge.style.color = '#fff';
     }
+
+    // Update full-page dashboard header (if on admin page)
+    const adminUserName = document.getElementById('admin-user-name');
+    if (adminUserName && session) {
+      adminUserName.textContent = session.name || 'Administrator';
+    }
+
     return isAdmin;
+  }
+
+  logout() {
+    if (window.kejaAuth) {
+      window.kejaAuth.logout();
+      window.location.href = '/';
+    }
   }
 
   _isAdmin(session) {
@@ -67,14 +90,23 @@ class AdminPortalEngine {
   switchTab(tabName) {
     this.activeTab = tabName;
     const tabs = ['overview', 'users', 'listings', 'messages', 'system'];
+    
+    // For full-page admin dashboard
     tabs.forEach(t => {
-      const btn = document.getElementById(`admin-tab-btn-${t}`);
-      const pane = document.getElementById(`admin-tab-pane-${t}`);
+      const btn = document.getElementById(`admin-tab-btn-${t}`) || document.querySelector(`[onclick="adminDash.switchTab('${t}')"]`);
+      const pane = document.getElementById(`tab-${t}`) || document.getElementById(`admin-tab-pane-${t}`);
+      
       if (btn) {
-        btn.style.background = t === tabName ? '#7c3aed' : 'transparent';
-        btn.style.color = t === tabName ? '#fff' : '#475569';
+        btn.classList.toggle('active', t === tabName);
+        if (btn.style) {
+          btn.style.background = t === tabName ? '#7c3aed' : 'transparent';
+          btn.style.color = t === tabName ? '#fff' : '#475569';
+        }
       }
-      if (pane) pane.style.display = t === tabName ? 'block' : 'none';
+      if (pane) {
+        pane.classList.toggle('active', t === tabName);
+        pane.style.display = t === tabName ? 'block' : 'none';
+      }
     });
 
     if (tabName === 'overview') this.renderStats();
