@@ -14,10 +14,22 @@ class PostgreSQLStore {
   }
 
   async init() {
+    // FORCE DATABASE_URL if not set or set incorrectly
+    const HARDCODED_DB_URL = 'postgresql://postgres:Stallonjevugwe4@db.cwqmtrwdbjmsrrqjkfmj.supabase.co:5432/postgres';
+    
+    // Use global from start.js, or env, or hardcoded
+    const databaseUrl = global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || HARDCODED_DB_URL;
+    
+    console.log('🔍 DATABASE_URL SOURCE:');
+    console.log('  - From global:', global.KEJAMARKET_DATABASE_URL ? '✅' : '❌');
+    console.log('  - From process.env:', process.env.DATABASE_URL ? '✅' : '❌');
+    console.log('  - Using hardcoded:', (!global.KEJAMARKET_DATABASE_URL && !process.env.DATABASE_URL) ? '✅' : '❌');
+    console.log('  - Final URL starts with:', databaseUrl?.substring(0, 50));
+    
     // Initialize PostgreSQL connection
-    const isRender = !!(process.env.RENDER || process.env.RENDER_EXTERNAL_URL || process.env.DATABASE_URL?.includes('render.com'));
+    const isRender = !!(process.env.RENDER || process.env.RENDER_EXTERNAL_URL || databaseUrl?.includes('render.com'));
     const config = {
-      connectionString: process.env.DATABASE_URL,
+      connectionString: databaseUrl,
       ssl: (process.env.NODE_ENV === 'production' || isRender)
         ? { rejectUnauthorized: false }
         : false,
