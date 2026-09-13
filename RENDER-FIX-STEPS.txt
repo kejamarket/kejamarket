@@ -1,0 +1,136 @@
+==============================================================================
+KEJAMARKET - RENDER DATABASE FIX (Copy-Paste This)
+==============================================================================
+
+ROOT CAUSE:
+-----------
+DATABASE_URL has wrong username format. It says "postgres.yvosarkf..." 
+but should be just "postgres". This causes database authentication to fail
+and the server falls back to empty JSON storage.
+
+SYMPTOMS:
+---------
+✗ API returns 0 properties
+✗ Admin dashboard shows all zeros and keeps refreshing
+✗ Property photos don't work (no data to show)
+✗ Buttons don't work (no data to interact with)
+
+THE FIX (5 MINUTES):
+--------------------
+
+Step 1: Login to Render
+→ Go to: https://dashboard.render.com
+→ Login with your account
+
+Step 2: Find Your Service
+→ Click on "kejamarket-prod" service
+
+Step 3: Go to Environment Tab
+→ Click "Environment" in the left sidebar
+
+Step 4: Edit DATABASE_URL
+→ Find the variable named: DATABASE_URL
+→ Click the "Edit" button next to it
+→ Delete the current value
+→ Copy and paste EXACTLY this (one line):
+
+postgresql://postgres:Stallon%40jevugwe4@db.yvosarkfeukzdjxoenwe.supabase.co:5432/postgres
+
+Step 5: Save
+→ Click "Save Changes" button at the bottom
+→ Render will automatically redeploy (takes 2 minutes)
+
+Step 6: Wait for Deploy
+→ Watch the "Events" tab
+→ Wait until you see "Deploy succeeded"
+
+==============================================================================
+VERIFICATION (After 2 minutes):
+==============================================================================
+
+Test 1 - API Returns Data:
+---------------------------
+Open terminal and run:
+  curl https://kejamarket.co.ke/api/properties
+
+You should see: "count":21  (not "count":0)
+
+Test 2 - Admin Dashboard Works:
+--------------------------------
+1. Open: https://kejamarket.co.ke/admin-dashboard.html
+2. Login:
+   Email: admin@kejamarket.co.ke
+   Password: Stallon@jevugwe4
+3. Should see:
+   ✓ Real numbers (not all zeros)
+   ✓ Page stays loaded (doesn't refresh)
+   ✓ All buttons work
+
+Test 3 - Properties Load on Homepage:
+--------------------------------------
+1. Open: https://kejamarket.co.ke
+2. Should see: 21 property cards with images
+3. Click any property image → should open details modal
+4. All buttons should work
+
+Test 4 - Diagnostics Page:
+---------------------------
+1. Open: https://kejamarket.co.ke/test-diagnostics.html
+2. Click "Test API" button
+3. Should show: "Properties Count: 21" (green)
+4. All tests should pass
+
+==============================================================================
+IF IT STILL DOESN'T WORK:
+==============================================================================
+
+Check Render Logs:
+→ Go to render.com dashboard
+→ Click your service
+→ Click "Logs" tab
+→ Look for these messages:
+
+GOOD (What you want to see):
+  ✓ "POSTGRESQL-ONLY MODE - JSON storage disabled permanently"
+  ✓ "PostgreSQL connected to Supabase successfully"
+  ✓ "Total verified properties: 21"
+
+BAD (What indicates problem):
+  ✗ "FATAL: PostgreSQL connection failed"
+  ✗ "Falling back to JSON"
+  ✗ "password authentication failed"
+
+If you see BAD messages:
+→ Double-check DATABASE_URL was copied correctly
+→ No extra spaces or line breaks
+→ Username is "postgres" not "postgres.yvo..."
+
+==============================================================================
+TECHNICAL DETAILS:
+==============================================================================
+
+Supabase Connection Format:
+  Host: db.yvosarkfeukzdjxoenwe.supabase.co
+  Port: 5432
+  Database: postgres
+  Username: postgres (ALWAYS just "postgres" for Supabase)
+  Password: Stallon@jevugwe4 (URL-encoded as Stallon%40jevugwe4)
+
+The Wrong Format That Was Being Used:
+  postgresql://postgres.yvosarkfeukzdjxoenwe:Stallon%40jevugwe4@...
+                        ^^^^^^^^^^^^^^^^ This is NOT the username!
+                        This is part of the hostname identifier
+
+The Correct Format:
+  postgresql://postgres:Stallon%40jevugwe4@db.yvosarkfeukzdjxoenwe.supabase.co:5432/postgres
+                ^^^^^^^ Simple "postgres" username
+
+==============================================================================
+QUESTIONS? CHECK THESE FILES:
+==============================================================================
+
+1. CRITICAL-FIX-DATABASE-URL.md - Detailed explanation
+2. DEPLOYMENT-STATUS.md - Full deployment status
+3. check-startup.js - Run locally to test database: node check-startup.js
+
+==============================================================================
