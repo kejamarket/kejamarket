@@ -6,6 +6,8 @@
 class NairobiRentalsApp {
   constructor() {
     this.properties = [...SEED_PROPERTIES];
+    this.services = [];
+    this.marketplaceItems = [];
     this.favorites = new Set();
     this.currentViewMode = 'grid'; // 'grid' | 'split' | 'map'
     this.currentPage = 1;
@@ -20,6 +22,7 @@ class NairobiRentalsApp {
     this.sortBy = 'newest';
     this.showOnlyFavorites = false;
     this.hideTaken = true; // Default hide taken/occupied properties
+    this.currentFilterMode = 'properties'; // Default filter mode
 
     // Filters for utilities & amenities
     this.filters = {
@@ -2026,13 +2029,14 @@ class NairobiRentalsApp {
       if (res.ok) {
         const data = await res.json();
         this.services = data.services || [];
+        console.log('Loaded services:', this.services.length);
       }
     } catch (err) {
       console.warn('Services fetch error:', err);
       this.services = [];
     }
 
-    this.renderListingsGrid(); // Reuse grid rendering with services
+    this.renderListings();
   }
 
   async loadMarketplaceData() {
@@ -2049,13 +2053,14 @@ class NairobiRentalsApp {
       if (res.ok) {
         const data = await res.json();
         this.marketplaceItems = data.items || [];
+        console.log('Loaded marketplace items:', this.marketplaceItems.length);
       }
     } catch (err) {
       console.warn('Marketplace fetch error:', err);
       this.marketplaceItems = [];
     }
 
-    this.renderListingsGrid(); // Reuse grid rendering with items
+    this.renderListings();
   }
 
   showToast(message, type = 'success') {
