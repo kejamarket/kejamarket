@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node force-db-fix.js",
+    "start": "node server.js",
     "build": "node validate.js",
     "dev": "node server.js",
     "validate": "node validate.js"

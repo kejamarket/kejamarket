@@ -71,40 +71,41 @@ app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.htm
 // INITIALIZE DATABASE (PostgreSQL with JSON fallback)
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
-const { initializePostgres } = require('./db/smart-pg-connect');
-
 let store;
 async function initializeDatabase() {
   try {
-    console.log('POSTGRESQL-ONLY MODE - JSON storage disabled permanently');
-    
-    const pool = await initializePostgres();
-    store = require('./db/postgres-store.js');
-    store.pool = pool;
-    const success = await store.init();
+    if (process.env.DATABASE_URL) {
+      console.log('ðŸ˜ Attempting PostgreSQL connection...');
+      store = require('./db/postgres-store.js');
+      const success = await store.init();
 
-    if (!success) {
-      throw new Error('PostgreSQL store initialization failed');
-    }
-
-    try {
-      const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
-      await pool.query(schemaSql);
-      console.log('Schema migration completed');
-    } catch (schemaErr) {
-      if (!schemaErr.message.includes('already exists')) {
-        console.warn('Schema warning:', schemaErr.message);
+      if (success) {
+        // Run schema additions for new tables
+        try {
+          const { Pool } = require('pg');
+          const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+          const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
+          await pool.query(schemaSql);
+          await pool.end();
+        } catch (schemaErr) {
+          console.warn('Schema update warning:', schemaErr.message);
+        }
+        console.log('âœ… PostgreSQL database initialized successfully');
+      } else {
+        console.log('ðŸ”„ Falling back to JSON file database');
+        store = require('./db/store');
       }
+    } else {
+      console.log('ðŸ“ Using JSON file database (set DATABASE_URL for PostgreSQL)');
+      store = require('./db/store');
     }
-
-    console.log('PostgreSQL connected to Supabase successfully');
-
   } catch (error) {
-    console.error('FATAL: PostgreSQL connection failed -', error.message);
-    console.error('Server cannot start without database. Exiting...');
-    process.exit(1);
+    console.error('âŒ Database initialization error:', error.message);
+    console.log('ðŸ”„ Using JSON file database as fallback');
+    store = require('./db/store');
   }
 
+  // Initialize email and image upload services
   emailService.initEmailService();
   uploadService.initCloudinary();
 }
@@ -704,17 +705,10 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
     const user = await store.authenticateUser(identifier, password, role);
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
 
-    // Add isAdmin flag for admin users
-    const userResponse = { ...user };
-    if (user.role === 'admin' || user.id === 'usr-admin-01' || 
-        (user.email && user.email.toLowerCase() === 'admin@kejamarket.co.ke')) {
-      userResponse.isAdmin = true;
-    }
-
     res.json({
       success: true,
       message: `Welcome back, ${user.name}!`,
-      user: userResponse,
+      user,
       token
     });
   } catch (err) {
@@ -3504,4 +3498,3 @@ app.post('/api/admin/reject', requireAuth, async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-
