@@ -4,38 +4,63 @@
 const { Pool } = require('pg');
 
 /**
+ * Build DATABASE_URL from environment or use provided URL
+ */
+function buildDatabaseUrl() {
+  // If DATABASE_URL is already set and looks correct, use it
+  if (process.env.DATABASE_URL && process.env.DATABASE_URL.includes('supabase.co')) {
+    return process.env.DATABASE_URL;
+  }
+
+  // Build from components if available
+  if (process.env.SUPABASE_HOST && process.env.SUPABASE_PASSWORD) {
+    const password = encodeURIComponent(process.env.SUPABASE_PASSWORD);
+    return `postgresql://postgres:${password}@${process.env.SUPABASE_HOST}:5432/postgres`;
+  }
+
+  // Fallback: try to fix common DATABASE_URL issues
+  if (process.env.DATABASE_URL) {
+    let url = process.env.DATABASE_URL;
+    
+    // Fix password encoding if needed
+    if (url.includes('@') && !url.includes('%40')) {
+      const match = url.match(/postgresql:\/\/([^:]+):([^@]+)@(.+)/);
+      if (match) {
+        const [, user, password, rest] = match;
+        const encodedPassword = encodeURIComponent(password);
+        url = `postgresql://${user}:${encodedPassword}@${rest}`;
+      }
+    }
+    
+    return url;
+  }
+
+  return null;
+}
+
+/**
  * Attempts to connect to PostgreSQL using multiple connection string formats
  * @param {string} baseUrl - The DATABASE_URL from environment
  * @returns {Promise<Pool>} Connected PostgreSQL pool
  */
 async function smartConnect(baseUrl) {
-  if (!baseUrl) {
-    throw new Error('DATABASE_URL environment variable is required. JSON storage is disabled.');
-  }
-
   console.log('🔌 Smart PostgreSQL connector initializing...');
 
-  // Parse the base URL to extract components
-  let url = baseUrl;
+  let url = baseUrl || buildDatabaseUrl();
 
-  // Fix common issues
-  // 1. URL-encode special characters in password
-  if (url.includes('@') && !url.includes('%40')) {
-    const match = url.match(/postgresql:\/\/([^:]+):([^@]+)@(.+)/);
-    if (match) {
-      const [, user, password, rest] = match;
-      // URL encode the password
-      const encodedPassword = encodeURIComponent(password);
-      url = `postgresql://${user}:${encodedPassword}@${rest}`;
-      console.log('🔧 Fixed: URL-encoded password special characters');
-    }
+  if (!url) {
+    throw new Error('DATABASE_URL not found. Set DATABASE_URL or SUPABASE_HOST + SUPABASE_PASSWORD');
   }
 
-  // 2. Ensure SSL mode is set
+  console.log('📝 Connection string format:', url.substring(0, 30) + '...');
+
+  // Ensure SSL mode is set
   if (!url.includes('sslmode=') && !url.includes('ssl=')) {
     url += (url.includes('?') ? '&' : '?') + 'sslmode=require';
-    console.log('🔧 Fixed: Added SSL requirement');
   }
+
+  // Remove sslmode from URL since we handle SSL in config
+  const cleanUrl = url.replace(/[?&]sslmode=[^&]+/, '');
 
   // Connection configurations to try (in order)
   const connectionConfigs = [];
@@ -44,14 +69,14 @@ async function smartConnect(baseUrl) {
   connectionConfigs.push({
     name: 'Direct SSL Connection',
     config: {
-      connectionString: url,
+      connectionString: cleanUrl,
       ssl: { rejectUnauthorized: false }
     }
   });
 
   // Config 2: Pooler connection (if using Supabase)
-  if (url.includes('supabase.co') && url.includes('db.')) {
-    const poolerUrl = url
+  if (cleanUrl.includes('supabase.co') && cleanUrl.includes('db.')) {
+    const poolerUrl = cleanUrl
       .replace('db.', 'aws-0-eu-west-1.pooler.')
       .replace(':5432', ':6543');
     connectionConfigs.push({
@@ -64,11 +89,11 @@ async function smartConnect(baseUrl) {
   }
 
   // Config 3: Transaction pooler with pgbouncer
-  if (url.includes('supabase.co')) {
-    const txPoolerUrl = url
+  if (cleanUrl.includes('supabase.co')) {
+    const txPoolerUrl = cleanUrl
       .replace('db.', 'aws-0-eu-west-1.pooler.')
       .replace(':5432', ':6543') +
-      (url.includes('?') ? '&' : '?') + 'pgbouncer=true';
+      (cleanUrl.includes('?') ? '&' : '?') + 'pgbouncer=true';
     connectionConfigs.push({
       name: 'Transaction Pooler with PgBouncer',
       config: {
@@ -78,17 +103,8 @@ async function smartConnect(baseUrl) {
     });
   }
 
-  // Config 4: Direct with different SSL settings
-  connectionConfigs.push({
-    name: 'Direct Connection (No SSL Verify)',
-    config: {
-      connectionString: url.replace('sslmode=require', 'sslmode=no-verify'),
-      ssl: { rejectUnauthorized: false }
-    }
-  });
-
-  // Config 5: Parsed connection (manual SSL)
-  const parsed = parseConnectionString(url);
+  // Config 4: Parsed connection (manual SSL)
+  const parsed = parseConnectionString(cleanUrl);
   if (parsed) {
     connectionConfigs.push({
       name: 'Parsed Connection with Manual SSL',
@@ -156,14 +172,16 @@ function parseConnectionString(url) {
  * Initialize PostgreSQL connection with smart retry logic
  */
 async function initializePostgres() {
-  const DATABASE_URL = process.env.DATABASE_URL;
+  const DATABASE_URL = buildDatabaseUrl();
 
   if (!DATABASE_URL) {
     console.error('\n❌ FATAL: DATABASE_URL not set!');
     console.error('📋 JSON storage has been disabled.');
-    console.error('🔧 Please set DATABASE_URL in your environment variables.');
-    console.error('\nExample:');
-    console.error('DATABASE_URL=postgresql://user:password@host:5432/database?sslmode=require\n');
+    console.error('🔧 Set one of these:');
+    console.error('   DATABASE_URL=postgresql://user:password@host:5432/database');
+    console.error('   OR');
+    console.error('   SUPABASE_HOST=db.xxx.supabase.co');
+    console.error('   SUPABASE_PASSWORD=yourpassword\n');
     process.exit(1);
   }
 
@@ -182,4 +200,4 @@ async function initializePostgres() {
   }
 }
 
-module.exports = { initializePostgres, smartConnect };
+module.exports = { initializePostgres, smartConnect, buildDatabaseUrl };

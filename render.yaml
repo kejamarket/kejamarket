@@ -11,4 +11,16 @@
       - key: PORT
         value: 10000
       - key: DATABASE_URL
-        value: postgresql://postgres.yvosarkfeukzdjxoenwe:Stallon%40jevugwe4@db.yvosarkfeukzdjxoenwe.supabase.co:5432/postgres?sslmode=require
+        generateValue: true
+      - key: JWT_SECRET
+        sync: false
+      - key: AT_USERNAME
+        sync: false
+      - key: AT_API_KEY
+        sync: false
+      - key: MPESA_ENV
+        value: sandbox
+      - key: SUPABASE_HOST
+        value: db.yvosarkfeukzdjxoenwe.supabase.co
+      - key: SUPABASE_PASSWORD
+        value: Stallon@jevugwe4
