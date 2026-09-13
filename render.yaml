@@ -9,4 +9,6 @@
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3001
+        value: 10000
+      - key: DATABASE_URL
+        value: postgresql://postgres.yvosarkfeukzdjxoenwe:Stallon%40jevugwe4@db.yvosarkfeukzdjxoenwe.supabase.co:5432/postgres?sslmode=require
