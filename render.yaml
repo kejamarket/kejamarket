@@ -1,32 +1,12 @@
 ﻿services:
   - type: web
-    name: kejamarket
+    name: kejamarket-prod
     env: node
+    buildCommand: npm install
+    startCommand: node server.js
     plan: free
-    buildCommand: npm ci && npm run validate
-    startCommand: npm start
-    healthCheckPath: /api/health
-    numInstances: 1
     envVars:
       - key: NODE_ENV
         value: production
-      - key: JWT_SECRET
-        generateValue: true
-      - key: MPESA_ENV
-        value: sandbox
-      - key: MPESA_PAYBILL
-        value: "303030" 
-      - key: MPESA_ACCOUNT
-        value: "2057103992"
-      - key: MPESA_CONSUMER_KEY
-        value: "YOUR_CONSUMER_KEY_HERE"
-      - key: MPESA_CONSUMER_SECRET
-        value: "YOUR_CONSUMER_SECRET_HERE"
-      - key: MPESA_PASSKEY
-        value: "YOUR_PASSKEY_HERE"
-      - key: MPESA_CALLBACK_URL
-        value: "https://kejamarket.onrender.com/api/mpesa/callback"
-      - key: AT_USERNAME
-        value: "kejamarket"
-      - key: AT_API_KEY
-        value: "atsk_bdabf24586133b346f31f648972e20184f64dc60e215e175c948b83d5e5e720bf9991634"
+      - key: PORT
+        value: 3001
