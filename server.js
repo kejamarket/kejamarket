@@ -11,6 +11,17 @@
  */
 
 require('dotenv').config();
+
+// ===== FIX DATABASE_URL IF WRONG FORMAT =====
+const CORRECT_DB_URL = 'postgresql://postgres:Stallon%40jevugwe4@db.yvosarkfeukzdjxoenwe.supabase.co:5432/postgres';
+if (!process.env.DATABASE_URL || 
+    process.env.DATABASE_URL.includes('postgres.$') || 
+    process.env.DATABASE_URL.includes('postgres.yvo')) {
+  console.log('🔧 Fixing DATABASE_URL format...');
+  process.env.DATABASE_URL = CORRECT_DB_URL;
+}
+// ============================================
+
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
