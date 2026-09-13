@@ -3036,6 +3036,40 @@ function trackBoostClick(propertyId) {
 const PORT = process.env.PORT || 3001;
 
 // Initialize database and start server
+// DIAGNOSTIC ENDPOINT - Check database and store status
+app.get('/api/diagnostic', async (req, res) => {
+  try {
+    const diagnostic = {
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV,
+      databaseUrl: process.env.DATABASE_URL ? 
+        'postgresql://postgres:***@' + process.env.DATABASE_URL.split('@')[1] : 'NOT SET',
+      storeInitialized: !!store,
+      storeType: store ? store.constructor.name : 'NONE'
+    };
+
+    // Try to count properties
+    if (store && typeof store.getProperties === 'function') {
+      try {
+        const result = await store.getProperties({ page: 1, limit: 1 });
+        diagnostic.propertyCount = result.total || 0;
+        diagnostic.storeWorking = true;
+      } catch (err) {
+        diagnostic.propertyCount = 0;
+        diagnostic.storeError = err.message;
+        diagnostic.storeWorking = false;
+      }
+    } else {
+      diagnostic.propertyCount = 0;
+      diagnostic.storeWorking = false;
+    }
+
+    res.json({ success: true, diagnostic });
+  } catch (error) {
+    res.json({ success: false, error: error.message });
+  }
+});
+
 async function startServer() {
   await initializeDatabase();
 
