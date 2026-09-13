@@ -785,6 +785,31 @@ class AdminPortalEngine {
     const icon = typeIcon[item.type] || 'fas fa-box';
     const color = typeColor[item.type] || '#475569';
 
+    // Parse images array if it exists
+    const images = item.images ? (Array.isArray(item.images) ? item.images : JSON.parse(item.images || '[]')) : [];
+    const hasImages = images && images.length > 0;
+
+    // Create image preview HTML
+    let imagePreviewHTML = '';
+    if (hasImages) {
+      imagePreviewHTML = `
+        <div style="margin-bottom: 12px; background: #f8fafc; border-radius: 8px; overflow: hidden;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; padding: 12px;">
+            ${images.slice(0, 4).map((img, idx) => `
+              <div style="position: relative; width: 100%; aspect-ratio: 1; background: #e2e8f0; border-radius: 6px; overflow: hidden; cursor: pointer;" onclick="this.querySelector('img, video').requestFullscreen ? this.querySelector('img, video').requestFullscreen() : null">
+                ${img.includes('video') || img.includes('.mp4') || img.includes('.webm') ? 
+                  `<video style="width: 100%; height: 100%; object-fit: cover;" src="${img}"></video>` :
+                  `<img style="width: 100%; height: 100%; object-fit: cover;" src="${img}" alt="Preview ${idx+1}">`
+                }
+                <div style="position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.7rem; font-weight: 700;">${idx+1}</div>
+              </div>
+            `).join('')}
+            ${images.length > 4 ? `<div style="display: flex; align-items: center; justify-content: center; background: #e2e8f0; border-radius: 6px; font-weight: 700; color: #64748b;">+${images.length - 4}</div>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
     return `
       <div style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
         <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
@@ -792,12 +817,15 @@ class AdminPortalEngine {
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
               <i class="${icon}" style="color: ${color}; font-size: 1.2rem;"></i>
               <span style="font-size: 0.75rem; background: ${color}33; color: ${color}; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: capitalize;">${item.type}</span>
+              ${hasImages ? `<span style="font-size: 0.75rem; background: #10b98133; color: #10b981; padding: 3px 8px; border-radius: 4px; font-weight: 700;"><i class="fas fa-image"></i> ${images.length} media</span>` : ''}
             </div>
             <h3 style="margin: 0; font-weight: 800; color: #1e293b; font-size: 1rem; line-height: 1.3;">${item.title}</h3>
           </div>
         </div>
 
-        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 12px; line-height: 1.4;">${item.description ? item.description.substring(0, 80) + '...' : 'No description'}</p>
+        ${imagePreviewHTML}
+
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 12px; line-height: 1.4;">${item.description ? item.description.substring(0, 120) + '...' : 'No description'}</p>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; font-size: 0.8rem;">
           <div>
