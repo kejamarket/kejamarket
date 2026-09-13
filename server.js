@@ -1960,15 +1960,53 @@ app.post('/api/upload/single', optionalAuth, async (req, res) => {
 });
 
 // GET /api/health
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'online',
-    timestamp: new Date().toISOString(),
-    mpesaEnvironment: MPESA_ENV,
-    hasDarajaCredentials: hasDarajaCredentials(),
-    database: (store && store.isConnected) ? 'postgresql' : 'json-file',
-    dbReady: store ? true : false
-  });
+app.get('/api/health', async (req, res) => {
+  try {
+    let dbCounts = { properties: 0, services: 0, marketplace: 0, users: 0 };
+    let dbHost = 'unknown';
+    
+    // Try to get counts from database
+    if (pool) {
+      try {
+        const propCount = await pool.query('SELECT COUNT(*) FROM properties');
+        const servCount = await pool.query('SELECT COUNT(*) FROM services');
+        const mktCount = await pool.query('SELECT COUNT(*) FROM marketplace_items');
+        const userCount = await pool.query('SELECT COUNT(*) FROM users');
+        
+        dbCounts = {
+          properties: parseInt(propCount.rows[0].count),
+          services: parseInt(servCount.rows[0].count),
+          marketplace: parseInt(mktCount.rows[0].count),
+          users: parseInt(userCount.rows[0].count)
+        };
+        
+        // Extract database host from connection string
+        const dbUrl = process.env.DATABASE_URL || '';
+        const hostMatch = dbUrl.match(/@([^:]+):/);
+        dbHost = hostMatch ? hostMatch[1] : 'not-configured';
+      } catch (err) {
+        console.error('Health check DB query failed:', err.message);
+      }
+    }
+    
+    res.json({
+      status: 'online',
+      version: '2.0.0-with-real-data',
+      commit: '63ceb0e',
+      timestamp: new Date().toISOString(),
+      mpesaEnvironment: MPESA_ENV,
+      hasDarajaCredentials: hasDarajaCredentials(),
+      database: (store && store.isConnected) ? 'postgresql' : 'json-file',
+      dbReady: store ? true : false,
+      dbHost: dbHost,
+      dataCounts: dbCounts
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      error: error.message
+    });
+  }
 });
 
 // â”€â”€â”€ DATABASE MIGRATION TRIGGER (Admin only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
