@@ -121,19 +121,66 @@ class AdminPortalEngine {
     const h = token ? { 'Authorization': `Bearer ${token}` } : {};
 
     try {
-      const [statsRes, usersRes, pendingRes, listingsRes, msgsRes] = await Promise.all([
-        fetch('/api/admin/overview', { headers: h }),
-        fetch('/api/admin/users', { headers: h }),
-        fetch('/api/admin/pending-listings', { headers: h }),
-        fetch('/api/properties', { headers: h }),
-        fetch('/api/messages', { headers: h })
-      ]);
+      // Fetch ALL data from working endpoints
+      const propsRes = await fetch('/api/properties', { headers: h });
+      const usersRes = await fetch('/api/users', { headers: h });
+      const msgsRes = await fetch('/api/messages', { headers: h });
 
-      if (statsRes.ok) { this.stats = await statsRes.json(); }
-      if (usersRes.ok) { const d = await usersRes.json(); this.users = d.users || []; }
-      if (pendingRes.ok) { const d = await pendingRes.json(); this.pendingListings = d.listings || []; }
-      if (listingsRes.ok) { const d = await listingsRes.json(); this.allListings = d.properties || []; }
-      if (msgsRes.ok) { const d = await msgsRes.json(); this.messages = d.messages || []; }
+      let allProps = [];
+      let allUsers = [];
+      let messages = [];
+
+      // Get all properties (including pending, approved, live)
+      if (propsRes.ok) {
+        const data = await propsRes.json();
+        allProps = data.properties || data.data || [];
+      }
+
+      // Get users if endpoint exists
+      if (usersRes.ok) {
+        const data = await usersRes.json();
+        allUsers = data.users || data.data || [];
+      }
+
+      // Get messages if endpoint exists
+      if (msgsRes.ok) {
+        const data = await msgsRes.json();
+        messages = data.messages || data.data || [];
+      }
+
+      // Store all properties
+      this.allListings = allProps;
+      
+      // Separate pending from approved listings
+      this.pendingListings = allProps.filter(p => 
+        p.status === 'pending' || p.status === 'awaiting_approval' || 
+        (p.isApproved === false && p.status !== 'approved')
+      );
+
+      // Calculate stats from actual data
+      this.users = allUsers;
+      this.messages = messages;
+
+      const landlords = allUsers.filter(u => u.role === 'landlord' || u.role === 'agency');
+      const tenants = allUsers.filter(u => u.role === 'tenant' || u.role === 'user');
+      const approvedProps = allProps.filter(p => p.status === 'approved' || p.isApproved === true);
+
+      this.stats = {
+        totalUsers: allUsers.length,
+        landlords: landlords.length,
+        tenants: tenants.length,
+        totalProperties: approvedProps.length,
+        totalTransactions: messages.length || 0
+      };
+
+      console.log('Admin data refreshed:', {
+        totalUsers: allUsers.length,
+        landlords: landlords.length,
+        tenants: tenants.length,
+        totalProps: approvedProps.length,
+        pending: this.pendingListings.length,
+        allProps: allProps.length
+      });
 
       // Update pending badge
       const badge = document.getElementById('admin-pending-count');
@@ -149,6 +196,8 @@ class AdminPortalEngine {
       if (this.activeTab === 'messages') this.renderMessages();
     } catch (err) {
       console.warn('Admin data fetch error:', err);
+      // Fallback: at least show something
+      this.stats = { totalUsers: 0, landlords: 0, tenants: 0, totalProperties: 0, totalTransactions: 0 };
     }
   }
 
@@ -158,14 +207,20 @@ class AdminPortalEngine {
 
   renderStats() {
     const s = this.stats || {};
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val ?? '—'; };
+    const set = (id, val) => { 
+      const el = document.getElementById(id); 
+      if (el) {
+        const display = (val === undefined || val === null || isNaN(val)) ? '—' : val;
+        el.textContent = display;
+      }
+    };
 
-    set('admin-stat-total-users', s.totalUsers);
-    set('admin-stat-landlords', s.landlords);
-    set('admin-stat-tenants', s.tenants);
-    set('admin-stat-total-props', s.totalProperties);
-    set('admin-stat-pending', this.pendingListings.length);
-    set('admin-stat-transactions', s.totalTransactions);
+    set('admin-stat-total-users', s.totalUsers || 0);
+    set('admin-stat-landlords', s.landlords || 0);
+    set('admin-stat-tenants', s.tenants || 0);
+    set('admin-stat-total-props', s.totalProperties || 0);
+    set('admin-stat-pending', (this.pendingListings && this.pendingListings.length) || 0);
+    set('admin-stat-transactions', s.totalTransactions || 0);
 
     this._renderAnalytics();
   }
@@ -181,10 +236,21 @@ class AdminPortalEngine {
 
     const newUsers = users.filter(u => u.createdAt && new Date(u.createdAt) >= weekAgo).length;
     const newListings = props.filter(p => p.createdAt && new Date(p.createdAt) >= weekAgo).length;
-    const avgRent = props.length > 0 ? Math.round(props.reduce((s, p) => s + (p.rentKes || p.rent || 0), 0) / props.length) : 0;
+    
+    let avgRent = 0;
+    const rentProps = props.filter(p => {
+      const rent = parseInt(p.rentKes || p.rent || 0);
+      return rent > 0;
+    });
+    if (rentProps.length > 0) {
+      avgRent = Math.round(rentProps.reduce((s, p) => s + parseInt(p.rentKes || p.rent || 0), 0) / rentProps.length);
+    }
 
     const suburbMap = {};
-    props.forEach(p => { const k = p.estateSuburb || 'Other'; suburbMap[k] = (suburbMap[k] || 0) + 1; });
+    props.forEach(p => { 
+      const k = p.estateSuburb || p.suburb || 'Other'; 
+      suburbMap[k] = (suburbMap[k] || 0) + 1; 
+    });
     const topSuburbs = Object.entries(suburbMap).sort((a,b) => b[1]-a[1]).slice(0, 5);
 
     container.innerHTML = `
@@ -197,11 +263,11 @@ class AdminPortalEngine {
         <div style="background:linear-gradient(135deg,#f093fb,#f5576c);border-radius:12px;padding:18px;color:white;">
           <div style="font-weight:700;margin-bottom:8px;"><i class="fas fa-coins"></i> Average Rent</div>
           <div style="font-size:2rem;font-weight:800;">KSh ${avgRent.toLocaleString()}</div>
-          <div style="font-size:0.85rem;opacity:0.9;">Across ${props.length} listings</div>
+          <div style="font-size:0.85rem;opacity:0.9;">Across ${rentProps.length} listings</div>
         </div>
         <div style="background:linear-gradient(135deg,#4facfe,#00f2fe);border-radius:12px;padding:18px;color:white;">
           <div style="font-weight:700;margin-bottom:8px;"><i class="fas fa-map-marked-alt"></i> Top Suburbs</div>
-          ${topSuburbs.map((s,i) => `<div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;"><span>${i+1}. ${s[0]}</span><strong>${s[1]}</strong></div>`).join('')}
+          ${topSuburbs.length > 0 ? topSuburbs.map((s,i) => `<div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;"><span>${i+1}. ${s[0]}</span><strong>${s[1]}</strong></div>`).join('') : '<div style="font-size:0.85rem;">No data yet</div>'}
         </div>
       </div>
     `;
