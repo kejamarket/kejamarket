@@ -14,11 +14,20 @@ require('dotenv').config();
 
 // ===== FIX DATABASE_URL IF WRONG FORMAT =====
 const CORRECT_DB_URL = 'postgresql://postgres:Stallon%40jevugwe4@db.yvosarkfeukzdjxoenwe.supabase.co:5432/postgres';
-if (!process.env.DATABASE_URL || 
-    process.env.DATABASE_URL.includes('postgres.$') || 
-    process.env.DATABASE_URL.includes('postgres.yvo')) {
-  console.log('🔧 Fixing DATABASE_URL format...');
+const currentUrl = process.env.DATABASE_URL;
+
+// Always check and fix if wrong or missing
+if (!currentUrl || 
+    currentUrl.includes('postgres.$') || 
+    currentUrl.includes('postgres.yvo') ||
+    currentUrl.includes('://postgres.')) {
+  console.log('🔧 DATABASE_URL wrong or missing - forcing correct Supabase connection');
   process.env.DATABASE_URL = CORRECT_DB_URL;
+} else if (currentUrl !== CORRECT_DB_URL) {
+  console.log('⚠️  DATABASE_URL format unknown, using verified Supabase connection');
+  process.env.DATABASE_URL = CORRECT_DB_URL;
+} else {
+  console.log('✅ DATABASE_URL correct');
 }
 // ============================================
 
