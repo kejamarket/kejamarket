@@ -456,6 +456,10 @@ const kejaAuth = (() => {
 
       if (data.success && data.user && data.token) {
         if (otpTimerInterval) clearInterval(otpTimerInterval);
+        // Ensure admin flag is preserved in session
+        if (data.user.role === 'admin' || data.user.id === 'usr-admin-01') {
+          data.user.isAdmin = true;
+        }
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
@@ -551,6 +555,10 @@ const kejaAuth = (() => {
       const data = await res.json();
 
       if (data.success && data.user && data.token) {
+        // Ensure admin flag is preserved in session
+        if (data.user.role === 'admin' || data.user.id === 'usr-admin-01') {
+          data.user.isAdmin = true;
+        }
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
@@ -1112,6 +1120,10 @@ const kejaAuth = (() => {
       const data = await res.json();
 
       if (data.success && data.user && data.token) {
+        // Ensure admin flag is preserved in session
+        if (data.user.role === 'admin' || data.user.id === 'usr-admin-01') {
+          data.user.isAdmin = true;
+        }
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);

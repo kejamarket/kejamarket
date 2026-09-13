@@ -1271,13 +1271,14 @@ app.get('/api/properties', async (req, res) => {
         query: q || null,
         page: page ? parseInt(page) : 1,
         pageSize: pageSize ? parseInt(pageSize) : 50,
-        sort: sort || 'newest'
+        sort: sort || 'newest',
+        isVerified: true  // Only show verified properties
       });
       return res.json({ success: true, ...result });
     }
 
-    // Fallback: return all properties
-    const properties = await store.getAllProperties();
+    // Fallback: return only verified properties
+    const properties = (await store.getAllProperties() || []).filter(p => p.is_verified === true);
     res.json({ success: true, count: properties.length, properties });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -1287,7 +1288,7 @@ app.get('/api/properties', async (req, res) => {
 // GET /api/properties/:id
 app.get('/api/properties/:id', async (req, res) => {
   const property = await store.getPropertyById(req.params.id);
-  if (!property) {
+  if (!property || property.is_verified !== true) {
     return res.status(404).json({ success: false, message: 'Property not found.' });
   }
   res.json({ success: true, property });

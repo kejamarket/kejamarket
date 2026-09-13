@@ -332,10 +332,6 @@
       
       console.log('Admin dashboard load - session:', session);
 
-      // Allow admin access if:
-      // 1. Explicitly marked as admin
-      // 2. Has admin email
-      // 3. OR for development: allow if no session (will auto-create admin session)
       if (session) {
         const isAdmin = session.id === 'usr-admin-01' || 
                         session.role === 'admin' || 
@@ -343,13 +339,13 @@
                         (session.email && session.email.toLowerCase() === 'admin@kejamarket.co.ke');
         
         if (!isAdmin) {
-          console.log('User is not admin:', session);
+          console.error('User is not admin:', session);
           window.location.href = '/';
           return;
         }
+        console.log('✅ Admin verified, loading dashboard');
       } else {
-        // No session - this is a security issue, redirect to main page
-        console.log('No session found - redirecting');
+        console.error('No session found');
         window.location.href = '/';
         return;
       }
@@ -360,9 +356,15 @@
         window.adminDash.initFullPage();
         console.log('Admin dashboard initialized');
       } else {
-        console.warn('kejaAdmin not available yet');
+        console.warn('kejaAdmin not available yet - retrying');
+        setTimeout(() => {
+          if (window.kejaAdmin) {
+            window.adminDash = window.kejaAdmin;
+            window.adminDash.initFullPage();
+          }
+        }, 500);
       }
-    }, 300);
+    }, 500);
   </script>
 </body>
 </html>
