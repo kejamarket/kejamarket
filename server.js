@@ -94,38 +94,31 @@ app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.htm
 let store;
 async function initializeDatabase() {
   try {
-    if (process.env.DATABASE_URL) {
-      console.log('ðŸ˜ Attempting PostgreSQL connection...');
-      store = require('./db/postgres-store.js');
-      const success = await store.init();
+    console.log('Initializing PostgreSQL database (Supabase)...');
+    store = require('./db/postgres-store.js');
+    const success = await store.init();
 
-      if (success) {
-        // Run schema additions for new tables
-        try {
-          const { Pool } = require('pg');
-          const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
-          const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
-          await pool.query(schemaSql);
-          await pool.end();
-        } catch (schemaErr) {
-          console.warn('Schema update warning:', schemaErr.message);
-        }
-        console.log('âœ… PostgreSQL database initialized successfully');
-      } else {
-        console.log('ðŸ”„ Falling back to JSON file database');
-        store = require('./db/store');
-      }
-    } else {
-      console.log('ðŸ“ Using JSON file database (set DATABASE_URL for PostgreSQL)');
-      store = require('./db/store');
+    if (!success) {
+      throw new Error('PostgreSQL initialization failed');
     }
+
+    try {
+      const { Pool } = require('pg');
+      const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+      const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
+      await pool.query(schemaSql);
+      await pool.end();
+    } catch (schemaErr) {
+      console.warn('Schema update warning:', schemaErr.message);
+    }
+    
+    console.log('PostgreSQL database (Supabase) connected successfully');
   } catch (error) {
-    console.error('âŒ Database initialization error:', error.message);
-    console.log('ðŸ”„ Using JSON file database as fallback');
-    store = require('./db/store');
+    console.error('FATAL: PostgreSQL connection failed -', error.message);
+    console.error('DATABASE_URL:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 40) + '...' : 'NOT SET');
+    process.exit(1);
   }
 
-  // Initialize email and image upload services
   emailService.initEmailService();
   uploadService.initCloudinary();
 }
@@ -3518,3 +3511,4 @@ app.post('/api/admin/reject', requireAuth, async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
