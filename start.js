@@ -1,10 +1,16 @@
 /**
  * KEJAMARKET STARTUP - FORCE CORRECT DATABASE CONNECTION
- * Sets DATABASE_URL BEFORE anything else loads
+ * Sets DATABASE_URL BEFORE and AFTER dotenv loads
  */
 
-// FORCE CORRECT DATABASE_URL FIRST - BEFORE ANY OTHER CODE
+// Set it BEFORE anything loads
 const CORRECT_DATABASE_URL = 'postgresql://postgres:Stallon%40jevugwe4@db.yvosarkfeukzdjxoenwe.supabase.co:5432/postgres';
+process.env.DATABASE_URL = CORRECT_DATABASE_URL;
+
+// Load dotenv (server.js will also call this, but we do it first)
+require('dotenv').config();
+
+// Force it AGAIN after dotenv (in case .env had wrong value)
 process.env.DATABASE_URL = CORRECT_DATABASE_URL;
 
 // Also force other critical env vars
