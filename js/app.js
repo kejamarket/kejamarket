@@ -2297,7 +2297,7 @@ class NairobiRentalsApp {
 
       const data = await res.json();
       if (data.success) {
-        this.showToast('âœ… Service posted successfully!', 'success');
+        this.showToast('âœ… Service posted! Pending verification by admin.', 'info');
         document.getElementById('form-post-service').reset();
         this.closeModal('modal-post-service');
         this.loadServicesData();
@@ -2355,7 +2355,7 @@ class NairobiRentalsApp {
 
       const data = await res.json();
       if (data.success) {
-        this.showToast('âœ… Item posted successfully!', 'success');
+        this.showToast('âœ… Item posted! Pending verification by admin.', 'info');
         document.getElementById('form-post-marketplace').reset();
         this.closeModal('modal-post-marketplace');
         this.loadMarketplaceData();

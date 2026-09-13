@@ -89,7 +89,7 @@ class AdminPortalEngine {
 
   switchTab(tabName) {
     this.activeTab = tabName;
-    const tabs = ['overview', 'users', 'listings', 'messages', 'system'];
+    const tabs = ['overview', 'users', 'listings', 'verification', 'messages', 'system'];
     
     // For full-page admin dashboard
     tabs.forEach(t => {
@@ -112,6 +112,7 @@ class AdminPortalEngine {
     if (tabName === 'overview') this.renderStats();
     if (tabName === 'users') this.renderUsers();
     if (tabName === 'listings') this.renderListings();
+    if (tabName === 'verification') this.loadPendingItems();
     if (tabName === 'messages') this.renderMessages();
     if (tabName === 'system') this.loadMpesaConfig();
   }
@@ -706,6 +707,176 @@ class AdminPortalEngine {
 
   downloadBackup() {
     window.open('/api/admin/download-db', '_blank');
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════════
+  // VERIFICATION / PENDING ITEMS
+  // ════════════════════════════════════════════════════════════════════════════════
+
+  async loadPendingItems() {
+    try {
+      const token = window.kejaAuth.getToken();
+      const res = await fetch('/api/admin/pending', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!res.ok) return;
+      const data = await res.json();
+
+      if (!data.success) return;
+
+      // Update counts
+      document.getElementById('pending-properties-count').textContent = data.counts.pendingProperties;
+      document.getElementById('pending-services-count').textContent = data.counts.pendingServices;
+      document.getElementById('pending-items-count').textContent = data.counts.pendingItems;
+      document.getElementById('pending-total-count').textContent = data.counts.total;
+
+      // Update pending badge in nav
+      document.getElementById('admin-nav-pending').textContent = data.counts.total;
+
+      this.renderPendingItems(data.pending);
+    } catch (err) {
+      console.error('Error loading pending items:', err);
+    }
+  }
+
+  renderPendingItems(pending) {
+    let html = '';
+
+    if (pending.properties.length === 0 && pending.services.length === 0 && pending.items.length === 0) {
+      html = '<div style="text-align: center; padding: 40px; color: #94a3b8;"><i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 12px; color: #10b981;"></i><p>All listings verified! âœ…</p></div>';
+    } else {
+      html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">';
+
+      // Properties
+      pending.properties.forEach(p => {
+        html += this._pendingItemCard(p);
+      });
+
+      // Services
+      pending.services.forEach(s => {
+        html += this._pendingItemCard(s);
+      });
+
+      // Items
+      pending.items.forEach(i => {
+        html += this._pendingItemCard(i);
+      });
+
+      html += '</div>';
+    }
+
+    document.getElementById('admin-verification-container').innerHTML = html;
+  }
+
+  _pendingItemCard(item) {
+    const typeIcon = {
+      property: 'fas fa-home',
+      service: 'fas fa-tools',
+      marketplace: 'fas fa-shopping-bag'
+    };
+
+    const typeColor = {
+      property: '#3b82f6',
+      service: '#7c3aed',
+      marketplace: '#f59e0b'
+    };
+
+    const icon = typeIcon[item.type] || 'fas fa-box';
+    const color = typeColor[item.type] || '#475569';
+
+    return `
+      <div style="background: white; border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <i class="${icon}" style="color: ${color}; font-size: 1.2rem;"></i>
+              <span style="font-size: 0.75rem; background: ${color}33; color: ${color}; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: capitalize;">${item.type}</span>
+            </div>
+            <h3 style="margin: 0; font-weight: 800; color: #1e293b; font-size: 1rem; line-height: 1.3;">${item.title}</h3>
+          </div>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 12px; line-height: 1.4;">${item.description ? item.description.substring(0, 80) + '...' : 'No description'}</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; font-size: 0.8rem;">
+          <div>
+            <span style="color: #94a3b8;">Location:</span>
+            <div style="color: #1e293b; font-weight: 700;">${item.location || 'N/A'}</div>
+          </div>
+          <div>
+            <span style="color: #94a3b8;">Price:</span>
+            <div style="color: #1e293b; font-weight: 700;">KSh ${item.price ? item.price.toLocaleString() : 'TBD'}</div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 12px;">
+          Posted: ${new Date(item.created_at).toLocaleDateString()} ${new Date(item.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <button class="btn-action" style="background: #10b981; border: none; color: white; font-weight: 700; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;" onclick="adminDash.approvePendingItem('${item.type}', '${item.id}')">
+            <i class="fas fa-check"></i> Approve
+          </button>
+          <button class="btn-action" style="background: #ef4444; border: none; color: white; font-weight: 700; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;" onclick="adminDash.rejectPendingItem('${item.type}', '${item.id}')">
+            <i class="fas fa-trash"></i> Reject
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  async approvePendingItem(itemType, itemId) {
+    try {
+      const token = window.kejaAuth.getToken();
+      const res = await fetch('/api/admin/approve', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ itemType, itemId })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) window.app.showToast(`✅ ${itemType} approved!`, 'success');
+        this.loadPendingItems();
+      } else {
+        if (window.app) window.app.showToast('Error approving item', 'error');
+      }
+    } catch (err) {
+      console.error('Error approving item:', err);
+      if (window.app) window.app.showToast('Error approving item', 'error');
+    }
+  }
+
+  async rejectPendingItem(itemType, itemId) {
+    const reason = prompt('Reject reason (optional):');
+    if (reason === null) return;
+
+    try {
+      const token = window.kejaAuth.getToken();
+      const res = await fetch('/api/admin/reject', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ itemType, itemId, reason })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (window.app) window.app.showToast(`🗑️ ${itemType} rejected`, 'info');
+        this.loadPendingItems();
+      } else {
+        if (window.app) window.app.showToast('Error rejecting item', 'error');
+      }
+    } catch (err) {
+      console.error('Error rejecting item:', err);
+      if (window.app) window.app.showToast('Error rejecting item', 'error');
+    }
   }
 }
 

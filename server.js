@@ -3073,7 +3073,7 @@ app.get('/api/services', async (req, res) => {
   try {
     const { serviceType, verified, limit = 50, offset = 0 } = req.query;
     
-    let query = 'SELECT * FROM services WHERE status = $1';
+    let query = 'SELECT * FROM services WHERE status = $1 AND is_verified = true';
     const params = ['active'];
     let paramCount = 2;
 
@@ -3081,10 +3081,6 @@ app.get('/api/services', async (req, res) => {
       query += ` AND service_type = $${paramCount}`;
       params.push(serviceType);
       paramCount++;
-    }
-
-    if (verified === 'true') {
-      query += ` AND is_verified = true`;
     }
 
     query += ` ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
@@ -3174,7 +3170,7 @@ app.get('/api/marketplace', async (req, res) => {
   try {
     const { category, condition, maxPrice, limit = 50, offset = 0 } = req.query;
     
-    let query = 'SELECT * FROM marketplace_items WHERE status = $1';
+    let query = 'SELECT * FROM marketplace_items WHERE status = $1 AND is_verified = true';
     const params = ['active'];
     let paramCount = 2;
 
@@ -3256,6 +3252,178 @@ app.delete('/api/marketplace/:id', authenticate, async (req, res) => {
 
     await pool.query('DELETE FROM marketplace_items WHERE id = $1', [req.params.id]);
     res.json({ success: true, message: 'Item deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════════════════
+// ADMIN VERIFICATION ENDPOINTS
+// ════════════════════════════════════════════════════════════════════════════════
+
+// GET /api/admin/pending - Get all pending items awaiting verification (requires admin)
+app.get('/api/admin/pending', authenticate, async (req, res) => {
+  try {
+    const session = req.user;
+    if (!session || !session.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required' });
+    }
+
+    // Get pending properties
+    const propsResult = await pool.query(
+      `SELECT id, title, description, rent_kes as price, estate_suburb as location, 
+              created_at, landlord_id as posted_by 
+       FROM properties WHERE is_verified = false ORDER BY created_at ASC`
+    );
+
+    // Get pending services
+    const svcsResult = await pool.query(
+      `SELECT id, title, description, price_min, price_max, service_type, 
+              created_at, provider_id as posted_by 
+       FROM services WHERE is_verified = false ORDER BY created_at ASC`
+    );
+
+    // Get pending marketplace items
+    const itemsResult = await pool.query(
+      `SELECT id, title, description, price_kes as price, category, location_suburb as location,
+              created_at, seller_id as posted_by 
+       FROM marketplace_items WHERE is_verified = false ORDER BY created_at ASC`
+    );
+
+    res.json({
+      success: true,
+      pending: {
+        properties: propsResult.rows.map(p => ({ ...p, type: 'property' })),
+        services: svcsResult.rows.map(s => ({ ...s, type: 'service' })),
+        items: itemsResult.rows.map(i => ({ ...i, type: 'marketplace' }))
+      },
+      counts: {
+        pendingProperties: propsResult.rows.length,
+        pendingServices: svcsResult.rows.length,
+        pendingItems: itemsResult.rows.length,
+        total: propsResult.rows.length + svcsResult.rows.length + itemsResult.rows.length
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/admin/approve - Approve a pending item (requires admin)
+app.post('/api/admin/approve', authenticate, async (req, res) => {
+  try {
+    const session = req.user;
+    if (!session || !session.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required' });
+    }
+
+    const { itemType, itemId } = req.body;
+
+    if (!itemType || !itemId) {
+      return res.status(400).json({ success: false, message: 'itemType and itemId required' });
+    }
+
+    let result;
+    switch (itemType) {
+      case 'property':
+        result = await pool.query(
+          'UPDATE properties SET is_verified = true, updated_at = NOW() WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      case 'service':
+        result = await pool.query(
+          'UPDATE services SET is_verified = true, updated_at = NOW() WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      case 'marketplace':
+        result = await pool.query(
+          'UPDATE marketplace_items SET is_verified = true, updated_at = NOW() WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      default:
+        return res.status(400).json({ success: false, message: 'Invalid itemType' });
+    }
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Item not found' });
+    }
+
+    // Log approval
+    const logId = `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    await pool.query(
+      `INSERT INTO verification_logs (id, item_type, item_id, action, admin_id, admin_name, reason)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [logId, itemType, itemId, 'approved', session.id, session.name || 'Admin', 'Admin approved']
+    );
+
+    res.json({
+      success: true,
+      message: `${itemType} approved successfully`,
+      item: result.rows[0]
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/admin/reject - Reject a pending item (requires admin)
+app.post('/api/admin/reject', authenticate, async (req, res) => {
+  try {
+    const session = req.user;
+    if (!session || !session.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required' });
+    }
+
+    const { itemType, itemId, reason } = req.body;
+
+    if (!itemType || !itemId) {
+      return res.status(400).json({ success: false, message: 'itemType and itemId required' });
+    }
+
+    let result;
+    switch (itemType) {
+      case 'property':
+        result = await pool.query(
+          'DELETE FROM properties WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      case 'service':
+        result = await pool.query(
+          'DELETE FROM services WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      case 'marketplace':
+        result = await pool.query(
+          'DELETE FROM marketplace_items WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      default:
+        return res.status(400).json({ success: false, message: 'Invalid itemType' });
+    }
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Item not found' });
+    }
+
+    // Log rejection
+    const logId = `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    await pool.query(
+      `INSERT INTO verification_logs (id, item_type, item_id, action, admin_id, admin_name, reason)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [logId, itemType, itemId, 'rejected', session.id, session.name || 'Admin', reason || '']
+    );
+
+    res.json({
+      success: true,
+      message: `${itemType} rejected and removed`,
+      reason
+    });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

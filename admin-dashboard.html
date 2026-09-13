@@ -109,6 +109,10 @@
         <button class="admin-nav-btn" onclick="adminDash.switchTab('listings')">
           <i class="fas fa-home"></i> Listings
         </button>
+        <button class="admin-nav-btn" onclick="adminDash.switchTab('verification')">
+          <i class="fas fa-check-circle"></i> Verification
+          <span id="admin-nav-pending" style="background: #ef4444; color: white; border-radius: 10px; padding: 1px 6px; font-size: 0.7rem; margin-left: auto;">0</span>
+        </button>
         <button class="admin-nav-btn" onclick="adminDash.switchTab('messages')">
           <i class="fas fa-comments"></i> Messages
         </button>
@@ -198,6 +202,40 @@
           <div id="admin-listings-container" style="padding: 20px; text-align: center; color: #94a3b8;">
             <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
             <div style="margin-top: 12px;">Loading listings...</div>
+          </div>
+        </div>
+
+        <!-- VERIFICATION TAB -->
+        <div class="admin-tab-pane" id="tab-verification">
+          <div class="list-header">
+            <h2 style="margin: 0; font-size: 1.2rem;">Pending Verification</h2>
+            <button class="btn-action btn-secondary" onclick="adminDash.loadPendingItems()">
+              <i class="fas fa-sync-alt"></i> Refresh Pending
+            </button>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px;">
+            <div class="stat-card">
+              <div class="stat-label">Properties</div>
+              <div class="stat-value" id="pending-properties-count" style="font-size: 2.5rem;">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Services</div>
+              <div class="stat-value" id="pending-services-count" style="font-size: 2.5rem;">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Items</div>
+              <div class="stat-value" id="pending-items-count" style="font-size: 2.5rem;">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Total Pending</div>
+              <div class="stat-value" id="pending-total-count" style="font-size: 2.5rem; color: #ef4444;">0</div>
+            </div>
+          </div>
+
+          <div id="admin-verification-container" style="padding: 20px; text-align: center; color: #94a3b8;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+            <div style="margin-top: 12px;">Loading pending items...</div>
           </div>
         </div>
 
