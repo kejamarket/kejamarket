@@ -2,7 +2,7 @@
   - type: web
     name: kejamarket-prod
     env: node
-    buildCommand: npm install
+    buildCommand: chmod +x render-build.sh && ./render-build.sh
     startCommand: node force-db-fix.js
     plan: free
     envVars:
