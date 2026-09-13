@@ -13,12 +13,16 @@ const DB_FILE = path.join(__dirname, 'data.json');
 const defaultState = {
   users: [],
   properties: [],
+  services: [],
+  marketplace_items: [],
   reviews: {},
+  service_reviews: {},
   transactions: [],
   alerts: [],
   leads: [],
   messages: [],
-  comments: {}
+  comments: {},
+  verification_logs: []
 };
 
 class Store {
@@ -35,22 +39,30 @@ class Store {
         // Ensure all arrays and objects exist
         this.data.users = this.data.users || [];
         this.data.properties = this.data.properties || [];
+        this.data.services = this.data.services || [];
+        this.data.marketplace_items = this.data.marketplace_items || [];
         this.data.reviews = this.data.reviews || {};
+        this.data.service_reviews = this.data.service_reviews || {};
         this.data.transactions = this.data.transactions || [];
         this.data.alerts = this.data.alerts || [];
         this.data.leads = this.data.leads || [];
         this.data.messages = this.data.messages || [];
         this.data.comments = this.data.comments || {};
+        this.data.verification_logs = this.data.verification_logs || [];
 
         // Guarantee official Admin account exists with current credentials
         this.ensureAdminUser();
+        // Ensure seed listings are available
+        this.ensureSeedListings();
       } else {
         this.seedInitialData();
+        this.ensureSeedListings();
         this.save();
       }
     } catch (err) {
       console.error('Error loading DB file, reinitializing:', err);
       this.seedInitialData();
+      this.ensureSeedListings();
       this.save();
     }
   }
@@ -691,6 +703,290 @@ class Store {
   getPaymentsByService(serviceId) {
     if (!this.data.payments) return [];
     return this.data.payments.filter(p => p.serviceId === serviceId);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // SEED LISTINGS LOADER
+  // ═══════════════════════════════════════════════════════════
+
+  ensureSeedListings() {
+    try {
+      const seedFilePath = path.join(__dirname, 'seed-listings.js');
+      if (fs.existsSync(seedFilePath)) {
+        const seedListings = require('./seed-listings.js');
+        if (seedListings) {
+          // Check properties
+          if (Array.isArray(seedListings.properties)) {
+            seedListings.properties.forEach(p => {
+              if (!this.data.properties.some(existing => existing.id === p.id)) {
+                this.data.properties.push({
+                  ...p,
+                  rentKes: p.price || p.rentKes,
+                  estateSuburb: p.suburb || p.location || p.estateSuburb,
+                  media: p.media || (p.images ? p.images.map(img => ({ url: typeof img === 'string' ? img : img.url, caption: p.title })) : []),
+                  images: p.images || (p.media ? p.media.map(m => m.url) : []),
+                  is_verified: false,
+                  isVerified: false,
+                  isApproved: false,
+                  status: 'pending'
+                });
+              }
+            });
+          }
+
+          // Check services
+          if (Array.isArray(seedListings.services) && (!this.data.services || this.data.services.length === 0)) {
+            this.data.services = seedListings.services.map(s => ({
+              ...s,
+              is_verified: false,
+              isVerified: false,
+              status: 'active'
+            }));
+          }
+
+          // Check marketplace items
+          const mkt = seedListings.marketplaceItems || seedListings.marketplace || [];
+          if (Array.isArray(mkt) && (!this.data.marketplace_items || this.data.marketplace_items.length === 0)) {
+            this.data.marketplace_items = mkt.map(item => ({
+              ...item,
+              price_kes: item.price || item.price_kes,
+              location_suburb: item.locationSuburb || item.location_suburb,
+              is_verified: false,
+              isVerified: false,
+              status: 'active'
+            }));
+          }
+          this.save();
+        }
+      }
+    } catch (err) {
+      console.warn('Could not auto-seed listings from seed-listings.js:', err.message);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // ADMIN VERIFICATION MANAGEMENT
+  // ═══════════════════════════════════════════════════════════
+
+  getPendingItems() {
+    const properties = (this.data.properties || [])
+      .filter(p => p.is_verified === false || p.isVerified === false || (!p.isApproved && p.status !== 'approved'))
+      .map(p => ({
+        id: p.id,
+        type: 'property',
+        title: p.title,
+        description: p.description,
+        price: p.rentKes || p.price || 0,
+        location: p.estateSuburb || p.location || 'Nairobi',
+        images: p.images || (p.media ? p.media.map(m => typeof m === 'string' ? m : m.url) : []),
+        posted_by: p.landlordId || (p.landlord ? p.landlord.id : null),
+        created_at: p.createdAt || p.posted || new Date().toISOString()
+      }));
+
+    const services = (this.data.services || [])
+      .filter(s => s.is_verified === false || s.isVerified === false)
+      .map(s => ({
+        id: s.id,
+        type: 'service',
+        title: s.title,
+        description: s.description,
+        price: s.price_min ? `${s.price_min} - ${s.price_max}` : (s.price || 'TBD'),
+        price_min: s.price_min,
+        price_max: s.price_max,
+        service_type: s.service_type || s.serviceType,
+        location: s.coverage_area || s.coverageArea || 'Nairobi',
+        images: s.images || [],
+        posted_by: s.provider_id || s.providerId,
+        created_at: s.created_at || s.createdAt || s.posted || new Date().toISOString()
+      }));
+
+    const items = (this.data.marketplace_items || [])
+      .filter(i => i.is_verified === false || i.isVerified === false)
+      .map(i => ({
+        id: i.id,
+        type: 'marketplace',
+        title: i.title,
+        description: i.description,
+        price: i.price_kes || i.price || 0,
+        category: i.category,
+        location: i.location_suburb || i.locationSuburb || 'Nairobi',
+        images: i.images || [],
+        posted_by: i.seller_id || i.sellerId,
+        created_at: i.created_at || i.createdAt || i.posted || new Date().toISOString()
+      }));
+
+    return {
+      properties,
+      services,
+      items,
+      counts: {
+        pendingProperties: properties.length,
+        pendingServices: services.length,
+        pendingItems: items.length,
+        total: properties.length + services.length + items.length
+      }
+    };
+  }
+
+  approveItem(itemType, itemId, adminUser = {}) {
+    let found = null;
+    if (itemType === 'property') {
+      const idx = (this.data.properties || []).findIndex(p => p.id === itemId);
+      if (idx !== -1) {
+        this.data.properties[idx].is_verified = true;
+        this.data.properties[idx].isVerified = true;
+        this.data.properties[idx].isApproved = true;
+        this.data.properties[idx].status = 'approved';
+        this.data.properties[idx].updatedAt = new Date().toISOString();
+        found = this.data.properties[idx];
+      }
+    } else if (itemType === 'service') {
+      const idx = (this.data.services || []).findIndex(s => s.id === itemId);
+      if (idx !== -1) {
+        this.data.services[idx].is_verified = true;
+        this.data.services[idx].isVerified = true;
+        this.data.services[idx].updatedAt = new Date().toISOString();
+        found = this.data.services[idx];
+      }
+    } else if (itemType === 'marketplace') {
+      const idx = (this.data.marketplace_items || []).findIndex(i => i.id === itemId);
+      if (idx !== -1) {
+        this.data.marketplace_items[idx].is_verified = true;
+        this.data.marketplace_items[idx].isVerified = true;
+        this.data.marketplace_items[idx].updatedAt = new Date().toISOString();
+        found = this.data.marketplace_items[idx];
+      }
+    }
+
+    if (found) {
+      if (!this.data.verification_logs) this.data.verification_logs = [];
+      this.data.verification_logs.push({
+        id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        item_type: itemType,
+        item_id: itemId,
+        action: 'approved',
+        admin_id: adminUser.id || 'usr-admin-01',
+        admin_name: adminUser.name || 'Admin',
+        reason: 'Admin approved',
+        created_at: new Date().toISOString()
+      });
+      this.save();
+    }
+    return found;
+  }
+
+  rejectItem(itemType, itemId, reason = '', adminUser = {}) {
+    let removed = null;
+    if (itemType === 'property') {
+      const idx = (this.data.properties || []).findIndex(p => p.id === itemId);
+      if (idx !== -1) {
+        removed = this.data.properties.splice(idx, 1)[0];
+      }
+    } else if (itemType === 'service') {
+      const idx = (this.data.services || []).findIndex(s => s.id === itemId);
+      if (idx !== -1) {
+        removed = this.data.services.splice(idx, 1)[0];
+      }
+    } else if (itemType === 'marketplace') {
+      const idx = (this.data.marketplace_items || []).findIndex(i => i.id === itemId);
+      if (idx !== -1) {
+        removed = this.data.marketplace_items.splice(idx, 1)[0];
+      }
+    }
+
+    if (removed) {
+      if (!this.data.verification_logs) this.data.verification_logs = [];
+      this.data.verification_logs.push({
+        id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        item_type: itemType,
+        item_id: itemId,
+        action: 'rejected',
+        admin_id: adminUser.id || 'usr-admin-01',
+        admin_name: adminUser.name || 'Admin',
+        reason: reason || 'Admin rejected',
+        created_at: new Date().toISOString()
+      });
+      this.save();
+    }
+    return removed;
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // SERVICES & MARKETPLACE STORE METHODS
+  // ═══════════════════════════════════════════════════════════
+
+  getAllServices(filters = {}) {
+    let list = this.data.services || [];
+    list = list.filter(s => s.status !== 'deleted');
+    if (filters.isVerified !== undefined) {
+      list = list.filter(s => Boolean(s.is_verified || s.isVerified) === Boolean(filters.isVerified));
+    }
+    if (filters.serviceType) {
+      list = list.filter(s => (s.service_type || s.serviceType) === filters.serviceType);
+    }
+    return list;
+  }
+
+  getServiceById(id) {
+    return (this.data.services || []).find(s => s.id === id) || null;
+  }
+
+  createService(service) {
+    if (!this.data.services) this.data.services = [];
+    this.data.services.push(service);
+    this.save();
+    return service;
+  }
+
+  getAllMarketplaceItems(filters = {}) {
+    let list = this.data.marketplace_items || [];
+    list = list.filter(i => i.status !== 'deleted');
+    if (filters.isVerified !== undefined) {
+      list = list.filter(i => Boolean(i.is_verified || i.isVerified) === Boolean(filters.isVerified));
+    }
+    if (filters.category) {
+      list = list.filter(i => i.category === filters.category);
+    }
+    if (filters.condition) {
+      list = list.filter(i => i.condition === filters.condition);
+    }
+    if (filters.maxPrice) {
+      list = list.filter(i => (i.price_kes || i.price || 0) <= Number(filters.maxPrice));
+    }
+    return list;
+  }
+
+  getMarketplaceItemById(id) {
+    return (this.data.marketplace_items || []).find(i => i.id === id) || null;
+  }
+
+  createMarketplaceItem(item) {
+    if (!this.data.marketplace_items) this.data.marketplace_items = [];
+    this.data.marketplace_items.push(item);
+    this.save();
+    return item;
+  }
+
+  deleteMarketplaceItem(id) {
+    const idx = (this.data.marketplace_items || []).findIndex(i => i.id === id);
+    if (idx !== -1) {
+      const removed = this.data.marketplace_items.splice(idx, 1)[0];
+      this.save();
+      return removed;
+    }
+    return null;
+  }
+
+  getServiceReviews(serviceId) {
+    return (this.data.service_reviews && this.data.service_reviews[serviceId]) || [];
+  }
+
+  addServiceReview(serviceId, review) {
+    if (!this.data.service_reviews) this.data.service_reviews = {};
+    if (!this.data.service_reviews[serviceId]) this.data.service_reviews[serviceId] = [];
+    this.data.service_reviews[serviceId].unshift(review);
+    this.save();
+    return review;
   }
 }
 

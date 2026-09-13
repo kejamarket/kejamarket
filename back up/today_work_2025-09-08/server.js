@@ -1277,52 +1277,9 @@ app.get('/api/properties', async (req, res) => {
       return res.json({ success: true, ...result });
     }
 
-    // Fallback: filter and return only verified properties
-    let properties = (await store.getAllProperties() || []).filter(p => p.is_verified === true);
-
-    // Apply client-side filters
-    if (category) {
-      properties = properties.filter(p => p.category && p.category.toLowerCase() === category.toLowerCase());
-    }
-    if (suburb) {
-      properties = properties.filter(p => p.estate_suburb && p.estate_suburb.toLowerCase().includes(suburb.toLowerCase()));
-    }
-    if (corridor) {
-      properties = properties.filter(p => p.corridor && p.corridor.toLowerCase() === corridor.toLowerCase());
-    }
-    if (minPrice) {
-      const min = Number(minPrice);
-      properties = properties.filter(p => p.rent_kes >= min);
-    }
-    if (maxPrice) {
-      const max = Number(maxPrice);
-      properties = properties.filter(p => p.rent_kes <= max);
-    }
-
-    // Apply sorting
-    if (sort === 'newest') {
-      properties.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
-    } else if (sort === 'price_asc') {
-      properties.sort((a, b) => (a.rent_kes || 0) - (b.rent_kes || 0));
-    } else if (sort === 'price_desc') {
-      properties.sort((a, b) => (b.rent_kes || 0) - (a.rent_kes || 0));
-    }
-
-    // Apply pagination
-    const p = page ? parseInt(page) : 1;
-    const ps = pageSize ? parseInt(pageSize) : 50;
-    const start = (p - 1) * ps;
-    const end = start + ps;
-    const paginatedProperties = properties.slice(start, end);
-
-    res.json({ 
-      success: true, 
-      count: paginatedProperties.length, 
-      total: properties.length,
-      page: p,
-      pageSize: ps,
-      properties: paginatedProperties 
-    });
+    // Fallback: return only verified properties
+    const properties = (await store.getAllProperties() || []).filter(p => p.is_verified === true);
+    res.json({ success: true, count: properties.length, properties });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -3313,71 +3270,43 @@ app.get('/api/admin/pending', requireAuth, async (req, res) => {
       return res.status(403).json({ success: false, message: 'Admin access required' });
     }
 
-    // Get pending properties from store
-    const properties = (store.getAllProperties() || [])
-      .filter(p => p.is_verified !== true)
-      .map(p => ({
-        id: p.id,
-        title: p.title,
-        description: p.description,
-        price: p.rent_kes,
-        location: p.estate_suburb,
-        created_at: p.created_at,
-        posted_by: p.landlord_id,
-        images: (p.images && Array.isArray(p.images)) ? p.images : [],
-        type: 'property'
-      }));
+    // Get pending properties
+    const propsResult = await pool.query(
+      `SELECT id, title, description, rent_kes as price, estate_suburb as location, 
+              created_at, landlord_id as posted_by, raw_data,
+              COALESCE((raw_data->>'images')::jsonb, '[]'::jsonb) as images
+       FROM properties WHERE is_verified = false ORDER BY created_at ASC`
+    );
 
-    // Get pending services from store
-    const services = (store.getServices && store.getServices() || [])
-      .filter(s => s.is_verified !== true)
-      .map(s => ({
-        id: s.id,
-        title: s.title,
-        description: s.description,
-        price_min: s.price_min,
-        price_max: s.price_max,
-        service_type: s.service_type,
-        created_at: s.created_at,
-        posted_by: s.provider_id,
-        images: (s.images && Array.isArray(s.images)) ? s.images : [],
-        type: 'service'
-      }));
+    // Get pending services
+    const svcsResult = await pool.query(
+      `SELECT id, title, description, price_min, price_max, service_type, 
+              created_at, provider_id as posted_by, images
+       FROM services WHERE is_verified = false ORDER BY created_at ASC`
+    );
 
-    // Get pending marketplace items from store
-    const items = (store.getMarketplaceItems && store.getMarketplaceItems() || [])
-      .filter(i => i.is_verified !== true)
-      .map(i => ({
-        id: i.id,
-        title: i.title,
-        description: i.description,
-        price: i.price_kes,
-        category: i.category,
-        location: i.location_suburb,
-        created_at: i.created_at,
-        posted_by: i.seller_id,
-        images: (i.images && Array.isArray(i.images)) ? i.images : [],
-        type: 'marketplace'
-      }));
-
-    const all = [...properties, ...services, ...items];
+    // Get pending marketplace items
+    const itemsResult = await pool.query(
+      `SELECT id, title, description, price_kes as price, category, location_suburb as location,
+              created_at, seller_id as posted_by, images
+       FROM marketplace_items WHERE is_verified = false ORDER BY created_at ASC`
+    );
 
     res.json({
       success: true,
       pending: {
-        properties,
-        services,
-        items
+        properties: propsResult.rows.map(p => ({ ...p, type: 'property' })),
+        services: svcsResult.rows.map(s => ({ ...s, type: 'service' })),
+        items: itemsResult.rows.map(i => ({ ...i, type: 'marketplace' }))
       },
       counts: {
-        pendingProperties: properties.length,
-        pendingServices: services.length,
-        pendingItems: items.length,
-        total: all.length
+        pendingProperties: propsResult.rows.length,
+        pendingServices: svcsResult.rows.length,
+        pendingItems: itemsResult.rows.length,
+        total: propsResult.rows.length + svcsResult.rows.length + itemsResult.rows.length
       }
     });
   } catch (err) {
-    console.error('Error fetching pending items:', err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
@@ -3396,39 +3325,47 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'itemType and itemId required' });
     }
 
-    let updatedItem = null;
-
-    try {
-      if (itemType === 'property') {
-        updatedItem = store.updateProperty(itemId, { is_verified: true });
-      } else if (itemType === 'service' && store.updateService) {
-        updatedItem = store.updateService(itemId, { is_verified: true });
-      } else if (itemType === 'marketplace' && store.updateMarketplaceItem) {
-        updatedItem = store.updateMarketplaceItem(itemId, { is_verified: true });
-      } else {
+    let result;
+    switch (itemType) {
+      case 'property':
+        result = await pool.query(
+          'UPDATE properties SET is_verified = true, updated_at = NOW() WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      case 'service':
+        result = await pool.query(
+          'UPDATE services SET is_verified = true, updated_at = NOW() WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      case 'marketplace':
+        result = await pool.query(
+          'UPDATE marketplace_items SET is_verified = true, updated_at = NOW() WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      default:
         return res.status(400).json({ success: false, message: 'Invalid itemType' });
-      }
-
-      if (!updatedItem) {
-        return res.status(404).json({ success: false, message: 'Item not found' });
-      }
-
-      // Send SMS notification to poster
-      const posterPhone = updatedItem.landlord_id || updatedItem.provider_id || updatedItem.seller_id;
-      if (posterPhone && sendRealSMS) {
-        const itemTitle = updatedItem.title || 'Your listing';
-        sendRealSMS(posterPhone, `✅ Your ${itemType} "${itemTitle}" has been approved and is now live on KejaMarket!`).catch(() => {});
-      }
-
-      res.json({
-        success: true,
-        message: `${itemType} approved successfully`,
-        item: updatedItem
-      });
-    } catch (err) {
-      console.error(`Error approving ${itemType}:`, err);
-      return res.status(500).json({ success: false, message: err.message });
     }
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Item not found' });
+    }
+
+    // Log approval
+    const logId = `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    await pool.query(
+      `INSERT INTO verification_logs (id, item_type, item_id, action, admin_id, admin_name, reason)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [logId, itemType, itemId, 'approved', session.id, session.name || 'Admin', 'Admin approved']
+    );
+
+    res.json({
+      success: true,
+      message: `${itemType} approved successfully`,
+      item: result.rows[0]
+    });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -3448,52 +3385,47 @@ app.post('/api/admin/reject', requireAuth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'itemType and itemId required' });
     }
 
-    let deletedItem = null;
-
-    try {
-      if (itemType === 'property') {
-        const prop = store.getProperty(itemId);
-        if (prop) {
-          store.deleteProperty(itemId);
-          deletedItem = prop;
-        }
-      } else if (itemType === 'service' && store.getService && store.deleteService) {
-        const svc = store.getService(itemId);
-        if (svc) {
-          store.deleteService(itemId);
-          deletedItem = svc;
-        }
-      } else if (itemType === 'marketplace' && store.getMarketplaceItem && store.deleteMarketplaceItem) {
-        const item = store.getMarketplaceItem(itemId);
-        if (item) {
-          store.deleteMarketplaceItem(itemId);
-          deletedItem = item;
-        }
-      } else {
+    let result;
+    switch (itemType) {
+      case 'property':
+        result = await pool.query(
+          'DELETE FROM properties WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      case 'service':
+        result = await pool.query(
+          'DELETE FROM services WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      case 'marketplace':
+        result = await pool.query(
+          'DELETE FROM marketplace_items WHERE id = $1 RETURNING *',
+          [itemId]
+        );
+        break;
+      default:
         return res.status(400).json({ success: false, message: 'Invalid itemType' });
-      }
-
-      if (!deletedItem) {
-        return res.status(404).json({ success: false, message: 'Item not found' });
-      }
-
-      // Send SMS notification to poster about rejection
-      const posterPhone = deletedItem.landlord_id || deletedItem.provider_id || deletedItem.seller_id;
-      if (posterPhone && sendRealSMS) {
-        const itemTitle = deletedItem.title || 'Your listing';
-        const rejectionReason = reason ? ` Reason: ${reason}` : '';
-        sendRealSMS(posterPhone, `❌ Your ${itemType} "${itemTitle}" was not approved.${rejectionReason}`).catch(() => {});
-      }
-
-      res.json({
-        success: true,
-        message: `${itemType} rejected and removed`,
-        item: deletedItem
-      });
-    } catch (err) {
-      console.error(`Error rejecting ${itemType}:`, err);
-      return res.status(500).json({ success: false, message: err.message });
     }
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Item not found' });
+    }
+
+    // Log rejection
+    const logId = `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    await pool.query(
+      `INSERT INTO verification_logs (id, item_type, item_id, action, admin_id, admin_name, reason)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [logId, itemType, itemId, 'rejected', session.id, session.name || 'Admin', reason || '']
+    );
+
+    res.json({
+      success: true,
+      message: `${itemType} rejected and removed`,
+      reason
+    });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

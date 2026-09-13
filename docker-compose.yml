@@ -1,17 +1,42 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: kejamarket-db
+    restart: always
+    environment:
+      POSTGRES_USER: kejamarket
+      POSTGRES_PASSWORD: keja2026secure
+      POSTGRES_DB: kejamarket_prod
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/postgres-migration.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kejamarket"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   app:
     build: .
     container_name: kejamarket-app
     restart: always
     ports:
       - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       - NODE_ENV=production
       - PORT=3001
+      - DATABASE_URL=postgresql://kejamarket:keja2026secure@postgres:5432/kejamarket_prod
       - MPESA_CALLBACK_URL=https://kejamarket.co.ke/api/mpesa/callback
     volumes:
       - ./db:/app/db
       - ./.env:/app/.env
-ere are things repeating.once lanlor
+
+volumes:
+  postgres_data:

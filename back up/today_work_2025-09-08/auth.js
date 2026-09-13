@@ -36,12 +36,7 @@ const kejaAuth = (() => {
 
   function saveSession(user, token) {
     if (token) localStorage.setItem('keja_token', token);
-    if (user) {
-      if (user.role === 'admin' || user.id === 'usr-admin-01' || (user.email && user.email.toLowerCase() === 'admin@kejamarket.co.ke')) {
-        user.isAdmin = true;
-      }
-      localStorage.setItem('keja_session', JSON.stringify(user));
-    }
+    if (user) localStorage.setItem('keja_session', JSON.stringify(user));
     if (typeof applyAuthWall === 'function') applyAuthWall(user);
     // Update post button visibility when session changes
     if (window.app && typeof window.app.updatePostButtonsVisibility === 'function') {

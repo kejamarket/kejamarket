@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KejaMarket Admin Dashboard</title>
+  <link rel="stylesheet" href="css/style.css?v=2.5">
+  <link rel="stylesheet" href="css/map.css?v=2.5">
+  <link rel="stylesheet" href="css/monetization.css?v=2.5">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR97kLJUhnToHmMgI+lLp9AfPlkp3+ZiCmKASi56Mark7yrFg==" crossorigin="">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background: #f8fafc; color: #1e293b; }
+    
+    .admin-layout { display: flex; height: 100vh; }
+    
+    .admin-sidebar { width: 250px; background: linear-gradient(135deg, #1e1b4b, #312e81); color: white; padding: 20px; overflow-y: auto; border-right: 1px solid #4f46e5; }
+    .admin-sidebar h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+    .admin-sidebar nav { display: flex; flex-direction: column; gap: 8px; }
+    .admin-nav-btn { background: transparent; color: #e9d5ff; border: none; padding: 12px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; text-align: left; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+    .admin-nav-btn:hover { background: rgba(124, 58, 237, 0.3); }
+    .admin-nav-btn.active { background: #7c3aed; color: white; }
+    
+    .admin-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    
+    .admin-header { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; padding: 20px 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .admin-header h1 { font-size: 1.5rem; font-weight: 800; }
+    .admin-header-right { display: flex; gap: 16px; align-items: center; }
+    .admin-logout-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+    .admin-logout-btn:hover { background: rgba(255,255,255,0.3); }
+    
+    .admin-content { flex: 1; overflow-y: auto; padding: 28px; }
+    
+    .admin-tab-nav { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .admin-tab-btn { background: white; border: 2px solid #e2e8f0; color: #475569; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: all 0.2s; }
+    .admin-tab-btn:hover { border-color: #7c3aed; }
+    .admin-tab-btn.active { background: #7c3aed; color: white; border-color: #7c3aed; }
+    
+    .admin-tab-pane { display: none; }
+    .admin-tab-pane.active { display: block; }
+    
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 6px; }
+    .stat-value { font-size: 2rem; font-weight: 800; color: #4f46e5; }
+    
+    .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .analytics-card { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; padding: 20px; }
+    .analytics-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+    .analytics-card .big-num { font-size: 2.2rem; font-weight: 800; }
+    .analytics-card .sub { font-size: 0.85rem; opacity: 0.9; margin-top: 6px; }
+    
+    .list-container { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; }
+    .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0; }
+    .list-header h3 { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
+    .action-buttons { display: flex; gap: 8px; }
+    .btn-action { background: #4f46e5; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .btn-action:hover { background: #4338ca; }
+    .btn-secondary { background: #f1f5f9; color: #334155; }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-danger { background: #ef4444; }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-success { background: #10b981; }
+    .btn-success:hover { background: #059669; }
+    
+    .item-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+    .item-info { flex: 1; }
+    .item-name { font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+    .item-meta { font-size: 0.8rem; color: #64748b; margin-bottom: 2px; }
+    .item-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-weight: 700; color: #1e293b; margin-bottom: 6px; font-size: 0.9rem; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 6px; font-family: inherit; font-size: 0.9rem; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #7c3aed; }
+    
+    .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+    .status-verified { background: #dcfce7; color: #166534; }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-banned { background: #fecaca; color: #991b1b; }
+    .status-approved { background: #dcfce7; color: #15803d; }
+    
+    @media (max-width: 768px) {
+      .admin-layout { flex-direction: column; }
+      .admin-sidebar { width: 100%; height: auto; }
+      .admin-sidebar nav { flex-direction: row; overflow-x: auto; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .analytics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <h2><i class="fas fa-crown" style="color: #ffd700;"></i> KejaMarket Admin</h2>
+      <nav>
+        <button class="admin-nav-btn active" onclick="adminDash.switchTab('overview')">
+          <i class="fas fa-chart-pie"></i> Overview
+        </button>
+        <button class="admin-nav-btn" onclick="adminDash.switchTab('users')">
+          <i class="fas fa-users"></i> Users
+          <span id="admin-nav-users-pending" style="background: #ef4444; color: white; border-radius: 10px; padding: 1px 6px; font-size: 0.7rem; margin-left: auto;">0</span>
+        </button>
+        <button class="admin-nav-btn" onclick="adminDash.switchTab('listings')">
+          <i class="fas fa-home"></i> Listings
+        </button>
+        <button class="admin-nav-btn" onclick="adminDash.switchTab('verification')">
+          <i class="fas fa-check-circle"></i> Verification
+          <span id="admin-nav-verification-pending" style="background: #ef4444; color: white; border-radius: 10px; padding: 1px 6px; font-size: 0.7rem; margin-left: auto;">0</span>
+        </button>
+        <button class="admin-nav-btn" onclick="adminDash.switchTab('messages')">
+          <i class="fas fa-comments"></i> Messages
+        </button>
+        <button class="admin-nav-btn" onclick="adminDash.switchTab('system')">
+          <i class="fas fa-cog"></i> Settings
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+      <!-- Header -->
+      <header class="admin-header">
+        <h1><i class="fas fa-shield-alt"></i> Admin Dashboard</h1>
+        <div class="admin-header-right">
+          <span id="admin-user-name">Administrator</span>
+          <button class="admin-logout-btn" onclick="adminDash.logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <main class="admin-content">
+
+        <!-- OVERVIEW TAB -->
+        <div class="admin-tab-pane active" id="tab-overview">
+          <h2 style="margin-bottom: 20px; font-size: 1.4rem; color: #1e293b;">Platform Overview</h2>
+          
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">Total Users</div>
+              <div class="stat-value" id="admin-stat-total-users">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Landlords</div>
+              <div class="stat-value" id="admin-stat-landlords">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Tenants</div>
+              <div class="stat-value" id="admin-stat-tenants">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Total Properties</div>
+              <div class="stat-value" id="admin-stat-total-props">—</div>
+            </div>
+            <div class="stat-card" style="background: #fef3c7; border-color: #fcd34d;">
+              <div class="stat-label" style="color: #92400e;">Pending Approval</div>
+              <div class="stat-value" id="admin-stat-pending" style="color: #dc2626;">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Transactions</div>
+              <div class="stat-value" id="admin-stat-transactions">—</div>
+            </div>
+          </div>
+
+          <div id="admin-analytics-container"></div>
+        </div>
+
+        <!-- USERS TAB -->
+        <div class="admin-tab-pane" id="tab-users">
+          <div class="list-header">
+            <h2 style="margin: 0; font-size: 1.2rem;">Registered Users</h2>
+            <div class="action-buttons">
+              <button class="btn-action btn-secondary" onclick="adminDash.refreshAllData()">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+              <button class="btn-action" style="background: #f59e0b;" onclick="adminDash.openBroadcastModal()">
+                <i class="fas fa-bullhorn"></i> Broadcast
+              </button>
+            </div>
+          </div>
+          <div id="admin-users-container" style="padding: 20px; text-align: center; color: #94a3b8;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+            <div style="margin-top: 12px;">Loading users...</div>
+          </div>
+        </div>
+
+        <!-- LISTINGS TAB -->
+        <div class="admin-tab-pane" id="tab-listings">
+          <div class="list-header">
+            <h2 style="margin: 0; font-size: 1.2rem;">Listings Moderation</h2>
+            <button class="btn-action btn-secondary" onclick="adminDash.refreshAllData()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          <div id="admin-listings-container" style="padding: 20px; text-align: center; color: #94a3b8;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+            <div style="margin-top: 12px;">Loading listings...</div>
+          </div>
+        </div>
+
+        <!-- VERIFICATION TAB -->
+        <div class="admin-tab-pane" id="tab-verification">
+          <div class="list-header">
+            <h2 style="margin: 0; font-size: 1.2rem;">Pending Verification</h2>
+            <button class="btn-action btn-secondary" onclick="adminDash.loadPendingItems()">
+              <i class="fas fa-sync-alt"></i> Refresh Pending
+            </button>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px;">
+            <div class="stat-card">
+              <div class="stat-label">Properties</div>
+              <div class="stat-value" id="pending-properties-count" style="font-size: 2.5rem;">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Services</div>
+              <div class="stat-value" id="pending-services-count" style="font-size: 2.5rem;">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Items</div>
+              <div class="stat-value" id="pending-items-count" style="font-size: 2.5rem;">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Total Pending</div>
+              <div class="stat-value" id="pending-total-count" style="font-size: 2.5rem; color: #ef4444;">0</div>
+            </div>
+          </div>
+
+          <div id="admin-verification-container" style="padding: 20px; text-align: center; color: #94a3b8;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+            <div style="margin-top: 12px;">Loading pending items...</div>
+          </div>
+        </div>
+
+        <!-- MESSAGES TAB -->
+        <div class="admin-tab-pane" id="tab-messages">
+          <div class="list-header">
+            <h2 style="margin: 0; font-size: 1.2rem;">Messages & Broadcasts</h2>
+            <button class="btn-action" style="background: #f59e0b;" onclick="adminDash.openBroadcastModal()">
+              <i class="fas fa-bullhorn"></i> New Broadcast
+            </button>
+          </div>
+          <div id="admin-messages-container" style="padding: 20px; text-align: center; color: #94a3b8;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+            <div style="margin-top: 12px;">Loading messages...</div>
+          </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div class="admin-tab-pane" id="tab-system">
+          <h2 style="margin-bottom: 24px; font-size: 1.4rem; color: #1e293b;">System Settings</h2>
+
+          <!-- Database Backup -->
+          <div class="list-container" style="margin-bottom: 24px;">
+            <h3 style="margin-bottom: 12px;"><i class="fas fa-database" style="color: #7c3aed;"></i> Database Backup</h3>
+            <p style="color: #64748b; margin-bottom: 14px; font-size: 0.9rem;">Download a full backup of the database at any time.</p>
+            <button class="btn-action" style="background: #7c3aed;" onclick="adminDash.downloadBackup()">
+              <i class="fas fa-download"></i> Download Database Backup
+            </button>
+          </div>
+
+          <!-- M-Pesa Configuration -->
+          <div class="list-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h3 style="margin: 0;"><i class="fas fa-mobile-alt" style="color: #00b53f;"></i> M-Pesa Daraja Configuration</h3>
+              <span id="admin-daraja-status-badge" style="padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; background: #fee2e2; color: #991b1b;">Keys Pending</span>
+            </div>
+            <p style="color: #64748b; margin-bottom: 16px; font-size: 0.9rem;">
+              Configure from <a href="https://developer.safaricom.co.ke" target="_blank" style="color: #00b53f; font-weight: 600;">developer.safaricom.co.ke</a>. Saved securely to environment.
+            </p>
+            <form id="form-admin-daraja-config" onsubmit="adminDash.saveMpesaConfig(event)">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                <div class="form-group">
+                  <label>Consumer Key</label>
+                  <input type="text" id="admin-mpesa-key" placeholder="Paste Consumer Key">
+                </div>
+                <div class="form-group">
+                  <label>Consumer Secret</label>
+                  <input type="password" id="admin-mpesa-secret" placeholder="Paste Consumer Secret">
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                <div class="form-group">
+                  <label>Daraja Passkey</label>
+                  <input type="password" id="admin-mpesa-passkey" placeholder="Paste Passkey">
+                </div>
+                <div class="form-group">
+                  <label>Paybill</label>
+                  <input type="text" id="admin-mpesa-paybill" value="303030" style="font-weight: 700;">
+                </div>
+                <div class="form-group">
+                  <label>Account No.</label>
+                  <input type="text" id="admin-mpesa-account" value="2057103992" style="font-weight: 700;">
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <label style="margin-right: 10px; font-weight: 700;">Environment:</label>
+                  <select id="admin-mpesa-env" style="padding: 8px 12px; border-radius: 6px; border: 2px solid #e2e8f0; font-weight: 600;">
+                    <option value="sandbox">Sandbox (Testing)</option>
+                    <option value="live">Live (Production)</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn-action" style="background: #00b53f;">
+                  <i class="fas fa-save"></i> Save M-Pesa Settings
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/data/locations.js?v=2.5"></script>
+  <script src="js/auth.js?v=2.5"></script>
+  <script src="js/admin.js?v=2.5"></script>
+  <script>
+    // Check if user is admin on page load
+    setTimeout(() => {
+      const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+      
+      console.log('Admin dashboard load - session:', session);
+
+      if (session) {
+        const isAdmin = session.id === 'usr-admin-01' || 
+                        session.role === 'admin' || 
+                        session.isAdmin === true ||
+                        (session.email && session.email.toLowerCase() === 'admin@kejamarket.co.ke');
+        
+        if (!isAdmin) {
+          console.error('User is not admin:', session);
+          window.location.href = '/';
+          return;
+        }
+        console.log('✅ Admin verified, loading dashboard');
+      } else {
+        console.error('No session found');
+        window.location.href = '/';
+        return;
+      }
+
+      // Initialize admin dashboard
+      if (window.kejaAdmin) {
+        window.adminDash = window.kejaAdmin;
+        window.adminDash.initFullPage();
+        console.log('Admin dashboard initialized');
+      } else {
+        console.warn('kejaAdmin not available yet - retrying');
+        setTimeout(() => {
+          if (window.kejaAdmin) {
+            window.adminDash = window.kejaAdmin;
+            window.adminDash.initFullPage();
+          }
+        }, 500);
+      }
+    }, 500);
+  </script>
+</body>
+</html>
