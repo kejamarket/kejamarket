@@ -1,0 +1,89 @@
+═══════════════════════════════════════════════════════════════════
+ 🚨 URGENT: RENDER DATABASE CONNECTION NOT WORKING
+═══════════════════════════════════════════════════════════════════
+
+PROBLEM CONFIRMED:
+✅ Live server is online at kejamarket.co.ke
+❌ Server is using "json-file" database (fallback mode)
+❌ PostgreSQL connection is NOT working
+❌ Returns 0 properties (should return 21)
+
+ROOT CAUSE:
+The DATABASE_URL environment variable in Render is either:
+  - Missing completely, OR
+  - Set to the OLD Supabase URL, OR  
+  - Has a typo/formatting error
+
+═══════════════════════════════════════════════════════════════════
+ ✅ SOLUTION - DO THIS NOW IN RENDER DASHBOARD:
+═══════════════════════════════════════════════════════════════════
+
+1. Open Render Dashboard:
+   https://dashboard.render.com
+
+2. Select your service: kejamarket-prod
+
+3. Click "Environment" tab (left sidebar)
+
+4. Look for DATABASE_URL variable:
+   
+   IF IT EXISTS:
+   - Click the "Edit" button (pencil icon)
+   - Replace the value with THIS EXACT STRING:
+     postgresql://postgres:Stallonjevugwe4@db.cwqmtrwdbjmsrrqjkfmj.supabase.co:5432/postgres
+   
+   IF IT DOESN'T EXIST:
+   - Click "Add Environment Variable"
+   - Key: DATABASE_URL
+   - Value: postgresql://postgres:Stallonjevugwe4@db.cwqmtrwdbjmsrrqjkfmj.supabase.co:5432/postgres
+
+5. Click "Save Changes"
+
+6. Render will automatically redeploy (takes 2-3 minutes)
+
+7. Wait for deployment to complete, then test:
+   https://kejamarket.co.ke/api/health
+
+   You should see:
+   - database: "postgresql" (not "json-file")
+   - version: "2.0.0-with-real-data"
+   - dataCounts showing 21 properties, 10 services, 20 marketplace items
+
+═══════════════════════════════════════════════════════════════════
+ 📋 VERIFICATION CHECKLIST:
+═══════════════════════════════════════════════════════════════════
+
+After Render redeploys, run these tests:
+
+Test 1 - Health Check:
+curl https://kejamarket.co.ke/api/health
+Should show: database: "postgresql", dataCounts with real numbers
+
+Test 2 - Properties:
+curl https://kejamarket.co.ke/api/properties
+Should show: count: 21
+
+Test 3 - Services:
+curl https://kejamarket.co.ke/api/services
+Should show: count: 10
+
+Test 4 - Marketplace:
+curl https://kejamarket.co.ke/api/marketplace
+Should show: count: 20
+
+═══════════════════════════════════════════════════════════════════
+ ⚠️  COMMON MISTAKES TO AVOID:
+═══════════════════════════════════════════════════════════════════
+
+❌ DON'T add quotes around the DATABASE_URL value
+❌ DON'T add spaces before or after the URL
+❌ DON'T use the old password (Stallon@jevugwe4)
+✅ USE the new password: Stallonjevugwe4 (no special characters)
+✅ MAKE SURE the host is: db.cwqmtrwdbjmsrrqjkfmj.supabase.co
+
+═══════════════════════════════════════════════════════════════════
+
+CORRECT DATABASE_URL (copy this EXACTLY):
+postgresql://postgres:Stallonjevugwe4@db.cwqmtrwdbjmsrrqjkfmj.supabase.co:5432/postgres
+
+═══════════════════════════════════════════════════════════════════

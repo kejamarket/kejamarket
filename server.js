@@ -1964,6 +1964,11 @@ app.get('/api/health', async (req, res) => {
   try {
     let dbCounts = { properties: 0, services: 0, marketplace: 0, users: 0 };
     let dbHost = 'unknown';
+    let dbConfigured = false;
+    
+    // Check if DATABASE_URL is configured
+    const dbUrl = process.env.DATABASE_URL || '';
+    dbConfigured = dbUrl.includes('postgres');
     
     // Try to get counts from database
     if (pool) {
@@ -1981,7 +1986,6 @@ app.get('/api/health', async (req, res) => {
         };
         
         // Extract database host from connection string
-        const dbUrl = process.env.DATABASE_URL || '';
         const hostMatch = dbUrl.match(/@([^:]+):/);
         dbHost = hostMatch ? hostMatch[1] : 'not-configured';
       } catch (err) {
@@ -1992,12 +1996,13 @@ app.get('/api/health', async (req, res) => {
     res.json({
       status: 'online',
       version: '2.0.0-with-real-data',
-      commit: '63ceb0e',
+      commit: 'ca62bc0',
       timestamp: new Date().toISOString(),
       mpesaEnvironment: MPESA_ENV,
       hasDarajaCredentials: hasDarajaCredentials(),
       database: (store && store.isConnected) ? 'postgresql' : 'json-file',
       dbReady: store ? true : false,
+      dbConfigured: dbConfigured,
       dbHost: dbHost,
       dataCounts: dbCounts
     });
