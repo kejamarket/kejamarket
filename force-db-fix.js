@@ -20,7 +20,10 @@ if (currentUrl) {
   console.log('  ' + currentUrl.substring(0, 50) + '...');
   
   // Check if it has the wrong format
-  if (currentUrl.includes('postgres.yvo') || currentUrl.includes('postgres.$')) {
+  if (currentUrl.includes('postgres.yvo') || 
+      currentUrl.includes('postgres.$') || 
+      currentUrl.includes('://postgres.') ||
+      currentUrl.match(/postgres\.[a-z]+:/)) {
     console.log('❌ WRONG FORMAT DETECTED - Fixing...');
     process.env.DATABASE_URL = CORRECT_DATABASE_URL;
     console.log('✅ DATABASE_URL CORRECTED');
