@@ -68,9 +68,21 @@ class NairobiRentalsApp {
       const res = await fetch('/api/properties');
       if (res.ok) {
         const data = await res.json();
-        if (data.success && Array.isArray(data.properties) && data.properties.length > 0) {
+        console.log('API response:', data);
+        
+        // Handle different response formats
+        let propsArray = [];
+        if (data.properties && Array.isArray(data.properties)) {
+          propsArray = data.properties;
+        } else if (data.data && Array.isArray(data.data)) {
+          propsArray = data.data;
+        } else if (Array.isArray(data)) {
+          propsArray = data;
+        }
+
+        if (propsArray.length > 0) {
           // TENANT PORTAL: Show ONLY verified/approved + VACANT listings (hide taken properties)
-          this.properties = data.properties.filter(p => 
+          this.properties = propsArray.filter(p => 
             (p.status === 'approved' || 
             p.isApproved === true ||
             p.isVerified === true ||
@@ -80,22 +92,27 @@ class NairobiRentalsApp {
             !p.isTest &&  // Exclude test properties
             !p.isPlaceholder  // Exclude placeholders
           );
+          console.log('Loaded properties from API:', this.properties.length);
+          return;
         }
       }
     } catch (err) {
-      console.log('Using seed properties (offline fallback)');
-      // Filter seed properties too
-      this.properties = SEED_PROPERTIES.filter(p => 
-        (p.status === 'approved' || 
-        p.isApproved === true ||
-        p.isVerified === true ||
-        p.status === 'active') &&
-        p.availability !== 'taken' &&  // Hide taken properties
-        !p.title?.includes('BEYOND SUNDAY') &&
-        !p.isTest &&
-        !p.isPlaceholder
-      );
+      console.log('API fetch failed:', err);
     }
+    
+    // Fallback to seed properties
+    console.log('Using seed properties (offline fallback)');
+    this.properties = SEED_PROPERTIES.filter(p => 
+      (p.status === 'approved' || 
+      p.isApproved === true ||
+      p.isVerified === true ||
+      p.status === 'active') &&
+      p.availability !== 'taken' &&  // Hide taken properties
+      !p.title?.includes('BEYOND SUNDAY') &&
+      !p.isTest &&
+      !p.isPlaceholder
+    );
+    console.log('Loaded properties from seed:', this.properties.length);
   }
 
   // Alias called by admin.js after listing boost/delete
@@ -278,6 +295,7 @@ class NairobiRentalsApp {
   }
 
   switchFilterTab(tab) {
+    console.log('Switching filter tab to:', tab);
     const categoryLabel = document.getElementById('filter-category-label');
     const categoryList = document.getElementById('sidebar-category-list');
     const propertyFiltersExtra = document.getElementById('sidebar-property-filters-extra');
@@ -287,41 +305,55 @@ class NairobiRentalsApp {
     const servicesBtn = document.getElementById('filter-tab-services');
     const marketplaceBtn = document.getElementById('filter-tab-marketplace');
 
+    if (!categoryLabel) {
+      console.warn('Filter tab elements not found in DOM');
+      return;
+    }
+
     // Reset all tabs to inactive style
     [propertiesBtn, servicesBtn, marketplaceBtn].forEach(btn => {
-      btn.style.background = 'transparent';
-      btn.style.color = '#475569';
-      btn.style.border = '1px solid #e2e8f0';
+      if (btn) {
+        btn.style.background = 'transparent';
+        btn.style.color = '#475569';
+        btn.style.border = '1px solid #e2e8f0';
+      }
     });
 
-    // Hide all extra filter sections
-    if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'none';
-    if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'none';
-    if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'none';
-
     if (tab === 'properties') {
-      propertiesBtn.style.background = '#00b53f';
-      propertiesBtn.style.color = 'white';
-      propertiesBtn.style.border = 'none';
-      categoryLabel.innerHTML = '<i class="fas fa-th-list" style="color: #00b53f;"></i> Property Type';
+      if (propertiesBtn) {
+        propertiesBtn.style.background = '#00b53f';
+        propertiesBtn.style.color = 'white';
+        propertiesBtn.style.border = 'none';
+      }
+      if (categoryLabel) categoryLabel.innerHTML = '<i class="fas fa-th-list" style="color: #00b53f;"></i> Property Type';
       this.currentFilterMode = 'properties';
       this.renderPropertyCategories();
       if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'block';
+      if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'none';
+      if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'none';
     } else if (tab === 'services') {
-      servicesBtn.style.background = '#00b53f';
-      servicesBtn.style.color = 'white';
-      servicesBtn.style.border = 'none';
-      categoryLabel.innerHTML = '<i class="fas fa-tools" style="color: #00b53f;"></i> Service Type';
+      if (servicesBtn) {
+        servicesBtn.style.background = '#00b53f';
+        servicesBtn.style.color = 'white';
+        servicesBtn.style.border = 'none';
+      }
+      if (categoryLabel) categoryLabel.innerHTML = '<i class="fas fa-tools" style="color: #00b53f;"></i> Service Type';
       this.currentFilterMode = 'services';
       this.renderServiceCategories();
+      if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'none';
       if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'block';
+      if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'none';
     } else if (tab === 'marketplace') {
-      marketplaceBtn.style.background = '#00b53f';
-      marketplaceBtn.style.color = 'white';
-      marketplaceBtn.style.border = 'none';
-      categoryLabel.innerHTML = '<i class="fas fa-shopping-bag" style="color: #00b53f;"></i> House Item Type';
+      if (marketplaceBtn) {
+        marketplaceBtn.style.background = '#00b53f';
+        marketplaceBtn.style.color = 'white';
+        marketplaceBtn.style.border = 'none';
+      }
+      if (categoryLabel) categoryLabel.innerHTML = '<i class="fas fa-shopping-bag" style="color: #00b53f;"></i> House Item Type';
       this.currentFilterMode = 'marketplace';
       this.renderMarketplaceCategories();
+      if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'none';
+      if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'none';
       if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'block';
     }
   }
