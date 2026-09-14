@@ -1,42 +1,32 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: kejamarket-db
-    restart: always
-    environment:
-      POSTGRES_USER: kejamarket
-      POSTGRES_PASSWORD: keja2026secure
-      POSTGRES_DB: kejamarket_prod
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./db/postgres-migration.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kejamarket"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   app:
     build: .
     container_name: kejamarket-app
     restart: always
     ports:
       - "3001:3001"
-    depends_on:
-      postgres:
-        condition: service_healthy
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - DATABASE_URL=postgresql://kejamarket:keja2026secure@postgres:5432/kejamarket_prod
+      - DATABASE_URL=postgresql://postgres:Stallonjevugwe4@db.cwqmtrwdbjmsrrqjkfmj.supabase.co:5432/postgres
+      - JWT_SECRET=${JWT_SECRET:-821b62dccd1d6a0c4d8262002c9ed1c5d1e8d0e0aa6ea0e63d15bfaaf3886b4191321f40d4c10fb076c93ddd58e7d93b04b42e68086ff5321b7bfc0b987d3ff4}
+      - MPESA_CONSUMER_KEY=${MPESA_CONSUMER_KEY:-YOUR_CONSUMER_KEY_HERE}
+      - MPESA_CONSUMER_SECRET=${MPESA_CONSUMER_SECRET:-YOUR_CONSUMER_SECRET_HERE}
+      - MPESA_PASSKEY=${MPESA_PASSKEY:-YOUR_PASSKEY_HERE}
+      - MPESA_PAYBILL=303030
+      - MPESA_ACCOUNT=2057103992
       - MPESA_CALLBACK_URL=https://kejamarket.co.ke/api/mpesa/callback
+      - MPESA_ENV=sandbox
+      - AT_USERNAME=kejamarket
+      - AT_API_KEY=${AT_API_KEY:-atsk_bdabf24586133b346f31f648972e20184f64dc60e215e175c948b83d5e5e720bf9991634}
+      - AT_SENDER_ID=${AT_SENDER_ID:-}
     volumes:
-      - ./db:/app/db
-      - ./.env:/app/.env
-
-volumes:
-  postgres_data:
+      - ./.env:/app/.env:ro
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

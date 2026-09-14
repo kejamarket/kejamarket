@@ -17,4 +17,5 @@ EXPOSE 3001
 ENV NODE_ENV=production
 ENV PORT=3001
 
-CMD ["node", "server.js"]
+# Use start.js which forces DATABASE_URL
+CMD ["node", "start.js"]
