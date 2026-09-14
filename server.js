@@ -73,13 +73,39 @@ app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.htm
 
 let store;
 async function initializeDatabase() {
+  console.log('═══════════════════════════════════════════════════════════');
+  console.log('🚀 KEJAMARKET DATABASE INITIALIZATION');
+  console.log('═══════════════════════════════════════════════════════════');
+  
+  // NUCLEAR OPTION: Remove JSON fallback completely
+  const dbPath = path.join(__dirname, 'db', 'data.json');
+  if (fs.existsSync(dbPath)) {
+    console.log('🗑️  Deleting db/data.json - FORCING PostgreSQL only mode');
+    try {
+      fs.unlinkSync(dbPath);
+      console.log('✅ JSON file deleted');
+    } catch (e) {
+      console.log('⚠️  Could not delete JSON file:', e.message);
+    }
+  }
+  
   try {
     console.log('Initializing PostgreSQL database (Supabase)...');
+    console.log('DATABASE_URL sources:');
+    console.log('  - Global:', global.KEJAMARKET_DATABASE_URL ? '✅ SET' : '❌ NOT SET');
+    console.log('  - Env:', process.env.DATABASE_URL ? '✅ SET' : '❌ NOT SET');
+    console.log('  - First 50 chars:', (global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || 'NONE').substring(0, 50));
+    
     store = require('./db/postgres-store.js');
     const success = await store.init();
 
     if (!success) {
-      throw new Error('PostgreSQL initialization failed');
+      console.log('');
+      console.log('❌❌❌ FATAL ERROR ❌❌❌');
+      console.log('PostgreSQL connection FAILED and JSON fallback is disabled');
+      console.log('The server CANNOT start without a working database connection');
+      console.log('');
+      throw new Error('PostgreSQL initialization failed - NO FALLBACK AVAILABLE');
     }
 
     try {
@@ -90,14 +116,24 @@ async function initializeDatabase() {
       const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
       await pool.query(schemaSql);
       await pool.end();
+      console.log('✅ Schema migrations applied');
     } catch (schemaErr) {
       console.warn('Schema update warning:', schemaErr.message);
     }
     
-    console.log('PostgreSQL database (Supabase) connected successfully');
+    console.log('✅ PostgreSQL database (Supabase) connected successfully');
+    console.log('═══════════════════════════════════════════════════════════');
   } catch (error) {
-    console.error('FATAL: PostgreSQL connection failed -', error.message);
+    console.error('');
+    console.error('╔═══════════════════════════════════════════════════════════╗');
+    console.error('║  FATAL: PostgreSQL connection failed                     ║');
+    console.error('╚═══════════════════════════════════════════════════════════╝');
+    console.error('Error:', error.message);
     console.error('DATABASE_URL:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 40) + '...' : 'NOT SET');
+    console.error('');
+    console.error('This server requires PostgreSQL. JSON fallback has been disabled.');
+    console.error('Please ensure DATABASE_URL is configured correctly.');
+    console.error('');
     process.exit(1);
   }
 

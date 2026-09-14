@@ -55,10 +55,25 @@ class PostgreSQLStore {
       return true;
     } catch (err) {
       console.error('❌ PostgreSQL connection failed:', err.message);
-      console.error('❌ Connection string starts with:', process.env.DATABASE_URL?.substring(0, 40));
-      // Fallback to JSON store
-      this.fallbackStore = require('./store.js');
-      console.log('🔄 Using JSON file fallback');
+      console.error('❌ Connection string starts with:', databaseUrl?.substring(0, 40));
+      console.error('');
+      console.error('╔═══════════════════════════════════════════════════════════╗');
+      console.error('║  NO FALLBACK AVAILABLE - PostgreSQL REQUIRED             ║');
+      console.error('╚═══════════════════════════════════════════════════════════╝');
+      console.error('');
+      console.error('This server is configured to use PostgreSQL only.');
+      console.error('JSON file fallback has been disabled for production.');
+      console.error('');
+      console.error('Troubleshooting:');
+      console.error('1. Check DATABASE_URL environment variable');
+      console.error('2. Verify Supabase project is running');
+      console.error('3. Check network connectivity to database');
+      console.error('');
+      
+      // DO NOT fallback to JSON
+      this.isConnected = false;
+      this.fallbackStore = null;
+      
       return false;
     }
   }
