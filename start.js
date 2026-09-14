@@ -1,9 +1,10 @@
 ﻿/**
  * KEJAMARKET STARTUP - NEW SUPABASE PROJECT
  * Forces correct DATABASE_URL - MULTIPLE TIMES TO ENSURE IT STICKS
+ * Using Connection Pooler for IPv4 compatibility
  */
 
-const CORRECT_DATABASE_URL = 'postgresql://postgres:Stallonjevugwe4@db.cwqmtrwdbjmsrrqjkfmj.supabase.co:5432/postgres';
+const CORRECT_DATABASE_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
 
 // Set it BEFORE dotenv
 process.env.DATABASE_URL = CORRECT_DATABASE_URL;
@@ -22,7 +23,7 @@ process.env.PORT = process.env.PORT || '10000';
 process.env.DATABASE_URL = CORRECT_DATABASE_URL;
 
 console.log('='.repeat(80));
-console.log('🚀 KEJAMARKET - FORCED DATABASE CONNECTION');
+console.log('🚀 KEJAMARKET - FORCED DATABASE CONNECTION (Connection Pooler)');
 console.log('='.repeat(80));
 console.log('DATABASE_URL:', CORRECT_DATABASE_URL);
 console.log('ENV CHECK:', process.env.DATABASE_URL);

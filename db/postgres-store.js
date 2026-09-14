@@ -14,8 +14,8 @@ class PostgreSQLStore {
   }
 
   async init() {
-    // FORCE DATABASE_URL if not set or set incorrectly
-    const HARDCODED_DB_URL = 'postgresql://postgres:Stallonjevugwe4@db.cwqmtrwdbjmsrrqjkfmj.supabase.co:5432/postgres';
+    // FORCE DATABASE_URL if not set or set incorrectly - Using Connection Pooler
+    const HARDCODED_DB_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
     
     // Use global from start.js, or env, or hardcoded
     const databaseUrl = global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || HARDCODED_DB_URL;

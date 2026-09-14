@@ -110,7 +110,7 @@ async function initializeDatabase() {
 
     try {
       const { Pool } = require('pg');
-      const HARDCODED_DB_URL = 'postgresql://postgres:Stallonjevugwe4@db.cwqmtrwdbjmsrrqjkfmj.supabase.co:5432/postgres';
+      const HARDCODED_DB_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
       const databaseUrl = global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || HARDCODED_DB_URL;
       const pool = new Pool({ connectionString: databaseUrl, ssl: { rejectUnauthorized: false } });
       const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
