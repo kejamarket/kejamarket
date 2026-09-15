@@ -101,7 +101,7 @@ async function initializeDatabase() {
         const databaseUrl = global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || POOLER_URL;
         const pool = new Pool({ connectionString: databaseUrl, ssl: { rejectUnauthorized: false } });
         const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
-        await pool.query(schemaSql);
+        await store.query(schemaSql);
         await pool.end();
         console.log('✅ Schema migrations applied');
       } catch (schemaErr) {
@@ -1860,9 +1860,9 @@ app.post('/api/messages', optionalAuth, async (req, res) => {
   }
 });
 
-// â”€â”€â”€ LEADS & ALERTS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── LEADS & ALERTS ROUTES ─────────────────────────────────────────────────
 
-// POST /api/alerts/whatsapp â€” save subscription + use saveWhatsAppSub for PostgreSQL
+// POST /api/alerts/whatsapp — save subscription + use saveWhatsAppSub for PostgreSQL
 app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
   try {
     const { phone, category, estate, budgetMin, budgetMax } = req.body;
@@ -1882,7 +1882,7 @@ app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
 
     // Send confirmation SMS
     await sendRealSMS(cleanPhone,
-      `[KejaMarket Alerts] âœ… Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}â€“${budgetMax || 'any'}/mo). Valid 30 days.`
+      `[KejaMarket Alerts] ✅ Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}–${budgetMax || 'any'}/mo). Valid 30 days.`
     );
 
     res.json({ success: true, message: 'Rental alert registered. SMS confirmation sent.', sub });
@@ -1997,12 +1997,12 @@ app.get('/api/health', async (req, res) => {
     dbConfigured = dbUrl.includes('postgres');
     
     // Try to get counts from database
-    if (pool) {
+    if (store && store.isConnected) {
       try {
-        const propCount = await pool.query('SELECT COUNT(*) FROM properties');
-        const servCount = await pool.query('SELECT COUNT(*) FROM services');
-        const mktCount = await pool.query('SELECT COUNT(*) FROM marketplace_items');
-        const userCount = await pool.query('SELECT COUNT(*) FROM users');
+        const propCount = await store.query('SELECT COUNT(*) FROM properties');
+        const servCount = await store.query('SELECT COUNT(*) FROM services');
+        const mktCount = await store.query('SELECT COUNT(*) FROM marketplace_items');
+        const userCount = await store.query('SELECT COUNT(*) FROM users');
         
         dbCounts = {
           properties: parseInt(propCount.rows[0].count),
@@ -3241,7 +3241,7 @@ app.get('/api/services', async (req, res) => {
     query += ` ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
     params.push(parseInt(limit), parseInt(offset));
 
-    const result = await pool.query(query, params);
+    const result = await store.query(query, params);
     
     res.json({
       success: true,
@@ -3257,7 +3257,7 @@ app.get('/api/services', async (req, res) => {
 // GET /api/services/:id - Get single service
 app.get('/api/services/:id', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM services WHERE id = $1', [req.params.id]);
+    const result = await store.query('SELECT * FROM services WHERE id = $1', [req.params.id]);
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Service not found' });
     }
@@ -3273,7 +3273,7 @@ app.post('/api/services', requireAuth, async (req, res) => {
     const { title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours, images } = req.body;
     const serviceId = 'svc-' + Date.now();
 
-    await pool.query(
+    await store.query(
       `INSERT INTO services (id, title, description, service_type, provider_id, provider_name, provider_phone, price_min, price_max, coverage_area, service_hours, images)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
       [serviceId, title, description, serviceType, req.user.id, req.user.name, req.user.phone, priceMin, priceMax, coverageArea, serviceHours, JSON.stringify(images || [])]
@@ -3288,7 +3288,7 @@ app.post('/api/services', requireAuth, async (req, res) => {
 // GET /api/services/:id/reviews - Get service reviews
 app.get('/api/services/:id/reviews', async (req, res) => {
   try {
-    const result = await pool.query(
+    const result = await store.query(
       'SELECT * FROM service_reviews WHERE service_id = $1 ORDER BY created_at DESC',
       [req.params.id]
     );
@@ -3304,7 +3304,7 @@ app.post('/api/services/:id/reviews', requireAuth, async (req, res) => {
     const { rating, reviewText } = req.body;
     const reviewId = 'svr-' + Date.now();
 
-    await pool.query(
+    await store.query(
       `INSERT INTO service_reviews (id, service_id, reviewer_id, reviewer_name, rating, review_text)
        VALUES ($1, $2, $3, $4, $5, $6)`,
       [reviewId, req.params.id, req.user.id, req.user.name, rating, reviewText]
@@ -3350,7 +3350,7 @@ app.get('/api/marketplace', async (req, res) => {
     query += ` ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
     params.push(parseInt(limit), parseInt(offset));
 
-    const result = await pool.query(query, params);
+    const result = await store.query(query, params);
     
     res.json({
       success: true,
@@ -3366,7 +3366,7 @@ app.get('/api/marketplace', async (req, res) => {
 // GET /api/marketplace/:id - Get single marketplace item
 app.get('/api/marketplace/:id', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM marketplace_items WHERE id = $1', [req.params.id]);
+    const result = await store.query('SELECT * FROM marketplace_items WHERE id = $1', [req.params.id]);
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Item not found' });
     }
@@ -3382,7 +3382,7 @@ app.post('/api/marketplace', requireAuth, async (req, res) => {
     const { title, description, category, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, images } = req.body;
     const itemId = 'mkt-' + Date.now();
 
-    await pool.query(
+    await store.query(
       `INSERT INTO marketplace_items (id, title, description, category, seller_id, seller_name, seller_phone, price_kes, condition, item_type, is_negotiable, location_suburb, location_corridor, images)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
       [itemId, title, description, category, req.user.id, req.user.name, req.user.phone, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, JSON.stringify(images || [])]
@@ -3397,7 +3397,7 @@ app.post('/api/marketplace', requireAuth, async (req, res) => {
 // DELETE /api/marketplace/:id - Delete marketplace item (owner only)
 app.delete('/api/marketplace/:id', requireAuth, async (req, res) => {
   try {
-    const result = await pool.query('SELECT seller_id FROM marketplace_items WHERE id = $1', [req.params.id]);
+    const result = await store.query('SELECT seller_id FROM marketplace_items WHERE id = $1', [req.params.id]);
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: 'Item not found' });
     }
@@ -3405,7 +3405,7 @@ app.delete('/api/marketplace/:id', requireAuth, async (req, res) => {
       return res.status(403).json({ success: false, message: 'Unauthorized' });
     }
 
-    await pool.query('DELETE FROM marketplace_items WHERE id = $1', [req.params.id]);
+    await store.query('DELETE FROM marketplace_items WHERE id = $1', [req.params.id]);
     res.json({ success: true, message: 'Item deleted' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
