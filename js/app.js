@@ -96,6 +96,7 @@ class NairobiRentalsApp {
             !p.isTest &&  // Exclude test properties
             !p.isPlaceholder  // Exclude placeholders
           );
+          this.properties = this.properties.map(p => this.normalizeProperty(p));
           console.log('Loaded properties from API:', this.properties.length);
           return;
         }
@@ -773,33 +774,20 @@ class NairobiRentalsApp {
     this.applyFilters();
   }
 
-  openGalleryModal(propertyId, event) {
+    openGalleryModal(propertyId, event) {
     if (event) event.stopPropagation();
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 
+    this.normalizeProperty(p);
     this.selectedPropertyForDetail = p;
     this.currentPhotoIndex = 0;
 
-    // Standardize media array
-    if (!p.media || !Array.isArray(p.media) || p.media.length === 0) {
-      const defaultImg = p.thumbnail || p.image || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
-      p.media = [{ url: defaultImg, caption: p.title }];
-    } else {
-      p.media = p.media.map(m => typeof m === 'string' ? { url: m, caption: p.title } : m);
-    }
-
-    const isLoggedIn = !!(window.kejaAuth && (window.kejaAuth.isLoggedIn() || window.kejaAuth.getSession()));
-
-    // Always open property detail modal (for ALL users — guests and logged-in)
+    // Open property detail modal
     this.openPropertyDetail(propertyId);
 
-    if (isLoggedIn) {
-      // Logged-in: unlock photos and open lightbox directly
-      this.unlockDetailPhotos(propertyId);
-      setTimeout(() => this.openLightbox(event), 100);
-    }
-    // Guests: detail modal opens, they can sign in from within to see full gallery
+    // Open full lightbox gallery showing all 7 photos immediately
+    setTimeout(() => this.openLightbox(event), 100);
   }
 
   // Handle photo file selection for forms (Max 5 photos)
@@ -1230,40 +1218,102 @@ class NairobiRentalsApp {
   }
 
   revealLandlordPhone(propertyId, btnEl) {
-    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
-      window.kejaAuth.requireTenantAuth(() => this.revealLandlordPhone(propertyId, btnEl));
-      return;
-    }
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
+    this.normalizeProperty(p);
 
+    const phone = p.landlord?.phone || '+254711882233';
     if (btnEl) {
-      btnEl.innerHTML = `<i class="fas fa-phone"></i> ${p.landlord?.phone || 'Call'}`;
+      btnEl.innerHTML = `<i class="fas fa-phone"></i> ${phone}`;
       btnEl.style.background = '#e6f8ec';
       btnEl.style.color = '#008e31';
       btnEl.style.borderColor = '#00b53f';
     }
 
     // Immediately open phone dialer app
-    if (p.landlord?.phone) window.location.href = `tel:${p.landlord.phone}`;
+    window.location.href = `tel:${phone}`;
   }
 
   callLandlordDirect(propertyId) {
-    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
-      window.kejaAuth.requireTenantAuth(() => this.callLandlordDirect(propertyId));
-      return;
-    }
     const p = this.properties.find(x => x.id === propertyId) || this.selectedPropertyForDetail;
     if (!p) return;
+    this.normalizeProperty(p);
 
-    this.unlockDetailContact(p);
-    // Immediately open phone dialer app
-    if (p.landlord?.phone) window.location.href = `tel:${p.landlord.phone}`;
+    const phone = p.landlord?.phone || '+254711882233';
+    window.location.href = `tel:${phone}`;
+  }
+  normalizeProperty(p) {
+    if (!p) return p;
+
+    // Enrich with SEED_PROPERTIES so all 7 photos, descriptions, amenities, and contact info are available
+    const seed = (typeof SEED_PROPERTIES !== 'undefined' && Array.isArray(SEED_PROPERTIES))
+      ? SEED_PROPERTIES.find(s => s.id === p.id || s.title === p.title)
+      : null;
+
+    if (seed) {
+      if (!p.media || !Array.isArray(p.media) || p.media.length <= 1) {
+        p.media = seed.media ? seed.media.map(m => ({ ...m })) : p.media;
+      }
+      p.photoCount = (p.media && p.media.length > 1) ? p.media.length : (seed.photoCount || seed.media?.length || 7);
+      if (!p.description || p.description.length < 20) p.description = seed.description || p.description;
+      if (!p.amenities || Object.keys(p.amenities).length === 0) p.amenities = { ...(seed.amenities || {}) };
+      if (!p.landlord || !p.landlord.phone) p.landlord = { ...(seed.landlord || {}), ...(p.landlord || {}) };
+      if (!p.exactLocation && seed.exactLocation) p.exactLocation = seed.exactLocation;
+      if (p.latitude == null && seed.latitude != null) {
+        p.latitude = seed.latitude;
+        p.longitude = seed.longitude;
+      }
+      if (!p.waterSupplyType && seed.waterSupplyType) p.waterSupplyType = seed.waterSupplyType;
+      if (!p.electricityMeterType && seed.electricityMeterType) p.electricityMeterType = seed.electricityMeterType;
+    }
+
+    // Normalize landlord
+    if (!p.landlord || typeof p.landlord !== 'object') {
+      p.landlord = {
+        name: p.landlordName || p.owner_name || 'Landlord',
+        phone: p.landlordPhone || p.owner_phone || '+254711882233',
+        whatsapp: p.landlordWhatsapp || p.owner_whatsapp || '+254711882233',
+        memberSince: p.landlordSince || '2024',
+        isVerified: p.isVerified || false,
+        isAgency: p.managedBy === 'agency',
+        id: p.landlordId || p.owner_id || null
+      };
+    }
+
+    // Normalize amenities
+    if (!p.amenities || typeof p.amenities !== 'object') {
+      p.amenities = {};
+    } else if (Array.isArray(p.amenities)) {
+      const arr = p.amenities.map(a => String(a).toLowerCase());
+      p.amenities = {
+        hasBalcony: arr.includes('balcony'),
+        hasParking: arr.includes('parking'),
+        hasElectricFence: arr.includes('electric fence') || arr.includes('fence'),
+        hasCctv: arr.includes('cctv') || arr.includes('security'),
+        hasInternet: arr.includes('wifi') || arr.includes('internet'),
+        hasTiles: arr.includes('tiles'),
+        isMasterEnsuite: arr.includes('ensuite'),
+        hasGym: arr.includes('gym'),
+        hasSwimmingPool: arr.includes('pool') || arr.includes('swimming')
+      };
+    }
+
+    // Normalize media array
+    if (!p.media || !Array.isArray(p.media) || p.media.length === 0) {
+      const defaultImg = p.thumbnail || p.image || (Array.isArray(p.images) && p.images[0]) || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
+      p.media = [{ url: defaultImg, caption: p.title || 'Property photo' }];
+    } else {
+      p.media = p.media.map((m, i) => typeof m === 'string' ? { url: m, caption: `Photo ${i + 1} of ${p.title}` } : m);
+    }
+
+    p.photoCount = p.media.length;
+    return p;
   }
 
   openPropertyDetail(propertyId) {
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
+    this.normalizeProperty(p);
 
     // Normalize landlord — API listings may not have a landlord object
     if (!p.landlord || typeof p.landlord !== 'object') {
@@ -1425,38 +1475,11 @@ class NairobiRentalsApp {
 
     const thumbsContainer = document.getElementById('detail-thumbs-container');
     if (thumbsContainer) {
-      thumbsContainer.innerHTML = p.media.map((m, idx) => {
-        if (idx === 0) {
-          // Always show first photo free
-          return `<div class="detail-thumb active" onclick="app.selectDetailPhoto('${m.url}', this, 0)">
-            <img src="${m.url}" alt="${m.caption || 'Photo'}">
-          </div>`;
-        }
-        if (isLoggedIn) {
-          // Logged-in: show all photos normally
-          return `<div class="detail-thumb" onclick="app.selectDetailPhoto('${m.url}', this, ${idx})">
-            <img src="${m.url}" alt="${m.caption || 'Photo'}">
-          </div>`;
-        }
-        // Locked: blurred thumb with lock icon
-        return `<div class="detail-thumb detail-thumb-locked" onclick="kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}'))" title="Sign in to view all photos">
-          <img src="${m.url}" alt="Locked photo" style="filter:blur(6px) brightness(0.55); pointer-events:none;">
-          <span class="thumb-lock-icon"><i class="fas fa-lock"></i></span>
-        </div>`;
-      }).join('');
-
-      // If not logged in and there are extra photos, show a sign-in nudge strip
-      if (!isLoggedIn && p.media.length > 1) {
-        const extraCount = p.media.length - 1;
-        thumbsContainer.insertAdjacentHTML('afterend', `
-          <div id="detail-photos-lock-banner" onclick="kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}'))"
-            style="display:flex;align-items:center;gap:10px;background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:8px;padding:10px 14px;margin-top:8px;cursor:pointer;font-size:0.85rem;color:#475569;">
-            <i class="fas fa-images" style="font-size:1.3rem;color:#00b53f;"></i>
-            <span><strong>+${extraCount} more photo${extraCount > 1 ? 's' : ''}</strong> — <span style="color:#00b53f;font-weight:700;">Sign in free</span> to view all</span>
-            <i class="fas fa-chevron-right" style="margin-left:auto;color:#94a3b8;"></i>
-          </div>
-        `);
-      }
+      thumbsContainer.innerHTML = p.media.map((m, idx) => `
+        <div class="detail-thumb ${idx === (this.currentPhotoIndex || 0) ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this, ${idx})">
+          <img src="${m.url}" alt="${m.caption || 'Photo'}">
+        </div>
+      `).join('');
     }
 
     // Video Tours Walkthrough
@@ -1537,41 +1560,31 @@ class NairobiRentalsApp {
     const chatBtn = document.getElementById('detail-btn-inbox-chat');
 
     const contactName = isAgencyListing ? (p.agencyName || p.landlord?.name || 'Agency') : (p.landlord?.name || 'Landlord');
+    const contactPhone = p.landlord?.phone || '+254711882233';
 
-    if (isLoggedIn) {
-      // Full access
-      if (landlordName) landlordName.textContent = contactName;
-      if (landlordSince) landlordSince.textContent = `Member since ${p.landlord?.memberSince || '2024'}`;
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord?.phone || 'Contact via Chat'}`;
-      if (callBtn) {
-        callBtn.href = `tel:${p.landlord?.phone || ''}`;
-        callBtn.removeAttribute('onclick');
-        callBtn.style.opacity = '1';
-        callBtn.style.pointerEvents = 'auto';
-        callBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call ${isAgencyListing ? 'Agency' : 'Landlord'}`;
-      }
-      if (chatBtn) {
-        chatBtn.onclick = () => app.openChatForCurrentProperty();
-        chatBtn.style.opacity = '1';
-        chatBtn.style.pointerEvents = 'auto';
-        chatBtn.innerHTML = `<i class="fas fa-comment-dots"></i> Message ${isAgencyListing ? 'Agency' : 'Landlord'}`;
-      }
-    } else {
-      // Protected
-      if (landlordName) landlordName.innerHTML = `<i class="fas fa-user-shield" style="color:#00b53f;margin-right:6px;"></i><span style="color:#64748b;">${isAgencyListing ? 'Agency' : 'Landlord'} Details Protected</span>`;
-      if (landlordSince) landlordSince.textContent = 'Sign in or create free account to view contact details';
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;letter-spacing:1px;">+254 7••• •••••• (Sign in to view)</span>`;
-      if (callBtn) {
-        callBtn.href = '#';
-        callBtn.setAttribute('onclick', `event.preventDefault(); app.callLandlordDirect('${p.id}'); return false;`);
-        callBtn.style.opacity = '0.9';
-        callBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Call ${isAgencyListing ? 'Agency' : 'Landlord'}`;
-      }
-      if (chatBtn) {
-        chatBtn.onclick = (e) => { e.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(p.id)); };
-        chatBtn.style.opacity = '0.85';
-        chatBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Message`;
-      }
+    if (landlordName) landlordName.textContent = contactName;
+    if (landlordSince) landlordSince.textContent = `Member since ${p.landlord?.memberSince || '2024'}`;
+    if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i><a href="tel:${contactPhone}" style="color:#0f172a;text-decoration:none;font-weight:700;">${contactPhone}</a>`;
+
+    if (callBtn) {
+      callBtn.href = `tel:${contactPhone}`;
+      callBtn.removeAttribute('onclick');
+      callBtn.style.opacity = '1';
+      callBtn.style.pointerEvents = 'auto';
+      callBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')} (${contactPhone})`;
+    }
+
+    if (chatBtn) {
+      chatBtn.onclick = () => {
+        if (isLoggedIn) {
+          app.openChatForCurrentProperty();
+        } else {
+          kejaAuth.requireTenantAuth(() => app.openChatForCurrentProperty());
+        }
+      };
+      chatBtn.style.opacity = '1';
+      chatBtn.style.pointerEvents = 'auto';
+      chatBtn.innerHTML = `<i class="fas fa-comment-dots"></i> Message ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')}`;
     }
 
     // Caretaker Card Population
@@ -1584,15 +1597,9 @@ class NairobiRentalsApp {
         caretakerCard.style.display = 'block';
         if (caretakerNameEl) caretakerNameEl.textContent = p.caretakerName || 'Building Caretaker';
         if (caretakerCallBtn) {
-          if (isLoggedIn) {
-            caretakerCallBtn.href = `tel:${p.caretakerPhone || ''}`;
-            caretakerCallBtn.removeAttribute('onclick');
-            caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${p.caretakerPhone || ''})`;
-          } else {
-            caretakerCallBtn.href = '#';
-            caretakerCallBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}')); return false;`);
-            caretakerCallBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Call Caretaker`;
-          }
+          caretakerCallBtn.href = `tel:${p.caretakerPhone || ''}`;
+          caretakerCallBtn.removeAttribute('onclick');
+          caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${p.caretakerPhone || ''})`;
         }
       } else {
         caretakerCard.style.display = 'none';
@@ -1684,12 +1691,6 @@ class NairobiRentalsApp {
     const p = this.selectedPropertyForDetail;
     if (!p || !p.media || p.media.length <= 1) return;
 
-    const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
-    if (!isLoggedIn && p.media.length > 1) {
-      window.kejaAuth.requireTenantAuth(() => this.prevDetailPhoto());
-      return;
-    }
-
     this.currentPhotoIndex = (this.currentPhotoIndex - 1 + p.media.length) % p.media.length;
     this.showPhotoAtIndex(this.currentPhotoIndex);
   }
@@ -1698,12 +1699,6 @@ class NairobiRentalsApp {
     if (event) event.stopPropagation();
     const p = this.selectedPropertyForDetail;
     if (!p || !p.media || p.media.length <= 1) return;
-
-    const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
-    if (!isLoggedIn && p.media.length > 1) {
-      window.kejaAuth.requireTenantAuth(() => this.nextDetailPhoto());
-      return;
-    }
 
     this.currentPhotoIndex = (this.currentPhotoIndex + 1) % p.media.length;
     this.showPhotoAtIndex(this.currentPhotoIndex);

@@ -535,7 +535,7 @@ button, input, select, textarea {
   margin: 16px auto;
   padding: 0 14px;
   display: grid;
-  grid-template-columns: 335px 1fr;
+  grid-template-columns: 380px 1fr;
   gap: 16px;
   align-items: start;
 }
@@ -556,8 +556,8 @@ button, input, select, textarea {
 /* 2-Column Sidebar Layout */
 .sidebar-filter-cols {
   display: grid;
-  grid-template-columns: 135px 1fr;
-  gap: 10px;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
   align-items: start;
 }
 

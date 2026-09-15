@@ -39,14 +39,21 @@ class LandlordManager {
 
     if (!searchInput || !suggestionsDiv) return;
 
-    let allSuburbs = [];
-    if (typeof ALL_SUBURBS !== 'undefined') {
-      allSuburbs = ALL_SUBURBS;
-    }
+    const getSuburbs = () => {
+      if (typeof ALL_SUBURBS !== 'undefined' && Array.isArray(ALL_SUBURBS) && ALL_SUBURBS.length > 0) return ALL_SUBURBS;
+      if (window.ALL_SUBURBS && Array.isArray(window.ALL_SUBURBS) && window.ALL_SUBURBS.length > 0) return window.ALL_SUBURBS;
+      if (typeof NAIROBI_REGIONS !== 'undefined' && Array.isArray(NAIROBI_REGIONS)) {
+        const list = [];
+        NAIROBI_REGIONS.forEach(r => (r.suburbs || []).forEach(s => list.push({ name: s, county: r.county || 'Nairobi', corridorId: r.corridorId, lat: r.lat || -1.286389, lng: r.lng || 36.817223 })));
+        return list;
+      }
+      return [];
+    };
 
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.trim().toLowerCase();
-      
+    const handleSearch = (e) => {
+      const query = (e ? e.target.value : searchInput.value || '').trim().toLowerCase();
+      const allSuburbs = getSuburbs();
+
       if (query.length < 2) {
         suggestionsDiv.style.display = 'none';
         return;
@@ -54,26 +61,32 @@ class LandlordManager {
 
       const matches = allSuburbs.filter(s => 
         s.name.toLowerCase().includes(query) ||
-        s.county.toLowerCase().includes(query)
-      ).slice(0, 10);
+        (s.county && s.county.toLowerCase().includes(query))
+      ).slice(0, 15);
 
       if (matches.length === 0) {
-        suggestionsDiv.style.display = 'none';
+        suggestionsDiv.innerHTML = `<div style="padding: 10px 12px; color: #64748b; font-size: 0.85rem;">Using "${searchInput.value.trim()}"</div>`;
+        suggestionsDiv.style.display = 'block';
         return;
       }
 
       suggestionsDiv.innerHTML = matches.map(s => `
-        <div style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f1f5f9; hover:background: #f8fafc;" 
-             onmouseover="this.style.background='#f8fafc'" 
+        <div style="padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;" 
+             onmouseover="this.style.background='#f0fdf4'" 
              onmouseout="this.style.background='white'"
-             onclick="landlordManager.selectSuburb('${s.name}', ${s.lat}, ${s.lng}, '${s.county}', '${s.corridorId}')">
-          <div style="font-weight: 600; color: #1e293b;">${s.name}</div>
-          <div style="font-size: 0.85rem; color: #64748b;">${s.county}</div>
+             onclick="landlordManager.selectSuburb('${s.name.replace(/'/g, "\\'")}', ${s.lat}, ${s.lng}, '${s.county}', '${s.corridorId}')">
+          <div style="font-weight: 700; color: #0f172a; font-size: 0.9rem;">${s.name}</div>
+          <div style="font-size: 0.75rem; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 999px; font-weight: 600;">${s.county}</div>
         </div>
       `).join('');
 
       suggestionsDiv.style.display = 'block';
-    });
+    };
+
+    searchInput.removeEventListener('input', searchInput._autoHandler || (()=>{}));
+    searchInput._autoHandler = handleSearch;
+    searchInput.addEventListener('input', handleSearch);
+    searchInput.addEventListener('focus', handleSearch);
 
     // Hide suggestions when clicking outside
     document.addEventListener('click', (e) => {
@@ -104,14 +117,27 @@ class LandlordManager {
   populateSelects() {
     // Populate Categories
     const catSelect = document.getElementById('post-category');
-    if (catSelect && typeof MASTER_CATEGORIES !== 'undefined') {
-      catSelect.innerHTML = MASTER_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+    const categories = (typeof MASTER_CATEGORIES !== 'undefined' && Array.isArray(MASTER_CATEGORIES) && MASTER_CATEGORIES.length > 0)
+      ? MASTER_CATEGORIES
+      : (window.MASTER_CATEGORIES || [
+          'Single Room', 'Bedsitter / Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom+',
+          'Maisonette / Townhouse', 'Bungalow', 'Penthouse', 'Room In Shared Apartment', 'Hostels / Student Room',
+          'Conference Room / Boardroom', 'Meeting & Event Hall', 'Commercial Office / Co-Working', 'Commercial Shop / Stall',
+          'BnB / Airbnb (Daily Stay)', 'Studio BnB (Short-Stay)', '1 & 2 Bedroom BnB (Furnished)', 'Luxury Villa / Vacation Stay'
+        ]);
+
+    if (catSelect) {
+      catSelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
     // Populate Corridors / Suburbs
     const suburbSelect = document.getElementById('post-suburb');
-    if (suburbSelect && typeof ALL_SUBURBS !== 'undefined') {
-      suburbSelect.innerHTML = ALL_SUBURBS.map(s => 
+    const suburbs = (typeof ALL_SUBURBS !== 'undefined' && Array.isArray(ALL_SUBURBS) && ALL_SUBURBS.length > 0)
+      ? ALL_SUBURBS
+      : (window.ALL_SUBURBS || []);
+
+    if (suburbSelect && suburbs.length > 0) {
+      suburbSelect.innerHTML = suburbs.map(s => 
         `<option value="${s.name}" data-lat="${s.lat}" data-lng="${s.lng}" data-county="${s.county}" data-corridor="${s.corridorId}">
           ${s.name} (${s.county})
         </option>`
@@ -125,6 +151,12 @@ class LandlordManager {
           this.updatePostMapLocation(lat, lng);
         }
       });
+    }
+
+    // Also populate native datalist for instant autocomplete
+    const datalist = document.getElementById('suburb-datalist');
+    if (datalist && suburbs.length > 0) {
+      datalist.innerHTML = suburbs.map(s => `<option value="${s.name}">${s.name} (${s.county})</option>`).join('');
     }
   }
 
@@ -444,7 +476,8 @@ class LandlordManager {
       const rent = parseFloat(document.getElementById('post-rent')?.value) || 0;
       const deposit = parseFloat(document.getElementById('post-deposit')?.value) || rent;
       const category = document.getElementById('post-category')?.value || '1 Bedroom';
-      const suburb = document.getElementById('post-suburb')?.value || 'Kilimani';
+      const searchVal = document.getElementById('post-suburb-search')?.value.trim() || '';
+      const suburb = (this.selectedSuburb && this.selectedSuburb.name) || document.getElementById('post-suburb')?.value || searchVal || 'Kilimani';
       const description = document.getElementById('post-description')?.value.trim() || '';
       const waterType = document.getElementById('post-water')?.value || 'Borehole Water';
       const electricityType = document.getElementById('post-electricity')?.value || 'Prepaid (Tokens)';
