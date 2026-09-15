@@ -19,13 +19,34 @@ try {
     'server.js',
     'package.json',
     'db/store.js',
-    'db/data.json'
+    'db/postgres-store.js'
   ];
   
   for (const file of requiredFiles) {
     if (!fs.existsSync(path.join(__dirname, file))) {
       throw new Error(`Required file missing: ${file}`);
     }
+  }
+
+  // Ensure data.json exists for store fallback
+  const dataJsonPath = path.join(__dirname, 'db', 'data.json');
+  if (!fs.existsSync(dataJsonPath)) {
+    const defaultData = {
+      users: [],
+      properties: [],
+      services: [],
+      marketplace_items: [],
+      reviews: {},
+      service_reviews: {},
+      transactions: [],
+      alerts: [],
+      leads: [],
+      messages: [],
+      comments: {},
+      verification_logs: []
+    };
+    fs.writeFileSync(dataJsonPath, JSON.stringify(defaultData, null, 2), 'utf8');
+    console.log('📦 Created initial db/data.json for fallback safety');
   }
   
   // Try to require the store

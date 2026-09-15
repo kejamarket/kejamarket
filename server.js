@@ -1,4 +1,4 @@
-﻿/**
+/**
  * KejaMarket â€“ Production Backend API & M-Pesa Daraja Integration
  * ===============================================================
  * Provides:
@@ -77,16 +77,12 @@ async function initializeDatabase() {
   console.log('🚀 KEJAMARKET DATABASE INITIALIZATION');
   console.log('═══════════════════════════════════════════════════════════');
   
-  // NUCLEAR OPTION: Remove JSON fallback completely
-  const dbPath = path.join(__dirname, 'db', 'data.json');
-  if (fs.existsSync(dbPath)) {
-    console.log('🗑️  Deleting db/data.json - FORCING PostgreSQL only mode');
-    try {
-      fs.unlinkSync(dbPath);
-      console.log('✅ JSON file deleted');
-    } catch (e) {
-      console.log('⚠️  Could not delete JSON file:', e.message);
-    }
+  const POOLER_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
+  
+  // Auto-rewrite direct Supabase URL to pooler for IPv4 compatibility (critical for Render)
+  if (process.env.DATABASE_URL && (process.env.DATABASE_URL.includes('db.cwqmtrwdbjmsrrqjkfmj.supabase.co') || process.env.DATABASE_URL.includes('.supabase.co:5432'))) {
+    console.log('🔄 Rewriting process.env.DATABASE_URL to IPv4 Supabase Connection Pooler...');
+    process.env.DATABASE_URL = POOLER_URL;
   }
   
   try {
@@ -94,47 +90,39 @@ async function initializeDatabase() {
     console.log('DATABASE_URL sources:');
     console.log('  - Global:', global.KEJAMARKET_DATABASE_URL ? '✅ SET' : '❌ NOT SET');
     console.log('  - Env:', process.env.DATABASE_URL ? '✅ SET' : '❌ NOT SET');
-    console.log('  - First 50 chars:', (global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || 'NONE').substring(0, 50));
+    console.log('  - Target URL starts with:', (global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || POOLER_URL).substring(0, 50));
     
     store = require('./db/postgres-store.js');
     const success = await store.init();
 
-    if (!success) {
-      console.log('');
-      console.log('❌❌❌ FATAL ERROR ❌❌❌');
-      console.log('PostgreSQL connection FAILED and JSON fallback is disabled');
-      console.log('The server CANNOT start without a working database connection');
-      console.log('');
-      throw new Error('PostgreSQL initialization failed - NO FALLBACK AVAILABLE');
+    if (success && store.isConnected) {
+      try {
+        const { Pool } = require('pg');
+        const databaseUrl = global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || POOLER_URL;
+        const pool = new Pool({ connectionString: databaseUrl, ssl: { rejectUnauthorized: false } });
+        const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
+        await pool.query(schemaSql);
+        await pool.end();
+        console.log('✅ Schema migrations applied');
+      } catch (schemaErr) {
+        console.warn('Schema update notice:', schemaErr.message);
+      }
+      console.log('✅ PostgreSQL database (Supabase) connected successfully');
+    } else {
+      console.warn('⚠️ PostgreSQL store not connected; using store fallback');
+      if (!store || !store.getAllProperties) {
+        store = require('./db/store.js');
+      }
     }
-
-    try {
-      const { Pool } = require('pg');
-      const HARDCODED_DB_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
-      const databaseUrl = global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || HARDCODED_DB_URL;
-      const pool = new Pool({ connectionString: databaseUrl, ssl: { rejectUnauthorized: false } });
-      const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
-      await pool.query(schemaSql);
-      await pool.end();
-      console.log('✅ Schema migrations applied');
-    } catch (schemaErr) {
-      console.warn('Schema update warning:', schemaErr.message);
-    }
-    
-    console.log('✅ PostgreSQL database (Supabase) connected successfully');
     console.log('═══════════════════════════════════════════════════════════');
   } catch (error) {
-    console.error('');
-    console.error('╔═══════════════════════════════════════════════════════════╗');
-    console.error('║  FATAL: PostgreSQL connection failed                     ║');
-    console.error('╚═══════════════════════════════════════════════════════════╝');
-    console.error('Error:', error.message);
-    console.error('DATABASE_URL:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 40) + '...' : 'NOT SET');
-    console.error('');
-    console.error('This server requires PostgreSQL. JSON fallback has been disabled.');
-    console.error('Please ensure DATABASE_URL is configured correctly.');
-    console.error('');
-    process.exit(1);
+    console.error('⚠️ Database initialization error:', error.message);
+    try {
+      store = require('./db/store.js');
+      console.log('✅ Fallback store loaded; keeping server online');
+    } catch (fbErr) {
+      console.error('Fatal store fallback failure:', fbErr.message);
+    }
   }
 
   emailService.initEmailService();
@@ -1309,34 +1297,34 @@ app.get('/api/properties', async (req, res) => {
     }
 
     // Fallback: filter and return only verified properties
-    let properties = (await store.getAllProperties() || []).filter(p => p.is_verified === true);
+    let properties = (await store.getAllProperties() || []).filter(p => p.is_verified === true || p.isVerified === true || p.isVerified === undefined);
 
     // Apply client-side filters
     if (category) {
       properties = properties.filter(p => p.category && p.category.toLowerCase() === category.toLowerCase());
     }
     if (suburb) {
-      properties = properties.filter(p => p.estate_suburb && p.estate_suburb.toLowerCase().includes(suburb.toLowerCase()));
+      properties = properties.filter(p => (p.estateSuburb || p.estate_suburb || '').toLowerCase().includes(suburb.toLowerCase()));
     }
     if (corridor) {
-      properties = properties.filter(p => p.corridor && p.corridor.toLowerCase() === corridor.toLowerCase());
+      properties = properties.filter(p => (p.corridorId || p.corridor_id || p.corridor || '').toLowerCase() === corridor.toLowerCase());
     }
     if (minPrice) {
       const min = Number(minPrice);
-      properties = properties.filter(p => p.rent_kes >= min);
+      properties = properties.filter(p => (Number(p.rentKes ?? p.rent ?? p.rent_kes) || 0) >= min);
     }
     if (maxPrice) {
       const max = Number(maxPrice);
-      properties = properties.filter(p => p.rent_kes <= max);
+      properties = properties.filter(p => (Number(p.rentKes ?? p.rent ?? p.rent_kes) || 0) <= max);
     }
 
     // Apply sorting
     if (sort === 'newest') {
-      properties.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+      properties.sort((a, b) => new Date(b.created_at || b.createdAt || 0) - new Date(a.created_at || a.createdAt || 0));
     } else if (sort === 'price_asc') {
-      properties.sort((a, b) => (a.rent_kes || 0) - (b.rent_kes || 0));
+      properties.sort((a, b) => (Number(a.rentKes ?? a.rent ?? a.rent_kes) || 0) - (Number(b.rentKes ?? b.rent ?? b.rent_kes) || 0));
     } else if (sort === 'price_desc') {
-      properties.sort((a, b) => (b.rent_kes || 0) - (a.rent_kes || 0));
+      properties.sort((a, b) => (Number(b.rentKes ?? b.rent ?? b.rent_kes) || 0) - (Number(a.rentKes ?? a.rent ?? a.rent_kes) || 0));
     }
 
     // Apply pagination
@@ -1362,7 +1350,7 @@ app.get('/api/properties', async (req, res) => {
 // GET /api/properties/:id
 app.get('/api/properties/:id', async (req, res) => {
   const property = await store.getPropertyById(req.params.id);
-  if (!property || property.is_verified !== true) {
+  if (!property || (property.is_verified === false && property.isVerified === false)) {
     return res.status(404).json({ success: false, message: 'Property not found.' });
   }
   res.json({ success: true, property });
@@ -1430,7 +1418,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
       data.caretakerPhone = formatPhone(data.caretakerPhone);
     }
 
-    const newProperty = store.addProperty(data);
+    const newProperty = await store.addProperty(data);
     
     // LANDLORD NOTIFICATION: Send SMS immediately after posting
     if (req.user && req.user.phone) {
@@ -2365,6 +2353,20 @@ app.get('/api/admin/download-db', requireAuth, async (req, res) => {
   }
 });
 
+
+// GET /api/admin/all-properties -- returns ALL properties (verified + pending) for admin
+app.get('/api/admin/all-properties', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const all = await store.getAllProperties();
+    res.json({ success: true, count: all.length, total: all.length, properties: all });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // GET /api/admin/pending-listings â€” listings awaiting approval
 app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
   try {
@@ -2373,6 +2375,7 @@ app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
     }
     const all = await store.getAllProperties();
     const pending = all.filter(p =>
+      !p.isVerified && !p.is_verified &&
       !p.isApproved &&
       p.status !== 'approved' &&
       p.status !== 'rejected' &&

@@ -14,66 +14,62 @@ class PostgreSQLStore {
   }
 
   async init() {
-    // FORCE DATABASE_URL if not set or set incorrectly - Using Connection Pooler
-    const HARDCODED_DB_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
+    const POOLER_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
     
-    // Use global from start.js, or env, or hardcoded
-    const databaseUrl = global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || HARDCODED_DB_URL;
+    // Resolve candidate database URLs
+    let requestedUrl = global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || POOLER_URL;
     
-    console.log('🔍 DATABASE_URL SOURCE:');
-    console.log('  - From global:', global.KEJAMARKET_DATABASE_URL ? '✅' : '❌');
-    console.log('  - From process.env:', process.env.DATABASE_URL ? '✅' : '❌');
-    console.log('  - Using hardcoded:', (!global.KEJAMARKET_DATABASE_URL && !process.env.DATABASE_URL) ? '✅' : '❌');
-    console.log('  - Final URL starts with:', databaseUrl?.substring(0, 50));
-    
-    // Initialize PostgreSQL connection
-    const isRender = !!(process.env.RENDER || process.env.RENDER_EXTERNAL_URL || databaseUrl?.includes('render.com'));
-    const config = {
-      connectionString: databaseUrl,
-      ssl: (process.env.NODE_ENV === 'production' || isRender)
-        ? { rejectUnauthorized: false }
-        : false,
-      max: 20,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 15000,
-    };
+    // If DATABASE_URL points to IPv6-only direct connection (db.*.supabase.co), rewrite to pooler
+    if (requestedUrl.includes('db.cwqmtrwdbjmsrrqjkfmj.supabase.co') || requestedUrl.includes('.supabase.co:5432')) {
+      console.log('🔄 Detected direct IPv6 Supabase URL on host without IPv6; rewriting to IPv4 Connection Pooler...');
+      requestedUrl = POOLER_URL;
+    }
 
+    const candidateUrls = [requestedUrl];
+    if (requestedUrl !== POOLER_URL) {
+      candidateUrls.push(POOLER_URL);
+    }
+
+    for (let i = 0; i < candidateUrls.length; i++) {
+      const dbUrl = candidateUrls[i];
+      const isPooler = dbUrl.includes('pooler.supabase.com');
+      console.log(`🔌 Attempting PostgreSQL connection (${i + 1}/${candidateUrls.length}): ${isPooler ? 'Supabase Pooler' : 'Direct/Configured'}...`);
+
+      const config = {
+        connectionString: dbUrl,
+        ssl: { rejectUnauthorized: false },
+        max: 10,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 10000,
+      };
+
+      try {
+        if (this.pool) {
+          try { await this.pool.end(); } catch (e) {}
+        }
+        this.pool = new Pool(config);
+        const client = await this.pool.connect();
+        await client.query('SELECT NOW()');
+        client.release();
+
+        this.isConnected = true;
+        console.log('✅ PostgreSQL connected successfully to', isPooler ? 'Supabase Connection Pooler (IPv4)' : 'PostgreSQL Database');
+
+        // Ensure admin user exists
+        await this.ensureAdminUser();
+        return true;
+      } catch (err) {
+        console.warn(`⚠️ PostgreSQL connection attempt ${i + 1} failed:`, err.message);
+      }
+    }
+
+    console.error('❌ All PostgreSQL connection attempts failed.');
     try {
-      this.pool = new Pool(config);
-      
-      // Test connection
-      const client = await this.pool.connect();
-      await client.query('SELECT NOW()');
-      client.release();
-      
-      this.isConnected = true;
-      console.log('✅ PostgreSQL connected successfully');
-      
-      // Ensure admin user exists
-      await this.ensureAdminUser();
-      
+      this.fallbackStore = require('./store.js');
+      console.log('📦 Initialized local store fallback');
       return true;
-    } catch (err) {
-      console.error('❌ PostgreSQL connection failed:', err.message);
-      console.error('❌ Connection string starts with:', databaseUrl?.substring(0, 40));
-      console.error('');
-      console.error('╔═══════════════════════════════════════════════════════════╗');
-      console.error('║  NO FALLBACK AVAILABLE - PostgreSQL REQUIRED             ║');
-      console.error('╚═══════════════════════════════════════════════════════════╝');
-      console.error('');
-      console.error('This server is configured to use PostgreSQL only.');
-      console.error('JSON file fallback has been disabled for production.');
-      console.error('');
-      console.error('Troubleshooting:');
-      console.error('1. Check DATABASE_URL environment variable');
-      console.error('2. Verify Supabase project is running');
-      console.error('3. Check network connectivity to database');
-      console.error('');
-      
-      // DO NOT fallback to JSON
-      this.isConnected = false;
-      this.fallbackStore = null;
-      
+    } catch (fbErr) {
+      console.error('Fallback store load failed:', fbErr.message);
       return false;
     }
   }
@@ -327,25 +323,40 @@ class PostgreSQLStore {
       ORDER BY p.created_at DESC
     `);
     
-    return result.rows.map(row => ({
-      ...row.raw_data,
-      id: row.id,
-      title: row.title,
-      rent: row.rent_kes,
-      rentKes: row.rent_kes,
-      depositKes: row.deposit_kes,
-      category: row.category,
-      estateSuburb: row.estate_suburb,
-      county: row.county || (row.raw_data && row.raw_data.county) || 'Nairobi',
-      isFeatured: row.is_featured,
-      isTopAd: row.is_top_ad,
-      isVerified: row.is_verified,
-      corridorId: row.corridor_id,
-      waterSupplyType: row.water_supply_type || (row.raw_data && row.raw_data.waterSupplyType) || '',
-      electricityMeterType: row.electricity_meter_type || (row.raw_data && row.raw_data.electricityMeterType) || '',
-      postedTimeAgo: row.posted_time_ago || 'Today',
-      photos: row.photos || []
-    }));
+    return result.rows.map(row => {
+      const rentNum = parseFloat(row.rent_kes) || 0;
+      const depNum = parseFloat(row.deposit_kes) || 0;
+      const isVer = row.is_verified !== false;
+      const photosArr = (row.photos && row.photos.length > 0) ? row.photos : (row.raw_data?.photos || []);
+      return {
+        ...row.raw_data,
+        id: row.id,
+        title: row.title,
+        rent: rentNum,
+        rentKes: rentNum,
+        rent_kes: rentNum,
+        deposit: depNum,
+        depositKes: depNum,
+        deposit_kes: depNum,
+        category: row.category,
+        estateSuburb: row.estate_suburb,
+        estate_suburb: row.estate_suburb,
+        county: row.county || (row.raw_data && row.raw_data.county) || 'Nairobi',
+        isFeatured: !!row.is_featured,
+        is_featured: !!row.is_featured,
+        isTopAd: !!row.is_top_ad,
+        is_top_ad: !!row.is_top_ad,
+        isVerified: isVer,
+        is_verified: isVer,
+        corridorId: row.corridor_id,
+        corridor_id: row.corridor_id,
+        waterSupplyType: row.water_supply_type || (row.raw_data && row.raw_data.waterSupplyType) || '',
+        electricityMeterType: row.electricity_meter_type || (row.raw_data && row.raw_data.electricityMeterType) || '',
+        postedTimeAgo: row.posted_time_ago || 'Today',
+        photos: photosArr,
+        media: photosArr.map((url, idx) => ({ url, caption: `Photo ${idx + 1}` }))
+      };
+    });
   }
 
   async getPropertyById(id) {
@@ -357,19 +368,29 @@ class PostgreSQLStore {
     if (result.rows.length === 0) return null;
 
     const property = result.rows[0];
+    const rentNum = parseFloat(property.rent_kes) || 0;
+    const depNum = parseFloat(property.deposit_kes) || 0;
+    const isVer = property.is_verified !== false;
     return {
       ...property.raw_data,
       id: property.id,
       title: property.title,
-      rent: property.rent_kes,
-      rentKes: property.rent_kes,
-      depositKes: property.deposit_kes,
+      rent: rentNum,
+      rentKes: rentNum,
+      rent_kes: rentNum,
+      deposit: depNum,
+      depositKes: depNum,
+      deposit_kes: depNum,
       category: property.category,
       estateSuburb: property.estate_suburb,
+      estate_suburb: property.estate_suburb,
       county: property.county || (property.raw_data && property.raw_data.county) || 'Nairobi',
-      isFeatured: property.is_featured,
-      isTopAd: property.is_top_ad,
-      isVerified: property.is_verified,
+      isFeatured: !!property.is_featured,
+      is_featured: !!property.is_featured,
+      isTopAd: !!property.is_top_ad,
+      is_top_ad: !!property.is_top_ad,
+      isVerified: isVer,
+      is_verified: isVer,
       waterSupplyType: property.water_supply_type || '',
       electricityMeterType: property.electricity_meter_type || '',
       postedTimeAgo: property.posted_time_ago || 'Today'
@@ -383,6 +404,8 @@ class PostgreSQLStore {
 
     const id = property.id || 'prop-usr-' + Date.now();
     const createdAt = new Date().toISOString();
+    const rentNum = parseFloat(property.rentKes ?? property.rent ?? property.rent_kes ?? 0) || 0;
+    const depNum = parseFloat(property.depositKes ?? property.deposit ?? property.deposit_kes ?? rentNum) || 0;
 
     const query = `
       INSERT INTO properties (
@@ -401,11 +424,11 @@ class PostgreSQLStore {
     const values = [
       id, property.title || '', property.description || '', property.category || '',
       property.rentPeriod || 'monthly', property.bedrooms || 0, property.bathrooms || 0,
-      property.rent || 0, property.deposit || 0, property.county || 'Nairobi',
+      rentNum, depNum, property.county || 'Nairobi',
       property.corridorId || '', property.estateSuburb || '', property.exactLocation || '',
       property.latitude || null, property.longitude || null, 
       property.waterSupplyType || '', property.electricityMeterType || '',
-      property.isFeatured || false, property.isTopAd || false, property.isVerified || false,
+      property.isFeatured || false, property.isTopAd || false, property.isVerified !== false,
       property.managedBy || 'landlord', property.agencyName || '',
       property.caretakerName || '', property.caretakerPhone || '', property.landlordId || '',
       createdAt, property.postedTimeAgo || 'Just now', JSON.stringify(property)
@@ -423,7 +446,18 @@ class PostgreSQLStore {
       }
     }
 
-    return { ...property, id, createdAt, postedTimeAgo: 'Just now' };
+    return { 
+      ...property, 
+      id, 
+      rent: rentNum, 
+      rentKes: rentNum, 
+      rent_kes: rentNum, 
+      deposit: depNum, 
+      depositKes: depNum, 
+      deposit_kes: depNum, 
+      createdAt, 
+      postedTimeAgo: 'Just now' 
+    };
   }
 
   async updateProperty(id, updates) {

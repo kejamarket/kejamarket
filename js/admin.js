@@ -122,9 +122,14 @@ class AdminPortalEngine {
 
     try {
       // Fetch ALL data from working endpoints
-      const propsRes = await fetch('/api/properties', { headers: h });
-      const usersRes = await fetch('/api/users', { headers: h });
-      const msgsRes = await fetch('/api/messages', { headers: h });
+      // Use /api/admin/all-properties to get ALL props (including unverified/pending)
+      // Fall back to /api/properties (only verified) if admin endpoint fails
+      let propsRes = await fetch('/api/admin/all-properties', { headers: h });
+      if (!propsRes.ok) {
+        propsRes = await fetch('/api/properties', { headers: h });
+      }
+      const usersRes = await fetch('/api/admin/users', { headers: h });
+      const msgsRes = await fetch('/api/messages', { headers: h }).catch(() => ({ ok: false }));
 
       let allProps = [];
       let allUsers = [];
@@ -142,19 +147,32 @@ class AdminPortalEngine {
         allUsers = data.users || data.data || [];
       }
 
-      // Get messages if endpoint exists
-      if (msgsRes.ok) {
-        const data = await msgsRes.json();
-        messages = data.messages || data.data || [];
+      // Get messages if endpoint exists (non-critical, may not exist)
+      if (msgsRes && msgsRes.ok) {
+        try {
+          const data = await msgsRes.json();
+          messages = data.messages || data.data || [];
+        } catch (e) { /* messages endpoint may not exist */ }
       }
 
       // Store all properties
       this.allListings = allProps;
       
+      // Helper: is a property "verified/live"?
+      // DB uses is_verified (boolean). Legacy code used status/isApproved.
+      const isLive = (p) => {
+        if (p.isVerified === true || p.is_verified === true) return true;
+        if (p.status === 'approved' || p.isApproved === true) return true;
+        return false;
+      };
+
       // Separate pending from approved listings
-      this.pendingListings = allProps.filter(p => 
-        p.status === 'pending' || p.status === 'awaiting_approval' || 
-        (p.isApproved === false && p.status !== 'approved')
+      // Pending = NOT verified AND NOT explicitly rejected
+      this.pendingListings = allProps.filter(p =>
+        !isLive(p) &&
+        p.status !== 'rejected' &&
+        !p.isPlaceholder &&
+        !p.isTest
       );
 
       // Calculate stats from actual data
@@ -163,7 +181,7 @@ class AdminPortalEngine {
 
       const landlords = allUsers.filter(u => u.role === 'landlord' || u.role === 'agency');
       const tenants = allUsers.filter(u => u.role === 'tenant' || u.role === 'user');
-      const approvedProps = allProps.filter(p => p.status === 'approved' || p.isApproved === true);
+      const approvedProps = allProps.filter(p => isLive(p));
 
       this.stats = {
         totalUsers: allUsers.length,
@@ -237,14 +255,20 @@ class AdminPortalEngine {
     const newUsers = users.filter(u => u.createdAt && new Date(u.createdAt) >= weekAgo).length;
     const newListings = props.filter(p => p.createdAt && new Date(p.createdAt) >= weekAgo).length;
     
+    const parseRent = (p) => {
+      const val = p.rentKes ?? p.rent ?? p.rent_kes ?? p.price ?? 0;
+      if (typeof val === 'number') return isNaN(val) ? 0 : val;
+      const num = parseFloat(String(val).replace(/[^0-9.]/g, ''));
+      return isNaN(num) ? 0 : num;
+    };
+
     let avgRent = 0;
-    const rentProps = props.filter(p => {
-      const rent = parseInt(p.rentKes || p.rent || 0);
-      return rent > 0;
-    });
+    const rentProps = props.filter(p => parseRent(p) > 0);
     if (rentProps.length > 0) {
-      avgRent = Math.round(rentProps.reduce((s, p) => s + parseInt(p.rentKes || p.rent || 0), 0) / rentProps.length);
+      const sum = rentProps.reduce((s, p) => s + parseRent(p), 0);
+      avgRent = Math.round(sum / rentProps.length);
     }
+    if (isNaN(avgRent)) avgRent = 0;
 
     const suburbMap = {};
     props.forEach(p => { 
@@ -349,8 +373,10 @@ class AdminPortalEngine {
     if (!container) return;
 
     const pending = this.pendingListings || [];
+    // Live = verified (DB uses is_verified boolean) OR legacy status/isApproved
     const live = (this.allListings || []).filter(p =>
-      p.status === 'approved' || p.isApproved || p.status === 'active'
+      p.isVerified === true || p.is_verified === true ||
+      p.status === 'approved' || p.isApproved === true || p.status === 'active'
     );
 
     let html = '';

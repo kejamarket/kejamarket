@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -638,12 +638,16 @@
 
           <!-- STEP 2: Photos -->
           <div class="form-group">
-            <label>Photos <span style="font-weight:400; color:#64748b;">(optional â€” adds up to 16 photos)</span></label>
+            <label>Add Photos <span style="font-weight:400; color:#64748b;">(Up to 16 photos)</span></label>
+            <div style="font-size: 0.82rem; color: #008e31; font-weight: 600; margin-bottom: 6px;">
+              <i class="fas fa-image"></i> First picture is the title picture. You can change the order of photos.
+            </div>
             <div class="photo-dropzone" id="photo-dropzone">
               <i class="fas fa-camera" style="font-size: 1.8rem; color: #00b53f; margin-bottom: 6px;"></i>
-              <div style="font-weight: 700; font-size: 0.9rem;">Tap to add photos</div>
+              <div style="font-weight: 700; font-size: 0.9rem;">Tap or drag to add photos</div>
               <div style="font-size: 0.78rem; color: #64748b;">Photos make tenants 5x more likely to contact you</div>
             </div>
+            <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Supported formats are *.jpg, *.jpeg, *.png and *.webp</div>
             <input type="file" id="post-photos-input" multiple accept="image/*" style="display: none;">
             <div class="photo-preview-grid" id="post-photos-preview"></div>
           </div>

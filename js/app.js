@@ -814,6 +814,8 @@ class NairobiRentalsApp {
     else if (p.rentPeriod === 'night' || isBnb) pricePeriod = '/ night';
     const isTaken = p.isTaken || p.status === 'taken';
     const isAgency = p.managedBy === 'agency' || p.landlord?.isAgency;
+    const rawPrice = p.rentKes ?? p.rent ?? p.rent_kes ?? p.price ?? 0;
+    const displayRent = typeof rawPrice === 'number' ? rawPrice : (parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0);
     
     return `
       <div class="property-card ${isTaken ? 'property-card-taken' : ''}" data-id="${p.id}">
@@ -836,7 +838,7 @@ class NairobiRentalsApp {
 
         <div class="card-content">
           <div class="card-price-row">
-            <div class="card-price" style="${isTaken ? 'color: #64748b;' : ''}">KSh ${p.rentKes.toLocaleString()} <span class="period">${pricePeriod}</span></div>
+            <div class="card-price" style="${isTaken ? 'color: #64748b;' : ''}">KSh ${displayRent.toLocaleString()} <span class="period">${pricePeriod}</span></div>
             ${p.caretakerPhone ? '<span style="font-size:0.72rem; color:#b45309; background:#fef3c7; border:1px solid #fde68a; padding:1px 6px; border-radius:4px; font-weight:700;"><i class="fas fa-key"></i> Caretaker</span>' : ''}
           </div>
 
@@ -1062,11 +1064,16 @@ class NairobiRentalsApp {
     }
 
     // Set modal title & price
+    const modalRentRaw = p.rentKes ?? p.rent ?? p.rent_kes ?? p.price ?? 0;
+    const modalRent = typeof modalRentRaw === 'number' ? modalRentRaw : (parseFloat(String(modalRentRaw).replace(/[^0-9.]/g, '')) || 0);
+    const modalDepositRaw = p.depositKes ?? p.deposit ?? p.deposit_kes ?? modalRent;
+    const modalDeposit = typeof modalDepositRaw === 'number' ? modalDepositRaw : (parseFloat(String(modalDepositRaw).replace(/[^0-9.]/g, '')) || modalRent);
+
     document.getElementById('detail-modal-title').textContent = p.title;
-    document.getElementById('detail-modal-price').textContent = `KSh ${p.rentKes.toLocaleString()} ${pricePeriod}`;
+    document.getElementById('detail-modal-price').textContent = `KSh ${modalRent.toLocaleString()} ${pricePeriod}`;
     document.getElementById('detail-modal-deposit').textContent = isBnb 
       ? `Short-Stay / Daily Booking (No Deposit Required)`
-      : `Deposit: KSh ${p.depositKes ? p.depositKes.toLocaleString() : p.rentKes.toLocaleString()}`;
+      : `Deposit: KSh ${modalDeposit.toLocaleString()}`;
     // Location & GPS Gating
     const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
     const locationEl = document.getElementById('detail-modal-location');
