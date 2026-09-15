@@ -647,6 +647,18 @@ class NairobiRentalsApp {
     this.showToast('All filters have been reset', 'info');
   }
 
+  clearSearchInput() {
+    const searchInput = document.getElementById('header-search-input');
+    if (searchInput) searchInput.value = '';
+    const clearBtn = document.getElementById('btn-clear-search');
+    if (clearBtn) clearBtn.style.display = 'none';
+    const dropdown = document.getElementById('header-search-suggestions');
+    if (dropdown) dropdown.style.display = 'none';
+    this.searchQuery = '';
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
   escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -2660,6 +2672,26 @@ class NairobiRentalsApp {
 // Global instance
 window.app = new NairobiRentalsApp();
 var app = window.app;
+
+function installPWAInstantly() {
+  if (window.deferredPWAPrompt) {
+    window.deferredPWAPrompt.prompt();
+    window.deferredPWAPrompt.userChoice.then((choice) => {
+      if (choice.outcome === 'accepted') {
+        if (window.app && window.app.showToast) window.app.showToast('🎉 App installation started!', 'success');
+      }
+      window.deferredPWAPrompt = null;
+    });
+  } else {
+    if (window.app && window.app.showToast) {
+      window.app.showToast('📱 To install: Tap browser menu (⋮ or Share) -> "Add to Home Screen".', 'info');
+    } else {
+      alert('📱 To install: Tap browser menu (⋮ or Share) -> "Add to Home Screen".');
+    }
+  }
+}
+window.installPWAInstantly = installPWAInstantly;
+
 document.addEventListener('DOMContentLoaded', () => {
   window.app.init();
 });

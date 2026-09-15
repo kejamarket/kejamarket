@@ -12,8 +12,10 @@ const kejaAuth = (() => {
     signinMode: 'otp' // 'otp' | 'password'
   };
 
-  // API Base URL (defaults to relative path or current host)
-  const API_BASE = '';
+  // API Base URL (defaults to relative path or Render backend host if custom domain proxying)
+  const API_BASE = (window.location.hostname === 'kejamarket.co.ke' || window.location.hostname === 'www.kejamarket.co.ke')
+    ? 'https://kejamarket.onrender.com'
+    : '';
 
   let pendingPhone = '';
   let pendingFlow = 'signup'; // 'signup' | 'login'
