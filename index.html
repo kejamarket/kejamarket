@@ -1099,7 +1099,7 @@
             </div>
             <p style="font-size: 0.8rem; color: #78350f; line-height: 1.5; margin-bottom: 10px;">Professional packing, careful transport & unpacking across Nairobi estates. Free instant quotes & same-day moves.</p>
             <div style="display: flex; gap: 8px;">
-              <button class="btn-primary" style="flex: 1; background: #ea580c; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
+              <button class="btn-primary" onclick="app.openModal('modal-lead-movers')" style="flex: 1; background: #ea580c; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
                 <i class="fas fa-calculator"></i> Get Moving Quotes
               </button>
             </div>
@@ -1121,7 +1121,7 @@
             </div>
             <p style="font-size: 0.8rem; color: #0c4a6e; line-height: 1.5; margin-bottom: 10px;">Fast 24-hr technician installation. Safaricom from KSh 2,999 (40Mbps), Airtel 5G from KSh 1,999 (15Mbps), Zuku & Faiba.</p>
             <div style="display: flex; gap: 8px;">
-              <button class="btn-primary" style="flex: 1; background: #0284c7; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
+              <button class="btn-primary" onclick="app.openModal('modal-lead-fibre')" style="flex: 1; background: #0284c7; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
                 <i class="fas fa-bolt"></i> Check Coverage & Book
               </button>
             </div>
@@ -2372,6 +2372,7 @@
         <button id="admin-tab-btn-users" class="category-pill" style="font-size: 0.85rem; padding: 6px 14px; margin: 0; background: transparent; color: #475569; cursor: pointer; font-weight: 700;" onclick="kejaAdmin.switchTab('users')">
   <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/auth.js?v=2.5&t=20250908011"></script>
   <script src="js/reviews.js?v=2.5&t=20250908011"></script>
   <script src="js/data/locations.js?v=2.5&t=20250908011"></script>
   <script src="js/data/seedListings.js?v=2.5&t=20250908011"></script>
@@ -2383,7 +2384,6 @@
   <script src="js/botSimulator.js?v=2.5&t=20250908011"></script>
   <script src="js/monetization.js?v=2.5&t=20250908011"></script>
   <script src="js/app.js?v=2.5&t=20250908011"></script>
-  <script src="js/auth.js?v=2.5&t=20250908011"></script>
   <script src="js/admin.js?v=2.5&t=20250908011"></script>
 
   <!-- PWA Install Button - Hidden (PWA installs via browser's built-in prompt) -->
@@ -2472,7 +2472,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=23&t=' + Date.now());
+      navigator.serviceWorker.register('/sw.js?v=2.5');
     }
   </script>
 </body>

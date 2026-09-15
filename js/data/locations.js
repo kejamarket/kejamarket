@@ -320,3 +320,14 @@ const HOUSE_ITEMS = [
   'Sports Equipment',
   'Garden Tools'
 ];
+
+if (typeof window !== 'undefined') {
+  window.NAIROBI_REGIONS = NAIROBI_REGIONS;
+  window.ALL_SUBURBS = ALL_SUBURBS;
+  window.MASTER_CATEGORIES = MASTER_CATEGORIES;
+  window.SERVICE_CATEGORIES = SERVICE_CATEGORIES;
+  window.HOUSE_ITEMS = HOUSE_ITEMS;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { NAIROBI_REGIONS, ALL_SUBURBS, MASTER_CATEGORIES, SERVICE_CATEGORIES, HOUSE_ITEMS };
+}

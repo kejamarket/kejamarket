@@ -1744,6 +1744,10 @@ const SEED_REVIEWS = {
   ]
 };
 
+if (typeof window !== 'undefined') {
+  window.SEED_PROPERTIES = SEED_PROPERTIES;
+  window.SEED_REVIEWS = SEED_REVIEWS;
+}
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { SEED_PROPERTIES, SEED_REVIEWS };
 }

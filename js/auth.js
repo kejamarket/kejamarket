@@ -1,5 +1,5 @@
-/**
- * KejaMarket – Real Authentication Engine & Anti-Fraud Phone Verification
+﻿/**
+ * KejaMarket â€“ Real Authentication Engine & Anti-Fraud Phone Verification
  * Connected to live backend JWT + Bcrypt API (/api/auth)
  * Handles phone SMS OTP verification for Tenant, Landlord, and Agency sign-up & sign-in.
  */
@@ -19,9 +19,9 @@ const kejaAuth = (() => {
   let pendingFlow = 'signup'; // 'signup' | 'login'
   let otpTimerInterval = null;
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      SESSION & TOKEN HELPERS
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function getToken() {
     return localStorage.getItem('keja_token') || null;
   }
@@ -64,9 +64,9 @@ const kejaAuth = (() => {
     return token ? { 'Authorization': `Bearer ${token}` } : {};
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      OPEN MODAL
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function openAuthModal() {
     const session = getSession();
     if (session) {
@@ -79,9 +79,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      TAB SWITCHING
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function switchTab(tab) {
     const session = getSession();
     if (session) {
@@ -110,9 +110,9 @@ const kejaAuth = (() => {
     if (tabSignUp) tabSignUp.style.cssText += (tab === 'signup' || tab === 'otp' ? activeStyle : inactiveStyle);
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      SIGN-IN MODE TOGGLE (PHONE OTP vs PASSWORD)
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function setSigninMode(mode) {
     state.signinMode = mode;
     const formOtp = document.getElementById('form-signin-otp');
@@ -138,9 +138,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      ROLE SELECTION (TENANT, LANDLORD, AGENCY, SERVICE)
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function setRole(role, panel) {
     state[`${panel}Role`] = role;
 
@@ -184,9 +184,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      SIGN UP (STEP 1: SEND SMS OTP)
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   async function handleSignUp(e) {
     e.preventDefault();
     const nameEl = document.getElementById('signup-name');
@@ -202,25 +202,25 @@ const kejaAuth = (() => {
 
     // STRICT VALIDATION: All fields required
     if (!name || !phone || !email || !password) {
-      if (window.app) window.app.showToast('❌ All fields are required including email.', 'error');
+      if (window.app) window.app.showToast('âŒ All fields are required including email.', 'error');
       return;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      if (window.app) window.app.showToast('❌ Please enter a valid email address.', 'error');
+      if (window.app) window.app.showToast('âŒ Please enter a valid email address.', 'error');
       return;
     }
 
     // Phone validation
     if (phone.length < 10) {
-      if (window.app) window.app.showToast('❌ Please enter a valid phone number.', 'error');
+      if (window.app) window.app.showToast('âŒ Please enter a valid phone number.', 'error');
       return;
     }
 
     if (password.length < 6) {
-      if (window.app) window.app.showToast('❌ Password must be at least 6 characters long.', 'error');
+      if (window.app) window.app.showToast('âŒ Password must be at least 6 characters long.', 'error');
       return;
     }
 
@@ -276,16 +276,16 @@ const kejaAuth = (() => {
         showLoggedInPanel(data.user);
         if (window.app) {
           window.app.closeModal('modal-auth');
-          window.app.showToast(`🎉 Welcome to KejaMarket, ${data.user.name}!`, 'success');
+          window.app.showToast(`ðŸŽ‰ Welcome to KejaMarket, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Registration failed.'}`, 'error');
+        if (window.app) window.app.showToast(`âŒ ${data.message || 'Registration failed.'}`, 'error');
       }
     } catch (err) {
       console.error('Sign up error:', err);
       if (window.app) {
-        window.app.showToast('❌ Unable to reach server. Please try again.', 'error');
+        window.app.showToast('âŒ Unable to reach server. Please try again.', 'error');
       }
     } finally {
       if (submitBtn) {
@@ -295,9 +295,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      SIGN IN VIA PHONE SMS OTP (ANTI-FRAUD LOGIN)
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   async function handleSendLoginOtp(e) {
     e.preventDefault();
     const phoneEl = document.getElementById('signin-otp-phone');
@@ -329,15 +329,15 @@ const kejaAuth = (() => {
         pendingFlow = 'login';
         showOtpPanel(data.phone, 'login');
         if (window.app) {
-          window.app.showToast(`📲 Sign-in code sent to +${data.phone}!`, 'success');
+          window.app.showToast(`ðŸ“² Sign-in code sent to +${data.phone}!`, 'success');
         }
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Account not found.'}`, 'error');
+        if (window.app) window.app.showToast(`âŒ ${data.message || 'Account not found.'}`, 'error');
       }
     } catch (err) {
       console.error('Login send-otp error:', err);
       if (window.app) {
-        window.app.showToast('❌ Unable to connect to server. Please try again.', 'error');
+        window.app.showToast('âŒ Unable to connect to server. Please try again.', 'error');
       }
     } finally {
       if (submitBtn) {
@@ -347,9 +347,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      OTP VERIFICATION UI & COUNTDOWN
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function showOtpPanel(phone, flow = 'signup') {
     showPanel('otp');
     const phoneDisplay = document.getElementById('otp-display-phone');
@@ -423,9 +423,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      CONFIRM OTP (VERIFY FOR SIGNUP OR LOGIN)
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   async function handleVerifyOtp(e) {
     if (e) e.preventDefault();
     const d1 = document.getElementById('otp-1')?.value || '';
@@ -469,11 +469,11 @@ const kejaAuth = (() => {
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
         if (window.app) {
-          window.app.showToast(`🎉 Phone verified! Welcome, ${data.user.name}!`, 'success');
+          window.app.showToast(`ðŸŽ‰ Phone verified! Welcome, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Invalid verification code.'}`, 'error');
+        if (window.app) window.app.showToast(`âŒ ${data.message || 'Invalid verification code.'}`, 'error');
         for (let i = 1; i <= 4; i++) {
           const el = document.getElementById(`otp-${i}`);
           if (el) el.value = '';
@@ -483,7 +483,7 @@ const kejaAuth = (() => {
       }
     } catch (err) {
       console.error('Error verifying OTP:', err);
-      if (window.app) window.app.showToast('❌ Verification failed. Please try again.', 'error');
+      if (window.app) window.app.showToast('âŒ Verification failed. Please try again.', 'error');
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -492,9 +492,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      RESEND OTP
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   async function handleResendOtp() {
     if (!pendingPhone) {
       switchTab(pendingFlow === 'login' ? 'signin' : 'signup');
@@ -515,9 +515,9 @@ const kejaAuth = (() => {
 
       if (data.success) {
         startOtpCountdown(60);
-        if (window.app) window.app.showToast(`🔄 New verification code sent to +${pendingPhone}!`, 'success');
+        if (window.app) window.app.showToast(`ðŸ”„ New verification code sent to +${pendingPhone}!`, 'success');
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to resend code.'}`, 'error');
+        if (window.app) window.app.showToast(`âŒ ${data.message || 'Failed to resend code.'}`, 'error');
         if (resendBtn) resendBtn.disabled = false;
       }
     } catch (err) {
@@ -526,9 +526,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      PASSWORD SIGN IN
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   async function handleSignIn(e) {
     e.preventDefault();
     const identifierEl = document.getElementById('signin-identifier');
@@ -568,11 +568,11 @@ const kejaAuth = (() => {
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
         if (window.app) {
-          window.app.showToast(`👋 Welcome back, ${data.user.name}!`, 'success');
+          window.app.showToast(`ðŸ‘‹ Welcome back, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Incorrect credentials'}`, 'error');
+        if (window.app) window.app.showToast(`âŒ ${data.message || 'Incorrect credentials'}`, 'error');
       }
     } catch (err) {
       console.error('Sign in error:', err);
@@ -587,21 +587,33 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      SIGN OUT
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function signOut() {
     clearSession();
     updateHeaderUI(null);
+    // Close any open portals/modals
     if (window.app) {
       window.app.closeModal('modal-auth');
-      window.app.showToast('You have been signed out.', 'info');
+      window.app.closeModal('modal-admin');
+      window.app.closeModal('modal-landlord-portal');
+      window.app.closeModal('modal-service-portal');
+      window.app.showToast('âœ… You have been signed out successfully.', 'info');
+    }
+    // Close profile dropdown if open
+    closeProfileDropdown();
+    // Reset to sign-in panel in auth modal
+    showPanel('signin');
+    // Reload listings without auth state
+    if (window.app && typeof window.app.applyFilters === 'function') {
+      window.app.applyFilters();
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      LOGGED-IN PANEL
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function showLoggedInPanel(session) {
     const signinEl = document.getElementById('auth-panel-signin');
     const signupEl = document.getElementById('auth-panel-signup');
@@ -613,12 +625,8 @@ const kejaAuth = (() => {
     if (otpEl) otpEl.style.display = 'none';
     if (loggedinEl) loggedinEl.style.display = 'block';
 
-    const initials = (session.name || 'User')
-      .split(' ')
-      .map(w => w[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+    const displayName = session.name || session.email || session.phone || 'User';
+    const initials = displayName.split(' ').map(w => w[0]).filter(Boolean).join('').toUpperCase().slice(0, 2) || 'U';
 
     const avatarEl = document.getElementById('auth-user-avatar');
     const greetingEl = document.getElementById('auth-user-greeting');
@@ -626,7 +634,7 @@ const kejaAuth = (() => {
     const badgeEl = document.getElementById('auth-user-role-badge');
 
     if (avatarEl) avatarEl.textContent = initials;
-    if (greetingEl) greetingEl.textContent = `Hi, ${session.name}!`;
+    if (greetingEl) greetingEl.textContent = `Hi, ${displayName}!`;
     if (phoneDisplayEl) phoneDisplayEl.textContent = session.phone ? `+${session.phone}` : (session.email || '');
 
     const isAdmin = Boolean(
@@ -641,19 +649,19 @@ const kejaAuth = (() => {
 
     if (badgeEl) {
       if (isAdmin) {
-        badgeEl.textContent = '👑 Administrator';
+        badgeEl.textContent = 'ðŸ‘‘ Administrator';
         badgeEl.style.background = 'linear-gradient(135deg, #7c3aed, #4f46e5)';
         badgeEl.style.color = '#ffffff';
       } else if (session.role === 'agency') {
-        badgeEl.textContent = '🏢 Real Estate Agency';
+        badgeEl.textContent = 'ðŸ¢ Real Estate Agency';
         badgeEl.style.background = '#f3e8ff';
         badgeEl.style.color = '#7c3aed';
       } else if (session.role === 'landlord') {
-        badgeEl.textContent = '🏠 Direct Landlord';
+        badgeEl.textContent = 'ðŸ  Direct Landlord';
         badgeEl.style.background = '#e0e7ff';
         badgeEl.style.color = '#4f46e5';
       } else {
-        badgeEl.textContent = '🔍 Tenant';
+        badgeEl.textContent = 'ðŸ” Tenant';
         badgeEl.style.background = '#d1fae5';
         badgeEl.style.color = '#065f46';
       }
@@ -664,9 +672,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      HEADER UI UPDATE & ROLE SEPARATION
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function updateHeaderUI(session) {
     applyAuthWall(session);
     const label = document.getElementById('auth-header-label');
@@ -697,15 +705,17 @@ const kejaAuth = (() => {
 
       const isServiceProvider = Boolean(session.role === 'service');
 
-      const initials = (session.name || 'User')
+      const displayName = session.name || session.email || session.phone || 'User';
+      const initials = displayName
         .split(' ')
         .map(w => w[0])
+        .filter(Boolean)
         .join('')
         .toUpperCase()
-        .slice(0, 2);
+        .slice(0, 2) || 'U';
 
       if (label) label.textContent = initials;
-      if (mobileLabel) mobileLabel.textContent = session.name.split(' ')[0];
+      if (mobileLabel) mobileLabel.textContent = (displayName.split(' ')[0] || 'Me');
       if (adminHeaderBtn) adminHeaderBtn.style.display = 'none'; // Always hidden, auto-opens on login
       
       // Show Landlord Portal button ONLY for landlords/agents (NOT admin, NOT service)
@@ -769,9 +779,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      PASSWORD TOGGLE
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function togglePwd(inputId, btn) {
     const input = document.getElementById(inputId);
     if (!input) return;
@@ -780,9 +790,9 @@ const kejaAuth = (() => {
     btn.innerHTML = isHidden ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      ROLE GUARD (LANDLORD OR AGENCY)
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function requireLandlordForAction(modalId) {
     const session = getSession();
     if (!session) {
@@ -815,9 +825,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      ROLE GUARD (ANY AUTHENTICATED USER)
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function requireAuthForAction(modalId, actionType) {
     const session = getSession();
     if (!session) {
@@ -838,9 +848,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      SYNC SESSION WITH SERVER ON BOOT
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   async function syncSession() {
     const token = getToken();
     if (!token) return;
@@ -879,25 +889,25 @@ const kejaAuth = (() => {
     
     // AUTO-OPEN PORTAL: Automatically open appropriate portal after login
     setTimeout(() => {
-      // Admin users → Open Admin Portal automatically (no button needed)
+      // Admin users â†’ Open Admin Portal automatically (no button needed)
       if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
         if (window.kejaAdmin && typeof window.kejaAdmin.openAdminModal === 'function') {
           window.kejaAdmin.openAdminModal();
         }
       }
-      // Landlord/Agency users → Open Landlord Portal automatically
+      // Landlord/Agency users â†’ Open Landlord Portal automatically
       else if (user.role === 'landlord' || user.role === 'agency') {
         if (window.kejaLandlordPortal && typeof window.kejaLandlordPortal.openLandlordPortal === 'function') {
           window.kejaLandlordPortal.openLandlordPortal();
         }
       }
-      // Service Provider users → Open Service Portal automatically
+      // Service Provider users â†’ Open Service Portal automatically
       else if (user.role === 'service') {
         if (window.kejaServicePortal && typeof window.kejaServicePortal.openServicePortal === 'function') {
           window.kejaServicePortal.openServicePortal();
         }
       }
-      // Tenants → Stay on main browsing page (default)
+      // Tenants â†’ Stay on main browsing page (default)
     }, 500); // Small delay to ensure modals are ready
 
     if (typeof pendingTenantAuthCallback === 'function') {
@@ -952,9 +962,9 @@ const kejaAuth = (() => {
 
   document.addEventListener('DOMContentLoaded', init);
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      PROFILE DROPDOWN (Small popup near button)
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function toggleProfileDropdown() {
     const session = getSession();
     
@@ -979,7 +989,7 @@ const kejaAuth = (() => {
     if (content) {
       content.innerHTML = `
         <div style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">
-          <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem;">${session.name}</div>
+          <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem;">${session.name || session.email || session.phone || 'User'}</div>
           <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">${session.email || session.phone}</div>
           <div style="font-size: 0.75rem; color: #6366f1; margin-top: 4px; text-transform: uppercase; font-weight: 600;">${session.role}</div>
         </div>
@@ -1031,9 +1041,9 @@ const kejaAuth = (() => {
     }
   }
 
-  /* ─────────────────────────────────────────
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      PASSWORD RESET FLOW
-  ───────────────────────────────────────── */
+  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
   let forgotIdentifier = '';
 
@@ -1082,12 +1092,12 @@ const kejaAuth = (() => {
           const codeInput = document.getElementById('reset-otp-code');
           if (codeInput) codeInput.focus();
         }, 100);
-        if (window.app) window.app.showToast(`✅ Reset code sent to your phone!`, 'success');
+        if (window.app) window.app.showToast(`âœ… Reset code sent to your phone!`, 'success');
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Failed to send reset code.'}`, 'error');
+        if (window.app) window.app.showToast(`âŒ ${data.message || 'Failed to send reset code.'}`, 'error');
       }
     } catch (err) {
-      if (window.app) window.app.showToast('❌ Could not reach server. Try again.', 'error');
+      if (window.app) window.app.showToast('âŒ Could not reach server. Try again.', 'error');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = orig; }
     }
@@ -1134,14 +1144,14 @@ const kejaAuth = (() => {
         showLoggedInPanel(data.user);
         if (window.app) {
           window.app.closeModal('modal-auth');
-          window.app.showToast(`✅ Password reset! Welcome back, ${data.user.name}!`, 'success');
+          window.app.showToast(`âœ… Password reset! Welcome back, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Reset failed.'}`, 'error');
+        if (window.app) window.app.showToast(`âŒ ${data.message || 'Reset failed.'}`, 'error');
       }
     } catch (err) {
-      if (window.app) window.app.showToast('❌ Reset failed. Check your connection.', 'error');
+      if (window.app) window.app.showToast('âŒ Reset failed. Check your connection.', 'error');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = orig; }
     }
@@ -1179,3 +1189,5 @@ const kejaAuth = (() => {
 })();
 
 window.kejaAuth = kejaAuth;
+
+

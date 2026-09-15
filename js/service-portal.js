@@ -7,7 +7,7 @@ const kejaServicePortal = (() => {
   let currentTab = 'my-services';
 
   function openServicePortal() {
-    const session = kejaAuth.getSession();
+    const session = (window.kejaAuth ? window.kejaAuth.getSession() : null);
     if (!session || (session.role !== 'service')) {
       if (window.app) window.app.showToast('Please sign in as a Service Provider to access this portal.', 'info');
       return;
@@ -51,7 +51,7 @@ const kejaServicePortal = (() => {
   }
 
   async function loadMyServices() {
-    const session = kejaAuth.getSession();
+    const session = (window.kejaAuth ? window.kejaAuth.getSession() : null);
     if (!session) return;
 
     const container = document.getElementById('service-my-services-list');
@@ -60,7 +60,7 @@ const kejaServicePortal = (() => {
     container.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
 
     try {
-      const token = kejaAuth.getToken();
+      const token = window.kejaAuth.getToken();
       const res = await fetch('/api/service/my-services', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -180,7 +180,7 @@ const kejaServicePortal = (() => {
     container.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading messages...</div>';
 
     try {
-      const token = kejaAuth.getToken();
+      const token = window.kejaAuth.getToken();
       const res = await fetch('/api/service/messages', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -221,7 +221,7 @@ const kejaServicePortal = (() => {
     container.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> Loading payment history...</div>';
 
     try {
-      const token = kejaAuth.getToken();
+      const token = window.kejaAuth.getToken();
       const res = await fetch('/api/service/payment-history', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -312,7 +312,7 @@ const kejaServicePortal = (() => {
 
   // Auto-open on page load if service provider is logged in
   function init() {
-    const session = kejaAuth.getSession();
+    const session = (window.kejaAuth ? window.kejaAuth.getSession() : null);
     if (session && session.role === 'service') {
       setTimeout(() => {
         openServicePortal();
@@ -325,7 +325,7 @@ const kejaServicePortal = (() => {
   // ═══════════════════════════════════════════════════════════
 
   function openBoostPayment(serviceId) {
-    const session = kejaAuth.getSession();
+    const session = (window.kejaAuth ? window.kejaAuth.getSession() : null);
     if (!session) return;
 
     const modalHtml = `
@@ -414,7 +414,7 @@ const kejaServicePortal = (() => {
       // Show loading
       if (window.app) window.app.showToast('Initiating M-Pesa payment...', 'info');
 
-      const token = kejaAuth.getToken();
+      const token = window.kejaAuth.getToken();
       const res = await fetch('/api/service/boost-payment', {
         method: 'POST',
         headers: {
@@ -458,7 +458,7 @@ const kejaServicePortal = (() => {
       attempts++;
 
       try {
-        const token = kejaAuth.getToken();
+        const token = window.kejaAuth.getToken();
         const res = await fetch(`/api/service/payment-status/${checkoutRequestId}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -486,7 +486,7 @@ const kejaServicePortal = (() => {
     if (!confirm('Remove boost from this service?')) return;
 
     try {
-      const token = kejaAuth.getToken();
+      const token = window.kejaAuth.getToken();
       const res = await fetch(`/api/properties/${encodeURIComponent(serviceId)}/unboost`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
@@ -504,7 +504,7 @@ const kejaServicePortal = (() => {
 
   async function toggleAvailability(serviceId, isAvailable) {
     try {
-      const token = kejaAuth.getToken();
+      const token = window.kejaAuth.getToken();
       const res = await fetch(`/api/service/availability/${encodeURIComponent(serviceId)}`, {
         method: 'PUT',
         headers: {
@@ -555,3 +555,6 @@ const kejaServicePortal = (() => {
     toggleAvailability
   };
 })();
+
+// Export to window for global HTML onclick access
+window.kejaServicePortal = kejaServicePortal;

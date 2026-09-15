@@ -1,5 +1,5 @@
-/**
- * KejaMarket â€“ Production Backend API & M-Pesa Daraja Integration
+﻿/**
+ * KejaMarket Ã¢â‚¬â€œ Production Backend API & M-Pesa Daraja Integration
  * ===============================================================
  * Provides:
  *  1. Full User Authentication (JWT + Bcrypt) for Tenants & Landlords
@@ -25,7 +25,7 @@ const fetch = require('node-fetch');
 const emailService = require('./db/email-service');
 const uploadService = require('./db/upload-service');
 
-// â”€â”€â”€ RATE LIMITING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ RATE LIMITING Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const rateLimit = require('express-rate-limit');
 
 // Auth endpoints: max 10 attempts per 15 minutes per IP
@@ -37,7 +37,7 @@ const authLimiter = rateLimit({
   legacyHeaders: false
 });
 
-// OTP endpoints: stricter â€” max 5 per 10 minutes
+// OTP endpoints: stricter Ã¢â‚¬â€ max 5 per 10 minutes
 const otpLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 5,
@@ -61,35 +61,35 @@ app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 // Serve static frontend files (HTML, CSS, JS, icons)
 app.use(express.static(__dirname));
 
-// â”€â”€â”€ LEGAL & STATIC PAGE ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ LEGAL & STATIC PAGE ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 app.get('/privacy-policy', (req, res) => res.sendFile(path.join(__dirname, 'privacy-policy.html')));
 app.get('/terms', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
 app.get('/terms-and-conditions', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
 app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.html')));
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 // INITIALIZE DATABASE (PostgreSQL with JSON fallback)
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 
 let store;
 async function initializeDatabase() {
-  console.log('═══════════════════════════════════════════════════════════');
-  console.log('🚀 KEJAMARKET DATABASE INITIALIZATION');
-  console.log('═══════════════════════════════════════════════════════════');
+  console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
+  console.log('ðŸš€ KEJAMARKET DATABASE INITIALIZATION');
+  console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
   
   const POOLER_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
   
   // Auto-rewrite direct Supabase URL to pooler for IPv4 compatibility (critical for Render)
   if (process.env.DATABASE_URL && (process.env.DATABASE_URL.includes('db.cwqmtrwdbjmsrrqjkfmj.supabase.co') || process.env.DATABASE_URL.includes('.supabase.co:5432'))) {
-    console.log('🔄 Rewriting process.env.DATABASE_URL to IPv4 Supabase Connection Pooler...');
+    console.log('ðŸ”„ Rewriting process.env.DATABASE_URL to IPv4 Supabase Connection Pooler...');
     process.env.DATABASE_URL = POOLER_URL;
   }
   
   try {
     console.log('Initializing PostgreSQL database (Supabase)...');
     console.log('DATABASE_URL sources:');
-    console.log('  - Global:', global.KEJAMARKET_DATABASE_URL ? '✅ SET' : '❌ NOT SET');
-    console.log('  - Env:', process.env.DATABASE_URL ? '✅ SET' : '❌ NOT SET');
+    console.log('  - Global:', global.KEJAMARKET_DATABASE_URL ? 'âœ… SET' : 'âŒ NOT SET');
+    console.log('  - Env:', process.env.DATABASE_URL ? 'âœ… SET' : 'âŒ NOT SET');
     console.log('  - Target URL starts with:', (global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || POOLER_URL).substring(0, 50));
     
     store = require('./db/postgres-store.js');
@@ -103,23 +103,23 @@ async function initializeDatabase() {
         const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
         await store.query(schemaSql);
         await pool.end();
-        console.log('✅ Schema migrations applied');
+        console.log('âœ… Schema migrations applied');
       } catch (schemaErr) {
         console.warn('Schema update notice:', schemaErr.message);
       }
-      console.log('✅ PostgreSQL database (Supabase) connected successfully');
+      console.log('âœ… PostgreSQL database (Supabase) connected successfully');
     } else {
-      console.warn('⚠️ PostgreSQL store not connected; using store fallback');
+      console.warn('âš ï¸ PostgreSQL store not connected; using store fallback');
       if (!store || !store.getAllProperties) {
         store = require('./db/store.js');
       }
     }
-    console.log('═══════════════════════════════════════════════════════════');
+    console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
   } catch (error) {
-    console.error('⚠️ Database initialization error:', error.message);
+    console.error('âš ï¸ Database initialization error:', error.message);
     try {
       store = require('./db/store.js');
-      console.log('✅ Fallback store loaded; keeping server online');
+      console.log('âœ… Fallback store loaded; keeping server online');
     } catch (fbErr) {
       console.error('Fatal store fallback failure:', fbErr.message);
     }
@@ -129,7 +129,7 @@ async function initializeDatabase() {
   uploadService.initCloudinary();
 }
 
-// â”€â”€â”€ CONFIGURATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ CONFIGURATION Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const JWT_SECRET = process.env.JWT_SECRET || 'kejamarket_super_secret_jwt_key_2026';
 let CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY || '';
 let CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET || '';
@@ -143,7 +143,7 @@ let MPESA_BASE = MPESA_ENV === 'live'
   ? 'https://api.safaricom.co.ke'
   : 'https://sandbox.safaricom.co.ke';
 
-// â”€â”€â”€ AFRICA'S TALKING SMS SERVICE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ AFRICA'S TALKING SMS SERVICE Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const AT_USERNAME = process.env.AT_USERNAME || 'sandbox';
 const AT_API_KEY = process.env.AT_API_KEY || '';
 const AT_SENDER_ID = process.env.AT_SENDER_ID || '';
@@ -160,12 +160,12 @@ try {
     });
     
     smsService = africastalking.SMS;
-    console.log(`ðŸ“± Africa's Talking SMS engine initialized (Account: ${AT_USERNAME})`);
+    console.log(`Ã°Å¸â€œÂ± Africa's Talking SMS engine initialized (Account: ${AT_USERNAME})`);
   } else {
-    console.log(`ðŸ“± Africa's Talking SMS: API Key not provided - SMS disabled`);
+    console.log(`Ã°Å¸â€œÂ± Africa's Talking SMS: API Key not provided - SMS disabled`);
   }
 } catch (error) {
-  console.warn(`âš ï¸ Africa's Talking initialization failed:`, error.message);
+  console.warn(`Ã¢Å¡Â Ã¯Â¸Â Africa's Talking initialization failed:`, error.message);
   smsService = null;
 }
 
@@ -187,18 +187,18 @@ async function sendRealSMS(toPhone, message) {
 
       try {
         const result = await smsService.send(options);
-        console.log(`ðŸ“¤ [REAL SMS SENT] To: ${recipient} | Status: Success | Response:`, result);
+        console.log(`Ã°Å¸â€œÂ¤ [REAL SMS SENT] To: ${recipient} | Status: Success | Response:`, result);
         return { success: true, response: result };
       } catch (apiError) {
-        console.error(`âŒ [SMS API FAILED] To: ${recipient}:`, apiError.message);
+        console.error(`Ã¢ÂÅ’ [SMS API FAILED] To: ${recipient}:`, apiError.message);
         return { success: false, error: apiError.message };
       }
     } else {
-      console.log(`ðŸ“¡ [SMS DISPATCH] To: ${recipient} | Body: "${message}" (SMS service not available)`);
+      console.log(`Ã°Å¸â€œÂ¡ [SMS DISPATCH] To: ${recipient} | Body: "${message}" (SMS service not available)`);
       return { success: true, localOnly: true };
     }
   } catch (smsErr) {
-    console.error(`âŒ [SMS SEND FAILED] To: ${toPhone}:`, smsErr.message);
+    console.error(`Ã¢ÂÅ’ [SMS SEND FAILED] To: ${toPhone}:`, smsErr.message);
     return { success: false, error: smsErr.message };
   }
 }
@@ -218,8 +218,8 @@ const hasDarajaCredentials = () => {
   );
 };
 
-// â”€â”€â”€ AUTH MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function requireAuth(req, res, next) {
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ AUTH MIDDLEWARE Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+async function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ success: false, message: 'Authentication required. Please sign in.' });
@@ -228,9 +228,21 @@ function requireAuth(req, res, next) {
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    const user = store.getUserById(decoded.id);
+    const userRaw = store.getUserById(decoded.id);
+    const user = (userRaw && typeof userRaw.then === 'function') ? await userRaw : userRaw;
     if (!user) {
       return res.status(401).json({ success: false, message: 'User not found or session expired.' });
+    }
+    // Normalize snake_case DB fields to camelCase
+    if (user.is_admin !== undefined) {
+      user.isAdmin = user.is_admin === true || user.is_admin === 1;
+    }
+    if (user.is_verified !== undefined) {
+      user.isVerified = user.is_verified === true || user.is_verified === 1;
+    }
+    // Always treat usr-admin-01 or role=admin as admin
+    if (user.id === 'usr-admin-01' || user.role === 'admin') {
+      user.isAdmin = true;
     }
     req.user = user;
     next();
@@ -240,13 +252,13 @@ function requireAuth(req, res, next) {
 }
 
 // Optional Auth (populates req.user if token present)
-function optionalAuth(req, res, next) {
+async function optionalAuth(req, res, next) {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.split(' ')[1];
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
-      req.user = store.getUserById(decoded.id);
+      req.user = await store.getUserById(decoded.id);
     } catch {
       req.user = null;
     }
@@ -254,7 +266,7 @@ function optionalAuth(req, res, next) {
   next();
 }
 
-// â”€â”€â”€ DARAJA HELPER FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ DARAJA HELPER FUNCTIONS Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 let cachedToken = null;
 let tokenExpiry = 0;
 
@@ -305,7 +317,7 @@ function formatPhone(phone) {
   return clean;
 }
 
-// â”€â”€â”€ OTP MEMORY STORES & UTILITIES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ OTP MEMORY STORES & UTILITIES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const pendingOtps = new Map(); // Registration OTPs: cleanPhone -> { otp, expiresAt, attempts, signupData }
 const pendingLoginOtps = new Map(); // Login OTPs: cleanPhone -> { otp, expiresAt, attempts, userId }
 
@@ -329,7 +341,7 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000);
 
-// â”€â”€â”€ AUTHENTICATION ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ AUTHENTICATION ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 // POST /api/auth/send-otp (Step 1 of Phone-Verified Registration: Tenant, Landlord, Agency)
 app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
@@ -396,7 +408,7 @@ app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket verification code is ${otp}. Valid for 5 minutes. Enter this code to verify your ${role === 'agency' ? 'Agency' : (role === 'landlord' ? 'Landlord' : 'Tenant')} account.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`ðŸ”‘ [SIGNUP OTP] Phone: +${cleanPhone} | OTP: ${otp} | Role: ${role}`);
+    console.log(`Ã°Å¸â€â€˜ [SIGNUP OTP] Phone: +${cleanPhone} | OTP: ${otp} | Role: ${role}`);
 
     res.json({
       success: true,
@@ -476,7 +488,7 @@ app.post('/api/auth/verify-otp', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: `ðŸŽ‰ Phone verified! Welcome to KejaMarket, ${user.name}!`,
+      message: `Ã°Å¸Å½â€° Phone verified! Welcome to KejaMarket, ${user.name}!`,
       user,
       token
     });
@@ -517,7 +529,7 @@ app.post('/api/auth/login-send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket sign-in verification code is ${otp}. Valid for 5 minutes. Do not share this code.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`ðŸ”‘ [LOGIN OTP] User: ${user.name} | Phone: +${cleanPhone} | OTP: ${otp}`);
+    console.log(`Ã°Å¸â€â€˜ [LOGIN OTP] User: ${user.name} | Phone: +${cleanPhone} | OTP: ${otp}`);
 
     res.json({
       success: true,
@@ -575,7 +587,7 @@ app.post('/api/auth/login-verify-otp', async (req, res) => {
     }
 
     // Valid OTP!
-    const user = store.getUserById(entry.userId);
+    const user = await store.getUserById(entry.userId);
     pendingLoginOtps.delete(cleanPhone);
 
     if (!user) {
@@ -584,7 +596,7 @@ app.post('/api/auth/login-verify-otp', async (req, res) => {
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
 
-    console.log(`âœ… [LOGIN VERIFIED] User: ${user.name} (${user.role}) via Phone OTP`);
+    console.log(`Ã¢Å“â€¦ [LOGIN VERIFIED] User: ${user.name} (${user.role}) via Phone OTP`);
 
     res.json({
       success: true,
@@ -647,7 +659,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
     const smsMessage = `Your new KejaMarket verification code is ${otp}. Valid for 5 minutes.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`ðŸ”„ [OTP RESENT] Phone: +${cleanPhone} | OTP: ${otp}`);
+    console.log(`Ã°Å¸â€â€ž [OTP RESENT] Phone: +${cleanPhone} | OTP: ${otp}`);
 
     res.json({
       success: true,
@@ -770,9 +782,9 @@ app.post('/api/auth/verify-landlord', optionalAuth, (req, res) => {
   }
 });
 
-// â”€â”€â”€ PASSWORD RESET ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ PASSWORD RESET ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
-// POST /api/auth/forgot-password â€” send reset OTP via SMS + email
+// POST /api/auth/forgot-password Ã¢â‚¬â€ send reset OTP via SMS + email
 app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
   try {
     const { identifier } = req.body;
@@ -790,7 +802,7 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
 
-    // Store token — use in-memory if DB table not ready
+    // Store token â€” use in-memory if DB table not ready
     try {
       if (store.createPasswordResetToken) {
         await store.createPasswordResetToken(user.id, otp, expiresAt);
@@ -800,7 +812,7 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
         });
       }
     } catch (tokenErr) {
-      // Table might not exist yet — fall back to in-memory
+      // Table might not exist yet â€” fall back to in-memory
       console.warn('Token DB storage failed, using memory fallback:', tokenErr.message);
       pendingOtps.set('reset_' + formatPhone(user.phone), {
         otp, expiresAt: Date.now() + 30 * 60 * 1000, attempts: 0, userId: user.id
@@ -814,16 +826,16 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
       `KejaMarket: Your password reset code is ${otp}. Valid for 30 minutes. Do NOT share this code.`
     ).catch(e => console.warn('Reset SMS failed:', e.message));
 
-    // Send email (completely non-blocking â€” never blocks response)
+    // Send email (completely non-blocking Ã¢â‚¬â€ never blocks response)
     if (user.email) {
       emailService.sendPasswordResetEmail(user.email, user.name, otp).catch(e => {
         console.warn('Password reset email failed:', e.message);
       });
     }
 
-    console.log(`ðŸ”‘ [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
+    console.log(`Ã°Å¸â€â€˜ [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
 
-    // Respond immediately â€” don't wait for SMS/email
+    // Respond immediately Ã¢â‚¬â€ don't wait for SMS/email
     res.json({
       success: true,
       message: 'Reset code sent to your registered phone' + (user.email ? ' and email' : '') + '.',
@@ -835,7 +847,7 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
   }
 });
 
-// POST /api/auth/reset-password â€” verify OTP and set new password
+// POST /api/auth/reset-password Ã¢â‚¬â€ verify OTP and set new password
 app.post('/api/auth/reset-password', async (req, res) => {
   try {
     const { identifier, otp, newPassword } = req.body;
@@ -852,7 +864,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Account not found.' });
     }
 
-    // Verify token — check DB first, fall back to in-memory
+    // Verify token â€” check DB first, fall back to in-memory
     let tokenValid = false;
     try {
       if (store.getPasswordResetToken) {
@@ -909,7 +921,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
   }
 });
 
-// â”€â”€â”€ M-PESA DARAJA STK PUSH & PAYMENT ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ M-PESA DARAJA STK PUSH & PAYMENT ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 // POST /api/mpesa/stk-push
 // Body: { phone, amount, itemType, itemName, targetPropertyId }
@@ -932,7 +944,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
     const isLiveDarajaConfigured = hasDarajaCredentials();
 
     if (isLiveDarajaConfigured) {
-      // ðŸš€ REAL SAFARICOM DARAJA API CALL
+      // Ã°Å¸Å¡â‚¬ REAL SAFARICOM DARAJA API CALL
       try {
         const token = await getMpesaToken();
         const timestamp = getDarajaTimestamp();
@@ -952,7 +964,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
           TransactionDesc: itemName || 'Keja Payment',
         };
 
-        console.log(`ðŸ“± [SAFARICOM DARAJA] Dispatching STK Push to ${formattedPhone} for KSh ${amountKes}...`);
+        console.log(`Ã°Å¸â€œÂ± [SAFARICOM DARAJA] Dispatching STK Push to ${formattedPhone} for KSh ${amountKes}...`);
         const stkRes = await fetch(`${MPESA_BASE}/mpesa/stkpush/v1/processrequest`, {
           method: 'POST',
           headers: {
@@ -963,7 +975,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
         });
 
         const stkData = await stkRes.json();
-        console.log('ðŸ“± [SAFARICOM DARAJA RESPONSE]:', JSON.stringify(stkData));
+        console.log('Ã°Å¸â€œÂ± [SAFARICOM DARAJA RESPONSE]:', JSON.stringify(stkData));
 
         if (stkData.ResponseCode === '0') {
           // Record transaction in database
@@ -994,7 +1006,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
           });
         }
       } catch (darajaErr) {
-        console.error('âŒ Daraja API Error:', darajaErr);
+        console.error('Ã¢ÂÅ’ Daraja API Error:', darajaErr);
         return res.status(502).json({
           success: false,
           hasDaraja: true,
@@ -1002,7 +1014,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
         });
       }
     } else {
-      // âš ï¸ Real Safaricom Daraja credentials are not set in .env
+      // Ã¢Å¡Â Ã¯Â¸Â Real Safaricom Daraja credentials are not set in .env
       // Do not lie to the user with a dummy phone simulation
       return res.json({
         success: false,
@@ -1094,7 +1106,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
 
     const receipt = receiptCode.trim().toUpperCase();
 
-    // â”€â”€ Validate Safaricom receipt code format â”€â”€
+    // Ã¢â€â‚¬Ã¢â€â‚¬ Validate Safaricom receipt code format Ã¢â€â‚¬Ã¢â€â‚¬
     // Real Safaricom receipt codes are exactly 10 alphanumeric characters
     const RECEIPT_REGEX = /^[A-Z0-9]{10}$/;
     if (!RECEIPT_REGEX.test(receipt)) {
@@ -1104,20 +1116,20 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
       });
     }
 
-    // â”€â”€ Validate amount is reasonable â”€â”€
+    // Ã¢â€â‚¬Ã¢â€â‚¬ Validate amount is reasonable Ã¢â€â‚¬Ã¢â€â‚¬
     const expectedAmount = Math.ceil(Number(amount)) || 100;
     if (isNaN(expectedAmount) || expectedAmount <= 0) {
       return res.status(400).json({ success: false, message: 'Invalid payment amount.' });
     }
 
-    // â”€â”€ When Daraja is configured, query Transaction Status API to verify receipt is genuine â”€â”€
+    // Ã¢â€â‚¬Ã¢â€â‚¬ When Daraja is configured, query Transaction Status API to verify receipt is genuine Ã¢â€â‚¬Ã¢â€â‚¬
     if (hasDarajaCredentials()) {
       try {
         const token = await getMpesaToken();
         const timestamp = getDarajaTimestamp();
         const password = generatePassword(timestamp);
 
-        console.log(`ðŸ” [DARAJA] Querying Transaction Status for receipt: ${receipt}...`);
+        console.log(`Ã°Å¸â€Â [DARAJA] Querying Transaction Status for receipt: ${receipt}...`);
         const statusRes = await fetch(`${MPESA_BASE}/mpesa/transactionstatus/v1/query`, {
           method: 'POST',
           headers: {
@@ -1139,7 +1151,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
         });
 
         const statusData = await statusRes.json();
-        console.log(`ðŸ” [DARAJA STATUS RESPONSE]:`, JSON.stringify(statusData));
+        console.log(`Ã°Å¸â€Â [DARAJA STATUS RESPONSE]:`, JSON.stringify(statusData));
 
         // ResponseCode 0 = request accepted for processing by Safaricom
         if (statusData.ResponseCode !== '0' && statusData.errorCode) {
@@ -1150,17 +1162,17 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
         }
         // Note: the actual result comes asynchronously to the ResultURL callback.
         // For now, if Safaricom accepted the query (ResponseCode 0), proceed with provisional confirmation.
-        console.log(`âœ… [DARAJA] Receipt ${receipt} accepted for verification by Safaricom.`);
+        console.log(`Ã¢Å“â€¦ [DARAJA] Receipt ${receipt} accepted for verification by Safaricom.`);
       } catch (darajaErr) {
-        console.warn('âš ï¸ Daraja transaction status query failed:', darajaErr.message);
+        console.warn('Ã¢Å¡Â Ã¯Â¸Â Daraja transaction status query failed:', darajaErr.message);
         // Fallback: proceed with format-validated receipt if Daraja call fails
       }
     } else {
-      // No Daraja credentials â€” log warning, format already validated above
-      console.warn(`âš ï¸ [RECEIPT] No Daraja creds â€” accepting format-validated receipt: ${receipt} (amount: KSh ${expectedAmount})`);
+      // No Daraja credentials Ã¢â‚¬â€ log warning, format already validated above
+      console.warn(`Ã¢Å¡Â Ã¯Â¸Â [RECEIPT] No Daraja creds Ã¢â‚¬â€ accepting format-validated receipt: ${receipt} (amount: KSh ${expectedAmount})`);
     }
 
-    // â”€â”€ Create or fetch the transaction record â”€â”€
+    // Ã¢â€â‚¬Ã¢â€â‚¬ Create or fetch the transaction record Ã¢â€â‚¬Ã¢â€â‚¬
     let tx = checkoutRequestId ? store.getTransactionByCheckoutId(checkoutRequestId) : null;
     if (!tx) {
       const generatedCheckoutId = 'ws_PAYBILL_' + receipt + '_' + Date.now();
@@ -1185,7 +1197,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
       resultDesc: 'Payment confirmed via M-Pesa receipt verification.'
     });
 
-    console.log(`âœ… [CONFIRMED] Transaction ${checkoutRequestId} â†’ Receipt: ${receipt} | KSh ${expectedAmount}`);
+    console.log(`Ã¢Å“â€¦ [CONFIRMED] Transaction ${checkoutRequestId} Ã¢â€ â€™ Receipt: ${receipt} | KSh ${expectedAmount}`);
 
     // Send real SMS payment confirmation
     if (updatedTx.phone && updatedTx.phone !== 'Direct Paybill') {
@@ -1238,7 +1250,7 @@ app.post('/api/mpesa/callback', (req, res) => {
       const receipt = items.find(i => i.Name === 'MpesaReceiptNumber')?.Value || ('MPESA' + Date.now());
       const phone = items.find(i => i.Name === 'PhoneNumber')?.Value;
 
-      console.log(`âœ… [DARAJA CONFIRMED] KSh ${amount} | Receipt: ${receipt} | Phone: ${phone}`);
+      console.log(`Ã¢Å“â€¦ [DARAJA CONFIRMED] KSh ${amount} | Receipt: ${receipt} | Phone: ${phone}`);
 
       const updatedTx = store.updateTransaction(checkoutRequestId, {
         status: 'SUCCESS',
@@ -1255,7 +1267,7 @@ app.post('/api/mpesa/callback', (req, res) => {
         );
       }
     } else {
-      console.log(`âŒ [DARAJA FAILED] ${resultDesc} (ResultCode: ${resultCode})`);
+      console.log(`Ã¢ÂÅ’ [DARAJA FAILED] ${resultDesc} (ResultCode: ${resultCode})`);
       store.updateTransaction(checkoutRequestId, {
         status: 'FAILED',
         resultDesc: resultDesc
@@ -1269,9 +1281,9 @@ app.post('/api/mpesa/callback', (req, res) => {
   }
 });
 
-// â”€â”€â”€ PROPERTIES & LISTINGS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ PROPERTIES & LISTINGS ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
-// GET /api/properties â€” server-side search, filtering, pagination
+// GET /api/properties Ã¢â‚¬â€ server-side search, filtering, pagination
 app.get('/api/properties', async (req, res) => {
   try {
     const {
@@ -1364,7 +1376,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Title, category, and monthly rent are required.' });
     }
 
-    // â”€â”€ Duplicate detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Ã¢â€â‚¬Ã¢â€â‚¬ Duplicate detection Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
     if (req.user && store.findDuplicateListing) {
       const duplicate = await store.findDuplicateListing(
         req.user.id, data.estateSuburb || '', data.category, data.rentKes
@@ -1378,7 +1390,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
       }
     }
 
-    // â”€â”€ Upload photos to Cloudinary CDN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Ã¢â€â‚¬Ã¢â€â‚¬ Upload photos to Cloudinary CDN Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
     if (data.photos && Array.isArray(data.photos) && data.photos.length > 0) {
       try {
         const cdnUrls = await uploadService.uploadMultipleImages(
@@ -1424,7 +1436,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
     if (req.user && req.user.phone) {
       try {
         await sendSMS(req.user.phone, 
-          `âœ… Your property listing "${data.title}" has been submitted to KejaMarket!\n\nâ³ Status: PENDING VERIFICATION\n\nOur admin team will review and approve it within 24 hours. You'll be notified once it's live.\n\nView status in your Landlord Portal.`
+          `Ã¢Å“â€¦ Your property listing "${data.title}" has been submitted to KejaMarket!\n\nÃ¢ÂÂ³ Status: PENDING VERIFICATION\n\nOur admin team will review and approve it within 24 hours. You'll be notified once it's live.\n\nView status in your Landlord Portal.`
         );
       } catch (err) {
         console.error('Failed to send landlord confirmation SMS:', err.message);
@@ -1530,17 +1542,17 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
     approvedBy: user.id
   });
 
-  // â”€â”€ Deliver WhatsApp alerts to matching subscribers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Ã¢â€â‚¬Ã¢â€â‚¬ Deliver WhatsApp alerts to matching subscribers Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   if (store.getMatchingWhatsAppSubs) {
     try {
       const subs = await store.getMatchingWhatsAppSubs(property);
       for (const sub of subs) {
-        const msg = `ðŸ  *New Rental Alert!*\n\n*${property.title}*\nðŸ“ ${property.estateSuburb}, ${property.county || 'Nairobi'}\nðŸ’° KSh ${(property.rentKes || property.rent || 0).toLocaleString()}/mo\n\nView on KejaMarket: https://kejamarket.co.ke`;
+        const msg = `Ã°Å¸ÂÂ  *New Rental Alert!*\n\n*${property.title}*\nÃ°Å¸â€œÂ ${property.estateSuburb}, ${property.county || 'Nairobi'}\nÃ°Å¸â€™Â° KSh ${(property.rentKes || property.rent || 0).toLocaleString()}/mo\n\nView on KejaMarket: https://kejamarket.co.ke`;
         // Send via Africa's Talking WhatsApp or SMS fallback
         await sendRealSMS(sub.phone, msg);
-        console.log(`ðŸ“² [WHATSAPP ALERT] Sent to ${sub.phone} for "${property.title}"`);
+        console.log(`Ã°Å¸â€œÂ² [WHATSAPP ALERT] Sent to ${sub.phone} for "${property.title}"`);
       }
-      if (subs.length > 0) console.log(`âœ… [ALERTS] Delivered to ${subs.length} subscriber(s)`);
+      if (subs.length > 0) console.log(`Ã¢Å“â€¦ [ALERTS] Delivered to ${subs.length} subscriber(s)`);
     } catch (alertErr) {
       console.warn('WhatsApp alert delivery error:', alertErr.message);
     }
@@ -1551,7 +1563,7 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
     const lPhone = property.landlordPhone || property.landlord.phone;
     try {
       await sendSMS(lPhone,
-        `âœ… Great news! Your property listing "${property.title}" has been approved and is now live on KejaMarket. Potential tenants can now view and contact you.`
+        `Ã¢Å“â€¦ Great news! Your property listing "${property.title}" has been approved and is now live on KejaMarket. Potential tenants can now view and contact you.`
       );
     } catch (err) {
       console.error('Failed to send approval SMS:', err.message);
@@ -1572,7 +1584,7 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
       fromRole: 'admin',
       toUserId: property.landlord.id,
       toRole: property.landlord.isAgency ? 'agency' : 'landlord',
-      message: `âœ… Your property "${property.title}" has been APPROVED and is now live! Tenants can now view and contact you.`,
+      message: `Ã¢Å“â€¦ Your property "${property.title}" has been APPROVED and is now live! Tenants can now view and contact you.`,
       propertyId: property.id,
       propertyTitle: property.title,
       createdAt: new Date().toISOString(),
@@ -1618,7 +1630,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
     try {
       const reasonText = reason ? `\n\nReason: ${reason}` : '';
       await sendSMS(property.landlordPhone, 
-        `âŒ Your property listing "${property.title}" was not approved for publication on KejaMarket.${reasonText}\n\nPlease review our listing guidelines and resubmit.`
+        `Ã¢ÂÅ’ Your property listing "${property.title}" was not approved for publication on KejaMarket.${reasonText}\n\nPlease review our listing guidelines and resubmit.`
       );
     } catch (err) {
       console.error('Failed to send rejection SMS:', err.message);
@@ -1633,7 +1645,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
       fromRole: 'admin',
       toUserId: property.landlord.id,
       toRole: property.landlord.isAgency ? 'agency' : 'landlord',
-      message: `âŒ Your property "${property.title}" was NOT approved.\n\nReason: ${reason || 'Does not meet listing requirements'}\n\nPlease review our guidelines and resubmit with corrections.`,
+      message: `Ã¢ÂÅ’ Your property "${property.title}" was NOT approved.\n\nReason: ${reason || 'Does not meet listing requirements'}\n\nPlease review our guidelines and resubmit with corrections.`,
       propertyId: property.id,
       propertyTitle: property.title,
       createdAt: new Date().toISOString(),
@@ -1649,7 +1661,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
   });
 });
 
-// â”€â”€â”€ REVIEWS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ REVIEWS ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 // GET /api/properties/:id/reviews
 app.get('/api/properties/:id/reviews', async (req, res) => {
@@ -1688,7 +1700,7 @@ app.post('/api/properties/:id/reviews', optionalAuth, (req, res) => {
   }
 });
 
-// â”€â”€â”€ LIVE FACEBOOK-STYLE PUBLIC COMMENTS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ LIVE FACEBOOK-STYLE PUBLIC COMMENTS ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 // GET /api/properties/:id/comments
 app.get('/api/properties/:id/comments', async (req, res) => {
@@ -1778,9 +1790,9 @@ app.post('/api/properties/:id/comments/:commentId/reply', optionalAuth, (req, re
   }
 });
 
-// â”€â”€â”€ IN-APP CHAT & INBOX MESSAGES ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ IN-APP CHAT & INBOX MESSAGES ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
-// GET /api/messages â€” fetch messages with real DB polling support
+// GET /api/messages Ã¢â‚¬â€ fetch messages with real DB polling support
 app.get('/api/messages', optionalAuth, async (req, res) => {
   try {
     const { propertyId, since } = req.query;
@@ -1825,7 +1837,7 @@ app.post('/api/messages', optionalAuth, async (req, res) => {
 
     // Route Admin inquiries directly to Admin
     if (recipientId === 'usr-admin-01' || !propertyId) {
-      console.log(`ðŸ›¡ï¸ [ADMIN INQUIRY] From: ${senderUserName} (${senderUserPhone}): ${text.trim()}`);
+      console.log(`Ã°Å¸â€ºÂ¡Ã¯Â¸Â [ADMIN INQUIRY] From: ${senderUserName} (${senderUserPhone}): ${text.trim()}`);
       sendRealSMS(
         '254180511492',
         `[KejaMarket Admin Support] New message from ${senderUserName} (${senderUserPhone || 'In-App'}): "${text.trim().substring(0, 90)}". Reply on kejamarket.co.ke`
@@ -1860,9 +1872,9 @@ app.post('/api/messages', optionalAuth, async (req, res) => {
   }
 });
 
-// ─── LEADS & ALERTS ROUTES ─────────────────────────────────────────────────
+// â”€â”€â”€ LEADS & ALERTS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/alerts/whatsapp — save subscription + use saveWhatsAppSub for PostgreSQL
+// POST /api/alerts/whatsapp â€” save subscription + use saveWhatsAppSub for PostgreSQL
 app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
   try {
     const { phone, category, estate, budgetMin, budgetMax } = req.body;
@@ -1882,7 +1894,7 @@ app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
 
     // Send confirmation SMS
     await sendRealSMS(cleanPhone,
-      `[KejaMarket Alerts] ✅ Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}–${budgetMax || 'any'}/mo). Valid 30 days.`
+      `[KejaMarket Alerts] âœ… Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}â€“${budgetMax || 'any'}/mo). Valid 30 days.`
     );
 
     res.json({ success: true, message: 'Rental alert registered. SMS confirmation sent.', sub });
@@ -1952,9 +1964,9 @@ app.post('/api/sms/send', optionalAuth, async (req, res) => {
   }
 });
 
-// â”€â”€â”€ IMAGE UPLOAD ENDPOINT (Cloudinary CDN) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ IMAGE UPLOAD ENDPOINT (Cloudinary CDN) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
-// POST /api/upload/images â€” upload 1-16 images to Cloudinary, return CDN URLs
+// POST /api/upload/images Ã¢â‚¬â€ upload 1-16 images to Cloudinary, return CDN URLs
 app.post('/api/upload/images', uploadLimiter, optionalAuth, async (req, res) => {
   try {
     const { images, folder } = req.body;
@@ -1973,7 +1985,7 @@ app.post('/api/upload/images', uploadLimiter, optionalAuth, async (req, res) => 
   }
 });
 
-// POST /api/upload/single â€” upload single image
+// POST /api/upload/single Ã¢â‚¬â€ upload single image
 app.post('/api/upload/single', optionalAuth, async (req, res) => {
   try {
     const { image, folder } = req.body;
@@ -2040,7 +2052,7 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// â”€â”€â”€ DATABASE MIGRATION TRIGGER (Admin only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ DATABASE MIGRATION TRIGGER (Admin only) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 app.post('/api/admin/migrate', async (req, res) => {
   const { secret } = req.body;
   const validSecrets = [
@@ -2054,7 +2066,7 @@ app.post('/api/admin/migrate', async (req, res) => {
   }
 
   try {
-    console.log('ðŸš€ Starting database migration via API...');
+    console.log('Ã°Å¸Å¡â‚¬ Starting database migration via API...');
     const runMigration = require('./db/migrate-to-postgres');
     await runMigration();
     res.json({ success: true, message: 'Migration completed successfully' });
@@ -2080,7 +2092,7 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// â”€â”€â”€ OWNER / ADMIN DATABASE PORTAL ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ OWNER / ADMIN DATABASE PORTAL ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 app.get('/api/admin/overview', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2093,9 +2105,9 @@ app.get('/api/admin/overview', requireAuth, async (req, res) => {
   }
 });
 
-// â”€â”€â”€ FAVOURITES ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ FAVOURITES ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
-// GET /api/favourites â€” get all favourites for logged-in user
+// GET /api/favourites Ã¢â‚¬â€ get all favourites for logged-in user
 app.get('/api/favourites', requireAuth, async (req, res) => {
   try {
     let propertyIds = [];
@@ -2108,7 +2120,7 @@ app.get('/api/favourites', requireAuth, async (req, res) => {
   }
 });
 
-// POST /api/favourites/:propertyId â€” add a favourite
+// POST /api/favourites/:propertyId Ã¢â‚¬â€ add a favourite
 app.post('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -2121,7 +2133,7 @@ app.post('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   }
 });
 
-// DELETE /api/favourites/:propertyId â€” remove a favourite
+// DELETE /api/favourites/:propertyId Ã¢â‚¬â€ remove a favourite
 app.delete('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -2134,9 +2146,9 @@ app.delete('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   }
 });
 
-// â”€â”€â”€ ADMIN ANALYTICS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ ADMIN ANALYTICS Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
-// GET /api/admin/analytics â€” real server-side analytics from PostgreSQL
+// GET /api/admin/analytics Ã¢â‚¬â€ real server-side analytics from PostgreSQL
 app.get('/api/admin/analytics', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2217,7 +2229,7 @@ app.post('/api/admin/mpesa-config', optionalAuth, (req, res) => {
       console.warn('Could not write to .env file:', envErr.message);
     }
 
-    console.log(`ðŸ”§ [M-PESA CONFIG UPDATED] Env: ${MPESA_ENV} | Shortcode: ${PAYBILL} | Active: ${hasDarajaCredentials()}`);
+    console.log(`Ã°Å¸â€Â§ [M-PESA CONFIG UPDATED] Env: ${MPESA_ENV} | Shortcode: ${PAYBILL} | Active: ${hasDarajaCredentials()}`);
 
     res.json({
       success: true,
@@ -2245,10 +2257,10 @@ app.get('/api/admin/users', requireAuth, async (req, res) => {
   }
 });
 
-app.post('/api/admin/users/:id/toggle-verify', optionalAuth, (req, res) => {
+app.post('/api/admin/users/:id/toggle-verify', optionalAuth, async (req, res) => {
   try {
     const { id } = req.params;
-    const user = store.getUserById(id);
+    const user = await store.getUserById(id);
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found.' });
     }
@@ -2274,7 +2286,7 @@ app.post('/api/admin/users/:id/ban', requireAuth, async (req, res) => {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
 
-    const user = store.getUserById(id);
+    const user = await store.getUserById(id);
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found.' });
     }
@@ -2333,7 +2345,7 @@ app.delete('/api/properties/:id', optionalAuth, (req, res) => {
 });
 
 
-// GET /api/admin/download-db (Backup â€” admin only)
+// GET /api/admin/download-db (Backup Ã¢â‚¬â€ admin only)
 app.get('/api/admin/download-db', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2367,7 +2379,7 @@ app.get('/api/admin/all-properties', requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/admin/pending-listings â€” listings awaiting approval
+// GET /api/admin/pending-listings Ã¢â‚¬â€ listings awaiting approval
 app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2398,7 +2410,7 @@ app.post('/api/admin/send-message', requireAuth, async (req, res) => {
     }
 
     // Get user details
-    const user = store.getUserById(userId);
+    const user = await store.getUserById(userId);
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found.' });
     }
@@ -2536,7 +2548,7 @@ app.put('/api/properties/:id/unboost', async (req, res) => {
   }
 });
 
-// â”€â”€â”€ LANDLORD PORTAL ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ LANDLORD PORTAL ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 // GET /api/landlord/my-listings (Get all listings for logged-in landlord)
 app.get('/api/landlord/my-listings', requireAuth, async (req, res) => {
@@ -2668,9 +2680,9 @@ app.put('/api/landlord/availability/:id', requireAuth, async (req, res) => {
   }
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 // SERVICE PROVIDER ENDPOINTS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 
 // GET /api/service/my-services (Get all services for logged-in service provider)
 app.get('/api/service/my-services', requireAuth, async (req, res) => {
@@ -2985,7 +2997,142 @@ app.put('/api/service/availability/:id', requireAuth, (req, res) => {
 });
 
 
-// â”€â”€â”€ 404 HANDLER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ 404 HANDLER Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+
+// ================================================================================
+// SERVICES & MARKETPLACE API ENDPOINTS
+// ================================================================================
+
+// GET /api/services
+app.get('/api/services', async (req, res) => {
+  try {
+    const { serviceType, limit = 50, offset = 0 } = req.query;
+    let query = 'SELECT * FROM services WHERE status = $1 AND is_verified = true';
+    const params = ['active'];
+    let pCount = 2;
+    if (serviceType) { query += ` AND service_type = $${pCount}`; params.push(serviceType); pCount++; }
+    query += ` ORDER BY created_at DESC LIMIT $${pCount} OFFSET $${pCount + 1}`;
+    params.push(parseInt(limit), parseInt(offset));
+    const result = await store.query(query, params);
+    res.json({ success: true, services: result.rows, count: result.rows.length });
+  } catch (err) {
+    res.json({ success: false, services: [], error: err.message });
+  }
+});
+
+// GET /api/marketplace
+app.get('/api/marketplace', async (req, res) => {
+  try {
+    const { category, condition, maxPrice, limit = 50, offset = 0 } = req.query;
+    // Note: marketplace_items does not have is_verified column, filter on status only
+    let query = 'SELECT * FROM marketplace_items WHERE status = $1';
+    const params = ['active'];
+    let pCount = 2;
+    if (category) { query += ` AND category = $${pCount}`; params.push(category); pCount++; }
+    if (condition) { query += ` AND condition = $${pCount}`; params.push(condition); pCount++; }
+    if (maxPrice) { query += ` AND price_kes <= $${pCount}`; params.push(parseInt(maxPrice)); pCount++; }
+    query += ` ORDER BY created_at DESC LIMIT $${pCount} OFFSET $${pCount + 1}`;
+    params.push(parseInt(limit), parseInt(offset));
+    const result = await store.query(query, params);
+    res.json({ success: true, items: result.rows, count: result.rows.length });
+  } catch (err) {
+    console.error('Marketplace fetch error:', err.message);
+    res.json({ success: false, items: [], error: err.message });
+  }
+});
+
+// POST /api/marketplace
+app.post('/api/marketplace', requireAuth, async (req, res) => {
+  try {
+    const { title, description, category, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, images } = req.body;
+    const itemId = 'mkt-' + Date.now();
+    await store.query(
+      'INSERT INTO marketplace_items (id, title, description, category, seller_id, seller_name, seller_phone, price_kes, condition, item_type, is_negotiable, location_suburb, location_corridor, images) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)',
+      [itemId, title, description, category, req.user.id, req.user.name, req.user.phone, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, JSON.stringify(images || [])]
+    );
+    res.status(201).json({ success: true, itemId, message: 'Item posted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/services
+app.post('/api/services', requireAuth, async (req, res) => {
+  try {
+    const { title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours, images } = req.body;
+    const serviceId = 'svc-' + Date.now();
+    await store.query(
+      'INSERT INTO services (id, title, description, service_type, provider_id, provider_name, provider_phone, price_min, price_max, coverage_area, service_hours, images) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)',
+      [serviceId, title, description, serviceType, req.user.id, req.user.name, req.user.phone, priceMin, priceMax, coverageArea, serviceHours, JSON.stringify(images || [])]
+    );
+    res.status(201).json({ success: true, serviceId, message: 'Service created successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/admin/pending
+app.get('/api/admin/pending', requireAuth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required' });
+    const allProps = await Promise.resolve(store.getAllProperties ? store.getAllProperties() : []);
+    const properties = (allProps || []).filter(p => !p.is_verified)
+      .map(p => ({ id: p.id, title: p.title, description: p.description, price: p.rent_kes, location: p.estate_suburb, created_at: p.created_at, images: Array.isArray(p.media) ? p.media.map(m => m.url || m) : [], type: 'property' }));
+    const svcs = store.getServices ? await Promise.resolve(store.getServices()) : [];
+    const services = (svcs || []).filter(s => !s.is_verified)
+      .map(s => ({ id: s.id, title: s.title, description: s.description, created_at: s.created_at, type: 'service' }));
+    const mktItems = store.getMarketplaceItems ? await Promise.resolve(store.getMarketplaceItems()) : [];
+    const items = (mktItems || []).filter(i => !i.is_verified)
+      .map(i => ({ id: i.id, title: i.title, description: i.description, price: i.price_kes, category: i.category, created_at: i.created_at, type: 'marketplace' }));
+    res.json({ success: true, pending: { properties, services, items }, items: [...properties, ...services, ...items], counts: { pendingProperties: properties.length, pendingServices: services.length, pendingItems: items.length, total: properties.length + services.length + items.length } });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/admin/approve
+app.post('/api/admin/approve', requireAuth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required' });
+    const { itemType, itemId } = req.body;
+    if (!itemType || !itemId) return res.status(400).json({ success: false, message: 'itemType and itemId required' });
+    let updatedItem = null;
+    if (itemType === 'property') updatedItem = await Promise.resolve(store.updateProperty(itemId, { is_verified: true }));
+    else if (itemType === 'service' && store.updateService) updatedItem = await Promise.resolve(store.updateService(itemId, { is_verified: true }));
+    else if (itemType === 'marketplace' && store.updateMarketplaceItem) updatedItem = await Promise.resolve(store.updateMarketplaceItem(itemId, { is_verified: true }));
+    else return res.status(400).json({ success: false, message: 'Invalid itemType' });
+    if (!updatedItem) return res.status(404).json({ success: false, message: 'Item not found' });
+    res.json({ success: true, message: `${itemType} approved successfully`, item: updatedItem });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/admin/reject
+app.post('/api/admin/reject', requireAuth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required' });
+    const { itemType, itemId } = req.body;
+    if (!itemType || !itemId) return res.status(400).json({ success: false, message: 'itemType and itemId required' });
+    let deletedItem = null;
+    if (itemType === 'property') {
+      if (store.getProperty) deletedItem = await Promise.resolve(store.getProperty(itemId));
+      if (deletedItem) await Promise.resolve(store.deleteProperty(itemId));
+    } else if (itemType === 'service' && store.getService && store.deleteService) {
+      deletedItem = await Promise.resolve(store.getService(itemId));
+      if (deletedItem) await Promise.resolve(store.deleteService(itemId));
+    } else if (itemType === 'marketplace' && store.getMarketplaceItem && store.deleteMarketplaceItem) {
+      deletedItem = await Promise.resolve(store.getMarketplaceItem(itemId));
+      if (deletedItem) await Promise.resolve(store.deleteMarketplaceItem(itemId));
+    }
+    if (!deletedItem) return res.status(404).json({ success: false, message: 'Item not found' });
+    res.json({ success: true, message: `${itemType} rejected and removed`, item: deletedItem });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
 app.use((req, res) => {
   // API routes get JSON 404
   if (req.path.startsWith('/api/')) {
@@ -2996,18 +3143,18 @@ app.use((req, res) => {
   if (require('fs').existsSync(notFoundPath)) {
     return res.status(404).sendFile(notFoundPath);
   }
-  res.status(404).send('<h1>404 â€” Page Not Found</h1><p><a href="/">â† Back to KejaMarket</a></p>');
+  res.status(404).send('<h1>404 Ã¢â‚¬â€ Page Not Found</h1><p><a href="/">Ã¢â€ Â Back to KejaMarket</a></p>');
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 // CRON JOBS & AUTOMATED TASKS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 
 // Check for expired boosts every hour
-setInterval(() => {
+setInterval(async () => {
   try {
     console.log('[CRON] Checking for expired boosts...');
-    const properties = store.getAllProperties();
+    const properties = await store.getAllProperties();
     let expiredCount = 0;
 
     properties.forEach(property => {
@@ -3042,8 +3189,8 @@ setInterval(() => {
 setInterval(async () => {
   try {
     console.log('[CRON] Checking for boost renewal reminders...');
-    const properties = store.getAllProperties();
-    const users = store.getAllUsers();
+    const properties = await store.getAllProperties();
+    const users = await store.getAllUsers();
     const now = new Date();
     const threeDaysFromNow = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
 
@@ -3116,7 +3263,7 @@ function trackBoostClick(propertyId) {
   }
 }
 
-// â”€â”€â”€ START SERVER & KEEP-ALIVE HEARTBEAT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ START SERVER & KEEP-ALIVE HEARTBEAT Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const PORT = process.env.PORT || 3001;
 
 // Initialize database and start server
@@ -3159,16 +3306,16 @@ async function startServer() {
 
   const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`====================================================`);
-    console.log(`ðŸš€ KejaMarket Production API Server running on port ${PORT}`);
-    console.log(`ðŸ”— Web Application: http://localhost:${PORT}`);
-    console.log(`ðŸ“± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
+    console.log(`Ã°Å¸Å¡â‚¬ KejaMarket Production API Server running on port ${PORT}`);
+    console.log(`Ã°Å¸â€â€” Web Application: http://localhost:${PORT}`);
+    console.log(`Ã°Å¸â€œÂ± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
     console.log(`====================================================`);
 
     const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
     const PING_INTERVAL = 9 * 60 * 1000;
 
     if (process.env.NODE_ENV === 'production') {
-      console.log(`ðŸ“¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+      console.log(`Ã°Å¸â€œÂ¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
       setInterval(() => {
         try {
           const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
@@ -3182,34 +3329,34 @@ async function startServer() {
         }
       }, PING_INTERVAL);
     } else {
-      console.log(`ðŸ“¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+      console.log(`Ã°Å¸â€œÂ¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
     }
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`âŒ Port ${PORT} is already in use`);
+      console.error(`Ã¢ÂÅ’ Port ${PORT} is already in use`);
       process.exit(1);
     } else {
-      console.error(`âŒ Server error:`, err);
+      console.error(`Ã¢ÂÅ’ Server error:`, err);
       process.exit(1);
     }
   });
 
   process.on('SIGTERM', () => {
-    console.log('ðŸ”„ SIGTERM received, shutting down gracefully');
+    console.log('Ã°Å¸â€â€ž SIGTERM received, shutting down gracefully');
     server.close(async () => {
       if (store && store.close) await store.close();
-      console.log('âœ… Server closed');
+      console.log('Ã¢Å“â€¦ Server closed');
       process.exit(0);
     });
   });
 
   process.on('SIGINT', () => {
-    console.log('ðŸ”„ SIGINT received, shutting down gracefully');
+    console.log('Ã°Å¸â€â€ž SIGINT received, shutting down gracefully');
     server.close(async () => {
       if (store && store.close) await store.close();
-      console.log('âœ… Server closed');
+      console.log('Ã¢Å“â€¦ Server closed');
       process.exit(0);
     });
   });
@@ -3219,394 +3366,9 @@ async function startServer() {
 startServer().catch(console.error);
 
 
-// ════════════════════════════════════════════════════════════════════════════════
-// SERVICES API ENDPOINTS
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
-// GET /api/services - List all services with filters
-app.get('/api/services', async (req, res) => {
-  try {
-    const { serviceType, verified, limit = 50, offset = 0 } = req.query;
-    
-    let query = 'SELECT * FROM services WHERE status = $1 AND is_verified = true';
-    const params = ['active'];
-    let paramCount = 2;
 
-    if (serviceType) {
-      query += ` AND service_type = $${paramCount}`;
-      params.push(serviceType);
-      paramCount++;
-    }
 
-    query += ` ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
-    params.push(parseInt(limit), parseInt(offset));
 
-    const result = await store.query(query, params);
-    
-    res.json({
-      success: true,
-      services: result.rows,
-      count: result.rows.length
-    });
-  } catch (err) {
-    console.error('Services fetch error:', err);
-    res.json({ success: false, services: [], error: err.message });
-  }
-});
-
-// GET /api/services/:id - Get single service
-app.get('/api/services/:id', async (req, res) => {
-  try {
-    const result = await store.query('SELECT * FROM services WHERE id = $1', [req.params.id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Service not found' });
-    }
-    res.json({ success: true, service: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// POST /api/services - Create new service (requires auth)
-app.post('/api/services', requireAuth, async (req, res) => {
-  try {
-    const { title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours, images } = req.body;
-    const serviceId = 'svc-' + Date.now();
-
-    await store.query(
-      `INSERT INTO services (id, title, description, service_type, provider_id, provider_name, provider_phone, price_min, price_max, coverage_area, service_hours, images)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
-      [serviceId, title, description, serviceType, req.user.id, req.user.name, req.user.phone, priceMin, priceMax, coverageArea, serviceHours, JSON.stringify(images || [])]
-    );
-
-    res.status(201).json({ success: true, serviceId, message: 'Service created successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// GET /api/services/:id/reviews - Get service reviews
-app.get('/api/services/:id/reviews', async (req, res) => {
-  try {
-    const result = await store.query(
-      'SELECT * FROM service_reviews WHERE service_id = $1 ORDER BY created_at DESC',
-      [req.params.id]
-    );
-    res.json({ success: true, reviews: result.rows });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// POST /api/services/:id/reviews - Add service review
-app.post('/api/services/:id/reviews', requireAuth, async (req, res) => {
-  try {
-    const { rating, reviewText } = req.body;
-    const reviewId = 'svr-' + Date.now();
-
-    await store.query(
-      `INSERT INTO service_reviews (id, service_id, reviewer_id, reviewer_name, rating, review_text)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [reviewId, req.params.id, req.user.id, req.user.name, rating, reviewText]
-    );
-
-    res.status(201).json({ success: true, message: 'Review submitted successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// ════════════════════════════════════════════════════════════════════════════════
-// MARKETPLACE API ENDPOINTS
-// ════════════════════════════════════════════════════════════════════════════════
-
-// GET /api/marketplace - List all marketplace items with filters
-app.get('/api/marketplace', async (req, res) => {
-  try {
-    const { category, condition, maxPrice, limit = 50, offset = 0 } = req.query;
-    
-    let query = 'SELECT * FROM marketplace_items WHERE status = $1 AND is_verified = true';
-    const params = ['active'];
-    let paramCount = 2;
-
-    if (category) {
-      query += ` AND category = $${paramCount}`;
-      params.push(category);
-      paramCount++;
-    }
-
-    if (condition) {
-      query += ` AND condition = $${paramCount}`;
-      params.push(condition);
-      paramCount++;
-    }
-
-    if (maxPrice) {
-      query += ` AND price_kes <= $${paramCount}`;
-      params.push(parseInt(maxPrice));
-      paramCount++;
-    }
-
-    query += ` ORDER BY created_at DESC LIMIT $${paramCount} OFFSET $${paramCount + 1}`;
-    params.push(parseInt(limit), parseInt(offset));
-
-    const result = await store.query(query, params);
-    
-    res.json({
-      success: true,
-      items: result.rows,
-      count: result.rows.length
-    });
-  } catch (err) {
-    console.error('Marketplace fetch error:', err);
-    res.json({ success: false, items: [], error: err.message });
-  }
-});
-
-// GET /api/marketplace/:id - Get single marketplace item
-app.get('/api/marketplace/:id', async (req, res) => {
-  try {
-    const result = await store.query('SELECT * FROM marketplace_items WHERE id = $1', [req.params.id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Item not found' });
-    }
-    res.json({ success: true, item: result.rows[0] });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// POST /api/marketplace - Create new marketplace item (requires auth)
-app.post('/api/marketplace', requireAuth, async (req, res) => {
-  try {
-    const { title, description, category, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, images } = req.body;
-    const itemId = 'mkt-' + Date.now();
-
-    await store.query(
-      `INSERT INTO marketplace_items (id, title, description, category, seller_id, seller_name, seller_phone, price_kes, condition, item_type, is_negotiable, location_suburb, location_corridor, images)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
-      [itemId, title, description, category, req.user.id, req.user.name, req.user.phone, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, JSON.stringify(images || [])]
-    );
-
-    res.status(201).json({ success: true, itemId, message: 'Item posted successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// DELETE /api/marketplace/:id - Delete marketplace item (owner only)
-app.delete('/api/marketplace/:id', requireAuth, async (req, res) => {
-  try {
-    const result = await store.query('SELECT seller_id FROM marketplace_items WHERE id = $1', [req.params.id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Item not found' });
-    }
-    if (result.rows[0].seller_id !== req.user.id && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Unauthorized' });
-    }
-
-    await store.query('DELETE FROM marketplace_items WHERE id = $1', [req.params.id]);
-    res.json({ success: true, message: 'Item deleted' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// ════════════════════════════════════════════════════════════════════════════════
-// ADMIN VERIFICATION ENDPOINTS
-// ════════════════════════════════════════════════════════════════════════════════
-
-// GET /api/admin/pending - Get all pending items awaiting verification (requires admin)
-app.get('/api/admin/pending', requireAuth, async (req, res) => {
-  try {
-    const session = req.user;
-    if (!session || !session.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required' });
-    }
-
-    // Get pending properties from store
-    const properties = (store.getAllProperties() || [])
-      .filter(p => p.is_verified !== true)
-      .map(p => ({
-        id: p.id,
-        title: p.title,
-        description: p.description,
-        price: p.rent_kes,
-        location: p.estate_suburb,
-        created_at: p.created_at,
-        posted_by: p.landlord_id,
-        images: (p.images && Array.isArray(p.images)) ? p.images : [],
-        type: 'property'
-      }));
-
-    // Get pending services from store
-    const services = (store.getServices && store.getServices() || [])
-      .filter(s => s.is_verified !== true)
-      .map(s => ({
-        id: s.id,
-        title: s.title,
-        description: s.description,
-        price_min: s.price_min,
-        price_max: s.price_max,
-        service_type: s.service_type,
-        created_at: s.created_at,
-        posted_by: s.provider_id,
-        images: (s.images && Array.isArray(s.images)) ? s.images : [],
-        type: 'service'
-      }));
-
-    // Get pending marketplace items from store
-    const items = (store.getMarketplaceItems && store.getMarketplaceItems() || [])
-      .filter(i => i.is_verified !== true)
-      .map(i => ({
-        id: i.id,
-        title: i.title,
-        description: i.description,
-        price: i.price_kes,
-        category: i.category,
-        location: i.location_suburb,
-        created_at: i.created_at,
-        posted_by: i.seller_id,
-        images: (i.images && Array.isArray(i.images)) ? i.images : [],
-        type: 'marketplace'
-      }));
-
-    const all = [...properties, ...services, ...items];
-
-    res.json({
-      success: true,
-      pending: {
-        properties,
-        services,
-        items
-      },
-      counts: {
-        pendingProperties: properties.length,
-        pendingServices: services.length,
-        pendingItems: items.length,
-        total: all.length
-      }
-    });
-  } catch (err) {
-    console.error('Error fetching pending items:', err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// POST /api/admin/approve - Approve a pending item (requires admin)
-app.post('/api/admin/approve', requireAuth, async (req, res) => {
-  try {
-    const session = req.user;
-    if (!session || !session.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required' });
-    }
-
-    const { itemType, itemId } = req.body;
-
-    if (!itemType || !itemId) {
-      return res.status(400).json({ success: false, message: 'itemType and itemId required' });
-    }
-
-    let updatedItem = null;
-
-    try {
-      if (itemType === 'property') {
-        updatedItem = store.updateProperty(itemId, { is_verified: true });
-      } else if (itemType === 'service' && store.updateService) {
-        updatedItem = store.updateService(itemId, { is_verified: true });
-      } else if (itemType === 'marketplace' && store.updateMarketplaceItem) {
-        updatedItem = store.updateMarketplaceItem(itemId, { is_verified: true });
-      } else {
-        return res.status(400).json({ success: false, message: 'Invalid itemType' });
-      }
-
-      if (!updatedItem) {
-        return res.status(404).json({ success: false, message: 'Item not found' });
-      }
-
-      // Send SMS notification to poster
-      const posterPhone = updatedItem.landlord_id || updatedItem.provider_id || updatedItem.seller_id;
-      if (posterPhone && sendRealSMS) {
-        const itemTitle = updatedItem.title || 'Your listing';
-        sendRealSMS(posterPhone, `✅ Your ${itemType} "${itemTitle}" has been approved and is now live on KejaMarket!`).catch(() => {});
-      }
-
-      res.json({
-        success: true,
-        message: `${itemType} approved successfully`,
-        item: updatedItem
-      });
-    } catch (err) {
-      console.error(`Error approving ${itemType}:`, err);
-      return res.status(500).json({ success: false, message: err.message });
-    }
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// POST /api/admin/reject - Reject a pending item (requires admin)
-app.post('/api/admin/reject', requireAuth, async (req, res) => {
-  try {
-    const session = req.user;
-    if (!session || !session.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required' });
-    }
-
-    const { itemType, itemId, reason } = req.body;
-
-    if (!itemType || !itemId) {
-      return res.status(400).json({ success: false, message: 'itemType and itemId required' });
-    }
-
-    let deletedItem = null;
-
-    try {
-      if (itemType === 'property') {
-        const prop = store.getProperty(itemId);
-        if (prop) {
-          store.deleteProperty(itemId);
-          deletedItem = prop;
-        }
-      } else if (itemType === 'service' && store.getService && store.deleteService) {
-        const svc = store.getService(itemId);
-        if (svc) {
-          store.deleteService(itemId);
-          deletedItem = svc;
-        }
-      } else if (itemType === 'marketplace' && store.getMarketplaceItem && store.deleteMarketplaceItem) {
-        const item = store.getMarketplaceItem(itemId);
-        if (item) {
-          store.deleteMarketplaceItem(itemId);
-          deletedItem = item;
-        }
-      } else {
-        return res.status(400).json({ success: false, message: 'Invalid itemType' });
-      }
-
-      if (!deletedItem) {
-        return res.status(404).json({ success: false, message: 'Item not found' });
-      }
-
-      // Send SMS notification to poster about rejection
-      const posterPhone = deletedItem.landlord_id || deletedItem.provider_id || deletedItem.seller_id;
-      if (posterPhone && sendRealSMS) {
-        const itemTitle = deletedItem.title || 'Your listing';
-        const rejectionReason = reason ? ` Reason: ${reason}` : '';
-        sendRealSMS(posterPhone, `❌ Your ${itemType} "${itemTitle}" was not approved.${rejectionReason}`).catch(() => {});
-      }
-
-      res.json({
-        success: true,
-        message: `${itemType} rejected and removed`,
-        item: deletedItem
-      });
-    } catch (err) {
-      console.error(`Error rejecting ${itemType}:`, err);
-      return res.status(500).json({ success: false, message: err.message });
-    }
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
 

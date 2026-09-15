@@ -485,6 +485,9 @@ class LandlordPortal {
 // Global instance
 const kejaLandlordPortal = new LandlordPortal();
 
+// Export to window for global HTML onclick access
+window.kejaLandlordPortal = kejaLandlordPortal;
+
 // Auto-init when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => kejaLandlordPortal.init());

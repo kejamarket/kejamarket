@@ -345,8 +345,10 @@
         }
         console.log('✅ Admin verified, loading dashboard');
       } else {
-        console.error('No session found');
-        window.location.href = '/';
+        console.warn('No active admin session found. Opening authentication modal.');
+        if (window.kejaAuth) {
+          window.kejaAuth.openAuthModal();
+        }
         return;
       }
 

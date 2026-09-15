@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KejaMarket Button Test</title>
+  <script>
+    // Test if buttons are clickable
+    window.onload = function() {
+      console.log("=== KEJAMARKET BUTTON TEST ===");
+      
+      // Test 1: Check if app is loaded
+      console.log("1. Window.app exists:", typeof window.app);
+      
+      // Test 2: Check if kejaAuth is loaded
+      console.log("2. Window.kejaAuth exists:", typeof window.kejaAuth);
+      
+      // Test 3: List all buttons
+      const buttons = document.querySelectorAll('button');
+      console.log("3. Total buttons found:", buttons.length);
+      
+      // Test 4: Check for onclick handlers
+      let withHandlers = 0;
+      buttons.forEach(btn => {
+        if (btn.onclick || btn.getAttribute('onclick')) withHandlers++;
+      });
+      console.log("4. Buttons with onclick:", withHandlers);
+      
+      // Test 5: Try to open auth modal
+      if (window.kejaAuth && typeof window.kejaAuth.openAuthModal === 'function') {
+        console.log("5. Auth modal function available: YES");
+      } else {
+        console.log("5. Auth modal function available: NO - THIS IS THE PROBLEM!");
+      }
+      
+      // Test 6: Try to toggle favorite
+      if (window.app && typeof window.app.toggleFavorite === 'function') {
+        console.log("6. Toggle favorite function available: YES");
+      } else {
+        console.log("6. Toggle favorite function available: NO - THIS IS THE PROBLEM!");
+      }
+      
+      // Test 7: Check for JavaScript errors
+      window.onerror = function(msg, url, lineNo, columnNo, error) {
+        console.error("JavaScript Error:", msg, "at", url, ":", lineNo);
+        return false;
+      };
+    };
+  </script>
+</head>
+<body>
+  <h1>Button Test Page</h1>
+  <p>Open browser console (F12) to see test results</p>
+  
+  <button onclick="alert('Direct onclick works!')">Test 1: Direct onclick</button>
+  <button onclick="window.kejaAuth.openAuthModal()">Test 2: Open Auth Modal</button>
+  <button onclick="window.app.toggleFavorite('test-id', event)">Test 3: Toggle Favorite</button>
+  
+  <!-- Load the actual scripts -->
+  <script src="https://kejamarket.co.ke/js/data/locations.js"></script>
+  <script src="https://kejamarket.co.ke/js/data/seedListings.js"></script>
+  <script src="https://kejamarket.co.ke/js/auth.js"></script>
+  <script src="https://kejamarket.co.ke/js/app.js"></script>
+</body>
+</html>
