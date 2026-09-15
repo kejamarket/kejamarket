@@ -155,7 +155,7 @@ class NairobiRentalsApp {
         this.saveFavorites();
       }
     } catch (e) {
-      // Silent Ã¢â‚¬â€ offline fallback to localStorage
+      // Silent — offline fallback to localStorage
     }
   }
 
@@ -179,7 +179,7 @@ class NairobiRentalsApp {
       this.showToast('Removed from saved favorites', 'info');
     } else {
       this.favorites.add(propertyId);
-      this.showToast('Saved to your favorites! Ã¢ÂÂ¤Ã¯Â¸Â', 'success');
+      this.showToast('Saved to your favorites!', 'success');
     }
     this.saveFavorites();
     this.applyFilters();
@@ -191,7 +191,7 @@ class NairobiRentalsApp {
       fetch(`/api/favourites/${encodeURIComponent(propertyId)}`, {
         method,
         headers: { 'Authorization': `Bearer ${token}` }
-      }).catch(() => {}); // Silent Ã¢â‚¬â€ localStorage is fallback
+      }).catch(() => {}); // Silent — localStorage is fallback
     }
   }
 
@@ -466,7 +466,7 @@ class NairobiRentalsApp {
     btn.classList.add('active');
     this.activeServiceCategory = service;
     this.applyFilters(); // Apply filters and refresh UI
-    this.showToast(`Ã°Å¸â€œÂ Filtering services: ${service}`, 'info');
+    this.showToast(`Filtering services: ${service}`, 'info');
   }
 
   setMarketplaceItem(item, btn) {
@@ -475,7 +475,7 @@ class NairobiRentalsApp {
     btn.classList.add('active');
     this.activeMarketplaceItem = item;
     this.applyFilters(); // Apply filters and refresh UI
-    this.showToast(`Ã°Å¸â€ºÂÃ¯Â¸Â Filtering items: ${item}`, 'info');
+    this.showToast(`Filtering items: ${item}`, 'info');
   }
 
    setupEventListeners() {
@@ -811,7 +811,7 @@ class NairobiRentalsApp {
     const files = Array.from(inputEl.files);
 
     if (inputEl._uploadedPhotos.length + files.length > maxPhotos) {
-      this.showToast(`⚠️ Maximum ${maxPhotos} photos allowed per post.`, 'error');
+      this.showToast(`Maximum ${maxPhotos} photos allowed per post.`, 'error');
     }
 
     const remainingSlots = maxPhotos - inputEl._uploadedPhotos.length;
@@ -863,7 +863,7 @@ class NairobiRentalsApp {
       if (duration > maxSeconds + 1) {
         const mins = Math.floor(duration / 60);
         const secs = Math.floor(duration % 60);
-        this.showToast(`❌ Video exceeds max duration! Allowed: 1 minute 30 seconds (90s). Uploaded: ${mins}m ${secs}s. Please trim your video.`, 'error');
+        this.showToast(`Video exceeds max duration! Allowed: 1 minute 30 seconds (90s). Uploaded: ${mins}m ${secs}s. Please trim your video.`, 'error');
         inputEl.value = '';
         inputEl._uploadedVideo = null;
         previewContainer.innerHTML = '';
@@ -877,11 +877,11 @@ class NairobiRentalsApp {
           <div style="position: relative; width: 160px; border-radius: 8px; overflow: hidden; background: #000; border: 2px solid #7c3aed;">
             <video src="${e.target.result}" style="width: 100%; height: 95px; object-fit: cover;" controls></video>
             <span style="position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">
-              🎥 ${Math.round(duration)}s
+              ${Math.round(duration)}s
             </span>
             <button type="button" style="position: absolute; top: 4px; right: 4px; background: rgba(220,38,38,0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 0.75rem;" onclick="document.getElementById('${inputEl.id}').value = ''; document.getElementById('${inputEl.id}')._uploadedVideo = null; document.getElementById('${previewId}').innerHTML = '';">&times;</button>
           </div>`;
-        this.showToast(`🎥 Video tour attached (${Math.round(duration)}s)!`, 'info');
+        this.showToast(`Video tour attached (${Math.round(duration)}s)!`, 'info');
       };
       reader.readAsDataURL(file);
     };
@@ -1386,7 +1386,7 @@ class NairobiRentalsApp {
         : 'GPS: Coordinates not available';
     } else {
       if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.estateSuburb}, ${p.county} <span style="font-size:0.75rem; color:#64748b; margin-left:6px;"><i class="fas fa-lock"></i> Exact landmark & pin protected</span>`;
-      if (gpsBadge) gpsBadge.textContent = 'GPS: Protected Ã°Å¸â€â€™';
+      if (gpsBadge) gpsBadge.textContent = 'GPS: Protected (Sign in to view)';
     }
     document.getElementById('detail-modal-desc').textContent = p.description;
 
@@ -1452,7 +1452,7 @@ class NairobiRentalsApp {
           <div id="detail-photos-lock-banner" onclick="kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}'))"
             style="display:flex;align-items:center;gap:10px;background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:8px;padding:10px 14px;margin-top:8px;cursor:pointer;font-size:0.85rem;color:#475569;">
             <i class="fas fa-images" style="font-size:1.3rem;color:#00b53f;"></i>
-            <span><strong>+${extraCount} more photo${extraCount > 1 ? 's' : ''}</strong> Ã¢â‚¬â€ <span style="color:#00b53f;font-weight:700;">Sign in free</span> to view all</span>
+            <span><strong>+${extraCount} more photo${extraCount > 1 ? 's' : ''}</strong> — <span style="color:#00b53f;font-weight:700;">Sign in free</span> to view all</span>
             <i class="fas fa-chevron-right" style="margin-left:auto;color:#94a3b8;"></i>
           </div>
         `);
@@ -1475,7 +1475,7 @@ class NairobiRentalsApp {
                   <video src="${v.url || v}" controls playsinline style="width: 100%; max-height: 220px; object-fit: contain; display: block;"></video>
                   <div style="padding: 6px 10px; background: #1e1b4b; color: #c084fc; font-size: 0.75rem; font-weight: 600; display: flex; justify-content: space-between;">
                     <span><i class="fas fa-play-circle"></i> Video Tour #${i + 1}</span>
-                    <span>${v.duration ? `Ã¢ÂÂ± ${Math.floor(v.duration / 60)}:${(v.duration % 60).toString().padStart(2, '0')}` : 'Max 1m 30s'}</span>
+                    <span>${v.duration ? `Duration: ${Math.floor(v.duration / 60)}:${(v.duration % 60).toString().padStart(2, '0')}` : 'Max 1m 30s'}</span>
                   </div>
                 </div>
               `).join('')}
@@ -1519,11 +1519,11 @@ class NairobiRentalsApp {
     const mgmtBadge = document.getElementById('detail-management-badge');
     if (mgmtBadge) {
       if (isAgencyListing) {
-        mgmtBadge.textContent = '🏢 Managed by ' + (p.agencyName || p.landlord?.name || 'Agency');
+        mgmtBadge.textContent = 'Managed by ' + (p.agencyName || p.landlord?.name || 'Agency');
         mgmtBadge.style.background = '#f3e8ff';
         mgmtBadge.style.color = '#7c3aed';
       } else {
-        mgmtBadge.textContent = '👤 Direct Landlord';
+        mgmtBadge.textContent = 'Direct Landlord';
         mgmtBadge.style.background = '#dcfce7';
         mgmtBadge.style.color = '#15803d';
       }
@@ -1560,7 +1560,7 @@ class NairobiRentalsApp {
       // Protected
       if (landlordName) landlordName.innerHTML = `<i class="fas fa-user-shield" style="color:#00b53f;margin-right:6px;"></i><span style="color:#64748b;">${isAgencyListing ? 'Agency' : 'Landlord'} Details Protected</span>`;
       if (landlordSince) landlordSince.textContent = 'Sign in or create free account to view contact details';
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;letter-spacing:1px;">+254 7Ã¢â‚¬Â¢Ã¢â‚¬Â¢ Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢ Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢ (Sign in to view)</span>`;
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;letter-spacing:1px;">+254 7••• •••••• (Sign in to view)</span>`;
       if (callBtn) {
         callBtn.href = '#';
         callBtn.setAttribute('onclick', `event.preventDefault(); app.callLandlordDirect('${p.id}'); return false;`);
@@ -1599,7 +1599,7 @@ class NairobiRentalsApp {
       }
     }
 
-    // Google Maps Link + Map visibility Ã¢â‚¬â€ gated behind login
+    // Google Maps Link + Map visibility — gated behind login
     const directionsBtn = document.getElementById('detail-btn-directions');
     const mapSection = document.getElementById('detail-map-section');
     const gpsLockOverlay = document.getElementById('detail-map-lock-overlay');
@@ -1915,9 +1915,9 @@ class NairobiRentalsApp {
     }
   }
 
-  /* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  /* 
      IN-APP CHAT & INBOX MESSAGING SYSTEM
-  Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
+   */
   openChatForProperty(propertyId, event) {
     if (event) event.stopPropagation();
 
@@ -1938,9 +1938,9 @@ class NairobiRentalsApp {
     if (quickReplies) {
       quickReplies.innerHTML = `
         <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Is this house still available?')">Is this available?</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Can I schedule a viewing today?')">Ã°Å¸â€œâ€¦ Book viewing</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Is borehole water continuous 24/7?')">Ã°Å¸â€™Â§ Water 24/7?</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('What is the deposit and token policy?')">Ã°Å¸â€™Â° Deposit policy</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Can I schedule a viewing today?')">Book viewing</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Is borehole water continuous 24/7?')">Water 24/7?</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('What is the deposit and token policy?')">Deposit policy</button>
       `;
     }
 
@@ -1962,7 +1962,7 @@ class NairobiRentalsApp {
       titleEl.textContent = prop.landlord?.name || 'Landlord';
     }
     if (subEl) {
-      subEl.textContent = `${prop.estateSuburb} Ã‚Â· Direct Landlord Chat`;
+      subEl.textContent = `${prop.estateSuburb} · Direct Landlord Chat`;
     }
     if (banner && bannerTitle && bannerPrice) {
       banner.style.display = 'flex';
@@ -2004,18 +2004,18 @@ class NairobiRentalsApp {
     const input = document.getElementById('chat-message-input');
     const quickReplies = document.getElementById('chat-quick-replies');
 
-    if (avatarEl) avatarEl.innerHTML = 'Ã°Å¸â€ºÂ¡Ã¯Â¸Â';
+    if (avatarEl) avatarEl.innerHTML = '<i class="fas fa-headset"></i>';
     if (titleEl) titleEl.innerHTML = '<i class="fas fa-headset" style="color: #00b53f; margin-right: 6px;"></i> KejaMarket Admin Support';
-    if (subEl) subEl.textContent = 'Reach out directly to Admin Ã‚Â· Prompt assistance & replies';
+    if (subEl) subEl.textContent = 'Reach out directly to Admin · Prompt assistance & replies';
     if (banner) banner.style.display = 'none';
     if (input) input.placeholder = 'Type your message to KejaMarket Admin...';
 
     if (quickReplies) {
       quickReplies.innerHTML = `
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Need help listing my property')">Ã°Å¸ÂÂ  Help listing</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Payment or M-Pesa verification inquiry')">Ã°Å¸â€™Â° Payment issue</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Report a fake or suspicious listing')">Ã¢Å¡Â Ã¯Â¸Â Report listing</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('General inquiry regarding KejaMarket')">Ã°Å¸â€™Â¬ General inquiry</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Need help listing my property')">Help listing</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Payment or M-Pesa verification inquiry')">Payment issue</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Report a fake or suspicious listing')">Report listing</button>
+        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('General inquiry regarding KejaMarket')">General inquiry</button>
       `;
     }
 
@@ -2073,7 +2073,7 @@ class NairobiRentalsApp {
         return `
           <div style="display: flex; flex-direction: column; align-items: ${isMe ? 'flex-end' : 'flex-start'}; margin-bottom: 4px;">
             <div style="font-size: 0.72rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
-              ${isMe ? 'You' : (m.senderName || 'KejaMarket Admin')} Ã‚Â· ${timeStr}
+              ${isMe ? 'You' : (m.senderName || 'KejaMarket Admin')} · ${timeStr}
             </div>
             <div style="max-width: 80%; padding: 10px 14px; border-radius: ${isMe ? '16px 16px 2px 16px' : '16px 16px 16px 2px'}; background: ${isMe ? '#00b53f' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.88rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
               ${m.text}
@@ -2113,7 +2113,7 @@ class NairobiRentalsApp {
       return `
         <div style="display: flex; flex-direction: column; align-items: ${isMe ? 'flex-end' : 'flex-start'}; margin-bottom: 4px;">
           <div style="font-size: 0.72rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
-            ${isMe ? 'You' : m.senderName} Ã‚Â· ${timeStr}
+            ${isMe ? 'You' : m.senderName} · ${timeStr}
           </div>
           <div style="max-width: 80%; padding: 10px 14px; border-radius: ${isMe ? '16px 16px 2px 16px' : '16px 16px 16px 2px'}; background: ${isMe ? '#00b53f' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.88rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
             ${m.text}
@@ -2186,15 +2186,15 @@ class NairobiRentalsApp {
     }
 
     if (isAdminChat) {
-      // No auto-reply Ã¢â‚¬â€ admin responds manually through the admin portal
-      this.showToast('Ã°Å¸â€ºÂ¡Ã¯Â¸Â Message sent to KejaMarket Admin. We will respond via SMS shortly.', 'success');
+      // No auto-reply — admin responds manually through the admin portal
+      this.showToast('Message sent to KejaMarket Admin. We will respond via SMS shortly.', 'success');
     } else if (prop) {
-      // No auto-reply Ã¢â‚¬â€ landlord replies manually through their portal
-      this.showToast(`Ã°Å¸â€œÂ¨ Message sent to ${prop.landlord?.name || 'landlord'}. They will reply shortly.`, 'info');
+      // No auto-reply — landlord replies manually through their portal
+      this.showToast(`Message sent to ${prop.landlord?.name || 'landlord'}. They will reply shortly.`, 'info');
     }
   }
 
-  // simulateLandlordReply removed Ã¢â‚¬â€ landlords reply manually
+  // simulateLandlordReply removed — landlords reply manually
 
   loadChatMessages() {
     // Load from localStorage as cache first
@@ -2262,7 +2262,7 @@ class NairobiRentalsApp {
           this.renderChatMessages();
         }
       } catch (err) {
-        // Silent fail Ã¢â‚¬â€ polling in background
+        // Silent fail — polling in background
       }
     }, 5000); // Poll every 5 seconds
   }
@@ -2576,9 +2576,9 @@ class NairobiRentalsApp {
     alert(`Showing all ${category} service providers. Modal implementation coming...`);
   }
 
-  // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+  // 
   // POSTING HANDLERS - Services, Marketplace, Properties
-  // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+  // 
 
   async submitServicePost(event) {
     event.preventDefault();
@@ -2632,7 +2632,7 @@ class NairobiRentalsApp {
 
       const data = await res.json();
       if (data.success) {
-        this.showToast('✅ Service posted with photos & video tour!', 'info');
+        this.showToast('Service posted with photos & video tour!', 'info');
         document.getElementById('form-post-service').reset();
         if (servicePhotosInput) servicePhotosInput._uploadedPhotos = [];
         if (serviceVideoInput) serviceVideoInput._uploadedVideo = null;
@@ -2702,7 +2702,7 @@ class NairobiRentalsApp {
 
       const data = await res.json();
       if (data.success) {
-        this.showToast('✅ Item posted for sale with photos & video tour!', 'info');
+        this.showToast('Item posted for sale with photos & video tour!', 'info');
         document.getElementById('form-post-marketplace').reset();
         if (mktPhotosInput) mktPhotosInput._uploadedPhotos = [];
         if (mktVideoInput) mktVideoInput._uploadedVideo = null;
@@ -2748,15 +2748,15 @@ function installPWAInstantly() {
     window.deferredPWAPrompt.prompt();
     window.deferredPWAPrompt.userChoice.then((choice) => {
       if (choice.outcome === 'accepted') {
-        if (window.app && window.app.showToast) window.app.showToast('🎉 App installation started!', 'success');
+        if (window.app && window.app.showToast) window.app.showToast('App installation started!', 'success');
       }
       window.deferredPWAPrompt = null;
     });
   } else {
     if (window.app && window.app.showToast) {
-      window.app.showToast('📱 To install: Tap browser menu (⋮ or Share) -> "Add to Home Screen".', 'info');
+      window.app.showToast('To install: Tap browser menu and select "Add to Home Screen".', 'info');
     } else {
-      alert('📱 To install: Tap browser menu (⋮ or Share) -> "Add to Home Screen".');
+      alert('To install: Tap browser menu and select "Add to Home Screen".');
     }
   }
 }

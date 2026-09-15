@@ -91,13 +91,13 @@ class ReviewManager {
 
         <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; font-size: 0.75rem;">
           <span style="background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px;">
-            💧 Water: ${r.ratingWater}★
+            Water: ${r.ratingWater} / 5
           </span>
           <span style="background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 4px;">
-            🛡️ Security: ${r.ratingSecurity}★
+            Security: ${r.ratingSecurity} / 5
           </span>
           <span style="background: #f3e8ff; color: #7e22ce; padding: 2px 6px; border-radius: 4px;">
-            💰 Deposit: ${r.ratingDeposit}★
+            Deposit: ${r.ratingDeposit} / 5
           </span>
         </div>
 

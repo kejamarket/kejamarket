@@ -126,7 +126,7 @@ class MonetizationEngine {
   copyText(text, label) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(() => {
-        if (window.app) window.app.showToast(`📋 Copied ${label}: ${text}`, 'success');
+        if (window.app) window.app.showToast(`Copied ${label}: ${text}`, 'success');
       }).catch(() => {
         if (window.app) window.app.showToast(`Copied: ${text}`, 'info');
       });
@@ -182,10 +182,10 @@ class MonetizationEngine {
       if (data.success) {
         this.completePaymentSuccess(data.receipt || rawCode);
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Receipt verification failed.'}`, 'error');
+        if (window.app) window.app.showToast(`${data.message || 'Receipt verification failed.'}`, 'error');
       }
     } catch (err) {
-      if (window.app) window.app.showToast('❌ Could not verify receipt with server.', 'error');
+      if (window.app) window.app.showToast('Could not verify receipt with server.', 'error');
     } finally {
       if (btn) {
         btn.disabled = false;
@@ -245,7 +245,7 @@ class MonetizationEngine {
         this.currentCheckoutRequestId = data.checkoutRequestId;
         // Show STK Prompt screen with real timer & spinner
         this.showStkScreen(cleanPhone);
-        if (window.app) window.app.showToast('📲 Real Safaricom STK prompt sent! Enter your PIN on your phone.', 'success');
+        if (window.app) window.app.showToast('Safaricom STK prompt sent! Enter your PIN on your phone.', 'success');
         
         // Start polling for real payment confirmation from Safaricom
         this.startStatusPolling(data.checkoutRequestId);
@@ -254,12 +254,12 @@ class MonetizationEngine {
         this.switchCheckoutTab('paybill');
         if (window.app) window.app.showToast('ℹ️ Complete payment via Paybill 303030 and enter receipt code below to confirm.', 'info');
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Payment initiation failed'}`, 'error');
+        if (window.app) window.app.showToast(`${data.message || 'Payment initiation failed'}`, 'error');
         this.resetCheckout();
       }
     } catch (err) {
       console.error('STK Push error:', err);
-      if (window.app) window.app.showToast('❌ Could not reach payment server. Please check connection.', 'error');
+      if (window.app) window.app.showToast('Could not reach payment server. Please check connection.', 'error');
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -353,7 +353,7 @@ class MonetizationEngine {
   async checkStatusImmediate() {
     const checkoutRequestId = this.currentCheckoutRequestId;
     if (!checkoutRequestId) {
-      if (window.app) window.app.showToast('❌ No active payment session. Please start again.', 'error');
+      if (window.app) window.app.showToast('No active payment session. Please start again.', 'error');
       this.resetCheckout();
       return;
     }
@@ -373,7 +373,7 @@ class MonetizationEngine {
           this.completePaymentSuccess(statusData.receipt || 'QKJ' + Math.floor(100000 + Math.random() * 900000));
           return;
         } else if (statusData.status === 'FAILED' || statusData.status === 'CANCELLED') {
-          if (window.app) window.app.showToast('❌ Payment was cancelled or failed on Safaricom side. Please try again.', 'error');
+          if (window.app) window.app.showToast('Payment was cancelled or failed on Safaricom side. Please try again.', 'error');
           this.resetCheckout();
           return;
         }
@@ -398,7 +398,7 @@ class MonetizationEngine {
           this.completePaymentSuccess(verifyData.receipt || cleanCode);
           return;
         } else {
-          if (window.app) window.app.showToast('⚠️ Receipt code could not be verified. Contact support if you were charged.', 'error');
+          if (window.app) window.app.showToast('Receipt code could not be verified. Contact support if you were charged.', 'error');
         }
       } else {
         // User cancelled - tell them to try again
@@ -406,7 +406,7 @@ class MonetizationEngine {
       }
     } catch (err) {
       console.warn('Instant check error:', err);
-      if (window.app) window.app.showToast('❌ Could not verify payment. Check your connection and try again.', 'error');
+      if (window.app) window.app.showToast('Could not verify payment. Check your connection and try again.', 'error');
     } finally {
       if (btn) {
         btn.disabled = false;
@@ -436,11 +436,11 @@ class MonetizationEngine {
       if (data.success) {
         this.completePaymentSuccess(data.receipt || cleanCode);
       } else {
-        if (window.app) window.app.showToast('⚠️ Receipt code not verified. Contact support if you were charged.', 'error');
+        if (window.app) window.app.showToast('Receipt code not verified. Contact support if you were charged.', 'error');
       }
     } catch (err) {
       console.warn('Receipt verify error:', err);
-      if (window.app) window.app.showToast('❌ Could not verify. Check connection and try again.', 'error');
+      if (window.app) window.app.showToast('Could not verify. Check connection and try again.', 'error');
     }
   }
 
@@ -499,7 +499,7 @@ class MonetizationEngine {
         if (window.app) window.app.openModal('modal-whatsapp-success');
       }, 300);
 
-      if (window.app) window.app.showToast('🎉 WhatsApp Alerts Activated! First alert coming shortly.', 'success', 6000);
+      if (window.app) window.app.showToast('WhatsApp Alerts Activated! First alert coming shortly.', 'success', 6000);
       this._pendingWhatsAppPrefs = null;
       return;
     }
@@ -541,7 +541,7 @@ class MonetizationEngine {
         session.isVerified = true;
         if (window.kejaAuth.saveSession) window.kejaAuth.saveSession(session);
       }
-      if (window.app) window.app.showToast('🎉 Verified Landlord status activated for your profile!', 'success');
+      if (window.app) window.app.showToast('Verified Landlord status activated for your profile!', 'success');
     }
 
     // Refresh listings & map
@@ -549,7 +549,7 @@ class MonetizationEngine {
       window.app.applyFilters();
     }
     if (window.app) {
-      window.app.showToast(`✅ Lipa Na M-Pesa ${receiptCode} Confirmed!`, 'success');
+      window.app.showToast(`Lipa Na M-Pesa ${receiptCode} Confirmed!`, 'success');
     }
   }
 
@@ -577,7 +577,7 @@ class MonetizationEngine {
       // ── Require sign-in before subscribing ──
       const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
       if (!session) {
-        if (window.app) window.app.showToast('⚠️ Please sign in to subscribe to WhatsApp alerts.', 'info');
+        if (window.app) window.app.showToast('Please sign in to subscribe to WhatsApp alerts.', 'info');
         if (window.kejaAuth) {
           window.kejaAuth.requireTenantAuth(() => {
             // Re-open WhatsApp alerts modal after sign-in
@@ -602,13 +602,13 @@ class MonetizationEngine {
 
       // Validate phone number
       if (!phone) {
-        if (window.app) window.app.showToast('⚠️ Please enter your WhatsApp phone number.', 'error');
+        if (window.app) window.app.showToast('Please enter your WhatsApp phone number.', 'error');
         if (phoneEl) phoneEl.focus();
         return;
       }
       const cleanCheck = phone.replace(/\D/g, '');
       if (cleanCheck.length < 9) {
-        if (window.app) window.app.showToast('⚠️ Please enter a valid Kenyan phone number (e.g. 0712345678).', 'error');
+        if (window.app) window.app.showToast('Please enter a valid Kenyan phone number (e.g. 0712345678).', 'error');
         if (phoneEl) phoneEl.focus();
         return;
       }
@@ -684,7 +684,7 @@ class MonetizationEngine {
       const partner = document.getElementById('mover-lead-partner')?.value || 'All Verified Partners';
 
       if (!phone) {
-        if (window.app) window.app.showToast('⚠️ Please enter your phone number.', 'error');
+        if (window.app) window.app.showToast('Please enter your phone number.', 'error');
         return;
       }
 
@@ -702,7 +702,7 @@ class MonetizationEngine {
         window.app.closeModal('modal-lead-movers');
         const partnerLabel = partner === 'All Verified Partners' ? 'Nellions, Cube, Taylor & Alpha Movers' : partner;
         window.app.showToast(
-          `🚚 Moving quote request sent! ${partnerLabel} will call ${phone} within 15 minutes with a ${size} quote from ${from} ➜ ${to}.`,
+          `Moving quote request sent! ${partnerLabel} will call ${phone} within 15 minutes with a ${size} quote from ${from} to ${to}.`,
           'success',
           7000
         );
@@ -718,7 +718,7 @@ class MonetizationEngine {
       const timing = document.getElementById('fibre-lead-time')?.value || 'Immediately (Within 24 Hours)';
 
       if (!phone) {
-        if (window.app) window.app.showToast('⚠️ Please enter your phone number.', 'error');
+        if (window.app) window.app.showToast('Please enter your phone number.', 'error');
         return;
       }
 
@@ -737,7 +737,7 @@ class MonetizationEngine {
         // Shorten ISP label for toast display
         const ispShort = isp.split('(')[0].trim();
         window.app.showToast(
-          `📶 ${ispShort} installation request confirmed for ${estate}! A technician will call ${phone} — Timing: ${timing}.`,
+          `${ispShort} installation request confirmed for ${estate}! A technician will call ${phone} — Timing: ${timing}.`,
           'success',
           7000
         );
@@ -765,7 +765,7 @@ window.openWhatsAppAlertsWithAuth = function() {
     fillPhone(session);
     if (window.app) window.app.openModal('modal-whatsapp-alerts');
   } else {
-    if (window.app) window.app.showToast('⚠️ Please sign in to set up WhatsApp house alerts.', 'info');
+    if (window.app) window.app.showToast('Please sign in to set up WhatsApp house alerts.', 'info');
     if (window.kejaAuth) {
       window.kejaAuth.requireTenantAuth(() => {
         const freshSession = window.kejaAuth.getSession();

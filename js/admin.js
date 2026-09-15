@@ -41,7 +41,7 @@ class AdminPortalEngine {
     if (adminHeaderBtn) adminHeaderBtn.style.display = isAdmin ? 'block' : 'none'; // Show button to admins
     if (adminLinks) adminLinks.style.display = isAdmin ? 'block' : 'none';
     if (roleBadge && isAdmin) {
-      roleBadge.textContent = '👑 Administrator';
+      roleBadge.textContent = 'Administrator';
       roleBadge.style.background = 'linear-gradient(135deg, #7c3aed, #4f46e5)';
       roleBadge.style.color = '#fff';
     }
@@ -78,7 +78,7 @@ class AdminPortalEngine {
       return;
     }
     if (!this._isAdmin(session)) {
-      if (window.app) window.app.showToast('🚫 Admin access only.', 'error');
+      if (window.app) window.app.showToast('Admin access only.', 'error');
       return;
     }
     // Navigate to full admin dashboard page only if not already on it
@@ -330,10 +330,10 @@ class AdminPortalEngine {
     }
 
     const groups = {
-      admin: { label: '👑 Admins', color: '#fef3c7', border: '#f59e0b', users: [] },
-      landlord: { label: '🏢 Landlords & Agencies', color: '#e0e7ff', border: '#6366f1', users: [] },
-      service: { label: '🔧 Service Providers', color: '#cffafe', border: '#06b6d4', users: [] },
-      tenant: { label: '🏠 Tenants', color: '#d1fae5', border: '#10b981', users: [] }
+      admin: { label: 'Admins', color: '#fef3c7', border: '#f59e0b', users: [] },
+      landlord: { label: 'Landlords & Agencies', color: '#e0e7ff', border: '#6366f1', users: [] },
+      service: { label: 'Service Providers', color: '#cffafe', border: '#06b6d4', users: [] },
+      tenant: { label: 'Tenants', color: '#d1fae5', border: '#10b981', users: [] }
     };
 
     this.users.forEach(u => {
@@ -360,15 +360,15 @@ class AdminPortalEngine {
         <div style="flex:1;min-width:200px;">
           <div style="font-weight:700;color:#1e293b;">
             ${u.name || 'Unknown'}
-            ${u.isVerified ? '<span style="background:#dcfce7;color:#166534;font-size:0.7rem;padding:1px 6px;border-radius:4px;margin-left:4px;">✓ Verified</span>' : ''}
-            ${u.isBanned ? '<span style="background:#fecaca;color:#991b1b;font-size:0.7rem;padding:1px 6px;border-radius:4px;margin-left:4px;">🚫 Banned</span>' : ''}
+            ${u.isVerified ? '<span style="background:#dcfce7;color:#166534;font-size:0.7rem;padding:1px 6px;border-radius:4px;margin-left:4px;">Verified</span>' : ''}
+            ${u.isBanned ? '<span style="background:#fecaca;color:#991b1b;font-size:0.7rem;padding:1px 6px;border-radius:4px;margin-left:4px;">Banned</span>' : ''}
           </div>
-          <div style="font-size:0.8rem;color:#64748b;margin-top:2px;">📞 ${u.phone || '—'} · 📧 ${u.email || '—'}</div>
+          <div style="font-size:0.8rem;color:#64748b;margin-top:2px;">Phone: ${u.phone || '—'} · Email: ${u.email || '—'}</div>
           <div style="font-size:0.75rem;color:#94a3b8;">Joined: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}</div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <button onclick="kejaAdmin.contactUser('${u.id}')" style="background:#4f46e5;color:white;border:none;padding:5px 10px;border-radius:6px;font-size:0.75rem;font-weight:600;cursor:pointer;">
-            💬 Message
+            Message
           </button>
           ${!isSystemAdmin ? `
             <button onclick="kejaAdmin.toggleUserVerification('${u.id}')" style="background:${u.isVerified ? '#f59e0b' : '#10b981'};color:white;border:none;padding:5px 10px;border-radius:6px;font-size:0.75rem;cursor:pointer;">
@@ -414,7 +414,7 @@ class AdminPortalEngine {
     if (live.length > 0) {
       html += `
         <div style="background:#d1fae5;border:2px solid #10b981;border-radius:12px;padding:16px;">
-          <h4 style="margin:0 0 12px;color:#065f46;font-weight:700;">✅ Live Listings (${live.length})</h4>
+          <h4 style="margin:0 0 12px;color:#065f46;font-weight:700;">Live Listings (${live.length})</h4>
           <div style="display:grid;gap:10px;">
             ${live.map(p => this._listingCard(p, false)).join('')}
           </div>
@@ -435,7 +435,7 @@ class AdminPortalEngine {
         <div style="flex:1;min-width:200px;">
           <div style="font-weight:700;color:#1e293b;">${p.title || 'Untitled'}</div>
           <div style="font-size:0.8rem;color:#64748b;margin-top:2px;">
-            📍 ${p.estateSuburb || '—'} · 💰 KSh ${Number(p.rentKes || p.rent || 0).toLocaleString()}/mo
+            Location: ${p.estateSuburb || '—'} · Rent: KSh ${Number(p.rentKes || p.rent || 0).toLocaleString()}/mo
           </div>
           <div style="font-size:0.75rem;color:#94a3b8;">
             ${p.category || '—'} · Posted: ${p.createdAt ? new Date(p.createdAt).toLocaleDateString() : '—'}
@@ -443,10 +443,10 @@ class AdminPortalEngine {
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
           ${isPending ? `
-            <button onclick="kejaAdmin.approveListing('${p.id}')" style="background:#10b981;color:white;border:none;padding:5px 10px;border-radius:6px;font-size:0.75rem;font-weight:700;cursor:pointer;">✅ Approve</button>
-            <button onclick="kejaAdmin.rejectListing('${p.id}')" style="background:#ef4444;color:white;border:none;padding:5px 10px;border-radius:6px;font-size:0.75rem;font-weight:700;cursor:pointer;">❌ Reject</button>
+            <button onclick="kejaAdmin.approveListing('${p.id}')" style="background:#10b981;color:white;border:none;padding:5px 10px;border-radius:6px;font-size:0.75rem;font-weight:700;cursor:pointer;">Approve</button>
+            <button onclick="kejaAdmin.rejectListing('${p.id}')" style="background:#ef4444;color:white;border:none;padding:5px 10px;border-radius:6px;font-size:0.75rem;font-weight:700;cursor:pointer;">Reject</button>
           ` : `
-            <button onclick="kejaAdmin.deleteListing('${p.id}')" style="background:#ef4444;color:white;border:none;padding:5px 10px;border-radius:6px;font-size:0.75rem;cursor:pointer;">🗑 Delete</button>
+            <button onclick="kejaAdmin.deleteListing('${p.id}')" style="background:#ef4444;color:white;border:none;padding:5px 10px;border-radius:6px;font-size:0.75rem;cursor:pointer;">Delete</button>
           `}
         </div>
       </div>
@@ -477,7 +477,7 @@ class AdminPortalEngine {
             <div style="font-size:0.85rem;color:#475569;margin-bottom:8px;">${m.text || ''}</div>
             ${m.propertyTitle || m.property_title ? `<div style="font-size:0.75rem;color:#64748b;">Property: ${m.propertyTitle || m.property_title}</div>` : ''}
             <div style="margin-top:8px;">
-              <button onclick="kejaAdmin.contactUser('${m.senderId || m.sender_id || ''}')" style="background:#4f46e5;color:white;border:none;padding:5px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;">💬 Reply</button>
+              <button onclick="kejaAdmin.contactUser('${m.senderId || m.sender_id || ''}')" style="background:#4f46e5;color:white;border:none;padding:5px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;">Reply</button>
             </div>
           </div>
         `).join('')}
@@ -496,8 +496,8 @@ class AdminPortalEngine {
         <div style="background:white;border-radius:16px;max-width:500px;width:100%;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
           <div style="background:linear-gradient(135deg,#6366f1,#4f46e5);padding:20px 24px;color:white;display:flex;justify-content:space-between;align-items:center;">
             <div>
-              <div style="font-weight:800;font-size:1.1rem;">💬 Contact ${u.name || 'User'}</div>
-              <div style="font-size:0.82rem;opacity:0.85;">📞 ${u.phone || '—'} · 📧 ${u.email || '—'}</div>
+              <div style="font-weight:800;font-size:1.1rem;">Contact ${u.name || 'User'}</div>
+              <div style="font-size:0.82rem;opacity:0.85;">Phone: ${u.phone || '—'} · Email: ${u.email || '—'}</div>
             </div>
             <button onclick="document.getElementById('admin-contact-modal').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;font-size:1.4rem;width:32px;height:32px;border-radius:50%;cursor:pointer;">×</button>
           </div>
@@ -530,7 +530,7 @@ class AdminPortalEngine {
       });
       const data = await res.json();
       if (data.success) {
-        if (window.app) window.app.showToast('✅ Message sent!', 'success');
+        if (window.app) window.app.showToast('Message sent!', 'success');
         document.getElementById('admin-contact-modal')?.remove();
       } else {
         if (window.app) window.app.showToast(data.message || 'Failed to send', 'error');
@@ -590,7 +590,7 @@ class AdminPortalEngine {
       });
       const data = await res.json();
       if (data.success) {
-        if (window.app) window.app.showToast(`✅ Broadcast sent to ${data.recipientCount || 0} users!`, 'success');
+        if (window.app) window.app.showToast(`Broadcast sent to ${data.recipientCount || 0} users!`, 'success');
         document.getElementById('admin-broadcast-modal')?.remove();
       } else {
         if (window.app) window.app.showToast(data.message || 'Failed', 'error');
@@ -653,7 +653,7 @@ class AdminPortalEngine {
       });
       const data = await res.json();
       if (data.success) {
-        if (window.app) { window.app.showToast('✅ Listing approved & live!', 'success'); window.app.loadProperties(); }
+        if (window.app) { window.app.showToast('Listing approved & live!', 'success'); window.app.loadProperties(); }
         await this.refreshAllData();
       }
     } catch (err) {
@@ -739,7 +739,7 @@ class AdminPortalEngine {
       });
       const data = await res.json();
       if (data.success) {
-        if (window.app) window.app.showToast('✅ M-Pesa settings saved!', 'success');
+        if (window.app) window.app.showToast('M-Pesa settings saved!', 'success');
         this.loadMpesaConfig();
       } else {
         if (window.app) window.app.showToast(data.message || 'Save failed', 'error');
@@ -912,7 +912,7 @@ class AdminPortalEngine {
 
       const data = await res.json();
       if (data.success) {
-        if (window.app) window.app.showToast(`✅ ${itemType} approved!`, 'success');
+        if (window.app) window.app.showToast(`${itemType} approved!`, 'success');
         this.loadPendingItems();
       } else {
         if (window.app) window.app.showToast('Error approving item', 'error');
@@ -940,7 +940,7 @@ class AdminPortalEngine {
 
       const data = await res.json();
       if (data.success) {
-        if (window.app) window.app.showToast(`🗑️ ${itemType} rejected`, 'info');
+        if (window.app) window.app.showToast(`${itemType} rejected`, 'info');
         this.loadPendingItems();
       } else {
         if (window.app) window.app.showToast('Error rejecting item', 'error');

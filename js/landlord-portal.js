@@ -203,13 +203,13 @@ class LandlordPortal {
   renderListingCard(property, status) {
     const statusBadge = status === 'pending' 
       ? '<span style="background: #fbbf24; color: #78350f; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">⏳ Pending</span>'
-      : '<span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">✓ Live</span>';
+      : '<span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">Live</span>';
 
     // Availability status (only for approved listings)
     const isTaken = property.availability === 'taken';
     const availabilityBadge = status === 'approved' ? `
       <span style="background: ${isTaken ? '#ef4444' : '#10b981'}; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">
-        ${isTaken ? '🔒 Taken' : '✓ Vacant'}
+        ${isTaken ? 'Taken' : 'Vacant'}
       </span>
     ` : '';
 
@@ -343,7 +343,7 @@ class LandlordPortal {
         <div style="background: ${bgColor}; border-left: 4px solid ${borderColor}; padding: 16px; border-radius: 8px; ${!msg.isRead ? 'box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);' : ''}">
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
             <span style="font-weight: 700; color: #1e293b;">
-              ${isFromAdmin ? '👑 Admin Team' : '📤 You'}
+              ${isFromAdmin ? 'Admin Team' : 'You'}
               ${!msg.isRead ? '<span style="background: #ef4444; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 8px; margin-left: 8px;">NEW</span>' : ''}
             </span>
             <span style="font-size: 0.85rem; color: #64748b;">
@@ -448,8 +448,8 @@ class LandlordPortal {
       if (data.success) {
         if (window.app) {
           const message = newStatus === 'taken' 
-            ? '🔒 Property marked as TAKEN. It will be hidden from tenant searches.'
-            : '✅ Property marked as VACANT. It will appear in tenant searches again!';
+            ? 'Property marked as TAKEN. It will be hidden from tenant searches.'
+            : 'Property marked as VACANT. It will appear in tenant searches again!';
           window.app.showToast(message, 'success');
         }
         

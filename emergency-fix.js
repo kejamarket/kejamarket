@@ -13,14 +13,14 @@
  */
 
 (function() {
-  console.log('🚨 EMERGENCY FIX: Initializing button repairs...');
+  console.log('Emergency Fix: Initializing button repairs...');
   
   let fixCount = 0;
   
   // Fix 1: Ensure app is loaded
   function waitForApp() {
     if (typeof window.app !== 'undefined' && typeof window.kejaAuth !== 'undefined') {
-      console.log('✅ App and Auth modules loaded');
+      console.log('App and Auth modules loaded');
       applyAllFixes();
     } else {
       console.log('⏳ Waiting for app to load...');
@@ -204,12 +204,12 @@
       }
     });
     
-    console.log(`✅ EMERGENCY FIX COMPLETE: ${fixCount} buttons repaired`);
+    console.log(`Emergency Fix complete: ${fixCount} buttons repaired`);
     
     // Add visual indicator
     const indicator = document.createElement('div');
     indicator.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#10b981;color:white;padding:12px 20px;border-radius:8px;z-index:999999;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation:slideIn 0.5s ease;';
-    indicator.innerHTML = `✅ ${fixCount} Buttons Fixed!`;
+    indicator.innerHTML = `${fixCount} Buttons Fixed!`;
     document.body.appendChild(indicator);
     
     setTimeout(() => {
@@ -223,7 +223,7 @@
   window.emergencyLogout = function() {
     localStorage.clear();
     sessionStorage.clear();
-    alert('✅ Emergency logout complete');
+    alert('Emergency logout complete');
     window.location.href = '/';
   };
   
@@ -248,7 +248,7 @@
     waitForApp();
   }
   
-  console.log('🚨 Emergency fix loaded. Available commands:');
+  console.log('Emergency fix loaded. Available commands:');
   console.log('  - emergencyLogout() - Force logout');
   console.log('  - emergencyReload() - Hard reload page');
   console.log('  - debugButtons() - Show button debug info');

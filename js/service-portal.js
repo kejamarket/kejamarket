@@ -91,7 +91,7 @@ const kejaServicePortal = (() => {
 
   function renderServiceCard(service) {
     const statusColor = service.isVerified ? '#10b981' : '#f59e0b';
-    const statusText = service.isVerified ? 'Verified ✓' : 'Pending Approval';
+    const statusText = service.isVerified ? 'Verified' : 'Pending Approval';
     const isBoosted = service.isTopAd || service.boosted;
     const isAvailable = service.isAvailable !== false; // Default to available
     
@@ -120,7 +120,7 @@ const kejaServicePortal = (() => {
             ${service.isVerified ? `
               <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;background:${isAvailable ? '#dcfce7' : '#fee2e2'};color:${isAvailable ? '#166534' : '#991b1b'};">
                 <input type="checkbox" ${isAvailable ? 'checked' : ''} onchange="kejaServicePortal.toggleAvailability('${service.id}', this.checked)" style="width:14px;height:14px;cursor:pointer;">
-                ${isAvailable ? '✓ Available' : '✗ Not Available'}
+                ${isAvailable ? 'Available' : 'Not Available'}
               </label>
             ` : ''}
           </div>
@@ -351,7 +351,7 @@ const kejaServicePortal = (() => {
               </div>
               <ul style="margin: 12px 0 0; padding-left: 20px; color: #78350f;">
                 <li>Your service appears at the top</li>
-                <li>🚀 BOOSTED badge displayed</li>
+                <li>BOOSTED badge displayed</li>
                 <li>Gold border highlight</li>
                 <li>Priority visibility for 30 days</li>
                 <li>Increased customer inquiries</li>
@@ -436,7 +436,7 @@ const kejaServicePortal = (() => {
 
         // Show success message
         if (window.app) {
-          window.app.showToast('📱 Check your phone to complete payment!', 'success');
+          window.app.showToast('Check your phone to complete payment!', 'success');
         }
 
         // Poll for payment status
@@ -467,7 +467,7 @@ const kejaServicePortal = (() => {
         if (data.status === 'completed') {
           clearInterval(interval);
           if (window.app) {
-            window.app.showToast('🚀 Payment successful! Your service is now boosted!', 'success');
+            window.app.showToast('Payment successful! Your service is now boosted!', 'success');
           }
           loadMyServices(); // Refresh services list
         } else if (data.status === 'failed' || attempts >= maxAttempts) {
@@ -518,7 +518,7 @@ const kejaServicePortal = (() => {
       if (data.success) {
         if (window.app) {
           window.app.showToast(
-            isAvailable ? '✅ Service marked as Available' : '⏸️ Service marked as Not Available',
+            isAvailable ? 'Service marked as Available' : 'Service marked as Not Available',
             'success'
           );
         }

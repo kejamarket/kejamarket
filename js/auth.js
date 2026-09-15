@@ -278,7 +278,7 @@ const kejaAuth = (() => {
         showLoggedInPanel(data.user);
         if (window.app) {
           window.app.closeModal('modal-auth');
-          window.app.showToast(`ðŸŽ‰ Welcome to KejaMarket, ${data.user.name}!`, 'success');
+          window.app.showToast(`Welcome to KejaMarket, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
@@ -331,7 +331,7 @@ const kejaAuth = (() => {
         pendingFlow = 'login';
         showOtpPanel(data.phone, 'login');
         if (window.app) {
-          window.app.showToast(`ðŸ“² Sign-in code sent to +${data.phone}!`, 'success');
+          window.app.showToast(`Sign-in code sent to +${data.phone}!`, 'success');
         }
       } else {
         if (window.app) window.app.showToast(`âŒ ${data.message || 'Account not found.'}`, 'error');
@@ -471,7 +471,7 @@ const kejaAuth = (() => {
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
         if (window.app) {
-          window.app.showToast(`ðŸŽ‰ Phone verified! Welcome, ${data.user.name}!`, 'success');
+          window.app.showToast(`Phone verified! Welcome, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
@@ -517,7 +517,7 @@ const kejaAuth = (() => {
 
       if (data.success) {
         startOtpCountdown(60);
-        if (window.app) window.app.showToast(`ðŸ”„ New verification code sent to +${pendingPhone}!`, 'success');
+        if (window.app) window.app.showToast(`New verification code sent to +${pendingPhone}!`, 'success');
       } else {
         if (window.app) window.app.showToast(`âŒ ${data.message || 'Failed to resend code.'}`, 'error');
         if (resendBtn) resendBtn.disabled = false;
@@ -570,7 +570,7 @@ const kejaAuth = (() => {
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
         if (window.app) {
-          window.app.showToast(`ðŸ‘‹ Welcome back, ${data.user.name}!`, 'success');
+          window.app.showToast(`Welcome back, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
@@ -601,7 +601,7 @@ const kejaAuth = (() => {
       window.app.closeModal('modal-admin');
       window.app.closeModal('modal-landlord-portal');
       window.app.closeModal('modal-service-portal');
-      window.app.showToast('âœ… You have been signed out successfully.', 'info');
+      window.app.showToast('You have been signed out successfully.', 'info');
     }
     // Close profile dropdown if open
     closeProfileDropdown();
@@ -651,19 +651,19 @@ const kejaAuth = (() => {
 
     if (badgeEl) {
       if (isAdmin) {
-        badgeEl.textContent = 'ðŸ‘‘ Administrator';
+        badgeEl.textContent = 'Administrator';
         badgeEl.style.background = 'linear-gradient(135deg, #7c3aed, #4f46e5)';
         badgeEl.style.color = '#ffffff';
       } else if (session.role === 'agency') {
-        badgeEl.textContent = 'ðŸ¢ Real Estate Agency';
+        badgeEl.textContent = 'Real Estate Agency';
         badgeEl.style.background = '#f3e8ff';
         badgeEl.style.color = '#7c3aed';
       } else if (session.role === 'landlord') {
-        badgeEl.textContent = 'ðŸ  Direct Landlord';
+        badgeEl.textContent = 'Direct Landlord';
         badgeEl.style.background = '#e0e7ff';
         badgeEl.style.color = '#4f46e5';
       } else {
-        badgeEl.textContent = 'ðŸ” Tenant';
+        badgeEl.textContent = 'Tenant';
         badgeEl.style.background = '#d1fae5';
         badgeEl.style.color = '#065f46';
       }
@@ -891,25 +891,25 @@ const kejaAuth = (() => {
     
     // AUTO-OPEN PORTAL: Automatically open appropriate portal after login
     setTimeout(() => {
-      // Admin users â†’ Open Admin Portal automatically (no button needed)
+      // Admin users: Open Admin Portal automatically (no button needed)
       if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
         if (window.kejaAdmin && typeof window.kejaAdmin.openAdminModal === 'function') {
           window.kejaAdmin.openAdminModal();
         }
       }
-      // Landlord/Agency users â†’ Open Landlord Portal automatically
+      // Landlord/Agency users: Open Landlord Portal automatically
       else if (user.role === 'landlord' || user.role === 'agency') {
         if (window.kejaLandlordPortal && typeof window.kejaLandlordPortal.openLandlordPortal === 'function') {
           window.kejaLandlordPortal.openLandlordPortal();
         }
       }
-      // Service Provider users â†’ Open Service Portal automatically
+      // Service Provider users: Open Service Portal automatically
       else if (user.role === 'service') {
         if (window.kejaServicePortal && typeof window.kejaServicePortal.openServicePortal === 'function') {
           window.kejaServicePortal.openServicePortal();
         }
       }
-      // Tenants â†’ Stay on main browsing page (default)
+      // Tenants: Stay on main browsing page (default)
     }, 500); // Small delay to ensure modals are ready
 
     if (typeof pendingTenantAuthCallback === 'function') {
@@ -1097,7 +1097,7 @@ const kejaAuth = (() => {
           const codeInput = document.getElementById('reset-otp-code');
           if (codeInput) codeInput.focus();
         }, 100);
-        if (window.app) window.app.showToast(`âœ… Reset code sent to your phone!`, 'success');
+        if (window.app) window.app.showToast(`Reset code sent to your phone!`, 'success');
       } else {
         if (window.app) window.app.showToast(`âŒ ${data.message || 'Failed to send reset code.'}`, 'error');
       }
@@ -1149,7 +1149,7 @@ const kejaAuth = (() => {
         showLoggedInPanel(data.user);
         if (window.app) {
           window.app.closeModal('modal-auth');
-          window.app.showToast(`âœ… Password reset! Welcome back, ${data.user.name}!`, 'success');
+          window.app.showToast(`Password reset! Welcome back, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {

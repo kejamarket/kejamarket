@@ -201,7 +201,7 @@ class CommentManager {
     if (!list || list.length === 0) {
       return `
         <div style="text-align: center; padding: 24px; color: #64748b; background: #f8fafc; border-radius: 10px;">
-          <div style="font-size: 1.5rem; margin-bottom: 6px;">💬</div>
+          <div style="font-size: 1.5rem; margin-bottom: 6px;"><i class="fas fa-comments"></i></div>
           <div style="font-weight: 700; color: #1e293b; font-size: 0.9rem;">No comments yet</div>
           <div style="font-size: 0.8rem; color: #64748b;">Be the first to ask a question or leave a critique on this house!</div>
         </div>
@@ -356,7 +356,7 @@ class CommentManager {
     }
 
     if (textInput) textInput.value = '';
-    if (window.app) window.app.showToast('💬 Comment posted live!', 'success');
+    if (window.app) window.app.showToast('Comment posted live!', 'success');
 
     // Post to backend
     try {
@@ -433,7 +433,7 @@ class CommentManager {
       el.outerHTML = this.renderSingleCommentHtml(propertyId, comment);
     }
 
-    if (window.app) window.app.showToast('💬 Reply posted!', 'success');
+    if (window.app) window.app.showToast('Reply posted!', 'success');
 
     // Post reply to backend
     try {
