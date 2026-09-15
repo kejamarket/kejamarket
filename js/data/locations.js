@@ -294,7 +294,14 @@ const SERVICE_CATEGORIES = [
   'Appliance Repair',
   'Water Tank Cleaning',
   'Garden Maintenance',
-  'House Sitting / Pet Care'
+  'House Sitting / Pet Care',
+  // ─── Internet & Connectivity ───
+  'Safaricom Fibre',
+  'Airtel 4G/5G Internet',
+  'Jamii Telecom (Faiba)',
+  'Zuku Fibre',
+  'Liquid Telecom',
+  'Internet Installation'
 ];
 
 // House items for marketplace (used items for sale)

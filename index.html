@@ -150,9 +150,9 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
   <!-- App Styles -->
-  <link rel="stylesheet" href="css/style.css?v=2.5&t=20250908011">
-  <link rel="stylesheet" href="css/map.css?v=2.5&t=20250908011">
-  <link rel="stylesheet" href="css/monetization.css?v=2.5&t=20250908011">
+  <link rel="stylesheet" href="css/style.css?v=2.6&t=202609152250">
+  <link rel="stylesheet" href="css/map.css?v=2.6&t=202609152250">
+  <link rel="stylesheet" href="css/monetization.css?v=2.6&t=202609152250">
 
   <style>
     .header-search-wrapper {
@@ -328,14 +328,69 @@
         </div>
       </div>
 
-      <!-- Direct Customer Support Button for Tenants -->
-      <button type="button" class="btn-primary" style="width: 100%; margin-bottom: 12px; background: linear-gradient(135deg, #00b53f, #059669); font-weight: 700; padding: 10px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,181,63,0.25);" onclick="app.openAdminChat()">
-        <i class="fas fa-headset" style="font-size: 1.1rem;"></i>
-        <span>🎧 Tenant Help & Customer Support</span>
-      </button>
+      <!-- ── Top-level 3 Category Tabs (Always visible together) ── -->
+      <div style="margin-bottom: 12px;">
+        <div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">Browse by Type</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px;" role="tablist" aria-label="Category Tabs">
+          <!-- Tab 1: Properties -->
+          <button id="tab-btn-properties" type="button" role="tab" aria-selected="true"
+            onclick="app.switchFilterTab('properties')"
+            style="display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px 4px; border-radius:8px; border:2px solid #00b53f; background:#f0fdf4; cursor:pointer; font-weight:700; color:#166534; font-size:0.72rem; transition:all 0.2s;">
+            <i class="fas fa-home" style="font-size:1.1rem; color:#00b53f;"></i>
+            <span>Houses</span>
+          </button>
+          <!-- Tab 2: Services -->
+          <button id="tab-btn-services" type="button" role="tab" aria-selected="false"
+            onclick="app.switchFilterTab('services')"
+            style="display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px 4px; border-radius:8px; border:2px solid #e9d5ff; background:#faf5ff; cursor:pointer; font-weight:700; color:#6b21a8; font-size:0.72rem; transition:all 0.2s;">
+            <i class="fas fa-tools" style="font-size:1.1rem; color:#7c3aed;"></i>
+            <span>Services</span>
+          </button>
+          <!-- Tab 3: House Items -->
+          <button id="tab-btn-marketplace" type="button" role="tab" aria-selected="false"
+            onclick="app.switchFilterTab('marketplace')"
+            style="display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px 4px; border-radius:8px; border:2px solid #fef08a; background:#fffbe6; cursor:pointer; font-weight:700; color:#854d0e; font-size:0.72rem; transition:all 0.2s;">
+            <i class="fas fa-shopping-bag" style="font-size:1.1rem; color:#f59e0b;"></i>
+            <span>House Items</span>
+          </button>
+        </div>
+      </div>
 
-      <!-- 1. Verification Status Filter for ALL 3 Sections -->
-      <div class="filter-group" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+      <!-- Category List — switches based on active tab -->
+      <div style="margin-bottom: 14px;">
+        <!-- Panel 1: Rental Properties -->
+        <div id="acc-body-properties" style="display:block;">
+          <div style="font-size:0.75rem; font-weight:700; color:#166534; margin-bottom:5px; display:flex; align-items:center; gap:5px;">
+            <i class="fas fa-home" style="color:#00b53f;"></i> House Types &amp; Rentals
+          </div>
+          <div id="sidebar-category-list" class="sidebar-category-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Panel 2: Professional Services -->
+        <div id="acc-body-services" style="display:none;">
+          <div style="font-size:0.75rem; font-weight:700; color:#6b21a8; margin-bottom:5px; display:flex; align-items:center; gap:5px;">
+            <i class="fas fa-tools" style="color:#7c3aed;"></i> Services &amp; Maintenance
+          </div>
+          <div id="sidebar-services-category-list" class="sidebar-category-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Panel 3: House Items & Marketplace -->
+        <div id="acc-body-marketplace" style="display:none;">
+          <div style="font-size:0.75rem; font-weight:700; color:#854d0e; margin-bottom:5px; display:flex; align-items:center; gap:5px;">
+            <i class="fas fa-shopping-bag" style="color:#f59e0b;"></i> Used House Items
+          </div>
+          <div id="sidebar-marketplace-category-list" class="sidebar-category-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification Status Filter -->
+      <div class="filter-group" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 14px;">
         <div class="filter-title" style="font-weight: 800; color: #0f172a; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
           <span><i class="fas fa-shield-alt" style="color: #00b53f;"></i> Verification Status</span>
           <span style="font-size: 0.7rem; color: #64748b; background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-weight: 700;">All 3 Sections</span>
@@ -350,57 +405,6 @@
           <button type="button" class="verification-pill" id="vf-unverified" onclick="app.setVerificationFilter('unverified', this)" style="padding: 6px 4px; font-size: 0.76rem; font-weight: 700; border-radius: 6px; border: 1.5px solid #cbd5e1; background: white; color: #475569; cursor: pointer; text-align: center;">
             Direct
           </button>
-        </div>
-      </div>
-
-      <!-- 2. Expandable Accordions for the 3 Main Sections -->
-      <div style="margin-bottom: 14px;">
-        <!-- Accordion 1: Rental Properties -->
-        <div class="sidebar-accordion" id="accordion-properties" style="margin-bottom: 8px;">
-          <div class="accordion-header active" onclick="app.switchFilterTab('properties')" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #f0fdf4; border: 1.5px solid #00b53f; border-radius: 8px; cursor: pointer; font-weight: 700; color: #166534;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <i class="fas fa-home" style="color: #00b53f;"></i>
-              <span>House Types & Rentals</span>
-            </div>
-            <i class="fas fa-chevron-down" id="acc-icon-properties" style="font-size: 0.8rem;"></i>
-          </div>
-          <div class="accordion-body" id="acc-body-properties" style="display: block; margin-top: 6px;">
-            <div id="sidebar-category-list" class="sidebar-category-list">
-              <!-- Populated by JS -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Accordion 2: Professional Services -->
-        <div class="sidebar-accordion" id="accordion-services" style="margin-bottom: 8px;">
-          <div class="accordion-header" onclick="app.switchFilterTab('services')" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #faf5ff; border: 1.5px solid #e9d5ff; border-radius: 8px; cursor: pointer; font-weight: 700; color: #6b21a8;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <i class="fas fa-tools" style="color: #7c3aed;"></i>
-              <span>Services & Maintenance</span>
-            </div>
-            <i class="fas fa-chevron-down" id="acc-icon-services" style="font-size: 0.8rem;"></i>
-          </div>
-          <div class="accordion-body" id="acc-body-services" style="display: none; margin-top: 6px;">
-            <div id="sidebar-services-category-list" class="sidebar-category-list">
-              <!-- Populated by JS -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Accordion 3: House Items & Marketplace -->
-        <div class="sidebar-accordion" id="accordion-marketplace" style="margin-bottom: 8px;">
-          <div class="accordion-header" onclick="app.switchFilterTab('marketplace')" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #fffbe6; border: 1.5px solid #fef08a; border-radius: 8px; cursor: pointer; font-weight: 700; color: #854d0e;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <i class="fas fa-shopping-bag" style="color: #f59e0b;"></i>
-              <span>Used House Items</span>
-            </div>
-            <i class="fas fa-chevron-down" id="acc-icon-marketplace" style="font-size: 0.8rem;"></i>
-          </div>
-          <div class="accordion-body" id="acc-body-marketplace" style="display: none; margin-top: 6px;">
-            <div id="sidebar-marketplace-category-list" class="sidebar-category-list">
-              <!-- Populated by JS -->
-            </div>
-          </div>
         </div>
       </div>
 
@@ -2522,23 +2526,23 @@
         <button id="admin-tab-btn-users" class="category-pill" style="font-size: 0.85rem; padding: 6px 14px; margin: 0; background: transparent; color: #475569; cursor: pointer; font-weight: 700;" onclick="kejaAdmin.switchTab('users')">
   <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="js/auth.js?v=2.5&t=20250908011"></script>
-  <script src="js/reviews.js?v=2.5&t=20250908011"></script>
-  <script src="js/data/locations.js?v=2.5&t=20250908011"></script>
-  <script src="js/data/seedListings.js?v=2.5&t=20250908011"></script>
-  <script src="js/comments.js?v=2.5&t=20250908011"></script>
-  <script src="js/map.js?v=2.5&t=20250908011"></script>
-  <script src="js/landlord.js?v=2.5&t=20250908011"></script>
-  <script src="js/landlord-portal.js?v=2.5&t=20250908011"></script>
-  <script src="js/service-portal.js?v=2.5&t=20250908011"></script>
-  <script src="js/botSimulator.js?v=2.5&t=20250908011"></script>
-  <script src="js/monetization.js?v=2.5&t=20250908011"></script>
-  <script src="js/app.js?v=2.5&t=20250908011"></script>
-  <script src="js/auth.js?v=2.5&t=20250908011"></script>
-  <script src="js/admin.js?v=2.5&t=20250908011"></script>
+  <script src="js/auth.js?v=2.6&t=202609152250"></script>
+  <script src="js/reviews.js?v=2.6&t=202609152250"></script>
+  <script src="js/data/locations.js?v=2.6&t=202609152250"></script>
+  <script src="js/data/seedListings.js?v=2.6&t=202609152250"></script>
+  <script src="js/comments.js?v=2.6&t=202609152250"></script>
+  <script src="js/map.js?v=2.6&t=202609152250"></script>
+  <script src="js/landlord.js?v=2.6&t=202609152250"></script>
+  <script src="js/landlord-portal.js?v=2.6&t=202609152250"></script>
+  <script src="js/service-portal.js?v=2.6&t=202609152250"></script>
+  <script src="js/botSimulator.js?v=2.6&t=202609152250"></script>
+  <script src="js/monetization.js?v=2.6&t=202609152250"></script>
+  <script src="js/app.js?v=2.6&t=202609152250"></script>
+  <script src="js/auth.js?v=2.6&t=202609152250"></script>
+  <script src="js/admin.js?v=2.6&t=202609152250"></script>
   
   <!-- 🚨 EMERGENCY FIX: Makes all 183 buttons responsive -->
-  <script src="emergency-fix.js?v=EMERGENCY"></script>
+  <script src="emergency-fix.js?v=2.6&t=202609152250"></script>
 
   <!-- PWA Install Button - Hidden (PWA installs via browser's built-in prompt) -->
   <div id="pwa-install-button" style="display: none !important;" onclick="installPWAInstantly()"></div>

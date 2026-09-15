@@ -1012,6 +1012,9 @@ const kejaAuth = (() => {
           <button onclick="window.app.openModal('modal-whatsapp-alerts'); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
             <i class="fab fa-whatsapp" style="width: 16px; color: #25d366;"></i> WhatsApp Alerts
           </button>
+          <button onclick="window.app.openAdminChat && window.app.openAdminChat(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #0369a1; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='none'">
+            <i class="fas fa-headset" style="width: 16px; color: #0369a1;"></i> Help &amp; Customer Support
+          </button>
         </div>
         <div style="border-top: 1px solid #e5e7eb; padding: 8px 0;">
           <button onclick="kejaAuth.signOut(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #dc2626; font-weight: 600; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">

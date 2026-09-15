@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v23'; // Small PWA install button, one-touch install
+const CACHE_NAME = 'kejamarket-v24'; // Small PWA install button, one-touch install
 const STATIC_ASSETS = [
   '/',
   '/index.html',

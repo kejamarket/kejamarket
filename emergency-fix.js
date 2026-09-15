@@ -102,11 +102,15 @@
               window.kejaAuth.signOut();
             } catch (err) {
               console.warn('signOut error:', err);
+              // Fallback: redirect to home
+              window.location.href = '/';
             }
+          } else {
+            // Absolute fallback
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = '/';
           }
-          
-          alert('✅ Signed out successfully!');
-          setTimeout(() => window.location.reload(), 500);
         };
         btn.setAttribute('data-fixed', 'true');
         fixCount++;
@@ -191,18 +195,10 @@
       }
     });
     
-    // FIX #10: All onclick attributes that might not be working
+    // FIX #10: Ensure all onclick elements have pointer cursor
     document.querySelectorAll('[onclick]').forEach((el) => {
       if (!el.hasAttribute('data-onclick-fixed')) {
-        const originalOnclick = el.getAttribute('onclick');
-        el.addEventListener('click', function(e) {
-          try {
-            // Try to execute the onclick code
-            eval(originalOnclick);
-          } catch (err) {
-            console.warn('Onclick error:', originalOnclick, err);
-          }
-        });
+        el.style.cursor = el.style.cursor || 'pointer';
         el.setAttribute('data-onclick-fixed', 'true');
         fixCount++;
       }

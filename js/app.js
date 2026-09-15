@@ -23,6 +23,7 @@ class NairobiRentalsApp {
     this.showOnlyFavorites = false;
     this.hideTaken = true; // Default hide taken/occupied properties
     this.currentFilterMode = 'properties'; // Default filter mode
+    this.activeVerificationFilter = 'all'; // 'all' | 'verified' | 'unverified'
 
     // Filters for utilities & amenities
     this.filters = {
@@ -297,67 +298,69 @@ class NairobiRentalsApp {
     });
   }
 
+  setVerificationFilter(status, btn) {
+    this.activeVerificationFilter = status;
+    
+    // Update active pill UI
+    document.querySelectorAll('.verification-pill').forEach(p => p.classList.remove('active'));
+    if (btn) {
+      btn.classList.add('active');
+    }
+    
+    // Apply filters based on current mode
+    this.currentPage = 1;
+    this.applyFilters();
+    this.showToast(`Filtering by verification: ${status}`, 'info');
+  }
+
   switchFilterTab(tab) {
     console.log('Switching filter tab to:', tab);
-    const categoryLabel = document.getElementById('filter-category-label');
-    const categoryList = document.getElementById('sidebar-category-list');
-    const propertyFiltersExtra = document.getElementById('sidebar-property-filters-extra');
-    const serviceFiltersExtra = document.getElementById('sidebar-service-filters-extra');
-    const marketplaceFiltersExtra = document.getElementById('sidebar-marketplace-filters-extra');
-    const propertiesBtn = document.getElementById('filter-tab-properties');
-    const servicesBtn = document.getElementById('filter-tab-services');
-    const marketplaceBtn = document.getElementById('filter-tab-marketplace');
+    
+    // Toggle Accordion Bodies
+    const accBodyProps = document.getElementById('acc-body-properties');
+    const accBodyServ = document.getElementById('acc-body-services');
+    const accBodyMkt = document.getElementById('acc-body-marketplace');
 
-    if (!categoryLabel) {
-      console.warn('Filter tab elements not found in DOM');
-      return;
-    }
+    // Toggle extra filters
+    const propFilters = document.getElementById('sidebar-properties-filters');
+    const servFilters = document.getElementById('sidebar-services-filters');
+    const mktFilters = document.getElementById('sidebar-marketplace-filters');
 
-    // Reset all tabs to inactive style
-    [propertiesBtn, servicesBtn, marketplaceBtn].forEach(btn => {
-      if (btn) {
-        btn.style.background = 'transparent';
-        btn.style.color = '#475569';
-        btn.style.border = '1px solid #e2e8f0';
-      }
+    if (accBodyProps) accBodyProps.style.display = tab === 'properties' ? 'block' : 'none';
+    if (accBodyServ) accBodyServ.style.display = tab === 'services' ? 'block' : 'none';
+    if (accBodyMkt) accBodyMkt.style.display = tab === 'marketplace' ? 'block' : 'none';
+
+    if (propFilters) propFilters.style.display = tab === 'properties' ? 'block' : 'none';
+    if (servFilters) servFilters.style.display = tab === 'services' ? 'block' : 'none';
+    if (mktFilters) mktFilters.style.display = tab === 'marketplace' ? 'block' : 'none';
+
+    // Update top tab strip button visual state
+    const tabStyles = {
+      properties: { activeBg: '#f0fdf4', activeBorder: '#00b53f', activeColor: '#166534', dimBg: '#f9fafb', dimBorder: '#e2e8f0', dimColor: '#94a3b8' },
+      services:   { activeBg: '#faf5ff', activeBorder: '#7c3aed', activeColor: '#6b21a8', dimBg: '#f9fafb', dimBorder: '#e2e8f0', dimColor: '#94a3b8' },
+      marketplace:{ activeBg: '#fffbe6', activeBorder: '#f59e0b', activeColor: '#854d0e', dimBg: '#f9fafb', dimBorder: '#e2e8f0', dimColor: '#94a3b8' }
+    };
+    ['properties', 'services', 'marketplace'].forEach(t => {
+      const btn = document.getElementById(`tab-btn-${t}`);
+      if (!btn) return;
+      const isActive = t === tab;
+      const styles = tabStyles[t];
+      btn.style.background = isActive ? styles.activeBg : styles.dimBg;
+      btn.style.borderColor = isActive ? styles.activeBorder : styles.dimBorder;
+      btn.style.color = isActive ? styles.activeColor : styles.dimColor;
+      btn.style.transform = isActive ? 'scale(1.03)' : 'scale(1)';
+      btn.style.boxShadow = isActive ? `0 2px 8px ${styles.activeBorder}33` : 'none';
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
+    this.currentFilterMode = tab;
+
     if (tab === 'properties') {
-      if (propertiesBtn) {
-        propertiesBtn.style.background = '#00b53f';
-        propertiesBtn.style.color = 'white';
-        propertiesBtn.style.border = 'none';
-      }
-      if (categoryLabel) categoryLabel.innerHTML = '<i class="fas fa-th-list" style="color: #00b53f;"></i> Property Type';
-      this.currentFilterMode = 'properties';
       this.renderPropertyCategories();
-      if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'block';
-      if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'none';
-      if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'none';
     } else if (tab === 'services') {
-      if (servicesBtn) {
-        servicesBtn.style.background = '#00b53f';
-        servicesBtn.style.color = 'white';
-        servicesBtn.style.border = 'none';
-      }
-      if (categoryLabel) categoryLabel.innerHTML = '<i class="fas fa-tools" style="color: #00b53f;"></i> Service Type';
-      this.currentFilterMode = 'services';
       this.renderServiceCategories();
-      if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'none';
-      if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'block';
-      if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'none';
     } else if (tab === 'marketplace') {
-      if (marketplaceBtn) {
-        marketplaceBtn.style.background = '#00b53f';
-        marketplaceBtn.style.color = 'white';
-        marketplaceBtn.style.border = 'none';
-      }
-      if (categoryLabel) categoryLabel.innerHTML = '<i class="fas fa-shopping-bag" style="color: #00b53f;"></i> House Item Type';
-      this.currentFilterMode = 'marketplace';
       this.renderMarketplaceCategories();
-      if (propertyFiltersExtra) propertyFiltersExtra.style.display = 'none';
-      if (serviceFiltersExtra) serviceFiltersExtra.style.display = 'none';
-      if (marketplaceFiltersExtra) marketplaceFiltersExtra.style.display = 'block';
     }
   }
 
@@ -389,7 +392,7 @@ class NairobiRentalsApp {
   }
 
   renderServiceCategories() {
-    const categoryList = document.getElementById('sidebar-category-list');
+    const categoryList = document.getElementById('sidebar-services-category-list');
     if (!categoryList) return;
 
     const getIcon = (service) => {
@@ -405,6 +408,13 @@ class NairobiRentalsApp {
       if (service.includes('Water')) return 'fa-water';
       if (service.includes('Garden')) return 'fa-leaf';
       if (service.includes('Pet') || service.includes('Sitting')) return 'fa-dog';
+      // Internet & Connectivity
+      if (service.includes('Safaricom')) return 'fa-wifi';
+      if (service.includes('Airtel')) return 'fa-signal';
+      if (service.includes('Jamii') || service.includes('Faiba')) return 'fa-network-wired';
+      if (service.includes('Zuku')) return 'fa-ethernet';
+      if (service.includes('Liquid')) return 'fa-server';
+      if (service.includes('Internet') || service.includes('Fibre') || service.includes('5G') || service.includes('4G')) return 'fa-wifi';
       return 'fa-tools';
     };
 
@@ -416,7 +426,7 @@ class NairobiRentalsApp {
   }
 
   renderMarketplaceCategories() {
-    const categoryList = document.getElementById('sidebar-category-list');
+    const categoryList = document.getElementById('sidebar-marketplace-category-list');
     if (!categoryList) return;
 
     const getIcon = (item) => {
@@ -780,13 +790,16 @@ class NairobiRentalsApp {
     }
 
     const isLoggedIn = !!(window.kejaAuth && (window.kejaAuth.isLoggedIn() || window.kejaAuth.getSession()));
-    
-    // Open property detail modal, then unlock photos and lightbox if logged in
+
+    // Always open property detail modal (for ALL users — guests and logged-in)
     this.openPropertyDetail(propertyId);
+
     if (isLoggedIn) {
+      // Logged-in: unlock photos and open lightbox directly
       this.unlockDetailPhotos(propertyId);
-      this.openLightbox(event);
+      setTimeout(() => this.openLightbox(event), 100);
     }
+    // Guests: detail modal opens, they can sign in from within to see full gallery
   }
 
   // Handle photo file selection for forms (Max 5 photos)
@@ -908,6 +921,11 @@ class NairobiRentalsApp {
     let result = this.properties.filter(p => {
       // Hide taken / occupied properties filter
       if (this.hideTaken && (p.isTaken || p.status === 'taken')) return false;
+
+      // Verification filter
+      const isLandlordVerified = p.landlord?.isVerified === true;
+      if (this.activeVerificationFilter === 'verified' && !isLandlordVerified && !p.isVerified && p.status !== 'approved') return false;
+      if (this.activeVerificationFilter === 'unverified' && (isLandlordVerified || p.isVerified || p.status === 'approved')) return false;
 
       // Favorites filter
       if (this.showOnlyFavorites && !this.favorites.has(p.id)) return false;
@@ -1220,14 +1238,14 @@ class NairobiRentalsApp {
     if (!p) return;
 
     if (btnEl) {
-      btnEl.innerHTML = `<i class="fas fa-phone"></i> ${p.landlord.phone}`;
+      btnEl.innerHTML = `<i class="fas fa-phone"></i> ${p.landlord?.phone || 'Call'}`;
       btnEl.style.background = '#e6f8ec';
       btnEl.style.color = '#008e31';
       btnEl.style.borderColor = '#00b53f';
     }
 
     // Immediately open phone dialer app
-    window.location.href = `tel:${p.landlord.phone}`;
+    if (p.landlord?.phone) window.location.href = `tel:${p.landlord.phone}`;
   }
 
   callLandlordDirect(propertyId) {
@@ -1240,12 +1258,51 @@ class NairobiRentalsApp {
 
     this.unlockDetailContact(p);
     // Immediately open phone dialer app
-    window.location.href = `tel:${p.landlord.phone}`;
+    if (p.landlord?.phone) window.location.href = `tel:${p.landlord.phone}`;
   }
 
   openPropertyDetail(propertyId) {
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
+
+    // Normalize landlord — API listings may not have a landlord object
+    if (!p.landlord || typeof p.landlord !== 'object') {
+      p.landlord = {
+        name: p.landlordName || p.owner_name || 'Landlord',
+        phone: p.landlordPhone || p.owner_phone || '',
+        whatsapp: p.landlordWhatsapp || p.owner_whatsapp || '',
+        memberSince: p.landlordSince || '2024',
+        isVerified: p.isVerified || false,
+        isAgency: p.managedBy === 'agency',
+        id: p.landlordId || p.owner_id || null
+      };
+    }
+
+    // Normalize amenities
+    if (!p.amenities || typeof p.amenities !== 'object') {
+      p.amenities = {};
+    } else if (Array.isArray(p.amenities)) {
+      const arr = p.amenities.map(a => String(a).toLowerCase());
+      p.amenities = {
+        hasBalcony: arr.includes('balcony'),
+        hasParking: arr.includes('parking'),
+        hasElectricFence: arr.includes('electric fence') || arr.includes('fence'),
+        hasCctv: arr.includes('cctv') || arr.includes('security'),
+        hasInternet: arr.includes('wifi') || arr.includes('internet'),
+        hasTiles: arr.includes('tiles'),
+        isMasterEnsuite: arr.includes('ensuite'),
+        hasGym: arr.includes('gym'),
+        hasSwimmingPool: arr.includes('pool') || arr.includes('swimming')
+      };
+    }
+
+    // Normalize media array
+    if (!p.media || !Array.isArray(p.media) || p.media.length === 0) {
+      const defaultImg = p.thumbnail || p.image || (Array.isArray(p.images) && p.images[0]) || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
+      p.media = [{ url: defaultImg, caption: p.title || 'Property photo' }];
+    } else {
+      p.media = p.media.map(m => typeof m === 'string' ? { url: m, caption: p.title || 'Property photo' } : m);
+    }
 
     this.selectedPropertyForDetail = p;
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
@@ -1324,7 +1381,9 @@ class NairobiRentalsApp {
 
     if (isLoggedIn) {
       if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
-      if (gpsBadge) gpsBadge.textContent = `GPS: ${p.latitude.toFixed(5)}, ${p.longitude.toFixed(5)}`;
+      if (gpsBadge) gpsBadge.textContent = (p.latitude != null && p.longitude != null)
+        ? `GPS: ${Number(p.latitude).toFixed(5)}, ${Number(p.longitude).toFixed(5)}`
+        : 'GPS: Coordinates not available';
     } else {
       if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.estateSuburb}, ${p.county} <span style="font-size:0.75rem; color:#64748b; margin-left:6px;"><i class="fas fa-lock"></i> Exact landmark & pin protected</span>`;
       if (gpsBadge) gpsBadge.textContent = 'GPS: Protected Ã°Å¸â€â€™';
@@ -1343,9 +1402,12 @@ class NairobiRentalsApp {
         ? `<span style="color:#7c3aed;font-weight:700;"><i class="fas fa-building"></i> Real Estate Agency</span>`
         : `<span style="color:#00b53f;font-weight:700;"><i class="fas fa-user-check"></i> Direct Landlord</span>`;
     }
-    document.getElementById('spec-verified').innerHTML = p.landlord.isVerified 
-      ? `<span style="color:#1976d2;"><i class="fas fa-check-circle"></i> ${isBnb ? 'Superhost' : (isAgencyListing ? 'Verified Agency' : 'Verified Landlord')}</span>` 
-      : '<span style="color:#64748b;">Direct Listing</span>';
+    const specVerifiedEl = document.getElementById('spec-verified');
+    if (specVerifiedEl) {
+      specVerifiedEl.innerHTML = p.landlord?.isVerified 
+        ? `<span style="color:#1976d2;"><i class="fas fa-check-circle"></i> ${isBnb ? 'Superhost' : (isAgencyListing ? 'Verified Agency' : 'Verified Landlord')}</span>` 
+        : '<span style="color:#64748b;">Direct Listing</span>';
+    }
 
     // Gallery
     this.currentPhotoIndex = 0;
@@ -1457,11 +1519,11 @@ class NairobiRentalsApp {
     const mgmtBadge = document.getElementById('detail-management-badge');
     if (mgmtBadge) {
       if (isAgencyListing) {
-        mgmtBadge.textContent = 'Ã°Å¸ÂÂ¢ Managed by ' + (p.agencyName || p.landlord.name || 'Agency');
+        mgmtBadge.textContent = '🏢 Managed by ' + (p.agencyName || p.landlord?.name || 'Agency');
         mgmtBadge.style.background = '#f3e8ff';
         mgmtBadge.style.color = '#7c3aed';
       } else {
-        mgmtBadge.textContent = 'Ã°Å¸â€˜Â¤ Direct Landlord';
+        mgmtBadge.textContent = '👤 Direct Landlord';
         mgmtBadge.style.background = '#dcfce7';
         mgmtBadge.style.color = '#15803d';
       }
@@ -1474,15 +1536,15 @@ class NairobiRentalsApp {
     const callBtn = document.getElementById('detail-btn-call');
     const chatBtn = document.getElementById('detail-btn-inbox-chat');
 
-    const contactName = isAgencyListing ? (p.agencyName || p.landlord.name) : p.landlord.name;
+    const contactName = isAgencyListing ? (p.agencyName || p.landlord?.name || 'Agency') : (p.landlord?.name || 'Landlord');
 
     if (isLoggedIn) {
       // Full access
       if (landlordName) landlordName.textContent = contactName;
-      if (landlordSince) landlordSince.textContent = `Member since ${p.landlord.memberSince}`;
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord.phone}`;
+      if (landlordSince) landlordSince.textContent = `Member since ${p.landlord?.memberSince || '2024'}`;
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord?.phone || 'Contact via Chat'}`;
       if (callBtn) {
-        callBtn.href = `tel:${p.landlord.phone}`;
+        callBtn.href = `tel:${p.landlord?.phone || ''}`;
         callBtn.removeAttribute('onclick');
         callBtn.style.opacity = '1';
         callBtn.style.pointerEvents = 'auto';
@@ -1752,13 +1814,15 @@ class NairobiRentalsApp {
     const directionsBtn = document.getElementById('detail-btn-directions');
     const gpsLockOverlay = document.getElementById('detail-map-lock-overlay');
 
-    if (landlordName) landlordName.textContent = p.landlord.name;
-    if (landlordSince) landlordSince.textContent = `Member since ${p.landlord.memberSince}`;
+    if (landlordName) landlordName.textContent = p.landlord?.name || 'Landlord';
+    if (landlordSince) landlordSince.textContent = `Member since ${p.landlord?.memberSince || 'N/A'}`;
     if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
-    if (gpsBadge) gpsBadge.textContent = `GPS: ${p.latitude.toFixed(5)}, ${p.longitude.toFixed(5)}`;
-    if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord.phone}`;
+    if (gpsBadge) gpsBadge.textContent = (p.latitude != null && p.longitude != null)
+      ? `GPS: ${Number(p.latitude).toFixed(5)}, ${Number(p.longitude).toFixed(5)}`
+      : 'GPS: Coordinates not available';
+    if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord?.phone || 'Contact via Chat'}`;
     if (callBtn) {
-      callBtn.href = `tel:${p.landlord.phone}`;
+      callBtn.href = `tel:${p.landlord?.phone || ''}`;
       callBtn.removeAttribute('onclick');
       callBtn.style.opacity = '1';
       callBtn.style.pointerEvents = 'auto';
@@ -1892,10 +1956,10 @@ class NairobiRentalsApp {
     const bannerPrice = document.getElementById('chat-banner-price');
 
     if (avatarEl) {
-      avatarEl.textContent = (prop.landlord.name || 'Landlord').slice(0, 2).toUpperCase();
+      avatarEl.textContent = (prop.landlord?.name || 'Landlord').slice(0, 2).toUpperCase();
     }
     if (titleEl) {
-      titleEl.textContent = prop.landlord.name;
+      titleEl.textContent = prop.landlord?.name || 'Landlord';
     }
     if (subEl) {
       subEl.textContent = `${prop.estateSuburb} Ã‚Â· Direct Landlord Chat`;
@@ -2293,7 +2357,10 @@ class NairobiRentalsApp {
       this.services = [];
     }
 
-    this.renderListings();
+    this.filteredProperties = this.services;
+    this.renderListingsSummary();
+    const gridEl = document.getElementById('property-grid');
+    if (gridEl) gridEl.innerHTML = `<div class="empty-state-box"><p>Service rendering is coming soon.</p></div>`;
   }
 
   async loadMarketplaceData() {
@@ -2317,7 +2384,10 @@ class NairobiRentalsApp {
       this.marketplaceItems = [];
     }
 
-    this.renderListings();
+    this.filteredProperties = this.marketplaceItems;
+    this.renderListingsSummary();
+    const gridEl = document.getElementById('property-grid');
+    if (gridEl) gridEl.innerHTML = `<div class="empty-state-box"><p>Marketplace rendering is coming soon.</p></div>`;
   }
 
   showToast(message, type = 'success') {
