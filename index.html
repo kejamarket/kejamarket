@@ -154,6 +154,50 @@
   <link rel="stylesheet" href="css/map.css?v=2.5&t=20250908011">
   <link rel="stylesheet" href="css/monetization.css?v=2.5&t=20250908011">
 
+  <style>
+    .header-search-wrapper {
+      position: relative;
+      flex: 1;
+      max-width: 680px;
+    }
+    .search-suggestions-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1.5px solid #00b53f;
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.08);
+      z-index: 9999;
+      max-height: 380px;
+      overflow-y: auto;
+      display: none;
+    }
+    .search-suggestion-item {
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f5f9;
+      transition: all 0.15s ease;
+    }
+    .search-suggestion-item:last-child {
+      border-bottom: none;
+    }
+    .search-suggestion-item:hover {
+      background: #f0fdf4;
+      padding-left: 20px;
+    }
+    .photo-dropzone {
+      transition: all 0.2s ease;
+    }
+    .photo-dropzone:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+  </style>
 </head>
 <body>
 
@@ -638,13 +682,13 @@
 
           <!-- STEP 2: Photos -->
           <div class="form-group">
-            <label>Add Photos <span style="font-weight:400; color:#64748b;">(Up to 16 photos)</span></label>
+            <label>Add Photos <span style="font-weight:400; color:#64748b;">(Up to 5 photos)</span></label>
             <div style="font-size: 0.82rem; color: #008e31; font-weight: 600; margin-bottom: 6px;">
-              <i class="fas fa-image"></i> First picture is the title picture. You can change the order of photos.
+              <i class="fas fa-image"></i> First picture is the cover picture. Max 5 photos allowed.
             </div>
             <div class="photo-dropzone" id="photo-dropzone">
               <i class="fas fa-camera" style="font-size: 1.8rem; color: #00b53f; margin-bottom: 6px;"></i>
-              <div style="font-weight: 700; font-size: 0.9rem;">Tap or drag to add photos</div>
+              <div style="font-weight: 700; font-size: 0.9rem;">Tap or drag to add photos (Max 5)</div>
               <div style="font-size: 0.78rem; color: #64748b;">Photos make tenants 5x more likely to contact you</div>
             </div>
             <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Supported formats are *.jpg, *.jpeg, *.png and *.webp</div>
@@ -652,15 +696,15 @@
             <div class="photo-preview-grid" id="post-photos-preview"></div>
           </div>
 
-          <!-- STEP 2B: Video Tours (Max 2 videos, max 1.5 mins / 90s each) -->
+          <!-- STEP 2B: Video Tours (Max 1 video, max 1.5 mins / 90s duration) -->
           <div class="form-group" style="margin-top: 14px;">
-            <label>Video Tours <span style="font-weight:400; color:#64748b;">(optional â€” max 2 videos, up to 1.5 minutes each)</span></label>
+            <label>Video Tour <span style="font-weight:400; color:#64748b;">(optional — max 1 video, up to 1 minute 30 seconds)</span></label>
             <div class="photo-dropzone" id="video-dropzone" style="background: #faf5ff; border: 2px dashed #c084fc; cursor: pointer; text-align: center; padding: 16px; border-radius: 8px;">
               <i class="fas fa-video" style="font-size: 1.8rem; color: #7c3aed; margin-bottom: 6px;"></i>
-              <div style="font-weight: 700; font-size: 0.9rem; color: #581c87;">Tap to upload video tour (Max 2 clips)</div>
-              <div style="font-size: 0.78rem; color: #6b7280;">Max duration: 1 minute 30 seconds per video (MP4, WebM, MOV)</div>
+              <div style="font-weight: 700; font-size: 0.9rem; color: #581c87;">Tap to upload video tour (Max 1 video)</div>
+              <div style="font-size: 0.78rem; color: #6b7280;">Max duration: 1 minute 30 seconds (90 seconds limit)</div>
             </div>
-            <input type="file" id="post-videos-input" multiple accept="video/mp4,video/webm,video/quicktime,video/*" style="display: none;">
+            <input type="file" id="post-videos-input" accept="video/mp4,video/webm,video/quicktime,video/*" style="display: none;">
             <div class="photo-preview-grid" id="post-videos-preview" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;"></div>
           </div>
 
@@ -815,6 +859,34 @@
             <input type="text" placeholder="e.g. Mon-Fri 8AM-6PM, Emergency 24/7" class="form-control" id="service-hours">
           </div>
 
+          <!-- Media Upload Section (Max 5 Photos & 1 Video max 1m30s) -->
+          <div class="form-group" style="margin-top: 14px; background: #f3e8ff; padding: 14px; border-radius: 10px; border: 1px dashed #7c3aed;">
+            <label style="font-weight:700; color: #581c87;">Service Work Photos & Video Tour <span style="font-weight:400; color:#6b21a8;">(Max 5 photos, 1 video up to 1m 30s)</span></label>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+              <!-- Photo Upload Box -->
+              <div class="photo-dropzone" style="border: 2px dashed #7c3aed; background: #ffffff; cursor: pointer; text-align: center; padding: 12px; border-radius: 8px;" onclick="document.getElementById('service-photos-input').click()">
+                <i class="fas fa-camera" style="font-size: 1.5rem; color: #7c3aed; margin-bottom: 4px;"></i>
+                <div style="font-weight: 700; font-size: 0.85rem; color: #581c87;">Add Work Photos (Max 5)</div>
+                <div style="font-size: 0.75rem; color: #6b21a8;">Tap to select photos</div>
+              </div>
+              <input type="file" id="service-photos-input" multiple accept="image/*" style="display: none;" onchange="app.handleFormPhotoFiles(this, 'service-photos-preview', 5)">
+
+              <!-- Video Upload Box -->
+              <div class="photo-dropzone" style="border: 2px dashed #a855f7; background: #ffffff; cursor: pointer; text-align: center; padding: 12px; border-radius: 8px;" onclick="document.getElementById('service-video-input').click()">
+                <i class="fas fa-video" style="font-size: 1.5rem; color: #a855f7; margin-bottom: 4px;"></i>
+                <div style="font-weight: 700; font-size: 0.85rem; color: #6b21a8;">Add Video Clip (Max 1)</div>
+                <div style="font-size: 0.75rem; color: #6b7280;">Max 1m 30s (90s limit)</div>
+              </div>
+              <input type="file" id="service-video-input" accept="video/*" style="display: none;" onchange="app.handleFormVideoFile(this, 'service-video-preview', 90)">
+            </div>
+
+            <!-- Photo Preview Grid -->
+            <div id="service-photos-preview" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;"></div>
+            <!-- Video Preview Grid -->
+            <div id="service-video-preview" style="margin-top: 10px;"></div>
+          </div>
+
           <div class="modal-footer">
             <button type="button" class="btn-secondary" onclick="app.closeModal('modal-post-service')">Cancel</button>
             <button type="submit" class="btn-primary" style="background: #7c3aed;"><i class="fas fa-check-circle"></i> Post Service</button>
@@ -896,6 +968,34 @@
           <div class="form-group">
             <label>Location (Suburb/Estate)</label>
             <input type="text" placeholder="e.g. Kilimani, Ruaka" class="form-control" id="marketplace-location">
+          </div>
+
+          <!-- Media Upload Section (Max 5 Photos & 1 Video max 1m30s) -->
+          <div class="form-group" style="margin-top: 14px; background: #fffbe6; padding: 14px; border-radius: 10px; border: 1px dashed #f59e0b;">
+            <label style="font-weight:700; color: #92400e;">Item Photos & Video <span style="font-weight:400; color:#b45309;">(Max 5 photos, 1 video up to 1m 30s)</span></label>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+              <!-- Photo Upload Box -->
+              <div class="photo-dropzone" style="border: 2px dashed #f59e0b; background: #ffffff; cursor: pointer; text-align: center; padding: 12px; border-radius: 8px;" onclick="document.getElementById('marketplace-photos-input').click()">
+                <i class="fas fa-camera" style="font-size: 1.5rem; color: #f59e0b; margin-bottom: 4px;"></i>
+                <div style="font-weight: 700; font-size: 0.85rem; color: #78350f;">Add Photos (Max 5)</div>
+                <div style="font-size: 0.75rem; color: #92400e;">Tap to select images</div>
+              </div>
+              <input type="file" id="marketplace-photos-input" multiple accept="image/*" style="display: none;" onchange="app.handleFormPhotoFiles(this, 'marketplace-photos-preview', 5)">
+
+              <!-- Video Upload Box -->
+              <div class="photo-dropzone" style="border: 2px dashed #c084fc; background: #ffffff; cursor: pointer; text-align: center; padding: 12px; border-radius: 8px;" onclick="document.getElementById('marketplace-video-input').click()">
+                <i class="fas fa-video" style="font-size: 1.5rem; color: #7c3aed; margin-bottom: 4px;"></i>
+                <div style="font-weight: 700; font-size: 0.85rem; color: #581c87;">Add Video (Max 1)</div>
+                <div style="font-size: 0.75rem; color: #6b7280;">Max 1m 30s (90s limit)</div>
+              </div>
+              <input type="file" id="marketplace-video-input" accept="video/*" style="display: none;" onchange="app.handleFormVideoFile(this, 'marketplace-video-preview', 90)">
+            </div>
+
+            <!-- Photo Preview Grid -->
+            <div id="marketplace-photos-preview" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;"></div>
+            <!-- Video Preview Grid -->
+            <div id="marketplace-video-preview" style="margin-top: 10px;"></div>
           </div>
 
           <div class="modal-footer">

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Nairobi Rentals Live - Main Application Controller
  * High-performance orchestrator for search, filtering, view switching, modals, and user interactions.
  */
@@ -647,6 +647,228 @@ class NairobiRentalsApp {
     this.showToast('All filters have been reset', 'info');
   }
 
+  escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  highlightMatch(text, query) {
+    if (!query || !text) return text;
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'gi');
+    return this.escapeHtml(text).replace(regex, '<mark style="background:#dcfce7; color:#166534; font-weight:700; padding:0 2px;">$1</mark>');
+  }
+
+  showSearchSuggestions(query) {
+    const dropdown = document.getElementById('header-search-suggestions');
+    if (!dropdown) return;
+
+    if (!query || query.trim().length < 1) {
+      dropdown.style.display = 'none';
+      dropdown.innerHTML = '';
+      return;
+    }
+
+    const q = query.toLowerCase().trim();
+    const suggestions = [];
+
+    // 1. Check Estates / Suburbs
+    const commonEstates = ['Kilimani', 'Westlands', 'Ruaka', 'Roysambu', 'Kasarani', 'Ngara', 'Umoja', 'Kahawa West', 'Embakasi', 'Parklands', 'Lavington', 'Kileleshwa', 'South B', 'South C', 'Thika Road', 'Juja', 'Karen'];
+    commonEstates.forEach(est => {
+      if (est.toLowerCase().includes(q)) {
+        suggestions.push({ type: 'location', text: est, icon: 'fas fa-map-marker-alt', category: 'Estate / Location' });
+      }
+    });
+
+    // 2. House Types & Categories
+    const houseTypes = [
+      'Single Room', 'Bedsitter / Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom+', 
+      'Maisonette / Townhouse', 'Bungalow', 'Penthouse', 'BnB / Airbnb Stay', 'Commercial / Office'
+    ];
+    houseTypes.forEach(ht => {
+      if (ht.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === ht.toLowerCase())) {
+        suggestions.push({ type: 'category', text: ht, icon: 'fas fa-home', category: 'House Type' });
+      }
+    });
+
+    // 3. Marketplace Categories
+    const mktCategories = [
+      'Furniture & Sofas', 'Beds & Mattresses', 'Kitchen Appliances', 'Electronics & TV', 
+      'Fridges & Freezers', 'Washing Machines', 'Dining Tables & Chairs', 'Wardrobes & Cabinets'
+    ];
+    mktCategories.forEach(mc => {
+      if (mc.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === mc.toLowerCase())) {
+        suggestions.push({ type: 'marketplace', text: mc, icon: 'fas fa-shopping-bag', category: 'Used Item' });
+      }
+    });
+
+    // 4. Listing Titles
+    if (this.properties && Array.isArray(this.properties)) {
+      this.properties.forEach(p => {
+        if (p.title && p.title.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === p.title.toLowerCase())) {
+          suggestions.push({ type: 'property', text: p.title, icon: 'fas fa-building', category: 'Rental Listing' });
+        }
+      });
+    }
+
+    const topSuggestions = suggestions.slice(0, 8);
+
+    if (topSuggestions.length === 0) {
+      dropdown.innerHTML = `
+        <div class="search-suggestion-item empty" style="padding: 12px; color: #64748b; font-size: 0.85rem; text-align: center;">
+          <i class="fas fa-search" style="margin-right: 6px; color: #00b53f;"></i> Press enter to search for "<strong>${this.escapeHtml(query)}</strong>"
+        </div>`;
+    } else {
+      dropdown.innerHTML = topSuggestions.map(item => `
+        <div class="search-suggestion-item" onclick="app.selectSearchSuggestion('${this.escapeHtml(item.text).replace(/'/g, "\\'")}')">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="${item.icon}" style="color: #00b53f; font-size: 0.95rem;"></i>
+            <span style="font-weight: 600; font-size: 0.9rem; color: #0f172a;">${this.highlightMatch(item.text, query)}</span>
+          </div>
+          <span style="font-size: 0.72rem; color: #64748b; background: #f1f5f9; padding: 2px 8px; border-radius: 12px; font-weight: 600;">${item.category}</span>
+        </div>
+      `).join('');
+    }
+
+    dropdown.style.display = 'block';
+  }
+
+  selectSearchSuggestion(text) {
+    const searchInput = document.getElementById('header-search-input');
+    if (searchInput) searchInput.value = text;
+    const dropdown = document.getElementById('header-search-suggestions');
+    if (dropdown) dropdown.style.display = 'none';
+    const clearBtn = document.getElementById('btn-clear-search');
+    if (clearBtn) clearBtn.style.display = 'flex';
+
+    this.searchQuery = text;
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  openGalleryModal(propertyId, event) {
+    if (event) event.stopPropagation();
+    const p = this.properties.find(x => x.id === propertyId);
+    if (!p) return;
+
+    this.selectedPropertyForDetail = p;
+    this.currentPhotoIndex = 0;
+
+    // Standardize media array
+    if (!p.media || !Array.isArray(p.media) || p.media.length === 0) {
+      const defaultImg = p.thumbnail || p.image || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
+      p.media = [{ url: defaultImg, caption: p.title }];
+    } else {
+      p.media = p.media.map(m => typeof m === 'string' ? { url: m, caption: p.title } : m);
+    }
+
+    const isLoggedIn = !!(window.kejaAuth && (window.kejaAuth.isLoggedIn() || window.kejaAuth.getSession()));
+    
+    // Open property detail modal, then unlock photos and lightbox if logged in
+    this.openPropertyDetail(propertyId);
+    if (isLoggedIn) {
+      this.unlockDetailPhotos(propertyId);
+      this.openLightbox(event);
+    }
+  }
+
+  // Handle photo file selection for forms (Max 5 photos)
+  handleFormPhotoFiles(inputEl, previewId, maxPhotos = 5) {
+    const previewGrid = document.getElementById(previewId);
+    if (!previewGrid || !inputEl.files) return;
+
+    if (!inputEl._uploadedPhotos) inputEl._uploadedPhotos = [];
+    const files = Array.from(inputEl.files);
+
+    if (inputEl._uploadedPhotos.length + files.length > maxPhotos) {
+      this.showToast(`⚠️ Maximum ${maxPhotos} photos allowed per post.`, 'error');
+    }
+
+    const remainingSlots = maxPhotos - inputEl._uploadedPhotos.length;
+    files.slice(0, remainingSlots).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        inputEl._uploadedPhotos.push(e.target.result);
+        this.renderFormPhotoPreviews(inputEl, previewGrid, maxPhotos);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  renderFormPhotoPreviews(inputEl, previewGrid, maxPhotos) {
+    if (!inputEl._uploadedPhotos) inputEl._uploadedPhotos = [];
+    previewGrid.innerHTML = inputEl._uploadedPhotos.map((url, idx) => `
+      <div style="position: relative; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 2px solid #00b53f;">
+        <img src="${url}" style="width: 100%; height: 100%; object-fit: cover;">
+        ${idx === 0 ? '<span style="position: absolute; bottom: 0; left: 0; right: 0; background: #00b53f; color: white; font-size: 0.6rem; text-align: center; font-weight: 700;">COVER</span>' : ''}
+        <button type="button" style="position: absolute; top: 2px; right: 2px; background: rgba(220,38,38,0.9); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 0.7rem;" onclick="app.removeFormPhoto('${inputEl.id}', '${previewGrid.id}', ${idx}, ${maxPhotos})">&times;</button>
+      </div>
+    `).join('');
+  }
+
+  removeFormPhoto(inputId, previewId, index, maxPhotos) {
+    const inputEl = document.getElementById(inputId);
+    const previewGrid = document.getElementById(previewId);
+    if (inputEl && inputEl._uploadedPhotos) {
+      inputEl._uploadedPhotos.splice(index, 1);
+      this.renderFormPhotoPreviews(inputEl, previewGrid, maxPhotos);
+    }
+  }
+
+  // Handle video file selection for forms (Max 1 video, max 90s duration)
+  handleFormVideoFile(inputEl, previewId, maxSeconds = 90) {
+    const previewContainer = document.getElementById(previewId);
+    if (!previewContainer || !inputEl.files || inputEl.files.length === 0) return;
+
+    const file = inputEl.files[0];
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    const blobUrl = URL.createObjectURL(file);
+    video.src = blobUrl;
+
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(blobUrl);
+      const duration = video.duration;
+
+      if (duration > maxSeconds + 1) {
+        const mins = Math.floor(duration / 60);
+        const secs = Math.floor(duration % 60);
+        this.showToast(`❌ Video exceeds max duration! Allowed: 1 minute 30 seconds (90s). Uploaded: ${mins}m ${secs}s. Please trim your video.`, 'error');
+        inputEl.value = '';
+        inputEl._uploadedVideo = null;
+        previewContainer.innerHTML = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        inputEl._uploadedVideo = { url: e.target.result, duration: Math.round(duration) };
+        previewContainer.innerHTML = `
+          <div style="position: relative; width: 160px; border-radius: 8px; overflow: hidden; background: #000; border: 2px solid #7c3aed;">
+            <video src="${e.target.result}" style="width: 100%; height: 95px; object-fit: cover;" controls></video>
+            <span style="position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">
+              🎥 ${Math.round(duration)}s
+            </span>
+            <button type="button" style="position: absolute; top: 4px; right: 4px; background: rgba(220,38,38,0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 0.75rem;" onclick="document.getElementById('${inputEl.id}').value = ''; document.getElementById('${inputEl.id}')._uploadedVideo = null; document.getElementById('${previewId}').innerHTML = '';">&times;</button>
+          </div>`;
+        this.showToast(`🎥 Video tour attached (${Math.round(duration)}s)!`, 'info');
+      };
+      reader.readAsDataURL(file);
+    };
+
+    video.onerror = () => {
+      URL.revokeObjectURL(blobUrl);
+      this.showToast('Could not process video file. Please check video format.', 'error');
+      inputEl.value = '';
+      previewContainer.innerHTML = '';
+    };
+  }
+
   toggleFavoritesView() {
     this.showOnlyFavorites = !this.showOnlyFavorites;
     const favBtn = document.getElementById('btn-header-favs');
@@ -828,7 +1050,7 @@ class NairobiRentalsApp {
     
     return `
       <div class="property-card ${isTaken ? 'property-card-taken' : ''}" data-id="${p.id}">
-        <div class="card-media-wrapper" onclick="app.openPropertyDetail('${p.id}')">
+        <div class="card-media-wrapper" onclick="app.openGalleryModal('${p.id}', event)" style="cursor: pointer;">
           <img src="${thumbnail}" alt="${p.title}" loading="lazy" style="${isTaken ? 'filter: grayscale(50%) opacity(0.8);' : ''}">
           
           <div class="card-badges-top">
@@ -842,7 +1064,7 @@ class NairobiRentalsApp {
           </button>
 
           <span class="card-watermark"><i class="fas fa-home"></i> KEJAMARKET VERIFIED</span>
-          <span class="card-photo-count"><i class="fas fa-camera"></i> ${photoCount} Photos</span>
+          <span class="card-photo-count" onclick="app.openGalleryModal('${p.id}', event)" style="cursor: pointer;"><i class="fas fa-camera"></i> ${photoCount} Photos</span>
         </div>
 
         <div class="card-content">
@@ -2298,6 +2520,14 @@ class NairobiRentalsApp {
       return;
     }
 
+    const servicePhotosInput = document.getElementById('service-photos-input');
+    const uploadedPhotos = (servicePhotosInput && servicePhotosInput._uploadedPhotos) ? servicePhotosInput._uploadedPhotos : [];
+    const serviceVideoInput = document.getElementById('service-video-input');
+    const uploadedVideo = (serviceVideoInput && serviceVideoInput._uploadedVideo) ? serviceVideoInput._uploadedVideo : null;
+
+    const images = [...uploadedPhotos];
+    if (uploadedVideo) images.push({ url: uploadedVideo.url, type: 'video', duration: uploadedVideo.duration });
+
     try {
       const token = window.kejaAuth.getToken();
       const res = await fetch('/api/services', {
@@ -2314,14 +2544,18 @@ class NairobiRentalsApp {
           priceMax,
           coverageArea,
           serviceHours,
-          images: []
+          images
         })
       });
 
       const data = await res.json();
       if (data.success) {
-        this.showToast('Ã¢Å“â€¦ Service posted! Pending verification by admin.', 'info');
+        this.showToast('✅ Service posted with photos & video tour!', 'info');
         document.getElementById('form-post-service').reset();
+        if (servicePhotosInput) servicePhotosInput._uploadedPhotos = [];
+        if (serviceVideoInput) serviceVideoInput._uploadedVideo = null;
+        document.getElementById('service-photos-preview').innerHTML = '';
+        document.getElementById('service-video-preview').innerHTML = '';
         this.closeModal('modal-post-service');
         this.loadServicesData();
       } else {
@@ -2355,6 +2589,14 @@ class NairobiRentalsApp {
       return;
     }
 
+    const mktPhotosInput = document.getElementById('marketplace-photos-input');
+    const uploadedPhotos = (mktPhotosInput && mktPhotosInput._uploadedPhotos) ? mktPhotosInput._uploadedPhotos : [];
+    const mktVideoInput = document.getElementById('marketplace-video-input');
+    const uploadedVideo = (mktVideoInput && mktVideoInput._uploadedVideo) ? mktVideoInput._uploadedVideo : null;
+
+    const images = [...uploadedPhotos];
+    if (uploadedVideo) images.push({ url: uploadedVideo.url, type: 'video', duration: uploadedVideo.duration });
+
     try {
       const token = window.kejaAuth.getToken();
       const res = await fetch('/api/marketplace', {
@@ -2372,14 +2614,18 @@ class NairobiRentalsApp {
           itemType: category,
           isNegotiable,
           locationSuburb,
-          images: []
+          images
         })
       });
 
       const data = await res.json();
       if (data.success) {
-        this.showToast('Ã¢Å“â€¦ Item posted! Pending verification by admin.', 'info');
+        this.showToast('✅ Item posted for sale with photos & video tour!', 'info');
         document.getElementById('form-post-marketplace').reset();
+        if (mktPhotosInput) mktPhotosInput._uploadedPhotos = [];
+        if (mktVideoInput) mktVideoInput._uploadedVideo = null;
+        document.getElementById('marketplace-photos-preview').innerHTML = '';
+        document.getElementById('marketplace-video-preview').innerHTML = '';
         this.closeModal('modal-post-marketplace');
         this.loadMarketplaceData();
       } else {

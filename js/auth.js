@@ -1,4 +1,4 @@
-﻿/**
+/**
  * KejaMarket â€“ Real Authentication Engine & Anti-Fraud Phone Verification
  * Connected to live backend JWT + Bcrypt API (/api/auth)
  * Handles phone SMS OTP verification for Tenant, Landlord, and Agency sign-up & sign-in.
@@ -1177,6 +1177,13 @@ const kejaAuth = (() => {
     requireTenantAuth,
     getSession,
     getToken,
+    isLoggedIn: function() {
+      try {
+        return !!(localStorage.getItem('keja_token') || JSON.parse(localStorage.getItem('keja_session')));
+      } catch {
+        return false;
+      }
+    },
     getAuthHeaders,
     applyAuthWall,
     toggleProfileDropdown,
