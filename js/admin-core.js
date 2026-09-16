@@ -498,22 +498,47 @@ const AdminCore = (() => {
 
   async function loadAdminUsers(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Admin Users Module...</div>';
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-user-shield"></i> Admin Users & Permissions</h1></div>
+      <div class="empty-state"><i class="fas fa-user-shield"></i><p>Role-based access control system</p><small>Configure admin roles and permissions</small></div>
+    `;
   }
 
   async function loadAudit(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Audit Logs Module...</div>';
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-clipboard-list"></i> Security Audit Logs</h1></div>
+      <div class="stats-row">
+        <div class="stat-box"><i class="fas fa-list"></i><div><div class="stat-number">0</div><div class="stat-label">Total Logs</div></div></div>
+        <div class="stat-box"><i class="fas fa-clock"></i><div><div class="stat-number">0</div><div class="stat-label">Today</div></div></div>
+      </div>
+      <div class="empty-state"><i class="fas fa-clipboard-list"></i><p>All admin actions are logged here</p><small>Track who did what and when</small></div>
+    `;
   }
 
   async function loadAnalytics(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Analytics Module...</div>';
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-chart-bar"></i> Analytics & Reports</h1></div>
+      <div class="stats-row">
+        <div class="stat-box"><i class="fas fa-eye"></i><div><div class="stat-number">0</div><div class="stat-label">Total Views</div></div></div>
+        <div class="stat-box"><i class="fas fa-users"></i><div><div class="stat-number">0</div><div class="stat-label">User Growth</div></div></div>
+        <div class="stat-box"><i class="fas fa-home"></i><div><div class="stat-number">0</div><div class="stat-label">New Listings</div></div></div>
+      </div>
+      <div class="empty-state"><i class="fas fa-chart-bar"></i><p>Advanced analytics dashboard</p><small>Charts and reports coming soon</small></div>
+    `;
   }
 
   async function loadFinance(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Finance Module...</div>';
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-dollar-sign"></i> Finance Management</h1></div>
+      <div class="stats-row">
+        <div class="stat-box"><i class="fas fa-money-bill-wave"></i><div><div class="stat-number">KSh 0</div><div class="stat-label">Total Revenue</div></div></div>
+        <div class="stat-box"><i class="fas fa-check"></i><div><div class="stat-number">0</div><div class="stat-label">Transactions</div></div></div>
+      </div>
+      <div class="empty-state"><i class="fas fa-dollar-sign"></i><p>Financial tracking system</p><small>Payments, commissions, and reports</small></div>
+    `;
   }
 
   // Utility functions
