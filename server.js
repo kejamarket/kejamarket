@@ -66,17 +66,18 @@ app.use(helmet({
 const allowedOrigins = [
   'https://kejamarket.co.ke',
   'https://www.kejamarket.co.ke',
+  'https://kejamarket-prod.onrender.com',
   'http://localhost:3001',
   'http://localhost:3000'
 ];
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, Render health checks)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    // Allow requests with no origin (mobile apps, curl, Render health checks, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    // Allow any Render preview URLs for this service
+    if (origin.endsWith('.onrender.com')) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true
 }));
