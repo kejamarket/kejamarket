@@ -13,6 +13,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const jwt = require('jsonwebtoken');
 const AfricasTalking = require('africastalking');
 const fs = require('fs');
@@ -54,9 +55,56 @@ const uploadLimiter = rateLimit({
 });
 
 const app = express();
-app.use(cors());
-app.use(express.json({ limit: '20mb' }));
-app.use(express.urlencoded({ extended: true, limit: '20mb' }));
+
+// ── SECURITY HEADERS (helmet) ────────────────────────────────────────────────
+app.use(helmet({
+  contentSecurityPolicy: false, // disabled to allow inline scripts in frontend
+  crossOriginEmbedderPolicy: false
+}));
+
+// ── CORS: restrict to own domain only ────────────────────────────────────────
+const allowedOrigins = [
+  'https://kejamarket.co.ke',
+  'https://www.kejamarket.co.ke',
+  'http://localhost:3001',
+  'http://localhost:3000'
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, Render health checks)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// ── BLOCK SENSITIVE FILES before static middleware ────────────────────────────
+const blockedPaths = [
+  '/.env', '/.git', '/admin-token.txt', '/db/data.json',
+  '/db/schema.sql', '/db/store.js', '/db/postgres-store.js',
+  '/db/postgres-migration.sql', '/package.json', '/package-lock.json',
+  '/ecosystem.config.js', '/docker-compose.yml', '/Dockerfile',
+  '/Procfile', '/nginx.conf', '/server.js', '/start.js', '/validate.js'
+];
+app.use((req, res, next) => {
+  const p = req.path.toLowerCase();
+  if (
+    blockedPaths.some(b => p === b || p.startsWith(b + '/')) ||
+    p.endsWith('.env') ||
+    p.endsWith('.sql') ||
+    p.includes('/.git/') ||
+    p.includes('/node_modules/')
+  ) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  next();
+});
 
 // Serve static frontend files (HTML, CSS, JS, icons)
 app.use(express.static(__dirname));
@@ -90,9 +138,9 @@ app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.htm
 
 let store;
 async function initializeDatabase() {
-  console.log('═══════════════════════════════════════════════════════════');
+  console.log([SIGNUP] OTP sent to: +${cleanPhone});
   console.log('🚀 KEJAMARKET DATABASE INITIALIZATION');
-  console.log('═══════════════════════════════════════════════════════════');
+  console.log([SIGNUP] OTP sent to: +${cleanPhone});
   
   const POOLER_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
   
@@ -131,7 +179,7 @@ async function initializeDatabase() {
         store = require('./db/store.js');
       }
     }
-    console.log('═══════════════════════════════════════════════════════════');
+    console.log([SIGNUP] OTP sent to: +${cleanPhone});
   } catch (error) {
     console.error('⚠️ Database initialization error:', error.message);
     try {
@@ -425,7 +473,7 @@ app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket verification code is ${otp}. Valid for 5 minutes. Enter this code to verify your ${role === 'agency' ? 'Agency' : (role === 'landlord' ? 'Landlord' : 'Tenant')} account.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`ðŸ”‘ [SIGNUP OTP] Phone: +${cleanPhone} | OTP: ${otp} | Role: ${role}`);
+    console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
 
     res.json({
       success: true,
@@ -546,7 +594,7 @@ app.post('/api/auth/login-send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket sign-in verification code is ${otp}. Valid for 5 minutes. Do not share this code.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`ðŸ”‘ [LOGIN OTP] User: ${user.name} | Phone: +${cleanPhone} | OTP: ${otp}`);
+    console.log("[LOGIN] OTP sent to: +${cleanPhone}");
 
     res.json({
       success: true,
@@ -676,7 +724,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
     const smsMessage = `Your new KejaMarket verification code is ${otp}. Valid for 5 minutes.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`ðŸ”„ [OTP RESENT] Phone: +${cleanPhone} | OTP: ${otp}`);
+    console.log("[OTP] Resent to: +${cleanPhone}");
 
     res.json({
       success: true,
@@ -1019,7 +1067,7 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
       });
     }
 
-    console.log(`ðŸ”‘ [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
+    console.log("[RESET] OTP sent to: ${user.name}");
 
     // Respond immediately â€” don't wait for SMS/email
     res.json({
@@ -2136,9 +2184,12 @@ app.post('/api/leads/fibre', async (req, res) => {
   }
 });
 
-// POST /api/sms/send (Direct SMS dispatch API)
-app.post('/api/sms/send', optionalAuth, async (req, res) => {
+// POST /api/sms/send (Direct SMS dispatch API - admin only)
+app.post('/api/sms/send', requireAuth, async (req, res) => {
   try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
     const { to, message } = req.body;
     if (!to || !message) {
       return res.status(400).json({ success: false, message: 'Recipient phone (to) and message are required.' });
@@ -2353,7 +2404,10 @@ app.get('/api/admin/analytics', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/mpesa-config
-app.get('/api/admin/mpesa-config', (req, res) => {
+app.get('/api/admin/mpesa-config', requireAuth, (req, res) => {
+  if (req.user.role !== 'admin' && !req.user.isAdmin) {
+    return res.status(403).json({ success: false, message: 'Admin access required.' });
+  }
   res.json({
     success: true,
     hasDarajaCredentials: hasDarajaCredentials(),
@@ -2368,7 +2422,10 @@ app.get('/api/admin/mpesa-config', (req, res) => {
 });
 
 // POST /api/admin/mpesa-config
-app.post('/api/admin/mpesa-config', optionalAuth, (req, res) => {
+app.post('/api/admin/mpesa-config', requireAuth, (req, res) => {
+  if (req.user.role !== 'admin' && !req.user.isAdmin) {
+    return res.status(403).json({ success: false, message: 'Admin access required.' });
+  }
   try {
     const { consumerKey, consumerSecret, passkey, paybill, account, callbackUrl, environment } = req.body;
 
@@ -2629,8 +2686,11 @@ app.get('/api/admin/units', requireAuth, async (req, res) => {
   }
 });
 
-app.post('/api/admin/users/:id/toggle-verify', optionalAuth, async (req, res) => {
+app.post('/api/admin/users/:id/toggle-verify', requireAuth, async (req, res) => {
   try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
     const { id } = req.params;
     const user = await store.getUserById(id);
     if (!user) {
@@ -3677,11 +3737,11 @@ async function startServer() {
   await initializeDatabase();
 
   const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`====================================================`);
+    console.log([SIGNUP] OTP sent to: +${cleanPhone});
     console.log(`ðŸš€ KejaMarket Production API Server running on port ${PORT}`);
     console.log(`ðŸ”— Web Application: http://localhost:${PORT}`);
     console.log(`ðŸ“± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
-    console.log(`====================================================`);
+    console.log([SIGNUP] OTP sent to: +${cleanPhone});
 
     const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
     const PING_INTERVAL = 9 * 60 * 1000;
