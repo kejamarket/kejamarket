@@ -255,106 +255,43 @@ const AdminCore = (() => {
     `).join('');
   }
 
-  // Users module loader (placeholder - will be expanded)
+  // Users module loader - delegates to AdminUsers module
   async function loadUsers(viewData) {
     const content = document.getElementById('admin-content');
     content.innerHTML = `
       <div class="module-header">
         <h1><i class="fas fa-users"></i> User Management</h1>
-        <button class="btn-primary" onclick="AdminCore.showModal('add-user')">
-          <i class="fas fa-plus"></i> Add User
-        </button>
       </div>
       <div class="module-tabs">
-        <button class="tab-btn active" onclick="AdminCore.loadUserTab('all')">All Users</button>
-        <button class="tab-btn" onclick="AdminCore.loadUserTab('tenants')">Tenants</button>
-        <button class="tab-btn" onclick="AdminCore.loadUserTab('landlords')">Landlords</button>
-        <button class="tab-btn" onclick="AdminCore.loadUserTab('agents')">Agents</button>
-        <button class="tab-btn" onclick="AdminCore.loadUserTab('pending')">Pending Verification</button>
-        <button class="tab-btn" onclick="AdminCore.loadUserTab('suspended')">Suspended</button>
+        <button class="tab-btn active" data-filter="all">All Users</button>
+        <button class="tab-btn" data-filter="tenants">Tenants</button>
+        <button class="tab-btn" data-filter="landlords">Landlords</button>
+        <button class="tab-btn" data-filter="agents">Agents</button>
+        <button class="tab-btn" data-filter="service-providers">Service Providers</button>
+        <button class="tab-btn" data-filter="verified">Verified</button>
+        <button class="tab-btn" data-filter="pending">Pending</button>
+        <button class="tab-btn" data-filter="suspended">Suspended</button>
       </div>
       <div id="users-content">
         <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading users...</div>
       </div>
     `;
 
-    // Load users data
-    await loadUserTab(viewData || 'all');
-  }
-
-  async function loadUserTab(tabName) {
-    const usersContent = document.getElementById('users-content');
-    usersContent.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
-
-    try {
-      const res = await fetch(`${API_BASE}/api/admin/users?filter=${tabName}`, {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+    // Setup tab click handlers
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        AdminUsers.init(btn.dataset.filter);
       });
+    });
 
-      if (!res.ok) throw new Error('Failed to load users');
-
-      const data = await res.json();
-      renderUsersTable(data.users || []);
-      
-    } catch (error) {
-      console.error('Error loading users:', error);
-      usersContent.innerHTML = '<div class="error-state">Failed to load users</div>';
+    // Load users with AdminUsers module
+    if (typeof AdminUsers !== 'undefined') {
+      await AdminUsers.init(viewData || 'all');
+    } else {
+      console.error('AdminUsers module not loaded');
     }
-  }
-
-  function renderUsersTable(users) {
-    const usersContent = document.getElementById('users-content');
-    
-    if (!users.length) {
-      usersContent.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><p>No users found</p></div>';
-      return;
-    }
-
-    usersContent.innerHTML = `
-      <div class="table-container">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Joined</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${users.map(user => `
-              <tr onclick="AdminCore.viewUser('${user.id}')" style="cursor: pointer;">
-                <td>
-                  <div class="user-info">
-                    <div class="user-avatar">${user.name.charAt(0).toUpperCase()}</div>
-                    <div>
-                      <div class="user-name">${user.name}</div>
-                      <div class="user-id">#${user.id.slice(0, 8)}</div>
-                    </div>
-                  </div>
-                </td>
-                <td>${user.email || '-'}</td>
-                <td>${user.phone}</td>
-                <td><span class="badge badge-${user.role}">${user.role}</span></td>
-                <td><span class="status-badge status-${user.isPhoneVerified ? 'verified' : 'pending'}">${user.isPhoneVerified ? 'Verified' : 'Pending'}</span></td>
-                <td>${formatDate(user.createdAt)}</td>
-                <td onclick="event.stopPropagation();">
-                  <button class="btn-icon" onclick="AdminCore.editUser('${user.id}')" title="Edit">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn-icon" onclick="AdminCore.suspendUser('${user.id}')" title="Suspend">
-                    <i class="fas fa-ban"></i>
-                  </button>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-    `;
   }
 
   // Properties, Buildings, Units - placeholder loaders
@@ -482,11 +419,6 @@ const AdminCore = (() => {
     init,
     navigate,
     navigateToModule: (module, filter) => navigate(module, filter),
-    loadUserTab,
-    viewUser: (userId) => console.log('View user:', userId),
-    editUser: (userId) => console.log('Edit user:', userId),
-    suspendUser: (userId) => console.log('Suspend user:', userId),
-    showModal: (modalType) => console.log('Show modal:', modalType),
     state
   };
 })();

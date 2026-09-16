@@ -2420,7 +2420,86 @@ app.get('/api/admin/users', requireAuth, async (req, res) => {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
     const users = await store.getAllUsers();
-    res.json({ success: true, count: users.length, users });
+    
+    // Add property count to each user
+    const usersWithCounts = users.map(user => {
+      const userProperties = (store.data.properties || []).filter(p => p.userId === user.id);
+      return {
+        ...user,
+        propertyCount: userProperties.length,
+        activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified).length
+      };
+    });
+    
+    res.json({ success: true, count: usersWithCounts.length, users: usersWithCounts });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/users/:id - Get individual user details
+app.get('/api/admin/users/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    
+    const { id } = req.params;
+    const user = await store.getUserById(id);
+    
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+    
+    // Add additional stats
+    const userProperties = (store.data.properties || []).filter(p => p.userId === id);
+    const inquiries = (store.data.inquiries || []).filter(i => i.userId === id);
+    const reviews = (store.data.reviews || []).filter(r => r.userId === id);
+    const reports = (store.data.reports || []).filter(r => r.reportedBy === id);
+    
+    const userWithStats = {
+      ...user,
+      propertyCount: userProperties.length,
+      activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified).length,
+      inquiriesSent: inquiries.length,
+      reviewsGiven: reviews.length,
+      reportsCount: reports.length
+    };
+    
+    res.json({ success: true, user: userWithStats });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/users/:id/suspend - Suspend/unsuspend user
+app.post('/api/admin/users/:id/suspend', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    
+    const { id } = req.params;
+    const { reason, duration } = req.body;
+    
+    const user = await store.getUserById(id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+    
+    const updated = store.updateUser(id, {
+      isSuspended: true,
+      suspendReason: reason,
+      suspendDuration: duration,
+      suspendedAt: new Date().toISOString(),
+      suspendedBy: req.user.id
+    });
+    
+    res.json({
+      success: true,
+      message: `User ${user.name} has been suspended.`,
+      user: updated
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
