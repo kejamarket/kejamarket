@@ -1,0 +1,612 @@
+/* Enhanced Landlord Portal Styles for Caretakers */
+
+/* Dashboard Header Enhancements */
+.caretaker-welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #bbf7d0;
+}
+
+.welcome-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.greeting {
+  font-size: 1.1rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.dashboard-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #059669;
+  margin-top: 4px;
+}
+
+.partner-badge {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.owner-welcome {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #fde68a;
+}
+
+.owner-welcome .greeting {
+  font-size: 1.1rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.owner-welcome .dashboard-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #d97706;
+  margin-top: 4px;
+}
+
+/* Multi-Building Manager */
+#multi-building-manager {
+  margin-bottom: 32px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  color: #1e293b;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.properties-count {
+  background: #e2e8f0;
+  color: #64748b;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.btn-add-property {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-add-property:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+/* Buildings Overview Cards */
+.buildings-overview {
+  margin-bottom: 24px;
+}
+
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.overview-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease;
+}
+
+.overview-card:hover {
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+}
+
+.card-icon {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.card-number {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #059669;
+}
+
+.card-label {
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Buildings List */
+.buildings-list {
+  display: grid;
+  gap: 16px;
+}
+
+.building-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.building-card:hover {
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+}
+
+.building-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.building-info {
+  flex: 1;
+}
+
+.building-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.building-location {
+  color: #64748b;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.building-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-manage {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-manage:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+.btn-add-unit {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-add-unit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+}
+
+.building-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #059669;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.stat.status-available .stat-label {
+  color: #059669;
+}
+
+.stat.status-occupied .stat-label {
+  color: #d97706;
+}
+
+.building-owner {
+  color: #64748b;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* Empty State */
+.empty-properties {
+  text-align: center;
+  padding: 60px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 2px dashed #e2e8f0;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.empty-desc {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+/* Caretaker Metrics */
+#caretaker-metrics {
+  margin-bottom: 32px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.metric-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.metric-icon {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.metric-content {
+  flex: 1;
+}
+
+.metric-number {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #059669;
+}
+
+.metric-label {
+  color: #1e293b;
+  font-weight: 600;
+  margin: 4px 0;
+}
+
+.metric-trend {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+/* Owner Communication */
+#owner-communication {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.communication-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.quick-updates h4,
+.message-owner h4 {
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.update-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-update {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-update:hover {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #059669;
+}
+
+#owner-message {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+
+#owner-message:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+/* Property Modal */
+.property-modal {
+  max-width: 600px;
+  width: 90%;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 0 24px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  color: #1e293b;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#add-property-form {
+  padding: 0 24px 24px 24px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-cancel {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-cancel:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+/* Success Toast */
+.success-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  z-index: 1100;
+  animation: slideInRight 0.3s ease-out;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .caretaker-welcome,
+  .owner-welcome {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .partner-badge {
+    align-self: flex-start;
+  }
+  
+  .overview-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .building-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .building-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .building-stats {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .communication-panel {
+    grid-template-columns: 1fr;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .property-modal {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .overview-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .btn-add-property {
+    width: 100%;
+  }
+}

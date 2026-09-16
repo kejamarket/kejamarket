@@ -724,6 +724,145 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
+// POST /api/auth/register-enhanced (Enhanced multi-step registration with role-specific data)
+app.post('/api/auth/register-enhanced', async (req, res) => {
+  try {
+    const { userType, role, name, position, phone, email, password, verification, properties } = req.body;
+
+    // Validation
+    if (!userType || !name || !phone || !email || !password) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'All required fields must be provided.' 
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Password must be at least 6 characters.' 
+      });
+    }
+
+    const cleanPhone = formatPhone(phone);
+    
+    // Check if user already exists
+    const existingUser = await store.getUser(cleanPhone);
+    if (existingUser) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Phone number already registered.' 
+      });
+    }
+
+    // Create enhanced user profile based on role
+    let userData = {
+      name,
+      phone: cleanPhone,
+      email,
+      password,
+      isPhoneVerified: false, // Needs verification
+      registrationData: {
+        userType,
+        role,
+        registrationDate: new Date(),
+        verificationStatus: 'pending'
+      }
+    };
+
+    // Role-specific data handling
+    if (userType === 'property-manager') {
+      userData.role = 'landlord'; // Backend compatibility
+      userData.registrationData.propertyRole = role;
+      
+      if (role === 'caretaker') {
+        userData.registrationData.position = position;
+        userData.registrationData.verification = verification;
+        userData.registrationData.properties = properties || [];
+        userData.registrationData.isCaretaker = true;
+        
+        // Calculate total units managed
+        const totalUnits = properties.reduce((sum, prop) => sum + (parseInt(prop.units) || 0), 0);
+        userData.numProperties = properties.length;
+        userData.registrationData.totalUnits = totalUnits;
+      }
+      
+      // Set appropriate badge
+      userData.registrationData.badge = role === 'caretaker' ? 'caretaker' : 'property-owner';
+      
+    } else {
+      userData.role = userType; // tenant or service
+    }
+
+    // Create user account
+    const user = await store.createUser(userData);
+    
+    // Generate verification OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    await store.storeOTP(cleanPhone, otp, 'registration-verification');
+    
+    // Send verification SMS
+    let smsMessage = `KejaMarket Verification: Your OTP is ${otp}. `;
+    if (role === 'caretaker') {
+      smsMessage += `Your Property Partner application is under review.`;
+    } else {
+      smsMessage += `Complete your registration with this code.`;
+    }
+    
+    const smsResult = await sendRealSMS(cleanPhone, smsMessage);
+    
+    // Send welcome email with role-specific content
+    if (user.email) {
+      let welcomeSubject = 'Welcome to KejaMarket!';
+      let roleTitle = 'User';
+      
+      if (role === 'caretaker') {
+        welcomeSubject = 'KejaMarket Property Partner Application Received';
+        roleTitle = 'Property Partner';
+      } else if (userType === 'property-manager') {
+        roleTitle = 'Property Manager';
+      }
+      
+      emailService.sendWelcomeEmail(user.email, user.name, roleTitle, {
+        isEnhancedRegistration: true,
+        needsVerification: true,
+        role: role,
+        userType: userType
+      }).catch(() => {});
+    }
+    
+    // Admin notification for caretaker registrations
+    if (role === 'caretaker') {
+      console.log(`🏢 New Caretaker Registration: ${name} (${cleanPhone}) - Managing ${properties.length} properties`);
+      // Could add admin email notification here
+    }
+    
+    res.status(201).json({
+      success: true,
+      message: role === 'caretaker' ? 
+        'Property Partner application submitted! Check your SMS for verification.' :
+        'Registration successful! Please verify your phone number.',
+      user: {
+        id: user.id,
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        role: userData.role,
+        registrationData: userData.registrationData
+      },
+      needsVerification: true,
+      verificationSent: smsResult.success
+    });
+    
+  } catch (err) {
+    console.error('Enhanced registration error:', err);
+    res.status(400).json({ 
+      success: false, 
+      message: err.message || 'Registration failed. Please try again.' 
+    });
+  }
+});
+
 // POST /api/auth/login
 app.post('/api/auth/login', authLimiter, async (req, res) => {
   try {

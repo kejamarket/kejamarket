@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KejaMarket Analytics Dashboard</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            padding: 24px 32px;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 32px;
+            font-size: 0.9rem;
+        }
+
+        .header-stat {
+            text-align: center;
+        }
+
+        .header-stat-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .header-stat-label {
+            opacity: 0.9;
+            font-size: 0.8rem;
+        }
+
+        /* Main Layout */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        /* Metrics */
+        .metric-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .metric-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .metric-trend {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+
+        .metric-trend.up {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .metric-trend.down {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .metric-trend.stable {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        /* Large Sections */
+        .section-large {
+            grid-column: span 2;
+        }
+
+        .section-wide {
+            grid-column: span 4;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 16px;
+        }
+
+        .chart-small {
+            height: 200px;
+        }
+
+        /* Progress Bars */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #059669, #10b981);
+            transition: width 0.5s ease;
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-active {
+            background: #10b981;
+        }
+
+        .status-warning {
+            background: #f59e0b;
+        }
+
+        .status-error {
+            background: #ef4444;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .quick-action-btn {
+            flex: 1;
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-action-btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        /* Alert Banner */
+        .alert-banner {
+            background: linear-gradient(135deg, #fef3c7, #fcd34d);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 1.2rem;
+            color: #92400e;
+        }
+
+        .alert-text {
+            color: #78350f;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            
+            .section-wide {
+                grid-column: span 3;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-container {
+                grid-template-columns: 1fr 1fr;
+                padding: 20px;
+            }
+            
+            .section-large {
+                grid-column: span 2;
+            }
+            
+            .section-wide {
+                grid-column: span 2;
+            }
+            
+            .header-stats {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-large,
+            .section-wide {
+                grid-column: span 1;
+            }
+            
+            .dashboard-header {
+                padding: 20px;
+            }
+            
+            .dashboard-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <h1 class="dashboard-title">
+                <i class="fas fa-chart-line"></i>
+                KejaMarket Analytics Dashboard
+            </h1>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-value" id="total-properties">1,247</div>
+                    <div class="header-stat-label">Total Properties</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value" id="active-users">8,942</div>
+                    <div class="header-stat-label">Active Users</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-value" id="monthly-inquiries">2,156</div>
+                    <div class="header-stat-label">Monthly Inquiries</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Alert Banner -->
+    <div class="alert-banner">
+        <i class="fas fa-info-circle alert-icon"></i>
+        <span class="alert-text">Live data updates every 5 minutes • Last updated: <span id="last-updated">2 minutes ago</span></span>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-container">
+        
+        <!-- Supply Metrics -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h2 class="section-title">Supply</h2>
+            </div>
+            <div class="metric-grid">
+                <div class="metric-item">
+                    <span class="metric-label">New Landlords</span>
+                    <div>
+                        <span class="metric-value">42</span>
+                        <span class="metric-trend up">+18%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">New Listings</span>
+                    <div>
+                        <span class="metric-value">156</span>
+                        <span class="metric-trend up">+24%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Verified Listings</span>
+                    <div>
+                        <span class="metric-value">1,089</span>
+                        <span class="metric-trend up">+12%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Active Listings</span>
+                    <div>
+                        <span class="metric-value">1,247</span>
+                        <span class="metric-trend up">+8%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Expired Listings</span>
+                    <div>
+                        <span class="metric-value">34</span>
+                        <span class="metric-trend down">-15%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Available Houses</span>
+                    <div>
+                        <span class="metric-value">892</span>
+                        <span class="metric-trend stable">±0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demand Metrics -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h2 class="section-title">Demand</h2>
+            </div>
+            <div class="metric-grid">
+                <div class="metric-item">
+                    <span class="metric-label">Website Visitors</span>
+                    <div>
+                        <span class="metric-value">24,567</span>
+                        <span class="metric-trend up">+32%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Searches</span>
+                    <div>
+                        <span class="metric-value">8,942</span>
+                        <span class="metric-trend up">+28%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">WhatsApp Inquiries</span>
+                    <div>
+                        <span class="metric-value">1,234</span>
+                        <span class="metric-trend up">+45%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Calls</span>
+                    <div>
+                        <span class="metric-value">567</span>
+                        <span class="metric-trend up">+22%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Messages</span>
+                    <div>
+                        <span class="metric-value">2,156</span>
+                        <span class="metric-trend up">+38%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Favorites</span>
+                    <div>
+                        <span class="metric-value">4,321</span>
+                        <span class="metric-trend up">+19%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversion Funnel -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-funnel-dollar"></i>
+                </div>
+                <h2 class="section-title">Conversion</h2>
+            </div>
+            <div class="metric-grid">
+                <div class="metric-item">
+                    <span class="metric-label">Search → Listing View</span>
+                    <div>
+                        <span class="metric-value">78%</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Listing View → Inquiry</span>
+                    <div>
+                        <span class="metric-value">24%</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 24%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Inquiry → Viewing</span>
+                    <div>
+                        <span class="metric-value">45%</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Viewing → Rental</span>
+                    <div>
+                        <span class="metric-value">67%</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 67%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="quick-actions">
+                <button class="quick-action-btn">
+                    <i class="fas fa-chart-line"></i> Optimize
+                </button>
+                <button class="quick-action-btn">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+        </div>
+
+        <!-- Marketing Performance -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-megaphone"></i>
+                </div>
+                <h2 class="section-title">Marketing</h2>
+            </div>
+            <div class="metric-grid">
+                <div class="metric-item">
+                    <span class="metric-label">TikTok Views</span>
+                    <div>
+                        <span class="metric-value">127K</span>
+                        <span class="metric-trend up">+89%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Facebook Reach</span>
+                    <div>
+                        <span class="metric-value">45K</span>
+                        <span class="metric-trend up">+34%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Instagram Reach</span>
+                    <div>
+                        <span class="metric-value">23K</span>
+                        <span class="metric-trend up">+56%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Website Traffic</span>
+                    <div>
+                        <span class="metric-value">24.5K</span>
+                        <span class="metric-trend up">+32%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Cost per Lead</span>
+                    <div>
+                        <span class="metric-value">KSh 45</span>
+                        <span class="metric-trend down">-18%</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Cost per Landlord</span>
+                    <div>
+                        <span class="metric-value">KSh 380</span>
+                        <span class="metric-trend down">-12%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust & Safety -->
+        <div class="dashboard-section section-large">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2 class="section-title">Trust & Safety</h2>
+            </div>
+            <div class="metric-grid">
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <span class="status-indicator status-warning"></span>
+                        Reported Listings
+                    </span>
+                    <div>
+                        <span class="metric-value">12</span>
+                        <span class="metric-trend up">+3</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <span class="status-indicator status-error"></span>
+                        Scam Complaints
+                    </span>
+                    <div>
+                        <span class="metric-value">3</span>
+                        <span class="metric-trend down">-2</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <span class="status-indicator status-active"></span>
+                        Fake Listings Removed
+                    </span>
+                    <div>
+                        <span class="metric-value">8</span>
+                        <span class="metric-trend stable">±0</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <span class="status-indicator status-active"></span>
+                        Verified Landlords
+                    </span>
+                    <div>
+                        <span class="metric-value">456</span>
+                        <span class="metric-trend up">+24</span>
+                    </div>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <span class="status-indicator status-warning"></span>
+                        Tenant Complaints
+                    </span>
+                    <div>
+                        <span class="metric-value">7</span>
+                        <span class="metric-trend down">-1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Traffic Chart -->
+        <div class="dashboard-section section-large">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-chart-area"></i>
+                </div>
+                <h2 class="section-title">Website Traffic (Last 30 Days)</h2>
+            </div>
+            <div class="chart-container">
+                <canvas id="traffic-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="dashboard-section section-wide">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h2 class="section-title">Recent Activity</h2>
+            </div>
+            <div class="metric-grid">
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <i class="fas fa-home" style="color: #10b981; margin-right: 8px;"></i>
+                        New property listed in Kilimani
+                    </span>
+                    <span class="metric-value" style="font-size: 0.8rem; color: #64748b;">2 min ago</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <i class="fas fa-user-check" style="color: #3b82f6; margin-right: 8px;"></i>
+                        Landlord verified: John Doe
+                    </span>
+                    <span class="metric-value" style="font-size: 0.8rem; color: #64748b;">5 min ago</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <i class="fas fa-phone" style="color: #f59e0b; margin-right: 8px;"></i>
+                        WhatsApp inquiry for Ruaka apartment
+                    </span>
+                    <span class="metric-value" style="font-size: 0.8rem; color: #64748b;">8 min ago</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <i class="fas fa-handshake" style="color: #8b5cf6; margin-right: 8px;"></i>
+                        Rental agreement completed
+                    </span>
+                    <span class="metric-value" style="font-size: 0.8rem; color: #64748b;">12 min ago</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">
+                        <i class="fas fa-flag" style="color: #ef4444; margin-right: 8px;"></i>
+                        Listing reported for review
+                    </span>
+                    <span class="metric-value" style="font-size: 0.8rem; color: #64748b;">18 min ago</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initTrafficChart();
+            updateLastUpdatedTime();
+            
+            // Auto-refresh every 5 minutes
+            setInterval(() => {
+                updateMetrics();
+                updateLastUpdatedTime();
+            }, 5 * 60 * 1000);
+        });
+
+        // Traffic Chart
+        function initTrafficChart() {
+            const ctx = document.getElementById('traffic-chart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 30}, (_, i) => {
+                        const date = new Date();
+                        date.setDate(date.getDate() - (29 - i));
+                        return date.getDate();
+                    }),
+                    datasets: [{
+                        label: 'Visitors',
+                        data: generateRandomData(30, 800, 1200),
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Inquiries',
+                        data: generateRandomData(30, 200, 400),
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f1f5f9'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: '#f1f5f9'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Generate random data for demo
+        function generateRandomData(count, min, max) {
+            return Array.from({length: count}, () => 
+                Math.floor(Math.random() * (max - min + 1)) + min
+            );
+        }
+
+        // Update metrics (simulate real-time data)
+        function updateMetrics() {
+            const metrics = [
+                'total-properties',
+                'active-users', 
+                'monthly-inquiries'
+            ];
+            
+            metrics.forEach(metric => {
+                const element = document.getElementById(metric);
+                if (element) {
+                    const currentValue = parseInt(element.textContent.replace(/,/g, ''));
+                    const change = Math.floor(Math.random() * 10) - 5;
+                    const newValue = Math.max(0, currentValue + change);
+                    element.textContent = newValue.toLocaleString();
+                }
+            });
+        }
+
+        // Update last updated time
+        function updateLastUpdatedTime() {
+            document.getElementById('last-updated').textContent = 'just now';
+        }
+    </script>
+</body>
+</html>
