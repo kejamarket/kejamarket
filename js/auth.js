@@ -729,15 +729,9 @@ const kejaAuth = (() => {
       const isServiceProvider = Boolean(session.role === 'service');
 
       const displayName = session.name || session.email || session.phone || 'User';
-      const initials = displayName
-        .split(' ')
-        .map(w => w[0])
-        .filter(Boolean)
-        .join('')
-        .toUpperCase()
-        .slice(0, 2) || 'U';
-
-      if (label) label.textContent = initials;
+      const firstName = displayName.split(' ')[0]; // Get first name instead of initials
+      
+      if (label) label.textContent = firstName;
       if (mobileLabel) mobileLabel.textContent = (displayName.split(' ')[0] || 'Me');
       if (adminHeaderBtn) adminHeaderBtn.style.display = 'none'; // Always hidden, auto-opens on login
       
@@ -1037,42 +1031,59 @@ const kejaAuth = (() => {
       return;
     }
 
-    // Build dropdown content
+    // Build compact profile dropdown content (Jiji-style)
     const content = document.getElementById('profile-dropdown-content');
     if (content) {
       content.innerHTML = `
-        <div style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">
-          <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem;">${session.name || session.email || session.phone || 'User'}</div>
-          <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">${session.email || session.phone}</div>
-          <div style="font-size: 0.75rem; color: #6366f1; margin-top: 4px; text-transform: uppercase; font-weight: 600;">${session.role}</div>
+        <!-- Profile Header -->
+        <div class="profile-dropdown-header">
+          <div class="profile-avatar">
+            ${(session.name || 'User').charAt(0).toUpperCase()}
+          </div>
+          <div class="profile-name">${session.name || 'User'}</div>
+          <div class="profile-contact">${session.email || session.phone || ''}</div>
+          <div class="profile-role">${session.role || 'Member'}</div>
         </div>
-        <div style="padding: 8px 0;">
-          <button onclick="kejaAuth.openAuthModal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: #f0fdf4; border: none; cursor: pointer; font-size: 0.9rem; color: #166534; font-weight: 700; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
-            <i class="fas fa-id-badge" style="width: 16px; color: #16a34a;"></i> My Profile Dashboard
+
+        <!-- Profile Menu -->
+        <div class="profile-menu">
+          <button class="profile-menu-item" onclick="kejaAuth.openAuthModal(); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-user profile-menu-icon"></i>
+            <span>My Profile</span>
           </button>
+          
           ${session.role === 'landlord' || session.role === 'agency' ? `
-            <button onclick="kejaLandlordPortal.openLandlordPortal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
-              <i class="fas fa-home" style="width: 16px;"></i> Landlord Portal
+            <button class="profile-menu-item" onclick="kejaLandlordPortal.openLandlordPortal(); kejaAuth.closeProfileDropdown();">
+              <i class="fas fa-home profile-menu-icon"></i>
+              <span>My Properties</span>
             </button>
           ` : ''}
+          
           ${session.role === 'service' ? `
-            <button onclick="kejaServicePortal.openServicePortal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
-              <i class="fas fa-tools" style="width: 16px;"></i> Service Portal
+            <button class="profile-menu-item" onclick="kejaServicePortal.openServicePortal(); kejaAuth.closeProfileDropdown();">
+              <i class="fas fa-tools profile-menu-icon"></i>
+              <span>My Services</span>
             </button>
           ` : ''}
-          <button onclick="window.app.openModal('modal-saved-properties'); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
-            <i class="fas fa-heart" style="width: 16px;"></i> Saved Properties
+          
+          <button class="profile-menu-item" onclick="window.app.openModal('modal-saved-properties'); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-heart profile-menu-icon"></i>
+            <span>Saved Properties</span>
           </button>
-          <button onclick="window.app.openModal('modal-whatsapp-alerts'); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
-            <i class="fab fa-whatsapp" style="width: 16px; color: #25d366;"></i> WhatsApp Alerts
+          
+          <button class="profile-menu-item" onclick="window.app.openModal('modal-whatsapp-alerts'); kejaAuth.closeProfileDropdown();">
+            <i class="fab fa-whatsapp profile-menu-icon"></i>
+            <span>WhatsApp Alerts</span>
           </button>
-          <button onclick="window.app.openAdminChat && window.app.openAdminChat(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #0369a1; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='none'">
-            <i class="fas fa-headset" style="width: 16px; color: #0369a1;"></i> Help &amp; Customer Support
+          
+          <button class="profile-menu-item" onclick="window.app.openAdminChat && window.app.openAdminChat(); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-headset profile-menu-icon"></i>
+            <span>Help & Support</span>
           </button>
-        </div>
-        <div style="border-top: 1px solid #e5e7eb; padding: 8px 0;">
-          <button onclick="kejaAuth.signOut(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 12px 16px; background: none; border: none; cursor: pointer; font-size: 1rem; color: #dc2626; font-weight: 700; display: flex; align-items: center; gap: 10px; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" onmouseover="this.style.background='#fef2f2'; this.style.color='#b91c1c';" onmouseout="this.style.background='none'; this.style.color='#dc2626';">
-            <i class="fas fa-sign-out-alt" style="width: 16px; color: #dc2626;"></i> <strong>Sign Out</strong>
+          
+          <button class="profile-menu-item profile-logout" onclick="kejaAuth.signOut(); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-sign-out-alt profile-menu-icon"></i>
+            <span>Sign Out</span>
           </button>
         </div>
       `;

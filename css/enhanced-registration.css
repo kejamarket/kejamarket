@@ -791,35 +791,119 @@
   color: white;
 }
 
-/* Profile Dropdown Styling */
+/* Jiji-Style Compact Profile Dropdown */
 #profile-dropdown {
-  background: white;
+  position: absolute !important;
+  top: 50px !important;
+  right: 10px !important;
+  background: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
+  min-width: 280px !important;
+  max-width: 320px !important;
+  z-index: 9999 !important;
+  padding: 0 !important;
+  border: 1px solid #e5e7eb !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  overflow: hidden !important;
+}
+
+/* Profile Header Section */
+.profile-dropdown-header {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  padding: 16px;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.profile-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.profile-contact {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-bottom: 2px;
+}
+
+.profile-role {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 4px 10px;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  min-width: 220px;
-  z-index: 3000;
-  padding: 12px 0;
-  border: 1px solid #e5e7eb;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-#profile-dropdown button {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 0.9rem !important;
-  font-weight: 500 !important;
-  transition: all 0.2s ease !important;
+/* Profile Menu Items */
+.profile-menu {
+  padding: 8px 0;
 }
 
-/* Logout Button Specific Styling */
-#profile-dropdown button[onclick*="signOut"] {
+.profile-menu-item {
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.profile-menu-item:hover {
+  background: #f9fafb;
+  color: #1f2937;
+}
+
+.profile-menu-item:last-child {
+  border-bottom: none;
+}
+
+.profile-menu-icon {
+  width: 18px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* Logout Button */
+.profile-logout {
+  border-top: 1px solid #e5e7eb;
+  background: #fef2f2;
   color: #dc2626 !important;
-  font-weight: 600 !important;
-  font-size: 0.95rem !important;
+  font-weight: 600;
 }
 
-#profile-dropdown button[onclick*="signOut"]:hover {
-  background: #fef2f2 !important;
+.profile-logout:hover {
+  background: #fee2e2 !important;
   color: #b91c1c !important;
+}
+
+.profile-logout .profile-menu-icon {
+  color: #dc2626;
 }
 
 /* Profile Button in Header */
