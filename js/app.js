@@ -191,6 +191,11 @@ class NairobiRentalsApp {
 
   toggleFavorite(propertyId, event) {
     if (event) event.stopPropagation();
+    // Gate: require sign-in to save/remove favorites
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.toggleFavorite(propertyId, null));
+      return;
+    }
     const wasAdded = !this.favorites.has(propertyId);
     if (this.favorites.has(propertyId)) {
       this.favorites.delete(propertyId);
@@ -642,6 +647,11 @@ class NairobiRentalsApp {
   }
 
   setViewMode(mode) {
+    // Gate: interactive map/split view requires login
+    if ((mode === 'map' || mode === 'split') && !(window.kejaAuth && window.kejaAuth.getSession())) {
+      window.kejaAuth.requireTenantAuth(() => this.setViewMode(mode));
+      return;
+    }
     this.currentViewMode = mode;
 
     // Toggle button active states
@@ -1207,6 +1217,11 @@ class NairobiRentalsApp {
 
   focusPropertyOnMap(propertyId, event) {
     if (event) event.stopPropagation();
+    // Gate: map view requires login
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.focusPropertyOnMap(propertyId, null));
+      return;
+    }
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 

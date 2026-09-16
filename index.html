@@ -2468,7 +2468,7 @@
       </div>
       <span>Post Ad</span>
     </a>
-    <a href="#" class="mobile-nav-item" onclick="app.toggleFavoritesView(); return false;">
+    <a href="#" class="mobile-nav-item" onclick="if(window.kejaAuth && window.kejaAuth.getSession()){ app.toggleFavoritesView(); } else { kejaAuth.requireTenantAuth(() => app.toggleFavoritesView()); } return false;">
       <i class="fas fa-heart"></i>
       <span>Saved</span>
     </a>
