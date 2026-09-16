@@ -724,6 +724,13 @@
   margin-top: 2px;
 }
 
+.media-duration {
+  color: #7c3aed;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
 .form-actions {
   display: flex;
   gap: 12px;

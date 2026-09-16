@@ -343,16 +343,16 @@ const KejaEnhancedAuth = {
   },
 
   /**
-   * Caretaker-specific form
+   * Caretaker-specific form (simplified - properties added later in dashboard)
    */
   getCaretakerForm() {
     return `
       <div class="step-header">
         <h3 style="font-size: 1.2rem; font-weight: 800; color: #1e293b; margin-bottom: 8px; text-align: center;">
-          Property Management Details
+          Property Manager Details
         </h3>
         <p style="color: #64748b; text-align: center; margin-bottom: 24px; font-size: 0.9rem;">
-          Tell us about the properties you manage
+          Complete your profile - you can add properties in your dashboard
         </p>
       </div>
 
@@ -373,54 +373,35 @@ const KejaEnhancedAuth = {
           </select>
         </div>
 
-        <div class="properties-section">
-          <h4 style="color: #1e293b; margin: 20px 0 12px 0; font-size: 1rem;">Properties I Manage</h4>
-          
-          <div id="properties-list">
-            <div class="property-input-group" data-property-index="0">
-              <div class="property-card">
-                <div class="form-row">
-                  <div class="form-group" style="flex: 2;">
-                    <label>Property/Building Name *</label>
-                    <input type="text" class="form-control property-name" placeholder="e.g. Sunrise Apartments" required>
-                  </div>
-                  <div class="form-group" style="flex: 1;">
-                    <label>Total Units *</label>
-                    <input type="number" class="form-control property-units" placeholder="20" min="1" required>
-                  </div>
-                </div>
-                
-                <div class="form-row">
-                  <div class="form-group" style="flex: 2;">
-                    <label>Location *</label>
-                    <input type="text" class="form-control property-location" placeholder="e.g. Kilimani, Nairobi" required>
-                  </div>
-                  <div class="form-group" style="flex: 1;">
-                    <label>Available Units</label>
-                    <input type="number" class="form-control property-available" placeholder="5" min="0">
-                  </div>
-                </div>
+        <div class="form-group">
+          <label>Years of Experience *</label>
+          <select id="caretaker-experience" class="form-control" required>
+            <option value="">Select experience</option>
+            <option value="1-2">1-2 years</option>
+            <option value="3-5">3-5 years</option>
+            <option value="6-10">6-10 years</option>
+            <option value="10+">10+ years</option>
+          </select>
+        </div>
 
-                <div class="form-group">
-                  <label>Property Owner Contact</label>
-                  <input type="text" class="form-control property-owner" placeholder="Owner's name and phone">
-                </div>
-
-                <button type="button" class="btn-remove-property" onclick="KejaEnhancedAuth.removeProperty(0)" style="display: none;">
-                  <i class="fas fa-trash"></i> Remove Property
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <button type="button" onclick="KejaEnhancedAuth.addProperty()" class="btn-add-property">
-            <i class="fas fa-plus"></i> Add Another Property
-          </button>
+        <div class="form-group">
+          <label>Area of Operation *</label>
+          <input type="text" id="caretaker-area" class="form-control" placeholder="e.g. Nairobi, Kilimani, Westlands" required>
         </div>
 
         <div class="form-group" style="margin-top: 24px;">
-          <label>ID/Verification Information *</label>
-          <textarea id="caretaker-verification" class="form-control" rows="3" placeholder="National ID number, years of experience, references..." required></textarea>
+          <label>Additional Information (Optional)</label>
+          <textarea id="caretaker-notes" class="form-control" rows="3" placeholder="Brief description of your experience, certifications, or special skills..."></textarea>
+        </div>
+
+        <div class="signup-note" style="background: #f0fdf4; padding: 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #059669;">
+          <div style="display: flex; align-items: center; gap: 8px; color: #059669; font-weight: 600; margin-bottom: 8px;">
+            <i class="fas fa-info-circle"></i>
+            Next Steps
+          </div>
+          <div style="color: #064e3b; font-size: 0.9rem; line-height: 1.4;">
+            After registration, you'll access your Property Partner Dashboard where you can add buildings, create unit listings, and manage your portfolio.
+          </div>
         </div>
       </form>
     `;
@@ -498,7 +479,7 @@ const KejaEnhancedAuth = {
               <label class="upload-label">
                 <i class="fas fa-camera"></i>
                 <span class="upload-title">Work Photos (Max 5)</span>
-                <span class="upload-desc">Show examples of your completed work</span>
+                <span class="upload-desc">JPG, PNG up to 2MB each</span>
                 <input type="file" id="service-photos" multiple accept="image/*" onchange="KejaEnhancedAuth.handleServicePhotoUpload(event)">
               </label>
               <div id="service-photo-preview" class="media-preview"></div>
@@ -561,7 +542,7 @@ const KejaEnhancedAuth = {
     const files = Array.from(event.target.files);
     const preview = document.getElementById('service-photo-preview');
     const maxFiles = 5;
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 2 * 1024 * 1024; // 2MB
 
     if (files.length > maxFiles) {
       alert(`Maximum ${maxFiles} photos allowed`);
@@ -574,7 +555,7 @@ const KejaEnhancedAuth = {
 
     files.forEach((file, index) => {
       if (file.size > maxSize) {
-        alert(`Photo ${file.name} is too large. Maximum 5MB per photo.`);
+        alert(`Photo ${file.name} is too large. Maximum 2MB per photo.`);
         return;
       }
 
@@ -748,36 +729,8 @@ const KejaEnhancedAuth = {
       document.getElementById('summary-name').textContent = nameField.value;
     }
 
-    // Show properties for caretakers
-    if (this.selectedPropertyRole === 'caretaker') {
-      const properties = this.getCaretakerProperties();
-      if (properties.length > 0) {
-        document.getElementById('summary-properties').textContent = `${properties.length} properties`;
-        document.getElementById('summary-properties-item').style.display = 'block';
-      }
-    }
-  },
-
-  /**
-   * Get caretaker properties data
-   */
-  getCaretakerProperties() {
-    const properties = [];
-    document.querySelectorAll('.property-input-group').forEach(group => {
-      const name = group.querySelector('.property-name').value;
-      const location = group.querySelector('.property-location').value;
-      const units = group.querySelector('.property-units').value;
-      const available = group.querySelector('.property-available').value;
-      const owner = group.querySelector('.property-owner').value;
-
-      if (name && location && units) {
-        properties.push({
-          name, location, units: parseInt(units), 
-          available: parseInt(available) || 0, owner
-        });
-      }
-    });
-    return properties;
+    // Remove properties section since caretakers add them later
+    document.getElementById('summary-properties-item').style.display = 'none';
   },
 
   /**
@@ -795,10 +748,15 @@ const KejaEnhancedAuth = {
         position: document.getElementById('caretaker-position')?.value || '',
         phone: document.getElementById('final-phone').value,
         email: document.getElementById('final-email').value,
-        password: document.getElementById('final-password').value,
-        verification: document.getElementById('caretaker-verification')?.value || '',
-        properties: this.selectedPropertyRole === 'caretaker' ? this.getCaretakerProperties() : []
+        password: document.getElementById('final-password').value
       };
+
+      // Add caretaker-specific data (no properties during signup)
+      if (this.selectedPropertyRole === 'caretaker') {
+        registrationData.experience = document.getElementById('caretaker-experience')?.value || '';
+        registrationData.operationArea = document.getElementById('caretaker-area')?.value || '';
+        registrationData.notes = document.getElementById('caretaker-notes')?.value || '';
+      }
 
       console.log('Enhanced Registration Data:', registrationData);
       
@@ -897,6 +855,8 @@ const KejaEnhancedAuth = {
    */
   showSuccessMessage() {
     const container = document.getElementById('enhanced-signup');
+    const isCaretaker = this.selectedPropertyRole === 'caretaker';
+    
     container.innerHTML = `
       <div class="success-message" style="text-align: center; padding: 40px 20px;">
         <div class="success-icon" style="margin-bottom: 24px;">
@@ -906,25 +866,37 @@ const KejaEnhancedAuth = {
         </div>
         
         <h3 style="color: #059669; margin-bottom: 16px; font-size: 1.4rem; font-weight: 800;">
-          🛡️ Verification Submitted!
+          🛡️ ${isCaretaker ? 'Property Partner Account Created!' : 'Account Created Successfully!'}
         </h3>
         
         <p style="color: #64748b; margin-bottom: 24px; line-height: 1.6;">
-          Your registration has been submitted for verification. You'll receive a confirmation SMS and email within 24 hours.
+          ${isCaretaker ? 
+            'Welcome to KejaMarket! You now have access to your Property Partner Dashboard where you can add buildings and create unit listings.' :
+            'Welcome to KejaMarket! Your account has been created and you can now access all features.'
+          }
         </p>
         
         <div class="next-steps" style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 24px;">
-          <h4 style="color: #1e293b; margin-bottom: 12px;">What happens next?</h4>
+          <h4 style="color: #1e293b; margin-bottom: 12px;">
+            ${isCaretaker ? 'Your Dashboard Features:' : 'What\'s Next?'}
+          </h4>
           <ul style="text-align: left; color: #64748b; font-size: 0.9rem;">
-            <li>✅ Identity verification (24 hours)</li>
-            <li>📱 SMS confirmation</li>
-            <li>🛡️ Verified Property Partner status</li>
-            <li>📊 Access to your dashboard</li>
+            ${isCaretaker ? `
+              <li>🏢 Add buildings you manage</li>
+              <li>📝 Create unit listings with photos & videos</li>
+              <li>📊 Track inquiries and manage availability</li>
+              <li>💬 Communicate with property owners</li>
+            ` : `
+              <li>✅ Phone verification (if required)</li>
+              <li>📱 SMS confirmation</li>
+              <li>🏠 Access to all listings</li>
+              <li>📊 Personalized dashboard</li>
+            `}
           </ul>
         </div>
         
-        <button onclick="app.closeModal('modal-auth')" class="btn-primary" style="width: 100%;">
-          Done
+        <button onclick="app.closeModal('modal-auth'); ${isCaretaker ? 'window.location.reload();' : ''}" class="btn-primary" style="width: 100%;">
+          ${isCaretaker ? 'Go to Dashboard' : 'Get Started'}
         </button>
       </div>
     `;

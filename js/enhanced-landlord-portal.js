@@ -633,7 +633,7 @@ const KejaEnhancedPortal = {
                   <label class="upload-label">
                     <i class="fas fa-camera"></i>
                     <span class="upload-title">Unit Photos (Max 8)</span>
-                    <span class="upload-desc">JPG, PNG up to 5MB each</span>
+                    <span class="upload-desc">JPG, PNG up to 2MB each</span>
                     <input type="file" id="unit-photos" multiple accept="image/*" onchange="KejaEnhancedPortal.handlePhotoUpload(event)">
                   </label>
                   <div id="photo-preview" class="media-preview"></div>
@@ -643,7 +643,7 @@ const KejaEnhancedPortal = {
                   <label class="upload-label">
                     <i class="fas fa-video"></i>
                     <span class="upload-title">Unit Video Tour (Max 1)</span>
-                    <span class="upload-desc">MP4, MOV up to 50MB, max 2 minutes</span>
+                    <span class="upload-desc">MP4, MOV max 1min 30sec</span>
                     <input type="file" id="unit-video" accept="video/*" onchange="KejaEnhancedPortal.handleVideoUpload(event)">
                   </label>
                   <div id="video-preview" class="media-preview"></div>
@@ -811,7 +811,7 @@ const KejaEnhancedPortal = {
     const files = Array.from(event.target.files);
     const preview = document.getElementById('photo-preview');
     const maxFiles = 8;
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 2 * 1024 * 1024; // 2MB
 
     if (files.length > maxFiles) {
       alert(`Maximum ${maxFiles} photos allowed`);
@@ -824,7 +824,7 @@ const KejaEnhancedPortal = {
 
     files.forEach((file, index) => {
       if (file.size > maxSize) {
-        alert(`Photo ${file.name} is too large. Maximum 5MB per photo.`);
+        alert(`Photo ${file.name} is too large. Maximum 2MB per photo.`);
         return;
       }
 
@@ -858,16 +858,8 @@ const KejaEnhancedPortal = {
   handleVideoUpload(event) {
     const file = event.target.files[0];
     const preview = document.getElementById('video-preview');
-    const maxSize = 50 * 1024 * 1024; // 50MB
-    const maxDuration = 120; // 2 minutes in seconds
 
     if (!file) return;
-
-    if (file.size > maxSize) {
-      alert('Video file is too large. Maximum 50MB allowed.');
-      event.target.value = '';
-      return;
-    }
 
     if (!file.type.startsWith('video/')) {
       alert('Please select a valid video file.');
@@ -875,31 +867,46 @@ const KejaEnhancedPortal = {
       return;
     }
 
-    // Clear previous preview
-    preview.innerHTML = '';
+    // Check video duration (1 minute 30 seconds = 90 seconds)
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    
+    video.onloadedmetadata = () => {
+      if (video.duration > 90) {
+        alert('Video is too long. Maximum duration is 1 minute 30 seconds.');
+        event.target.value = '';
+        return;
+      }
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const videoItem = document.createElement('div');
-      videoItem.className = 'media-item';
-      videoItem.innerHTML = `
-        <div class="media-thumbnail video-thumbnail">
-          <video src="${e.target.result}" controls>
-            Your browser does not support video preview.
-          </video>
-          <button type="button" class="remove-media" onclick="this.parentElement.parentElement.remove(); document.getElementById('unit-video').value = '';">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="media-info">
-          <div class="media-name">${file.name}</div>
-          <div class="media-size">${(file.size / 1024 / 1024).toFixed(1)}MB</div>
-          <div class="media-type">Video Tour</div>
-        </div>
-      `;
-      preview.appendChild(videoItem);
+      // Clear previous preview
+      preview.innerHTML = '';
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const videoItem = document.createElement('div');
+        videoItem.className = 'media-item';
+        videoItem.innerHTML = `
+          <div class="media-thumbnail video-thumbnail">
+            <video src="${e.target.result}" controls>
+              Your browser does not support video preview.
+            </video>
+            <button type="button" class="remove-media" onclick="this.parentElement.parentElement.remove(); document.getElementById('unit-video').value = '';">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="media-info">
+            <div class="media-name">${file.name}</div>
+            <div class="media-size">${(file.size / 1024 / 1024).toFixed(1)}MB</div>
+            <div class="media-type">Video Tour</div>
+            <div class="media-duration">${Math.floor(video.duration / 60)}:${Math.floor(video.duration % 60).toString().padStart(2, '0')}</div>
+          </div>
+        `;
+        preview.appendChild(videoItem);
+      };
+      reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
+
+    video.src = URL.createObjectURL(file);
   },
 
   /**
