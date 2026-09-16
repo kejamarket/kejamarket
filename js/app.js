@@ -642,11 +642,6 @@ class NairobiRentalsApp {
   }
 
   setViewMode(mode) {
-    if ((mode === 'map' || mode === 'split') && (!window.kejaAuth || !window.kejaAuth.getSession())) {
-      window.kejaAuth.requireTenantAuth(() => this.setViewMode(mode));
-      return;
-    }
-
     this.currentViewMode = mode;
 
     // Toggle button active states
@@ -1185,12 +1180,13 @@ class NairobiRentalsApp {
           </div>
 
           <div class="card-action-buttons">
+            <!-- View Details — always free, no login required -->
+            <button class="btn-card-details" onclick="app.openPropertyDetail('${p.id}')">
+              <i class="fas fa-eye"></i> View Details
+            </button>
             ${isTaken ? `
               <button class="btn-card-call" style="background: #ef4444; color: white; opacity: 0.85;" onclick="app.showTakenToast(event)">
                 <i class="fas fa-ban"></i> Taken
-              </button>
-              <button class="btn-card-chat" style="background: #94a3b8; color: white; opacity: 0.85;" onclick="app.showTakenToast(event)">
-                <i class="fas fa-lock"></i> Taken
               </button>
             ` : `
               <button class="btn-card-call" onclick="app.revealLandlordPhone('${p.id}', this)">
@@ -1200,8 +1196,8 @@ class NairobiRentalsApp {
                 <i class="fas fa-comment-dots"></i> Chat
               </button>
             `}
-            <button class="btn-card-map" onclick="app.focusPropertyOnMap('${p.id}', event)" title="View Pin on Map">
-              <i class="fas fa-map-marked-alt"></i> Pin Map
+            <button class="btn-card-map" onclick="app.focusPropertyOnMap('${p.id}', event)" title="View on Map">
+              <i class="fas fa-map-marked-alt"></i>
             </button>
           </div>
         </div>
@@ -1211,10 +1207,6 @@ class NairobiRentalsApp {
 
   focusPropertyOnMap(propertyId, event) {
     if (event) event.stopPropagation();
-    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
-      window.kejaAuth.requireTenantAuth(() => this.focusPropertyOnMap(propertyId));
-      return;
-    }
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 
@@ -1222,7 +1214,7 @@ class NairobiRentalsApp {
     window.scrollTo({ top: 120, behavior: 'smooth' });
 
     setTimeout(() => {
-      if (window.mapController.fullMap) {
+      if (window.mapController && window.mapController.fullMap) {
         window.mapController.fullMap.setView([p.latitude, p.longitude], 15, { animate: true });
       }
     }, 200);

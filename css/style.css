@@ -1136,6 +1136,28 @@ button, input, select, textarea {
   border-top: 1px solid #f1f5f9;
 }
 
+.btn-card-details {
+  background: #2563EB;
+  border: none;
+  color: white;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: var(--transition);
+  white-space: nowrap;
+  flex: 1;
+}
+
+.btn-card-details:hover {
+  background: #1d4ed8;
+}
+
 .btn-card-call {
   background: #f8fafc;
   border: 1px solid var(--border-color);

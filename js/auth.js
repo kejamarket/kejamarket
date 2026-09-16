@@ -101,13 +101,15 @@ const kejaAuth = (() => {
     const target = document.getElementById(`auth-panel-${tab}`);
     if (target) target.style.display = 'block';
 
-    // Update tab button active states for main tabs only
-    const activeStyle = 'background:transparent; color:white; border-bottom:3px solid white;';
-    const inactiveStyle = 'background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.75); border-bottom:3px solid transparent;';
+    // Update tab button active states — new CSS class-based approach
     const tabSignIn = document.getElementById('auth-tab-signin');
     const tabSignUp = document.getElementById('auth-tab-signup');
-    if (tabSignIn) tabSignIn.style.cssText += (tab === 'signin' ? activeStyle : inactiveStyle);
-    if (tabSignUp) tabSignUp.style.cssText += (tab === 'signup' || tab === 'otp' ? activeStyle : inactiveStyle);
+    if (tabSignIn) {
+      tabSignIn.classList.toggle('auth-tab--active', tab === 'signin');
+    }
+    if (tabSignUp) {
+      tabSignUp.classList.toggle('auth-tab--active', tab === 'signup' || tab === 'otp');
+    }
   }
 
   /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

@@ -2121,283 +2121,228 @@
 
 
   <!-- ====================================================================
-       AUTH MODAL: Sign In / Sign Up (Tenant & Landlord)
+       AUTH MODAL: Sign In / Sign Up
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-auth" style="z-index: 2500;">
-    <div class="modal-dialog" style="max-width:480px;">
+    <div class="modal-dialog auth-modal-dialog">
 
-      <!-- Header tabs -->
-      <div class="modal-header" style="background:linear-gradient(135deg,#4f46e5,#7c3aed); padding:0; overflow:hidden;">
-        <div style="display:flex; width:100%;">
-          <button id="auth-tab-signin" onclick="kejaAuth.switchTab('signin')"
-            style="flex:1; padding:18px; border:none; background:transparent; color:white; font-weight:700; font-size:1rem; cursor:pointer; border-bottom:3px solid white; transition:all 0.2s;">
-            Sign In
-          </button>
-          <button id="auth-tab-signup" onclick="kejaAuth.switchTab('signup')"
-            style="flex:1; padding:18px; border:none; background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.75); font-weight:700; font-size:1rem; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s;">
-            Sign Up
-          </button>
+      <!-- Modal Header with logo + tabs -->
+      <div class="auth-modal-header">
+        <div class="auth-header-brand">
+          <img src="/icons/favicon-32x32.png" alt="KejaMarket" class="auth-header-logo">
+          <span class="auth-header-name">KejaMarket</span>
         </div>
-        <button class="modal-close-btn" onclick="app.closeModal('modal-auth')" style="color:white; position:absolute; right:14px; top:12px;">&times;</button>
+        <div class="auth-tabs">
+          <button id="auth-tab-signin" class="auth-tab auth-tab--active" onclick="kejaAuth.switchTab('signin')">Sign In</button>
+          <button id="auth-tab-signup" class="auth-tab" onclick="kejaAuth.switchTab('signup')">Sign Up</button>
+        </div>
+        <button class="modal-close-btn auth-close-btn" onclick="app.closeModal('modal-auth')">&times;</button>
       </div>
 
-      <div class="modal-body" style="padding:24px;">
+      <div class="modal-body auth-modal-body">
 
-        <!-- â”€â”€ SIGN IN PANEL â”€â”€ -->
+        <!-- SIGN IN PANEL -->
         <div id="auth-panel-signin">
-          <!-- Role chooser -->
-          <div style="display:flex; gap:8px; margin-bottom:16px;">
-            <button onclick="kejaAuth.setRole('tenant','signin')" id="role-signin-tenant"
-              class="role-btn role-btn-active" style="flex:1; padding:8px 4px; font-size:0.82rem;">
-              <i class="fas fa-user"></i><br>Tenant
+          <p class="auth-subtitle">Sign in to your account to continue</p>
+          <div class="auth-role-grid" id="signin-role-grid">
+            <button onclick="kejaAuth.setRole('tenant','signin')" id="role-signin-tenant" class="auth-role-card auth-role-card--active">
+              <i class="fas fa-user"></i><span>Tenant / Buyer</span>
             </button>
-            <button onclick="kejaAuth.setRole('landlord','signin')" id="role-signin-landlord"
-              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
-              <i class="fas fa-home"></i><br>Property Owner / Agent
+            <button onclick="kejaAuth.setRole('landlord','signin')" id="role-signin-landlord" class="auth-role-card">
+              <i class="fas fa-home"></i><span>Property Owner / Agent</span>
             </button>
-            <button onclick="kejaAuth.setRole('service','signin')" id="role-signin-service"
-              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
-              <i class="fas fa-tools"></i><br>Services
+            <button onclick="kejaAuth.setRole('service','signin')" id="role-signin-service" class="auth-role-card">
+              <i class="fas fa-tools"></i><span>Service Provider</span>
             </button>
           </div>
-
-          <!-- Direct Password Sign In Form -->
           <form id="form-signin-password" onsubmit="kejaAuth.handleSignIn(event)">
             <div class="form-group">
-              <label>Phone Number or Email *</label>
-              <input type="text" id="signin-identifier" class="form-control" placeholder="0712345678 or name@email.com" required autofocus>
-            </div>
-            <div class="form-group">
-              <label>Password *</label>
-              <div style="position:relative;">
-                <input type="password" id="signin-password" class="form-control" placeholder="Enter password" required style="padding-right:42px;">
-                <button type="button" onclick="kejaAuth.togglePwd('signin-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;">
-                  <i class="fas fa-eye"></i>
-                </button>
+              <label>Phone Number or Email</label>
+              <div class="input-icon-wrap">
+                <i class="fas fa-phone input-icon"></i>
+                <input type="text" id="signin-identifier" class="form-control form-control--icon" placeholder="0712345678 or name@email.com" required autofocus>
               </div>
             </div>
-            <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;margin-top:4px;">
-              Sign In
-            </button>
-            <p style="text-align:center;margin-top:10px;font-size:0.85rem;">
-              <a href="#" onclick="kejaAuth.showForgotPassword();return false;" style="color:#00b53f;font-weight:600;">
-                Forgot password?
-              </a>
-            </p>
-            <p style="text-align:center;margin-top:8px;font-size:0.85rem;color:#6b7280;">
-              No account? <a href="#" onclick="kejaAuth.switchTab('signup');return false;" style="color:#4f46e5;font-weight:600;">Create one free</a>
-            </p>
+            <div class="form-group">
+              <label>Password</label>
+              <div style="position:relative;">
+                <i class="fas fa-lock" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:0.85rem;pointer-events:none;z-index:1;"></i>
+                <input type="password" id="signin-password" class="form-control form-control--icon" placeholder="Enter your password" required style="padding-right:42px;">
+                <button type="button" onclick="kejaAuth.togglePwd('signin-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;z-index:1;"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+            <div style="text-align:right;margin-bottom:14px;margin-top:-6px;">
+              <a href="#" onclick="kejaAuth.showForgotPassword();return false;" style="color:#2563EB;font-size:0.82rem;font-weight:600;">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn-auth-submit"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+            <p class="auth-switch-text">Don't have an account? <a href="#" onclick="kejaAuth.switchTab('signup');return false;">Sign Up free</a></p>
           </form>
         </div>
 
-        <!-- â”€â”€ FORGOT PASSWORD PANEL (sibling, not nested) â”€â”€ -->
+        <!-- FORGOT PASSWORD PANEL -->
         <div id="auth-panel-forgot" style="display:none;">
-          <div style="text-align:center; margin-bottom:20px;">
-            <div style="width:56px;height:56px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
-              <i class="fas fa-key" style="color:#00b53f;font-size:1.5rem;"></i>
-            </div>
-            <h3 style="font-size:1.1rem;font-weight:800;color:#0f172a;margin:0 0 6px 0;">Reset Your Password</h3>
-            <p style="font-size:0.85rem;color:#64748b;margin:0;">Enter your phone number or email and we'll send you a reset code via SMS.</p>
+          <div class="auth-icon-header">
+            <div class="auth-icon-circle" style="background:#e0f2fe;"><i class="fas fa-key" style="color:#0ea5e9;"></i></div>
+            <h3>Reset Your Password</h3>
+            <p>Enter your phone number or email and we'll send a reset code via SMS.</p>
           </div>
           <form id="form-forgot-password" onsubmit="kejaAuth.handleForgotPassword(event)">
             <div class="form-group">
-              <label>Phone Number or Email *</label>
+              <label>Phone Number or Email</label>
               <input type="text" id="forgot-identifier" class="form-control" placeholder="0712345678 or name@email.com" required autofocus>
             </div>
-            <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;font-size:0.95rem;">
-              <i class="fas fa-paper-plane"></i> Send Reset Code
-            </button>
-            <p style="text-align:center;margin-top:14px;font-size:0.85rem;">
-              <a href="#" onclick="kejaAuth.showPanel('signin');return false;" style="color:#64748b;"><i class="fas fa-arrow-left"></i> Back to Sign In</a>
-            </p>
+            <button type="submit" class="btn-auth-submit"><i class="fas fa-paper-plane"></i> Send Reset Code</button>
+            <p class="auth-switch-text"><a href="#" onclick="kejaAuth.showPanel('signin');return false;"><i class="fas fa-arrow-left"></i> Back to Sign In</a></p>
           </form>
         </div>
 
-        <!-- â”€â”€ RESET PASSWORD PANEL (sibling, not nested) â”€â”€ -->
+        <!-- RESET PASSWORD PANEL -->
         <div id="auth-panel-reset" style="display:none;">
-          <div style="text-align:center; margin-bottom:20px;">
-            <div style="width:56px;height:56px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
-              <i class="fas fa-lock-open" style="color:#00b53f;font-size:1.5rem;"></i>
-            </div>
-            <h3 style="font-size:1.1rem;font-weight:800;color:#0f172a;margin:0 0 6px 0;">Set New Password</h3>
-            <p style="font-size:0.85rem;color:#64748b;margin:0;">Enter the 6-digit code sent to your phone and your new password.</p>
+          <div class="auth-icon-header">
+            <div class="auth-icon-circle" style="background:#d1fae5;"><i class="fas fa-lock-open" style="color:#16a34a;"></i></div>
+            <h3>Set New Password</h3>
+            <p>Enter the 6-digit code sent to your phone and choose a new password.</p>
           </div>
           <form id="form-reset-password" onsubmit="kejaAuth.handleResetPassword(event)">
             <div class="form-group">
-              <label>Reset Code *</label>
+              <label>Reset Code</label>
               <input type="text" id="reset-otp-code" class="form-control" placeholder="6-digit code from SMS" required maxlength="6" style="letter-spacing:6px;font-size:1.2rem;text-align:center;font-weight:700;">
             </div>
             <div class="form-group">
-              <label>New Password *</label>
+              <label>New Password</label>
               <div style="position:relative;">
                 <input type="password" id="reset-new-password" class="form-control" placeholder="Min 6 characters" required style="padding-right:42px;">
-                <button type="button" onclick="kejaAuth.togglePwd('reset-new-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;">
-                  <i class="fas fa-eye"></i>
-                </button>
+                <button type="button" onclick="kejaAuth.togglePwd('reset-new-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;"><i class="fas fa-eye"></i></button>
               </div>
             </div>
             <div class="form-group">
-              <label>Confirm New Password *</label>
+              <label>Confirm New Password</label>
               <input type="password" id="reset-confirm-password" class="form-control" placeholder="Re-enter new password" required>
             </div>
-            <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;font-size:0.95rem;">
-              <i class="fas fa-check-circle"></i> Reset Password & Sign In
-            </button>
-            <p style="text-align:center;margin-top:14px;font-size:0.85rem;">
-              <a href="#" onclick="kejaAuth.showPanel('signin');return false;" style="color:#64748b;"><i class="fas fa-arrow-left"></i> Back to Sign In</a>
-            </p>
+            <button type="submit" class="btn-auth-submit"><i class="fas fa-check-circle"></i> Reset and Sign In</button>
+            <p class="auth-switch-text"><a href="#" onclick="kejaAuth.showPanel('signin');return false;"><i class="fas fa-arrow-left"></i> Back to Sign In</a></p>
           </form>
         </div>
 
-        <!-- â”€â”€ SIGN UP PANEL (DIRECT 100% FREE SIGNUP) â”€â”€ -->
+        <!-- SIGN UP PANEL -->
         <div id="auth-panel-signup" style="display:none;">
-          <!-- Role chooser -->
-          <div style="display:flex; gap:8px; margin-bottom:16px;">
-            <button onclick="kejaAuth.setRole('tenant','signup')" id="role-signup-tenant"
-              class="role-btn role-btn-active" style="flex:1; padding:8px 4px; font-size:0.82rem;">
-              <i class="fas fa-user"></i><br>Tenant
+          <p class="auth-subtitle">Join KejaMarket and start exploring amazing opportunities.</p>
+          <div class="auth-role-grid auth-role-grid--4" id="signup-role-grid">
+            <button onclick="kejaAuth.setRole('tenant','signup')" id="role-signup-tenant" class="auth-role-card auth-role-card--active">
+              <i class="fas fa-user"></i><span>Tenant / Buyer</span>
             </button>
-            <button onclick="kejaAuth.setRole('landlord','signup')" id="role-signup-landlord"
-              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
-              <i class="fas fa-home"></i><br>Property Owner / Agent
+            <button onclick="kejaAuth.setRole('landlord','signup')" id="role-signup-landlord" class="auth-role-card">
+              <i class="fas fa-home"></i><span>Property Owner / Agent</span>
             </button>
-            <button onclick="kejaAuth.setRole('agency','signup')" id="role-signup-agency"
-              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
-              <i class="fas fa-briefcase"></i><br>Agency
+            <button onclick="kejaAuth.setRole('agency','signup')" id="role-signup-agency" class="auth-role-card">
+              <i class="fas fa-building"></i><span>Real Estate Agency</span>
             </button>
-            <button onclick="kejaAuth.setRole('service','signup')" id="role-signup-service"
-              class="role-btn" style="flex:1; padding:8px 4px; font-size:0.82rem;">
-              <i class="fas fa-tools"></i><br>Services
+            <button onclick="kejaAuth.setRole('service','signup')" id="role-signup-service" class="auth-role-card">
+              <i class="fas fa-tools"></i><span>Service Provider</span>
             </button>
           </div>
-
           <form id="form-signup" onsubmit="kejaAuth.handleSignUp(event)">
-            <!-- Tenant & Landlord Name -->
             <div class="form-group" id="signup-name-group">
-              <label id="signup-name-label">Full Name *</label>
+              <label id="signup-name-label">Full Name</label>
               <input type="text" id="signup-name" class="form-control" placeholder="e.g. John Mwangi" required>
             </div>
-
-            <!-- Agency-specific fields -->
             <div id="signup-agency-fields" style="display:none;">
               <div class="form-group">
-                <label>Real Estate Agency / Company Name *</label>
+                <label>Agency / Company Name</label>
                 <input type="text" id="signup-agency-name" class="form-control" placeholder="e.g. HassConsult Real Estate Ltd">
               </div>
               <div class="form-group">
-                <label>Office Location / Headquarters</label>
+                <label>Office Location</label>
                 <input type="text" id="signup-agency-location" class="form-control" placeholder="e.g. ABC Place, Westlands">
               </div>
             </div>
-
-            <!-- Service Provider-specific fields -->
             <div id="signup-service-fields" style="display:none;">
               <div class="form-group">
-                <label>Service Category *</label>
+                <label>Service Category</label>
                 <select id="signup-service-category" class="form-control">
                   <option value="">Select Service Type</option>
                   <option value="wifi">WiFi / Internet Provider</option>
-                  <option value="movers">Moving & Relocation Services</option>
-                  <option value="laundry">Laundry & Dry Cleaning</option>
-                  <option value="garbage">Garbage Collection & Waste Management</option>
-                  <option value="gas">Gas Refills & Delivery</option>
+                  <option value="movers">Moving and Relocation Services</option>
+                  <option value="laundry">Laundry and Dry Cleaning</option>
+                  <option value="garbage">Garbage Collection and Waste Management</option>
+                  <option value="gas">Gas Refills and Delivery</option>
                   <option value="water">Water Delivery Services</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Business Name / Company</label>
+                <label>Business Name</label>
                 <input type="text" id="signup-service-business" class="form-control" placeholder="e.g. Swift Movers Ltd">
               </div>
               <div class="form-group">
-                <label>Service Areas (Towns/Estates)</label>
+                <label>Service Areas</label>
                 <input type="text" id="signup-service-areas" class="form-control" placeholder="e.g. Nairobi, Kiambu, Machakos">
               </div>
             </div>
-
             <div class="form-group">
-              <label>Phone Number *</label>
-              <input type="tel" id="signup-phone" class="form-control" placeholder="0712345678 or 0112345678" required>
+              <label>Phone Number</label>
+              <div class="input-icon-wrap">
+                <i class="fas fa-phone input-icon"></i>
+                <input type="tel" id="signup-phone" class="form-control form-control--icon" placeholder="0712345678" required>
+              </div>
             </div>
-
             <div class="form-group">
-              <label>Email Address *</label>
-              <input type="email" id="signup-email" class="form-control" placeholder="name@email.com" required>
+              <label>Email Address</label>
+              <div class="input-icon-wrap">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="signup-email" class="form-control form-control--icon" placeholder="name@email.com" required>
+              </div>
             </div>
-
-            <!-- Landlord-only fields -->
             <div id="signup-landlord-fields" style="display:none;">
               <div class="form-group">
                 <label>Primary Area / Estate</label>
                 <input type="text" id="signup-landlord-area" class="form-control" placeholder="e.g. Kilimani, Ruaka, Roysambu">
               </div>
             </div>
-
             <div class="form-group">
-              <label>Password *</label>
+              <label>Password</label>
               <div style="position:relative;">
-                <input type="password" id="signup-password" class="form-control" placeholder="Min 6 characters" required minlength="6" style="padding-right:42px;">
-                <button type="button" onclick="kejaAuth.togglePwd('signup-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;">
-                  <i class="fas fa-eye"></i>
-                </button>
+                <i class="fas fa-lock" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:0.85rem;pointer-events:none;z-index:1;"></i>
+                <input type="password" id="signup-password" class="form-control form-control--icon" placeholder="Min 6 characters" required minlength="6" style="padding-right:42px;">
+                <button type="button" onclick="kejaAuth.togglePwd('signup-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;z-index:1;"><i class="fas fa-eye"></i></button>
               </div>
             </div>
-
-            <button type="submit" class="btn-primary" style="width:100%;border:none;font-weight:700;cursor:pointer;margin-top:4px;">
-              Create Free Account
-            </button>
-            <p style="text-align:center;margin-top:14px;font-size:0.85rem;color:#6b7280;">
-              Already have an account? <a href="#" onclick="kejaAuth.switchTab('signin');return false;" style="color:#4f46e5;font-weight:600;">Sign In</a>
-            </p>
+            <button type="submit" class="btn-auth-submit"><i class="fas fa-user-plus"></i> Sign Up</button>
+            <p class="auth-switch-text">Already have an account? <a href="#" onclick="kejaAuth.switchTab('signin');return false;">Sign In</a></p>
           </form>
         </div>
 
-        <!-- â”€â”€ OTP PHONE VERIFICATION PANEL (FOR BOTH SIGNUP & LOGIN) â”€â”€ -->
+        <!-- OTP VERIFICATION PANEL -->
         <div id="auth-panel-otp" style="display:none; text-align:center;">
-          <div style="width:64px; height:64px; border-radius:50%; background:#e0e7ff; color:#4f46e5; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.8rem;">
-            <i class="fas fa-sms"></i>
+          <div class="auth-icon-header">
+            <div class="auth-icon-circle" style="background:#e0e7ff;"><i class="fas fa-sms" style="color:#4f46e5;font-size:1.4rem;"></i></div>
+            <h3 id="otp-panel-title">Verify Your Phone</h3>
+            <p>We sent a 4-digit code via SMS to <strong id="otp-display-phone">+254...</strong></p>
           </div>
-          <h3 id="otp-panel-title" style="margin:0 0 6px 0; color:#1e1b4b; font-size:1.2rem; font-weight:800;">Verify Your Phone Number</h3>
-          <p style="font-size:0.88rem; color:#64748b; margin-bottom:16px;">
-            We sent a 4-digit verification code via SMS to <strong id="otp-display-phone" style="color:#1e1b4b;">+254...</strong>
-          </p>
-
           <form id="form-otp-verify" onsubmit="kejaAuth.handleVerifyOtp(event)">
-            <div style="display:flex; justify-content:center; gap:10px; margin-bottom:18px;">
-              <input type="text" maxlength="1" class="otp-digit form-control" id="otp-1" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required autofocus oninput="kejaAuth.onOtpDigitInput(1, this, event)" onkeydown="kejaAuth.onOtpKeyDown(1, this, event)">
-              <input type="text" maxlength="1" class="otp-digit form-control" id="otp-2" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required oninput="kejaAuth.onOtpDigitInput(2, this, event)" onkeydown="kejaAuth.onOtpKeyDown(2, this, event)">
-              <input type="text" maxlength="1" class="otp-digit form-control" id="otp-3" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required oninput="kejaAuth.onOtpDigitInput(3, this, event)" onkeydown="kejaAuth.onOtpKeyDown(3, this, event)">
-              <input type="text" maxlength="1" class="otp-digit form-control" id="otp-4" style="width:52px; height:58px; font-size:1.6rem; text-align:center; font-weight:800; border:2px solid #cbd5e1; border-radius:10px;" required oninput="kejaAuth.onOtpDigitInput(4, this, event)" onkeydown="kejaAuth.onOtpKeyDown(4, this, event)">
+            <div class="otp-inputs">
+              <input type="text" maxlength="1" class="otp-digit otp-box" id="otp-1" required autofocus oninput="kejaAuth.onOtpDigitInput(1,this,event)" onkeydown="kejaAuth.onOtpKeyDown(1,this,event)">
+              <input type="text" maxlength="1" class="otp-digit otp-box" id="otp-2" required oninput="kejaAuth.onOtpDigitInput(2,this,event)" onkeydown="kejaAuth.onOtpKeyDown(2,this,event)">
+              <input type="text" maxlength="1" class="otp-digit otp-box" id="otp-3" required oninput="kejaAuth.onOtpDigitInput(3,this,event)" onkeydown="kejaAuth.onOtpKeyDown(3,this,event)">
+              <input type="text" maxlength="1" class="otp-digit otp-box" id="otp-4" required oninput="kejaAuth.onOtpDigitInput(4,this,event)" onkeydown="kejaAuth.onOtpKeyDown(4,this,event)">
             </div>
-
-            <button type="submit" id="btn-submit-otp" class="btn-primary" style="width:100%; border:none; font-weight:700; cursor:pointer; padding:12px; font-size:0.95rem; background:linear-gradient(135deg,#4f46e5,#7c3aed);">
-              <i class="fas fa-check-circle"></i> <span id="btn-submit-otp-label">Verify & Continue</span>
-            </button>
+            <button type="submit" id="btn-submit-otp" class="btn-auth-submit"><i class="fas fa-check-circle"></i> <span id="btn-submit-otp-label">Verify and Continue</span></button>
           </form>
-
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; font-size:0.82rem;">
-            <button type="button" onclick="kejaAuth.handleResendOtp()" id="btn-resend-otp" style="background:none; border:none; color:#4f46e5; font-weight:700; cursor:pointer; padding:0;">
-              <i class="fas fa-redo"></i> Resend Code <span id="otp-countdown">(60s)</span>
-            </button>
-            <a href="#" onclick="kejaAuth.switchTab('signin'); return false;" style="color:#64748b; text-decoration:underline;">
-              Back to Sign In
-            </a>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:0.82rem;">
+            <button type="button" onclick="kejaAuth.handleResendOtp()" id="btn-resend-otp" style="background:none;border:none;color:#4f46e5;font-weight:700;cursor:pointer;padding:0;"><i class="fas fa-redo"></i> Resend Code <span id="otp-countdown">(60s)</span></button>
+            <a href="#" onclick="kejaAuth.switchTab('signin');return false;" style="color:#64748b;">Back to Sign In</a>
           </div>
         </div>
 
-        <!-- â”€â”€ LOGGED IN PANEL (CLEAN SIGN OUT ONLY) â”€â”€ -->
-        <div id="auth-panel-loggedin" style="display:none; text-align:center; padding: 10px 0 6px;">
-          <div id="auth-user-avatar" style="width:76px; height:76px; border-radius:50%; background:linear-gradient(135deg,#4f46e5,#7c3aed); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:2rem; color:white; font-weight:800; box-shadow: 0 4px 12px rgba(79,70,229,0.3);"></div>
-          <div id="auth-user-greeting" style="font-size:1.2rem; font-weight:800; color:#1e1b4b; margin-bottom:4px;"></div>
-          <div id="auth-user-phone-display" style="font-size:0.88rem; color:#64748b; margin-bottom:10px;"></div>
-          <div id="auth-user-role-badge" style="display:inline-block; padding:4px 14px; border-radius:20px; font-size:0.82rem; font-weight:700; margin-bottom:24px;"></div>
-
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            <button onclick="kejaAuth.signOut()" style="width:100%; background:#ef4444; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.95rem; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow: 0 2px 6px rgba(239,68,68,0.3);">
-              <i class="fas fa-sign-out-alt"></i> Sign Out
-            </button>
-            <button onclick="app.closeModal('modal-auth')" style="width:100%; background:none; border:1px solid #e2e8f0; padding:10px; border-radius:8px; cursor:pointer; color:#64748b; font-weight:600; font-size:0.85rem;">
-              Close
-            </button>
+        <!-- LOGGED IN PANEL -->
+        <div id="auth-panel-loggedin" style="display:none; text-align:center; padding:10px 0 6px;">
+          <div id="auth-user-avatar" class="auth-avatar-lg"></div>
+          <div id="auth-user-greeting" style="font-size:1.2rem;font-weight:800;color:#0F172A;margin-bottom:4px;"></div>
+          <div id="auth-user-phone-display" style="font-size:0.88rem;color:#64748b;margin-bottom:10px;"></div>
+          <div id="auth-user-role-badge" style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:0.82rem;font-weight:700;margin-bottom:20px;"></div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button onclick="kejaDashboard.open();app.closeModal('modal-auth');" class="btn-auth-submit" style="background:#4f46e5;"><i class="fas fa-th-large"></i> Open My Dashboard</button>
+            <button onclick="kejaAuth.signOut()" style="width:100%;background:#ef4444;color:white;border:none;padding:11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.9rem;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+            <button onclick="app.closeModal('modal-auth')" style="width:100%;background:none;border:1px solid #e2e8f0;padding:10px;border-radius:8px;cursor:pointer;color:#64748b;font-weight:600;font-size:0.85rem;">Close</button>
           </div>
         </div>
 
@@ -2405,6 +2350,46 @@
     </div>
   </div>
 
+  <!-- Auth Modal Styles -->
+  <style>
+    .auth-modal-dialog { max-width:420px; width:95%; border-radius:16px; overflow:hidden; padding:0; }
+    .auth-modal-header { background:#ffffff; border-bottom:1px solid #e2e8f0; padding:14px 20px; display:flex; align-items:center; gap:12px; position:relative; }
+    .auth-header-brand { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .auth-header-logo { width:28px; height:28px; border-radius:6px; }
+    .auth-header-name { font-size:0.95rem; font-weight:800; color:#0F172A; }
+    .auth-tabs { display:flex; gap:4px; background:#f1f5f9; border-radius:8px; padding:3px; margin-left:auto; }
+    .auth-tab { padding:6px 16px; border:none; border-radius:6px; font-size:0.85rem; font-weight:700; cursor:pointer; background:transparent; color:#64748b; transition:all 0.15s; }
+    .auth-tab--active { background:#ffffff; color:#0F172A; box-shadow:0 1px 3px rgba(0,0,0,0.12); }
+    .auth-close-btn { position:absolute !important; right:12px !important; top:50% !important; transform:translateY(-50%) !important; color:#94a3b8 !important; font-size:1.5rem !important; }
+    .auth-modal-body { padding:20px; background:#f8fafc; max-height:80vh; overflow-y:auto; }
+    .auth-subtitle { font-size:0.85rem; color:#64748b; margin-bottom:16px; text-align:center; }
+    .auth-role-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:18px; }
+    .auth-role-grid--4 { grid-template-columns:repeat(2,1fr); }
+    .auth-role-card { display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 8px; border:2px solid #e2e8f0; border-radius:10px; background:#ffffff; cursor:pointer; font-size:0.75rem; font-weight:700; color:#475569; transition:all 0.15s; line-height:1.3; text-align:center; }
+    .auth-role-card i { font-size:1.2rem; color:#94a3b8; }
+    .auth-role-card:hover, .auth-role-card:hover i { border-color:#4f46e5; color:#4f46e5; }
+    .auth-role-card--active, .role-btn-active.auth-role-card { border-color:#4f46e5; background:#eef2ff; color:#4f46e5; }
+    .auth-role-card--active i, .role-btn-active.auth-role-card i { color:#4f46e5; }
+    .input-icon-wrap { position:relative; }
+    .input-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:0.85rem; pointer-events:none; z-index:1; }
+    .form-control--icon { padding-left:36px; }
+    .btn-auth-submit { width:100%; background:#4f46e5; color:white; border:none; padding:12px; border-radius:8px; font-size:0.95rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background 0.15s; margin-bottom:4px; }
+    .btn-auth-submit:hover { background:#4338ca; }
+    .auth-switch-text { text-align:center; font-size:0.83rem; color:#64748b; margin-top:12px; }
+    .auth-switch-text a { color:#4f46e5; font-weight:700; text-decoration:none; }
+    .auth-icon-header { text-align:center; margin-bottom:20px; }
+    .auth-icon-circle { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:1.5rem; }
+    .auth-icon-header h3 { font-size:1.1rem; font-weight:800; color:#0F172A; margin:0 0 6px; }
+    .auth-icon-header p { font-size:0.83rem; color:#64748b; margin:0; }
+    .otp-inputs { display:flex; justify-content:center; gap:12px; margin-bottom:18px; }
+    .otp-box { width:54px !important; height:60px !important; font-size:1.8rem !important; text-align:center; font-weight:800; border:2px solid #e2e8f0 !important; border-radius:10px !important; background:white; }
+    .otp-box:focus { border-color:#4f46e5 !important; outline:none; }
+    .auth-avatar-lg { width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg,#4f46e5,#7c3aed); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:1.8rem; color:white; font-weight:800; box-shadow:0 4px 12px rgba(79,70,229,0.3); }
+    .auth-modal-body .form-group { margin-bottom:14px; }
+    .auth-modal-body .form-group label { font-size:0.82rem; font-weight:700; color:#374151; margin-bottom:5px; display:block; }
+    .auth-modal-body .form-control { background:white; border:1.5px solid #e2e8f0; border-radius:8px; padding:10px 12px; font-size:0.9rem; width:100%; transition:border-color 0.15s; }
+    .auth-modal-body .form-control:focus { border-color:#4f46e5; outline:none; box-shadow:0 0 0 3px rgba(79,70,229,0.1); }
+  </style>
   <!-- ====================================================================
        MODAL: Fullscreen Image Lightbox (Jiji Style)
        ==================================================================== -->
