@@ -990,6 +990,85 @@ app.get('/api/auth/me', requireAuth, (req, res) => {
   });
 });
 
+// GET /api/user/dashboard — unified stats for all roles after login
+app.get('/api/user/dashboard', requireAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    const userId = user.id;
+    const userPhone = user.phone;
+    const role = user.role;
+
+    // Base stats for every user
+    let stats = {
+      role,
+      name: user.name,
+      isVerified: user.isVerified || user.is_verified || false,
+      listings: 0,
+      activeListings: 0,
+      pendingListings: 0,
+      messages: 0,
+      unreadMessages: 0,
+      favourites: 0,
+      totalViews: 0
+    };
+
+    // Listings count (landlord, agency, service, marketplace sellers)
+    try {
+      const allProps = await store.getAllProperties();
+      const myProps = allProps.filter(p =>
+        p.landlordId === userId ||
+        p.postedBy === userId ||
+        (p.landlord && (p.landlord.id === userId || p.landlord.phone === userPhone)) ||
+        p.landlordPhone === userPhone
+      );
+      stats.listings = myProps.length;
+      stats.activeListings = myProps.filter(p => p.isApproved || p.status === 'approved').length;
+      stats.pendingListings = myProps.filter(p => !p.isApproved && p.status !== 'approved').length;
+      stats.totalViews = myProps.reduce((sum, p) => sum + (p.views || p.viewCount || 0), 0);
+    } catch (e) { /* non-fatal */ }
+
+    // Services count for service providers
+    if (role === 'service') {
+      try {
+        const allServices = store.getAllServices ? await store.getAllServices() : [];
+        const myServices = allServices.filter(s => s.userId === userId || s.providerId === userId);
+        stats.listings = myServices.length;
+        stats.activeListings = myServices.filter(s => s.isVerified || s.status === 'approved').length;
+        stats.pendingListings = myServices.filter(s => !s.isVerified && s.status !== 'approved').length;
+      } catch (e) { /* non-fatal */ }
+    }
+
+    // Marketplace items count
+    if (role === 'tenant' || role === 'buyer') {
+      try {
+        const allItems = store.getAllMarketplaceItems ? await store.getAllMarketplaceItems() : [];
+        const myItems = allItems.filter(i => i.userId === userId || i.sellerId === userId);
+        if (myItems.length > 0) {
+          stats.listings = myItems.length;
+          stats.activeListings = myItems.filter(i => i.status === 'active' || i.isActive).length;
+        }
+      } catch (e) { /* non-fatal */ }
+    }
+
+    // Messages
+    try {
+      const msgs = store.getLandlordMessages ? store.getLandlordMessages(userId) : [];
+      stats.messages = msgs.length;
+      stats.unreadMessages = msgs.filter(m => !m.isRead).length;
+    } catch (e) { /* non-fatal */ }
+
+    // Favourites
+    try {
+      const favs = store.getUserFavourites ? await store.getUserFavourites(userId) : [];
+      stats.favourites = Array.isArray(favs) ? favs.length : 0;
+    } catch (e) { /* non-fatal */ }
+
+    res.json({ success: true, stats });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // POST /api/auth/profile
 app.post('/api/auth/profile', requireAuth, (req, res) => {
   try {

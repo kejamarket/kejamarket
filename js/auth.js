@@ -706,6 +706,7 @@ const kejaAuth = (() => {
     const adminHeaderBtn = document.getElementById('btn-admin-header');
     const landlordHeaderBtn = document.getElementById('btn-landlord-header');
     const serviceHeaderBtn = document.getElementById('btn-service-header');
+    const dashboardBtn = document.getElementById('btn-my-dashboard');
     const postAdBtn = document.getElementById('btn-header-post-ad');
     const pricingBtn = document.getElementById('btn-header-pricing');
     const whatsappAlertBanner = document.getElementById('tenant-whatsapp-alert-banner');
@@ -729,20 +730,22 @@ const kejaAuth = (() => {
       const isServiceProvider = Boolean(session.role === 'service');
 
       const displayName = session.name || session.email || session.phone || 'User';
-      const firstName = displayName.split(' ')[0]; // Get first name instead of initials
+      const firstName = displayName.split(' ')[0];
       
       if (label) label.textContent = firstName;
       if (mobileLabel) mobileLabel.textContent = (displayName.split(' ')[0] || 'Me');
-      if (adminHeaderBtn) adminHeaderBtn.style.display = 'none'; // Always hidden, auto-opens on login
+      if (adminHeaderBtn) adminHeaderBtn.style.display = 'none';
       
-      // Show Landlord Portal button ONLY for landlords/agents (NOT admin, NOT service)
       if (landlordHeaderBtn) {
         landlordHeaderBtn.style.display = (isLandlordOrAgent && !isAdmin && !isServiceProvider) ? 'inline-flex' : 'none';
       }
-      
-      // Show Service Portal button ONLY for service providers
       if (serviceHeaderBtn) {
         serviceHeaderBtn.style.display = isServiceProvider ? 'inline-flex' : 'none';
+      }
+
+      // Dashboard button: visible for all logged-in non-admin users
+      if (dashboardBtn) {
+        dashboardBtn.style.display = !isAdmin ? 'inline-flex' : 'none';
       }
 
       if (btn) {
@@ -754,19 +757,17 @@ const kejaAuth = (() => {
           btn.style.background = 'linear-gradient(135deg, #7c3aed, #6366f1)';
           btn.style.color = 'white';
         } else if (session.role === 'landlord') {
-          btn.style.background = 'linear-gradient(135deg, #4f46e5, #7c3aed)';
+          btn.style.background = 'linear-gradient(135deg, #4f46e5, #4338ca)';
           btn.style.color = 'white';
         } else if (session.role === 'service') {
           btn.style.background = 'linear-gradient(135deg, #0891b2, #06b6d4)';
           btn.style.color = 'white';
         } else {
-          btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+          btn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
           btn.style.color = 'white';
         }
       }
 
-      // Role separation:
-      // Pricing & Pro and Post only appear for Landlord or Agent (never for Tenant or Service Provider)
       if (postAdBtn) postAdBtn.style.display = isLandlordOrAgent ? 'inline-flex' : 'none';
       if (pricingBtn) pricingBtn.style.display = isLandlordOrAgent ? 'inline-flex' : 'none';
 
@@ -781,11 +782,11 @@ const kejaAuth = (() => {
       if (adminHeaderBtn) adminHeaderBtn.style.display = 'none';
       if (landlordHeaderBtn) landlordHeaderBtn.style.display = 'none';
       if (serviceHeaderBtn) serviceHeaderBtn.style.display = 'none';
+      if (dashboardBtn) dashboardBtn.style.display = 'none';
       if (btn) {
         btn.style.background = '';
         btn.style.color = '';
       }
-      // When signed out: hide Post and Pricing & Pro (only landlords/agents have these)
       if (postAdBtn) postAdBtn.style.display = 'none';
       if (pricingBtn) pricingBtn.style.display = 'none';
       if (whatsappAlertBanner) whatsappAlertBanner.style.display = 'flex';
@@ -903,37 +904,47 @@ const kejaAuth = (() => {
     if (window.app && typeof window.app.applyFilters === 'function') {
       window.app.applyFilters();
     }
-    
-    // AUTO-OPEN PORTAL: Automatically open appropriate portal after login
-    setTimeout(() => {
-      // Admin users: Open Admin Portal automatically (no button needed)
-      if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
-        if (window.kejaAdmin && typeof window.kejaAdmin.openAdminModal === 'function') {
-          window.kejaAdmin.openAdminModal();
-        }
-      }
-      // Landlord/Agency users: Open Landlord Portal automatically
-      else if (user.role === 'landlord' || user.role === 'agency') {
-        if (window.kejaLandlordPortal && typeof window.kejaLandlordPortal.openLandlordPortal === 'function') {
-          window.kejaLandlordPortal.openLandlordPortal();
-        }
-      }
-      // Service Provider users: Open Service Portal automatically
-      else if (user.role === 'service') {
-        if (window.kejaServicePortal && typeof window.kejaServicePortal.openServicePortal === 'function') {
-          window.kejaServicePortal.openServicePortal();
-        }
-      }
-      // Tenants: Stay on main browsing page (default)
-    }, 500); // Small delay to ensure modals are ready
 
+    // Handle pending callbacks first (e.g. user was blocked by auth-wall)
     if (typeof pendingTenantAuthCallback === 'function') {
       const cb = pendingTenantAuthCallback;
       pendingTenantAuthCallback = null;
       cb(user);
-    } else if (window.app && window.app.selectedPropertyForDetail) {
-      window.app.unlockDetailPhotos();
+      return; // Don't open dashboard if user was mid-action
     }
+
+    if (window.app && window.app.selectedPropertyForDetail) {
+      window.app.unlockDetailPhotos();
+      return; // Don't open dashboard if user tapped a property photo
+    }
+
+    // AUTO-OPEN PORTAL / DASHBOARD after login
+    setTimeout(() => {
+      // Admin → Admin Portal (unchanged)
+      if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
+        if (window.kejaAdmin && typeof window.kejaAdmin.openAdminModal === 'function') {
+          window.kejaAdmin.openAdminModal();
+        }
+        return;
+      }
+
+      // All other roles → Unified User Dashboard first
+      // The dashboard has role-aware deep links to landlord portal / service portal / browse
+      if (window.kejaDashboard && typeof window.kejaDashboard.open === 'function') {
+        window.kejaDashboard.open();
+      } else {
+        // Fallback: legacy direct-portal behaviour if dashboard JS not loaded
+        if (user.role === 'landlord' || user.role === 'agency') {
+          if (window.kejaLandlordPortal && typeof window.kejaLandlordPortal.openLandlordPortal === 'function') {
+            window.kejaLandlordPortal.openLandlordPortal();
+          }
+        } else if (user.role === 'service') {
+          if (window.kejaServicePortal && typeof window.kejaServicePortal.openServicePortal === 'function') {
+            window.kejaServicePortal.openServicePortal();
+          }
+        }
+      }
+    }, 400);
   }
 
   function requireTenantAuth(callback) {
@@ -1047,6 +1058,11 @@ const kejaAuth = (() => {
 
         <!-- Profile Menu -->
         <div class="profile-menu">
+          <button class="profile-menu-item" onclick="kejaDashboard.open(); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-th-large profile-menu-icon" style="color:#4f46e5;"></i>
+            <span>My Dashboard</span>
+          </button>
+
           <button class="profile-menu-item" onclick="kejaAuth.openAuthModal(); kejaAuth.closeProfileDropdown();">
             <i class="fas fa-user profile-menu-icon"></i>
             <span>My Profile</span>
