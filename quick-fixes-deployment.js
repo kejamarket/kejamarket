@@ -125,6 +125,43 @@ document.addEventListener('DOMContentLoaded', function() {
       max-height: 500px !important;
       overflow-y: auto !important;
     }
+    
+    /* Fix map container sizing - ensure full visibility */
+    .split-view-container {
+      height: calc(100vh - 220px) !important;
+      min-height: 600px !important;
+    }
+    
+    .split-map-col {
+      height: 100% !important;
+      min-height: 600px !important;
+    }
+    
+    .full-map-view-container {
+      height: calc(100vh - 200px) !important;
+      min-height: 650px !important;
+    }
+    
+    #leaflet-full-map,
+    #leaflet-split-map {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: inherit !important;
+    }
+    
+    /* Ensure map is not cut off at top */
+    .leaflet-container {
+      height: 100% !important;
+    }
+    
+    /* Make sure map pins are fully visible */
+    .leaflet-marker-pane {
+      z-index: 600 !important;
+    }
+    
+    .leaflet-popup-pane {
+      z-index: 700 !important;
+    }
   `;
   document.head.appendChild(style);
   
