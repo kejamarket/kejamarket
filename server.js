@@ -674,17 +674,39 @@ app.post('/api/auth/resend-otp', async (req, res) => {
 // POST /api/auth/register (Direct registration fallback)
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea } = req.body;
+    console.log('🔵 [REGISTER] Request received:', { 
+      name: req.body.name, 
+      phone: req.body.phone, 
+      email: req.body.email,
+      role: req.body.role 
+    });
+
+    const { name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea, serviceCategory, serviceBusiness, serviceAreas } = req.body;
 
     if (!name || !phone || !password) {
+      console.log('❌ [REGISTER] Missing required fields');
       return res.status(400).json({ success: false, message: 'Name, phone number, and password are required.' });
     }
 
     if (password.length < 6) {
+      console.log('❌ [REGISTER] Password too short');
       return res.status(400).json({ success: false, message: 'Password must be at least 6 characters.' });
     }
 
     const cleanPhone = formatPhone(phone);
+    console.log('🔵 [REGISTER] Clean phone:', cleanPhone);
+
+    // Check if user already exists
+    try {
+      const existingUser = await store.getUser(cleanPhone);
+      if (existingUser) {
+        console.log('❌ [REGISTER] User already exists');
+        return res.status(400).json({ success: false, message: 'Phone number already registered. Please sign in instead.' });
+      }
+    } catch (err) {
+      console.log('⚠️ [REGISTER] Error checking existing user:', err.message);
+    }
+
     const user = await store.createUser({
       name,
       phone: cleanPhone,
@@ -698,8 +720,13 @@ app.post('/api/auth/register', async (req, res) => {
       officeLocation,
       registrationNo,
       coverageArea,
+      serviceCategory,
+      serviceBusiness,
+      serviceAreas,
       isPhoneVerified: true
     });
+
+    console.log('✅ [REGISTER] User created:', user.id);
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
 
@@ -713,6 +740,8 @@ app.post('/api/auth/register', async (req, res) => {
       emailService.sendWelcomeEmail(user.email, user.name, user.role).catch(() => {});
     }
 
+    console.log('✅ [REGISTER] Success, returning user and token');
+
     res.status(201).json({
       success: true,
       message: `Welcome to KejaMarket, ${user.name}!`,
@@ -720,7 +749,8 @@ app.post('/api/auth/register', async (req, res) => {
       token
     });
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    console.error('❌ [REGISTER] Error:', err);
+    res.status(400).json({ success: false, message: err.message || 'Registration failed. Please try again.' });
   }
 });
 
