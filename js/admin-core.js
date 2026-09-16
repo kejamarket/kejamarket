@@ -345,7 +345,47 @@ const AdminCore = (() => {
 
   async function loadVerification(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Verification Module...</div>';
+    content.innerHTML = `
+      <div class="module-header">
+        <h1><i class="fas fa-shield-check"></i> Verification Centre</h1>
+      </div>
+      <div class="module-tabs">
+        <button class="tab-btn active" data-filter="pending-properties">
+          <i class="fas fa-home"></i> Pending Properties
+        </button>
+        <button class="tab-btn" data-filter="pending-users">
+          <i class="fas fa-user-clock"></i> Pending Users
+        </button>
+        <button class="tab-btn" data-filter="documents">
+          <i class="fas fa-file-alt"></i> Documents
+        </button>
+        <button class="tab-btn" data-filter="recently-approved">
+          <i class="fas fa-check-circle"></i> Recently Approved
+        </button>
+        <button class="tab-btn" data-filter="recently-rejected">
+          <i class="fas fa-times-circle"></i> Recently Rejected
+        </button>
+      </div>
+      <div id="verification-content">
+        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading verification queue...</div>
+      </div>
+    `;
+
+    // Setup tab click handlers
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        AdminVerification.init(btn.dataset.filter);
+      });
+    });
+
+    // Load verification with AdminVerification module
+    if (typeof AdminVerification !== 'undefined') {
+      await AdminVerification.init(viewData || 'pending-properties');
+    } else {
+      console.error('AdminVerification module not loaded');
+    }
   }
 
   async function loadBNB(viewData) {
