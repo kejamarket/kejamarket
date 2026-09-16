@@ -40,8 +40,59 @@ const KejaEnhancedAuth = {
    */
   init() {
     console.log('Enhanced Registration System initialized');
+    this.overrideDefaultAuth();
     this.createEnhancedSignupFlow();
     this.bindEvents();
+  },
+
+  /**
+   * Override default auth system
+   */
+  overrideDefaultAuth() {
+    // Override the setRole function for signup to use our enhanced flow
+    if (window.kejaAuth && typeof window.kejaAuth.setRole === 'function') {
+      const originalSetRole = window.kejaAuth.setRole;
+      window.kejaAuth.setRole = (role, panel) => {
+        if (panel === 'signup') {
+          // For signup, show our enhanced registration instead
+          this.showEnhancedRegistration();
+          return;
+        }
+        // For signin, use original function
+        originalSetRole(role, panel);
+      };
+    }
+
+    // Override any existing signup button click handlers
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('[onclick*="signup"]') || 
+          e.target.matches('.role-btn[onclick*="signup"]') ||
+          e.target.closest('.role-btn[onclick*="signup"]')) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showEnhancedRegistration();
+        return false;
+      }
+    });
+  },
+
+  /**
+   * Show enhanced registration modal
+   */
+  showEnhancedRegistration() {
+    // Close any existing auth modal
+    if (window.app && typeof window.app.closeModal === 'function') {
+      window.app.closeModal('modal-auth');
+    }
+    
+    // Show our enhanced modal
+    setTimeout(() => {
+      this.createEnhancedSignupFlow();
+      const authModal = document.getElementById('modal-auth');
+      if (authModal) {
+        authModal.style.display = 'flex';
+      }
+    }, 100);
   },
 
   /**
@@ -119,7 +170,7 @@ const KejaEnhancedAuth = {
             <div class="user-type-icon">🔧</div>
             <div class="user-type-content">
               <div class="user-type-title">Service Provider</div>
-              <div class="user-type-desc">Provide property-related services.</div>
+              <div class="user-type-desc">Provide property-related services like plumbing, electrical, cleaning, moving, etc.</div>
             </div>
           </div>
         </div>
@@ -380,8 +431,16 @@ const KejaEnhancedAuth = {
    */
   getDirectRegistrationHTML() {
     const userTypeData = {
-      'tenant': { title: 'Tenant Registration', desc: 'Complete your tenant profile' },
-      'service': { title: 'Service Provider Registration', desc: 'Set up your service business profile' }
+      'tenant': { 
+        title: 'Tenant Registration', 
+        desc: 'Complete your tenant profile to find your ideal home',
+        icon: '👤'
+      },
+      'service': { 
+        title: 'Service Provider Registration', 
+        desc: 'Set up your service business profile and start connecting with property owners',
+        icon: '🔧'
+      }
     };
 
     const data = userTypeData[this.selectedUserType] || userTypeData.tenant;
@@ -389,6 +448,9 @@ const KejaEnhancedAuth = {
     return `
       <div class="signup-step" data-step="direct">
         <div class="step-header">
+          <div class="step-icon" style="text-align: center; margin-bottom: 16px;">
+            <div style="font-size: 3rem;">${data.icon}</div>
+          </div>
           <h3 style="font-size: 1.2rem; font-weight: 800; color: #1e293b; margin-bottom: 8px; text-align: center;">
             ${data.title}
           </h3>
@@ -402,6 +464,47 @@ const KejaEnhancedAuth = {
             <label>Full Name *</label>
             <input type="text" id="direct-name" class="form-control" placeholder="e.g. John Mwangi" required>
           </div>
+          
+          ${this.selectedUserType === 'service' ? `
+          <div class="form-group">
+            <label>Service Type *</label>
+            <select id="direct-service-type" class="form-control" required>
+              <option value="">Select your primary service</option>
+              <option value="plumbing">🔧 Plumbing</option>
+              <option value="electrical">⚡ Electrical</option>
+              <option value="cleaning">🧽 Cleaning Services</option>
+              <option value="moving">📦 Moving & Relocation</option>
+              <option value="painting">🎨 Painting</option>
+              <option value="carpentry">🔨 Carpentry</option>
+              <option value="security">🛡️ Security Services</option>
+              <option value="gardening">🌱 Gardening & Landscaping</option>
+              <option value="appliance">🔧 Appliance Repair</option>
+              <option value="pest-control">🐛 Pest Control</option>
+              <option value="roofing">🏠 Roofing</option>
+              <option value="other">🔧 Other Services</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Service Description *</label>
+            <textarea id="direct-service-desc" class="form-control" rows="3" placeholder="Briefly describe your services and experience..." required></textarea>
+          </div>
+
+          <div class="form-section media-section">
+            <h4>📸 Service Portfolio (Optional)</h4>
+            <p class="media-help">Add photos of your work to build trust with potential clients</p>
+            
+            <div class="upload-section">
+              <label class="upload-label">
+                <i class="fas fa-camera"></i>
+                <span class="upload-title">Work Photos (Max 5)</span>
+                <span class="upload-desc">Show examples of your completed work</span>
+                <input type="file" id="service-photos" multiple accept="image/*" onchange="KejaEnhancedAuth.handleServicePhotoUpload(event)">
+              </label>
+              <div id="service-photo-preview" class="media-preview"></div>
+            </div>
+          </div>
+          ` : ''}
           
           <div class="form-group">
             <label>Phone Number *</label>
@@ -419,7 +522,7 @@ const KejaEnhancedAuth = {
           </div>
 
           <button type="submit" class="btn-primary" style="width: 100%;">
-            Create Account
+            <i class="fas fa-user-plus"></i> Create ${this.selectedUserType === 'service' ? 'Service Provider' : 'Account'}
           </button>
         </form>
 
@@ -448,6 +551,58 @@ const KejaEnhancedAuth = {
         });
         e.target.closest('.property-role-card').classList.add('selected');
       }
+    });
+  },
+
+  /**
+   * Service photo upload handler
+   */
+  handleServicePhotoUpload(event) {
+    const files = Array.from(event.target.files);
+    const preview = document.getElementById('service-photo-preview');
+    const maxFiles = 5;
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (files.length > maxFiles) {
+      alert(`Maximum ${maxFiles} photos allowed`);
+      event.target.value = '';
+      return;
+    }
+
+    // Clear previous preview
+    preview.innerHTML = '';
+
+    files.forEach((file, index) => {
+      if (file.size > maxSize) {
+        alert(`Photo ${file.name} is too large. Maximum 5MB per photo.`);
+        return;
+      }
+
+      if (!file.type.startsWith('image/')) {
+        alert(`${file.name} is not a valid image file.`);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'media-item';
+        photoItem.innerHTML = `
+          <div class="media-thumbnail">
+            <img src="${e.target.result}" alt="Service work ${index + 1}">
+            <button type="button" class="remove-media" onclick="this.parentElement.parentElement.remove()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="media-info">
+            <div class="media-name">${file.name}</div>
+            <div class="media-size">${(file.size / 1024 / 1024).toFixed(1)}MB</div>
+            <div class="media-type">Work Sample</div>
+          </div>
+        `;
+        preview.appendChild(photoItem);
+      };
+      reader.readAsDataURL(file);
     });
   },
 
@@ -678,16 +833,62 @@ const KejaEnhancedAuth = {
         password: document.getElementById('direct-password').value
       };
 
+      // Add service provider specific data
+      if (this.selectedUserType === 'service') {
+        registrationData.serviceType = document.getElementById('direct-service-type')?.value;
+        registrationData.serviceDescription = document.getElementById('direct-service-desc')?.value;
+        
+        // Handle service photos
+        const servicePhotos = document.getElementById('service-photos')?.files;
+        if (servicePhotos && servicePhotos.length > 0) {
+          registrationData.hasPhotos = true;
+          registrationData.photoCount = servicePhotos.length;
+          // In real implementation, photos would be uploaded as FormData
+        }
+      }
+
       console.log('Direct Registration Data:', registrationData);
       
-      // Use existing auth system for direct registration
-      if (window.kejaAuth) {
-        window.kejaAuth.handleSignUp(event);
+      // Show loading state
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+      submitBtn.disabled = true;
+
+      // Submit to enhanced registration endpoint
+      const response = await fetch('/api/auth/register-enhanced', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(registrationData)
+      });
+
+      if (response.ok) {
+        this.showSuccessMessage(
+          this.selectedUserType === 'service' ? 
+          'Service provider account created! You can now start offering your services.' :
+          'Account created successfully! Welcome to KejaMarket.'
+        );
+        
+        setTimeout(() => {
+          if (window.app && typeof window.app.closeModal === 'function') {
+            window.app.closeModal('modal-auth');
+          }
+        }, 2000);
+      } else {
+        const error = await response.json();
+        throw new Error(error.message || 'Registration failed');
       }
       
     } catch (error) {
       console.error('Direct registration error:', error);
-      alert('Registration failed. Please try again.');
+      alert('Registration failed: ' + error.message);
+      
+      // Reset button
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.innerHTML = `<i class="fas fa-user-plus"></i> Create ${this.selectedUserType === 'service' ? 'Service Provider' : 'Account'}`;
+        submitBtn.disabled = false;
+      }
     }
   },
 
@@ -732,10 +933,24 @@ const KejaEnhancedAuth = {
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => KejaEnhancedAuth.init());
+  document.addEventListener('DOMContentLoaded', () => {
+    // Wait for other scripts to load, then initialize
+    setTimeout(() => KejaEnhancedAuth.init(), 500);
+  });
 } else {
-  KejaEnhancedAuth.init();
+  // DOM already loaded, initialize after a short delay
+  setTimeout(() => KejaEnhancedAuth.init(), 500);
 }
+
+// Also initialize when the auth modal is shown
+document.addEventListener('click', (e) => {
+  if (e.target.matches('[onclick*="openAuthModal"]') || 
+      e.target.matches('.auth-trigger') ||
+      e.target.textContent.includes('Sign Up')) {
+    // Reinitialize enhanced registration when auth modal opens
+    setTimeout(() => KejaEnhancedAuth.init(), 100);
+  }
+});
 
 // Export for global access
 window.KejaEnhancedAuth = KejaEnhancedAuth;
