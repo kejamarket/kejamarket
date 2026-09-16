@@ -2277,3 +2277,98 @@ button, input, select, textarea {
 .role-btn-active i {
   color: var(--primary-color);
 }
+
+/* ================================================================
+   SECONDARY NAV BAR (Home | Properties | Rentals | Land | ...)
+   ================================================================ */
+.secondary-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 62px;
+  z-index: 999;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.secondary-nav-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.secondary-nav-container::-webkit-scrollbar { display: none; }
+
+.secondary-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 15px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.secondary-nav-item:hover {
+  color: #16a34a;
+  border-bottom-color: #16a34a;
+}
+
+.secondary-nav-item--active {
+  color: #16a34a;
+  border-bottom-color: #16a34a;
+  font-weight: 700;
+}
+
+.secondary-nav-item i { font-size: 0.8rem; }
+
+/* ================================================================
+   SELL ITEM BUTTON — always visible in header
+   ================================================================ */
+.btn-sell-item {
+  background: #F59E0B;
+  color: white !important;
+  border: none;
+  padding: 9px 16px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(245,158,11,0.35);
+}
+
+.btn-sell-item:hover {
+  background: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(245,158,11,0.4);
+}
+
+/* ================================================================
+   CARD GRID — 4 columns on desktop like reference
+   ================================================================ */
+@media (min-width: 1024px) {
+  .property-listings-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .secondary-nav-item { padding: 9px 10px; font-size: 0.78rem; }
+  .secondary-nav-item i { display: none; }
+  .btn-sell-item { padding: 7px 10px; font-size: 0.82rem; }
+}

@@ -158,15 +158,15 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
   <!-- App Styles -->
-  <link rel="stylesheet" href="css/style.css?v=3.0&t=202609170001">
-  <link rel="stylesheet" href="css/map.css?v=3.0&t=202609170001">
-  <link rel="stylesheet" href="css/monetization.css?v=3.0&t=202609170001">
-  <link rel="stylesheet" href="css/verification.css?v=3.0&t=202609170001">
-  <link rel="stylesheet" href="css/recently-added.css?v=3.0&t=202609170001">
-  <link rel="stylesheet" href="css/enhanced-registration.css?v=3.0&t=202609170001">
-  <link rel="stylesheet" href="css/simplified-management.css?v=3.0&t=202609170001">
-  <link rel="stylesheet" href="css/communication-system.css?v=3.0&t=202609170001">
-  <link rel="stylesheet" href="css/enhanced-portal.css?v=3.0&t=202609170001">
+  <link rel="stylesheet" href="css/style.css?v=3.1&t=202609170002">
+  <link rel="stylesheet" href="css/map.css?v=3.1&t=202609170002">
+  <link rel="stylesheet" href="css/monetization.css?v=3.1&t=202609170002">
+  <link rel="stylesheet" href="css/verification.css?v=3.1&t=202609170002">
+  <link rel="stylesheet" href="css/recently-added.css?v=3.1&t=202609170002">
+  <link rel="stylesheet" href="css/enhanced-registration.css?v=3.1&t=202609170002">
+  <link rel="stylesheet" href="css/simplified-management.css?v=3.1&t=202609170002">
+  <link rel="stylesheet" href="css/communication-system.css?v=3.1&t=202609170002">
+  <link rel="stylesheet" href="css/enhanced-portal.css?v=3.1&t=202609170002">
 
   <style>
     .header-search-wrapper {
@@ -265,9 +265,9 @@
           <i class="fas fa-tools"></i> Post Service
         </button>
 
-        <!-- Post Marketplace Button (Tenants/Anyone) -->
-        <button class="btn-post-ad" id="btn-header-post-marketplace" style="display: none; background: #F59E0B;" onclick="kejaAuth.requireAuthForAction('modal-post-marketplace', 'marketplace')">
-          <i class="fas fa-shopping-bag"></i> Sell Item
+        <!-- Post Marketplace Button - always visible to everyone -->
+        <button class="btn-sell-item" id="btn-header-post-marketplace" onclick="kejaAuth.requireAuthForAction('modal-post-marketplace', 'marketplace')">
+          <i class="fas fa-plus"></i> Sell Item
         </button>
 
         <!-- Favorites (Heart) -->
@@ -337,7 +337,43 @@
     </div>
   </header>
 
-  <!-- Mobile elements disabled to preserve unified desktop display across phone and desktop -->
+  <!-- Secondary Navigation Bar -->
+  <nav class="secondary-nav" aria-label="Category Navigation">
+    <div class="secondary-nav-container">
+      <a href="#" class="secondary-nav-item secondary-nav-item--active" id="sec-nav-home"
+         onclick="app.switchFilterTab('properties'); app.setCategory('All'); kejaUI.setSecondaryNav(this); return false;">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-properties"
+         onclick="app.switchFilterTab('properties'); app.setCategory('All'); kejaUI.setSecondaryNav(this); return false;">
+        <i class="fas fa-building"></i> Properties
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-rentals"
+         onclick="app.switchFilterTab('properties'); app.setCategory('1 Bedroom'); kejaUI.setSecondaryNav(this); return false;">
+        <i class="fas fa-key"></i> Rentals
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-land"
+         onclick="app.switchFilterTab('properties'); app.setCategory('Land'); kejaUI.setSecondaryNav(this); return false;">
+        <i class="fas fa-map"></i> Land
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-selling"
+         onclick="app.switchFilterTab('properties'); app.setCategory('Bungalow'); kejaUI.setSecondaryNav(this); return false;">
+        <i class="fas fa-tag"></i> Selling Homes
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-useditems"
+         onclick="app.switchFilterTab('marketplace'); kejaUI.setSecondaryNav(this); return false;">
+        <i class="fas fa-couch"></i> Used Items
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-bnb"
+         onclick="app.switchFilterTab('properties'); app.setCategory('BnB / Airbnb'); kejaUI.setSecondaryNav(this); return false;">
+        <i class="fas fa-bed"></i> BnB
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-services"
+         onclick="app.switchFilterTab('services'); kejaUI.setSecondaryNav(this); return false;">
+        <i class="fas fa-tools"></i> Services
+      </a>
+    </div>
+  </nav>
   <nav class="category-pills-bar category-pills-bar--mobile-only" style="display: none !important;" aria-label="Category Navigation">
     <div class="pills-scroll-container" id="category-pills-container"></div>
   </nav>
@@ -2893,6 +2929,18 @@
   
   <!-- PWA Install Button - Hidden (PWA installs via browser's built-in prompt) -->
   <div id="pwa-install-button" style="display: none !important;" onclick="installPWAInstantly()"></div>
+
+  <script>
+    // Secondary nav active state helper
+    window.kejaUI = {
+      setSecondaryNav: function(el) {
+        document.querySelectorAll('.secondary-nav-item').forEach(function(i) {
+          i.classList.remove('secondary-nav-item--active');
+        });
+        if (el) el.classList.add('secondary-nav-item--active');
+      }
+    };
+  </script>
 
   <script>
     // PWA Install - Small button that installs immediately with one touch

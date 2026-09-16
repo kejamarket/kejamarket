@@ -1343,7 +1343,16 @@ class NairobiRentalsApp {
       }
       if (!p.waterSupplyType && seed.waterSupplyType) p.waterSupplyType = seed.waterSupplyType;
       if (!p.electricityMeterType && seed.electricityMeterType) p.electricityMeterType = seed.electricityMeterType;
+      // Fix county/estateSuburb from seed if missing
+      if (!p.county && seed.county) p.county = seed.county;
+      if (!p.estateSuburb && seed.estateSuburb) p.estateSuburb = seed.estateSuburb;
     }
+
+    // Ensure county always has a value
+    if (!p.county) p.county = 'Nairobi';
+    if (!p.estateSuburb) p.estateSuburb = p.county || 'Nairobi';
+    if (!p.waterSupplyType) p.waterSupplyType = 'Council Water';
+    if (!p.electricityMeterType) p.electricityMeterType = 'Prepaid (Tokens)';
 
     // Normalize landlord
     if (!p.landlord || typeof p.landlord !== 'object') {
