@@ -1041,8 +1041,8 @@ const kejaAuth = (() => {
           </button>
         </div>
         <div style="border-top: 1px solid #e5e7eb; padding: 8px 0;">
-          <button onclick="kejaAuth.signOut(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #dc2626; font-weight: 600; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
-            <i class="fas fa-sign-out-alt" style="width: 16px;"></i> Sign Out
+          <button onclick="kejaAuth.signOut(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 12px 16px; background: none; border: none; cursor: pointer; font-size: 1rem; color: #dc2626; font-weight: 700; display: flex; align-items: center; gap: 10px; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" onmouseover="this.style.background='#fef2f2'; this.style.color='#b91c1c';" onmouseout="this.style.background='none'; this.style.color='#dc2626';">
+            <i class="fas fa-sign-out-alt" style="width: 16px; color: #dc2626;"></i> <strong>Sign Out</strong>
           </button>
         </div>
       `;

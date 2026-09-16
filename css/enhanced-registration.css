@@ -791,6 +791,72 @@
   color: white;
 }
 
+/* Profile Dropdown Styling */
+#profile-dropdown {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  min-width: 220px;
+  z-index: 3000;
+  padding: 12px 0;
+  border: 1px solid #e5e7eb;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+#profile-dropdown button {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Logout Button Specific Styling */
+#profile-dropdown button[onclick*="signOut"] {
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+}
+
+#profile-dropdown button[onclick*="signOut"]:hover {
+  background: #fef2f2 !important;
+  color: #b91c1c !important;
+}
+
+/* Profile Button in Header */
+.btn-auth-trigger {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+}
+
+/* Ensure all header buttons use consistent font */
+.btn-header-action, .btn-post-ad {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-weight: 600 !important;
+}
+
+/* Enhanced visibility for mobile users */
+@media (max-width: 768px) {
+  #profile-dropdown {
+    min-width: 260px;
+    right: 10px !important;
+    top: 55px !important;
+  }
+  
+  #profile-dropdown button {
+    font-size: 1rem !important;
+    padding: 12px 16px !important;
+  }
+  
+  #profile-dropdown button[onclick*="signOut"] {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    border: 2px solid #fecaca;
+    margin: 4px 8px;
+    border-radius: 8px;
+  }
+}
+
 /* Permissions Display */
 .permissions-display ul {
   display: grid;
