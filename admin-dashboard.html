@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🏢 KejaMarket Admin Dashboard</title>
-  <link rel="stylesheet" href="css/style.css?v=3.0">
-  <link rel="stylesheet" href="css/map.css?v=3.0">
-  <link rel="stylesheet" href="css/monetization.css?v=3.0">
+  <link rel="stylesheet" href="css/style.css?v=3.1">
+  <link rel="stylesheet" href="css/admin-dashboard.css?v=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
   
   <style>
@@ -186,12 +184,12 @@
       <!-- Core Management -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">Core Management</div>
-        <button class="admin-nav-btn active" onclick="adminDash.showSection('dashboard')">
+        <button class="admin-nav-btn active" data-module="dashboard">
           <i class="fas fa-chart-line nav-icon"></i>
           <span>Dashboard</span>
         </button>
         
-        <button class="admin-nav-btn" onclick="adminDash.showSection('users')">
+        <button class="admin-nav-btn" data-module="users">
           <i class="fas fa-users nav-icon"></i>
           <span>Users</span>
         </button>
@@ -200,12 +198,22 @@
       <!-- Property Management -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">Property Management</div>
-        <button class="admin-nav-btn" onclick="adminDash.showSection('properties')">
+        <button class="admin-nav-btn" data-module="properties">
           <i class="fas fa-home nav-icon"></i>
           <span>Properties</span>
         </button>
         
-        <button class="admin-nav-btn" onclick="adminDash.showSection('verification')">
+        <button class="admin-nav-btn" data-module="buildings">
+          <i class="fas fa-building nav-icon"></i>
+          <span>Buildings</span>
+        </button>
+        
+        <button class="admin-nav-btn" data-module="units">
+          <i class="fas fa-door-open nav-icon"></i>
+          <span>Units</span>
+        </button>
+        
+        <button class="admin-nav-btn" data-module="verification">
           <i class="fas fa-shield-check nav-icon"></i>
           <span>Verification</span>
         </button>
@@ -214,22 +222,22 @@
       <!-- Business Operations -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">Business Operations</div>
-        <button class="admin-nav-btn" onclick="adminDash.showSection('rentals')">
+        <button class="admin-nav-btn" data-module="rentals">
           <i class="fas fa-key nav-icon"></i>
           <span>Rentals</span>
         </button>
         
-        <button class="admin-nav-btn" onclick="adminDash.showSection('bnb')">
+        <button class="admin-nav-btn" data-module="bnb">
           <i class="fas fa-bed nav-icon"></i>
           <span>Short-Stays / BNB</span>
         </button>
         
-        <button class="admin-nav-btn" onclick="adminDash.showSection('services')">
+        <button class="admin-nav-btn" data-module="services">
           <i class="fas fa-tools nav-icon"></i>
           <span>Services</span>
         </button>
         
-        <button class="admin-nav-btn" onclick="adminDash.showSection('marketplace')">
+        <button class="admin-nav-btn" data-module="marketplace">
           <i class="fas fa-shopping-cart nav-icon"></i>
           <span>Marketplace</span>
         </button>
@@ -238,42 +246,62 @@
       <!-- Customer Management -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">Customer Management</div>
-        <button class="admin-nav-btn" onclick="adminDash.showSection('inquiries')">
+        <button class="admin-nav-btn" data-module="inquiries">
           <i class="fas fa-envelope nav-icon"></i>
           <span>Inquiries</span>
         </button>
         
-        <button class="admin-nav-btn" onclick="adminDash.showSection('reviews')">
+        <button class="admin-nav-btn" data-module="reviews">
           <i class="fas fa-star nav-icon"></i>
           <span>Reviews</span>
+        </button>
+        
+        <button class="admin-nav-btn" data-module="support">
+          <i class="fas fa-ticket-alt nav-icon"></i>
+          <span>Support</span>
         </button>
       </div>
       
       <!-- Risk & Security -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">Risk & Security</div>
-        <button class="admin-nav-btn" onclick="adminDash.showSection('reports')">
+        <button class="admin-nav-btn" data-module="reports">
           <i class="fas fa-exclamation-triangle nav-icon"></i>
           <span>Reports & Complaints</span>
         </button>
         
-        <button class="admin-nav-btn" onclick="adminDash.showSection('fraud')">
+        <button class="admin-nav-btn" data-module="risk">
           <i class="fas fa-shield-alt nav-icon"></i>
           <span>Risk & Fraud</span>
+        </button>
+        
+        <button class="admin-nav-btn" data-module="audit">
+          <i class="fas fa-clipboard-list nav-icon"></i>
+          <span>Audit Logs</span>
         </button>
       </div>
       
       <!-- Analytics & Tools -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">Analytics & Tools</div>
-        <button class="admin-nav-btn" onclick="adminDash.showSection('analytics')">
+        <button class="admin-nav-btn" data-module="analytics">
           <i class="fas fa-chart-bar nav-icon"></i>
           <span>Analytics</span>
         </button>
         
-        <button class="admin-nav-btn" onclick="adminDash.showSection('settings')">
-          <i class="fas fa-cog nav-icon"></i>
-          <span>Settings</span>
+        <button class="admin-nav-btn" data-module="finance">
+          <i class="fas fa-dollar-sign nav-icon"></i>
+          <span>Finance</span>
+        </button>
+        
+        <button class="admin-nav-btn" data-module="adminUsers">
+          <i class="fas fa-user-shield nav-icon"></i>
+          <span>Admin Users</span>
+        </button>
+        
+        <button class="admin-nav-btn" data-module="locations">
+          <i class="fas fa-map-marker-alt nav-icon"></i>
+          <span>Locations</span>
         </button>
       </div>
     </nav>
@@ -287,8 +315,11 @@
         Dashboard Overview
       </h1>
       <div class="admin-header-right">
-        <span id="admin-user-name">Administrator</span>
-        <button class="admin-logout-btn" onclick="adminDash.logout()">
+        <div style="text-align: right;">
+          <div id="admin-user-name" style="font-weight: 700;">Administrator</div>
+          <div id="admin-user-role" style="font-size: 0.85rem; opacity: 0.9;">Admin</div>
+        </div>
+        <button class="admin-logout-btn" id="admin-logout">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
@@ -296,559 +327,13 @@
 
     <!-- Dynamic Content Area -->
     <div class="admin-content" id="admin-content">
-      <!-- Dashboard Overview (Default) -->
-      <div id="section-dashboard" class="admin-section active">
-        <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
-          <i class="fas fa-chart-line"></i>
-          Platform Overview
-        </h2>
-        
-        <!-- Key Statistics Grid -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon">👥</div>
-            <div class="stat-value">12,450</div>
-            <div class="stat-label">Total Users</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🟢</div>
-            <div class="stat-value">9,840</div>
-            <div class="stat-label">Active Users</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🏠</div>
-            <div class="stat-value">3,280</div>
-            <div class="stat-label">Properties</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🏢</div>
-            <div class="stat-value">540</div>
-            <div class="stat-label">Buildings</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🚪</div>
-            <div class="stat-value">8,750</div>
-            <div class="stat-label">Units</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">📋</div>
-            <div class="stat-value">2,740</div>
-            <div class="stat-label">Active Listings</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">⏳</div>
-            <div class="stat-value">185</div>
-            <div class="stat-label">Pending Listings</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🛏️</div>
-            <div class="stat-value">420</div>
-            <div class="stat-label">BNBs</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🔧</div>
-            <div class="stat-value">1,160</div>
-            <div class="stat-label">Service Providers</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🛋️</div>
-            <div class="stat-value">2,850</div>
-            <div class="stat-label">Marketplace Items</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">📩</div>
-            <div class="stat-value">1,240</div>
-            <div class="stat-label">New Inquiries</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🚨</div>
-            <div class="stat-value">76</div>
-            <div class="stat-label">Open Reports</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- BNB Section -->
-      <div id="section-bnb" class="admin-section" style="display: none;">
-        <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
-          <i class="fas fa-bed"></i>
-          Short-Stays / BNB Management
-        </h2>
-        <p style="background: #f0fdf4; padding: 16px; border-radius: 8px; border-left: 4px solid #059669; color: #166534; margin-bottom: 24px;">
-          <strong>🏨 KejaMarket BNB Model:</strong> KejaMarket connects guests with BNB hosts. Hosts manage their own availability, pricing, and bookings. Platform facilitates discovery and inquiry connection.
-        </p>
-        
-        <!-- BNB Statistics -->
-        <div class="stats-grid" style="margin-bottom: 32px;">
-          <div class="stat-card">
-            <div class="stat-icon">🏨</div>
-            <div class="stat-value">420</div>
-            <div class="stat-label">Total BNB Listings</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">👥</div>
-            <div class="stat-value">156</div>
-            <div class="stat-label">BNB Hosts</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">📩</div>
-            <div class="stat-value">1,847</div>
-            <div class="stat-label">Guest Inquiries</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🟡</div>
-            <div class="stat-value">284</div>
-            <div class="stat-label">Awaiting Host Response</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Other sections will be loaded dynamically -->
-      <div id="section-users" class="admin-section" style="display: none;">
-        <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
-          <i class="fas fa-users"></i>
-          User Management
-        </h2>
-        <p>Comprehensive user management system coming soon...</p>
-      </div>
+      <!-- Content loaded dynamically by admin-core.js -->
     </div>
   </main>
 </div>
 
-<script>
-/**
- * KejaMarket Complete Admin Dashboard System
- */
-const adminDash = {
-  currentSection: 'dashboard',
-  
-  /**
-   * Initialize admin dashboard
-   */
-  init() {
-    console.log('🏢 KejaMarket Admin Dashboard initialized');
-    this.loadDashboardData();
-    this.setupEventListeners();
-  },
-  
-  /**
-   * Show specific admin section
-   */
-  showSection(sectionId) {
-    // Hide all sections
-    document.querySelectorAll('.admin-section').forEach(section => {
-      section.style.display = 'none';
-    });
-    
-    // Remove active class from all nav buttons
-    document.querySelectorAll('.admin-nav-btn').forEach(btn => {
-      btn.classList.remove('active');
-    });
-    
-    // Show selected section
-    const section = document.getElementById(`section-${sectionId}`);
-    if (section) {
-      section.style.display = 'block';
-    } else {
-      this.createSection(sectionId);
-    }
-    
-    // Set active nav button
-    const navBtn = document.querySelector(`[onclick="adminDash.showSection('${sectionId}')"]`);
-    if (navBtn) {
-      navBtn.classList.add('active');
-    }
-    
-    // Update page title
-    this.updatePageTitle(sectionId);
-    
-    this.currentSection = sectionId;
-  },
-  
-  /**
-   * Create section dynamically if it doesn't exist
-   */
-  createSection(sectionId) {
-    const content = document.getElementById('admin-content');
-    const sectionDiv = document.createElement('div');
-    sectionDiv.id = `section-${sectionId}`;
-    sectionDiv.className = 'admin-section';
-    
-    switch(sectionId) {
-      case 'properties':
-        sectionDiv.innerHTML = this.getPropertiesHTML();
-        break;
-      case 'verification':
-        sectionDiv.innerHTML = this.getVerificationHTML();
-        break;
-      case 'rentals':
-        sectionDiv.innerHTML = this.getRentalsHTML();
-        break;
-      case 'services':
-        sectionDiv.innerHTML = this.getServicesHTML();
-        break;
-      case 'marketplace':
-        sectionDiv.innerHTML = this.getMarketplaceHTML();
-        break;
-      case 'inquiries':
-        sectionDiv.innerHTML = this.getInquiriesHTML();
-        break;
-      case 'reviews':
-        sectionDiv.innerHTML = this.getReviewsHTML();
-        break;
-      case 'reports':
-        sectionDiv.innerHTML = this.getReportsHTML();
-        break;
-      case 'fraud':
-        sectionDiv.innerHTML = this.getFraudHTML();
-        break;
-      case 'analytics':
-        sectionDiv.innerHTML = this.getAnalyticsHTML();
-        break;
-      case 'settings':
-        sectionDiv.innerHTML = this.getSettingsHTML();
-        break;
-      default:
-        sectionDiv.innerHTML = `
-          <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
-            <i class="fas fa-cog"></i>
-            ${this.formatSectionTitle(sectionId)}
-          </h2>
-          <p style="color: #6b7280; font-size: 1rem;">This section is under development. Full functionality coming soon...</p>
-        `;
-    }
-    
-    content.appendChild(sectionDiv);
-  },
-  
-  /**
-   * Get HTML for different sections
-   */
-  getPropertiesHTML() {
-    return `
-      <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
-        <i class="fas fa-home"></i>
-        Property Management
-      </h2>
-      
-      <div class="stats-grid" style="margin-bottom: 32px;">
-        <div class="stat-card">
-          <div class="stat-icon">🏠</div>
-          <div class="stat-value">3,280</div>
-          <div class="stat-label">Total Properties</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">✅</div>
-          <div class="stat-value">2,740</div>
-          <div class="stat-label">Active Properties</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">⏳</div>
-          <div class="stat-value">185</div>
-          <div class="stat-label">Pending Approval</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🏢</div>
-          <div class="stat-value">540</div>
-          <div class="stat-label">Buildings</div>
-        </div>
-      </div>
-      
-      <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px;">
-        <h3 style="font-size: 1.2rem; font-weight: 700; color: #1e293b; margin-bottom: 16px;">
-          Property Relationships
-        </h3>
-        <div style="background: #f8fafc; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 0.9rem;">
-          PROPERTY<br>
-          &nbsp;&nbsp;↓<br>
-          OWNER<br>
-          &nbsp;&nbsp;↓<br>
-          PROPERTY MANAGER<br>
-          &nbsp;&nbsp;↓<br>
-          CARETAKER<br>
-          &nbsp;&nbsp;↓<br>
-          AGENT<br>
-          &nbsp;&nbsp;↓<br>
-          BUILDING<br>
-          &nbsp;&nbsp;↓<br>
-          UNIT<br>
-          &nbsp;&nbsp;↓<br>
-          LISTING
-        </div>
-      </div>
-    `;
-  },
-  
-  getVerificationHTML() {
-    return `
-      <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
-        <i class="fas fa-shield-check"></i>
-        Verification Centre
-      </h2>
-      
-      <div class="stats-grid" style="margin-bottom: 32px;">
-        <div class="stat-card">
-          <div class="stat-icon">🔑</div>
-          <div class="stat-value">94</div>
-          <div class="stat-label">Pending Verifications</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">✅</div>
-          <div class="stat-value">8,420</div>
-          <div class="stat-label">Verified Users</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">📄</div>
-          <div class="stat-value">156</div>
-          <div class="stat-label">Documents Uploaded</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">❌</div>
-          <div class="stat-value">23</div>
-          <div class="stat-label">Rejected Applications</div>
-        </div>
-      </div>
-      
-      <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px;">
-        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px;">Verification Types</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
-          <div style="padding: 16px; background: #f9fafb; border-radius: 8px;">
-            <strong>User Verification</strong><br>
-            <span style="color: #6b7280;">Identity documents, phone verification</span>
-          </div>
-          <div style="padding: 16px; background: #f9fafb; border-radius: 8px;">
-            <strong>Landlord Verification</strong><br>
-            <span style="color: #6b7280;">Property ownership documents</span>
-          </div>
-          <div style="padding: 16px; background: #f9fafb; border-radius: 8px;">
-            <strong>BNB Host Verification</strong><br>
-            <span style="color: #6b7280;">Property licenses, host validation</span>
-          </div>
-        </div>
-      </div>
-    `;
-  },
-  
-  getInquiriesHTML() {
-    return `
-      <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
-        <i class="fas fa-envelope"></i>
-        Inquiry Management
-      </h2>
-      
-      <div style="background: #f0f9ff; padding: 16px; border-radius: 8px; border-left: 4px solid #0ea5e9; margin-bottom: 24px;">
-        <strong>📞 KejaMarket Connection Model:</strong> Platform facilitates inquiries between users. Tenants contact landlords, guests contact BNB hosts, customers contact service providers.
-      </div>
-      
-      <div class="stats-grid" style="margin-bottom: 32px;">
-        <div class="stat-card">
-          <div class="stat-icon">📩</div>
-          <div class="stat-value">1,240</div>
-          <div class="stat-label">Total Inquiries</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🏠</div>
-          <div class="stat-value">847</div>
-          <div class="stat-label">Property Inquiries</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🛏️</div>
-          <div class="stat-value">284</div>
-          <div class="stat-label">BNB Inquiries</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">🔧</div>
-          <div class="stat-value">109</div>
-          <div class="stat-label">Service Inquiries</div>
-        </div>
-      </div>
-      
-      <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px;">
-        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px;">Inquiry Flow</h3>
-        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-          <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
-            <strong>1. Discovery</strong><br>
-            <span style="color: #166534; font-size: 0.9rem;">User finds listing</span>
-          </div>
-          <div style="color: #059669; font-size: 1.2rem;">→</div>
-          <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
-            <strong>2. Inquiry</strong><br>
-            <span style="color: #166534; font-size: 0.9rem;">User contacts owner</span>
-          </div>
-          <div style="color: #059669; font-size: 1.2rem;">→</div>
-          <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
-            <strong>3. Connection</strong><br>
-            <span style="color: #166534; font-size: 0.9rem;">Direct communication</span>
-          </div>
-        </div>
-      </div>
-    `;
-  },
-  
-  /**
-   * Update page title based on current section
-   */
-  updatePageTitle(sectionId) {
-    const titleMap = {
-      'dashboard': 'Dashboard Overview',
-      'users': 'User Management', 
-      'properties': 'Property Management',
-      'verification': 'Verification Centre',
-      'rentals': 'Long-term Rentals',
-      'bnb': 'Short-Stays / BNB',
-      'services': 'Service Providers',
-      'marketplace': 'Marketplace Items',
-      'inquiries': 'Inquiry Management',
-      'reviews': 'Reviews & Ratings',
-      'reports': 'Reports & Complaints',
-      'fraud': 'Risk & Fraud Detection',
-      'analytics': 'Analytics & Insights',
-      'settings': 'Platform Settings'
-    };
-    
-    const title = titleMap[sectionId] || this.formatSectionTitle(sectionId);
-    const icon = this.getSectionIcon(sectionId);
-    
-    document.getElementById('page-title').innerHTML = `
-      <i class="${icon}"></i>
-      ${title}
-    `;
-  },
-  
-  /**
-   * Get icon for section
-   */
-  getSectionIcon(sectionId) {
-    const iconMap = {
-      'dashboard': 'fas fa-chart-line',
-      'users': 'fas fa-users',
-      'properties': 'fas fa-home',
-      'verification': 'fas fa-shield-check',
-      'rentals': 'fas fa-key',
-      'bnb': 'fas fa-bed',
-      'services': 'fas fa-tools',
-      'marketplace': 'fas fa-shopping-cart',
-      'inquiries': 'fas fa-envelope',
-      'reviews': 'fas fa-star',
-      'reports': 'fas fa-exclamation-triangle',
-      'fraud': 'fas fa-shield-alt',
-      'analytics': 'fas fa-chart-bar',
-      'settings': 'fas fa-cog'
-    };
-    
-    return iconMap[sectionId] || 'fas fa-cog';
-  },
-  
-  /**
-   * Format section title for display
-   */
-  formatSectionTitle(sectionId) {
-    return sectionId.split('-').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ');
-  },
-  
-  /**
-   * Load dashboard data
-   */
-  loadDashboardData() {
-    // Simulate loading real platform data
-    console.log('Loading KejaMarket platform statistics...');
-    
-    // In real implementation, this would fetch from API
-    this.updateStatistics();
-  },
-  
-  /**
-   * Update dashboard statistics
-   */
-  updateStatistics() {
-    const stats = {
-      totalUsers: 12450,
-      activeUsers: 9840, 
-      properties: 3280,
-      buildings: 540,
-      units: 8750,
-      activeListings: 2740,
-      pendingListings: 185,
-      bnbs: 420,
-      serviceProviders: 1160,
-      marketplaceItems: 2850,
-      newInquiries: 1240,
-      openReports: 76,
-      pendingVerifications: 94
-    };
-    
-    // Update stat values if elements exist
-    Object.keys(stats).forEach(key => {
-      const element = document.getElementById(`stat-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
-      if (element) {
-        element.textContent = stats[key].toLocaleString();
-      }
-    });
-  },
-  
-  /**
-   * Setup event listeners
-   */
-  setupEventListeners() {
-    // Global search functionality
-    const searchInput = document.getElementById('global-search');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        this.handleGlobalSearch(e.target.value);
-      });
-    }
-    
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey || e.metaKey) {
-        switch(e.key) {
-          case 'k':
-            e.preventDefault();
-            document.getElementById('global-search')?.focus();
-            break;
-        }
-      }
-    });
-  },
-  
-  /**
-   * Handle global search
-   */
-  handleGlobalSearch(query) {
-    if (query.length < 2) return;
-    
-    console.log('🔍 Searching KejaMarket for:', query);
-    // In real implementation, this would search across:
-    // - Users (name, phone, email)
-    // - Properties (name, location)  
-    // - Buildings and units
-    // - Listings
-    // - Inquiries
-    // - Reports
-    // - Transactions
-  },
-  
-  /**
-   * Logout functionality
-   */
-  logout() {
-    if (confirm('Are you sure you want to logout from the admin dashboard?')) {
-      console.log('Admin logging out...');
-      // Clear session
-      localStorage.removeItem('admin_session');
-      // Redirect to login
-      window.location.href = '/admin-login.html';
-    }
-  }
-};
-
-// Initialize dashboard when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  adminDash.init();
-});
-</script>
+<!-- Admin System Scripts -->
+<script src="js/admin-core.js?v=1.0"></script>
 
 </body>
 </html>

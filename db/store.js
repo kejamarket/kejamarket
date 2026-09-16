@@ -622,23 +622,93 @@ class Store {
     const properties = this.data.properties || [];
     const transactions = this.data.transactions || [];
     const messages = this.data.messages || [];
+    const reviews = this.data.reviews || [];
+    const inquiries = this.data.inquiries || [];
+    const reports = this.data.reports || [];
 
+    // User statistics
     const totalUsers = users.length;
+    const activeUsers = users.filter(u => u.isPhoneVerified).length;
     const tenants = users.filter(u => u.role === 'tenant').length;
     const landlords = users.filter(u => u.role === 'landlord').length;
+    const agents = users.filter(u => u.role === 'agent').length;
+    const serviceProviders = users.filter(u => u.role === 'service-provider').length;
+
+    // Property statistics
     const totalProperties = properties.length;
+    const activeListings = properties.filter(p => p.status === 'verified' || p.isVerified).length;
+    const pendingListings = properties.filter(p => p.status === 'pending' || (!p.isVerified && p.status !== 'rejected')).length;
     const availableProperties = properties.filter(p => !p.isTaken && p.status !== 'taken').length;
     const takenProperties = properties.filter(p => p.isTaken || p.status === 'taken').length;
 
+    // Buildings and Units (if implemented)
+    const buildings = this.data.buildings || [];
+    const units = this.data.units || [];
+    const totalBuildings = buildings.length;
+    const totalUnits = units.length;
+
+    // BNB statistics
+    const bnbs = properties.filter(p => p.propertyType === 'bnb' || p.propertyType === 'short-stay');
+    const totalBNBs = bnbs.length;
+    const activeBNBs = bnbs.filter(b => b.status === 'verified' || b.isVerified).length;
+
+    // Marketplace & Services
+    const marketplaceItems = this.data.marketplaceItems || [];
+    const services = this.data.services || [];
+    const totalMarketplace = marketplaceItems.length;
+    const totalServices = services.length;
+
+    // Inquiries & Communication
+    const newInquiries = inquiries.filter(i => i.status === 'new' || !i.status).length;
+    const totalInquiries = inquiries.length;
+    
+    // Reports & Reviews
+    const openReports = reports.filter(r => r.status === 'open' || r.status === 'pending').length;
+    const totalReports = reports.length;
+    const totalReviews = reviews.length;
+
     return {
+      // User stats
       totalUsers,
+      activeUsers,
       tenants,
       landlords,
+      agents,
+      serviceProviders,
+      
+      // Property stats
       totalProperties,
+      activeListings,
+      pendingListings,
       availableProperties,
       takenProperties,
-      totalTransactions: transactions.length,
+      
+      // Buildings & Units
+      totalBuildings,
+      totalUnits,
+      
+      // BNB stats
+      totalBNBs,
+      activeBNBs,
+      
+      // Marketplace & Services
+      totalMarketplace,
+      totalServices,
+      
+      // Communication
+      totalInquiries,
+      newInquiries,
       totalMessages: messages.length,
+      
+      // Reports & Reviews
+      totalReports,
+      openReports,
+      totalReviews,
+      
+      // Transactions
+      totalTransactions: transactions.length,
+      
+      // Meta
       dbFilePath: DB_FILE,
       recentUsers: users.slice(-50).reverse().map(u => this.sanitizeUser(u))
     };
