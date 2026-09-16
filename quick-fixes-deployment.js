@@ -107,11 +107,16 @@ document.addEventListener('DOMContentLoaded', function() {
       font-size: 0.75rem !important;
     }
     
-    /* Fix filter section scrolling issue */
+    /* Fix filter section scrolling issue - extend to use all available space */
     .categories-filters-sidebar {
-      max-height: calc(100vh - 180px) !important;
+      max-height: calc(100vh - 140px) !important;
       overflow-y: auto !important;
       padding-bottom: 20px !important;
+    }
+    
+    .sidebar-col-category,
+    .sidebar-col-other {
+      max-height: none !important;
     }
     
     .filter-section {
@@ -119,11 +124,30 @@ document.addEventListener('DOMContentLoaded', function() {
       overflow: visible !important;
     }
     
-    /* Ensure filter options are fully visible */
+    /* Ensure filter options are fully visible without scrolling */
     .house-types-list,
     .services-list {
-      max-height: 500px !important;
-      overflow-y: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    
+    /* Hide toast messages / notification popups */
+    .toast-notification,
+    .toast-container,
+    .Toastify,
+    [class*="toast"],
+    [id*="toast"] {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+    
+    /* Make service category items clickable and styled */
+    .sidebar-cat-item,
+    .service-category-item {
+      cursor: pointer !important;
+      pointer-events: auto !important;
+      user-select: none !important;
     }
     
     /* Fix map container sizing - ensure full visibility */
@@ -208,6 +232,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 1000);
   
   console.log('✅ Quick fixes applied');
+  
+  // Fix 5: Disable toast notifications completely
+  setTimeout(() => {
+    if (window.app && window.app.showToast) {
+      window.app.showToast = function() {
+        // Silently ignore all toast notifications
+        return;
+      };
+      console.log('✅ Toast notifications disabled');
+    }
+  }, 100);
 });
 
 // Add service location filter functionality
