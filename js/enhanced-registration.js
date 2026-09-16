@@ -23,9 +23,9 @@ const KejaEnhancedAuth = {
     'airbnb-host': {
       title: 'Airbnb / Short-Stay Host',
       icon: '🏨',
-      description: 'I host short-term accommodations (nightly/weekly stays)',
+      description: 'I list short-term accommodations for guests to contact me directly',
       propertyType: 'short-stay',
-      dashboardFeatures: ['nightly pricing', 'availability calendar', 'booking requests', 'guest inquiries', 'check-in/out', 'reviews', 'earnings']
+      dashboardFeatures: ['listing management', 'guest inquiries', 'contact tracking', 'reviews', 'marketplace visibility']
     },
     'serviced-apartment': {
       title: 'Serviced Apartment',

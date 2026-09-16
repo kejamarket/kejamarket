@@ -77,7 +77,7 @@ const KejaEnhancedPortal = {
   },
 
   /**
-   * Setup Airbnb host dashboard with short-stay management
+   * Setup Airbnb host dashboard with marketplace model (no booking management)
    */
   setupAirbnbDashboard() {
     const dashboardHeader = document.querySelector('#landlord-dashboard h2');
@@ -86,62 +86,62 @@ const KejaEnhancedPortal = {
         <div class="airbnb-welcome">
           <div class="welcome-text">
             <span class="greeting">Welcome, ${this.user.name}</span>
-            <span class="dashboard-title">🏨 Airbnb Host Dashboard</span>
+            <span class="dashboard-title">🏨 BNB Host Dashboard</span>
           </div>
           <div class="host-badge">
-            🏨 Short-Stay Host
+            🏨 BNB Host
           </div>
         </div>
       `;
     }
 
-    this.addAirbnbProperties();
-    this.addAirbnbMetrics();
-    this.addBookingManagement();
+    this.addBnbListings();
+    this.addBnbMetrics();
+    this.addGuestInquiries();
   },
 
   /**
-   * Add Airbnb-specific property management
+   * Add BNB listings management (marketplace model)
    */
-  addAirbnbProperties() {
+  addBnbListings() {
     const dashboard = document.getElementById('landlord-dashboard');
     if (!dashboard) return;
 
-    const airbnbSection = document.createElement('div');
-    airbnbSection.id = 'airbnb-properties';
-    airbnbSection.innerHTML = `
+    const bnbSection = document.createElement('div');
+    bnbSection.id = 'bnb-listings';
+    bnbSection.innerHTML = `
       <div class="section-header">
         <h3>
           <i class="fas fa-bed"></i>
-          My Accommodations
+          My BNB Listings
           <span class="properties-count">${this.properties.length} listings</span>
         </h3>
-        <button onclick="KejaEnhancedPortal.showAddAccommodationModal()" class="btn-add-property">
-          <i class="fas fa-plus"></i> Add Accommodation
+        <button onclick="KejaEnhancedPortal.showAddBnbModal()" class="btn-add-property">
+          <i class="fas fa-plus"></i> Add BNB Listing
         </button>
       </div>
 
-      <div class="airbnb-overview">
+      <div class="bnb-overview">
         <div class="overview-cards">
           <div class="overview-card">
-            <div class="card-icon">🏨</div>
+            <div class="card-icon">🏠</div>
             <div class="card-content">
               <div class="card-number">${this.properties.length}</div>
-              <div class="card-label">Accommodations</div>
+              <div class="card-label">Active Listings</div>
             </div>
           </div>
           <div class="overview-card">
-            <div class="card-icon">📅</div>
+            <div class="card-icon">👀</div>
             <div class="card-content">
-              <div class="card-number">${this.getOccupancyRate()}%</div>
-              <div class="card-label">Occupancy Rate</div>
+              <div class="card-number">${this.getBnbViews()}</div>
+              <div class="card-label">Total Views</div>
             </div>
           </div>
           <div class="overview-card">
-            <div class="card-icon">💰</div>
+            <div class="card-icon">📞</div>
             <div class="card-content">
-              <div class="card-number">KSh ${this.getMonthlyEarnings().toLocaleString()}</div>
-              <div class="card-label">Monthly Earnings</div>
+              <div class="card-number">${this.getGuestInquiries()}</div>
+              <div class="card-label">Guest Inquiries</div>
             </div>
           </div>
           <div class="overview-card">
@@ -154,60 +154,59 @@ const KejaEnhancedPortal = {
         </div>
       </div>
 
-      <div class="accommodations-list" id="accommodations-list">
-        ${this.renderAirbnbAccommodations()}
+      <div class="bnb-listings-list" id="bnb-listings-list">
+        ${this.renderBnbListings()}
       </div>
     `;
 
-    dashboard.appendChild(airbnbSection);
+    dashboard.appendChild(bnbSection);
   },
 
   /**
-   * Render Airbnb accommodations list
+   * Render BNB listings (marketplace model)
    */
-  renderAirbnbAccommodations() {
+  renderBnbListings() {
     if (this.properties.length === 0) {
       return `
         <div class="empty-properties">
           <div class="empty-icon">🏨</div>
-          <div class="empty-title">No Accommodations Listed Yet</div>
-          <div class="empty-desc">Add your first short-stay accommodation to start hosting guests</div>
-          <button onclick="KejaEnhancedPortal.showAddAccommodationModal()" class="btn-primary">
-            <i class="fas fa-plus"></i> Add Your First Accommodation
+          <div class="empty-title">No BNB Listings Yet</div>
+          <div class="empty-desc">Add your first BNB listing to start connecting with guests on KejaMarket</div>
+          <button onclick="KejaEnhancedPortal.showAddBnbModal()" class="btn-primary">
+            <i class="fas fa-plus"></i> Create Your First BNB Listing
           </button>
         </div>
       `;
     }
 
     return this.properties.map(property => `
-      <div class="accommodation-card" data-property-id="${property.id}">
-        <div class="accommodation-header">
-          <div class="accommodation-info">
-            <div class="accommodation-name">${property.title}</div>
-            <div class="accommodation-location">
+      <div class="bnb-listing-card" data-property-id="${property.id}">
+        <div class="bnb-header">
+          <div class="bnb-info">
+            <div class="bnb-name">${property.title}</div>
+            <div class="bnb-location">
               <i class="fas fa-map-marker-alt"></i>
               ${property.location}
             </div>
           </div>
-          <div class="availability-status status-${property.availability || 'available'}">
-            ${property.availability === 'available' ? '🟢 Available' : 
-              property.availability === 'booked' ? '🔴 Booked' : 
-              '🟡 Maintenance'}
+          <div class="availability-status">
+            <div class="status-indicator">🟡 Confirm with host</div>
+            <div class="price-display">KSh ${property.nightlyRate || 3500}/night</div>
           </div>
         </div>
         
-        <div class="accommodation-stats">
+        <div class="bnb-stats">
           <div class="stat">
-            <span class="stat-number">KSh ${property.nightlyRate || 4500}</span>
-            <span class="stat-label">per night</span>
+            <span class="stat-number">${property.views || 0}</span>
+            <span class="stat-label">Views</span>
           </div>
           <div class="stat">
-            <span class="stat-number">${property.bookings || 0}</span>
-            <span class="stat-label">Bookings</span>
+            <span class="stat-number">${property.inquiries || 0}</span>
+            <span class="stat-label">Inquiries</span>
           </div>
           <div class="stat">
-            <span class="stat-number">${property.occupancy || 65}%</span>
-            <span class="stat-label">Occupancy</span>
+            <span class="stat-number">${property.contacts || 0}</span>
+            <span class="stat-label">Contacts</span>
           </div>
           <div class="stat">
             <span class="stat-number">⭐ ${property.rating || 4.8}</span>
@@ -215,68 +214,73 @@ const KejaEnhancedPortal = {
           </div>
         </div>
         
-        <div class="accommodation-actions">
-          <button onclick="KejaEnhancedPortal.manageCalendar('${property.id}')" class="btn-action">
-            📅 Calendar
+        <div class="bnb-actions">
+          <button onclick="KejaEnhancedPortal.editBnbListing('${property.id}')" class="btn-action">
+            📝 Edit Listing
           </button>
-          <button onclick="KejaEnhancedPortal.viewBookings('${property.id}')" class="btn-action">
-            📋 Bookings
+          <button onclick="KejaEnhancedPortal.viewBnbInquiries('${property.id}')" class="btn-action">
+            📞 View Inquiries
           </button>
-          <button onclick="KejaEnhancedPortal.manageAccommodation('${property.id}')" class="btn-manage">
+          <button onclick="KejaEnhancedPortal.manageBnbListing('${property.id}')" class="btn-manage">
             Manage
           </button>
+        </div>
+        
+        <div class="marketplace-note">
+          <i class="fas fa-info-circle"></i>
+          <span>Guests contact you directly to confirm availability and booking</span>
         </div>
       </div>
     `).join('');
   },
 
   /**
-   * Add Airbnb-specific metrics
+   * Add BNB marketplace metrics
    */
-  addAirbnbMetrics() {
+  addBnbMetrics() {
     const dashboard = document.getElementById('landlord-dashboard');
     
     const metricsSection = document.createElement('div');
-    metricsSection.id = 'airbnb-metrics';
+    metricsSection.id = 'bnb-metrics';
     metricsSection.innerHTML = `
       <div class="section-header">
-        <h3><i class="fas fa-chart-bar"></i> Host Performance</h3>
+        <h3><i class="fas fa-chart-bar"></i> BNB Performance</h3>
       </div>
       
       <div class="metrics-grid">
         <div class="metric-card">
           <div class="metric-icon">📊</div>
           <div class="metric-content">
-            <div class="metric-number">15</div>
-            <div class="metric-label">Booking Requests</div>
+            <div class="metric-number">${this.getGuestInquiries()}</div>
+            <div class="metric-label">Guest Inquiries</div>
             <div class="metric-trend">This month</div>
           </div>
         </div>
         
         <div class="metric-card">
-          <div class="metric-icon">👥</div>
+          <div class="metric-icon">👁️</div>
           <div class="metric-content">
-            <div class="metric-number">28</div>
-            <div class="metric-label">Total Guests</div>
+            <div class="metric-number">${this.getBnbViews()}</div>
+            <div class="metric-label">Listing Views</div>
             <div class="metric-trend">This month</div>
           </div>
         </div>
         
         <div class="metric-card">
-          <div class="metric-icon">💰</div>
+          <div class="metric-icon">📞</div>
           <div class="metric-content">
-            <div class="metric-number">KSh 87,500</div>
-            <div class="metric-label">Gross Earnings</div>
+            <div class="metric-number">${Math.floor(Math.random() * 15) + 5}</div>
+            <div class="metric-label">Phone Contacts</div>
             <div class="metric-trend">This month</div>
           </div>
         </div>
         
         <div class="metric-card">
-          <div class="metric-icon">⭐</div>
+          <div class="metric-icon">💬</div>
           <div class="metric-content">
-            <div class="metric-number">4.9</div>
-            <div class="metric-label">Average Rating</div>
-            <div class="metric-trend">12 reviews</div>
+            <div class="metric-number">${Math.floor(Math.random() * 20) + 8}</div>
+            <div class="metric-label">WhatsApp Contacts</div>
+            <div class="metric-trend">This month</div>
           </div>
         </div>
       </div>
@@ -286,64 +290,108 @@ const KejaEnhancedPortal = {
   },
 
   /**
-   * Add booking management section
+   * Add guest inquiry management (not booking management)
    */
-  addBookingManagement() {
+  addGuestInquiries() {
     const dashboard = document.getElementById('landlord-dashboard');
     
-    const bookingSection = document.createElement('div');
-    bookingSection.id = 'booking-management';
-    bookingSection.innerHTML = `
+    const inquirySection = document.createElement('div');
+    inquirySection.id = 'guest-inquiries';
+    inquirySection.innerHTML = `
       <div class="section-header">
-        <h3><i class="fas fa-calendar-check"></i> Recent Bookings</h3>
+        <h3><i class="fas fa-envelope"></i> Recent Guest Inquiries</h3>
       </div>
       
-      <div class="bookings-panel">
-        <div class="booking-requests">
-          <h4>Pending Requests (3)</h4>
-          <div class="request-list">
-            <div class="booking-request">
+      <div class="inquiries-panel">
+        <div class="inquiry-requests">
+          <h4>New Inquiries (${Math.floor(Math.random() * 5) + 2})</h4>
+          <div class="inquiry-list">
+            <div class="guest-inquiry">
               <div class="guest-info">
-                <strong>Sarah K.</strong> • 2 nights
-                <div class="dates">Dec 15-17 • KSh 9,000</div>
+                <strong>Sarah K.</strong> • Interested in your Kilimani BNB
+                <div class="inquiry-details">Looking for 3 nights, Dec 15-18</div>
+                <div class="inquiry-time">2 hours ago</div>
               </div>
-              <div class="request-actions">
-                <button onclick="KejaEnhancedPortal.acceptBooking('req1')" class="btn-accept">Accept</button>
-                <button onclick="KejaEnhancedPortal.declineBooking('req1')" class="btn-decline">Decline</button>
+              <div class="inquiry-actions">
+                <button onclick="KejaEnhancedPortal.respondToInquiry('inq1')" class="btn-respond">Respond</button>
+                <button onclick="KejaEnhancedPortal.viewInquiry('inq1')" class="btn-view">View</button>
               </div>
             </div>
             
-            <div class="booking-request">
+            <div class="guest-inquiry">
               <div class="guest-info">
-                <strong>Mike A.</strong> • 5 nights
-                <div class="dates">Dec 20-25 • KSh 22,500</div>
+                <strong>Mike A.</strong> • Wants to book your Westlands place
+                <div class="inquiry-details">Weekend stay, Dec 22-24</div>
+                <div class="inquiry-time">5 hours ago</div>
               </div>
-              <div class="request-actions">
-                <button onclick="KejaEnhancedPortal.acceptBooking('req2')" class="btn-accept">Accept</button>
-                <button onclick="KejaEnhancedPortal.declineBooking('req2')" class="btn-decline">Decline</button>
+              <div class="inquiry-actions">
+                <button onclick="KejaEnhancedPortal.respondToInquiry('inq2')" class="btn-respond">Respond</button>
+                <button onclick="KejaEnhancedPortal.viewInquiry('inq2')" class="btn-view">View</button>
               </div>
             </div>
           </div>
         </div>
         
-        <div class="upcoming-checkins">
-          <h4>Upcoming Check-ins</h4>
-          <div class="checkin-list">
-            <div class="checkin-item">
-              <div class="guest-details">
-                <strong>John & Mary</strong>
-                <div class="checkin-date">Today, 3:00 PM</div>
-              </div>
-              <button onclick="KejaEnhancedPortal.viewCheckinDetails('checkin1')" class="btn-action">
-                View Details
-              </button>
+        <div class="inquiry-tips">
+          <h4>💡 Host Tips</h4>
+          <div class="tip-list">
+            <div class="tip-item">
+              <i class="fas fa-clock"></i>
+              <span>Respond quickly to increase booking chances</span>
             </div>
+            <div class="tip-item">
+              <i class="fas fa-phone"></i>
+              <span>Confirm availability before accepting</span>
+            </div>
+            <div class="tip-item">
+              <i class="fas fa-handshake"></i>
+              <span>Be clear about check-in arrangements</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="marketplace-flow">
+        <div class="flow-title">
+          <i class="fas fa-route"></i>
+          How KejaMarket BNB Works
+        </div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="step-number">1</div>
+            <div class="step-text">Guest finds your listing</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="step-number">2</div>
+            <div class="step-text">Guest contacts you directly</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="step-number">3</div>
+            <div class="step-text">You confirm availability</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="step-number">4</div>
+            <div class="step-text">You arrange booking & payment</div>
           </div>
         </div>
       </div>
     `;
     
-    dashboard.appendChild(bookingSection);
+    dashboard.appendChild(inquirySection);
+  },
+
+  /**
+   * Utility functions for BNB metrics
+   */
+  getBnbViews() {
+    return Math.floor(Math.random() * 200) + 50; // 50-250 views
+  },
+
+  getGuestInquiries() {
+    return Math.floor(Math.random() * 15) + 5; // 5-20 inquiries
   },
 
   /**
@@ -808,42 +856,36 @@ const KejaEnhancedPortal = {
   },
 
   /**
-   * Airbnb-specific actions
+   * BNB Marketplace Actions (no booking management)
    */
-  showAddAccommodationModal() {
-    console.log('Showing add accommodation modal for Airbnb host');
-    // This would show an Airbnb-specific property addition modal
-    alert('Airbnb accommodation setup - coming soon!');
+  showAddBnbModal() {
+    console.log('Showing add BNB listing modal');
+    alert('Add BNB Listing - Set up your listing with photos, description, nightly rate, and contact preferences');
   },
 
-  manageCalendar(propertyId) {
-    console.log('Managing calendar for accommodation:', propertyId);
-    alert('Calendar management - coming soon!');
+  editBnbListing(propertyId) {
+    console.log('Editing BNB listing:', propertyId);
+    alert('Edit BNB Listing - Update photos, description, nightly rate, and availability status');
   },
 
-  viewBookings(propertyId) {
-    console.log('Viewing bookings for accommodation:', propertyId);
-    alert('Booking management - coming soon!');
+  viewBnbInquiries(propertyId) {
+    console.log('Viewing BNB inquiries for:', propertyId);
+    alert('View Guest Inquiries - See all guests who have contacted you about this listing');
   },
 
-  manageAccommodation(propertyId) {
-    console.log('Managing accommodation:', propertyId);
-    alert('Accommodation management - coming soon!');
+  manageBnbListing(propertyId) {
+    console.log('Managing BNB listing:', propertyId);
+    alert('Manage BNB - Update listing details, respond to inquiries, manage photos');
   },
 
-  acceptBooking(requestId) {
-    console.log('Accepting booking request:', requestId);
-    alert('Booking accepted!');
+  respondToInquiry(inquiryId) {
+    console.log('Responding to inquiry:', inquiryId);
+    alert('Respond to Guest - Call, WhatsApp, or message the guest directly to confirm availability and arrange booking');
   },
 
-  declineBooking(requestId) {
-    console.log('Declining booking request:', requestId);
-    alert('Booking declined');
-  },
-
-  viewCheckinDetails(checkinId) {
-    console.log('Viewing check-in details:', checkinId);
-    alert('Check-in details - coming soon!');
+  viewInquiry(inquiryId) {
+    console.log('Viewing inquiry details:', inquiryId);
+    alert('Inquiry Details - View full guest message, dates requested, and contact information');
   },
 
   manageProperty(propertyId) {
