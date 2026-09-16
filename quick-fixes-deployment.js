@@ -233,14 +233,25 @@ document.addEventListener('DOMContentLoaded', function() {
   
   console.log('✅ Quick fixes applied');
   
-  // Fix 5: Disable toast notifications completely
+  // Fix 5: Disable toast notifications for filters only (keep auth toasts)
   setTimeout(() => {
     if (window.app && window.app.showToast) {
-      window.app.showToast = function() {
-        // Silently ignore all toast notifications
+      const originalShowToast = window.app.showToast;
+      window.app.showToast = function(message, type) {
+        // Allow authentication and error messages
+        if (type === 'error' || type === 'success' || 
+            message.includes('Welcome') || 
+            message.includes('Sign') ||
+            message.includes('Password') ||
+            message.includes('Account') ||
+            message.includes('Email') ||
+            message.includes('Phone')) {
+          return originalShowToast.call(this, message, type);
+        }
+        // Silently ignore filter/category notifications
         return;
       };
-      console.log('✅ Toast notifications disabled');
+      console.log('✅ Toast notifications filtered (auth messages allowed)');
     }
   }, 100);
 });
