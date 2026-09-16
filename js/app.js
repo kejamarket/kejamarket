@@ -16,6 +16,8 @@ class NairobiRentalsApp {
     this.activeCorridor = 'all';
     this.activeSuburb = 'all';
     this.activeCounty = 'all';
+    this.activeServiceCorridor = 'all';
+    this.activeServiceSuburb = 'all';
     this.searchQuery = '';
     this.minPrice = 0;
     this.maxPrice = 200000;
@@ -280,7 +282,7 @@ class NairobiRentalsApp {
   }
 
   populateSidebarFilters() {
-    // Populate Counties / Corridors
+    // Populate Counties / Corridors for Properties
     const corridorSelect = document.getElementById('filter-corridor');
     if (corridorSelect) {
       corridorSelect.innerHTML = `<option value="all">All Nairobi Corridors & Satellite Towns</option>` +
@@ -294,6 +296,21 @@ class NairobiRentalsApp {
     }
 
     this.updateSuburbFilterOptions();
+    
+    // Populate Counties / Corridors for Services
+    const serviceCorridorSelect = document.getElementById('filter-service-corridor');
+    if (serviceCorridorSelect) {
+      serviceCorridorSelect.innerHTML = `<option value="all">All Nairobi Corridors</option>` +
+        NAIROBI_REGIONS.map(r => `<option value="${r.corridorId}">${r.corridorName} (${r.county})</option>`).join('');
+      
+      serviceCorridorSelect.addEventListener('change', (e) => {
+        this.activeServiceCorridor = e.target.value;
+        this.updateServiceSuburbFilterOptions();
+        this.applyFilters();
+      });
+    }
+
+    this.updateServiceSuburbFilterOptions();
   }
 
   updateSuburbFilterOptions() {
@@ -310,6 +327,24 @@ class NairobiRentalsApp {
     
     suburbSelect.addEventListener('change', (e) => {
       this.activeSuburb = e.target.value;
+      this.applyFilters();
+    });
+  }
+
+  updateServiceSuburbFilterOptions() {
+    const serviceSuburbSelect = document.getElementById('filter-service-suburb');
+    if (!serviceSuburbSelect) return;
+
+    let availableSuburbs = ALL_SUBURBS;
+    if (this.activeServiceCorridor && this.activeServiceCorridor !== 'all') {
+      availableSuburbs = ALL_SUBURBS.filter(s => s.corridorId === this.activeServiceCorridor);
+    }
+
+    serviceSuburbSelect.innerHTML = `<option value="all">All Suburbs & Estates (${availableSuburbs.length})</option>` +
+      availableSuburbs.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+    
+    serviceSuburbSelect.addEventListener('change', (e) => {
+      this.activeServiceSuburb = e.target.value;
       this.applyFilters();
     });
   }
@@ -378,6 +413,9 @@ class NairobiRentalsApp {
     } else if (tab === 'marketplace') {
       this.renderMarketplaceCategories();
     }
+    
+    // Apply filters to load the correct data for the new tab
+    this.applyFilters();
   }
 
   renderPropertyCategories() {
@@ -645,6 +683,8 @@ class NairobiRentalsApp {
     this.activeCategory = 'All';
     this.activeCorridor = 'all';
     this.activeSuburb = 'all';
+    this.activeServiceCorridor = 'all';
+    this.activeServiceSuburb = 'all';
     this.searchQuery = '';
     this.minPrice = 0;
     this.maxPrice = 200000;
@@ -658,6 +698,8 @@ class NairobiRentalsApp {
     if (searchInput) searchInput.value = '';
     const corridorSelect = document.getElementById('filter-corridor');
     if (corridorSelect) corridorSelect.value = 'all';
+    const serviceCorridorSelect = document.getElementById('filter-service-corridor');
+    if (serviceCorridorSelect) serviceCorridorSelect.value = 'all';
     const priceSlider = document.getElementById('price-slider');
     if (priceSlider) priceSlider.value = 200000;
     const priceMaxInput = document.getElementById('price-max-input');
@@ -669,6 +711,7 @@ class NairobiRentalsApp {
 
     this.setCategory('All');
     this.updateSuburbFilterOptions();
+    this.updateServiceSuburbFilterOptions();
     this.applyFilters();
     this.showToast('All filters have been reset', 'info');
   }
@@ -2494,7 +2537,20 @@ class NairobiRentalsApp {
       this.services = [];
     }
 
-    this.filteredProperties = this.services;
+    // Apply location filters to services
+    let filteredServices = [...this.services];
+    
+    // Corridor filter
+    if (this.activeServiceCorridor && this.activeServiceCorridor !== 'all') {
+      filteredServices = filteredServices.filter(s => s.corridorId === this.activeServiceCorridor);
+    }
+    
+    // Suburb filter
+    if (this.activeServiceSuburb && this.activeServiceSuburb !== 'all') {
+      filteredServices = filteredServices.filter(s => s.estateSuburb === this.activeServiceSuburb || s.location === this.activeServiceSuburb);
+    }
+
+    this.filteredProperties = filteredServices;
     this.renderListingsSummary();
     const gridEl = document.getElementById('property-grid');
     if (gridEl) gridEl.innerHTML = `<div class="empty-state-box"><p>Service rendering is coming soon.</p></div>`;
