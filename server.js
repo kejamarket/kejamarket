@@ -2505,6 +2505,113 @@ app.post('/api/admin/users/:id/suspend', requireAuth, async (req, res) => {
   }
 });
 
+// ─── BUILDINGS & UNITS ROUTES ───────────────────────────────────────────────
+
+// GET /api/admin/buildings - Get all buildings
+app.get('/api/admin/buildings', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    
+    const buildings = store.data.buildings || [];
+    
+    // Add stats to each building
+    const buildingsWithStats = buildings.map(building => {
+      const units = (store.data.units || []).filter(u => u.buildingId === building.id);
+      const occupiedUnits = units.filter(u => u.status === 'occupied' || u.isOccupied).length;
+      const availableUnits = units.filter(u => u.status === 'available').length;
+      const maintenanceUnits = units.filter(u => u.status === 'maintenance').length;
+      
+      return {
+        ...building,
+        totalUnits: units.length,
+        occupiedUnits,
+        availableUnits,
+        maintenanceUnits
+      };
+    });
+    
+    res.json({ success: true, count: buildingsWithStats.length, buildings: buildingsWithStats });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/buildings/:id - Get building details
+app.get('/api/admin/buildings/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    
+    const { id } = req.params;
+    const building = (store.data.buildings || []).find(b => b.id === id);
+    
+    if (!building) {
+      return res.status(404).json({ success: false, message: 'Building not found.' });
+    }
+    
+    // Add stats
+    const units = (store.data.units || []).filter(u => u.buildingId === id);
+    const occupiedUnits = units.filter(u => u.status === 'occupied' || u.isOccupied).length;
+    const availableUnits = units.filter(u => u.status === 'available').length;
+    const maintenanceUnits = units.filter(u => u.status === 'maintenance').length;
+    
+    const buildingWithStats = {
+      ...building,
+      totalUnits: units.length,
+      occupiedUnits,
+      availableUnits,
+      maintenanceUnits
+    };
+    
+    res.json({ success: true, building: buildingWithStats });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/buildings/:id/units - Get units in a building
+app.get('/api/admin/buildings/:id/units', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    
+    const { id } = req.params;
+    const units = (store.data.units || []).filter(u => u.buildingId === id);
+    
+    res.json({ success: true, count: units.length, units });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/units - Get all units
+app.get('/api/admin/units', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    
+    const units = store.data.units || [];
+    
+    // Add building names
+    const unitsWithBuildings = units.map(unit => {
+      const building = (store.data.buildings || []).find(b => b.id === unit.buildingId);
+      return {
+        ...unit,
+        buildingName: building ? building.name : 'Unknown Building'
+      };
+    });
+    
+    res.json({ success: true, count: unitsWithBuildings.length, units: unitsWithBuildings });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 app.post('/api/admin/users/:id/toggle-verify', optionalAuth, async (req, res) => {
   try {
     const { id } = req.params;

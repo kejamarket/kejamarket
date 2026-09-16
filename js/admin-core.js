@@ -335,12 +335,43 @@ const AdminCore = (() => {
 
   async function loadBuildings(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Buildings Module...</div>';
+    content.innerHTML = `
+      <div class="module-header">
+        <h1><i class="fas fa-building"></i> Buildings & Units Management</h1>
+      </div>
+      <div class="module-tabs">
+        <button class="tab-btn active" data-view="buildings">
+          <i class="fas fa-building"></i> Buildings
+        </button>
+        <button class="tab-btn" data-view="units">
+          <i class="fas fa-door-open"></i> All Units
+        </button>
+      </div>
+      <div id="buildings-content">
+        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+      </div>
+    `;
+
+    // Setup tab click handlers
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        AdminBuildings.init(btn.dataset.view);
+      });
+    });
+
+    // Load buildings with AdminBuildings module
+    if (typeof AdminBuildings !== 'undefined') {
+      await AdminBuildings.init(viewData || 'buildings');
+    } else {
+      console.error('AdminBuildings module not loaded');
+    }
   }
 
   async function loadUnits(viewData) {
-    const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Units Module...</div>';
+    // Delegate to buildings module with units view
+    await loadBuildings('units');
   }
 
   async function loadVerification(viewData) {
