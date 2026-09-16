@@ -138,9 +138,9 @@ app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.htm
 
 let store;
 async function initializeDatabase() {
-  console.log([SIGNUP] OTP sent to: +${cleanPhone});
+  console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
   console.log('🚀 KEJAMARKET DATABASE INITIALIZATION');
-  console.log([SIGNUP] OTP sent to: +${cleanPhone});
+  console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
   
   const POOLER_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
   
@@ -179,7 +179,7 @@ async function initializeDatabase() {
         store = require('./db/store.js');
       }
     }
-    console.log([SIGNUP] OTP sent to: +${cleanPhone});
+    console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
   } catch (error) {
     console.error('⚠️ Database initialization error:', error.message);
     try {
@@ -3737,11 +3737,11 @@ async function startServer() {
   await initializeDatabase();
 
   const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log([SIGNUP] OTP sent to: +${cleanPhone});
+    console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
     console.log(`ðŸš€ KejaMarket Production API Server running on port ${PORT}`);
     console.log(`ðŸ”— Web Application: http://localhost:${PORT}`);
     console.log(`ðŸ“± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
-    console.log([SIGNUP] OTP sent to: +${cleanPhone});
+    console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
 
     const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
     const PING_INTERVAL = 9 * 60 * 1000;
