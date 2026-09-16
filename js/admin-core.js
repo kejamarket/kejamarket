@@ -297,8 +297,40 @@ const AdminCore = (() => {
   // Properties, Buildings, Units - placeholder loaders
   async function loadProperties(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Properties Module...</div>';
-    // Will be implemented in next phase
+    content.innerHTML = `
+      <div class="module-header">
+        <h1><i class="fas fa-home"></i> Property Management</h1>
+      </div>
+      <div class="module-tabs">
+        <button class="tab-btn active" data-filter="all">All Properties</button>
+        <button class="tab-btn" data-filter="verified">Verified</button>
+        <button class="tab-btn" data-filter="pending">Pending</button>
+        <button class="tab-btn" data-filter="rejected">Rejected</button>
+        <button class="tab-btn" data-filter="available">Available</button>
+        <button class="tab-btn" data-filter="taken">Taken</button>
+        <button class="tab-btn" data-filter="rental">Rentals</button>
+        <button class="tab-btn" data-filter="bnb">BNBs</button>
+      </div>
+      <div id="properties-content">
+        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading properties...</div>
+      </div>
+    `;
+
+    // Setup tab click handlers
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        AdminProperties.init(btn.dataset.filter);
+      });
+    });
+
+    // Load properties with AdminProperties module
+    if (typeof AdminProperties !== 'undefined') {
+      await AdminProperties.init(viewData || 'all');
+    } else {
+      console.error('AdminProperties module not loaded');
+    }
   }
 
   async function loadBuildings(viewData) {
