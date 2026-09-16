@@ -1306,9 +1306,14 @@ window.openModal = function(modalId) {
   console.log(`✅ Modal ${modalId} opened properly`);
 };
 
-// Fix backdrop clicks to close modal
+// Fix backdrop clicks to close modal (except auth modal)
 document.addEventListener('click', function(e) {
   if (e.target.classList.contains('modal-backdrop')) {
+    // Don't close auth modal when clicking backdrop
+    if (e.target.id === 'modal-auth') {
+      return; // Do nothing - keep modal open
+    }
+    
     e.target.classList.remove('open');
     document.body.classList.remove('modal-open');
     setTimeout(() => {
