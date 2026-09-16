@@ -3,370 +3,852 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KejaMarket Admin Dashboard</title>
-  <link rel="stylesheet" href="css/style.css?v=2.5">
-  <link rel="stylesheet" href="css/map.css?v=2.5">
-  <link rel="stylesheet" href="css/monetization.css?v=2.5">
+  <title>🏢 KejaMarket Admin Dashboard</title>
+  <link rel="stylesheet" href="css/style.css?v=3.0">
+  <link rel="stylesheet" href="css/map.css?v=3.0">
+  <link rel="stylesheet" href="css/monetization.css?v=3.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR97kLJUhnToHmMgI+lLp9AfPlkp3+ZiCmKASi56Mark7yrFg==" crossorigin="">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background: #f8fafc; color: #1e293b; }
+    body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #1e293b; }
     
     .admin-layout { display: flex; height: 100vh; }
     
-    .admin-sidebar { width: 250px; background: linear-gradient(135deg, #1e1b4b, #312e81); color: white; padding: 20px; overflow-y: auto; border-right: 1px solid #4f46e5; }
-    .admin-sidebar h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
-    .admin-sidebar nav { display: flex; flex-direction: column; gap: 8px; }
-    .admin-nav-btn { background: transparent; color: #e9d5ff; border: none; padding: 12px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; text-align: left; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
-    .admin-nav-btn:hover { background: rgba(124, 58, 237, 0.3); }
-    .admin-nav-btn.active { background: #7c3aed; color: white; }
+    /* Enhanced Sidebar */
+    .admin-sidebar { 
+      width: 280px; 
+      background: linear-gradient(135deg, #1e1b4b, #312e81); 
+      color: white; 
+      padding: 20px; 
+      overflow-y: auto; 
+      border-right: 1px solid #4f46e5;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    }
+    
+    .admin-sidebar h2 { 
+      font-size: 1.4rem; 
+      font-weight: 800; 
+      margin-bottom: 28px; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(124, 58, 237, 0.3);
+    }
+    
+    .sidebar-section {
+      margin-bottom: 24px;
+    }
+    
+    .sidebar-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #c4b5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      padding-left: 16px;
+    }
+    
+    .admin-nav-btn { 
+      background: transparent; 
+      color: #e9d5ff; 
+      border: none; 
+      padding: 12px 16px; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 600; 
+      font-size: 0.9rem; 
+      text-align: left; 
+      transition: all 0.2s; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 4px;
+    }
+    
+    .admin-nav-btn:hover { 
+      background: rgba(124, 58, 237, 0.4); 
+      color: white;
+      transform: translateX(4px);
+    }
+    
+    .admin-nav-btn.active { 
+      background: #7c3aed; 
+      color: white; 
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+    }
+    
+    .nav-icon {
+      width: 18px;
+      text-align: center;
+    }
     
     .admin-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
     
-    .admin-header { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; padding: 20px 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .admin-header h1 { font-size: 1.5rem; font-weight: 800; }
-    .admin-header-right { display: flex; gap: 16px; align-items: center; }
-    .admin-logout-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
-    .admin-logout-btn:hover { background: rgba(255,255,255,0.3); }
+    /* Enhanced Header */
+    .admin-header { 
+      background: linear-gradient(135deg, #7c3aed, #4f46e5); 
+      color: white; 
+      padding: 20px 32px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
     
-    .admin-content { flex: 1; overflow-y: auto; padding: 28px; }
+    .admin-header h1 { 
+      font-size: 1.6rem; 
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
     
-    .admin-tab-nav { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
-    .admin-tab-btn { background: white; border: 2px solid #e2e8f0; color: #475569; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: all 0.2s; }
-    .admin-tab-btn:hover { border-color: #7c3aed; }
-    .admin-tab-btn.active { background: #7c3aed; color: white; border-color: #7c3aed; }
+    .admin-header-right { 
+      display: flex; 
+      gap: 20px; 
+      align-items: center; 
+    }
     
-    .admin-tab-pane { display: none; }
-    .admin-tab-pane.active { display: block; }
+    .admin-logout-btn { 
+      background: rgba(255,255,255,0.2); 
+      color: white; 
+      border: 1px solid rgba(255,255,255,0.4); 
+      padding: 10px 18px; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 600; 
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     
-    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
-    .stat-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 6px; }
-    .stat-value { font-size: 2rem; font-weight: 800; color: #4f46e5; }
+    .admin-content { 
+      flex: 1; 
+      overflow-y: auto; 
+      padding: 32px; 
+      background: #f8fafc;
+    }
     
-    .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .analytics-card { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; padding: 20px; }
-    .analytics-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
-    .analytics-card .big-num { font-size: 2.2rem; font-weight: 800; }
-    .analytics-card .sub { font-size: 0.85rem; opacity: 0.9; margin-top: 6px; }
+    .stats-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+      gap: 20px; 
+      margin-bottom: 32px; 
+    }
     
-    .list-container { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; }
-    .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0; }
-    .list-header h3 { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
-    .action-buttons { display: flex; gap: 8px; }
-    .btn-action { background: #4f46e5; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
-    .btn-action:hover { background: #4338ca; }
-    .btn-secondary { background: #f1f5f9; color: #334155; }
-    .btn-secondary:hover { background: #e2e8f0; }
-    .btn-danger { background: #ef4444; }
-    .btn-danger:hover { background: #dc2626; }
-    .btn-success { background: #10b981; }
-    .btn-success:hover { background: #059669; }
+    .stat-card { 
+      background: white; 
+      border: 1px solid #e2e8f0; 
+      border-radius: 12px; 
+      padding: 24px; 
+      text-align: center; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: all 0.2s;
+    }
     
-    .item-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: start; gap: 12px; }
-    .item-info { flex: 1; }
-    .item-name { font-weight: 700; color: #1e293b; margin-bottom: 4px; }
-    .item-meta { font-size: 0.8rem; color: #64748b; margin-bottom: 2px; }
-    .item-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
     
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-weight: 700; color: #1e293b; margin-bottom: 6px; font-size: 0.9rem; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 6px; font-family: inherit; font-size: 0.9rem; }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #7c3aed; }
+    .stat-value { 
+      font-size: 2.2rem; 
+      font-weight: 800; 
+      color: #4f46e5;
+      margin-bottom: 8px;
+    }
     
-    .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-    .status-verified { background: #dcfce7; color: #166534; }
-    .status-pending { background: #fef3c7; color: #92400e; }
-    .status-banned { background: #fecaca; color: #991b1b; }
-    .status-approved { background: #dcfce7; color: #15803d; }
-    
-    @media (max-width: 768px) {
-      .admin-layout { flex-direction: column; }
-      .admin-sidebar { width: 100%; height: auto; }
-      .admin-sidebar nav { flex-direction: row; overflow-x: auto; }
-      .stat-grid { grid-template-columns: repeat(2, 1fr); }
-      .analytics-grid { grid-template-columns: 1fr; }
+    .stat-label { 
+      font-size: 0.9rem; 
+      color: #64748b; 
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
-  <div class="admin-layout">
-    <!-- Sidebar Navigation -->
-    <aside class="admin-sidebar">
-      <h2><i class="fas fa-crown" style="color: #ffd700;"></i> KejaMarket Admin</h2>
-      <nav>
-        <button class="admin-nav-btn active" onclick="adminDash.switchTab('overview')">
-          <i class="fas fa-chart-pie"></i> Overview
+<div class="admin-layout">
+  <!-- Enhanced Sidebar -->
+  <aside class="admin-sidebar">
+    <h2>
+      <i class="fas fa-building"></i>
+      KejaMarket Admin
+    </h2>
+    
+    <nav>
+      <!-- Core Management -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Core Management</div>
+        <button class="admin-nav-btn active" onclick="adminDash.showSection('dashboard')">
+          <i class="fas fa-chart-line nav-icon"></i>
+          <span>Dashboard</span>
         </button>
-        <button class="admin-nav-btn" onclick="adminDash.switchTab('users')">
-          <i class="fas fa-users"></i> Users
-          <span id="admin-nav-users-pending" style="background: #ef4444; color: white; border-radius: 10px; padding: 1px 6px; font-size: 0.7rem; margin-left: auto;">0</span>
-        </button>
-        <button class="admin-nav-btn" onclick="adminDash.switchTab('listings')">
-          <i class="fas fa-home"></i> Listings
-        </button>
-        <button class="admin-nav-btn" onclick="adminDash.switchTab('verification')">
-          <i class="fas fa-check-circle"></i> Verification
-          <span id="admin-nav-verification-pending" style="background: #ef4444; color: white; border-radius: 10px; padding: 1px 6px; font-size: 0.7rem; margin-left: auto;">0</span>
-        </button>
-        <button class="admin-nav-btn" onclick="adminDash.switchTab('messages')">
-          <i class="fas fa-comments"></i> Messages
-        </button>
-        <button class="admin-nav-btn" onclick="adminDash.switchTab('system')">
-          <i class="fas fa-cog"></i> Settings
-        </button>
-      </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="admin-main">
-      <!-- Header -->
-      <header class="admin-header">
-        <h1><i class="fas fa-shield-alt"></i> Admin Dashboard</h1>
-        <div class="admin-header-right">
-          <span id="admin-user-name">Administrator</span>
-          <button class="admin-logout-btn" onclick="adminDash.logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
-          </button>
-        </div>
-      </header>
-
-      <!-- Content Area -->
-      <main class="admin-content">
-
-        <!-- OVERVIEW TAB -->
-        <div class="admin-tab-pane active" id="tab-overview">
-          <h2 style="margin-bottom: 20px; font-size: 1.4rem; color: #1e293b;">Platform Overview</h2>
-          
-          <div class="stat-grid">
-            <div class="stat-card">
-              <div class="stat-label">Total Users</div>
-              <div class="stat-value" id="admin-stat-total-users">—</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Landlords</div>
-              <div class="stat-value" id="admin-stat-landlords">—</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Tenants</div>
-              <div class="stat-value" id="admin-stat-tenants">—</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Total Properties</div>
-              <div class="stat-value" id="admin-stat-total-props">—</div>
-            </div>
-            <div class="stat-card" style="background: #fef3c7; border-color: #fcd34d;">
-              <div class="stat-label" style="color: #92400e;">Pending Approval</div>
-              <div class="stat-value" id="admin-stat-pending" style="color: #dc2626;">—</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Transactions</div>
-              <div class="stat-value" id="admin-stat-transactions">—</div>
-            </div>
-          </div>
-
-          <div id="admin-analytics-container"></div>
-        </div>
-
-        <!-- USERS TAB -->
-        <div class="admin-tab-pane" id="tab-users">
-          <div class="list-header">
-            <h2 style="margin: 0; font-size: 1.2rem;">Registered Users</h2>
-            <div class="action-buttons">
-              <button class="btn-action btn-secondary" onclick="adminDash.refreshAllData()">
-                <i class="fas fa-sync-alt"></i> Refresh
-              </button>
-              <button class="btn-action" style="background: #f59e0b;" onclick="adminDash.openBroadcastModal()">
-                <i class="fas fa-bullhorn"></i> Broadcast
-              </button>
-            </div>
-          </div>
-          <div id="admin-users-container" style="padding: 20px; text-align: center; color: #94a3b8;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
-            <div style="margin-top: 12px;">Loading users...</div>
-          </div>
-        </div>
-
-        <!-- LISTINGS TAB -->
-        <div class="admin-tab-pane" id="tab-listings">
-          <div class="list-header">
-            <h2 style="margin: 0; font-size: 1.2rem;">Listings Moderation</h2>
-            <button class="btn-action btn-secondary" onclick="adminDash.refreshAllData()">
-              <i class="fas fa-sync-alt"></i> Refresh
-            </button>
-          </div>
-          <div id="admin-listings-container" style="padding: 20px; text-align: center; color: #94a3b8;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
-            <div style="margin-top: 12px;">Loading listings...</div>
-          </div>
-        </div>
-
-        <!-- VERIFICATION TAB -->
-        <div class="admin-tab-pane" id="tab-verification">
-          <div class="list-header">
-            <h2 style="margin: 0; font-size: 1.2rem;">Pending Verification</h2>
-            <button class="btn-action btn-secondary" onclick="adminDash.loadPendingItems()">
-              <i class="fas fa-sync-alt"></i> Refresh Pending
-            </button>
-          </div>
-          
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px;">
-            <div class="stat-card">
-              <div class="stat-label">Properties</div>
-              <div class="stat-value" id="pending-properties-count" style="font-size: 2.5rem;">0</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Services</div>
-              <div class="stat-value" id="pending-services-count" style="font-size: 2.5rem;">0</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Items</div>
-              <div class="stat-value" id="pending-items-count" style="font-size: 2.5rem;">0</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Total Pending</div>
-              <div class="stat-value" id="pending-total-count" style="font-size: 2.5rem; color: #ef4444;">0</div>
-            </div>
-          </div>
-
-          <div id="admin-verification-container" style="padding: 20px; text-align: center; color: #94a3b8;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
-            <div style="margin-top: 12px;">Loading pending items...</div>
-          </div>
-        </div>
-
-        <!-- MESSAGES TAB -->
-        <div class="admin-tab-pane" id="tab-messages">
-          <div class="list-header">
-            <h2 style="margin: 0; font-size: 1.2rem;">Messages & Broadcasts</h2>
-            <button class="btn-action" style="background: #f59e0b;" onclick="adminDash.openBroadcastModal()">
-              <i class="fas fa-bullhorn"></i> New Broadcast
-            </button>
-          </div>
-          <div id="admin-messages-container" style="padding: 20px; text-align: center; color: #94a3b8;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
-            <div style="margin-top: 12px;">Loading messages...</div>
-          </div>
-        </div>
-
-        <!-- SETTINGS TAB -->
-        <div class="admin-tab-pane" id="tab-system">
-          <h2 style="margin-bottom: 24px; font-size: 1.4rem; color: #1e293b;">System Settings</h2>
-
-          <!-- Database Backup -->
-          <div class="list-container" style="margin-bottom: 24px;">
-            <h3 style="margin-bottom: 12px;"><i class="fas fa-database" style="color: #7c3aed;"></i> Database Backup</h3>
-            <p style="color: #64748b; margin-bottom: 14px; font-size: 0.9rem;">Download a full backup of the database at any time.</p>
-            <button class="btn-action" style="background: #7c3aed;" onclick="adminDash.downloadBackup()">
-              <i class="fas fa-download"></i> Download Database Backup
-            </button>
-          </div>
-
-          <!-- M-Pesa Configuration -->
-          <div class="list-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-              <h3 style="margin: 0;"><i class="fas fa-mobile-alt" style="color: #00b53f;"></i> M-Pesa Daraja Configuration</h3>
-              <span id="admin-daraja-status-badge" style="padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; background: #fee2e2; color: #991b1b;">Keys Pending</span>
-            </div>
-            <p style="color: #64748b; margin-bottom: 16px; font-size: 0.9rem;">
-              Configure from <a href="https://developer.safaricom.co.ke" target="_blank" style="color: #00b53f; font-weight: 600;">developer.safaricom.co.ke</a>. Saved securely to environment.
-            </p>
-            <form id="form-admin-daraja-config" onsubmit="adminDash.saveMpesaConfig(event)">
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                <div class="form-group">
-                  <label>Consumer Key</label>
-                  <input type="text" id="admin-mpesa-key" placeholder="Paste Consumer Key">
-                </div>
-                <div class="form-group">
-                  <label>Consumer Secret</label>
-                  <input type="password" id="admin-mpesa-secret" placeholder="Paste Consumer Secret">
-                </div>
-              </div>
-              <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                <div class="form-group">
-                  <label>Daraja Passkey</label>
-                  <input type="password" id="admin-mpesa-passkey" placeholder="Paste Passkey">
-                </div>
-                <div class="form-group">
-                  <label>Paybill</label>
-                  <input type="text" id="admin-mpesa-paybill" value="303030" style="font-weight: 700;">
-                </div>
-                <div class="form-group">
-                  <label>Account No.</label>
-                  <input type="text" id="admin-mpesa-account" value="2057103992" style="font-weight: 700;">
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <label style="margin-right: 10px; font-weight: 700;">Environment:</label>
-                  <select id="admin-mpesa-env" style="padding: 8px 12px; border-radius: 6px; border: 2px solid #e2e8f0; font-weight: 600;">
-                    <option value="sandbox">Sandbox (Testing)</option>
-                    <option value="live">Live (Production)</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn-action" style="background: #00b53f;">
-                  <i class="fas fa-save"></i> Save M-Pesa Settings
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-      </main>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="js/data/locations.js?v=2.5"></script>
-  <script src="js/auth.js?v=2.5"></script>
-  <script src="js/admin.js?v=2.5"></script>
-  <script>
-    // Check if user is admin on page load
-    setTimeout(() => {
-      const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
-      
-      console.log('Admin dashboard load - session:', session);
-
-      if (session) {
-        const isAdmin = session.id === 'usr-admin-01' || 
-                        session.role === 'admin' || 
-                        session.isAdmin === true ||
-                        (session.email && session.email.toLowerCase() === 'admin@kejamarket.co.ke');
         
-        if (!isAdmin) {
-          console.error('User is not admin:', session);
-          window.location.href = '/';
-          return;
-        }
-        console.log('Admin verified, loading dashboard');
-      } else {
-        console.warn('No active admin session found. Opening authentication modal.');
-        if (window.kejaAuth) {
-          window.kejaAuth.openAuthModal();
-        }
-        return;
-      }
+        <button class="admin-nav-btn" onclick="adminDash.showSection('users')">
+          <i class="fas fa-users nav-icon"></i>
+          <span>Users</span>
+        </button>
+      </div>
+      
+      <!-- Property Management -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Property Management</div>
+        <button class="admin-nav-btn" onclick="adminDash.showSection('properties')">
+          <i class="fas fa-home nav-icon"></i>
+          <span>Properties</span>
+        </button>
+        
+        <button class="admin-nav-btn" onclick="adminDash.showSection('verification')">
+          <i class="fas fa-shield-check nav-icon"></i>
+          <span>Verification</span>
+        </button>
+      </div>
+      
+      <!-- Business Operations -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Business Operations</div>
+        <button class="admin-nav-btn" onclick="adminDash.showSection('rentals')">
+          <i class="fas fa-key nav-icon"></i>
+          <span>Rentals</span>
+        </button>
+        
+        <button class="admin-nav-btn" onclick="adminDash.showSection('bnb')">
+          <i class="fas fa-bed nav-icon"></i>
+          <span>Short-Stays / BNB</span>
+        </button>
+        
+        <button class="admin-nav-btn" onclick="adminDash.showSection('services')">
+          <i class="fas fa-tools nav-icon"></i>
+          <span>Services</span>
+        </button>
+        
+        <button class="admin-nav-btn" onclick="adminDash.showSection('marketplace')">
+          <i class="fas fa-shopping-cart nav-icon"></i>
+          <span>Marketplace</span>
+        </button>
+      </div>
+      
+      <!-- Customer Management -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Customer Management</div>
+        <button class="admin-nav-btn" onclick="adminDash.showSection('inquiries')">
+          <i class="fas fa-envelope nav-icon"></i>
+          <span>Inquiries</span>
+        </button>
+        
+        <button class="admin-nav-btn" onclick="adminDash.showSection('reviews')">
+          <i class="fas fa-star nav-icon"></i>
+          <span>Reviews</span>
+        </button>
+      </div>
+      
+      <!-- Risk & Security -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Risk & Security</div>
+        <button class="admin-nav-btn" onclick="adminDash.showSection('reports')">
+          <i class="fas fa-exclamation-triangle nav-icon"></i>
+          <span>Reports & Complaints</span>
+        </button>
+        
+        <button class="admin-nav-btn" onclick="adminDash.showSection('fraud')">
+          <i class="fas fa-shield-alt nav-icon"></i>
+          <span>Risk & Fraud</span>
+        </button>
+      </div>
+      
+      <!-- Analytics & Tools -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Analytics & Tools</div>
+        <button class="admin-nav-btn" onclick="adminDash.showSection('analytics')">
+          <i class="fas fa-chart-bar nav-icon"></i>
+          <span>Analytics</span>
+        </button>
+        
+        <button class="admin-nav-btn" onclick="adminDash.showSection('settings')">
+          <i class="fas fa-cog nav-icon"></i>
+          <span>Settings</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+  <!-- Main Content Area -->
+  <main class="admin-main">
+    <!-- Enhanced Header -->
+    <header class="admin-header">
+      <h1 id="page-title">
+        <i class="fas fa-chart-line"></i>
+        Dashboard Overview
+      </h1>
+      <div class="admin-header-right">
+        <span id="admin-user-name">Administrator</span>
+        <button class="admin-logout-btn" onclick="adminDash.logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </header>
 
-      // Initialize admin dashboard
-      if (window.kejaAdmin) {
-        window.adminDash = window.kejaAdmin;
-        window.adminDash.initFullPage();
-        console.log('Admin dashboard initialized');
-      } else {
-        console.warn('kejaAdmin not available yet - retrying');
-        setTimeout(() => {
-          if (window.kejaAdmin) {
-            window.adminDash = window.kejaAdmin;
-            window.adminDash.initFullPage();
-          }
-        }, 500);
+    <!-- Dynamic Content Area -->
+    <div class="admin-content" id="admin-content">
+      <!-- Dashboard Overview (Default) -->
+      <div id="section-dashboard" class="admin-section active">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+          <i class="fas fa-chart-line"></i>
+          Platform Overview
+        </h2>
+        
+        <!-- Key Statistics Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value">12,450</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🟢</div>
+            <div class="stat-value">9,840</div>
+            <div class="stat-label">Active Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏠</div>
+            <div class="stat-value">3,280</div>
+            <div class="stat-label">Properties</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏢</div>
+            <div class="stat-value">540</div>
+            <div class="stat-label">Buildings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🚪</div>
+            <div class="stat-value">8,750</div>
+            <div class="stat-label">Units</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📋</div>
+            <div class="stat-value">2,740</div>
+            <div class="stat-label">Active Listings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value">185</div>
+            <div class="stat-label">Pending Listings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🛏️</div>
+            <div class="stat-value">420</div>
+            <div class="stat-label">BNBs</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🔧</div>
+            <div class="stat-value">1,160</div>
+            <div class="stat-label">Service Providers</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🛋️</div>
+            <div class="stat-value">2,850</div>
+            <div class="stat-label">Marketplace Items</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📩</div>
+            <div class="stat-value">1,240</div>
+            <div class="stat-label">New Inquiries</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🚨</div>
+            <div class="stat-value">76</div>
+            <div class="stat-label">Open Reports</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- BNB Section -->
+      <div id="section-bnb" class="admin-section" style="display: none;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
+          <i class="fas fa-bed"></i>
+          Short-Stays / BNB Management
+        </h2>
+        <p style="background: #f0fdf4; padding: 16px; border-radius: 8px; border-left: 4px solid #059669; color: #166534; margin-bottom: 24px;">
+          <strong>🏨 KejaMarket BNB Model:</strong> KejaMarket connects guests with BNB hosts. Hosts manage their own availability, pricing, and bookings. Platform facilitates discovery and inquiry connection.
+        </p>
+        
+        <!-- BNB Statistics -->
+        <div class="stats-grid" style="margin-bottom: 32px;">
+          <div class="stat-card">
+            <div class="stat-icon">🏨</div>
+            <div class="stat-value">420</div>
+            <div class="stat-label">Total BNB Listings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value">156</div>
+            <div class="stat-label">BNB Hosts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📩</div>
+            <div class="stat-value">1,847</div>
+            <div class="stat-label">Guest Inquiries</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🟡</div>
+            <div class="stat-value">284</div>
+            <div class="stat-label">Awaiting Host Response</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Other sections will be loaded dynamically -->
+      <div id="section-users" class="admin-section" style="display: none;">
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
+          <i class="fas fa-users"></i>
+          User Management
+        </h2>
+        <p>Comprehensive user management system coming soon...</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/**
+ * KejaMarket Complete Admin Dashboard System
+ */
+const adminDash = {
+  currentSection: 'dashboard',
+  
+  /**
+   * Initialize admin dashboard
+   */
+  init() {
+    console.log('🏢 KejaMarket Admin Dashboard initialized');
+    this.loadDashboardData();
+    this.setupEventListeners();
+  },
+  
+  /**
+   * Show specific admin section
+   */
+  showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.admin-section').forEach(section => {
+      section.style.display = 'none';
+    });
+    
+    // Remove active class from all nav buttons
+    document.querySelectorAll('.admin-nav-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    
+    // Show selected section
+    const section = document.getElementById(`section-${sectionId}`);
+    if (section) {
+      section.style.display = 'block';
+    } else {
+      this.createSection(sectionId);
+    }
+    
+    // Set active nav button
+    const navBtn = document.querySelector(`[onclick="adminDash.showSection('${sectionId}')"]`);
+    if (navBtn) {
+      navBtn.classList.add('active');
+    }
+    
+    // Update page title
+    this.updatePageTitle(sectionId);
+    
+    this.currentSection = sectionId;
+  },
+  
+  /**
+   * Create section dynamically if it doesn't exist
+   */
+  createSection(sectionId) {
+    const content = document.getElementById('admin-content');
+    const sectionDiv = document.createElement('div');
+    sectionDiv.id = `section-${sectionId}`;
+    sectionDiv.className = 'admin-section';
+    
+    switch(sectionId) {
+      case 'properties':
+        sectionDiv.innerHTML = this.getPropertiesHTML();
+        break;
+      case 'verification':
+        sectionDiv.innerHTML = this.getVerificationHTML();
+        break;
+      case 'rentals':
+        sectionDiv.innerHTML = this.getRentalsHTML();
+        break;
+      case 'services':
+        sectionDiv.innerHTML = this.getServicesHTML();
+        break;
+      case 'marketplace':
+        sectionDiv.innerHTML = this.getMarketplaceHTML();
+        break;
+      case 'inquiries':
+        sectionDiv.innerHTML = this.getInquiriesHTML();
+        break;
+      case 'reviews':
+        sectionDiv.innerHTML = this.getReviewsHTML();
+        break;
+      case 'reports':
+        sectionDiv.innerHTML = this.getReportsHTML();
+        break;
+      case 'fraud':
+        sectionDiv.innerHTML = this.getFraudHTML();
+        break;
+      case 'analytics':
+        sectionDiv.innerHTML = this.getAnalyticsHTML();
+        break;
+      case 'settings':
+        sectionDiv.innerHTML = this.getSettingsHTML();
+        break;
+      default:
+        sectionDiv.innerHTML = `
+          <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
+            <i class="fas fa-cog"></i>
+            ${this.formatSectionTitle(sectionId)}
+          </h2>
+          <p style="color: #6b7280; font-size: 1rem;">This section is under development. Full functionality coming soon...</p>
+        `;
+    }
+    
+    content.appendChild(sectionDiv);
+  },
+  
+  /**
+   * Get HTML for different sections
+   */
+  getPropertiesHTML() {
+    return `
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
+        <i class="fas fa-home"></i>
+        Property Management
+      </h2>
+      
+      <div class="stats-grid" style="margin-bottom: 32px;">
+        <div class="stat-card">
+          <div class="stat-icon">🏠</div>
+          <div class="stat-value">3,280</div>
+          <div class="stat-label">Total Properties</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value">2,740</div>
+          <div class="stat-label">Active Properties</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-value">185</div>
+          <div class="stat-label">Pending Approval</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏢</div>
+          <div class="stat-value">540</div>
+          <div class="stat-label">Buildings</div>
+        </div>
+      </div>
+      
+      <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px;">
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: #1e293b; margin-bottom: 16px;">
+          Property Relationships
+        </h3>
+        <div style="background: #f8fafc; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 0.9rem;">
+          PROPERTY<br>
+          &nbsp;&nbsp;↓<br>
+          OWNER<br>
+          &nbsp;&nbsp;↓<br>
+          PROPERTY MANAGER<br>
+          &nbsp;&nbsp;↓<br>
+          CARETAKER<br>
+          &nbsp;&nbsp;↓<br>
+          AGENT<br>
+          &nbsp;&nbsp;↓<br>
+          BUILDING<br>
+          &nbsp;&nbsp;↓<br>
+          UNIT<br>
+          &nbsp;&nbsp;↓<br>
+          LISTING
+        </div>
+      </div>
+    `;
+  },
+  
+  getVerificationHTML() {
+    return `
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
+        <i class="fas fa-shield-check"></i>
+        Verification Centre
+      </h2>
+      
+      <div class="stats-grid" style="margin-bottom: 32px;">
+        <div class="stat-card">
+          <div class="stat-icon">🔑</div>
+          <div class="stat-value">94</div>
+          <div class="stat-label">Pending Verifications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value">8,420</div>
+          <div class="stat-label">Verified Users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📄</div>
+          <div class="stat-value">156</div>
+          <div class="stat-label">Documents Uploaded</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">❌</div>
+          <div class="stat-value">23</div>
+          <div class="stat-label">Rejected Applications</div>
+        </div>
+      </div>
+      
+      <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px;">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px;">Verification Types</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+          <div style="padding: 16px; background: #f9fafb; border-radius: 8px;">
+            <strong>User Verification</strong><br>
+            <span style="color: #6b7280;">Identity documents, phone verification</span>
+          </div>
+          <div style="padding: 16px; background: #f9fafb; border-radius: 8px;">
+            <strong>Landlord Verification</strong><br>
+            <span style="color: #6b7280;">Property ownership documents</span>
+          </div>
+          <div style="padding: 16px; background: #f9fafb; border-radius: 8px;">
+            <strong>BNB Host Verification</strong><br>
+            <span style="color: #6b7280;">Property licenses, host validation</span>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+  
+  getInquiriesHTML() {
+    return `
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 24px;">
+        <i class="fas fa-envelope"></i>
+        Inquiry Management
+      </h2>
+      
+      <div style="background: #f0f9ff; padding: 16px; border-radius: 8px; border-left: 4px solid #0ea5e9; margin-bottom: 24px;">
+        <strong>📞 KejaMarket Connection Model:</strong> Platform facilitates inquiries between users. Tenants contact landlords, guests contact BNB hosts, customers contact service providers.
+      </div>
+      
+      <div class="stats-grid" style="margin-bottom: 32px;">
+        <div class="stat-card">
+          <div class="stat-icon">📩</div>
+          <div class="stat-value">1,240</div>
+          <div class="stat-label">Total Inquiries</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏠</div>
+          <div class="stat-value">847</div>
+          <div class="stat-label">Property Inquiries</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🛏️</div>
+          <div class="stat-value">284</div>
+          <div class="stat-label">BNB Inquiries</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔧</div>
+          <div class="stat-value">109</div>
+          <div class="stat-label">Service Inquiries</div>
+        </div>
+      </div>
+      
+      <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px;">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px;">Inquiry Flow</h3>
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+          <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
+            <strong>1. Discovery</strong><br>
+            <span style="color: #166534; font-size: 0.9rem;">User finds listing</span>
+          </div>
+          <div style="color: #059669; font-size: 1.2rem;">→</div>
+          <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
+            <strong>2. Inquiry</strong><br>
+            <span style="color: #166534; font-size: 0.9rem;">User contacts owner</span>
+          </div>
+          <div style="color: #059669; font-size: 1.2rem;">→</div>
+          <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
+            <strong>3. Connection</strong><br>
+            <span style="color: #166534; font-size: 0.9rem;">Direct communication</span>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+  
+  /**
+   * Update page title based on current section
+   */
+  updatePageTitle(sectionId) {
+    const titleMap = {
+      'dashboard': 'Dashboard Overview',
+      'users': 'User Management', 
+      'properties': 'Property Management',
+      'verification': 'Verification Centre',
+      'rentals': 'Long-term Rentals',
+      'bnb': 'Short-Stays / BNB',
+      'services': 'Service Providers',
+      'marketplace': 'Marketplace Items',
+      'inquiries': 'Inquiry Management',
+      'reviews': 'Reviews & Ratings',
+      'reports': 'Reports & Complaints',
+      'fraud': 'Risk & Fraud Detection',
+      'analytics': 'Analytics & Insights',
+      'settings': 'Platform Settings'
+    };
+    
+    const title = titleMap[sectionId] || this.formatSectionTitle(sectionId);
+    const icon = this.getSectionIcon(sectionId);
+    
+    document.getElementById('page-title').innerHTML = `
+      <i class="${icon}"></i>
+      ${title}
+    `;
+  },
+  
+  /**
+   * Get icon for section
+   */
+  getSectionIcon(sectionId) {
+    const iconMap = {
+      'dashboard': 'fas fa-chart-line',
+      'users': 'fas fa-users',
+      'properties': 'fas fa-home',
+      'verification': 'fas fa-shield-check',
+      'rentals': 'fas fa-key',
+      'bnb': 'fas fa-bed',
+      'services': 'fas fa-tools',
+      'marketplace': 'fas fa-shopping-cart',
+      'inquiries': 'fas fa-envelope',
+      'reviews': 'fas fa-star',
+      'reports': 'fas fa-exclamation-triangle',
+      'fraud': 'fas fa-shield-alt',
+      'analytics': 'fas fa-chart-bar',
+      'settings': 'fas fa-cog'
+    };
+    
+    return iconMap[sectionId] || 'fas fa-cog';
+  },
+  
+  /**
+   * Format section title for display
+   */
+  formatSectionTitle(sectionId) {
+    return sectionId.split('-').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+  },
+  
+  /**
+   * Load dashboard data
+   */
+  loadDashboardData() {
+    // Simulate loading real platform data
+    console.log('Loading KejaMarket platform statistics...');
+    
+    // In real implementation, this would fetch from API
+    this.updateStatistics();
+  },
+  
+  /**
+   * Update dashboard statistics
+   */
+  updateStatistics() {
+    const stats = {
+      totalUsers: 12450,
+      activeUsers: 9840, 
+      properties: 3280,
+      buildings: 540,
+      units: 8750,
+      activeListings: 2740,
+      pendingListings: 185,
+      bnbs: 420,
+      serviceProviders: 1160,
+      marketplaceItems: 2850,
+      newInquiries: 1240,
+      openReports: 76,
+      pendingVerifications: 94
+    };
+    
+    // Update stat values if elements exist
+    Object.keys(stats).forEach(key => {
+      const element = document.getElementById(`stat-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
+      if (element) {
+        element.textContent = stats[key].toLocaleString();
       }
-    }, 500);
-  </script>
+    });
+  },
+  
+  /**
+   * Setup event listeners
+   */
+  setupEventListeners() {
+    // Global search functionality
+    const searchInput = document.getElementById('global-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.handleGlobalSearch(e.target.value);
+      });
+    }
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+          case 'k':
+            e.preventDefault();
+            document.getElementById('global-search')?.focus();
+            break;
+        }
+      }
+    });
+  },
+  
+  /**
+   * Handle global search
+   */
+  handleGlobalSearch(query) {
+    if (query.length < 2) return;
+    
+    console.log('🔍 Searching KejaMarket for:', query);
+    // In real implementation, this would search across:
+    // - Users (name, phone, email)
+    // - Properties (name, location)  
+    // - Buildings and units
+    // - Listings
+    // - Inquiries
+    // - Reports
+    // - Transactions
+  },
+  
+  /**
+   * Logout functionality
+   */
+  logout() {
+    if (confirm('Are you sure you want to logout from the admin dashboard?')) {
+      console.log('Admin logging out...');
+      // Clear session
+      localStorage.removeItem('admin_session');
+      // Redirect to login
+      window.location.href = '/admin-login.html';
+    }
+  }
+};
+
+// Initialize dashboard when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  adminDash.init();
+});
+</script>
+
 </body>
 </html>
