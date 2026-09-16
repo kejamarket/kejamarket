@@ -1,10 +1,21 @@
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /api/admin/
-Disallow: /db/
+Allow: /index.html
+Allow: /css/
+Allow: /js/
+Allow: /icons/
+Allow: /manifest.json
+Allow: /sitemap.xml
 
+# Disallow admin areas
+Disallow: /admin-dashboard.html
+Disallow: /db/
+Disallow: /*.log
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Important files
 Sitemap: https://kejamarket.co.ke/sitemap.xml
 
-# KejaMarket - Kenya's #1 Rental Property Marketplace
-# kejamarket.co.ke
+# Crawl-delay (optional - helps prevent overloading)
+Crawl-delay: 1

@@ -1,28 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+        
   <!-- Homepage -->
   <url>
     <loc>https://kejamarket.co.ke/</loc>
-    <lastmod>2026-09-12</lastmod>
+    <lastmod>2024-09-08T12:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- Legal Pages -->
+  
+  <!-- Main Pages -->
   <url>
-    <loc>https://kejamarket.co.ke/privacy-policy</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://kejamarket.co.ke/index.html</loc>
+    <lastmod>2024-09-08T12:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Admin Dashboard -->
+  <url>
+    <loc>https://kejamarket.co.ke/admin-dashboard.html</loc>
+    <lastmod>2024-09-08T12:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
-
+  
+  <!-- Static Pages -->
   <url>
-    <loc>https://kejamarket.co.ke/terms</loc>
-    <lastmod>2026-09-12</lastmod>
+    <loc>https://kejamarket.co.ke/offline.html</loc>
+    <lastmod>2024-09-08T12:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.2</priority>
   </url>
-
+  
+  <!-- Terms and Policies -->
+  <url>
+    <loc>https://kejamarket.co.ke/terms.html</loc>
+    <lastmod>2024-09-08T12:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <!-- Service Worker -->
+  <url>
+    <loc>https://kejamarket.co.ke/sw.js</loc>
+    <lastmod>2024-09-08T12:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.1</priority>
+  </url>
+  
+  <!-- Manifest -->
+  <url>
+    <loc>https://kejamarket.co.ke/manifest.json</loc>
+    <lastmod>2024-09-08T12:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.1</priority>
+  </url>
+  
 </urlset>
