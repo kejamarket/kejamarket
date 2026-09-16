@@ -282,16 +282,16 @@
           <span>Pricing & Pro</span>
         </button>
 
-        <!-- Admin Dashboard (Links to full page - Hidden from non-admins) -->
-        <button class="btn-header-action" id="btn-admin-header" style="display: none; background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; font-weight: 700; border: 1px solid rgba(124,58,237,0.4);" onclick="window.open('/dashboard.html', '_blank')" title="Analytics Dashboard">
+        <!-- Admin Access (Hidden, no public labels) -->
+        <button class="btn-header-action" id="btn-admin-header" style="display: none; background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; font-weight: 700; border: 1px solid rgba(124,58,237,0.4);" onclick="window.open('/dashboard.html', '_blank')" title="Dashboard" aria-label="Dashboard">
           <i class="fas fa-chart-line" style="color: #ffd700;"></i>
           <span>Dashboard</span>
         </button>
 
-        <!-- Landlord Portal (Visible to Landlords only) -->
-        <button class="btn-header-action" id="btn-landlord-header" style="display: none; background: linear-gradient(135deg, #7c3aed, #5b21b6); color: white; font-weight: 700;" onclick="kejaLandlordPortal.openLandlordPortal()" title="Landlord Dashboard">
+        <!-- Landlord Access (Hidden by default) -->
+        <button class="btn-header-action" id="btn-landlord-header" style="display: none; background: linear-gradient(135deg, #7c3aed, #5b21b6); color: white; font-weight: 700;" onclick="kejaLandlordPortal.openLandlordPortal()" title="My Listings">
           <i class="fas fa-home"></i>
-          <span>Landlord Portal</span>
+          <span>My Listings</span>
         </button>
 
         <!-- Service Provider Portal (Visible to Service Providers only) -->
@@ -1333,12 +1333,12 @@
   </div>
 
   <!-- ====================================================================
-       MODAL 3: Automated Aggregator Bot (Web Scraper Engine)
+       MODAL 3: Property Import Tool
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-bot-simulator">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h3><i class="fas fa-sync-alt" style="color: #00b53f;"></i> Nairobi Listings Aggregator & Ingestion Engine</h3>
+        <h3><i class="fas fa-sync-alt" style="color: #00b53f;"></i> Property Import Tool</h3>
         <button class="modal-close-btn" onclick="app.closeModal('modal-bot-simulator')">&times;</button>
       </div>
       <div class="modal-body">
@@ -1364,16 +1364,16 @@
 
         <!-- Terminal Console -->
         <div class="bot-console-wrapper" id="bot-console-logs">
-          <div class="bot-console-log info">[SYSTEM] Bot Aggregator Engine ready for Nairobi Metropolitan Area.</div>
-          <div class="bot-console-log info">[SYSTEM] Target corridors: Kiambu Rd, Thika Rd, Westlands, Eastlands, Mombasa Rd, Ngong Rd.</div>
+          <div class="bot-console-log info">[SYSTEM] Property import system ready.</div>
+          <div class="bot-console-log info">[SYSTEM] Service areas: Kiambu, Thika, Westlands, Eastlands, Mombasa Road, Ngong Road.</div>
         </div>
 
         <div style="display: flex; gap: 10px;">
           <button class="btn-primary" onclick="botAggregator.runScraperCycle()">
-            <i class="fas fa-play"></i> Trigger Live Scrape Cycle
+            <i class="fas fa-play"></i> Import Properties
           </button>
           <button class="btn-secondary" onclick="botAggregator.runStaleArchiver()">
-            <i class="fas fa-broom"></i> Run 21-Day Stale Archiver
+            <i class="fas fa-broom"></i> Archive Old Listings
           </button>
         </div>
       </div>
@@ -2455,7 +2455,7 @@
         <div style="display: flex; align-items: center; gap: 12px;">
           <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;"><i class="fas fa-home" style="color:white;"></i></div>
           <div>
-            <h3 style="margin: 0; color: #ffffff; font-size: 1.2rem; font-weight: 800;">Landlord Portal</h3>
+            <h3 style="margin: 0; color: #ffffff; font-size: 1.2rem; font-weight: 800;">My Properties</h3>
             <div style="font-size: 0.8rem; color: #e9d5ff;">Manage Your Listings · Browse Properties · Messages</div>
           </div>
         </div>

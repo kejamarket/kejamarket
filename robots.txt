@@ -1,21 +1,68 @@
+# KejaMarket Robots.txt
+# Updated: 2026-09-16
+# Objective: Hide internal systems, expose public marketplace
+
 User-agent: *
+
+# ═══════════════════════════════════════════════════════════
+# ALLOW: Public marketplace & SEO content
+# ═══════════════════════════════════════════════════════════
 Allow: /
 Allow: /index.html
+Allow: /offline.html
 Allow: /css/
-Allow: /js/
+Allow: /js/app.js
+Allow: /js/map.js
+Allow: /js/monetization.js
+Allow: /js/reviews.js
+Allow: /js/comments.js
 Allow: /icons/
-Allow: /manifest.json
-Allow: /sitemap.xml
+Allow: /api/properties
+Allow: /api/services
+Allow: /api/marketplace
+Allow: /api/health
 
-# Disallow admin areas
+# ═══════════════════════════════════════════════════════════
+# BLOCK: Internal systems (admin, landlord, aggregator)
+# ═══════════════════════════════════════════════════════════
 Disallow: /admin-dashboard.html
+Disallow: /admin-dashboard-old.html
+Disallow: /dashboard.html
+Disallow: /landlord.html
+Disallow: /landlord-portal.html
+
+# Admin JavaScript & CSS
+Disallow: /js/admin*.js
+Disallow: /js/landlord*.js
+Disallow: /js/botSimulator.js
+Disallow: /css/admin*.css
+
+# Internal data & configs
 Disallow: /db/
-Disallow: /*.log
-Disallow: /node_modules/
+Disallow: /.env
 Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /back up/
 
-# Important files
+# API endpoints that expose internal data
+Disallow: /api/admin/
+Disallow: /api/landlord/
+Disallow: /api/auth/admin
+Disallow: /api/users/
+Disallow: /api/bot/
+Disallow: /api/scraper/
+Disallow: /api/aggregator/
+
+# Development & testing files
+Disallow: /*.log
+Disallow: /*.sql
+Disallow: /*.json
+Disallow: /*.md
+Disallow: /*.txt
+Disallow: /test/
+Disallow: /tests/
+
+# ═══════════════════════════════════════════════════════════
+# Sitemap
+# ═══════════════════════════════════════════════════════════
 Sitemap: https://kejamarket.co.ke/sitemap.xml
-
-# Crawl-delay (optional - helps prevent overloading)
-Crawl-delay: 1
