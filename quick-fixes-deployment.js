@@ -107,16 +107,24 @@ document.addEventListener('DOMContentLoaded', function() {
       font-size: 0.75rem !important;
     }
     
-    /* Fix filter section scrolling issue - extend to use all available space */
+    /* Fix filter section scrolling issue - let sidebar handle all scrolling */
     .categories-filters-sidebar {
-      max-height: calc(100vh - 140px) !important;
-      overflow-y: auto !important;
+      /* Don't set max-height here - it's handled by parent .sidebar-filters */
+      overflow-y: visible !important;
       padding-bottom: 20px !important;
+    }
+    
+    .sidebar-filters {
+      position: sticky !important;
+      top: 80px !important;
+      max-height: calc(100vh - 100px) !important;
+      overflow-y: auto !important;
     }
     
     .sidebar-col-category,
     .sidebar-col-other {
       max-height: none !important;
+      overflow-y: visible !important;
     }
     
     .filter-section {
