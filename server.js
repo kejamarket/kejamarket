@@ -3511,3 +3511,513 @@ startServer().catch(console.error);
 
 
 
+/**
+ * ═══════════════════════════════════════════════════════════════
+ * KEJAMARKET COMMUNICATION SYSTEM API ENDPOINTS
+ * ═══════════════════════════════════════════════════════════════
+ * Complete communication system supporting:
+ * - User-to-User conversations (property/BNB/service/marketplace inquiries)
+ * - User-to-Platform support tickets
+ * - System-to-User notifications
+ * - Interaction tracking (WhatsApp/call analytics)
+ */
+
+// Initialize database pool for communication system
+const dbPool = require('./db/pool');
+
+// Generate unique IDs for communication system
+const generateCommId = (prefix) => `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+// Communication rate limiter
+const commLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 30, // max 30 communication actions per minute
+  message: { success: false, message: 'Too many communication requests. Please slow down.' }
+});
+
+/**
+ * CONVERSATIONS API
+ */
+
+// GET /api/communication/conversations - Get all conversations for user
+app.get('/api/communication/conversations', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    
+    const query = `
+      SELECT c.*, 
+             CASE 
+               WHEN c.participant_1 = $1 THEN c.unread_count_p1
+               ELSE c.unread_count_p2
+             END as unread_count,
+             CASE 
+               WHEN c.participant_1 = $1 THEN u2.name
+               ELSE u1.name
+             END as other_participant_name,
+             CASE 
+               WHEN c.participant_1 = $1 THEN u2.role
+               ELSE u1.role
+             END as other_participant_role,
+             m.message_text as last_message,
+             m.created_at as last_message_at
+      FROM conversations c
+      LEFT JOIN users u1 ON c.participant_1 = u1.id
+      LEFT JOIN users u2 ON c.participant_2 = u2.id
+      LEFT JOIN LATERAL (
+        SELECT message_text, created_at
+        FROM messages
+        WHERE conversation_id = c.id
+        ORDER BY created_at DESC
+        LIMIT 1
+      ) m ON true
+      WHERE c.participant_1 = $1 OR c.participant_2 = $1
+      ORDER BY c.last_message_at DESC
+    `;
+    
+    const result = await dbPool.query(query, [userId]);
+    
+    res.json({
+      success: true,
+      conversations: result.rows
+    });
+    
+  } catch (error) {
+    console.error('Error fetching conversations:', error);
+    res.status(500).json({ error: 'Failed to fetch conversations' });
+  }
+});
+
+// POST /api/communication/conversations - Create new conversation/inquiry
+app.post('/api/communication/conversations', commLimiter, requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { type, relatedId, relatedType, participantId, initialMessage, metadata } = req.body;
+    
+    if (!type || !relatedId || !participantId || !initialMessage) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    
+    // Check if conversation already exists
+    const existingQuery = `
+      SELECT id FROM conversations 
+      WHERE related_id = $1 AND related_type = $2 
+      AND ((participant_1 = $3 AND participant_2 = $4) 
+           OR (participant_1 = $4 AND participant_2 = $3))
+    `;
+    
+    const existing = await dbPool.query(existingQuery, [relatedId, relatedType, userId, participantId]);
+    
+    let conversationId;
+    
+    if (existing.rows.length > 0) {
+      conversationId = existing.rows[0].id;
+    } else {
+      // Create new conversation
+      conversationId = generateCommId('conv');
+      
+      const insertQuery = `
+        INSERT INTO conversations (id, type, related_id, related_type, participant_1, participant_2, metadata)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING id
+      `;
+      
+      await dbPool.query(insertQuery, [conversationId, type, relatedId, relatedType, userId, participantId, JSON.stringify(metadata || {})]);
+    }
+    
+    // Add initial message
+    const messageId = generateCommId('msg');
+    const messageQuery = `
+      INSERT INTO messages (id, conversation_id, sender_id, message_text, message_type, metadata)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *
+    `;
+    
+    const messageResult = await dbPool.query(messageQuery, [
+      messageId, 
+      conversationId, 
+      userId, 
+      initialMessage, 
+      'inquiry', 
+      JSON.stringify(metadata || {})
+    ]);
+    
+    // Update conversation timestamp
+    await dbPool.query(
+      'UPDATE conversations SET last_message_at = CURRENT_TIMESTAMP WHERE id = $1',
+      [conversationId]
+    );
+    
+    res.json({
+      success: true,
+      conversation_id: conversationId,
+      message: messageResult.rows[0]
+    });
+    
+  } catch (error) {
+    console.error('Error creating conversation:', error);
+    res.status(500).json({ error: 'Failed to create conversation' });
+  }
+});
+
+// GET /api/communication/conversations/:id/messages - Get messages for conversation
+app.get('/api/communication/conversations/:id/messages', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const conversationId = req.params.id;
+    
+    // Verify user is participant in conversation
+    const authQuery = `
+      SELECT id FROM conversations 
+      WHERE id = $1 AND (participant_1 = $2 OR participant_2 = $2)
+    `;
+    
+    const authResult = await dbPool.query(authQuery, [conversationId, userId]);
+    if (authResult.rows.length === 0) {
+      return res.status(403).json({ error: 'Access denied to this conversation' });
+    }
+    
+    // Get messages
+    const messagesQuery = `
+      SELECT m.*, u.name as sender_name, u.role as sender_role
+      FROM messages m
+      JOIN users u ON m.sender_id = u.id
+      WHERE m.conversation_id = $1
+      ORDER BY m.created_at ASC
+    `;
+    
+    const messagesResult = await dbPool.query(messagesQuery, [conversationId]);
+    
+    res.json({
+      success: true,
+      messages: messagesResult.rows
+    });
+    
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'Failed to fetch messages' });
+  }
+});
+
+// POST /api/communication/conversations/:id/messages - Send message to conversation
+app.post('/api/communication/conversations/:id/messages', commLimiter, requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const conversationId = req.params.id;
+    const { message, messageType = 'text', attachments = [] } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message text is required' });
+    }
+    
+    // Verify user is participant
+    const authQuery = `
+      SELECT participant_1, participant_2 FROM conversations 
+      WHERE id = $1 AND (participant_1 = $2 OR participant_2 = $2)
+    `;
+    
+    const authResult = await dbPool.query(authQuery, [conversationId, userId]);
+    if (authResult.rows.length === 0) {
+      return res.status(403).json({ error: 'Access denied to this conversation' });
+    }
+    
+    // Insert message
+    const messageId = generateCommId('msg');
+    const insertQuery = `
+      INSERT INTO messages (id, conversation_id, sender_id, message_text, message_type, attachments)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *
+    `;
+    
+    const result = await dbPool.query(insertQuery, [
+      messageId, conversationId, userId, message, messageType, JSON.stringify(attachments)
+    ]);
+    
+    // Update conversation timestamp and unread counts
+    const conversation = authResult.rows[0];
+    const otherParticipant = conversation.participant_1 === userId ? conversation.participant_2 : conversation.participant_1;
+    const unreadField = conversation.participant_1 === userId ? 'unread_count_p2' : 'unread_count_p1';
+    
+    await dbPool.query(
+      `UPDATE conversations SET 
+       last_message_at = CURRENT_TIMESTAMP,
+       ${unreadField} = ${unreadField} + 1
+       WHERE id = $1`,
+      [conversationId]
+    );
+    
+    res.json({
+      success: true,
+      message: result.rows[0]
+    });
+    
+  } catch (error) {
+    console.error('Error sending message:', error);
+    res.status(500).json({ error: 'Failed to send message' });
+  }
+});
+
+/**
+ * SUPPORT TICKETS API
+ */
+
+// GET /api/communication/support-tickets - Get all support tickets for user
+app.get('/api/communication/support-tickets', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    
+    const query = `
+      SELECT t.*, 
+             COUNT(sm.id) as message_count,
+             MAX(sm.created_at) as last_message_at
+      FROM support_tickets t
+      LEFT JOIN support_messages sm ON t.id = sm.ticket_id
+      WHERE t.user_id = $1
+      GROUP BY t.id
+      ORDER BY t.created_at DESC
+    `;
+    
+    const result = await dbPool.query(query, [userId]);
+    
+    res.json({
+      success: true,
+      tickets: result.rows
+    });
+    
+  } catch (error) {
+    console.error('Error fetching support tickets:', error);
+    res.status(500).json({ error: 'Failed to fetch support tickets' });
+  }
+});
+
+// POST /api/communication/support-tickets - Create new support ticket
+app.post('/api/communication/support-tickets', commLimiter, requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { category, subject, description, priority = 'normal' } = req.body;
+    
+    if (!category || !subject || !description) {
+      return res.status(400).json({ error: 'Category, subject, and description are required' });
+    }
+    
+    // Generate ticket ID
+    const ticketNumber = Math.floor(10000 + Math.random() * 90000);
+    const ticketId = `KM-${ticketNumber}`;
+    
+    // Insert ticket
+    const ticketQuery = `
+      INSERT INTO support_tickets (id, user_id, category, subject, priority, status)
+      VALUES ($1, $2, $3, $4, $5, 'open')
+      RETURNING *
+    `;
+    
+    const ticketResult = await dbPool.query(ticketQuery, [ticketId, userId, category, subject, priority]);
+    
+    // Add initial message
+    const messageId = generateCommId('smsg');
+    const messageQuery = `
+      INSERT INTO support_messages (id, ticket_id, sender_id, message_text, is_internal)
+      VALUES ($1, $2, $3, $4, false)
+      RETURNING *
+    `;
+    
+    const messageResult = await dbPool.query(messageQuery, [messageId, ticketId, userId, description]);
+    
+    // Send auto-acknowledgment
+    const autoMessageId = generateCommId('smsg');
+    const autoMessage = `Hello! We've received your support request (${ticketId}).\n\nOur support team will review your issue and respond within 24 hours.\n\nFor urgent issues, our typical response time is 2-4 hours.\n\nThank you for contacting KejaMarket!`;
+    
+    await dbPool.query(messageQuery, [autoMessageId, ticketId, 'system', autoMessage]);
+    
+    res.json({
+      success: true,
+      ticket: ticketResult.rows[0],
+      initial_message: messageResult.rows[0]
+    });
+    
+  } catch (error) {
+    console.error('Error creating support ticket:', error);
+    res.status(500).json({ error: 'Failed to create support ticket' });
+  }
+});
+
+// GET /api/communication/support-tickets/:id/messages - Get messages for support ticket
+app.get('/api/communication/support-tickets/:id/messages', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const ticketId = req.params.id;
+    
+    // Verify user owns the ticket
+    const authQuery = 'SELECT id FROM support_tickets WHERE id = $1 AND user_id = $2';
+    const authResult = await dbPool.query(authQuery, [ticketId, userId]);
+    
+    if (authResult.rows.length === 0) {
+      return res.status(403).json({ error: 'Access denied to this ticket' });
+    }
+    
+    // Get messages (excluding internal notes)
+    const messagesQuery = `
+      SELECT sm.*, u.name as sender_name, u.role as sender_role
+      FROM support_messages sm
+      LEFT JOIN users u ON sm.sender_id = u.id
+      WHERE sm.ticket_id = $1 AND sm.is_internal = false
+      ORDER BY sm.created_at ASC
+    `;
+    
+    const result = await dbPool.query(messagesQuery, [ticketId]);
+    
+    res.json({
+      success: true,
+      messages: result.rows
+    });
+    
+  } catch (error) {
+    console.error('Error fetching ticket messages:', error);
+    res.status(500).json({ error: 'Failed to fetch ticket messages' });
+  }
+});
+
+/**
+ * NOTIFICATIONS API
+ */
+
+// GET /api/communication/notifications - Get notifications for user
+app.get('/api/communication/notifications', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { type, unread_only = false } = req.query;
+    
+    let query = `
+      SELECT * FROM notifications 
+      WHERE user_id = $1
+    `;
+    const params = [userId];
+    
+    if (type) {
+      query += ` AND type = $${params.length + 1}`;
+      params.push(type);
+    }
+    
+    if (unread_only === 'true') {
+      query += ` AND read_at IS NULL`;
+    }
+    
+    query += ` ORDER BY created_at DESC LIMIT 50`;
+    
+    const result = await dbPool.query(query, params);
+    
+    res.json({
+      success: true,
+      notifications: result.rows
+    });
+    
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ error: 'Failed to fetch notifications' });
+  }
+});
+
+// POST /api/communication/notifications/mark-read - Mark notifications as read
+app.post('/api/communication/notifications/mark-read', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { notification_ids } = req.body;
+    
+    if (notification_ids && notification_ids.length > 0) {
+      // Mark specific notifications as read
+      const placeholders = notification_ids.map((_, index) => `$${index + 2}`).join(', ');
+      const query = `
+        UPDATE notifications 
+        SET read_at = CURRENT_TIMESTAMP 
+        WHERE user_id = $1 AND id IN (${placeholders})
+      `;
+      
+      await dbPool.query(query, [userId, ...notification_ids]);
+    } else {
+      // Mark all notifications as read
+      await dbPool.query(
+        'UPDATE notifications SET read_at = CURRENT_TIMESTAMP WHERE user_id = $1 AND read_at IS NULL',
+        [userId]
+      );
+    }
+    
+    res.json({ success: true });
+    
+  } catch (error) {
+    console.error('Error marking notifications as read:', error);
+    res.status(500).json({ error: 'Failed to mark notifications as read' });
+  }
+});
+
+/**
+ * INTERACTION TRACKING API
+ */
+
+// POST /api/communication/interactions - Record interaction event (WhatsApp click, call click, etc.)
+app.post('/api/communication/interactions', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { relatedId, relatedType, interactionType, metadata = {} } = req.body;
+    
+    if (!relatedId || !relatedType || !interactionType) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    
+    const eventId = generateCommId('int');
+    const query = `
+      INSERT INTO interaction_events (id, user_id, related_id, related_type, interaction_type, metadata)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *
+    `;
+    
+    const result = await dbPool.query(query, [eventId, userId, relatedId, relatedType, interactionType, JSON.stringify(metadata)]);
+    
+    res.json({
+      success: true,
+      event: result.rows[0]
+    });
+    
+  } catch (error) {
+    console.error('Error recording interaction:', error);
+    res.status(500).json({ error: 'Failed to record interaction' });
+  }
+});
+
+/**
+ * COMMUNICATION SYSTEM HEALTH CHECK
+ */
+
+// GET /api/communication/health - Communication system health check
+app.get('/api/communication/health', async (req, res) => {
+  try {
+    const healthCheck = await dbPool.healthCheck();
+    
+    if (healthCheck.status === 'healthy') {
+      // Run communication health check function
+      const commHealthQuery = 'SELECT * FROM communication_system_health_check()';
+      const commHealth = await dbPool.query(commHealthQuery);
+      
+      res.json({
+        success: true,
+        database: healthCheck,
+        communication_system: commHealth.rows,
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      res.status(503).json({
+        success: false,
+        database: healthCheck,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+  } catch (error) {
+    res.status(503).json({
+      success: false,
+      error: 'Communication system health check failed',
+      details: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+console.log('✅ KejaMarket Communication System API endpoints loaded');

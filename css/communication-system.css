@@ -1,0 +1,981 @@
+/**
+ * KejaMarket Communication System Styles
+ * Complete styling for messaging, inquiries, and support
+ */
+
+/* Modal Overlays */
+.messages-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.messages-modal {
+  max-width: 1200px;
+  width: 95%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.messages-modal .modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  margin: 0;
+}
+
+.messages-modal .modal-header h3 {
+  margin: 0;
+  color: white;
+}
+
+/* Messages Layout */
+.messages-modal .modal-content {
+  display: flex;
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+}
+
+.messages-sidebar {
+  width: 280px;
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  padding: 16px 0;
+}
+
+.messages-content {
+  flex: 1;
+  background: white;
+  overflow-y: auto;
+}
+
+/* Message Categories */
+.message-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.category-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.category-btn:hover {
+  background: rgba(79, 70, 229, 0.05);
+  color: #4f46e5;
+}
+
+.category-btn.active {
+  background: #4f46e5;
+  color: white;
+}
+
+.category-btn i {
+  width: 16px;
+  text-align: center;
+}
+
+.category-btn span {
+  flex: 1;
+}
+
+.unread-count {
+  background: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.category-btn.active .unread-count {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Category Content */
+.category-content {
+  padding: 20px 24px;
+}
+
+.messages-header {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 16px;
+}
+
+.messages-header h4 {
+  margin: 0 0 4px 0;
+  color: #1f2937;
+  font-size: 1.2rem;
+}
+
+.messages-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.btn-new-ticket {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-new-ticket:hover {
+  background: #4338ca;
+}
+
+/* Message Items */
+.message-item,
+.conversation-item,
+.support-ticket-item {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.message-item:hover,
+.conversation-item:hover,
+.support-ticket-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.message-item.unread,
+.conversation-item.unread {
+  border-left: 4px solid #4f46e5;
+  background: #fefbff;
+}
+
+.message-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.message-icon {
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.message-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.message-header {
+  display: flex;
+  justify-content: between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.message-title {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.message-time {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.message-preview {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-participant {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.unread-indicator {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  background: #4f46e5;
+  border-radius: 50%;
+  color: #4f46e5;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* Conversation Items */
+.conversation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.property-name,
+.item-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.conversation-time {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.conversation-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.participant-info {
+  color: #059669;
+  font-weight: 500;
+}
+
+.inquiry-type {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.conversation-preview {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversation-status {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* BNB Specific */
+.bnb-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+
+.guest-info {
+  color: #7c3aed;
+  font-weight: 500;
+}
+
+.stay-details {
+  color: #6b7280;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.viewing_scheduled {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.available {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.unavailable {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Support Tickets */
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ticket-id {
+  font-weight: 600;
+  color: #4f46e5;
+  font-size: 0.9rem;
+}
+
+.ticket-subject {
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.ticket-details {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+}
+
+.ticket-category {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.ticket-status {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.status-open {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-in_progress {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-resolved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-closed {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.ticket-priority {
+  font-weight: 500;
+}
+
+.priority-normal {
+  color: #6b7280;
+}
+
+.priority-high {
+  color: #ea580c;
+}
+
+.priority-urgent {
+  color: #dc2626;
+}
+
+.ticket-preview {
+  color: #4b5563;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* Empty States */
+.empty-conversations {
+  text-align: center;
+  padding: 48px 20px;
+  color: #6b7280;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.empty-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Inquiry Modal Styles */
+.inquiry-modal,
+.service-inquiry-modal,
+.marketplace-inquiry-modal,
+.support-modal {
+  max-width: 500px;
+  width: 90%;
+}
+
+.property-info,
+.service-info,
+.item-info {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.property-name,
+.service-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.property-type,
+.service-type,
+.item-type {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Inquiry Form */
+.inquiry-form,
+.service-form,
+.marketplace-form,
+.support-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inquiry-checkboxes,
+.service-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.inquiry-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.inquiry-option:hover {
+  background: #f8fafc;
+  border-color: #4f46e5;
+}
+
+.inquiry-option input[type="checkbox"] {
+  margin: 0;
+}
+
+.checkmark {
+  font-size: 0.9rem;
+  color: #4f46e5;
+  font-weight: 500;
+}
+
+/* Form Elements */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.form-group small {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Communication Options */
+.communication-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Notifications Modal */
+.notifications-modal {
+  max-width: 600px;
+  width: 90%;
+}
+
+.notifications-tabs {
+  display: flex;
+  gap: 4px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.notifications-tabs .tab-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notifications-tabs .tab-btn.active {
+  background: white;
+  color: #1f2937;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Notification Items */
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.notification-item.unread {
+  background: #fefbff;
+  border-left: 4px solid #4f46e5;
+}
+
+.notification-type {
+  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.notification-type.inquiry {
+  background: #dbeafe;
+}
+
+.notification-type.system {
+  background: #f0fdf4;
+}
+
+.notification-type.support {
+  background: #fef3c7;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.notification-title {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.notification-time {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.notification-message {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .messages-modal {
+    height: 90vh;
+    flex-direction: column;
+  }
+  
+  .messages-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .message-categories {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0 16px;
+  }
+  
+  .category-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .secondary-actions {
+    flex-direction: column;
+  }
+}
+/* Header Messages & Notifications Buttons */
+.btn-messages,
+.btn-notifications {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  font-weight: 500;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-messages:hover,
+.btn-notifications:hover {
+  background: rgba(79, 70, 229, 0.1);
+  color: #4f46e5;
+}
+
+.messages-count,
+.notifications-count {
+  background: #ef4444;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 16px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.btn-notifications {
+  padding: 8px;
+}
+
+.btn-notifications .notifications-count {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.65rem;
+  padding: 1px 4px;
+}
+
+/* Show messages/notifications when logged in */
+.user-logged-in .btn-messages,
+.user-logged-in .btn-notifications {
+  display: flex !important;
+}
+/* Property Communication Integration Styles */
+
+/* Communication Buttons on Property Cards */
+.communication-buttons,
+.bnb-communication,
+.service-communication,
+.marketplace-communication {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Primary Actions */
+.property-actions,
+.bnb-actions,
+.service-actions,
+.marketplace-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-inquiry.primary,
+.btn-check-availability,
+.btn-request-service,
+.btn-ask-seller {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-inquiry.primary:hover,
+.btn-check-availability:hover,
+.btn-request-service:hover,
+.btn-ask-seller:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Secondary Actions */
+.secondary-actions,
+.bnb-contact-options,
+.service-contact-options,
+.seller-contact-options {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.btn-communication.secondary,
+.btn-bnb-contact,
+.btn-bnb-whatsapp,
+.btn-service-chat,
+.btn-service-call,
+.btn-service-whatsapp,
+.btn-marketplace-chat,
+.btn-marketplace-call,
+.btn-marketplace-whatsapp {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+  text-align: center;
+}
+
+.btn-communication.secondary:hover,
+.btn-bnb-contact:hover,
+.btn-service-chat:hover,
+.btn-marketplace-chat:hover {
+  background: #4f46e5;
+  color: white;
+  border-color: #4f46e5;
+}
+
+.btn-bnb-whatsapp:hover,
+.btn-service-whatsapp:hover,
+.btn-marketplace-whatsapp:hover {
+  background: #25d366;
+  color: white;
+  border-color: #25d366;
+}
+
+.btn-service-call:hover,
+.btn-marketplace-call:hover {
+  background: #059669;
+  color: white;
+  border-color: #059669;
+}
+
+/* Availability Notice */
+.availability-notice {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #f0f9ff;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #0369a1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.availability-notice i {
+  font-size: 0.75rem;
+}
+
+/* Property Card Enhancements */
+.property-card.enhanced,
+.listing-card.enhanced {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.property-card.enhanced:hover,
+.listing-card.enhanced:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* BNB Specific Styling */
+.bnb-card .bnb-communication {
+  background: linear-gradient(135deg, #fef7ff, #f3e8ff);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.btn-check-availability {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+}
+
+.btn-check-availability:hover {
+  background: linear-gradient(135deg, #6d28d9, #9333ea);
+}
+
+/* Service Provider Styling */
+.service-card .service-communication {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.btn-request-service {
+  background: linear-gradient(135deg, #059669, #10b981);
+}
+
+.btn-request-service:hover {
+  background: linear-gradient(135deg, #047857, #059669);
+}
+
+/* Marketplace Item Styling */
+.marketplace-card .marketplace-communication {
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.btn-ask-seller {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: #92400e;
+}
+
+.btn-ask-seller:hover {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .secondary-actions,
+  .bnb-contact-options,
+  .service-contact-options,
+  .seller-contact-options {
+    flex-direction: column;
+  }
+  
+  .btn-communication.secondary,
+  .btn-bnb-contact,
+  .btn-bnb-whatsapp,
+  .btn-service-chat,
+  .btn-service-call,
+  .btn-service-whatsapp,
+  .btn-marketplace-chat,
+  .btn-marketplace-call,
+  .btn-marketplace-whatsapp {
+    flex: none;
+  }
+}

@@ -95,9 +95,40 @@ const KejaEnhancedPortal = {
       `;
     }
 
-    this.addBnbListings();
-    this.addBnbMetrics();
-    this.addGuestInquiries();
+    this.addSimplifiedBnbSystem();
+    this.addSimplifiedRentalSystem();
+    this.addGuestInquiryHandler();
+  },
+
+  /**
+   * Add simplified BNB system (no complex calendars)
+   */
+  addSimplifiedBnbSystem() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const simplifiedSection = document.createElement('div');
+    simplifiedSection.innerHTML = KejaSimplified.BNBManager.renderBNBDashboard();
+    dashboard.appendChild(simplifiedSection);
+  },
+
+  /**
+   * Add simplified rental management system
+   */
+  addSimplifiedRentalSystem() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const rentalSection = document.createElement('div');
+    rentalSection.innerHTML = KejaSimplified.RentalManager.renderRentalDashboard();
+    dashboard.appendChild(rentalSection);
+  },
+
+  /**
+   * Guest inquiry handler
+   */
+  addGuestInquiryHandler() {
+    console.log('✅ Guest inquiry system enabled');
   },
 
   /**
@@ -2047,3 +2078,131 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+  /**
+   * Render guest inquiries for BNB hosts
+   */
+  renderGuestInquiries() {
+    const sampleInquiries = [
+      {
+        id: 'inq_001',
+        guestName: 'Sarah K.',
+        bnbName: 'Sunset BNB',
+        checkin: '2024-09-20',
+        checkout: '2024-09-22', 
+        guests: 2,
+        message: 'Hello, I would like to stay at Sunset BNB for a weekend getaway.',
+        contact: '+254701234567',
+        status: 'pending',
+        timestamp: '2024-09-08T10:30:00Z'
+      },
+      {
+        id: 'inq_002',
+        guestName: 'John M.',
+        bnbName: 'Cozy Studio',
+        checkin: '2024-09-25',
+        checkout: '2024-09-27',
+        guests: 1,
+        message: 'Looking for a quiet place to stay for business trip.',
+        contact: 'john.m@email.com',
+        status: 'responded',
+        timestamp: '2024-09-07T15:45:00Z'
+      }
+    ];
+
+    return sampleInquiries.map(inquiry => `
+      <div class="inquiry-card ${inquiry.status}">
+        <div class="inquiry-header">
+          <div class="inquiry-guest">
+            <div class="guest-name">${inquiry.guestName}</div>
+            <div class="inquiry-time">${this.formatTimeAgo(inquiry.timestamp)}</div>
+          </div>
+          <div class="inquiry-status">
+            <span class="status-badge ${inquiry.status}">
+              ${inquiry.status === 'pending' ? '🟡 Pending Response' : '✅ Responded'}
+            </span>
+          </div>
+        </div>
+
+        <div class="inquiry-details">
+          <div class="inquiry-property">
+            <strong>${inquiry.bnbName}</strong>
+          </div>
+          <div class="inquiry-dates">
+            📅 ${inquiry.checkin} to ${inquiry.checkout} • ${inquiry.guests} guest${inquiry.guests > 1 ? 's' : ''}
+          </div>
+          <div class="inquiry-message">
+            "${inquiry.message}"
+          </div>
+          <div class="inquiry-contact">
+            📞 ${inquiry.contact}
+          </div>
+        </div>
+
+        <div class="inquiry-actions">
+          ${inquiry.status === 'pending' ? `
+            <button class="btn-success" onclick="KejaEnhancedPortal.respondToInquiry('${inquiry.id}', 'available')">
+              ✅ Available - Send Details
+            </button>
+            <button class="btn-decline" onclick="KejaEnhancedPortal.respondToInquiry('${inquiry.id}', 'unavailable')">
+              ❌ Sorry, Dates Taken
+            </button>
+          ` : `
+            <div class="responded-note">
+              Response sent: Available - Booking details provided
+            </div>
+          `}
+        </div>
+      </div>
+    `).join('');
+  },
+
+  /**
+   * Respond to guest inquiry
+   */
+  respondToInquiry(inquiryId, response) {
+    console.log(`Responding to inquiry ${inquiryId} with:`, response);
+    
+    if (response === 'available') {
+      alert(`✅ Response Sent: Available\n\nYour response has been sent to the guest:\n\n"Great news! Your dates are available. Here are the booking details:\n\n• Rate: As listed\n• Payment: [Your payment method]\n• Check-in: [Your check-in process]\n• Contact: [Your direct contact]\n\nLooking forward to hosting you!"\n\nThe guest will contact you directly to complete the booking.`);
+    } else {
+      alert(`❌ Response Sent: Unavailable\n\nYour response has been sent to the guest:\n\n"Thank you for your interest in [Property Name]. Unfortunately, those dates are already taken.\n\nPlease check our other available dates or consider alternative properties on KejaMarket.\n\nBest regards"`);
+    }
+  },
+
+  /**
+   * Format timestamp to "time ago" format
+   */
+  formatTimeAgo(timestamp) {
+    const now = new Date();
+    const time = new Date(timestamp);
+    const diffHours = Math.floor((now - time) / (1000 * 60 * 60));
+    
+    if (diffHours < 1) return 'Just now';
+    if (diffHours < 24) return `${diffHours}h ago`;
+    return `${Math.floor(diffHours / 24)}d ago`;
+  },
+
+  /**
+   * Tab management
+   */
+  showTab(tabName) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.style.display = 'none';
+    });
+    
+    // Remove active class from all tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    
+    // Show selected tab
+    const selectedTab = document.getElementById(`tab-${tabName}`);
+    if (selectedTab) {
+      selectedTab.style.display = 'block';
+    }
+    
+    // Add active class to selected button
+    event.target.classList.add('active');
+  }

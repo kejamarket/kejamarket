@@ -156,6 +156,8 @@
   <link rel="stylesheet" href="css/verification.css?v=2.9&t=202609160120">
   <link rel="stylesheet" href="css/recently-added.css?v=2.9&t=202609160120">
   <link rel="stylesheet" href="css/enhanced-registration.css?v=2.9&t=202609160120">
+  <link rel="stylesheet" href="css/simplified-management.css?v=2.9&t=202609160120">
+  <link rel="stylesheet" href="css/communication-system.css?v=2.9&t=202609160120">
   <link rel="stylesheet" href="css/enhanced-portal.css?v=2.9&t=202609160120">
 
   <style>
@@ -296,6 +298,15 @@
         <button class="btn-header-action" id="btn-service-header" style="display: none; background: linear-gradient(135deg, #0891b2, #06b6d4); color: white; font-weight: 700;" onclick="kejaServicePortal.openServicePortal()" title="Service Provider Dashboard">
           <i class="fas fa-tools"></i>
           <span>Services Portal</span>
+        </button>
+
+        <!-- Messages & Notifications -->
+        <button class="btn-messages" id="btn-messages" onclick="KejaMessages.showMessagesCenter()" style="display:none;">
+          💬 <span class="messages-count" id="messages-count">7</span>
+        </button>
+        
+        <button class="btn-notifications" id="btn-notifications" onclick="KejaCommunication.NotificationSystem.showNotificationsCenter()" style="display:none;">
+          🔔 <span class="notifications-count" id="notifications-count">5</span>
         </button>
 
         <!-- Sign In / Sign Up (dynamic based on session) -->
@@ -2555,6 +2566,15 @@
   <script src="js/verification.js?v=2.9&t=202609160120"></script>
   <script src="js/enhanced-registration.js?v=2.9&t=202609160120"></script>
   <script src="js/enhanced-landlord-portal.js?v=2.9&t=202609160120"></script>
+  <script src="js/simplified-property-management.js?v=2.9&t=202609160120"></script>
+  <script src="js/communication-system.js?v=2.9&t=202609160120"></script>
+  <script src="js/messages-interface.js?v=2.9&t=202609160120"></script>
+  <script src="test-simplified-management.js?v=2.9&t=202609160120"></script>
+  <script src="test-communication-system.js?v=2.9&t=202609160120"></script>
+  <script src="js/property-communication-integration.js?v=2.9&t=202609160120"></script>
+  <script src="js/communication-api-client.js?v=2.9&t=202609160120"></script>
+  <script src="test-complete-system.js?v=2.9&t=202609160120"></script>
+  <script src="test-end-to-end-system.js?v=2.9&t=202609160120"></script>
   <script src="js/recently-added.js?v=2.9&t=202609160120"></script>
   <script src="js/botSimulator.js?v=2.9&t=202609160120"></script>
   <script src="js/monetization.js?v=2.9&t=202609160120"></script>

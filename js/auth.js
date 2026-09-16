@@ -1354,3 +1354,36 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 console.log('🔧 Modal fixes and profile dropdown optimization applied');
+  /**
+   * Show messages and notifications for logged-in users
+   */
+  function updateCommunicationButtons() {
+    const session = getSession();
+    const messagesBtn = document.getElementById('btn-messages');
+    const notificationsBtn = document.getElementById('btn-notifications');
+    
+    if (session && messagesBtn) {
+      messagesBtn.style.display = 'flex';
+    }
+    
+    if (session && notificationsBtn) {
+      notificationsBtn.style.display = 'flex';
+    }
+    
+    // Add logged-in class
+    if (session) {
+      document.body.classList.add('user-logged-in');
+    } else {
+      document.body.classList.remove('user-logged-in');
+      if (messagesBtn) messagesBtn.style.display = 'none';
+      if (notificationsBtn) notificationsBtn.style.display = 'none';
+    }
+  }
+
+  // Call this function when the page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(updateCommunicationButtons, 100);
+  });
+
+  // Make it globally accessible
+  window.updateCommunicationButtons = updateCommunicationButtons;
