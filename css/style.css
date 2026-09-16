@@ -1857,6 +1857,85 @@ button, input, select, textarea {
 }
 
 /* ==========================================================================
+   RESPONSIVE DESIGN - DESKTOP & LARGE SCREENS
+   ========================================================================== */
+
+/* Extra Large Screens (1920px+) - 4 column grid */
+@media (min-width: 1920px) {
+  .property-listings-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 18px;
+  }
+  
+  .categories-filters-sidebar {
+    max-height: calc(100vh - 120px);
+  }
+}
+
+/* Large Desktop (1600px - 1919px) - 3 column grid with more space */
+@media (min-width: 1600px) and (max-width: 1919px) {
+  .property-listings-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 16px;
+  }
+}
+
+/* Standard Desktop (1367px - 1599px) - 3 column grid */
+@media (min-width: 1367px) and (max-width: 1599px) {
+  .property-listings-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 14px;
+  }
+}
+
+/* Small Laptops & Tablets Landscape (1024px - 1366px) - 2 column grid */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .property-listings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px;
+  }
+  
+  .categories-filters-sidebar {
+    max-height: calc(100vh - 160px);
+    font-size: 0.85rem;
+  }
+  
+  .card-media-wrapper {
+    height: 140px !important;
+  }
+  
+  .split-view-container {
+    height: calc(100vh - 200px);
+  }
+  
+  .filter-group {
+    padding: 8px;
+  }
+  
+  .sidebar-cat-item {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+}
+
+/* Tablets Portrait (769px - 1023px) - 2 column grid */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .property-listings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px;
+  }
+  
+  .categories-filters-sidebar {
+    max-width: 220px;
+    font-size: 0.8rem;
+  }
+  
+  .card-media-wrapper {
+    height: 130px !important;
+  }
+}
+
+/* ==========================================================================
    MOBILE RESPONSIVE STYLES  (max-width: 768px)
    ========================================================================== */
 @media (max-width: 768px) {

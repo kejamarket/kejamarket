@@ -186,6 +186,64 @@ document.addEventListener('DOMContentLoaded', function() {
     .leaflet-popup-pane {
       z-index: 700 !important;
     }
+    
+    /* Responsive adjustments for all screen sizes */
+    @media screen and (max-width: 1366px) {
+      /* Small laptops and tablets landscape */
+      .categories-filters-sidebar {
+        max-height: calc(100vh - 160px) !important;
+        font-size: 0.85rem !important;
+      }
+      
+      .property-card {
+        font-size: 0.9rem !important;
+      }
+      
+      .card-media-wrapper {
+        height: 140px !important;
+      }
+    }
+    
+    @media screen and (max-width: 1280px) {
+      /* Smaller screens - adjust grid */
+      .property-listings-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+      }
+      
+      .split-view-container {
+        height: calc(100vh - 200px) !important;
+      }
+    }
+    
+    @media screen and (min-width: 1920px) {
+      /* Large screens - use more space */
+      .categories-filters-sidebar {
+        max-height: calc(100vh - 120px) !important;
+      }
+      
+      .property-listings-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      }
+    }
+    
+    /* Ensure sidebar never gets cut off */
+    .sidebar-col-category,
+    .sidebar-col-other {
+      overflow-y: auto !important;
+      max-height: 100% !important;
+    }
+    
+    /* Flexible container sizing */
+    .main-content-wrapper {
+      max-width: 100% !important;
+      padding: 0 clamp(10px, 2vw, 20px) !important;
+    }
+    
+    /* Auto-adjust font sizes based on screen */
+    html {
+      font-size: clamp(14px, 1vw, 16px) !important;
+    }
   `;
   document.head.appendChild(style);
   
