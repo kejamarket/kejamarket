@@ -11,27 +11,108 @@ const KejaEnhancedAuth = {
   selectedPropertyRole: null,
   registrationData: {},
 
-  // Property management role definitions
+  // Property management role definitions (sub-roles under Property Account)
   propertyRoles: {
     'landlord': {
       title: 'Landlord / Property Owner',
       icon: '🏠',
-      description: 'I own rental properties and manage them directly'
-    },
-    'caretaker': {
-      title: 'Caretaker / Property Manager', 
-      icon: '🏢',
-      description: 'I manage properties on behalf of the owners'
+      description: 'I own rental properties and manage them directly',
+      permissions: {
+        listProperty: true,
+        manageProperty: true,
+        searchProperties: true,
+        requestViewing: true, // optional
+        sellHouseItems: true,
+        listServices: true, // optional if they provide services
+        receivePropertyInquiries: true,
+        receiveServiceInquiries: true // if they provide services
+      }
     },
     'agent': {
       title: 'Real Estate Agent',
       icon: '🤝', 
-      description: 'I help clients find and rent properties'
+      description: 'I help clients find, rent, and sell properties',
+      permissions: {
+        listProperty: true,
+        manageProperty: true,
+        searchProperties: true,
+        requestViewing: true, // optional
+        sellHouseItems: true,
+        listServices: true, // optional if they provide services
+        receivePropertyInquiries: true,
+        receiveServiceInquiries: true // if they provide services
+      }
     },
-    'company': {
-      title: 'Property Management Company',
+    'caretaker': {
+      title: 'Caretaker',
       icon: '🏢',
-      description: 'We manage multiple properties for various owners'
+      description: 'I manage properties on behalf of the owners',
+      permissions: {
+        listProperty: true, // with restrictions
+        manageProperty: true, // with restrictions
+        searchProperties: true,
+        requestViewing: true, // optional
+        sellHouseItems: true,
+        listServices: true, // optional if they provide services
+        receivePropertyInquiries: true,
+        receiveServiceInquiries: true // if they provide services
+      }
+    },
+    'property-manager': {
+      title: 'Property Manager',
+      icon: '🏢',
+      description: 'I manage multiple properties professionally',
+      permissions: {
+        listProperty: true,
+        manageProperty: true,
+        searchProperties: true,
+        requestViewing: true, // optional
+        sellHouseItems: true,
+        listServices: true, // optional if they provide services
+        receivePropertyInquiries: true,
+        receiveServiceInquiries: true // if they provide services
+      }
+    }
+  },
+
+  // Main account types
+  mainAccountTypes: {
+    'property-account': {
+      title: 'Property Account',
+      icon: '🏠',
+      description: 'List and manage rental properties, connect with tenants and manage available units.',
+      subtitle: 'Landlord / Agent',
+      subRoles: ['landlord', 'agent', 'caretaker', 'property-manager']
+    },
+    'tenant': {
+      title: 'Tenant',
+      icon: '👤',
+      description: 'Search for properties, save favorites, contact property owners, and buy/sell house items.',
+      permissions: {
+        listProperty: false,
+        manageProperty: false,
+        searchProperties: true,
+        requestViewing: true,
+        sellHouseItems: true,
+        listServices: false,
+        receivePropertyInquiries: false,
+        receiveServiceInquiries: false
+      }
+    },
+    'service-provider': {
+      title: 'Service Provider',
+      icon: '🔧',
+      description: 'List services, manage your service profile, and sell relevant products.',
+      permissions: {
+        listProperty: false,
+        manageProperty: false,
+        searchProperties: true,
+        requestViewing: true, // optional for service providers
+        sellHouseItems: true, // if relevant products
+        listServices: true,
+        receivePropertyInquiries: false,
+        receiveServiceInquiries: true
+      }
     }
   },
 
@@ -145,16 +226,16 @@ const KejaEnhancedAuth = {
             Create your KejaMarket account
           </h3>
           <p style="color: #64748b; text-align: center; margin-bottom: 24px; font-size: 0.9rem;">
-            I am a:
+            Choose your account type:
           </p>
         </div>
 
         <div class="user-type-selection">
-          <div class="user-type-card" onclick="KejaEnhancedAuth.selectUserType('property-manager')" data-type="property-manager">
+          <div class="user-type-card" onclick="KejaEnhancedAuth.selectUserType('property-account')" data-type="property-account">
             <div class="user-type-icon">🏠</div>
             <div class="user-type-content">
-              <div class="user-type-title">Property Owner / Agent</div>
-              <div class="user-type-desc">List and manage rental properties, connect with tenants and manage available units.</div>
+              <div class="user-type-title">Landlord / Agent</div>
+              <div class="user-type-desc">List property • Manage property listings • Receive tenant inquiries • Sell property-related items • Optionally offer services</div>
             </div>
           </div>
 
@@ -162,15 +243,15 @@ const KejaEnhancedAuth = {
             <div class="user-type-icon">👤</div>
             <div class="user-type-content">
               <div class="user-type-title">Tenant</div>
-              <div class="user-type-desc">Find a home and connect with property owners.</div>
+              <div class="user-type-desc">Search for properties • Save/favorite properties • Contact landlords/agents/caretakers • Request viewings • Buy used house items</div>
             </div>
           </div>
 
-          <div class="user-type-card" onclick="KejaEnhancedAuth.selectUserType('service')" data-type="service">
+          <div class="user-type-card" onclick="KejaEnhancedAuth.selectUserType('service-provider')" data-type="service-provider">
             <div class="user-type-icon">🔧</div>
             <div class="user-type-content">
               <div class="user-type-title">Service Provider</div>
-              <div class="user-type-desc">Provide property-related services like plumbing, electrical, cleaning, moving, etc.</div>
+              <div class="user-type-desc">List services • Manage service profile • Receive service inquiries • Sell relevant products/items</div>
             </div>
           </div>
         </div>
@@ -188,19 +269,22 @@ const KejaEnhancedAuth = {
    * Step 2: Choose property management role
    */
   getStep2HTML() {
-    if (this.selectedUserType !== 'property-manager') {
+    if (this.selectedUserType !== 'property-account') {
       return this.getDirectRegistrationHTML();
     }
 
     return `
       <div class="signup-step" data-step="2">
         <div class="step-header">
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: #1e293b; margin-bottom: 8px; text-align: center;">
-            Tell us about yourself
-          </h3>
-          <p style="color: #64748b; text-align: center; margin-bottom: 24px; font-size: 0.9rem;">
-            I am a:
-          </p>
+          <div class="property-account-header">
+            <div class="account-type-badge">🏠 PROPERTY ACCOUNT</div>
+            <h3 style="font-size: 1.2rem; font-weight: 800; color: #1e293b; margin-bottom: 8px; text-align: center;">
+              What is your role?
+            </h3>
+            <p style="color: #64748b; text-align: center; margin-bottom: 24px; font-size: 0.9rem;">
+              Choose your specific property management role:
+            </p>
+          </div>
         </div>
 
         <div class="property-role-selection">
@@ -218,6 +302,16 @@ const KejaEnhancedAuth = {
               </div>
             </div>
           `).join('')}
+        </div>
+
+        <div class="permissions-note" style="background: #f0f9ff; padding: 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #0ea5e9;">
+          <div style="display: flex; align-items: center; gap: 8px; color: #0ea5e9; font-weight: 600; margin-bottom: 8px;">
+            <i class="fas fa-info-circle"></i>
+            Your Permissions
+          </div>
+          <div style="color: #075985; font-size: 0.85rem; line-height: 1.4;">
+            All property account holders can list properties, manage listings, and receive inquiries. Specific permissions vary by role.
+          </div>
         </div>
 
         <div class="step-navigation" style="margin-top: 24px;">
@@ -408,19 +502,35 @@ const KejaEnhancedAuth = {
   },
 
   /**
-   * Get direct registration for non-property-manager roles
+   * Get direct registration for non-property-account roles
    */
   getDirectRegistrationHTML() {
     const userTypeData = {
       'tenant': { 
         title: 'Tenant Registration', 
         desc: 'Complete your tenant profile to find your ideal home',
-        icon: '👤'
+        icon: '👤',
+        permissions: [
+          '✅ Search for properties',
+          '✅ Save/favorite properties', 
+          '✅ Contact property owners',
+          '✅ Request viewings',
+          '✅ Buy/sell used house items',
+          '❌ Cannot list properties for rent'
+        ]
       },
-      'service': { 
+      'service-provider': { 
         title: 'Service Provider Registration', 
         desc: 'Set up your service business profile and start connecting with property owners',
-        icon: '🔧'
+        icon: '🔧',
+        permissions: [
+          '✅ List services',
+          '✅ Manage service profile',
+          '✅ Receive service inquiries',
+          '✅ Sell relevant products/items',
+          '✅ Search properties (optional)',
+          '❌ Cannot list properties for rent'
+        ]
       }
     };
 
@@ -440,13 +550,26 @@ const KejaEnhancedAuth = {
           </p>
         </div>
 
+        <div class="permissions-display" style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+          <h4 style="color: #1e293b; font-size: 0.95rem; font-weight: 700; margin-bottom: 12px;">
+            Your Account Permissions:
+          </h4>
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            ${data.permissions.map(permission => `
+              <li style="padding: 4px 0; font-size: 0.85rem; color: #4b5563;">
+                ${permission}
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+
         <form id="direct-registration-form" onsubmit="KejaEnhancedAuth.submitDirectRegistration(event)">
           <div class="form-group">
             <label>Full Name *</label>
             <input type="text" id="direct-name" class="form-control" placeholder="e.g. John Mwangi" required>
           </div>
           
-          ${this.selectedUserType === 'service' ? `
+          ${this.selectedUserType === 'service-provider' ? `
           <div class="form-group">
             <label>Service Type *</label>
             <select id="direct-service-type" class="form-control" required>
@@ -503,7 +626,7 @@ const KejaEnhancedAuth = {
           </div>
 
           <button type="submit" class="btn-primary" style="width: 100%;">
-            <i class="fas fa-user-plus"></i> Create ${this.selectedUserType === 'service' ? 'Service Provider' : 'Account'}
+            <i class="fas fa-user-plus"></i> Create ${this.selectedUserType === 'service-provider' ? 'Service Provider' : 'Tenant'} Account
           </button>
         </form>
 
@@ -713,14 +836,18 @@ const KejaEnhancedAuth = {
    * Update registration summary
    */
   updateRegistrationSummary() {
-    document.getElementById('summary-user-type').textContent = 
-      this.selectedUserType === 'property-manager' ? 'Property Owner / Agent' : 
-      this.selectedUserType === 'tenant' ? 'Tenant' : 'Service Provider';
+    const userTypeText = this.selectedUserType === 'property-account' ? 'Property Account (Landlord / Agent)' : 
+                        this.selectedUserType === 'tenant' ? 'Tenant' : 
+                        this.selectedUserType === 'service-provider' ? 'Service Provider' : 'User';
     
-    if (this.selectedPropertyRole) {
+    document.getElementById('summary-user-type').textContent = userTypeText;
+    
+    if (this.selectedPropertyRole && this.selectedUserType === 'property-account') {
       document.getElementById('summary-role').textContent = 
         this.propertyRoles[this.selectedPropertyRole].title;
       document.getElementById('summary-role-item').style.display = 'block';
+    } else {
+      document.getElementById('summary-role-item').style.display = 'none';
     }
 
     // Get name from current form
@@ -729,7 +856,7 @@ const KejaEnhancedAuth = {
       document.getElementById('summary-name').textContent = nameField.value;
     }
 
-    // Remove properties section since caretakers add them later
+    // Properties section not shown for registration
     document.getElementById('summary-properties-item').style.display = 'none';
   },
 
@@ -855,7 +982,52 @@ const KejaEnhancedAuth = {
    */
   showSuccessMessage() {
     const container = document.getElementById('enhanced-signup');
+    const isPropertyAccount = this.selectedUserType === 'property-account';
     const isCaretaker = this.selectedPropertyRole === 'caretaker';
+    const isServiceProvider = this.selectedUserType === 'service-provider';
+    const isTenant = this.selectedUserType === 'tenant';
+    
+    let title, message, features;
+    
+    if (isPropertyAccount) {
+      if (isCaretaker) {
+        title = '🏢 Property Partner Account Created!';
+        message = 'Welcome to KejaMarket! You now have access to your Property Partner Dashboard where you can add buildings and create unit listings.';
+        features = [
+          '🏢 Add buildings you manage',
+          '📝 Create unit listings with photos & videos', 
+          '📊 Track inquiries and manage availability',
+          '💬 Communicate with property owners'
+        ];
+      } else {
+        title = '🏠 Property Account Created!';
+        message = 'Welcome to KejaMarket! Your property management account is ready. You can now list properties and connect with tenants.';
+        features = [
+          '🏠 List and manage properties',
+          '📝 Create listings with photos & videos',
+          '📊 Receive and track tenant inquiries', 
+          '💰 Sell property-related items'
+        ];
+      }
+    } else if (isServiceProvider) {
+      title = '🔧 Service Provider Account Created!';
+      message = 'Welcome to KejaMarket! Your service provider profile is ready. You can now list services and connect with clients.';
+      features = [
+        '🔧 List and manage services',
+        '📝 Create service profile with portfolio',
+        '📞 Receive service inquiries',
+        '💼 Sell relevant products/items'
+      ];
+    } else {
+      title = '👤 Tenant Account Created!';
+      message = 'Welcome to KejaMarket! Your tenant account is ready. You can now search for properties and connect with landlords.';
+      features = [
+        '🔍 Search and filter properties',
+        '❤️ Save favorite properties',
+        '📱 Contact landlords directly',
+        '🛒 Buy/sell used house items'
+      ];
+    }
     
     container.innerHTML = `
       <div class="success-message" style="text-align: center; padding: 40px 20px;">
@@ -866,37 +1038,24 @@ const KejaEnhancedAuth = {
         </div>
         
         <h3 style="color: #059669; margin-bottom: 16px; font-size: 1.4rem; font-weight: 800;">
-          🛡️ ${isCaretaker ? 'Property Partner Account Created!' : 'Account Created Successfully!'}
+          ${title}
         </h3>
         
         <p style="color: #64748b; margin-bottom: 24px; line-height: 1.6;">
-          ${isCaretaker ? 
-            'Welcome to KejaMarket! You now have access to your Property Partner Dashboard where you can add buildings and create unit listings.' :
-            'Welcome to KejaMarket! Your account has been created and you can now access all features.'
-          }
+          ${message}
         </p>
         
         <div class="next-steps" style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 24px;">
           <h4 style="color: #1e293b; margin-bottom: 12px;">
-            ${isCaretaker ? 'Your Dashboard Features:' : 'What\'s Next?'}
+            Your Account Features:
           </h4>
           <ul style="text-align: left; color: #64748b; font-size: 0.9rem;">
-            ${isCaretaker ? `
-              <li>🏢 Add buildings you manage</li>
-              <li>📝 Create unit listings with photos & videos</li>
-              <li>📊 Track inquiries and manage availability</li>
-              <li>💬 Communicate with property owners</li>
-            ` : `
-              <li>✅ Phone verification (if required)</li>
-              <li>📱 SMS confirmation</li>
-              <li>🏠 Access to all listings</li>
-              <li>📊 Personalized dashboard</li>
-            `}
+            ${features.map(feature => `<li>${feature}</li>`).join('')}
           </ul>
         </div>
         
-        <button onclick="app.closeModal('modal-auth'); ${isCaretaker ? 'window.location.reload();' : ''}" class="btn-primary" style="width: 100%;">
-          ${isCaretaker ? 'Go to Dashboard' : 'Get Started'}
+        <button onclick="app.closeModal('modal-auth'); ${isPropertyAccount ? 'window.location.reload();' : ''}" class="btn-primary" style="width: 100%;">
+          ${isPropertyAccount ? 'Go to Dashboard' : 'Start Exploring'}
         </button>
       </div>
     `;

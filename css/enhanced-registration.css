@@ -443,3 +443,55 @@
   border-color: #059669;
   box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
+
+/* Property Account Header */
+.property-account-header {
+  text-align: center;
+}
+
+.account-type-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+/* Permissions Display */
+.permissions-display ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.permissions-display li {
+  padding: 6px 0 !important;
+  font-size: 0.85rem !important;
+  color: #4b5563 !important;
+}
+
+.permissions-note {
+  background: #f0f9ff !important;
+  border-left: 4px solid #0ea5e9 !important;
+  padding: 16px !important;
+  border-radius: 8px !important;
+  margin-top: 20px !important;
+}
+
+.permissions-display {
+  background: #f8fafc !important;
+  padding: 16px !important;
+  border-radius: 8px !important;
+  margin-bottom: 24px !important;
+}
+
+/* Enhanced User Type Descriptions */
+.user-type-desc {
+  font-size: 0.8rem !important;
+  color: #64748b !important;
+  line-height: 1.4 !important;
+}
