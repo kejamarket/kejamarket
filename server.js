@@ -1,5 +1,5 @@
-﻿/**
- * KejaMarket Ã¢â‚¬â€œ Production Backend API & M-Pesa Daraja Integration
+/**
+ * KejaMarket â€“ Production Backend API & M-Pesa Daraja Integration
  * ===============================================================
  * Provides:
  *  1. Full User Authentication (JWT + Bcrypt) for Tenants & Landlords
@@ -25,7 +25,7 @@ const fetch = require('node-fetch');
 const emailService = require('./db/email-service');
 const uploadService = require('./db/upload-service');
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ RATE LIMITING Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ RATE LIMITING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const rateLimit = require('express-rate-limit');
 
 // Auth endpoints: max 10 attempts per 15 minutes per IP
@@ -37,7 +37,7 @@ const authLimiter = rateLimit({
   legacyHeaders: false
 });
 
-// OTP endpoints: stricter Ã¢â‚¬â€ max 5 per 10 minutes
+// OTP endpoints: stricter â€” max 5 per 10 minutes
 const otpLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 5,
@@ -61,35 +61,46 @@ app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 // Serve static frontend files (HTML, CSS, JS, icons)
 app.use(express.static(__dirname));
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ LEGAL & STATIC PAGE ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// SEO & Robots files
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.sendFile(path.join(__dirname, 'robots.txt'));
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.sendFile(path.join(__dirname, 'sitemap.xml'));
+});
+
+// â”€â”€â”€ LEGAL & STATIC PAGE ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/privacy-policy', (req, res) => res.sendFile(path.join(__dirname, 'privacy-policy.html')));
 app.get('/terms', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
 app.get('/terms-and-conditions', (req, res) => res.sendFile(path.join(__dirname, 'terms.html')));
 app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.html')));
 
-// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INITIALIZE DATABASE (PostgreSQL with JSON fallback)
-// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 let store;
 async function initializeDatabase() {
-  console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
-  console.log('ðŸš€ KEJAMARKET DATABASE INITIALIZATION');
-  console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
+  console.log('═══════════════════════════════════════════════════════════');
+  console.log('🚀 KEJAMARKET DATABASE INITIALIZATION');
+  console.log('═══════════════════════════════════════════════════════════');
   
   const POOLER_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
   
   // Auto-rewrite direct Supabase URL to pooler for IPv4 compatibility (critical for Render)
   if (process.env.DATABASE_URL && (process.env.DATABASE_URL.includes('db.cwqmtrwdbjmsrrqjkfmj.supabase.co') || process.env.DATABASE_URL.includes('.supabase.co:5432'))) {
-    console.log('ðŸ”„ Rewriting process.env.DATABASE_URL to IPv4 Supabase Connection Pooler...');
+    console.log('🔄 Rewriting process.env.DATABASE_URL to IPv4 Supabase Connection Pooler...');
     process.env.DATABASE_URL = POOLER_URL;
   }
   
   try {
     console.log('Initializing PostgreSQL database (Supabase)...');
     console.log('DATABASE_URL sources:');
-    console.log('  - Global:', global.KEJAMARKET_DATABASE_URL ? 'âœ… SET' : 'âŒ NOT SET');
-    console.log('  - Env:', process.env.DATABASE_URL ? 'âœ… SET' : 'âŒ NOT SET');
+    console.log('  - Global:', global.KEJAMARKET_DATABASE_URL ? '✅ SET' : '❌ NOT SET');
+    console.log('  - Env:', process.env.DATABASE_URL ? '✅ SET' : '❌ NOT SET');
     console.log('  - Target URL starts with:', (global.KEJAMARKET_DATABASE_URL || process.env.DATABASE_URL || POOLER_URL).substring(0, 50));
     
     store = require('./db/postgres-store.js');
@@ -103,23 +114,23 @@ async function initializeDatabase() {
         const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
         await store.query(schemaSql);
         await pool.end();
-        console.log('âœ… Schema migrations applied');
+        console.log('✅ Schema migrations applied');
       } catch (schemaErr) {
         console.warn('Schema update notice:', schemaErr.message);
       }
-      console.log('âœ… PostgreSQL database (Supabase) connected successfully');
+      console.log('✅ PostgreSQL database (Supabase) connected successfully');
     } else {
-      console.warn('âš ï¸ PostgreSQL store not connected; using store fallback');
+      console.warn('⚠️ PostgreSQL store not connected; using store fallback');
       if (!store || !store.getAllProperties) {
         store = require('./db/store.js');
       }
     }
-    console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
+    console.log('═══════════════════════════════════════════════════════════');
   } catch (error) {
-    console.error('âš ï¸ Database initialization error:', error.message);
+    console.error('⚠️ Database initialization error:', error.message);
     try {
       store = require('./db/store.js');
-      console.log('âœ… Fallback store loaded; keeping server online');
+      console.log('✅ Fallback store loaded; keeping server online');
     } catch (fbErr) {
       console.error('Fatal store fallback failure:', fbErr.message);
     }
@@ -129,7 +140,7 @@ async function initializeDatabase() {
   uploadService.initCloudinary();
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ CONFIGURATION Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ CONFIGURATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const JWT_SECRET = process.env.JWT_SECRET || 'kejamarket_super_secret_jwt_key_2026';
 let CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY || '';
 let CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET || '';
@@ -143,7 +154,7 @@ let MPESA_BASE = MPESA_ENV === 'live'
   ? 'https://api.safaricom.co.ke'
   : 'https://sandbox.safaricom.co.ke';
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ AFRICA'S TALKING SMS SERVICE Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ AFRICA'S TALKING SMS SERVICE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const AT_USERNAME = process.env.AT_USERNAME || 'sandbox';
 const AT_API_KEY = process.env.AT_API_KEY || '';
 const AT_SENDER_ID = process.env.AT_SENDER_ID || '';
@@ -160,12 +171,12 @@ try {
     });
     
     smsService = africastalking.SMS;
-    console.log(`Ã°Å¸â€œÂ± Africa's Talking SMS engine initialized (Account: ${AT_USERNAME})`);
+    console.log(`ðŸ“± Africa's Talking SMS engine initialized (Account: ${AT_USERNAME})`);
   } else {
-    console.log(`Ã°Å¸â€œÂ± Africa's Talking SMS: API Key not provided - SMS disabled`);
+    console.log(`ðŸ“± Africa's Talking SMS: API Key not provided - SMS disabled`);
   }
 } catch (error) {
-  console.warn(`Ã¢Å¡Â Ã¯Â¸Â Africa's Talking initialization failed:`, error.message);
+  console.warn(`âš ï¸ Africa's Talking initialization failed:`, error.message);
   smsService = null;
 }
 
@@ -187,18 +198,18 @@ async function sendRealSMS(toPhone, message) {
 
       try {
         const result = await smsService.send(options);
-        console.log(`Ã°Å¸â€œÂ¤ [REAL SMS SENT] To: ${recipient} | Status: Success | Response:`, result);
+        console.log(`ðŸ“¤ [REAL SMS SENT] To: ${recipient} | Status: Success | Response:`, result);
         return { success: true, response: result };
       } catch (apiError) {
-        console.error(`Ã¢ÂÅ’ [SMS API FAILED] To: ${recipient}:`, apiError.message);
+        console.error(`âŒ [SMS API FAILED] To: ${recipient}:`, apiError.message);
         return { success: false, error: apiError.message };
       }
     } else {
-      console.log(`Ã°Å¸â€œÂ¡ [SMS DISPATCH] To: ${recipient} | Body: "${message}" (SMS service not available)`);
+      console.log(`ðŸ“¡ [SMS DISPATCH] To: ${recipient} | Body: "${message}" (SMS service not available)`);
       return { success: true, localOnly: true };
     }
   } catch (smsErr) {
-    console.error(`Ã¢ÂÅ’ [SMS SEND FAILED] To: ${toPhone}:`, smsErr.message);
+    console.error(`âŒ [SMS SEND FAILED] To: ${toPhone}:`, smsErr.message);
     return { success: false, error: smsErr.message };
   }
 }
@@ -218,7 +229,7 @@ const hasDarajaCredentials = () => {
   );
 };
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ AUTH MIDDLEWARE Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ AUTH MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -266,7 +277,7 @@ async function optionalAuth(req, res, next) {
   next();
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ DARAJA HELPER FUNCTIONS Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ DARAJA HELPER FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let cachedToken = null;
 let tokenExpiry = 0;
 
@@ -317,7 +328,7 @@ function formatPhone(phone) {
   return clean;
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ OTP MEMORY STORES & UTILITIES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ OTP MEMORY STORES & UTILITIES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const pendingOtps = new Map(); // Registration OTPs: cleanPhone -> { otp, expiresAt, attempts, signupData }
 const pendingLoginOtps = new Map(); // Login OTPs: cleanPhone -> { otp, expiresAt, attempts, userId }
 
@@ -341,7 +352,7 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000);
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ AUTHENTICATION ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ AUTHENTICATION ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // POST /api/auth/send-otp (Step 1 of Phone-Verified Registration: Tenant, Landlord, Agency)
 app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
@@ -408,7 +419,7 @@ app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket verification code is ${otp}. Valid for 5 minutes. Enter this code to verify your ${role === 'agency' ? 'Agency' : (role === 'landlord' ? 'Landlord' : 'Tenant')} account.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`Ã°Å¸â€â€˜ [SIGNUP OTP] Phone: +${cleanPhone} | OTP: ${otp} | Role: ${role}`);
+    console.log(`ðŸ”‘ [SIGNUP OTP] Phone: +${cleanPhone} | OTP: ${otp} | Role: ${role}`);
 
     res.json({
       success: true,
@@ -488,7 +499,7 @@ app.post('/api/auth/verify-otp', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: `Ã°Å¸Å½â€° Phone verified! Welcome to KejaMarket, ${user.name}!`,
+      message: `ðŸŽ‰ Phone verified! Welcome to KejaMarket, ${user.name}!`,
       user,
       token
     });
@@ -529,7 +540,7 @@ app.post('/api/auth/login-send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket sign-in verification code is ${otp}. Valid for 5 minutes. Do not share this code.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`Ã°Å¸â€â€˜ [LOGIN OTP] User: ${user.name} | Phone: +${cleanPhone} | OTP: ${otp}`);
+    console.log(`ðŸ”‘ [LOGIN OTP] User: ${user.name} | Phone: +${cleanPhone} | OTP: ${otp}`);
 
     res.json({
       success: true,
@@ -596,7 +607,7 @@ app.post('/api/auth/login-verify-otp', async (req, res) => {
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
 
-    console.log(`Ã¢Å“â€¦ [LOGIN VERIFIED] User: ${user.name} (${user.role}) via Phone OTP`);
+    console.log(`âœ… [LOGIN VERIFIED] User: ${user.name} (${user.role}) via Phone OTP`);
 
     res.json({
       success: true,
@@ -659,7 +670,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
     const smsMessage = `Your new KejaMarket verification code is ${otp}. Valid for 5 minutes.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log(`Ã°Å¸â€â€ž [OTP RESENT] Phone: +${cleanPhone} | OTP: ${otp}`);
+    console.log(`ðŸ”„ [OTP RESENT] Phone: +${cleanPhone} | OTP: ${otp}`);
 
     res.json({
       success: true,
@@ -674,7 +685,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
 // POST /api/auth/register (Direct registration fallback)
 app.post('/api/auth/register', async (req, res) => {
   try {
-    console.log('🔵 [REGISTER] Request received:', { 
+    console.log('?? [REGISTER] Request received:', { 
       name: req.body.name, 
       phone: req.body.phone, 
       email: req.body.email,
@@ -684,27 +695,27 @@ app.post('/api/auth/register', async (req, res) => {
     const { name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea, serviceCategory, serviceBusiness, serviceAreas } = req.body;
 
     if (!name || !phone || !password) {
-      console.log('❌ [REGISTER] Missing required fields');
+      console.log('? [REGISTER] Missing required fields');
       return res.status(400).json({ success: false, message: 'Name, phone number, and password are required.' });
     }
 
     if (password.length < 6) {
-      console.log('❌ [REGISTER] Password too short');
+      console.log('? [REGISTER] Password too short');
       return res.status(400).json({ success: false, message: 'Password must be at least 6 characters.' });
     }
 
     const cleanPhone = formatPhone(phone);
-    console.log('🔵 [REGISTER] Clean phone:', cleanPhone);
+    console.log('?? [REGISTER] Clean phone:', cleanPhone);
 
     // Check if user already exists
     try {
       const existingUser = await store.getUser(cleanPhone);
       if (existingUser) {
-        console.log('❌ [REGISTER] User already exists');
+        console.log('? [REGISTER] User already exists');
         return res.status(400).json({ success: false, message: 'Phone number already registered. Please sign in instead.' });
       }
     } catch (err) {
-      console.log('⚠️ [REGISTER] Error checking existing user:', err.message);
+      console.log('?? [REGISTER] Error checking existing user:', err.message);
     }
 
     const user = await store.createUser({
@@ -726,7 +737,7 @@ app.post('/api/auth/register', async (req, res) => {
       isPhoneVerified: true
     });
 
-    console.log('✅ [REGISTER] User created:', user.id);
+    console.log('? [REGISTER] User created:', user.id);
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
 
@@ -740,7 +751,7 @@ app.post('/api/auth/register', async (req, res) => {
       emailService.sendWelcomeEmail(user.email, user.name, user.role).catch(() => {});
     }
 
-    console.log('✅ [REGISTER] Success, returning user and token');
+    console.log('? [REGISTER] Success, returning user and token');
 
     res.status(201).json({
       success: true,
@@ -749,7 +760,7 @@ app.post('/api/auth/register', async (req, res) => {
       token
     });
   } catch (err) {
-    console.error('❌ [REGISTER] Error:', err);
+    console.error('? [REGISTER] Error:', err);
     res.status(400).json({ success: false, message: err.message || 'Registration failed. Please try again.' });
   }
 });
@@ -863,7 +874,7 @@ app.post('/api/auth/register-enhanced', async (req, res) => {
     
     // Admin notification for caretaker registrations
     if (role === 'caretaker') {
-      console.log(`🏢 New Caretaker Registration: ${name} (${cleanPhone}) - Managing ${properties.length} properties`);
+      console.log(`?? New Caretaker Registration: ${name} (${cleanPhone}) - Managing ${properties.length} properties`);
       // Could add admin email notification here
     }
     
@@ -951,9 +962,9 @@ app.post('/api/auth/verify-landlord', optionalAuth, (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ PASSWORD RESET ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ PASSWORD RESET ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/auth/forgot-password Ã¢â‚¬â€ send reset OTP via SMS + email
+// POST /api/auth/forgot-password â€” send reset OTP via SMS + email
 app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
   try {
     const { identifier } = req.body;
@@ -971,7 +982,7 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
 
-    // Store token â€” use in-memory if DB table not ready
+    // Store token — use in-memory if DB table not ready
     try {
       if (store.createPasswordResetToken) {
         await store.createPasswordResetToken(user.id, otp, expiresAt);
@@ -981,7 +992,7 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
         });
       }
     } catch (tokenErr) {
-      // Table might not exist yet â€” fall back to in-memory
+      // Table might not exist yet — fall back to in-memory
       console.warn('Token DB storage failed, using memory fallback:', tokenErr.message);
       pendingOtps.set('reset_' + formatPhone(user.phone), {
         otp, expiresAt: Date.now() + 30 * 60 * 1000, attempts: 0, userId: user.id
@@ -995,16 +1006,16 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
       `KejaMarket: Your password reset code is ${otp}. Valid for 30 minutes. Do NOT share this code.`
     ).catch(e => console.warn('Reset SMS failed:', e.message));
 
-    // Send email (completely non-blocking Ã¢â‚¬â€ never blocks response)
+    // Send email (completely non-blocking â€” never blocks response)
     if (user.email) {
       emailService.sendPasswordResetEmail(user.email, user.name, otp).catch(e => {
         console.warn('Password reset email failed:', e.message);
       });
     }
 
-    console.log(`Ã°Å¸â€â€˜ [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
+    console.log(`ðŸ”‘ [PASSWORD RESET] User: ${user.name} | OTP: ${otp}`);
 
-    // Respond immediately Ã¢â‚¬â€ don't wait for SMS/email
+    // Respond immediately â€” don't wait for SMS/email
     res.json({
       success: true,
       message: 'Reset code sent to your registered phone' + (user.email ? ' and email' : '') + '.',
@@ -1016,7 +1027,7 @@ app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
   }
 });
 
-// POST /api/auth/reset-password Ã¢â‚¬â€ verify OTP and set new password
+// POST /api/auth/reset-password â€” verify OTP and set new password
 app.post('/api/auth/reset-password', async (req, res) => {
   try {
     const { identifier, otp, newPassword } = req.body;
@@ -1033,7 +1044,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Account not found.' });
     }
 
-    // Verify token â€” check DB first, fall back to in-memory
+    // Verify token — check DB first, fall back to in-memory
     let tokenValid = false;
     try {
       if (store.getPasswordResetToken) {
@@ -1090,7 +1101,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ M-PESA DARAJA STK PUSH & PAYMENT ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ M-PESA DARAJA STK PUSH & PAYMENT ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // POST /api/mpesa/stk-push
 // Body: { phone, amount, itemType, itemName, targetPropertyId }
@@ -1113,7 +1124,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
     const isLiveDarajaConfigured = hasDarajaCredentials();
 
     if (isLiveDarajaConfigured) {
-      // Ã°Å¸Å¡â‚¬ REAL SAFARICOM DARAJA API CALL
+      // ðŸš€ REAL SAFARICOM DARAJA API CALL
       try {
         const token = await getMpesaToken();
         const timestamp = getDarajaTimestamp();
@@ -1133,7 +1144,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
           TransactionDesc: itemName || 'Keja Payment',
         };
 
-        console.log(`Ã°Å¸â€œÂ± [SAFARICOM DARAJA] Dispatching STK Push to ${formattedPhone} for KSh ${amountKes}...`);
+        console.log(`ðŸ“± [SAFARICOM DARAJA] Dispatching STK Push to ${formattedPhone} for KSh ${amountKes}...`);
         const stkRes = await fetch(`${MPESA_BASE}/mpesa/stkpush/v1/processrequest`, {
           method: 'POST',
           headers: {
@@ -1144,7 +1155,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
         });
 
         const stkData = await stkRes.json();
-        console.log('Ã°Å¸â€œÂ± [SAFARICOM DARAJA RESPONSE]:', JSON.stringify(stkData));
+        console.log('ðŸ“± [SAFARICOM DARAJA RESPONSE]:', JSON.stringify(stkData));
 
         if (stkData.ResponseCode === '0') {
           // Record transaction in database
@@ -1175,7 +1186,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
           });
         }
       } catch (darajaErr) {
-        console.error('Ã¢ÂÅ’ Daraja API Error:', darajaErr);
+        console.error('âŒ Daraja API Error:', darajaErr);
         return res.status(502).json({
           success: false,
           hasDaraja: true,
@@ -1183,7 +1194,7 @@ app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
         });
       }
     } else {
-      // Ã¢Å¡Â Ã¯Â¸Â Real Safaricom Daraja credentials are not set in .env
+      // âš ï¸ Real Safaricom Daraja credentials are not set in .env
       // Do not lie to the user with a dummy phone simulation
       return res.json({
         success: false,
@@ -1275,7 +1286,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
 
     const receipt = receiptCode.trim().toUpperCase();
 
-    // Ã¢â€â‚¬Ã¢â€â‚¬ Validate Safaricom receipt code format Ã¢â€â‚¬Ã¢â€â‚¬
+    // â”€â”€ Validate Safaricom receipt code format â”€â”€
     // Real Safaricom receipt codes are exactly 10 alphanumeric characters
     const RECEIPT_REGEX = /^[A-Z0-9]{10}$/;
     if (!RECEIPT_REGEX.test(receipt)) {
@@ -1285,20 +1296,20 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
       });
     }
 
-    // Ã¢â€â‚¬Ã¢â€â‚¬ Validate amount is reasonable Ã¢â€â‚¬Ã¢â€â‚¬
+    // â”€â”€ Validate amount is reasonable â”€â”€
     const expectedAmount = Math.ceil(Number(amount)) || 100;
     if (isNaN(expectedAmount) || expectedAmount <= 0) {
       return res.status(400).json({ success: false, message: 'Invalid payment amount.' });
     }
 
-    // Ã¢â€â‚¬Ã¢â€â‚¬ When Daraja is configured, query Transaction Status API to verify receipt is genuine Ã¢â€â‚¬Ã¢â€â‚¬
+    // â”€â”€ When Daraja is configured, query Transaction Status API to verify receipt is genuine â”€â”€
     if (hasDarajaCredentials()) {
       try {
         const token = await getMpesaToken();
         const timestamp = getDarajaTimestamp();
         const password = generatePassword(timestamp);
 
-        console.log(`Ã°Å¸â€Â [DARAJA] Querying Transaction Status for receipt: ${receipt}...`);
+        console.log(`ðŸ” [DARAJA] Querying Transaction Status for receipt: ${receipt}...`);
         const statusRes = await fetch(`${MPESA_BASE}/mpesa/transactionstatus/v1/query`, {
           method: 'POST',
           headers: {
@@ -1320,7 +1331,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
         });
 
         const statusData = await statusRes.json();
-        console.log(`Ã°Å¸â€Â [DARAJA STATUS RESPONSE]:`, JSON.stringify(statusData));
+        console.log(`ðŸ” [DARAJA STATUS RESPONSE]:`, JSON.stringify(statusData));
 
         // ResponseCode 0 = request accepted for processing by Safaricom
         if (statusData.ResponseCode !== '0' && statusData.errorCode) {
@@ -1331,17 +1342,17 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
         }
         // Note: the actual result comes asynchronously to the ResultURL callback.
         // For now, if Safaricom accepted the query (ResponseCode 0), proceed with provisional confirmation.
-        console.log(`Ã¢Å“â€¦ [DARAJA] Receipt ${receipt} accepted for verification by Safaricom.`);
+        console.log(`âœ… [DARAJA] Receipt ${receipt} accepted for verification by Safaricom.`);
       } catch (darajaErr) {
-        console.warn('Ã¢Å¡Â Ã¯Â¸Â Daraja transaction status query failed:', darajaErr.message);
+        console.warn('âš ï¸ Daraja transaction status query failed:', darajaErr.message);
         // Fallback: proceed with format-validated receipt if Daraja call fails
       }
     } else {
-      // No Daraja credentials Ã¢â‚¬â€ log warning, format already validated above
-      console.warn(`Ã¢Å¡Â Ã¯Â¸Â [RECEIPT] No Daraja creds Ã¢â‚¬â€ accepting format-validated receipt: ${receipt} (amount: KSh ${expectedAmount})`);
+      // No Daraja credentials â€” log warning, format already validated above
+      console.warn(`âš ï¸ [RECEIPT] No Daraja creds â€” accepting format-validated receipt: ${receipt} (amount: KSh ${expectedAmount})`);
     }
 
-    // Ã¢â€â‚¬Ã¢â€â‚¬ Create or fetch the transaction record Ã¢â€â‚¬Ã¢â€â‚¬
+    // â”€â”€ Create or fetch the transaction record â”€â”€
     let tx = checkoutRequestId ? store.getTransactionByCheckoutId(checkoutRequestId) : null;
     if (!tx) {
       const generatedCheckoutId = 'ws_PAYBILL_' + receipt + '_' + Date.now();
@@ -1366,7 +1377,7 @@ app.post('/api/mpesa/verify-receipt', optionalAuth, async (req, res) => {
       resultDesc: 'Payment confirmed via M-Pesa receipt verification.'
     });
 
-    console.log(`Ã¢Å“â€¦ [CONFIRMED] Transaction ${checkoutRequestId} Ã¢â€ â€™ Receipt: ${receipt} | KSh ${expectedAmount}`);
+    console.log(`âœ… [CONFIRMED] Transaction ${checkoutRequestId} â†’ Receipt: ${receipt} | KSh ${expectedAmount}`);
 
     // Send real SMS payment confirmation
     if (updatedTx.phone && updatedTx.phone !== 'Direct Paybill') {
@@ -1419,7 +1430,7 @@ app.post('/api/mpesa/callback', (req, res) => {
       const receipt = items.find(i => i.Name === 'MpesaReceiptNumber')?.Value || ('MPESA' + Date.now());
       const phone = items.find(i => i.Name === 'PhoneNumber')?.Value;
 
-      console.log(`Ã¢Å“â€¦ [DARAJA CONFIRMED] KSh ${amount} | Receipt: ${receipt} | Phone: ${phone}`);
+      console.log(`âœ… [DARAJA CONFIRMED] KSh ${amount} | Receipt: ${receipt} | Phone: ${phone}`);
 
       const updatedTx = store.updateTransaction(checkoutRequestId, {
         status: 'SUCCESS',
@@ -1436,7 +1447,7 @@ app.post('/api/mpesa/callback', (req, res) => {
         );
       }
     } else {
-      console.log(`Ã¢ÂÅ’ [DARAJA FAILED] ${resultDesc} (ResultCode: ${resultCode})`);
+      console.log(`âŒ [DARAJA FAILED] ${resultDesc} (ResultCode: ${resultCode})`);
       store.updateTransaction(checkoutRequestId, {
         status: 'FAILED',
         resultDesc: resultDesc
@@ -1450,9 +1461,9 @@ app.post('/api/mpesa/callback', (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ PROPERTIES & LISTINGS ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ PROPERTIES & LISTINGS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /api/properties Ã¢â‚¬â€ server-side search, filtering, pagination
+// GET /api/properties â€” server-side search, filtering, pagination
 app.get('/api/properties', async (req, res) => {
   try {
     const {
@@ -1545,7 +1556,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Title, category, and monthly rent are required.' });
     }
 
-    // Ã¢â€â‚¬Ã¢â€â‚¬ Duplicate detection Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+    // â”€â”€ Duplicate detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (req.user && store.findDuplicateListing) {
       const duplicate = await store.findDuplicateListing(
         req.user.id, data.estateSuburb || '', data.category, data.rentKes
@@ -1559,7 +1570,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
       }
     }
 
-    // Ã¢â€â‚¬Ã¢â€â‚¬ Upload photos to Cloudinary CDN Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+    // â”€â”€ Upload photos to Cloudinary CDN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (data.photos && Array.isArray(data.photos) && data.photos.length > 0) {
       try {
         const cdnUrls = await uploadService.uploadMultipleImages(
@@ -1605,7 +1616,7 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
     if (req.user && req.user.phone) {
       try {
         await sendSMS(req.user.phone, 
-          `Ã¢Å“â€¦ Your property listing "${data.title}" has been submitted to KejaMarket!\n\nÃ¢ÂÂ³ Status: PENDING VERIFICATION\n\nOur admin team will review and approve it within 24 hours. You'll be notified once it's live.\n\nView status in your Landlord Portal.`
+          `âœ… Your property listing "${data.title}" has been submitted to KejaMarket!\n\nâ³ Status: PENDING VERIFICATION\n\nOur admin team will review and approve it within 24 hours. You'll be notified once it's live.\n\nView status in your Landlord Portal.`
         );
       } catch (err) {
         console.error('Failed to send landlord confirmation SMS:', err.message);
@@ -1711,17 +1722,17 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
     approvedBy: user.id
   });
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Deliver WhatsApp alerts to matching subscribers Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // â”€â”€ Deliver WhatsApp alerts to matching subscribers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (store.getMatchingWhatsAppSubs) {
     try {
       const subs = await store.getMatchingWhatsAppSubs(property);
       for (const sub of subs) {
-        const msg = `Ã°Å¸ÂÂ  *New Rental Alert!*\n\n*${property.title}*\nÃ°Å¸â€œÂ ${property.estateSuburb}, ${property.county || 'Nairobi'}\nÃ°Å¸â€™Â° KSh ${(property.rentKes || property.rent || 0).toLocaleString()}/mo\n\nView on KejaMarket: https://kejamarket.co.ke`;
+        const msg = `ðŸ  *New Rental Alert!*\n\n*${property.title}*\nðŸ“ ${property.estateSuburb}, ${property.county || 'Nairobi'}\nðŸ’° KSh ${(property.rentKes || property.rent || 0).toLocaleString()}/mo\n\nView on KejaMarket: https://kejamarket.co.ke`;
         // Send via Africa's Talking WhatsApp or SMS fallback
         await sendRealSMS(sub.phone, msg);
-        console.log(`Ã°Å¸â€œÂ² [WHATSAPP ALERT] Sent to ${sub.phone} for "${property.title}"`);
+        console.log(`ðŸ“² [WHATSAPP ALERT] Sent to ${sub.phone} for "${property.title}"`);
       }
-      if (subs.length > 0) console.log(`Ã¢Å“â€¦ [ALERTS] Delivered to ${subs.length} subscriber(s)`);
+      if (subs.length > 0) console.log(`âœ… [ALERTS] Delivered to ${subs.length} subscriber(s)`);
     } catch (alertErr) {
       console.warn('WhatsApp alert delivery error:', alertErr.message);
     }
@@ -1732,7 +1743,7 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
     const lPhone = property.landlordPhone || property.landlord.phone;
     try {
       await sendSMS(lPhone,
-        `Ã¢Å“â€¦ Great news! Your property listing "${property.title}" has been approved and is now live on KejaMarket. Potential tenants can now view and contact you.`
+        `âœ… Great news! Your property listing "${property.title}" has been approved and is now live on KejaMarket. Potential tenants can now view and contact you.`
       );
     } catch (err) {
       console.error('Failed to send approval SMS:', err.message);
@@ -1753,7 +1764,7 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
       fromRole: 'admin',
       toUserId: property.landlord.id,
       toRole: property.landlord.isAgency ? 'agency' : 'landlord',
-      message: `Ã¢Å“â€¦ Your property "${property.title}" has been APPROVED and is now live! Tenants can now view and contact you.`,
+      message: `âœ… Your property "${property.title}" has been APPROVED and is now live! Tenants can now view and contact you.`,
       propertyId: property.id,
       propertyTitle: property.title,
       createdAt: new Date().toISOString(),
@@ -1799,7 +1810,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
     try {
       const reasonText = reason ? `\n\nReason: ${reason}` : '';
       await sendSMS(property.landlordPhone, 
-        `Ã¢ÂÅ’ Your property listing "${property.title}" was not approved for publication on KejaMarket.${reasonText}\n\nPlease review our listing guidelines and resubmit.`
+        `âŒ Your property listing "${property.title}" was not approved for publication on KejaMarket.${reasonText}\n\nPlease review our listing guidelines and resubmit.`
       );
     } catch (err) {
       console.error('Failed to send rejection SMS:', err.message);
@@ -1814,7 +1825,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
       fromRole: 'admin',
       toUserId: property.landlord.id,
       toRole: property.landlord.isAgency ? 'agency' : 'landlord',
-      message: `Ã¢ÂÅ’ Your property "${property.title}" was NOT approved.\n\nReason: ${reason || 'Does not meet listing requirements'}\n\nPlease review our guidelines and resubmit with corrections.`,
+      message: `âŒ Your property "${property.title}" was NOT approved.\n\nReason: ${reason || 'Does not meet listing requirements'}\n\nPlease review our guidelines and resubmit with corrections.`,
       propertyId: property.id,
       propertyTitle: property.title,
       createdAt: new Date().toISOString(),
@@ -1830,7 +1841,7 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
   });
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ REVIEWS ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ REVIEWS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/properties/:id/reviews
 app.get('/api/properties/:id/reviews', async (req, res) => {
@@ -1869,7 +1880,7 @@ app.post('/api/properties/:id/reviews', optionalAuth, (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ LIVE FACEBOOK-STYLE PUBLIC COMMENTS ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ LIVE FACEBOOK-STYLE PUBLIC COMMENTS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/properties/:id/comments
 app.get('/api/properties/:id/comments', async (req, res) => {
@@ -1959,9 +1970,9 @@ app.post('/api/properties/:id/comments/:commentId/reply', optionalAuth, (req, re
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ IN-APP CHAT & INBOX MESSAGES ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ IN-APP CHAT & INBOX MESSAGES ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /api/messages Ã¢â‚¬â€ fetch messages with real DB polling support
+// GET /api/messages â€” fetch messages with real DB polling support
 app.get('/api/messages', optionalAuth, async (req, res) => {
   try {
     const { propertyId, since } = req.query;
@@ -2006,7 +2017,7 @@ app.post('/api/messages', optionalAuth, async (req, res) => {
 
     // Route Admin inquiries directly to Admin
     if (recipientId === 'usr-admin-01' || !propertyId) {
-      console.log(`Ã°Å¸â€ºÂ¡Ã¯Â¸Â [ADMIN INQUIRY] From: ${senderUserName} (${senderUserPhone}): ${text.trim()}`);
+      console.log(`ðŸ›¡ï¸ [ADMIN INQUIRY] From: ${senderUserName} (${senderUserPhone}): ${text.trim()}`);
       sendRealSMS(
         '254180511492',
         `[KejaMarket Admin Support] New message from ${senderUserName} (${senderUserPhone || 'In-App'}): "${text.trim().substring(0, 90)}". Reply on kejamarket.co.ke`
@@ -2041,9 +2052,9 @@ app.post('/api/messages', optionalAuth, async (req, res) => {
   }
 });
 
-// â”€â”€â”€ LEADS & ALERTS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── LEADS & ALERTS ROUTES ─────────────────────────────────────────────────
 
-// POST /api/alerts/whatsapp â€” save subscription + use saveWhatsAppSub for PostgreSQL
+// POST /api/alerts/whatsapp — save subscription + use saveWhatsAppSub for PostgreSQL
 app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
   try {
     const { phone, category, estate, budgetMin, budgetMax } = req.body;
@@ -2063,7 +2074,7 @@ app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
 
     // Send confirmation SMS
     await sendRealSMS(cleanPhone,
-      `[KejaMarket Alerts] âœ… Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}â€“${budgetMax || 'any'}/mo). Valid 30 days.`
+      `[KejaMarket Alerts] ✅ Subscribed! You'll get instant alerts for ${category || 'all'} rentals in ${estate || 'Nairobi'} (Budget: KSh ${budgetMin || 0}–${budgetMax || 'any'}/mo). Valid 30 days.`
     );
 
     res.json({ success: true, message: 'Rental alert registered. SMS confirmation sent.', sub });
@@ -2133,9 +2144,9 @@ app.post('/api/sms/send', optionalAuth, async (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ IMAGE UPLOAD ENDPOINT (Cloudinary CDN) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ IMAGE UPLOAD ENDPOINT (Cloudinary CDN) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/upload/images Ã¢â‚¬â€ upload 1-16 images to Cloudinary, return CDN URLs
+// POST /api/upload/images â€” upload 1-16 images to Cloudinary, return CDN URLs
 app.post('/api/upload/images', uploadLimiter, optionalAuth, async (req, res) => {
   try {
     const { images, folder } = req.body;
@@ -2154,7 +2165,7 @@ app.post('/api/upload/images', uploadLimiter, optionalAuth, async (req, res) => 
   }
 });
 
-// POST /api/upload/single Ã¢â‚¬â€ upload single image
+// POST /api/upload/single â€” upload single image
 app.post('/api/upload/single', optionalAuth, async (req, res) => {
   try {
     const { image, folder } = req.body;
@@ -2221,7 +2232,7 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ DATABASE MIGRATION TRIGGER (Admin only) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ DATABASE MIGRATION TRIGGER (Admin only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.post('/api/admin/migrate', async (req, res) => {
   const { secret } = req.body;
   const validSecrets = [
@@ -2235,7 +2246,7 @@ app.post('/api/admin/migrate', async (req, res) => {
   }
 
   try {
-    console.log('Ã°Å¸Å¡â‚¬ Starting database migration via API...');
+    console.log('ðŸš€ Starting database migration via API...');
     const runMigration = require('./db/migrate-to-postgres');
     await runMigration();
     res.json({ success: true, message: 'Migration completed successfully' });
@@ -2261,7 +2272,7 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ OWNER / ADMIN DATABASE PORTAL ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ OWNER / ADMIN DATABASE PORTAL ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/api/admin/overview', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2274,9 +2285,9 @@ app.get('/api/admin/overview', requireAuth, async (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ FAVOURITES ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ FAVOURITES ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /api/favourites Ã¢â‚¬â€ get all favourites for logged-in user
+// GET /api/favourites â€” get all favourites for logged-in user
 app.get('/api/favourites', requireAuth, async (req, res) => {
   try {
     let propertyIds = [];
@@ -2289,7 +2300,7 @@ app.get('/api/favourites', requireAuth, async (req, res) => {
   }
 });
 
-// POST /api/favourites/:propertyId Ã¢â‚¬â€ add a favourite
+// POST /api/favourites/:propertyId â€” add a favourite
 app.post('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -2302,7 +2313,7 @@ app.post('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   }
 });
 
-// DELETE /api/favourites/:propertyId Ã¢â‚¬â€ remove a favourite
+// DELETE /api/favourites/:propertyId â€” remove a favourite
 app.delete('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -2315,9 +2326,9 @@ app.delete('/api/favourites/:propertyId', requireAuth, async (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ ADMIN ANALYTICS Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ ADMIN ANALYTICS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /api/admin/analytics Ã¢â‚¬â€ real server-side analytics from PostgreSQL
+// GET /api/admin/analytics â€” real server-side analytics from PostgreSQL
 app.get('/api/admin/analytics', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2398,7 +2409,7 @@ app.post('/api/admin/mpesa-config', optionalAuth, (req, res) => {
       console.warn('Could not write to .env file:', envErr.message);
     }
 
-    console.log(`Ã°Å¸â€Â§ [M-PESA CONFIG UPDATED] Env: ${MPESA_ENV} | Shortcode: ${PAYBILL} | Active: ${hasDarajaCredentials()}`);
+    console.log(`ðŸ”§ [M-PESA CONFIG UPDATED] Env: ${MPESA_ENV} | Shortcode: ${PAYBILL} | Active: ${hasDarajaCredentials()}`);
 
     res.json({
       success: true,
@@ -2505,7 +2516,7 @@ app.post('/api/admin/users/:id/suspend', requireAuth, async (req, res) => {
   }
 });
 
-// ─── BUILDINGS & UNITS ROUTES ───────────────────────────────────────────────
+// --- BUILDINGS & UNITS ROUTES -----------------------------------------------
 
 // GET /api/admin/buildings - Get all buildings
 app.get('/api/admin/buildings', requireAuth, async (req, res) => {
@@ -2700,7 +2711,7 @@ app.delete('/api/properties/:id', optionalAuth, (req, res) => {
 });
 
 
-// GET /api/admin/download-db (Backup Ã¢â‚¬â€ admin only)
+// GET /api/admin/download-db (Backup â€” admin only)
 app.get('/api/admin/download-db', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2734,7 +2745,7 @@ app.get('/api/admin/all-properties', requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/admin/pending-listings Ã¢â‚¬â€ listings awaiting approval
+// GET /api/admin/pending-listings â€” listings awaiting approval
 app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -2903,7 +2914,7 @@ app.put('/api/properties/:id/unboost', async (req, res) => {
   }
 });
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ LANDLORD PORTAL ROUTES Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ LANDLORD PORTAL ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/landlord/my-listings (Get all listings for logged-in landlord)
 app.get('/api/landlord/my-listings', requireAuth, async (req, res) => {
@@ -3035,9 +3046,9 @@ app.put('/api/landlord/availability/:id', requireAuth, async (req, res) => {
   }
 });
 
-// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SERVICE PROVIDER ENDPOINTS
-// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 // GET /api/service/my-services (Get all services for logged-in service provider)
 app.get('/api/service/my-services', requireAuth, async (req, res) => {
@@ -3352,7 +3363,7 @@ app.put('/api/service/availability/:id', requireAuth, (req, res) => {
 });
 
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ 404 HANDLER Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ 404 HANDLER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // ================================================================================
 // SERVICES & MARKETPLACE API ENDPOINTS
@@ -3498,12 +3509,12 @@ app.use((req, res) => {
   if (require('fs').existsSync(notFoundPath)) {
     return res.status(404).sendFile(notFoundPath);
   }
-  res.status(404).send('<h1>404 Ã¢â‚¬â€ Page Not Found</h1><p><a href="/">Ã¢â€ Â Back to KejaMarket</a></p>');
+  res.status(404).send('<h1>404 â€” Page Not Found</h1><p><a href="/">â† Back to KejaMarket</a></p>');
 });
 
-// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CRON JOBS & AUTOMATED TASKS
-// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 // Check for expired boosts every hour
 setInterval(async () => {
@@ -3618,7 +3629,7 @@ function trackBoostClick(propertyId) {
   }
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ START SERVER & KEEP-ALIVE HEARTBEAT Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// â”€â”€â”€ START SERVER & KEEP-ALIVE HEARTBEAT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const PORT = process.env.PORT || 3001;
 
 // Initialize database and start server
@@ -3661,16 +3672,16 @@ async function startServer() {
 
   const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`====================================================`);
-    console.log(`Ã°Å¸Å¡â‚¬ KejaMarket Production API Server running on port ${PORT}`);
-    console.log(`Ã°Å¸â€â€” Web Application: http://localhost:${PORT}`);
-    console.log(`Ã°Å¸â€œÂ± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
+    console.log(`ðŸš€ KejaMarket Production API Server running on port ${PORT}`);
+    console.log(`ðŸ”— Web Application: http://localhost:${PORT}`);
+    console.log(`ðŸ“± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
     console.log(`====================================================`);
 
     const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
     const PING_INTERVAL = 9 * 60 * 1000;
 
     if (process.env.NODE_ENV === 'production') {
-      console.log(`Ã°Å¸â€œÂ¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+      console.log(`ðŸ“¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
       setInterval(() => {
         try {
           const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
@@ -3684,34 +3695,34 @@ async function startServer() {
         }
       }, PING_INTERVAL);
     } else {
-      console.log(`Ã°Å¸â€œÂ¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+      console.log(`ðŸ“¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
     }
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`Ã¢ÂÅ’ Port ${PORT} is already in use`);
+      console.error(`âŒ Port ${PORT} is already in use`);
       process.exit(1);
     } else {
-      console.error(`Ã¢ÂÅ’ Server error:`, err);
+      console.error(`âŒ Server error:`, err);
       process.exit(1);
     }
   });
 
   process.on('SIGTERM', () => {
-    console.log('Ã°Å¸â€â€ž SIGTERM received, shutting down gracefully');
+    console.log('ðŸ”„ SIGTERM received, shutting down gracefully');
     server.close(async () => {
       if (store && store.close) await store.close();
-      console.log('Ã¢Å“â€¦ Server closed');
+      console.log('âœ… Server closed');
       process.exit(0);
     });
   });
 
   process.on('SIGINT', () => {
-    console.log('Ã°Å¸â€â€ž SIGINT received, shutting down gracefully');
+    console.log('ðŸ”„ SIGINT received, shutting down gracefully');
     server.close(async () => {
       if (store && store.close) await store.close();
-      console.log('Ã¢Å“â€¦ Server closed');
+      console.log('âœ… Server closed');
       process.exit(0);
     });
   });
@@ -3721,16 +3732,16 @@ async function startServer() {
 startServer().catch(console.error);
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════════════════════════════
 
 
 
 
 
 /**
- * ═══════════════════════════════════════════════════════════════
+ * ---------------------------------------------------------------
  * KEJAMARKET COMMUNICATION SYSTEM API ENDPOINTS
- * ═══════════════════════════════════════════════════════════════
+ * ---------------------------------------------------------------
  * Complete communication system supporting:
  * - User-to-User conversations (property/BNB/service/marketplace inquiries)
  * - User-to-Platform support tickets
@@ -4236,4 +4247,4 @@ app.get('/api/communication/health', async (req, res) => {
   }
 });
 
-console.log('✅ KejaMarket Communication System API endpoints loaded');
+console.log('? KejaMarket Communication System API endpoints loaded');
