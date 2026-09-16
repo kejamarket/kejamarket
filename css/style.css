@@ -349,27 +349,65 @@ button, input, select, textarea {
   flex-shrink: 0;
 }
 
+/* Enhanced Header Button Visibility */
 .btn-header-action {
   background: transparent;
   border: 1px solid var(--border-color);
   color: var(--text-secondary);
-  padding: 7px 11px;
+  padding: 8px 12px;
   border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   position: relative;
   transition: var(--transition);
   white-space: nowrap;
+  min-width: 80px;
+  justify-content: center;
 }
 
+/* Ensure auth button is always visible */
+#btn-auth-header {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  color: white !important;
+  border: 1px solid rgba(79, 70, 229, 0.3) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2) !important;
+}
+
+/* Enhanced Auth Button Hover */
 .btn-header-action:hover {
   border-color: var(--primary-color);
   color: var(--primary-color);
   background: var(--primary-light);
+  transform: translateY(-1px);
+}
+
+#btn-auth-header:hover {
+  background: linear-gradient(135deg, #4338ca, #6d28d9) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* Force profile dropdown visibility and positioning */
+#profile-dropdown {
+  position: absolute !important;
+  top: 60px !important;
+  right: 20px !important;
+  background: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+  min-width: 240px !important;
+  z-index: 9999 !important;
+  padding: 12px 0 !important;
+  border: 1px solid #e5e7eb !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
 .badge-count {

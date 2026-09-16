@@ -978,9 +978,39 @@ const kejaAuth = (() => {
 
   function init() {
     const session = getSession();
+    
+    // CRITICAL: Ensure auth button is always visible
+    ensureAuthButtonVisible();
+    
     applyAuthWall(session);
     updateHeaderUI(session);
     syncSession();
+  }
+
+  /**
+   * Force auth button visibility on load
+   */
+  function ensureAuthButtonVisible() {
+    const authBtn = document.getElementById('btn-auth-header');
+    const authLabel = document.getElementById('auth-header-label');
+    
+    if (authBtn) {
+      // Force button to be visible
+      authBtn.style.display = 'flex';
+      authBtn.style.visibility = 'visible';
+      authBtn.style.opacity = '1';
+      
+      // Ensure it has proper styling
+      authBtn.classList.add('btn-header-action', 'btn-auth-trigger');
+      
+      if (authLabel && !authLabel.textContent.trim()) {
+        authLabel.textContent = 'Sign In';
+      }
+      
+      console.log('✅ Auth button visibility ensured');
+    } else {
+      console.error('❌ Auth button not found in DOM');
+    }
   }
 
   document.addEventListener('DOMContentLoaded', init);
