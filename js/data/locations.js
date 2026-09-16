@@ -283,6 +283,7 @@ const MASTER_CATEGORIES = [
 
 // Service categories for service providers
 const SERVICE_CATEGORIES = [
+  'House Moving & Relocations',
   'Plumbing Services',
   'Electrical Services',
   'Cleaning Services',

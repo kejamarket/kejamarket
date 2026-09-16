@@ -22,13 +22,32 @@ const KejaEnhancedPortal = {
    * Setup role-specific dashboard
    */
   setupEnhancedDashboard() {
-    const isCaretaker = this.user.registrationData?.isCaretaker || 
-                       this.user.registrationData?.propertyRole === 'caretaker';
+    const propertyRole = this.user.registrationData?.propertyRole || 'landlord';
     
-    if (isCaretaker) {
-      this.setupCaretakerDashboard();
-    } else {
-      this.setupStandardDashboard();
+    switch(propertyRole) {
+      case 'airbnb-host':
+        this.setupAirbnbDashboard();
+        break;
+      case 'serviced-apartment':
+        this.setupServicedApartmentDashboard();
+        break;
+      case 'guest-house':
+        this.setupGuestHouseDashboard();
+        break;
+      case 'commercial':
+        this.setupCommercialDashboard();
+        break;
+      case 'caretaker':
+        this.setupCaretakerDashboard();
+        break;
+      case 'property-manager':
+        this.setupPropertyManagerDashboard();
+        break;
+      case 'agent':
+        this.setupAgentDashboard();
+        break;
+      default:
+        this.setupLandlordDashboard();
     }
   },
 
@@ -58,30 +77,358 @@ const KejaEnhancedPortal = {
   },
 
   /**
-   * Setup standard property owner dashboard
+   * Setup Airbnb host dashboard with short-stay management
    */
-  setupStandardDashboard() {
+  setupAirbnbDashboard() {
     const dashboardHeader = document.querySelector('#landlord-dashboard h2');
     if (dashboardHeader) {
-      const role = this.user.registrationData?.propertyRole || 'landlord';
-      let dashboardTitle = '🏠 Property Owner Dashboard';
-      
-      switch(role) {
-        case 'agent':
-          dashboardTitle = '🤝 Real Estate Agent Dashboard';
-          break;
-        case 'company':
-          dashboardTitle = '🏢 Property Management Dashboard';
-          break;
-      }
-      
       dashboardHeader.innerHTML = `
-        <div class="owner-welcome">
-          <span class="greeting">Welcome, ${this.user.name}</span>
-          <span class="dashboard-title">${dashboardTitle}</span>
+        <div class="airbnb-welcome">
+          <div class="welcome-text">
+            <span class="greeting">Welcome, ${this.user.name}</span>
+            <span class="dashboard-title">🏨 Airbnb Host Dashboard</span>
+          </div>
+          <div class="host-badge">
+            🏨 Short-Stay Host
+          </div>
         </div>
       `;
     }
+
+    this.addAirbnbProperties();
+    this.addAirbnbMetrics();
+    this.addBookingManagement();
+  },
+
+  /**
+   * Add Airbnb-specific property management
+   */
+  addAirbnbProperties() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const airbnbSection = document.createElement('div');
+    airbnbSection.id = 'airbnb-properties';
+    airbnbSection.innerHTML = `
+      <div class="section-header">
+        <h3>
+          <i class="fas fa-bed"></i>
+          My Accommodations
+          <span class="properties-count">${this.properties.length} listings</span>
+        </h3>
+        <button onclick="KejaEnhancedPortal.showAddAccommodationModal()" class="btn-add-property">
+          <i class="fas fa-plus"></i> Add Accommodation
+        </button>
+      </div>
+
+      <div class="airbnb-overview">
+        <div class="overview-cards">
+          <div class="overview-card">
+            <div class="card-icon">🏨</div>
+            <div class="card-content">
+              <div class="card-number">${this.properties.length}</div>
+              <div class="card-label">Accommodations</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">📅</div>
+            <div class="card-content">
+              <div class="card-number">${this.getOccupancyRate()}%</div>
+              <div class="card-label">Occupancy Rate</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">💰</div>
+            <div class="card-content">
+              <div class="card-number">KSh ${this.getMonthlyEarnings().toLocaleString()}</div>
+              <div class="card-label">Monthly Earnings</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">⭐</div>
+            <div class="card-content">
+              <div class="card-number">4.8</div>
+              <div class="card-label">Guest Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accommodations-list" id="accommodations-list">
+        ${this.renderAirbnbAccommodations()}
+      </div>
+    `;
+
+    dashboard.appendChild(airbnbSection);
+  },
+
+  /**
+   * Render Airbnb accommodations list
+   */
+  renderAirbnbAccommodations() {
+    if (this.properties.length === 0) {
+      return `
+        <div class="empty-properties">
+          <div class="empty-icon">🏨</div>
+          <div class="empty-title">No Accommodations Listed Yet</div>
+          <div class="empty-desc">Add your first short-stay accommodation to start hosting guests</div>
+          <button onclick="KejaEnhancedPortal.showAddAccommodationModal()" class="btn-primary">
+            <i class="fas fa-plus"></i> Add Your First Accommodation
+          </button>
+        </div>
+      `;
+    }
+
+    return this.properties.map(property => `
+      <div class="accommodation-card" data-property-id="${property.id}">
+        <div class="accommodation-header">
+          <div class="accommodation-info">
+            <div class="accommodation-name">${property.title}</div>
+            <div class="accommodation-location">
+              <i class="fas fa-map-marker-alt"></i>
+              ${property.location}
+            </div>
+          </div>
+          <div class="availability-status status-${property.availability || 'available'}">
+            ${property.availability === 'available' ? '🟢 Available' : 
+              property.availability === 'booked' ? '🔴 Booked' : 
+              '🟡 Maintenance'}
+          </div>
+        </div>
+        
+        <div class="accommodation-stats">
+          <div class="stat">
+            <span class="stat-number">KSh ${property.nightlyRate || 4500}</span>
+            <span class="stat-label">per night</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">${property.bookings || 0}</span>
+            <span class="stat-label">Bookings</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">${property.occupancy || 65}%</span>
+            <span class="stat-label">Occupancy</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">⭐ ${property.rating || 4.8}</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+        
+        <div class="accommodation-actions">
+          <button onclick="KejaEnhancedPortal.manageCalendar('${property.id}')" class="btn-action">
+            📅 Calendar
+          </button>
+          <button onclick="KejaEnhancedPortal.viewBookings('${property.id}')" class="btn-action">
+            📋 Bookings
+          </button>
+          <button onclick="KejaEnhancedPortal.manageAccommodation('${property.id}')" class="btn-manage">
+            Manage
+          </button>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  /**
+   * Add Airbnb-specific metrics
+   */
+  addAirbnbMetrics() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    
+    const metricsSection = document.createElement('div');
+    metricsSection.id = 'airbnb-metrics';
+    metricsSection.innerHTML = `
+      <div class="section-header">
+        <h3><i class="fas fa-chart-bar"></i> Host Performance</h3>
+      </div>
+      
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon">📊</div>
+          <div class="metric-content">
+            <div class="metric-number">15</div>
+            <div class="metric-label">Booking Requests</div>
+            <div class="metric-trend">This month</div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-icon">👥</div>
+          <div class="metric-content">
+            <div class="metric-number">28</div>
+            <div class="metric-label">Total Guests</div>
+            <div class="metric-trend">This month</div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-icon">💰</div>
+          <div class="metric-content">
+            <div class="metric-number">KSh 87,500</div>
+            <div class="metric-label">Gross Earnings</div>
+            <div class="metric-trend">This month</div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-icon">⭐</div>
+          <div class="metric-content">
+            <div class="metric-number">4.9</div>
+            <div class="metric-label">Average Rating</div>
+            <div class="metric-trend">12 reviews</div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    dashboard.appendChild(metricsSection);
+  },
+
+  /**
+   * Add booking management section
+   */
+  addBookingManagement() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    
+    const bookingSection = document.createElement('div');
+    bookingSection.id = 'booking-management';
+    bookingSection.innerHTML = `
+      <div class="section-header">
+        <h3><i class="fas fa-calendar-check"></i> Recent Bookings</h3>
+      </div>
+      
+      <div class="bookings-panel">
+        <div class="booking-requests">
+          <h4>Pending Requests (3)</h4>
+          <div class="request-list">
+            <div class="booking-request">
+              <div class="guest-info">
+                <strong>Sarah K.</strong> • 2 nights
+                <div class="dates">Dec 15-17 • KSh 9,000</div>
+              </div>
+              <div class="request-actions">
+                <button onclick="KejaEnhancedPortal.acceptBooking('req1')" class="btn-accept">Accept</button>
+                <button onclick="KejaEnhancedPortal.declineBooking('req1')" class="btn-decline">Decline</button>
+              </div>
+            </div>
+            
+            <div class="booking-request">
+              <div class="guest-info">
+                <strong>Mike A.</strong> • 5 nights
+                <div class="dates">Dec 20-25 • KSh 22,500</div>
+              </div>
+              <div class="request-actions">
+                <button onclick="KejaEnhancedPortal.acceptBooking('req2')" class="btn-accept">Accept</button>
+                <button onclick="KejaEnhancedPortal.declineBooking('req2')" class="btn-decline">Decline</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="upcoming-checkins">
+          <h4>Upcoming Check-ins</h4>
+          <div class="checkin-list">
+            <div class="checkin-item">
+              <div class="guest-details">
+                <strong>John & Mary</strong>
+                <div class="checkin-date">Today, 3:00 PM</div>
+              </div>
+              <button onclick="KejaEnhancedPortal.viewCheckinDetails('checkin1')" class="btn-action">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    dashboard.appendChild(bookingSection);
+  },
+
+  /**
+   * Setup standard landlord dashboard
+   */
+  setupLandlordDashboard() {
+    const dashboardHeader = document.querySelector('#landlord-dashboard h2');
+    if (dashboardHeader) {
+      dashboardHeader.innerHTML = `
+        <div class="landlord-welcome">
+          <div class="welcome-text">
+            <span class="greeting">Welcome, ${this.user.name}</span>
+            <span class="dashboard-title">🏠 Landlord Dashboard</span>
+          </div>
+          <div class="landlord-badge">
+            🏠 Property Owner
+          </div>
+        </div>
+      `;
+    }
+
+    this.addLandlordProperties();
+    this.addLandlordMetrics();
+  },
+
+  /**
+   * Add standard landlord property management
+   */
+  addLandlordProperties() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const propertiesSection = document.createElement('div');
+    propertiesSection.id = 'landlord-properties';
+    propertiesSection.innerHTML = `
+      <div class="section-header">
+        <h3>
+          <i class="fas fa-building"></i>
+          My Properties
+          <span class="properties-count">${this.properties.length} properties</span>
+        </h3>
+        <button onclick="KejaEnhancedPortal.showAddPropertyModal()" class="btn-add-property">
+          <i class="fas fa-plus"></i> Add Property
+        </button>
+      </div>
+
+      <div class="properties-overview">
+        <div class="overview-cards">
+          <div class="overview-card">
+            <div class="card-icon">🏠</div>
+            <div class="card-content">
+              <div class="card-number">${this.getTotalUnits()}</div>
+              <div class="card-label">Total Units</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">✅</div>
+            <div class="card-content">
+              <div class="card-number">${this.getVacantUnits()}</div>
+              <div class="card-label">Vacant Units</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">💰</div>
+            <div class="card-content">
+              <div class="card-number">KSh ${this.getMonthlyRental().toLocaleString()}</div>
+              <div class="card-label">Monthly Rental</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">📝</div>
+            <div class="card-content">
+              <div class="card-number">${this.getTenantInquiries()}</div>
+              <div class="card-label">Inquiries</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="properties-list" id="properties-list">
+        ${this.renderLandlordProperties()}
+      </div>
+    `;
+
+    dashboard.appendChild(propertiesSection);
   },
 
   /**
@@ -324,8 +671,619 @@ const KejaEnhancedPortal = {
   },
 
   /**
-   * Utility functions
+   * Utility functions for different property types
    */
+  getOccupancyRate() {
+    return Math.floor(Math.random() * 30) + 60; // 60-90%
+  },
+
+  getMonthlyEarnings() {
+    return Math.floor(Math.random() * 50000) + 75000; // 75k-125k
+  },
+
+  getVacantUnits() {
+    return this.properties.reduce((sum, prop) => sum + (prop.vacantUnits || Math.floor(Math.random() * 3)), 0);
+  },
+
+  getMonthlyRental() {
+    return Math.floor(Math.random() * 100000) + 150000; // 150k-250k
+  },
+
+  getTenantInquiries() {
+    return Math.floor(Math.random() * 15) + 5; // 5-20 inquiries
+  },
+
+  /**
+   * Render standard landlord properties
+   */
+  renderLandlordProperties() {
+    if (this.properties.length === 0) {
+      return `
+        <div class="empty-properties">
+          <div class="empty-icon">🏠</div>
+          <div class="empty-title">No Properties Added Yet</div>
+          <div class="empty-desc">Add your first rental property to start managing tenants</div>
+          <button onclick="KejaEnhancedPortal.showAddPropertyModal()" class="btn-primary">
+            <i class="fas fa-plus"></i> Add Your First Property
+          </button>
+        </div>
+      `;
+    }
+
+    return this.properties.map(property => `
+      <div class="property-card" data-property-id="${property.id}">
+        <div class="property-header">
+          <div class="property-info">
+            <div class="property-name">${property.title}</div>
+            <div class="property-location">
+              <i class="fas fa-map-marker-alt"></i>
+              ${property.location}
+            </div>
+          </div>
+          <div class="property-actions">
+            <button onclick="KejaEnhancedPortal.manageProperty('${property.id}')" class="btn-manage">
+              Manage
+            </button>
+            <button onclick="KejaEnhancedPortal.addUnit('${property.id}')" class="btn-add-unit">
+              + Add Unit
+            </button>
+          </div>
+        </div>
+        
+        <div class="property-stats">
+          <div class="stat">
+            <span class="stat-number">KSh ${property.monthlyRent || 25000}</span>
+            <span class="stat-label">Monthly Rent</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">${property.totalUnits || 1}</span>
+            <span class="stat-label">Units</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">${property.vacantUnits || 0}</span>
+            <span class="stat-label">Vacant</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">${property.inquiries || 0}</span>
+            <span class="stat-label">Inquiries</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  /**
+   * Add landlord metrics
+   */
+  addLandlordMetrics() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    
+    const metricsSection = document.createElement('div');
+    metricsSection.id = 'landlord-metrics';
+    metricsSection.innerHTML = `
+      <div class="section-header">
+        <h3><i class="fas fa-chart-line"></i> Property Performance</h3>
+      </div>
+      
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon">👥</div>
+          <div class="metric-content">
+            <div class="metric-number">${this.getTenantInquiries()}</div>
+            <div class="metric-label">Tenant Inquiries</div>
+            <div class="metric-trend">This month</div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-icon">🏠</div>
+          <div class="metric-content">
+            <div class="metric-number">${Math.floor(Math.random() * 5) + 2}</div>
+            <div class="metric-label">Viewing Requests</div>
+            <div class="metric-trend">This week</div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-icon">💰</div>
+          <div class="metric-content">
+            <div class="metric-number">98%</div>
+            <div class="metric-label">Collection Rate</div>
+            <div class="metric-trend">Excellent</div>
+          </div>
+        </div>
+        
+        <div class="metric-card">
+          <div class="metric-icon">⭐</div>
+          <div class="metric-content">
+            <div class="metric-number">4.6</div>
+            <div class="metric-label">Tenant Rating</div>
+            <div class="metric-trend">Good</div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    dashboard.appendChild(metricsSection);
+  },
+
+  /**
+   * Airbnb-specific actions
+   */
+  showAddAccommodationModal() {
+    console.log('Showing add accommodation modal for Airbnb host');
+    // This would show an Airbnb-specific property addition modal
+    alert('Airbnb accommodation setup - coming soon!');
+  },
+
+  manageCalendar(propertyId) {
+    console.log('Managing calendar for accommodation:', propertyId);
+    alert('Calendar management - coming soon!');
+  },
+
+  viewBookings(propertyId) {
+    console.log('Viewing bookings for accommodation:', propertyId);
+    alert('Booking management - coming soon!');
+  },
+
+  manageAccommodation(propertyId) {
+    console.log('Managing accommodation:', propertyId);
+    alert('Accommodation management - coming soon!');
+  },
+
+  acceptBooking(requestId) {
+    console.log('Accepting booking request:', requestId);
+    alert('Booking accepted!');
+  },
+
+  declineBooking(requestId) {
+    console.log('Declining booking request:', requestId);
+    alert('Booking declined');
+  },
+
+  viewCheckinDetails(checkinId) {
+    console.log('Viewing check-in details:', checkinId);
+    alert('Check-in details - coming soon!');
+  },
+
+  manageProperty(propertyId) {
+    console.log('Managing property:', propertyId);
+    alert('Property management - coming soon!');
+  },
+
+  /**
+   * Setup serviced apartment dashboard
+   */
+  setupServicedApartmentDashboard() {
+    const dashboardHeader = document.querySelector('#landlord-dashboard h2');
+    if (dashboardHeader) {
+      dashboardHeader.innerHTML = `
+        <div class="serviced-welcome">
+          <div class="welcome-text">
+            <span class="greeting">Welcome, ${this.user.name}</span>
+            <span class="dashboard-title">🏨 Serviced Apartment Manager</span>
+          </div>
+          <div class="serviced-badge">
+            🏨 Serviced Apartments
+          </div>
+        </div>
+      `;
+    }
+
+    this.addServicedApartmentProperties();
+  },
+
+  /**
+   * Setup guest house dashboard
+   */
+  setupGuestHouseDashboard() {
+    const dashboardHeader = document.querySelector('#landlord-dashboard h2');
+    if (dashboardHeader) {
+      dashboardHeader.innerHTML = `
+        <div class="guesthouse-welcome">
+          <div class="welcome-text">
+            <span class="greeting">Welcome, ${this.user.name}</span>
+            <span class="dashboard-title">🏨 Guest House Manager</span>
+          </div>
+          <div class="guesthouse-badge">
+            🏨 Guest House / Lodge
+          </div>
+        </div>
+      `;
+    }
+
+    this.addGuestHouseProperties();
+  },
+
+  /**
+   * Setup commercial property dashboard
+   */
+  setupCommercialDashboard() {
+    const dashboardHeader = document.querySelector('#landlord-dashboard h2');
+    if (dashboardHeader) {
+      dashboardHeader.innerHTML = `
+        <div class="commercial-welcome">
+          <div class="welcome-text">
+            <span class="greeting">Welcome, ${this.user.name}</span>
+            <span class="dashboard-title">🏢 Commercial Property Manager</span>
+          </div>
+          <div class="commercial-badge">
+            🏢 Commercial Properties
+          </div>
+        </div>
+      `;
+    }
+
+    this.addCommercialProperties();
+  },
+
+  /**
+   * Setup agent dashboard
+   */
+  setupAgentDashboard() {
+    const dashboardHeader = document.querySelector('#landlord-dashboard h2');
+    if (dashboardHeader) {
+      dashboardHeader.innerHTML = `
+        <div class="agent-welcome">
+          <div class="welcome-text">
+            <span class="greeting">Welcome, ${this.user.name}</span>
+            <span class="dashboard-title">🤝 Real Estate Agent Portal</span>
+          </div>
+          <div class="agent-badge">
+            🤝 Real Estate Agent
+          </div>
+        </div>
+      `;
+    }
+
+    this.addAgentProperties();
+  },
+
+  /**
+   * Setup property manager dashboard
+   */
+  setupPropertyManagerDashboard() {
+    const dashboardHeader = document.querySelector('#landlord-dashboard h2');
+    if (dashboardHeader) {
+      dashboardHeader.innerHTML = `
+        <div class="manager-welcome">
+          <div class="welcome-text">
+            <span class="greeting">Welcome, ${this.user.name}</span>
+            <span class="dashboard-title">🏢 Property Management Portal</span>
+          </div>
+          <div class="manager-badge">
+            🏢 Property Manager
+          </div>
+        </div>
+      `;
+    }
+
+    this.addPropertyManagerDashboard();
+  },
+
+  /**
+   * Add serviced apartment management
+   */
+  addServicedApartmentProperties() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const servicedSection = document.createElement('div');
+    servicedSection.innerHTML = `
+      <div class="section-header">
+        <h3>
+          <i class="fas fa-concierge-bell"></i>
+          My Serviced Apartments
+          <span class="properties-count">${this.properties.length} apartments</span>
+        </h3>
+        <button onclick="KejaEnhancedPortal.showAddServicedApartmentModal()" class="btn-add-property">
+          <i class="fas fa-plus"></i> Add Apartment
+        </button>
+      </div>
+
+      <div class="serviced-overview">
+        <div class="overview-cards">
+          <div class="overview-card">
+            <div class="card-icon">🏨</div>
+            <div class="card-content">
+              <div class="card-number">${this.properties.length}</div>
+              <div class="card-label">Apartments</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">📅</div>
+            <div class="card-content">
+              <div class="card-number">${this.getOccupancyRate()}%</div>
+              <div class="card-label">Occupancy</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">🛎️</div>
+            <div class="card-content">
+              <div class="card-number">24/7</div>
+              <div class="card-label">Concierge</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">⭐</div>
+            <div class="card-content">
+              <div class="card-number">4.7</div>
+              <div class="card-label">Service Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="properties-list">
+        <div class="empty-properties">
+          <div class="empty-icon">🏨</div>
+          <div class="empty-title">No Serviced Apartments Yet</div>
+          <div class="empty-desc">Add your first serviced apartment with hotel-like amenities</div>
+          <button onclick="KejaEnhancedPortal.showAddServicedApartmentModal()" class="btn-primary">
+            <i class="fas fa-plus"></i> Add Serviced Apartment
+          </button>
+        </div>
+      </div>
+    `;
+
+    dashboard.appendChild(servicedSection);
+  },
+
+  /**
+   * Add guest house management
+   */
+  addGuestHouseProperties() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const guestSection = document.createElement('div');
+    guestSection.innerHTML = `
+      <div class="section-header">
+        <h3>
+          <i class="fas fa-bed"></i>
+          My Guest House
+          <span class="properties-count">Hospitality Management</span>
+        </h3>
+        <button onclick="KejaEnhancedPortal.showRoomManagementModal()" class="btn-add-property">
+          <i class="fas fa-plus"></i> Manage Rooms
+        </button>
+      </div>
+
+      <div class="guesthouse-overview">
+        <div class="overview-cards">
+          <div class="overview-card">
+            <div class="card-icon">🛏️</div>
+            <div class="card-content">
+              <div class="card-number">12</div>
+              <div class="card-label">Total Rooms</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">✅</div>
+            <div class="card-content">
+              <div class="card-number">8</div>
+              <div class="card-label">Available</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">📋</div>
+            <div class="card-content">
+              <div class="card-number">5</div>
+              <div class="card-label">Reservations</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">⭐</div>
+            <div class="card-content">
+              <div class="card-number">4.9</div>
+              <div class="card-label">Guest Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    dashboard.appendChild(guestSection);
+  },
+
+  /**
+   * Add commercial property management
+   */
+  addCommercialProperties() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const commercialSection = document.createElement('div');
+    commercialSection.innerHTML = `
+      <div class="section-header">
+        <h3>
+          <i class="fas fa-building"></i>
+          Commercial Portfolio
+          <span class="properties-count">Business Properties</span>
+        </h3>
+        <button onclick="KejaEnhancedPortal.showAddCommercialModal()" class="btn-add-property">
+          <i class="fas fa-plus"></i> Add Commercial Space
+        </button>
+      </div>
+
+      <div class="commercial-overview">
+        <div class="overview-cards">
+          <div class="overview-card">
+            <div class="card-icon">🏢</div>
+            <div class="card-content">
+              <div class="card-number">${this.properties.length}</div>
+              <div class="card-label">Properties</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">🏪</div>
+            <div class="card-content">
+              <div class="card-number">24</div>
+              <div class="card-label">Total Spaces</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">💼</div>
+            <div class="card-content">
+              <div class="card-number">18</div>
+              <div class="card-label">Occupied</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">💰</div>
+            <div class="card-content">
+              <div class="card-number">KSh 450K</div>
+              <div class="card-label">Monthly Income</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    dashboard.appendChild(commercialSection);
+  },
+
+  /**
+   * Add agent portfolio management
+   */
+  addAgentProperties() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const agentSection = document.createElement('div');
+    agentSection.innerHTML = `
+      <div class="section-header">
+        <h3>
+          <i class="fas fa-handshake"></i>
+          Client Properties
+          <span class="properties-count">Active Listings</span>
+        </h3>
+        <button onclick="KejaEnhancedPortal.showAddClientPropertyModal()" class="btn-add-property">
+          <i class="fas fa-plus"></i> Add Client Property
+        </button>
+      </div>
+
+      <div class="agent-overview">
+        <div class="overview-cards">
+          <div class="overview-card">
+            <div class="card-icon">🏠</div>
+            <div class="card-content">
+              <div class="card-number">${this.properties.length}</div>
+              <div class="card-label">Active Listings</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">👥</div>
+            <div class="card-content">
+              <div class="card-number">15</div>
+              <div class="card-label">Clients</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">📅</div>
+            <div class="card-content">
+              <div class="card-number">8</div>
+              <div class="card-label">Viewings Scheduled</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">💰</div>
+            <div class="card-content">
+              <div class="card-number">KSh 125K</div>
+              <div class="card-label">Commission YTD</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    dashboard.appendChild(agentSection);
+  },
+
+  /**
+   * Add property manager dashboard
+   */
+  addPropertyManagerDashboard() {
+    const dashboard = document.getElementById('landlord-dashboard');
+    if (!dashboard) return;
+
+    const managerSection = document.createElement('div');
+    managerSection.innerHTML = `
+      <div class="section-header">
+        <h3>
+          <i class="fas fa-building-user"></i>
+          Property Portfolio
+          <span class="properties-count">Professional Management</span>
+        </h3>
+        <button onclick="KejaEnhancedPortal.showAddManagedPropertyModal()" class="btn-add-property">
+          <i class="fas fa-plus"></i> Add Managed Property
+        </button>
+      </div>
+
+      <div class="manager-overview">
+        <div class="overview-cards">
+          <div class="overview-card">
+            <div class="card-icon">🏢</div>
+            <div class="card-content">
+              <div class="card-number">${this.properties.length}</div>
+              <div class="card-label">Managed Properties</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">👤</div>
+            <div class="card-content">
+              <div class="card-number">8</div>
+              <div class="card-label">Property Owners</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">🏠</div>
+            <div class="card-content">
+              <div class="card-number">45</div>
+              <div class="card-label">Total Units</div>
+            </div>
+          </div>
+          <div class="overview-card">
+            <div class="card-icon">📊</div>
+            <div class="card-content">
+              <div class="card-number">92%</div>
+              <div class="card-label">Occupancy Rate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    dashboard.appendChild(managerSection);
+  },
+
+  /**
+   * Modal methods for different property types
+   */
+  showAddServicedApartmentModal() {
+    alert('Serviced apartment setup - coming soon!');
+  },
+
+  showRoomManagementModal() {
+    alert('Room management - coming soon!');
+  },
+
+  showAddCommercialModal() {
+    alert('Commercial space setup - coming soon!');
+  },
+
+  showAddClientPropertyModal() {
+    alert('Client property listing - coming soon!');
+  },
+
+  showAddManagedPropertyModal() {
+    alert('Managed property setup - coming soon!');
+  },
+
+  addUnit(propertyId) {
+    console.log('Adding unit to property:', propertyId);
+    alert('Add unit functionality - coming soon!');
+  },
   getTotalUnits() {
     return this.properties.reduce((sum, prop) => sum + (prop.totalUnits || 1), 0);
   },

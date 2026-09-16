@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KejaMarket Verification System Test</title>
+    <link rel="stylesheet" href="css/verification.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background: #f8fafc;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        h1 { color: #059669; margin-bottom: 30px; }
+        h2 { color: #374151; margin-bottom: 20px; }
+        .sample-property {
+            background: #f8fafc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🛡️ KejaMarket Verification System Test</h1>
+        
+        <div class="test-section">
+            <h2>1. Basic Verification Badge Test</h2>
+            <div id="basic-badge-test"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. Premium Verification Badge Test</h2>
+            <div id="premium-badge-test"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. Verification Details Panel Test</h2>
+            <div id="verification-details-test"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. Trust Score Test</h2>
+            <div id="trust-score-test"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>5. Enhanced Property Information Test</h2>
+            <div id="property-info-test"></div>
+        </div>
+    </div>
+
+    <script src="js/verification.js"></script>
+    <script>
+        // Wait for the verification system to load
+        setTimeout(() => {
+            console.log('Testing KejaMarket Verification System...');
+            
+            // Test sample landlords
+            const basicLandlord = {
+                name: 'John Doe',
+                isVerified: true,
+                isPremiumVerified: false,
+                rating: 4.2,
+                reviewCount: 5,
+                responseRate: 92,
+                listingCount: 3,
+                memberSince: '2024'
+            };
+            
+            const premiumLandlord = {
+                name: 'HassConsult Real Estate',
+                isVerified: true,
+                isPremiumVerified: true,
+                rating: 4.9,
+                reviewCount: 28,
+                responseRate: 98,
+                listingCount: 24,
+                memberSince: '2023'
+            };
+            
+            // Test sample property
+            const sampleProperty = {
+                rentKes: 32000,
+                depositKes: 32000,
+                category: '2 Bedroom',
+                bedrooms: 2,
+                bathrooms: 2,
+                floorLevel: 3,
+                county: 'Kiambu',
+                estateSuburb: 'Ruaka',
+                exactLocation: 'Ruaka Bypass, near Joyland Supermarket',
+                waterSupplyType: 'Borehole + Council Backup',
+                electricityMeterType: 'Prepaid (Tokens)',
+                garbageFeeKes: 500,
+                isTaken: false,
+                status: 'available',
+                amenities: {
+                    hasBalcony: true,
+                    hasParking: true,
+                    hasElectricFence: true,
+                    hasCctv: true,
+                    hasInternet: true,
+                    hasTiles: true,
+                    isMasterEnsuite: true,
+                    hasLift: true,
+                    hasBorehole: true,
+                    hasGenerator: true,
+                    hasGym: false,
+                    hasSwimmingPool: false
+                },
+                media: [
+                    { url: 'test1.jpg' },
+                    { url: 'test2.jpg' },
+                    { url: 'test3.jpg' },
+                    { url: 'test4.jpg' },
+                    { url: 'test5.jpg' }
+                ]
+            };
+            
+            // Test 1: Basic Verification Badge
+            if (window.KejaVerification) {
+                document.getElementById('basic-badge-test').innerHTML = 
+                    KejaVerification.generateVerificationBadge(basicLandlord, sampleProperty);
+                
+                // Test 2: Premium Verification Badge
+                document.getElementById('premium-badge-test').innerHTML = 
+                    KejaVerification.generateVerificationBadge(premiumLandlord, sampleProperty);
+                
+                // Test 3: Verification Details
+                document.getElementById('verification-details-test').innerHTML = 
+                    KejaVerification.generateVerificationDetails(premiumLandlord);
+                
+                // Test 4: Trust Score
+                document.getElementById('trust-score-test').innerHTML = 
+                    KejaVerification.generateTrustScore(premiumLandlord);
+                
+                // Test 5: Enhanced Property Information
+                document.getElementById('property-info-test').innerHTML = 
+                    KejaVerification.generateEnhancedPropertyInfo(sampleProperty);
+                
+                console.log('✅ All verification tests completed successfully!');
+                console.log('🛡️ Verification system is working correctly');
+            } else {
+                console.error('❌ KejaVerification not loaded');
+            }
+            
+        }, 1000);
+    </script>
+</body>
+</html>

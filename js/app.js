@@ -98,6 +98,14 @@ class NairobiRentalsApp {
           );
           this.properties = this.properties.map(p => this.normalizeProperty(p));
           console.log('Loaded properties from API:', this.properties.length);
+          
+          // Initialize Recently Added section with fresh data
+          if (window.KejaRecentlyAdded && window.KejaRecentlyAdded.refresh) {
+            setTimeout(() => {
+              window.KejaRecentlyAdded.refresh();
+            }, 500);
+          }
+          
           return;
         }
       }
@@ -118,6 +126,13 @@ class NairobiRentalsApp {
       !p.isPlaceholder
     );
     console.log('Loaded properties from seed:', this.properties.length);
+    
+    // Initialize Recently Added section with fresh data
+    if (window.KejaRecentlyAdded && window.KejaRecentlyAdded.refresh) {
+      setTimeout(() => {
+        window.KejaRecentlyAdded.refresh();
+      }, 500);
+    }
   }
 
   // Alias called by admin.js after listing boost/delete
@@ -776,6 +791,14 @@ class NairobiRentalsApp {
 
     openGalleryModal(propertyId, event) {
     if (event) event.stopPropagation();
+    // Gate: require sign-in to view full gallery
+    const _isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
+    if (!_isLoggedIn) {
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        window.kejaAuth.requireTenantAuth(() => this.openGalleryModal(propertyId, null));
+      }
+      return;
+    }
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
 
@@ -787,7 +810,7 @@ class NairobiRentalsApp {
     this.openPropertyDetail(propertyId);
 
     // Open full lightbox gallery showing all 7 photos immediately
-    setTimeout(() => this.openLightbox(event), 100);
+    setTimeout(() => this.openLightbox(null), 100);
   }
 
   // Handle photo file selection for forms (Max 5 photos)
@@ -1074,7 +1097,12 @@ class NairobiRentalsApp {
           <div class="card-badges-top">
             ${isTaken ? '<span class="badge-taken" style="background: #dc2626; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;"><i class="fas fa-ban"></i> TAKEN / OCCUPIED</span>' : ''}
             ${isBnb ? '<span class="badge-top-ad" style="background: #ff5a5f;"><i class="fas fa-bed"></i> BNB / AIRBNB</span>' : (p.isTopAd ? '<span class="badge-top-ad"><i class="fas fa-bolt"></i> TOP AD</span>' : '')}
-            ${isAgency ? `<span class="badge-verified-landlord" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);"><i class="fas fa-building"></i> ${p.agencyName ? (p.agencyName.length > 18 ? p.agencyName.substring(0, 16) + '...' : p.agencyName) : 'AGENCY'}</span>` : (p.landlord?.isVerified ? '<span class="badge-verified-landlord"><i class="fas fa-shield-alt"></i> VERIFIED</span>' : '')}
+            ${isAgency ? `<span class="badge-verified-landlord" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);"><i class="fas fa-building"></i> ${p.agencyName ? (p.agencyName.length > 18 ? p.agencyName.substring(0, 16) + '...' : p.agencyName) : 'AGENCY'}</span>` : 
+              (window.KejaVerification ? 
+                window.KejaVerification.generateSmallVerificationBadge(p.landlord, p) : 
+                (p.landlord?.isVerified ? '<span class="verification-badge verification-badge-small"><i class="fas fa-shield-alt"></i> VERIFIED</span>' : '')
+              )
+            }
           </div>
 
           <button class="btn-favorite-heart ${isFav ? 'active' : ''}" onclick="app.toggleFavorite('${p.id}', event)" title="Save to Favorites">
@@ -1218,6 +1246,14 @@ class NairobiRentalsApp {
   }
 
   revealLandlordPhone(propertyId, btnEl) {
+    // Gate: require sign-in to reveal contact phone
+    const _isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
+    if (!_isLoggedIn) {
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        window.kejaAuth.requireTenantAuth(() => this.revealLandlordPhone(propertyId, btnEl));
+      }
+      return;
+    }
     const p = this.properties.find(x => x.id === propertyId);
     if (!p) return;
     this.normalizeProperty(p);
@@ -1235,6 +1271,13 @@ class NairobiRentalsApp {
   }
 
   callLandlordDirect(propertyId) {
+    // Gate: require sign-in to call landlord
+    if (!(window.kejaAuth && window.kejaAuth.getSession())) {
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        window.kejaAuth.requireTenantAuth(() => this.callLandlordDirect(propertyId));
+      }
+      return;
+    }
     const p = this.properties.find(x => x.id === propertyId) || this.selectedPropertyForDetail;
     if (!p) return;
     this.normalizeProperty(p);
@@ -1454,9 +1497,15 @@ class NairobiRentalsApp {
     }
     const specVerifiedEl = document.getElementById('spec-verified');
     if (specVerifiedEl) {
-      specVerifiedEl.innerHTML = p.landlord?.isVerified 
-        ? `<span style="color:#1976d2;"><i class="fas fa-check-circle"></i> ${isBnb ? 'Superhost' : (isAgencyListing ? 'Verified Agency' : 'Verified Landlord')}</span>` 
-        : '<span style="color:#64748b;">Direct Listing</span>';
+      // Use enhanced verification if available
+      if (window.KejaVerification) {
+        specVerifiedEl.innerHTML = window.KejaVerification.generateVerificationBadge(p.landlord, p);
+      } else {
+        // Fallback to original verification display
+        specVerifiedEl.innerHTML = p.landlord?.isVerified 
+          ? `<span style="color:#059669;font-weight:700;background:#dcfce7;padding:4px 12px;border-radius:20px;font-size:0.8rem;">🛡️ KEJAMARKET VERIFIED</span>` 
+          : '<span style="color:#64748b;">Direct Listing</span>';
+      }
     }
 
     // Gallery
@@ -1475,11 +1524,28 @@ class NairobiRentalsApp {
 
     const thumbsContainer = document.getElementById('detail-thumbs-container');
     if (thumbsContainer) {
-      thumbsContainer.innerHTML = p.media.map((m, idx) => `
-        <div class="detail-thumb ${idx === (this.currentPhotoIndex || 0) ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this, ${idx})">
-          <img src="${m.url}" alt="${m.caption || 'Photo'}">
-        </div>
-      `).join('');
+      if (isLoggedIn) {
+        // All thumbs visible for signed-in users
+        thumbsContainer.innerHTML = p.media.map((m, idx) => `
+          <div class="detail-thumb ${idx === (this.currentPhotoIndex || 0) ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this, ${idx})">
+            <img src="${m.url}" alt="${m.caption || 'Photo'}">
+          </div>
+        `).join('');
+      } else {
+        // Guest: first thumb free, remaining locked behind sign-in
+        const firstThumb = p.media[0];
+        const lockedCount = p.media.length - 1;
+        thumbsContainer.innerHTML = (firstThumb ? `
+          <div class="detail-thumb active" onclick="kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}'))">
+            <img src="${firstThumb.url}" alt="${firstThumb.caption || 'Photo'}">
+          </div>
+        ` : '') + (lockedCount > 0 ? `
+          <div onclick="kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}'))" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:10px;padding:10px 16px;cursor:pointer;min-width:120px;flex:1;border:2px dashed rgba(99,102,241,0.5);">
+            <i class="fas fa-lock" style="color:#a5b4fc;font-size:1.1rem;"></i>
+            <span style="color:#c7d2fe;font-weight:700;font-size:0.8rem;">${lockedCount} more photo${lockedCount > 1 ? 's' : ''}<br><span style="font-size:0.7rem;font-weight:500;color:#a5b4fc;">Sign in to view</span></span>
+          </div>
+        ` : '');
+      }
     }
 
     // Video Tours Walkthrough
@@ -1564,14 +1630,50 @@ class NairobiRentalsApp {
 
     if (landlordName) landlordName.textContent = contactName;
     if (landlordSince) landlordSince.textContent = `Member since ${p.landlord?.memberSince || '2024'}`;
-    if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i><a href="tel:${contactPhone}" style="color:#0f172a;text-decoration:none;font-weight:700;">${contactPhone}</a>`;
 
-    if (callBtn) {
-      callBtn.href = `tel:${contactPhone}`;
-      callBtn.removeAttribute('onclick');
-      callBtn.style.opacity = '1';
-      callBtn.style.pointerEvents = 'auto';
-      callBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')} (${contactPhone})`;
+    // Add enhanced verification details and trust score after landlord info
+    if (window.KejaVerification) {
+      const verificationContainer = document.getElementById('detail-verification-container');
+      if (verificationContainer) {
+        // Clear existing content
+        verificationContainer.innerHTML = '';
+        
+        // Add verification details and trust score
+        const verificationDetails = window.KejaVerification.generateVerificationDetails(p.landlord);
+        const trustScore = window.KejaVerification.generateTrustScore(p.landlord);
+        
+        if (verificationDetails || trustScore) {
+          verificationContainer.innerHTML = verificationDetails + trustScore;
+        }
+      }
+
+      // Add enhanced property information
+      const propertyInfoContainer = document.getElementById('enhanced-property-info-container');
+      if (propertyInfoContainer) {
+        propertyInfoContainer.innerHTML = window.KejaVerification.generateEnhancedPropertyInfo(p);
+      }
+    }
+
+    if (isLoggedIn) {
+      // Logged in: show real phone & enable call
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i><a href="tel:${contactPhone}" style="color:#0f172a;text-decoration:none;font-weight:700;">${contactPhone}</a>`;
+      if (callBtn) {
+        callBtn.href = `tel:${contactPhone}`;
+        callBtn.removeAttribute('onclick');
+        callBtn.style.opacity = '1';
+        callBtn.style.pointerEvents = 'auto';
+        callBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')} (${contactPhone})`;
+      }
+    } else {
+      // Guest: mask phone number, prompt sign-in
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;font-weight:700;letter-spacing:2px;">+254 *** ***</span>&nbsp;<a href="#" onclick="event.preventDefault();kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}'))" style="color:#4f46e5;text-decoration:underline;font-weight:600;font-size:0.78rem;">Sign in to view</a>`;
+      if (callBtn) {
+        callBtn.href = '#';
+        callBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}')); return false;`);
+        callBtn.style.opacity = '0.65';
+        callBtn.style.pointerEvents = 'auto';
+        callBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Call`;
+      }
     }
 
     if (chatBtn) {
@@ -1597,9 +1699,17 @@ class NairobiRentalsApp {
         caretakerCard.style.display = 'block';
         if (caretakerNameEl) caretakerNameEl.textContent = p.caretakerName || 'Building Caretaker';
         if (caretakerCallBtn) {
-          caretakerCallBtn.href = `tel:${p.caretakerPhone || ''}`;
-          caretakerCallBtn.removeAttribute('onclick');
-          caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${p.caretakerPhone || ''})`;
+          if (isLoggedIn) {
+            caretakerCallBtn.href = `tel:${p.caretakerPhone || ''}`;
+            caretakerCallBtn.removeAttribute('onclick');
+            caretakerCallBtn.style.opacity = '1';
+            caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${p.caretakerPhone || ''})`;
+          } else {
+            caretakerCallBtn.href = '#';
+            caretakerCallBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}')); return false;`);
+            caretakerCallBtn.style.opacity = '0.65';
+            caretakerCallBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Call`;
+          }
         }
       } else {
         caretakerCard.style.display = 'none';
@@ -1669,6 +1779,14 @@ class NairobiRentalsApp {
   }
 
   selectDetailPhoto(url, thumbEl, index) {
+    // Gate: require sign-in to browse photos
+    if (!(window.kejaAuth && window.kejaAuth.getSession())) {
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        const p = this.selectedPropertyForDetail;
+        window.kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(p && p.id));
+      }
+      return;
+    }
     if (typeof index === 'number') {
       this.currentPhotoIndex = index;
     } else if (this.selectedPropertyForDetail && this.selectedPropertyForDetail.media) {
@@ -1688,6 +1806,14 @@ class NairobiRentalsApp {
 
   prevDetailPhoto(event) {
     if (event) event.stopPropagation();
+    // Gate: require sign-in to navigate photos
+    if (!(window.kejaAuth && window.kejaAuth.getSession())) {
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        const _p = this.selectedPropertyForDetail;
+        window.kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(_p && _p.id));
+      }
+      return;
+    }
     const p = this.selectedPropertyForDetail;
     if (!p || !p.media || p.media.length <= 1) return;
 
@@ -1697,6 +1823,14 @@ class NairobiRentalsApp {
 
   nextDetailPhoto(event) {
     if (event) event.stopPropagation();
+    // Gate: require sign-in to navigate photos
+    if (!(window.kejaAuth && window.kejaAuth.getSession())) {
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        const _p = this.selectedPropertyForDetail;
+        window.kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(_p && _p.id));
+      }
+      return;
+    }
     const p = this.selectedPropertyForDetail;
     if (!p || !p.media || p.media.length <= 1) return;
 
@@ -1753,6 +1887,14 @@ class NairobiRentalsApp {
 
   openLightbox(event) {
     if (event) event.stopPropagation();
+    // Gate: require sign-in to view fullscreen photos
+    const _isLoggedInLB = !!(window.kejaAuth && window.kejaAuth.getSession());
+    if (!_isLoggedInLB) {
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        window.kejaAuth.requireTenantAuth(() => this.openLightbox(null));
+      }
+      return;
+    }
     const p = this.selectedPropertyForDetail;
     if (!p || !p.media || p.media.length === 0) return;
 

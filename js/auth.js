@@ -686,6 +686,10 @@ const kejaAuth = (() => {
       }
     }
 
+    if (window.kejaProfile && typeof window.kejaProfile.renderProfileMenu === 'function') {
+      window.kejaProfile.renderProfileMenu(session);
+    }
+
     if (window.kejaAdmin && typeof window.kejaAdmin.checkAdminSession === 'function') {
       window.kejaAdmin.checkAdminSession();
     }
@@ -1013,6 +1017,9 @@ const kejaAuth = (() => {
           <div style="font-size: 0.75rem; color: #6366f1; margin-top: 4px; text-transform: uppercase; font-weight: 600;">${session.role}</div>
         </div>
         <div style="padding: 8px 0;">
+          <button onclick="kejaAuth.openAuthModal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: #f0fdf4; border: none; cursor: pointer; font-size: 0.9rem; color: #166534; font-weight: 700; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
+            <i class="fas fa-id-badge" style="width: 16px; color: #16a34a;"></i> My Profile Dashboard
+          </button>
           ${session.role === 'landlord' || session.role === 'agency' ? `
             <button onclick="kejaLandlordPortal.openLandlordPortal(); kejaAuth.closeProfileDropdown();" style="width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #475569; display: flex; align-items: center; gap: 10px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
               <i class="fas fa-home" style="width: 16px;"></i> Landlord Portal

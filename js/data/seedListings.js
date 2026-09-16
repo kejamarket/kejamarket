@@ -26,6 +26,7 @@ const SEED_PROPERTIES = [
     "isFeatured": true,
     "isTopAd": true,
     "isVerified": true,
+    "dateAdded": "2024-09-08T10:30:00Z",
     "source": "direct",
     "managedBy": "agency",
     "agencyName": "HassConsult Real Estate",
@@ -38,10 +39,15 @@ const SEED_PROPERTIES = [
       "phone": "+254733112233",
       "whatsapp": "+254733112233",
       "isVerified": true,
+      "isPremiumVerified": true,
       "isAgency": true,
       "memberSince": "January 2023",
       "rating": 4.9,
-      "reviewCount": 28
+      "reviewCount": 28,
+      "responseRate": 98,
+      "listingCount": 24,
+      "verificationDate": "2024-01-15",
+      "backgroundCheckPassed": true
     },
     "amenities": {
       "hasBalcony": true,

@@ -14,64 +14,60 @@ const KejaEnhancedAuth = {
   // Property management role definitions (sub-roles under Property Account)
   propertyRoles: {
     'landlord': {
-      title: 'Landlord / Property Owner',
+      title: 'Landlord / Long-term Rental',
       icon: '🏠',
-      description: 'I own rental properties and manage them directly',
-      permissions: {
-        listProperty: true,
-        manageProperty: true,
-        searchProperties: true,
-        requestViewing: true, // optional
-        sellHouseItems: true,
-        listServices: true, // optional if they provide services
-        receivePropertyInquiries: true,
-        receiveServiceInquiries: true // if they provide services
-      }
+      description: 'I own rental properties for long-term tenants (monthly/yearly leases)',
+      propertyType: 'long-term-rental',
+      dashboardFeatures: ['monthly rent', 'vacant units', 'tenant inquiries', 'viewing requests', 'lease management']
+    },
+    'airbnb-host': {
+      title: 'Airbnb / Short-Stay Host',
+      icon: '🏨',
+      description: 'I host short-term accommodations (nightly/weekly stays)',
+      propertyType: 'short-stay',
+      dashboardFeatures: ['nightly pricing', 'availability calendar', 'booking requests', 'guest inquiries', 'check-in/out', 'reviews', 'earnings']
+    },
+    'serviced-apartment': {
+      title: 'Serviced Apartment',
+      icon: '🏨',
+      description: 'I manage furnished apartments with hotel-like services',
+      propertyType: 'serviced-apartment',
+      dashboardFeatures: ['nightly/monthly rates', 'service amenities', 'booking management', 'guest services', 'occupancy tracking']
     },
     'agent': {
       title: 'Real Estate Agent',
       icon: '🤝', 
       description: 'I help clients find, rent, and sell properties',
-      permissions: {
-        listProperty: true,
-        manageProperty: true,
-        searchProperties: true,
-        requestViewing: true, // optional
-        sellHouseItems: true,
-        listServices: true, // optional if they provide services
-        receivePropertyInquiries: true,
-        receiveServiceInquiries: true // if they provide services
-      }
+      propertyType: 'agent-listings',
+      dashboardFeatures: ['client properties', 'commission tracking', 'viewing schedules', 'client management', 'property portfolio']
     },
     'caretaker': {
       title: 'Caretaker',
       icon: '🏢',
-      description: 'I manage properties on behalf of the owners',
-      permissions: {
-        listProperty: true, // with restrictions
-        manageProperty: true, // with restrictions
-        searchProperties: true,
-        requestViewing: true, // optional
-        sellHouseItems: true,
-        listServices: true, // optional if they provide services
-        receivePropertyInquiries: true,
-        receiveServiceInquiries: true // if they provide services
-      }
+      description: 'I manage long-term rental properties on behalf of owners',
+      propertyType: 'long-term-rental',
+      dashboardFeatures: ['managed properties', 'unit availability', 'tenant inquiries', 'owner communication', 'maintenance requests']
     },
     'property-manager': {
       title: 'Property Manager',
       icon: '🏢',
-      description: 'I manage multiple properties professionally',
-      permissions: {
-        listProperty: true,
-        manageProperty: true,
-        searchProperties: true,
-        requestViewing: true, // optional
-        sellHouseItems: true,
-        listServices: true, // optional if they provide services
-        receivePropertyInquiries: true,
-        receiveServiceInquiries: true // if they provide services
-      }
+      description: 'I professionally manage multiple properties for various owners',
+      propertyType: 'multi-property',
+      dashboardFeatures: ['property portfolio', 'owner accounts', 'tenant management', 'financial reporting', 'maintenance coordination']
+    },
+    'guest-house': {
+      title: 'Guest House / Lodge',
+      icon: '🏨',
+      description: 'I operate a guest house, lodge, or small hotel',
+      propertyType: 'hospitality',
+      dashboardFeatures: ['room management', 'reservations', 'guest services', 'occupancy rates', 'hospitality amenities']
+    },
+    'commercial': {
+      title: 'Commercial Property Owner',
+      icon: '🏢',
+      description: 'I own/manage office spaces, retail, or commercial properties',
+      propertyType: 'commercial',
+      dashboardFeatures: ['commercial units', 'lease agreements', 'business tenants', 'commercial rates', 'property services']
     }
   },
 
@@ -279,17 +275,17 @@ const KejaEnhancedAuth = {
           <div class="property-account-header">
             <div class="account-type-badge">🏠 PROPERTY ACCOUNT</div>
             <h3 style="font-size: 1.2rem; font-weight: 800; color: #1e293b; margin-bottom: 8px; text-align: center;">
-              What is your role?
+              What do you manage?
             </h3>
             <p style="color: #64748b; text-align: center; margin-bottom: 24px; font-size: 0.9rem;">
-              Choose your specific property management role:
+              Choose your property management specialization:
             </p>
           </div>
         </div>
 
         <div class="property-role-selection">
           ${Object.entries(this.propertyRoles).map(([key, role]) => `
-            <div class="property-role-card" onclick="KejaEnhancedAuth.selectPropertyRole('${key}')" data-role="${key}">
+            <div class="property-role-card enhanced-role-card" onclick="KejaEnhancedAuth.selectPropertyRole('${key}')" data-role="${key}">
               <div class="role-option">
                 <div class="role-radio">
                   <input type="radio" name="property-role" value="${key}" id="role-${key}">
@@ -298,19 +294,22 @@ const KejaEnhancedAuth = {
                 <div class="role-info">
                   <div class="role-title">${role.title}</div>
                   <div class="role-desc">${role.description}</div>
+                  <div class="dashboard-preview">
+                    Dashboard: ${role.dashboardFeatures.slice(0, 3).join(' • ')}${role.dashboardFeatures.length > 3 ? '...' : ''}
+                  </div>
                 </div>
               </div>
             </div>
           `).join('')}
         </div>
 
-        <div class="permissions-note" style="background: #f0f9ff; padding: 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #0ea5e9;">
-          <div style="display: flex; align-items: center; gap: 8px; color: #0ea5e9; font-weight: 600; margin-bottom: 8px;">
+        <div class="property-system-note" style="background: #f0fdf4; padding: 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #059669;">
+          <div style="display: flex; align-items: center; gap: 8px; color: #059669; font-weight: 600; margin-bottom: 8px;">
             <i class="fas fa-info-circle"></i>
-            Your Permissions
+            One Property System, Multiple Specializations
           </div>
-          <div style="color: #075985; font-size: 0.85rem; line-height: 1.4;">
-            All property account holders can list properties, manage listings, and receive inquiries. Specific permissions vary by role.
+          <div style="color: #064e3b; font-size: 0.85rem; line-height: 1.4;">
+            Each role gets a specialized dashboard designed for your property type - from nightly Airbnb rates to monthly rental management.
           </div>
         </div>
 
