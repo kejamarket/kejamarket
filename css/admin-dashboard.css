@@ -1477,3 +1477,133 @@ textarea.form-control {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* BNB Management Styles */
+.bnb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.bnb-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bnb-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: #7c3aed;
+}
+
+.bnb-image {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-color: #f1f5f9;
+  position: relative;
+}
+
+.booked-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #10b981;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bnb-card-body {
+  padding: 16px;
+}
+
+.bnb-card-body h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bnb-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.bnb-detail i {
+  color: #94a3b8;
+  width: 16px;
+}
+
+.bnb-stats {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0;
+  padding: 12px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.bnb-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.bnb-stat i {
+  color: #7c3aed;
+}
+
+.bnb-price {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #7c3aed;
+  margin: 12px 0;
+}
+
+.bnb-price span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.bnb-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .bnb-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Operations Module Styles */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}

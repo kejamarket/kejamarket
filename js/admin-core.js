@@ -421,42 +421,79 @@ const AdminCore = (() => {
 
   async function loadBNB(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading BNB Module...</div>';
+    content.innerHTML = `
+      <div class="module-header">
+        <h1><i class="fas fa-bed"></i> Short-Stay & BNB Management</h1>
+      </div>
+      <div class="module-tabs">
+        <button class="tab-btn active" data-filter="all">All BNBs</button>
+        <button class="tab-btn" data-filter="active">Active</button>
+        <button class="tab-btn" data-filter="pending">Pending</button>
+        <button class="tab-btn" data-filter="available">Available</button>
+        <button class="tab-btn" data-filter="booked">Booked</button>
+      </div>
+      <div id="bnb-content">
+        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+      </div>
+    `;
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        AdminBNB.init(btn.dataset.filter);
+      });
+    });
+
+    if (typeof AdminBNB !== 'undefined') {
+      await AdminBNB.init(viewData || 'all');
+    } else {
+      console.error('AdminBNB module not loaded');
+    }
   }
 
   async function loadServices(viewData) {
-    const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Services Module...</div>';
+    await loadOperationsModule('services', 'Services Management', 'tools');
   }
 
   async function loadMarketplace(viewData) {
-    const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Marketplace Module...</div>';
+    await loadOperationsModule('marketplace', 'Marketplace Management', 'shopping-cart');
   }
 
   async function loadInquiries(viewData) {
-    const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Inquiries Module...</div>';
+    await loadOperationsModule('inquiries', 'Inquiries Management', 'envelope');
   }
 
   async function loadReviews(viewData) {
-    const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Reviews Module...</div>';
+    await loadOperationsModule('reviews', 'Reviews Management', 'star');
   }
 
   async function loadReports(viewData) {
-    const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Reports Module...</div>';
+    await loadOperationsModule('reports', 'Reports & Complaints', 'exclamation-triangle');
   }
 
   async function loadRisk(viewData) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Risk & Fraud Module...</div>';
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-shield-alt"></i> Risk & Fraud Detection</h1></div>
+      <div class="empty-state"><i class="fas fa-shield-alt"></i><p>Risk monitoring system</p><small>Advanced fraud detection coming soon</small></div>
+    `;
   }
 
   async function loadSupport(viewData) {
+    await loadOperationsModule('support', 'Support Ticketing', 'ticket-alt');
+  }
+
+  async function loadOperationsModule(module, title, icon) {
     const content = document.getElementById('admin-content');
-    content.innerHTML = '<div class="loading-state">Loading Support Module...</div>';
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-${icon}"></i> ${title}</h1></div>
+      <div id="operations-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>
+    `;
+
+    if (typeof AdminOperations !== 'undefined') {
+      await AdminOperations.init(module);
+    }
   }
 
   async function loadAdminUsers(viewData) {
