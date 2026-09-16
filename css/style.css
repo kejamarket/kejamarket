@@ -4,25 +4,31 @@
    ========================================================================== */
 
 :root {
-  --primary-color: #4f46e5;          /* Indigo */
+  /* ── Brand Colors ─────────────────────────────────────── */
+  --primary-color: #4f46e5;          /* Indigo - prices, primary actions */
   --primary-hover: #4338ca;
   --primary-light: #e0e7ff;
   --primary-dark: #3730a3;
-  --secondary-color: #f97316;        /* Amber */
-  --secondary-light: #ffedd5;
-  --accent-blue: #10b981;           /* Emerald */
-  --accent-blue-light: #d1fae5;
+  --secondary-color: #F59E0B;        /* Amber - Sell Item, marketplace */
+  --secondary-light: #fef3c7;
+  --accent-green: #16a34a;           /* Green - verified badges */
+  --accent-green-light: #dcfce7;
+  --search-blue: #2563EB;            /* Blue - search button */
+  --search-blue-hover: #1d4ed8;
+  --sms-banner-bg: #1E5A85;          /* Dark blue - SMS alert banner */
   
-  --text-primary: #1f2937;
-  --text-secondary: #4b5563;
-  --text-muted: #6b7280;
-  --text-light: #9ca3af;
+  /* ── Text Colors ──────────────────────────────────────── */
+  --text-primary: #0F172A;           /* Dark navy - main text */
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
   
-  --bg-body: #f4f7f6;
-  --bg-card: #ffffff;
+  /* ── Backgrounds ──────────────────────────────────────── */
+  --bg-body: #f0f4f8;                /* Very light blue-gray */
+  --bg-card: #ffffff;                /* White cards */
   --bg-surface: #ffffff;
-  --border-color: #e5e7eb;
-  --border-focus: #00b53f;
+  --border-color: #e2e8f0;
+  --border-focus: #2563EB;
   
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -32,7 +38,7 @@
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-hover: 0 12px 20px -2px rgba(0, 181, 63, 0.15), 0 6px 10px -2px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 12px 20px -2px rgba(37, 99, 235, 0.12), 0 6px 10px -2px rgba(0, 0, 0, 0.08);
 
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -150,6 +156,14 @@ button, input, select, textarea {
   letter-spacing: -0.5px;
 }
 
+.brand-logo-img {
+  height: 48px;
+  width: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
 .brand-logo .logo-icon {
   background: var(--primary-color);
   color: white;
@@ -242,7 +256,7 @@ button, input, select, textarea {
 }
 
 .search-submit-btn {
-  background: var(--primary-color);
+  background: var(--search-blue);
   color: white;
   border: none;
   padding: 0 16px;
@@ -257,7 +271,7 @@ button, input, select, textarea {
 }
 
 .search-submit-btn:hover {
-  background: var(--primary-hover);
+  background: var(--search-blue-hover);
 }
 
 /* Floating Real-time Suggestions Dropdown */
@@ -374,11 +388,11 @@ button, input, select, textarea {
   display: flex !important;
   visibility: visible !important;
   opacity: 1 !important;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  background: linear-gradient(135deg, #4f46e5, #4338ca) !important;
   color: white !important;
-  border: 1px solid rgba(79, 70, 229, 0.3) !important;
+  border: 1px solid rgba(79, 70, 229, 0.4) !important;
   font-weight: 700 !important;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25) !important;
 }
 
 /* Enhanced Auth Button Hover */
@@ -390,9 +404,9 @@ button, input, select, textarea {
 }
 
 #btn-auth-header:hover {
-  background: linear-gradient(135deg, #4338ca, #6d28d9) !important;
+  background: linear-gradient(135deg, #4338ca, #3730a3) !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35) !important;
 }
 
 /* Force profile dropdown visibility and positioning */
@@ -974,7 +988,7 @@ button, input, select, textarea {
 }
 
 .badge-verified-landlord {
-  background: var(--accent-blue);
+  background: #16a34a;
   color: #fff;
   font-size: 0.68rem;
   font-weight: 700;
