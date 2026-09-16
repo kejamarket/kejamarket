@@ -1331,4 +1331,26 @@ document.addEventListener('click', function(e) {
   }
 });
 
-console.log('🔧 Modal fixes applied');
+// FORCE PROFILE DROPDOWN TO USE NEW DESIGN
+document.addEventListener('DOMContentLoaded', function() {
+  // Disable any competing modal systems for profile
+  const authModal = document.getElementById('modal-auth');
+  if (authModal) {
+    const profilePanels = authModal.querySelectorAll('[id*="profile"], [class*="profile"]');
+    profilePanels.forEach(panel => {
+      if (panel.id !== 'profile-dropdown' && panel.id !== 'profile-dropdown-content') {
+        panel.style.display = 'none';
+      }
+    });
+  }
+  
+  // Ensure profile dropdown uses new compact design
+  const profileDropdown = document.getElementById('profile-dropdown');
+  if (profileDropdown) {
+    // Remove any old inline styles that might conflict
+    profileDropdown.removeAttribute('style');
+    profileDropdown.style.display = 'none'; // Start hidden
+  }
+});
+
+console.log('🔧 Modal fixes and profile dropdown optimization applied');
