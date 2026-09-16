@@ -1257,3 +1257,67 @@ const kejaAuth = (() => {
 window.kejaAuth = kejaAuth;
 
 
+
+/**
+ * CRITICAL MODAL FIXES
+ */
+
+// Enhanced modal management
+window.closeModal = function(modalId) {
+  const modal = document.getElementById(modalId);
+  const backdrop = modal?.closest('.modal-backdrop');
+  
+  if (backdrop) {
+    backdrop.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    
+    setTimeout(() => {
+      backdrop.style.display = 'none';
+    }, 150);
+  }
+  
+  console.log(`✅ Modal ${modalId} closed properly`);
+};
+
+window.openModal = function(modalId) {
+  const modal = document.getElementById(modalId);
+  const backdrop = modal?.closest('.modal-backdrop');
+  
+  if (backdrop) {
+    backdrop.style.display = 'flex';
+    document.body.classList.add('modal-open');
+    
+    setTimeout(() => {
+      backdrop.classList.add('open');
+    }, 10);
+  }
+  
+  console.log(`✅ Modal ${modalId} opened properly`);
+};
+
+// Fix backdrop clicks to close modal
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-backdrop')) {
+    e.target.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    setTimeout(() => {
+      e.target.style.display = 'none';
+    }, 150);
+  }
+});
+
+// Fix close buttons
+document.addEventListener('click', function(e) {
+  if (e.target.matches('.modal-close, .btn-modal-close, [onclick*="closeModal"]')) {
+    const modal = e.target.closest('.modal-backdrop');
+    if (modal) {
+      modal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 150);
+    }
+  }
+});
+
+console.log('🔧 Modal fixes applied');
