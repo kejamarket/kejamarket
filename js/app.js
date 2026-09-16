@@ -290,7 +290,7 @@ class NairobiRentalsApp {
     // Populate Counties / Corridors for Properties
     const corridorSelect = document.getElementById('filter-corridor');
     if (corridorSelect) {
-      corridorSelect.innerHTML = `<option value="all">All Nairobi Corridors & Satellite Towns</option>` +
+      corridorSelect.innerHTML = `<option value="all">Nairobi & Environs</option>` +
         NAIROBI_REGIONS.map(r => `<option value="${r.corridorId}">${r.corridorName} (${r.county})</option>`).join('');
       
       corridorSelect.addEventListener('change', (e) => {
@@ -301,6 +301,7 @@ class NairobiRentalsApp {
     }
 
     this.updateSuburbFilterOptions();
+    this.populateSidebarChecklists();
     
     // Populate Counties / Corridors for Services
     const serviceCorridorSelect = document.getElementById('filter-service-corridor');
@@ -316,6 +317,127 @@ class NairobiRentalsApp {
     }
 
     this.updateServiceSuburbFilterOptions();
+  }
+
+  toggleFilterSection(secId) {
+    const el = document.getElementById(secId);
+    if (el) el.classList.toggle('collapsed');
+  }
+
+  populateSidebarChecklists() {
+    const suburbContainer = document.getElementById('suburb-checklist-container');
+    if (suburbContainer) {
+      const topSuburbs = [
+        { name: 'Ngara', count: 12 },
+        { name: 'Kilimani', count: 18 },
+        { name: 'Parklands', count: 9 },
+        { name: 'Ruaraka', count: 6 },
+        { name: 'Kasarani', count: 14 },
+        { name: 'Lavington', count: 10 },
+        { name: 'Westlands', count: 22 },
+        { name: 'Donholm', count: 8 },
+        { name: 'Eastleigh', count: 11 },
+        { name: 'Rongai', count: 7 },
+        { name: 'South B', count: 15 },
+        { name: 'South C', count: 9 },
+        { name: 'Ruaka', count: 19 },
+        { name: 'Roysambu', count: 16 },
+        { name: 'Umoja', count: 13 },
+        { name: 'Pangani', count: 8 },
+        { name: 'Embakasi', count: 12 },
+        { name: 'Kikuyu', count: 7 },
+        { name: 'Karen', count: 5 },
+        { name: 'Juja', count: 11 }
+      ];
+
+      this.sidebarSuburbsList = topSuburbs;
+      this.renderSuburbChecklist(topSuburbs.slice(0, 10));
+    }
+
+    const typeContainer = document.getElementById('property-type-checklist-container');
+    if (typeContainer) {
+      const types = [
+        { name: 'Single Room', count: '3,245' },
+        { name: 'Bedsitter', count: '4,502' },
+        { name: '1 Bedroom', count: '2,187' },
+        { name: '2 Bedrooms', count: '1,432' },
+        { name: '3 Bedrooms', count: '986' },
+        { name: '4+ Bedrooms', count: '521' },
+        { name: 'Bungalow', count: '318' }
+      ];
+
+      typeContainer.innerHTML = types.map(t => `
+        <label class="filter-check-item">
+          <input type="checkbox" class="prop-type-checkbox" value="${t.name}" onchange="app.onPropertyTypeCheckboxChange(this)">
+          <span class="item-label">${t.name}</span>
+          <span class="item-count">${t.count}</span>
+        </label>
+      `).join('');
+    }
+  }
+
+  renderSuburbChecklist(suburbs) {
+    const container = document.getElementById('suburb-checklist-container');
+    if (!container) return;
+
+    container.innerHTML = suburbs.map(s => {
+      const isChecked = this.selectedSuburbs?.has(s.name) || false;
+      return `
+        <label class="filter-check-item">
+          <input type="checkbox" class="suburb-checkbox" value="${s.name}" ${isChecked ? 'checked' : ''} onchange="app.onSuburbCheckboxChange(this)">
+          <span class="item-label">${s.name}</span>
+          <span class="item-count">${s.count}</span>
+        </label>
+      `;
+    }).join('');
+  }
+
+  filterSuburbChecklist(query) {
+    if (!this.sidebarSuburbsList) return;
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+      this.renderSuburbChecklist(this.showingAllSuburbs ? this.sidebarSuburbsList : this.sidebarSuburbsList.slice(0, 10));
+      return;
+    }
+    const filtered = this.sidebarSuburbsList.filter(s => s.name.toLowerCase().includes(q));
+    this.renderSuburbChecklist(filtered);
+  }
+
+  toggleMoreSuburbs() {
+    this.showingAllSuburbs = !this.showingAllSuburbs;
+    const btn = document.getElementById('btn-toggle-more-suburbs');
+    if (this.showingAllSuburbs) {
+      this.renderSuburbChecklist(this.sidebarSuburbsList);
+      if (btn) btn.innerHTML = `<span>Show less</span> <i class="fas fa-chevron-up"></i>`;
+    } else {
+      this.renderSuburbChecklist(this.sidebarSuburbsList.slice(0, 10));
+      if (btn) btn.innerHTML = `<span>Show more (${this.sidebarSuburbsList.length - 10})</span> <i class="fas fa-chevron-down"></i>`;
+    }
+  }
+
+  onSuburbCheckboxChange(cb) {
+    if (!this.selectedSuburbs) this.selectedSuburbs = new Set();
+    if (cb.checked) {
+      this.selectedSuburbs.add(cb.value);
+      this.activeSuburb = cb.value;
+    } else {
+      this.selectedSuburbs.delete(cb.value);
+      if (this.selectedSuburbs.size === 0) {
+        this.activeSuburb = 'all';
+      } else {
+        this.activeSuburb = Array.from(this.selectedSuburbs)[0];
+      }
+    }
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  onPropertyTypeCheckboxChange(cb) {
+    if (cb.checked) {
+      this.setCategory(cb.value);
+    } else {
+      this.setCategory('All');
+    }
   }
 
   updateSuburbFilterOptions() {
@@ -1123,96 +1245,103 @@ class NairobiRentalsApp {
 
   generateCardHtml(p) {
     const isFav = this.favorites.has(p.id);
-    const photoCount = p.photoCount || p.media.length || 1;
-    const thumbnail = p.media[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
-    const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
-    const isHourly = p.rentPeriod === 'hour' || p.category.includes('Boardroom');
-    const isDaily = p.rentPeriod === 'day' || p.category.includes('Conference') || p.category.includes('Event') || p.category.includes('Hall');
+    const photoCount = p.photoCount || p.media?.length || 7;
+    const thumbnail = p.media?.[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
+    const isBnb = p.isBnb || p.category?.includes('BnB') || p.category?.includes('Airbnb') || p.category?.includes('Villa') || p.rentPeriod === 'night';
+    const isHourly = p.rentPeriod === 'hour' || p.category?.includes('Boardroom');
+    const isDaily = p.rentPeriod === 'day' || p.category?.includes('Conference') || p.category?.includes('Event') || p.category?.includes('Hall');
     let pricePeriod = '/ month';
     if (p.rentPeriod === 'hour' || isHourly) pricePeriod = '/ hour';
     else if (p.rentPeriod === 'day' || isDaily) pricePeriod = '/ day';
     else if (p.rentPeriod === 'night' || isBnb) pricePeriod = '/ night';
     const isTaken = p.isTaken || p.status === 'taken';
-    const isAgency = p.managedBy === 'agency' || p.landlord?.isAgency;
     const rawPrice = p.rentKes ?? p.rent ?? p.rent_kes ?? p.price ?? 0;
     const displayRent = typeof rawPrice === 'number' ? rawPrice : (parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0);
-    
+
+    // Status Badge determination matching reference:
+    let badgeHtml = '';
+    if (isTaken) {
+      badgeHtml = `<div class="card-badge-status" style="background:#dc2626; color:white;"><i class="fas fa-ban"></i> TAKEN</div>`;
+    } else if (p.isTopAd || p.isFeatured) {
+      badgeHtml = `<div class="card-badge-status featured"><i class="fas fa-star"></i> FEATURED</div>`;
+    } else if (p.isVerified || p.landlord?.isVerified) {
+      badgeHtml = `<div class="card-badge-status verified"><i class="fas fa-check"></i> VERIFIED</div>`;
+    } else {
+      badgeHtml = `<div class="card-badge-status unverified"><i class="fas fa-exclamation-triangle"></i> UNVERIFIED</div>`;
+    }
+
+    const beds = p.bedrooms ?? (p.category?.includes('Bedsitter') ? 1 : (p.category?.includes('Single') ? 1 : 1));
+    const baths = p.bathrooms ?? 1;
+    const sqm = p.sizeSqm ?? p.sqm ?? 0;
+    const suburbName = p.estateSuburb || 'Nairobi';
+    const countyName = p.county || 'Nairobi';
+
     return `
       <div class="property-card ${isTaken ? 'property-card-taken' : ''}" data-id="${p.id}">
         <div class="card-media-wrapper" onclick="app.openGalleryModal('${p.id}', event)" style="cursor: pointer;">
           <img src="${thumbnail}" alt="${p.title}" loading="lazy" style="${isTaken ? 'filter: grayscale(50%) opacity(0.8);' : ''}">
           
-          <div class="card-badges-top">
-            ${isTaken ? '<span class="badge-taken" style="background: #dc2626; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;"><i class="fas fa-ban"></i> TAKEN / OCCUPIED</span>' : ''}
-            ${isBnb ? '<span class="badge-top-ad" style="background: #ff5a5f;"><i class="fas fa-bed"></i> BNB / AIRBNB</span>' : (p.isTopAd ? '<span class="badge-top-ad"><i class="fas fa-bolt"></i> TOP AD</span>' : '')}
-            ${isAgency ? `<span class="badge-verified-landlord" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);"><i class="fas fa-building"></i> ${p.agencyName ? (p.agencyName.length > 18 ? p.agencyName.substring(0, 16) + '...' : p.agencyName) : 'AGENCY'}</span>` : 
-              (window.KejaVerification ? 
-                window.KejaVerification.generateSmallVerificationBadge(p.landlord, p) : 
-                (p.landlord?.isVerified ? '<span class="verification-badge verification-badge-small"><i class="fas fa-shield-alt"></i> VERIFIED</span>' : '')
-              )
-            }
-          </div>
+          ${badgeHtml}
 
-          <button class="btn-favorite-heart ${isFav ? 'active' : ''}" onclick="app.toggleFavorite('${p.id}', event)" title="Save to Favorites">
+          <button type="button" class="btn-card-fav ${isFav ? 'active' : ''}" onclick="app.toggleFavorite('${p.id}', event)" title="Save to Favorites">
             <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i>
           </button>
 
           <span class="card-watermark"><i class="fas fa-home"></i> KEJAMARKET VERIFIED</span>
-          <span class="card-photo-count" onclick="app.openGalleryModal('${p.id}', event)" style="cursor: pointer;"><i class="fas fa-camera"></i> ${photoCount} Photos</span>
+          <span class="card-photo-count" onclick="app.openGalleryModal('${p.id}', event)">
+            <i class="fas fa-camera"></i> ${photoCount} Photos
+          </span>
         </div>
 
         <div class="card-content">
           <div class="card-price-row">
-            <div class="card-price" style="${isTaken ? 'color: #64748b;' : ''}">KSh ${displayRent.toLocaleString()} <span class="period">${pricePeriod}</span></div>
-            ${p.caretakerPhone ? '<span style="font-size:0.72rem; color:#b45309; background:#fef3c7; border:1px solid #fde68a; padding:1px 6px; border-radius:4px; font-weight:700;"><i class="fas fa-key"></i> Caretaker</span>' : ''}
+            <div class="card-price">KSh ${displayRent.toLocaleString()} <span class="period">${pricePeriod}</span></div>
           </div>
 
           <h3 class="card-title" onclick="app.openPropertyDetail('${p.id}')" title="${p.title}">
             ${isTaken ? '<span style="color: #dc2626; font-size: 0.8rem; font-weight: 800; margin-right: 4px;">[TAKEN]</span>' : ''}${p.title}
           </h3>
 
-          <div class="card-location-row">
-            <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
-            <span>${p.estateSuburb}, ${p.county}</span>
-            <span class="time-posted">${p.postedTimeAgo || 'Today'}</span>
+          <div class="card-location-row" title="${suburbName}, ${countyName}">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>${suburbName}, ${countyName}</span>
           </div>
 
-          <div class="card-utility-tags">
-            ${isBnb ? '<span class="utility-tag borehole"><i class="fas fa-wifi"></i> 100Mbps WiFi</span><span class="utility-tag tokens"><i class="fas fa-tv"></i> Netflix / Smart TV</span><span class="utility-tag tiles"><i class="fas fa-key"></i> Self Check-In</span>' : `
-              <span class="utility-tag ${p.waterSupplyType.toLowerCase().includes('borehole') ? 'borehole' : 'council'}">
-                <i class="fas fa-tint"></i> ${p.waterSupplyType}
-              </span>
-              <span class="utility-tag tokens">
-                <i class="fas fa-bolt"></i> ${p.electricityMeterType}
-              </span>
-              ${p.amenities.hasTiles ? '<span class="utility-tag tiles"><i class="fas fa-border-all"></i> Tiles</span>' : ''}
-            `}
+          <div class="card-specs-row">
+            <span><i class="fas fa-bed"></i> ${beds} Bed</span>
+            <span><i class="fas fa-bath"></i> ${baths} Bath</span>
+            <span><i class="fas fa-vector-square"></i> ${sqm} m²</span>
           </div>
 
-          <div class="card-action-buttons">
-            <!-- View Details — always free, no login required -->
-            <button class="btn-card-details" onclick="app.openPropertyDetail('${p.id}')">
-              <i class="fas fa-eye"></i> View Details
+          <div class="card-actions-row">
+            <button type="button" class="btn-card-details-green" onclick="app.openPropertyDetail('${p.id}')">
+              View Details
             </button>
-            ${isTaken ? `
-              <button class="btn-card-call" style="background: #ef4444; color: white; opacity: 0.85;" onclick="app.showTakenToast(event)">
-                <i class="fas fa-ban"></i> Taken
-              </button>
-            ` : `
-              <button class="btn-card-call" onclick="app.revealLandlordPhone('${p.id}', this)">
-                <i class="fas fa-phone-alt"></i> ${isAgency ? 'Call Agency' : (isBnb ? 'Call Host' : 'Call')}
-              </button>
-              <button class="btn-card-chat" onclick="app.openChatForProperty('${p.id}', event)">
-                <i class="fas fa-comment-dots"></i> Chat
-              </button>
-            `}
-            <button class="btn-card-map" onclick="app.focusPropertyOnMap('${p.id}', event)" title="View on Map">
-              <i class="fas fa-map-marked-alt"></i>
+            <button type="button" class="btn-card-whatsapp" onclick="app.openChatForProperty('${p.id}', event)" title="Chat / WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </button>
+            <button type="button" class="btn-card-more" onclick="app.openCardMoreMenu('${p.id}', event)" title="More options">
+              <i class="fas fa-ellipsis-v"></i>
             </button>
           </div>
         </div>
       </div>
     `;
+  }
+
+  openGalleryModal(propertyId, event) {
+    if (event) event.stopPropagation();
+    // Auth gate for gallery / more photos: "More photos -> 🔒 Login"
+    if (!window.kejaAuth || !window.kejaAuth.getSession()) {
+      window.kejaAuth.requireTenantAuth(() => this.openGalleryModal(propertyId, null));
+      return;
+    }
+    this.openPropertyDetail(propertyId);
+  }
+
+  openCardMoreMenu(propertyId, event) {
+    if (event) event.stopPropagation();
+    this.openPropertyDetail(propertyId);
   }
 
   focusPropertyOnMap(propertyId, event) {

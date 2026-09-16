@@ -5,17 +5,19 @@
 
 :root {
   /* ── Brand Colors ─────────────────────────────────────── */
-  --primary-color: #4f46e5;          /* Indigo - prices, primary actions */
-  --primary-hover: #4338ca;
-  --primary-light: #e0e7ff;
-  --primary-dark: #3730a3;
-  --secondary-color: #F59E0B;        /* Amber - Sell Item, marketplace */
-  --secondary-light: #fef3c7;
-  --accent-green: #16a34a;           /* Green - verified badges */
+  --primary-color: #00b53f;          /* KejaMarket Green */
+  --primary-hover: #009634;
+  --primary-light: #e8f8ee;
+  --primary-dark: #007728;
+  --secondary-color: #e62e2d;        /* KejaMarket Red - Sell Item */
+  --secondary-light: #fee2e2;
+  --accent-green: #00b53f;           /* Green - verified badges */
   --accent-green-light: #dcfce7;
-  --search-blue: #2563EB;            /* Blue - search button */
-  --search-blue-hover: #1d4ed8;
-  --sms-banner-bg: #1E5A85;          /* Dark blue - SMS alert banner */
+  --search-blue: #00b53f;            /* Green - search button */
+  --search-blue-hover: #009634;
+  --sms-banner-bg: #007a38;          /* Green - SMS alert banner */
+  --btn-sell-red: #e62e2d;           /* Red - Sell Item button */
+  --btn-sell-hover: #cc2524;
   
   /* ── Text Colors ──────────────────────────────────────── */
   --text-primary: #0F172A;           /* Dark navy - main text */
@@ -581,27 +583,34 @@ button, input, select, textarea {
   color: var(--primary-color);
 }
 
-/* App Main Layout Grid (Optimized width so 3 houses per row fit cleanly) */
+/* App Main Layout Grid (Matches reference image with 260px sidebar & 4-column cards) */
 .main-app-layout {
-  max-width: 1600px;
+  max-width: 1560px;
   margin: 16px auto;
-  padding: 0 14px;
+  padding: 0 16px;
   display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 16px;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
   align-items: start;
+}
+
+@media (max-width: 960px) {
+  .main-app-layout {
+    grid-template-columns: 1fr;
+    padding: 0 12px;
+  }
 }
 
 /* Sidebar Filter Box */
 .sidebar-filters {
   background: var(--bg-card);
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   border: 1px solid var(--border-color);
-  padding: 12px 10px;
+  padding: 16px 14px;
   box-shadow: var(--shadow-sm);
   position: sticky;
-  top: 80px;
-  max-height: calc(100vh - 100px);
+  top: 110px;
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
 }
 
@@ -876,29 +885,48 @@ button, input, select, textarea {
   height: 100%;
 }
 
-/* Property Listings Grid (Guaranteed 3 houses per row matching desktop picture) */
+/* Property Listings Grid (4 columns matching reference image) */
 .property-listings-grid {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 16px;
 }
 
-/* Jiji Style Property Card */
+@media (max-width: 1200px) {
+  .property-listings-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .property-listings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 580px) {
+  .property-listings-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* KejaMarket Property Card */
 .property-card {
   background: var(--bg-card);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
   overflow: hidden;
-  transition: var(--transition);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .property-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
   border-color: rgba(0, 181, 63, 0.4);
 }
 
@@ -1041,13 +1069,13 @@ button, input, select, textarea {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 
 .card-price {
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--primary-color);
+  color: #008744;
 }
 
 .card-price span.period {
@@ -1057,7 +1085,7 @@ button, input, select, textarea {
 }
 
 .card-title {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.3;
@@ -1067,6 +1095,7 @@ button, input, select, textarea {
   -webkit-box-orient: vertical;
   overflow: hidden;
   cursor: pointer;
+  min-height: 2.3em;
 }
 
 .card-title:hover {
@@ -1077,72 +1106,61 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   color: var(--text-secondary);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.card-location-row .time-posted {
-  margin-left: auto;
-  color: var(--text-muted);
-  font-size: 0.75rem;
+.card-location-row i {
+  color: #00b53f;
+  flex-shrink: 0;
 }
 
-/* Utility Badges (Water & Tokens) */
-.card-utility-tags {
+/* Card Specs Row (1 Bed | 1 Bath | 0 m²) */
+.card-specs-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 12px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: #475569;
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.utility-tag {
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  display: inline-flex;
+.card-specs-row span {
+  display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.utility-tag.borehole {
-  background: #e0f2fe;
-  color: #0369a1;
+.card-specs-row i {
+  color: #94a3b8;
+  font-size: 0.8rem;
 }
 
-.utility-tag.tokens {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.utility-tag.council {
-  background: #f1f5f9;
-  color: #475569;
-}
-
-.utility-tag.tiles {
-  background: #f3e8ff;
-  color: #7e22ce;
-}
-
-/* Card Actions Buttons (Call, WhatsApp, View on Map) */
+/* Card Action Buttons (View Details, WhatsApp, More) */
+.card-actions-row,
 .card-action-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  display: flex;
+  align-items: center;
   gap: 6px;
   margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px solid #f1f5f9;
+  padding-top: 6px;
 }
 
-.btn-card-details {
-  background: #2563EB;
+.btn-card-details,
+.btn-card-details-green {
+  background: #00b53f;
   border: none;
   color: white;
-  padding: 7px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -1154,71 +1172,116 @@ button, input, select, textarea {
   flex: 1;
 }
 
-.btn-card-details:hover {
-  background: #1d4ed8;
-}
-
-.btn-card-call {
-  background: #f8fafc;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  padding: 7px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  transition: var(--transition);
-  white-space: nowrap;
-}
-
-.btn-card-call:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-}
-
-.btn-card-chat,
-.btn-card-whatsapp {
-  background: #00b53f;
-  border: none;
-  color: white;
-  padding: 7px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  transition: var(--transition);
-  white-space: nowrap;
-}
-
-.btn-card-chat:hover,
-.btn-card-whatsapp:hover {
+.btn-card-details:hover,
+.btn-card-details-green:hover {
   background: #009634;
   transform: translateY(-1px);
 }
 
-.btn-card-map {
-  background: #e0f2fe;
-  border: 1px solid #bae6fd;
-  color: #0284c7;
-  padding: 7px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
+.btn-card-whatsapp {
+  width: 36px;
+  height: 34px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #25d366;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  cursor: pointer;
   transition: var(--transition);
-  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-card-whatsapp:hover {
+  background: #f0fdf4;
+  border-color: #25d366;
+}
+
+.btn-card-more {
+  width: 30px;
+  height: 34px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #64748b;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.btn-card-more:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+/* Status Badge top-left */
+.card-badge-status {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.card-badge-status.verified {
+  background: #00b53f;
+  color: white;
+}
+
+.card-badge-status.featured {
+  background: #e62e2d;
+  color: white;
+}
+
+.card-badge-status.unverified {
+  background: #f59e0b;
+  color: white;
+}
+
+/* Circular heart button top-right */
+.btn-card-fav,
+.btn-favorite-heart {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 0.95rem;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: all 0.15s ease;
+}
+
+.btn-card-fav:hover,
+.btn-card-fav.active,
+.btn-favorite-heart:hover,
+.btn-favorite-heart.active {
+  color: #ef4444;
+  background: #ffffff;
+  transform: scale(1.08);
 }
 
 .btn-card-map:hover {
@@ -2335,13 +2398,16 @@ button, input, select, textarea {
 /* ================================================================
    SELL ITEM BUTTON — always visible in header
    ================================================================ */
+/* ================================================================
+   SELL ITEM BUTTON — RED button matching reference image
+   ================================================================ */
 .btn-sell-item {
-  background: #F59E0B;
-  color: white !important;
+  background: #e62e2d !important;
+  color: #ffffff !important;
   border: none;
-  padding: 9px 16px;
-  border-radius: var(--radius-md);
-  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 800;
   font-size: 0.88rem;
   cursor: pointer;
   display: inline-flex !important;
@@ -2349,26 +2415,501 @@ button, input, select, textarea {
   gap: 6px;
   transition: var(--transition);
   white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(245,158,11,0.35);
+  box-shadow: 0 2px 8px rgba(230, 46, 45, 0.35);
 }
 
 .btn-sell-item:hover {
-  background: #d97706;
+  background: #cc2524 !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(245,158,11,0.4);
+  box-shadow: 0 4px 12px rgba(230, 46, 45, 0.45);
 }
 
 /* ================================================================
-   CARD GRID — 4 columns on desktop like reference
+   HEADER SEARCH BAR & USER CONTROLS (Matches reference)
    ================================================================ */
-@media (min-width: 1024px) {
-  .property-listings-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+.header-search-bar {
+  border-radius: 8px;
+  border: 1.5px solid #00b53f;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.search-submit-btn {
+  background: #00b53f !important;
+  color: white !important;
+  border: none;
+  padding: 0 18px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.search-submit-btn:hover {
+  background: #009634 !important;
+}
+
+.header-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #064e3b;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   ACCORDION SIDEBAR FILTERS (Matches reference image)
+   ================================================================ */
+.filter-header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.filter-header-title {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-header-title i {
+  color: #00b53f;
+}
+
+.filter-clear-link {
+  color: #00b53f;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.filter-clear-link:hover {
+  text-decoration: underline;
+}
+
+.filter-accordion-section {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 10px 0;
+}
+
+.filter-accordion-section:last-of-type {
+  border-bottom: none;
+}
+
+.filter-accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #1e293b;
+  padding: 4px 0;
+  user-select: none;
+}
+
+.filter-accordion-header .acc-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-accordion-header .acc-title i {
+  color: #00b53f;
+  font-size: 0.9rem;
+  width: 16px;
+  text-align: center;
+}
+
+.filter-accordion-header .acc-icon {
+  font-size: 0.72rem;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+.filter-accordion-section.collapsed .acc-icon {
+  transform: rotate(-90deg);
+}
+
+.filter-accordion-section.collapsed .filter-accordion-body {
+  display: none;
+}
+
+.filter-accordion-body {
+  margin-top: 10px;
+}
+
+.suburb-search-wrapper {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.suburb-search-wrapper i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 0.78rem;
+}
+
+.suburb-search-input {
+  width: 100%;
+  padding: 7px 10px 7px 28px;
+  font-size: 0.8rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  outline: none;
+  background: #f8fafc;
+  box-sizing: border-box;
+}
+
+.suburb-search-input:focus {
+  border-color: #00b53f;
+  background: white;
+}
+
+.filter-checklist-box {
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  scrollbar-width: thin;
+  padding-right: 4px;
+}
+
+.filter-check-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.82rem;
+  color: #334155;
+  cursor: pointer;
+  padding: 2px 0;
+  user-select: none;
+}
+
+.filter-check-item input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #00b53f;
+  margin-right: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.filter-check-item .item-label {
+  font-weight: 500;
+  flex: 1;
+}
+
+.filter-check-item .item-count {
+  color: #94a3b8;
+  font-size: 0.76rem;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.btn-show-more-suburbs {
+  background: none;
+  border: none;
+  color: #00b53f;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 0 2px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-show-more-suburbs:hover {
+  text-decoration: underline;
+}
+
+.price-range-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-box-input {
+  flex: 1;
+  padding: 7px 10px;
+  font-size: 0.82rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  outline: none;
+  width: 45%;
+  box-sizing: border-box;
+}
+
+.price-box-input:focus {
+  border-color: #00b53f;
+}
+
+.amenities-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 8px;
+}
+
+.btn-apply-filters-main {
+  width: 100%;
+  background: #00b53f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  box-shadow: 0 4px 12px rgba(0, 181, 63, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-apply-filters-main:hover {
+  background: #009634;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 181, 63, 0.35);
+}
+
+/* ================================================================
+   GREEN SMS ALERT HERO BANNER (Matches reference image)
+   ================================================================ */
+.green-sms-alert-banner {
+  background: linear-gradient(135deg, #005a2b 0%, #008f43 55%, #007a38 100%);
+  border-radius: 12px;
+  padding: 14px 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 90, 43, 0.2);
+  min-height: 100px;
+}
+
+.green-sms-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 2;
+  flex: 1;
+}
+
+.sms-circle-badge {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: white;
+  color: #006837;
+  font-weight: 900;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+}
+
+.sms-text-block h3 {
+  font-size: 1.12rem;
+  font-weight: 800;
+  margin-bottom: 3px;
+  color: white;
+  letter-spacing: -0.3px;
+}
+
+.sms-text-block p {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 8px;
+}
+
+.btn-sms-alert-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  color: #006837;
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 7px 16px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: all 0.2s ease;
+}
+
+.btn-sms-alert-pill:hover {
+  background: #f0fdf4;
+  transform: translateY(-1px);
+}
+
+.green-sms-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1;
+  position: relative;
+}
+
+.green-sms-right-img {
+  height: 90px;
+  width: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.sms-cursive-text {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  color: white;
+  font-family: 'Brush Script MT', cursive, sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.1;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+  pointer-events: none;
+  text-align: right;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .green-sms-right {
+    display: none;
   }
+}
+
+/* ================================================================
+   RICH SITE FOOTER (Dark Green #072818, Matches reference image)
+   ================================================================ */
+.keja-site-footer {
+  background: #072818;
+  color: #cbd5e1;
+  padding: 44px 20px 24px;
+  margin-top: 50px;
+  font-size: 0.85rem;
+}
+
+.keja-footer-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.4fr;
+  gap: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 992px) {
+  .keja-footer-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 580px) {
+  .keja-footer-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-col-title {
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links-list a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-links-list a:hover {
+  color: #4ade80;
+}
+
+.footer-social-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.footer-social-icons a {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+  transition: background 0.15s;
+}
+
+.footer-social-icons a:hover {
+  background: #00b53f;
+}
+
+.footer-app-badges {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-tagline-script {
+  font-family: 'Brush Script MT', cursive, sans-serif;
+  font-size: 1.35rem;
+  color: #86efac;
+  line-height: 1.2;
+  margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
   .secondary-nav-item { padding: 9px 10px; font-size: 0.78rem; }
   .secondary-nav-item i { display: none; }
-  .btn-sell-item { padding: 7px 10px; font-size: 0.82rem; }
+  .btn-sell-item { padding: 7px 12px; font-size: 0.82rem; }
 }
