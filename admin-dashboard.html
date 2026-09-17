@@ -192,6 +192,31 @@
           Dashboard Overview
         </h1>
       </div>
+      <!-- Admin Global Search Bar -->
+      <div class="admin-global-search-container" id="admin-global-search-container">
+        <div class="admin-search-input-wrapper">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="admin-global-search-input" placeholder="Search users, listings, services, units... (Ctrl + K)" autocomplete="off">
+          <button class="search-clear-btn" id="admin-search-clear-btn" style="display:none;" title="Clear search">&times;</button>
+          <span class="search-key-badge">Ctrl K</span>
+        </div>
+
+        <!-- Floating Global Search Results Dropdown -->
+        <div class="admin-search-dropdown" id="admin-search-dropdown" style="display: none;">
+          <div class="search-category-filter" id="search-category-filter">
+            <button class="search-filter-pill active" data-filter="all">All</button>
+            <button class="search-filter-pill" data-filter="users"><i class="fas fa-users"></i> Users</button>
+            <button class="search-filter-pill" data-filter="properties"><i class="fas fa-home"></i> Properties</button>
+            <button class="search-filter-pill" data-filter="services"><i class="fas fa-tools"></i> Services</button>
+            <button class="search-filter-pill" data-filter="marketplace"><i class="fas fa-shopping-bag"></i> Marketplace</button>
+            <button class="search-filter-pill" data-filter="buildings"><i class="fas fa-building"></i> Buildings</button>
+          </div>
+          <div class="admin-search-results" id="admin-search-results">
+            <div class="search-hint">Type at least 2 characters to search across KejaMarket...</div>
+          </div>
+        </div>
+      </div>
+
       <div class="admin-user-info">
         <div class="user-details">
           <div id="admin-user-name" class="user-name">Administrator</div>

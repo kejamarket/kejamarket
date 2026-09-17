@@ -1772,12 +1772,19 @@ const KejaEnhancedPortal = {
       }
 
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
+        const rawUrl = e.target.result;
+        let finalUrl = rawUrl;
+        if (window.kejaWatermark && typeof window.kejaWatermark.applyWatermarkToImage === 'function') {
+          try {
+            finalUrl = await window.kejaWatermark.applyWatermarkToImage(rawUrl);
+          } catch (err) {}
+        }
         const photoItem = document.createElement('div');
         photoItem.className = 'media-item';
         photoItem.innerHTML = `
           <div class="media-thumbnail">
-            <img src="${e.target.result}" alt="Property photo ${index + 1}">
+            <img src="${finalUrl}" alt="Property photo ${index + 1}">
             <button type="button" class="remove-media" onclick="this.parentElement.parentElement.remove()">
               <i class="fas fa-times"></i>
             </button>
@@ -1820,10 +1827,13 @@ const KejaEnhancedPortal = {
       const videoItem = document.createElement('div');
       videoItem.className = 'media-item';
       videoItem.innerHTML = `
-        <div class="media-thumbnail video-thumbnail">
-          <video src="${e.target.result}" controls>
+        <div class="media-thumbnail video-thumbnail" style="position:relative; overflow:hidden; border-radius:8px;">
+          <video src="${e.target.result}" controls controlsList="nodownload" oncontextmenu="return false;" style="width:100%; border-radius:6px; display:block;">
             Your browser does not support video preview.
           </video>
+          <div class="keja-video-watermark-overlay" style="position:absolute; top:8px; right:8px; pointer-events:none; background:rgba(15,23,42,0.85); color:#fff; padding:3px 8px; border-radius:5px; font-size:0.65rem; font-weight:700; border:1px solid rgba(0,181,63,0.8); z-index:10; display:flex; align-items:center; gap:5px;">
+            <span style="width:6px; height:6px; border-radius:50%; background:#00b53f; display:inline-block;"></span>kejamarket.co.ke
+          </div>
           <button type="button" class="remove-media" onclick="this.parentElement.parentElement.remove(); document.getElementById('property-video').value = '';">
             <i class="fas fa-times"></i>
           </button>
@@ -1865,12 +1875,19 @@ const KejaEnhancedPortal = {
       }
 
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
+        const rawUrl = e.target.result;
+        let finalUrl = rawUrl;
+        if (window.kejaWatermark && typeof window.kejaWatermark.applyWatermarkToImage === 'function') {
+          try {
+            finalUrl = await window.kejaWatermark.applyWatermarkToImage(rawUrl);
+          } catch (err) {}
+        }
         const photoItem = document.createElement('div');
         photoItem.className = 'media-item';
         photoItem.innerHTML = `
           <div class="media-thumbnail">
-            <img src="${e.target.result}" alt="Unit photo ${index + 1}">
+            <img src="${finalUrl}" alt="Unit photo ${index + 1}">
             <button type="button" class="remove-media" onclick="this.parentElement.parentElement.remove()">
               <i class="fas fa-times"></i>
             </button>
@@ -1917,10 +1934,13 @@ const KejaEnhancedPortal = {
         const videoItem = document.createElement('div');
         videoItem.className = 'media-item';
         videoItem.innerHTML = `
-          <div class="media-thumbnail video-thumbnail">
-            <video src="${e.target.result}" controls>
+          <div class="media-thumbnail video-thumbnail" style="position:relative; overflow:hidden; border-radius:8px;">
+            <video src="${e.target.result}" controls controlsList="nodownload" oncontextmenu="return false;" style="width:100%; border-radius:6px; display:block;">
               Your browser does not support video preview.
             </video>
+            <div class="keja-video-watermark-overlay" style="position:absolute; top:8px; right:8px; pointer-events:none; background:rgba(15,23,42,0.85); color:#fff; padding:3px 8px; border-radius:5px; font-size:0.65rem; font-weight:700; border:1px solid rgba(0,181,63,0.8); z-index:10; display:flex; align-items:center; gap:5px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:#00b53f; display:inline-block;"></span>kejamarket.co.ke
+            </div>
             <button type="button" class="remove-media" onclick="this.parentElement.parentElement.remove(); document.getElementById('unit-video').value = '';">
               <i class="fas fa-times"></i>
             </button>
@@ -2079,6 +2099,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+Object.assign(KejaEnhancedPortal, {
   /**
    * Render guest inquiries for BNB hosts
    */
@@ -2206,3 +2227,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add active class to selected button
     event.target.classList.add('active');
   }
+});

@@ -156,9 +156,7 @@ app.get('/offline', (req, res) => res.sendFile(path.join(__dirname, 'offline.htm
 
 let store;
 async function initializeDatabase() {
-  console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
   console.log('🚀 KEJAMARKET DATABASE INITIALIZATION');
-  console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
   
   const POOLER_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
   
@@ -197,7 +195,6 @@ async function initializeDatabase() {
         store = require('./db/store.js');
       }
     }
-    console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
   } catch (error) {
     console.error('⚠️ Database initialization error:', error.message);
     try {
@@ -491,7 +488,7 @@ app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket verification code is ${otp}. Valid for 5 minutes. Enter this code to verify your ${role === 'agency' ? 'Agency' : (role === 'landlord' ? 'Landlord' : 'Tenant')} account.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
+    console.log(`[SIGNUP] OTP sent to: +${cleanPhone}`);
 
     res.json({
       success: true,
@@ -612,7 +609,7 @@ app.post('/api/auth/login-send-otp', otpLimiter, async (req, res) => {
     const smsMessage = `Your KejaMarket sign-in verification code is ${otp}. Valid for 5 minutes. Do not share this code.`;
     await sendRealSMS(cleanPhone, smsMessage);
 
-    console.log("[LOGIN] OTP sent to: +${cleanPhone}");
+    console.log(`[LOGIN] OTP sent to: +${cleanPhone}`);
 
     res.json({
       success: true,
@@ -2423,6 +2420,18 @@ app.post('/api/upload/single', optionalAuth, async (req, res) => {
   }
 });
 
+// POST /api/upload/video — upload video with kejamarket.co.ke watermark overlay
+app.post('/api/upload/video', uploadLimiter, optionalAuth, async (req, res) => {
+  try {
+    const { video, folder } = req.body;
+    if (!video) return res.status(400).json({ success: false, message: 'No video provided.' });
+    const result = await uploadService.uploadVideo(video, folder || 'kejamarket/videos');
+    res.json({ success: true, ...result });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Video upload failed: ' + err.message });
+  }
+});
+
 // GET /api/health
 app.get('/api/health', async (req, res) => {
   try {
@@ -2528,6 +2537,124 @@ app.get('/api/admin/overview', requireAuth, async (req, res) => {
     res.json({ success: true, ...stats });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/global-search — universal search across all entities (Users, Properties, Services, Marketplace, Buildings)
+app.get('/api/admin/global-search', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+
+    const q = (req.query.q || '').trim();
+    if (!q || q.length < 2) {
+      return res.json({ success: true, query: q, total: 0, results: { users: [], properties: [], services: [], marketplace: [], buildings: [] } });
+    }
+
+    const pattern = `%${q}%`;
+    const results = {
+      users: [],
+      properties: [],
+      services: [],
+      marketplace: [],
+      buildings: []
+    };
+
+    if (store && store.query) {
+      // 1. Users
+      try {
+        const uRes = await store.query(
+          `SELECT id, name, email, phone, role, is_admin as "isAdmin", created_at as "createdAt"
+           FROM users 
+           WHERE name ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1 OR role ILIKE $1 
+           ORDER BY created_at DESC LIMIT 6`,
+          [pattern]
+        );
+        results.users = uRes.rows || [];
+      } catch (err) {
+        console.warn('Global search users error:', err.message);
+      }
+
+      // 2. Properties
+      try {
+        const pRes = await store.query(
+          `SELECT id, title, location, estate_suburb as "estateSuburb", price, property_type as "type", bedrooms, status, is_verified as "isVerified"
+           FROM properties 
+           WHERE title ILIKE $1 OR location ILIKE $1 OR COALESCE(estate_suburb, '') ILIKE $1 OR COALESCE(property_type, '') ILIKE $1
+           ORDER BY created_at DESC LIMIT 6`,
+          [pattern]
+        );
+        results.properties = pRes.rows || [];
+      } catch (err) {
+        console.warn('Global search properties error:', err.message);
+      }
+
+      // 3. Services
+      try {
+        const sRes = await store.query(
+          `SELECT id, title, service_type as "serviceType", location, provider_name as "providerName", price_min as "priceMin", price_max as "priceMax"
+           FROM services 
+           WHERE title ILIKE $1 OR COALESCE(service_type, '') ILIKE $1 OR COALESCE(location, '') ILIKE $1 OR COALESCE(provider_name, '') ILIKE $1
+           ORDER BY created_at DESC LIMIT 6`,
+          [pattern]
+        );
+        results.services = sRes.rows || [];
+      } catch (err) {
+        console.warn('Global search services error:', err.message);
+      }
+
+      // 4. Marketplace
+      try {
+        const mRes = await store.query(
+          `SELECT id, title, category, price, location, seller_name as "sellerName", status
+           FROM marketplace_items 
+           WHERE title ILIKE $1 OR COALESCE(category, '') ILIKE $1 OR COALESCE(location, '') ILIKE $1 OR COALESCE(seller_name, '') ILIKE $1
+           ORDER BY created_at DESC LIMIT 6`,
+          [pattern]
+        );
+        results.marketplace = mRes.rows || [];
+      } catch (err) {
+        console.warn('Global search marketplace error:', err.message);
+      }
+
+      // 5. Buildings
+      try {
+        const bRes = await store.query(
+          `SELECT id, name, location, units_count as "unitsCount", landlord_name as "landlordName"
+           FROM buildings 
+           WHERE name ILIKE $1 OR COALESCE(location, '') ILIKE $1 OR COALESCE(landlord_name, '') ILIKE $1
+           ORDER BY created_at DESC LIMIT 6`,
+          [pattern]
+        );
+        results.buildings = bRes.rows || [];
+      } catch (err) {
+        // Buildings table might be optional
+      }
+    } else {
+      // Fallback
+      if (store.getAllUsers) {
+        const allUsers = await store.getAllUsers();
+        results.users = allUsers.filter(u => 
+          (u.name && u.name.toLowerCase().includes(q.toLowerCase())) ||
+          (u.email && u.email.toLowerCase().includes(q.toLowerCase())) ||
+          (u.phone && u.phone.includes(q))
+        ).slice(0, 6);
+      }
+      if (store.getAllProperties) {
+        const allProps = await store.getAllProperties();
+        results.properties = allProps.filter(p => 
+          (p.title && p.title.toLowerCase().includes(q.toLowerCase())) ||
+          (p.location && p.location.toLowerCase().includes(q.toLowerCase()))
+        ).slice(0, 6);
+      }
+    }
+
+    const total = results.users.length + results.properties.length + results.services.length + results.marketplace.length + results.buildings.length;
+    res.json({ success: true, query: q, total, results });
+  } catch (err) {
+    console.error('Global search error:', err);
+    res.status(500).json({ success: false, message: 'Global search failed: ' + err.message });
   }
 });
 
@@ -4610,11 +4737,9 @@ async function startServer() {
   await initializeDatabase();
 
   const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
-    console.log(`ðŸš€ KejaMarket Production API Server running on port ${PORT}`);
-    console.log(`ðŸ”— Web Application: http://localhost:${PORT}`);
-    console.log(`ðŸ“± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
-    console.log("[SIGNUP] OTP sent to: +${cleanPhone}");
+    console.log(`🚀 KejaMarket Production API Server running on port ${PORT}`);
+    console.log(`🔗 Web Application: http://localhost:${PORT}`);
+    console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
 
     const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
     const PING_INTERVAL = 9 * 60 * 1000;

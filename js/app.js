@@ -1026,8 +1026,17 @@ class NairobiRentalsApp {
     const remainingSlots = maxPhotos - inputEl._uploadedPhotos.length;
     files.slice(0, remainingSlots).forEach(file => {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        inputEl._uploadedPhotos.push(e.target.result);
+      reader.onload = async (e) => {
+        const rawUrl = e.target.result;
+        let finalUrl = rawUrl;
+        if (window.kejaWatermark && typeof window.kejaWatermark.applyWatermarkToImage === 'function') {
+          try {
+            finalUrl = await window.kejaWatermark.applyWatermarkToImage(rawUrl);
+          } catch (err) {
+            console.warn('Watermark failed, using raw:', err);
+          }
+        }
+        inputEl._uploadedPhotos.push(finalUrl);
         this.renderFormPhotoPreviews(inputEl, previewGrid, maxPhotos);
       };
       reader.readAsDataURL(file);
@@ -1040,6 +1049,7 @@ class NairobiRentalsApp {
       <div style="position: relative; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 2px solid #00b53f;">
         <img src="${url}" style="width: 100%; height: 100%; object-fit: cover;">
         ${idx === 0 ? '<span style="position: absolute; bottom: 0; left: 0; right: 0; background: #00b53f; color: white; font-size: 0.6rem; text-align: center; font-weight: 700;">COVER</span>' : ''}
+        <span style="position: absolute; top: 2px; left: 2px; background: rgba(15,23,42,0.85); color: #fff; font-size: 0.52rem; font-weight: 700; padding: 1px 3px; border-radius: 2px; border: 1px solid rgba(0,181,63,0.8);">kejamarket.co.ke</span>
         <button type="button" style="position: absolute; top: 2px; right: 2px; background: rgba(220,38,38,0.9); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 0.7rem;" onclick="app.removeFormPhoto('${inputEl.id}', '${previewGrid.id}', ${idx}, ${maxPhotos})">&times;</button>
       </div>
     `).join('');
@@ -1080,17 +1090,26 @@ class NairobiRentalsApp {
       }
 
       const reader = new FileReader();
-      reader.onload = (e) => {
-        inputEl._uploadedVideo = { url: e.target.result, duration: Math.round(duration) };
+      reader.onload = async (e) => {
+        let posterUrl = '';
+        if (window.kejaWatermark && typeof window.kejaWatermark.generateVideoPoster === 'function') {
+          try {
+            posterUrl = await window.kejaWatermark.generateVideoPoster(file);
+          } catch (err) {}
+        }
+        inputEl._uploadedVideo = { url: e.target.result, duration: Math.round(duration), poster: posterUrl };
         previewContainer.innerHTML = `
           <div style="position: relative; width: 160px; border-radius: 8px; overflow: hidden; background: #000; border: 2px solid #7c3aed;">
-            <video src="${e.target.result}" style="width: 100%; height: 95px; object-fit: cover;" controls></video>
+            <video src="${e.target.result}" ${posterUrl ? `poster="${posterUrl}"` : ''} controlsList="nodownload" oncontextmenu="return false;" style="width: 100%; height: 95px; object-fit: cover;" controls></video>
+            <span style="position: absolute; top: 4px; left: 4px; background: rgba(15,23,42,0.85); color: #fff; font-size: 0.58rem; font-weight: 700; padding: 1px 5px; border-radius: 3px; border: 1px solid rgba(0,181,63,0.8); z-index: 5;">
+              <span style="display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #00b53f; margin-right: 3px;"></span>kejamarket.co.ke
+            </span>
             <span style="position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">
               ${Math.round(duration)}s
             </span>
-            <button type="button" style="position: absolute; top: 4px; right: 4px; background: rgba(220,38,38,0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 0.75rem;" onclick="document.getElementById('${inputEl.id}').value = ''; document.getElementById('${inputEl.id}')._uploadedVideo = null; document.getElementById('${previewId}').innerHTML = '';">&times;</button>
+            <button type="button" style="position: absolute; top: 4px; right: 4px; background: rgba(220,38,38,0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 0.75rem; z-index: 6;" onclick="document.getElementById('${inputEl.id}').value = ''; document.getElementById('${inputEl.id}')._uploadedVideo = null; document.getElementById('${previewId}').innerHTML = '';">&times;</button>
           </div>`;
-        this.showToast(`Video tour attached (${Math.round(duration)}s)!`, 'info');
+        this.showToast(`Video tour attached (${Math.round(duration)}s) with kejamarket.co.ke watermark!`, 'info');
       };
       reader.readAsDataURL(file);
     };
@@ -1886,8 +1905,12 @@ class NairobiRentalsApp {
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
               ${p.videos.map((v, i) => `
-                <div style="flex: 1; min-width: 240px; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-                  <video src="${v.url || v}" controls playsinline style="width: 100%; max-height: 220px; object-fit: contain; display: block;"></video>
+                <div style="flex: 1; min-width: 240px; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: relative;">
+                  <video src="${v.url || v}" ${v.poster ? `poster="${v.poster}"` : ''} controls playsinline controlsList="nodownload" oncontextmenu="return false;" style="width: 100%; max-height: 220px; object-fit: contain; display: block;"></video>
+                  <div class="video-watermark-overlay" style="position: absolute; top: 10px; right: 10px; pointer-events: none; background: rgba(15, 23, 42, 0.85); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; display: flex; align-items: center; gap: 6px; border: 1.5px solid rgba(0, 181, 63, 0.85); box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 10; font-family: 'Montserrat', 'Inter', sans-serif;">
+                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #00b53f; display: inline-block; box-shadow: 0 0 6px #00b53f;"></span>
+                    kejamarket.co.ke
+                  </div>
                   <div style="padding: 6px 10px; background: #1e1b4b; color: #c084fc; font-size: 0.75rem; font-weight: 600; display: flex; justify-content: space-between;">
                     <span><i class="fas fa-play-circle"></i> Video Tour #${i + 1}</span>
                     <span>${v.duration ? `Duration: ${Math.floor(v.duration / 60)}:${(v.duration % 60).toString().padStart(2, '0')}` : 'Max 1m 30s'}</span>
@@ -3091,7 +3114,7 @@ class NairobiRentalsApp {
     const uploadedVideo = (serviceVideoInput && serviceVideoInput._uploadedVideo) ? serviceVideoInput._uploadedVideo : null;
 
     const images = [...uploadedPhotos];
-    if (uploadedVideo) images.push({ url: uploadedVideo.url, type: 'video', duration: uploadedVideo.duration });
+    if (uploadedVideo) images.push({ url: uploadedVideo.url, type: 'video', duration: uploadedVideo.duration, poster: uploadedVideo.poster });
 
     try {
       const token = window.kejaAuth.getToken();
@@ -3160,7 +3183,7 @@ class NairobiRentalsApp {
     const uploadedVideo = (mktVideoInput && mktVideoInput._uploadedVideo) ? mktVideoInput._uploadedVideo : null;
 
     const images = [...uploadedPhotos];
-    if (uploadedVideo) images.push({ url: uploadedVideo.url, type: 'video', duration: uploadedVideo.duration });
+    if (uploadedVideo) images.push({ url: uploadedVideo.url, type: 'video', duration: uploadedVideo.duration, poster: uploadedVideo.poster });
 
     try {
       const token = window.kejaAuth.getToken();

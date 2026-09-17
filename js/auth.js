@@ -1,4 +1,4 @@
-﻿/**
+/**
  * KejaMarket Ã¢â‚¬â€œ Real Authentication Engine & Anti-Fraud Phone Verification
  * Connected to live backend JWT + Bcrypt API (/api/auth)
  * Handles phone SMS OTP verification for Tenant, Landlord, and Agency sign-up & sign-in.
@@ -958,8 +958,13 @@ const kejaAuth = (() => {
         return;
       }
 
-      // All other roles â†’ Unified User Dashboard first
-      // The dashboard has role-aware deep links to landlord portal / service portal / browse
+      // Tenant / Buyer: DO NOT auto-pop dashboard modal upon login/signup.
+      // It remains accessible inside their Profile dropdown.
+      if (user.role === 'tenant' || user.role === 'buyer') {
+        return;
+      }
+
+      // Landlord / Agency / Service roles → Unified User Dashboard
       if (window.kejaDashboard && typeof window.kejaDashboard.open === 'function') {
         window.kejaDashboard.open();
       } else {

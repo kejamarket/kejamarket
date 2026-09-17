@@ -231,9 +231,17 @@ class LandlordManager {
 
     Array.from(files).slice(0, 16).forEach(file => {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        const imgUrl = e.target.result;
-        this.uploadedImages.push(imgUrl);
+      reader.onload = async (e) => {
+        const rawUrl = e.target.result;
+        let finalUrl = rawUrl;
+        if (window.kejaWatermark && typeof window.kejaWatermark.applyWatermarkToImage === 'function') {
+          try {
+            finalUrl = await window.kejaWatermark.applyWatermarkToImage(rawUrl);
+          } catch (err) {
+            console.warn('Watermark processing failed, using raw image:', err);
+          }
+        }
+        this.uploadedImages.push(finalUrl);
         this.renderPhotoPreviews();
       };
       reader.readAsDataURL(file);
@@ -273,16 +281,23 @@ class LandlordManager {
         }
 
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = async (e) => {
           const videoDataUrl = e.target.result;
+          let posterUrl = '';
+          if (window.kejaWatermark && typeof window.kejaWatermark.generateVideoPoster === 'function') {
+            try {
+              posterUrl = await window.kejaWatermark.generateVideoPoster(file);
+            } catch (err) {}
+          }
           this.uploadedVideos.push({
             url: videoDataUrl,
             duration: Math.round(duration),
-            name: file.name
+            name: file.name,
+            poster: posterUrl
           });
           this.renderVideoPreviews();
           if (window.app) {
-            window.app.showToast(`🎥 Video tour added (${Math.round(duration)}s)!`, 'success');
+            window.app.showToast(`🎥 Video tour added (${Math.round(duration)}s) with kejamarket.co.ke watermark!`, 'success');
           }
         };
         reader.readAsDataURL(file);
@@ -302,8 +317,8 @@ class LandlordManager {
     previewGrid.innerHTML = this.uploadedImages.map((url, idx) => `
       <div class="photo-preview-item" style="position:relative; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; height:80px;">
         <img src="${url}" alt="Upload preview ${idx+1}" style="width:100%; height:100%; object-fit:cover;">
-        <span class="watermark-tag" style="position:absolute; bottom:2px; left:2px; background:rgba(0,0,0,0.65); color:#fff; font-size:0.6rem; padding:1px 4px; border-radius:3px;">
-          <i class="fas fa-shield-alt"></i> KEJAMARKET
+        <span class="watermark-tag" style="position:absolute; bottom:2px; left:2px; background:rgba(15,23,42,0.85); color:#fff; font-size:0.58rem; font-weight:700; padding:1px 4px; border-radius:3px; border:1px solid rgba(0,181,63,0.8);">
+          <i class="fas fa-shield-alt" style="color:#00b53f;"></i> kejamarket.co.ke
         </span>
         <button type="button" onclick="landlordManager.removePhoto(${idx})" style="position:absolute; top:2px; right:2px; background:rgba(239,68,68,0.85); color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:0.65rem; cursor:pointer; display:flex; align-items:center; justify-content:center;">&times;</button>
       </div>
@@ -319,8 +334,11 @@ class LandlordManager {
       const secs = (v.duration % 60).toString().padStart(2, '0');
       return `
         <div class="video-preview-item" style="position:relative; border-radius:8px; overflow:hidden; border:2px solid #c084fc; width:140px; height:90px; background:#000;">
-          <video src="${v.url}" style="width:100%; height:100%; object-fit:cover;" muted></video>
-          <span style="position:absolute; bottom:4px; left:4px; background:rgba(124,58,237,0.85); color:#fff; font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:4px; display:flex; align-items:center; gap:4px;">
+          <video src="${v.url}" ${v.poster ? `poster="${v.poster}"` : ''} controlsList="nodownload" oncontextmenu="return false;" style="width:100%; height:100%; object-fit:cover;" muted></video>
+          <span class="watermark-tag" style="position:absolute; top:3px; left:3px; background:rgba(15,23,42,0.85); color:#fff; font-size:0.58rem; font-weight:700; padding:1px 4px; border-radius:3px; border:1px solid rgba(0,181,63,0.8); z-index:4;">
+            <span style="display:inline-block; width:5px; height:5px; border-radius:50%; background:#00b53f; margin-right:3px;"></span>kejamarket.co.ke
+          </span>
+          <span style="position:absolute; bottom:4px; left:4px; background:rgba(124,58,237,0.85); color:#fff; font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:4px; display:flex; align-items:center; gap:4px; z-index:4;">
             <i class="fas fa-play" style="font-size:0.55rem;"></i> ${mins}:${secs}
           </span>
           <button type="button" onclick="landlordManager.removeVideo(${idx})" style="position:absolute; top:3px; right:3px; background:rgba(239,68,68,0.9); color:white; border:none; border-radius:50%; width:22px; height:22px; font-size:0.75rem; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:5;">&times;</button>

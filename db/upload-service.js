@@ -76,6 +76,48 @@ async function uploadMultipleImages(images, folder = 'kejamarket/properties') {
 }
 
 /**
+ * Upload a video to Cloudinary with kejamarket.co.ke watermark overlay
+ */
+async function uploadVideo(videoData, folder = 'kejamarket/videos') {
+  if (!cloudinaryConfigured) {
+    return { success: true, url: videoData, cdn: false };
+  }
+
+  try {
+    const result = await cloudinary.uploader.upload(videoData, {
+      folder,
+      resource_type: 'video',
+      transformation: [
+        { width: 1280, height: 720, crop: 'limit' },
+        {
+          overlay: {
+            font_family: 'Arial',
+            font_size: 26,
+            font_weight: 'bold',
+            text: 'kejamarket.co.ke'
+          },
+          gravity: 'south_east',
+          x: 20,
+          y: 20,
+          opacity: 80
+        }
+      ]
+    });
+
+    return {
+      success: true,
+      url: result.secure_url,
+      publicId: result.public_id,
+      duration: result.duration,
+      cdn: true
+    };
+  } catch (err) {
+    console.error('Cloudinary video upload error:', err.message);
+    return { success: true, url: videoData, cdn: false, error: err.message };
+  }
+}
+
+/**
  * Delete an image from Cloudinary by public ID
  */
 async function deleteImage(publicId) {
@@ -93,6 +135,7 @@ module.exports = {
   initCloudinary,
   uploadImage,
   uploadMultipleImages,
+  uploadVideo,
   deleteImage,
   isConfigured: () => cloudinaryConfigured
 };

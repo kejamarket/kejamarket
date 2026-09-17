@@ -663,12 +663,19 @@ const KejaEnhancedAuth = {
       }
 
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
+        const rawUrl = e.target.result;
+        let finalUrl = rawUrl;
+        if (window.kejaWatermark && typeof window.kejaWatermark.applyWatermarkToImage === 'function') {
+          try {
+            finalUrl = await window.kejaWatermark.applyWatermarkToImage(rawUrl);
+          } catch (err) {}
+        }
         const photoItem = document.createElement('div');
         photoItem.className = 'media-item';
         photoItem.innerHTML = `
           <div class="media-thumbnail">
-            <img src="${e.target.result}" alt="Service work ${index + 1}">
+            <img src="${finalUrl}" alt="Service work ${index + 1}">
             <button type="button" class="remove-media" onclick="this.parentElement.parentElement.remove()">
               <i class="fas fa-times"></i>
             </button>

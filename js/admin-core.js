@@ -50,6 +50,9 @@ const AdminCore = (() => {
       // Setup event listeners
       setupEventListeners();
       
+      // Setup Global Search
+      setupGlobalSearch();
+
       // Load dashboard by default
       await navigate('dashboard');
       
@@ -991,11 +994,307 @@ const AdminCore = (() => {
     }
   }
 
+  // ============================================================
+  // GLOBAL SEARCH CONTROLLER
+  // ============================================================
+  let searchDebounceTimer = null;
+  let activeSearchCategory = 'all';
+  let lastSearchResults = null;
+
+  function setupGlobalSearch() {
+    const searchInput = document.getElementById('admin-global-search-input');
+    const clearBtn = document.getElementById('admin-search-clear-btn');
+    const dropdown = document.getElementById('admin-search-dropdown');
+    const resultsContainer = document.getElementById('admin-search-results');
+    const filterPills = document.querySelectorAll('.search-filter-pill');
+
+    if (!searchInput) return;
+
+    // Keyboard shortcut (Ctrl + K or Cmd + K)
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+      if (e.key === 'Escape') {
+        closeGlobalSearch();
+      }
+    });
+
+    // Category filter buttons
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeSearchCategory = pill.dataset.filter || 'all';
+        if (lastSearchResults) {
+          renderSearchResults(lastSearchResults, activeSearchCategory);
+        }
+      });
+    });
+
+    // Input events
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim();
+      if (clearBtn) clearBtn.style.display = query ? 'block' : 'none';
+
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+
+      if (query.length < 2) {
+        if (dropdown) dropdown.style.display = query.length > 0 ? 'block' : 'none';
+        if (resultsContainer) {
+          resultsContainer.innerHTML = '<div class="search-hint">Type at least 2 characters to search across KejaMarket...</div>';
+        }
+        lastSearchResults = null;
+        return;
+      }
+
+      if (dropdown) dropdown.style.display = 'block';
+      if (resultsContainer) {
+        resultsContainer.innerHTML = '<div class="search-hint"><i class="fas fa-spinner fa-spin"></i> Searching database...</div>';
+      }
+
+      searchDebounceTimer = setTimeout(() => {
+        performGlobalSearch(query);
+      }, 250);
+    });
+
+    searchInput.addEventListener('focus', () => {
+      if (searchInput.value.trim().length >= 2 && dropdown) {
+        dropdown.style.display = 'block';
+      }
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        clearBtn.style.display = 'none';
+        closeGlobalSearch();
+        searchInput.focus();
+      });
+    }
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('admin-global-search-container');
+      if (container && !container.contains(e.target)) {
+        closeGlobalSearch();
+      }
+    });
+  }
+
+  function closeGlobalSearch() {
+    const dropdown = document.getElementById('admin-search-dropdown');
+    if (dropdown) dropdown.style.display = 'none';
+  }
+
+  async function performGlobalSearch(query) {
+    const token = localStorage.getItem('keja_token');
+    const resultsContainer = document.getElementById('admin-search-results');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/global-search?q=${encodeURIComponent(query)}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) throw new Error('Search failed');
+
+      const data = await res.json();
+      lastSearchResults = data.results || {};
+      renderSearchResults(lastSearchResults, activeSearchCategory);
+    } catch (err) {
+      console.error('Search error:', err);
+      if (resultsContainer) {
+        resultsContainer.innerHTML = `
+          <div class="search-empty-state">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Search error</p>
+            <small>${err.message}</small>
+          </div>
+        `;
+      }
+    }
+  }
+
+  function renderSearchResults(results, category) {
+    const resultsContainer = document.getElementById('admin-search-results');
+    if (!resultsContainer) return;
+
+    const sections = [];
+
+    const showUsers = category === 'all' || category === 'users';
+    const showProps = category === 'all' || category === 'properties';
+    const showServices = category === 'all' || category === 'services';
+    const showMarketplace = category === 'all' || category === 'marketplace';
+    const showBuildings = category === 'all' || category === 'buildings';
+
+    let totalShown = 0;
+
+    // Users
+    if (showUsers && results.users && results.users.length > 0) {
+      totalShown += results.users.length;
+      sections.push(`
+        <div class="search-section">
+          <div class="search-section-header">
+            <span><i class="fas fa-users"></i> Users</span>
+            <span>${results.users.length} match${results.users.length > 1 ? 'es' : ''}</span>
+          </div>
+          ${results.users.map(u => `
+            <div class="search-result-item" onclick="AdminCore.navigate('users'); AdminCore.closeGlobalSearch();">
+              <div class="search-result-icon user"><i class="fas fa-user"></i></div>
+              <div class="search-result-info">
+                <div class="search-result-title">${escapeHtml(u.name || 'User')}</div>
+                <div class="search-result-sub">
+                  <span>${escapeHtml(u.phone || u.email || 'No contact')}</span>
+                  ${u.email ? `<span>• ${escapeHtml(u.email)}</span>` : ''}
+                </div>
+              </div>
+              <span class="search-result-badge ${u.isAdmin ? 'admin' : (u.role || 'tenant')}">${u.isAdmin ? 'ADMIN' : (u.role || 'user')}</span>
+            </div>
+          `).join('')}
+        </div>
+      `);
+    }
+
+    // Properties
+    if (showProps && results.properties && results.properties.length > 0) {
+      totalShown += results.properties.length;
+      sections.push(`
+        <div class="search-section">
+          <div class="search-section-header">
+            <span><i class="fas fa-home"></i> Properties</span>
+            <span>${results.properties.length} match${results.properties.length > 1 ? 'es' : ''}</span>
+          </div>
+          ${results.properties.map(p => `
+            <div class="search-result-item" onclick="AdminCore.navigate('properties'); AdminCore.closeGlobalSearch();">
+              <div class="search-result-icon property"><i class="fas fa-building"></i></div>
+              <div class="search-result-info">
+                <div class="search-result-title">${escapeHtml(p.title || 'Property Listing')}</div>
+                <div class="search-result-sub">
+                  <span>KSh ${Number(p.price || 0).toLocaleString()}</span>
+                  <span>• ${escapeHtml(p.location || 'Nairobi')}</span>
+                  ${p.estateSuburb ? `<span>(${escapeHtml(p.estateSuburb)})</span>` : ''}
+                </div>
+              </div>
+              <span class="search-result-badge ${p.isVerified ? 'verified' : ''}">${p.type || 'Rental'}</span>
+            </div>
+          `).join('')}
+        </div>
+      `);
+    }
+
+    // Services
+    if (showServices && results.services && results.services.length > 0) {
+      totalShown += results.services.length;
+      sections.push(`
+        <div class="search-section">
+          <div class="search-section-header">
+            <span><i class="fas fa-tools"></i> Services</span>
+            <span>${results.services.length} match${results.services.length > 1 ? 'es' : ''}</span>
+          </div>
+          ${results.services.map(s => `
+            <div class="search-result-item" onclick="AdminCore.navigate('services'); AdminCore.closeGlobalSearch();">
+              <div class="search-result-icon service"><i class="fas fa-wrench"></i></div>
+              <div class="search-result-info">
+                <div class="search-result-title">${escapeHtml(s.title || 'Service')}</div>
+                <div class="search-result-sub">
+                  <span>${escapeHtml(s.serviceType || 'Service')}</span>
+                  <span>• By ${escapeHtml(s.providerName || 'Provider')}</span>
+                  ${s.location ? `<span>• ${escapeHtml(s.location)}</span>` : ''}
+                </div>
+              </div>
+              <span class="search-result-badge service">${escapeHtml(s.serviceType || 'Service')}</span>
+            </div>
+          `).join('')}
+        </div>
+      `);
+    }
+
+    // Marketplace
+    if (showMarketplace && results.marketplace && results.marketplace.length > 0) {
+      totalShown += results.marketplace.length;
+      sections.push(`
+        <div class="search-section">
+          <div class="search-section-header">
+            <span><i class="fas fa-shopping-bag"></i> Marketplace Items</span>
+            <span>${results.marketplace.length} match${results.marketplace.length > 1 ? 'es' : ''}</span>
+          </div>
+          ${results.marketplace.map(m => `
+            <div class="search-result-item" onclick="AdminCore.navigate('marketplace'); AdminCore.closeGlobalSearch();">
+              <div class="search-result-icon marketplace"><i class="fas fa-tag"></i></div>
+              <div class="search-result-info">
+                <div class="search-result-title">${escapeHtml(m.title || 'Marketplace Item')}</div>
+                <div class="search-result-sub">
+                  <span>KSh ${Number(m.price || 0).toLocaleString()}</span>
+                  <span>• ${escapeHtml(m.category || 'Item')}</span>
+                  ${m.location ? `<span>• ${escapeHtml(m.location)}</span>` : ''}
+                </div>
+              </div>
+              <span class="search-result-badge">${escapeHtml(m.category || 'For Sale')}</span>
+            </div>
+          `).join('')}
+        </div>
+      `);
+    }
+
+    // Buildings
+    if (showBuildings && results.buildings && results.buildings.length > 0) {
+      totalShown += results.buildings.length;
+      sections.push(`
+        <div class="search-section">
+          <div class="search-section-header">
+            <span><i class="fas fa-building"></i> Buildings</span>
+            <span>${results.buildings.length} match${results.buildings.length > 1 ? 'es' : ''}</span>
+          </div>
+          ${results.buildings.map(b => `
+            <div class="search-result-item" onclick="AdminCore.navigate('buildings'); AdminCore.closeGlobalSearch();">
+              <div class="search-result-icon building"><i class="fas fa-city"></i></div>
+              <div class="search-result-info">
+                <div class="search-result-title">${escapeHtml(b.name || 'Building')}</div>
+                <div class="search-result-sub">
+                  <span>${escapeHtml(b.location || '')}</span>
+                  ${b.unitsCount ? `<span>• ${b.unitsCount} units</span>` : ''}
+                </div>
+              </div>
+              <span class="search-result-badge">BUILDING</span>
+            </div>
+          `).join('')}
+        </div>
+      `);
+    }
+
+    if (totalShown === 0) {
+      resultsContainer.innerHTML = `
+        <div class="search-empty-state">
+          <i class="fas fa-search"></i>
+          <p>No results found</p>
+          <small>Try searching with another keyword or category</small>
+        </div>
+      `;
+    } else {
+      resultsContainer.innerHTML = sections.join('');
+    }
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   // Public API
   return {
     init,
     navigate,
     navigateToModule: (module, filter) => navigate(module, filter),
+    closeGlobalSearch,
     state
   };
 })();
