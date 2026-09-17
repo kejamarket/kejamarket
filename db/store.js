@@ -74,7 +74,7 @@ class Store {
       u.email === 'admin@kejamarket.co.ke' || 
       u.email === 'admin@keja.co.ke' || 
       u.phone === '0792409540' ||
-      u.phone === '0700000000'
+      u.phone === '0792409540'
     );
 
     if (existingAdmin) {
@@ -140,7 +140,7 @@ class Store {
       {
         id: 'usr-admin-01',
         name: 'KejaMarket Admin',
-        phone: '0700000000',
+        phone: '0792409540',
         email: 'admin@kejamarket.co.ke',
         password: hashedPassword,
         role: 'admin',
@@ -259,7 +259,7 @@ class Store {
     const cleanId = identifier.trim().toLowerCase();
 
     // If attempting Admin login, ensure admin user is initialized
-    if (cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin@keja.co.ke' || cleanId === '0792409540' || cleanId === '254792409540' || cleanId === '0700000000' || cleanId === '254700000000' || cleanId === 'admin') {
+    if (cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin@keja.co.ke' || cleanId === '0792409540' || cleanId === '254792409540' || cleanId === 'admin') {
       this.ensureAdminUser();
     }
 

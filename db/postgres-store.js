@@ -115,6 +115,7 @@ class PostgreSQLStore {
         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
       )
       ON CONFLICT (id) DO UPDATE SET
+        phone = EXCLUDED.phone,
         email = EXCLUDED.email,
         name = EXCLUDED.name,
         password = EXCLUDED.password,
@@ -237,7 +238,7 @@ class PostgreSQLStore {
     const cleanId = identifier.trim().toLowerCase();
 
     // Ensure admin user exists for admin logins
-    if (cleanId.includes('admin') || cleanId === '0792409540' || cleanId === '254792409540' || cleanId === '0700000000') {
+    if (cleanId.includes('admin') || cleanId === '0792409540' || cleanId === '254792409540') {
       await this.ensureAdminUser();
     }
 
