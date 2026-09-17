@@ -2166,17 +2166,7 @@
         <!-- SIGN IN PANEL -->
         <div id="auth-panel-signin">
           <p class="auth-subtitle">Sign in to your account to continue</p>
-          <div class="auth-role-grid" id="signin-role-grid">
-            <button onclick="kejaAuth.setRole('tenant','signin')" id="role-signin-tenant" class="auth-role-card auth-role-card--active">
-              <i class="fas fa-user"></i><span>Tenant / Buyer</span>
-            </button>
-            <button onclick="kejaAuth.setRole('landlord','signin')" id="role-signin-landlord" class="auth-role-card">
-              <i class="fas fa-home"></i><span>Property Owner / Agent</span>
-            </button>
-            <button onclick="kejaAuth.setRole('service','signin')" id="role-signin-service" class="auth-role-card">
-              <i class="fas fa-tools"></i><span>Service Provider</span>
-            </button>
-          </div>
+          <p style="font-size:0.82rem;color:#64748b;margin-bottom:14px;text-align:center;"><i class="fas fa-shield-alt" style="color:#00b53f;margin-right:4px;"></i>We'll automatically detect your account type.</p>
           <form id="form-signin-password" onsubmit="kejaAuth.handleSignIn(event)">
             <div class="form-group">
               <label>Phone Number or Email</label>
@@ -3058,31 +3048,7 @@
       </div>
     </div>
   </div>
-        <button type="button" class="modal-close-btn" style="color: white; font-size: 1.6rem; background: none; border: none; cursor: pointer;" onclick="document.getElementById('modal-instagram-share').style.display='none'">&times;</button>
-      </div>
-      <div class="modal-body" style="padding: 20px;">
-        <div style="font-size: 0.8rem; font-weight: 700; color: #64748b; margin-bottom: 6px; text-transform: uppercase;">
-          <i class="fas fa-magic"></i> Auto-Generated Instagram Caption
-        </div>
-        <div id="ig-share-preview-box" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 0.86rem; color: #0f172a; max-height: 220px; overflow-y: auto; white-space: pre-wrap; line-height: 1.55;"></div>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;">
-          <button type="button" id="btn-copy-ig-caption" onclick="app.copyInstagramCaption()" style="background: #00b53f; color: white; border: none; border-radius: 8px; padding: 11px 14px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 6px rgba(0,181,63,0.25);">
-            <i class="fas fa-copy"></i> Copy Caption
-          </button>
-          <a href="https://instagram.com/kejamarket" target="_blank" style="background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: white; border: none; border-radius: 8px; padding: 11px 14px; font-weight: 700; font-size: 0.88rem; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 6px rgba(220,39,67,0.25);">
-            <i class="fab fa-instagram"></i> Open @kejamarket
-          </a>
-        </div>
 
-        <div style="margin-top: 10px;">
-          <button type="button" id="btn-share-ig-whatsapp" onclick="app.shareListingToWhatsApp()" style="width: 100%; background: #25d366; color: white; border: none; border-radius: 8px; padding: 11px 14px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 6px rgba(37,211,102,0.25);">
-            <i class="fab fa-whatsapp"></i> Share Formatted to WhatsApp
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Floating Social Connect Widget (@kejamarket & WhatsApp) -->
   <div id="floating-social-widget" style="position: fixed; bottom: 22px; right: 22px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
