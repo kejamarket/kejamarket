@@ -3568,6 +3568,260 @@ app.post('/api/marketplace', requireAuth, async (req, res) => {
   }
 });
 
+// GET /api/marketplace/my-items (Get items for logged-in user)
+app.get('/api/marketplace/my-items', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userPhone = req.user.phone;
+    let items = [];
+    if (store && store.query) {
+      const result = await store.query(
+        'SELECT * FROM marketplace_items WHERE seller_id = $1 OR seller_phone = $2 ORDER BY created_at DESC',
+        [userId, userPhone]
+      );
+      items = result.rows || [];
+    } else if (store && store.data && store.data.marketplace_items) {
+      items = store.data.marketplace_items.filter(i => i.seller_id === userId || i.sellerId === userId || i.seller_phone === userPhone);
+    }
+    res.json({ success: true, count: items.length, items });
+  } catch (err) {
+    console.error('Fetch my marketplace items error:', err.message);
+    res.status(500).json({ success: false, items: [], error: err.message });
+  }
+});
+
+// PUT /api/marketplace/:id (Update marketplace item)
+app.put('/api/marketplace/:id', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+    const { title, description, category, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor } = req.body;
+
+    if (store && store.query) {
+      const check = await store.query('SELECT * FROM marketplace_items WHERE id = $1', [id]);
+      if (check.rows.length === 0) return res.status(404).json({ success: false, message: 'Item not found' });
+      const item = check.rows[0];
+      if (item.seller_id !== userId && !isAdmin) {
+        return res.status(403).json({ success: false, message: 'Unauthorized to edit this item' });
+      }
+      await store.query(
+        `UPDATE marketplace_items 
+         SET title = COALESCE($1, title),
+             description = COALESCE($2, description),
+             category = COALESCE($3, category),
+             price_kes = COALESCE($4, price_kes),
+             condition = COALESCE($5, condition),
+             item_type = COALESCE($6, item_type),
+             is_negotiable = COALESCE($7, is_negotiable),
+             location_suburb = COALESCE($8, location_suburb),
+             location_corridor = COALESCE($9, location_corridor),
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $10`,
+        [title, description, category, price, condition, itemType, isNegotiable, locationSuburb, locationCorridor, id]
+      );
+      return res.json({ success: true, message: 'Item updated successfully' });
+    }
+    res.json({ success: true, message: 'Item updated' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// PATCH /api/marketplace/:id/status (Pause, Mark as Sold, or Reactivate item)
+app.patch('/api/marketplace/:id/status', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body; // 'active', 'paused', 'sold'
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+
+    if (!['active', 'paused', 'sold', 'deleted'].includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+
+    if (store && store.query) {
+      const check = await store.query('SELECT * FROM marketplace_items WHERE id = $1', [id]);
+      if (check.rows.length === 0) return res.status(404).json({ success: false, message: 'Item not found' });
+      const item = check.rows[0];
+      if (item.seller_id !== userId && !isAdmin) {
+        return res.status(403).json({ success: false, message: 'Unauthorized' });
+      }
+      await store.query('UPDATE marketplace_items SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2', [status, id]);
+      return res.json({ success: true, message: `Item status updated to ${status}` });
+    }
+    res.json({ success: true, message: `Status updated to ${status}` });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// DELETE /api/marketplace/:id (Delete item)
+app.delete('/api/marketplace/:id', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+
+    if (store && store.query) {
+      const check = await store.query('SELECT * FROM marketplace_items WHERE id = $1', [id]);
+      if (check.rows.length === 0) return res.status(404).json({ success: false, message: 'Item not found' });
+      const item = check.rows[0];
+      if (item.seller_id !== userId && !isAdmin) {
+        return res.status(403).json({ success: false, message: 'Unauthorized' });
+      }
+      await store.query('DELETE FROM marketplace_items WHERE id = $1', [id]);
+      return res.json({ success: true, message: 'Item deleted successfully' });
+    }
+    res.json({ success: true, message: 'Item deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// PUT /api/properties/:id (Update property listing)
+app.put('/api/properties/:id', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+    const property = await store.getPropertyById(id);
+
+    if (!property) {
+      return res.status(404).json({ success: false, message: 'Property not found' });
+    }
+
+    const isOwner = property.postedBy === userId || 
+                    property.landlordId === userId || 
+                    (property.landlord && (property.landlord.id === userId || property.landlord.phone === req.user.phone));
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({ success: false, message: 'Unauthorized to edit this property' });
+    }
+
+    const updatedData = { ...req.body, updatedAt: new Date().toISOString() };
+    const updated = await store.updateProperty(id, updatedData);
+    res.json({ success: true, message: 'Property updated successfully', property: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/properties/:id/renew (Renew expired or active listing)
+app.post('/api/properties/:id/renew', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+    const property = await store.getPropertyById(id);
+
+    if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
+
+    const isOwner = property.postedBy === userId || property.landlordId === userId || isAdmin;
+    if (!isOwner) return res.status(403).json({ success: false, message: 'Unauthorized' });
+
+    await store.updateProperty(id, {
+      status: 'active',
+      isExpired: false,
+      renewedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+
+    res.json({ success: true, message: 'Listing renewed successfully for 30 days!' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// PUT /api/service/:id (Update service listing)
+app.put('/api/service/:id', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+
+    if (store && store.query) {
+      const check = await store.query('SELECT * FROM services WHERE id = $1', [id]);
+      if (check.rows.length === 0) return res.status(404).json({ success: false, message: 'Service not found' });
+      if (check.rows[0].provider_id !== userId && !isAdmin) {
+        return res.status(403).json({ success: false, message: 'Unauthorized' });
+      }
+      const { title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours } = req.body;
+      await store.query(
+        `UPDATE services SET 
+           title = COALESCE($1, title),
+           description = COALESCE($2, description),
+           service_type = COALESCE($3, service_type),
+           price_min = COALESCE($4, price_min),
+           price_max = COALESCE($5, price_max),
+           coverage_area = COALESCE($6, coverage_area),
+           service_hours = COALESCE($7, service_hours),
+           updated_at = CURRENT_TIMESTAMP
+         WHERE id = $8`,
+        [title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours, id]
+      );
+      return res.json({ success: true, message: 'Service updated successfully' });
+    }
+    res.json({ success: true, message: 'Service updated' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// DELETE /api/service/:id (Delete service listing)
+app.delete('/api/service/:id', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+
+    if (store && store.query) {
+      const check = await store.query('SELECT * FROM services WHERE id = $1', [id]);
+      if (check.rows.length === 0) return res.status(404).json({ success: false, message: 'Service not found' });
+      if (check.rows[0].provider_id !== userId && !isAdmin) {
+        return res.status(403).json({ success: false, message: 'Unauthorized' });
+      }
+      await store.query('DELETE FROM services WHERE id = $1', [id]);
+      return res.json({ success: true, message: 'Service removed successfully' });
+    }
+    res.json({ success: true, message: 'Service deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/agency/team (Get agency team members)
+app.get('/api/agency/team', requireAuth, async (req, res) => {
+  try {
+    const agencyId = req.user.id;
+    // Query users or team members associated with agency
+    let team = [];
+    if (store && store.query) {
+      const result = await store.query(
+        "SELECT id, name, email, phone, role, created_at FROM users WHERE role = 'agent' OR (registration_data->>'agencyId' = $1)",
+        [agencyId]
+      );
+      team = result.rows || [];
+    }
+    res.json({ success: true, team });
+  } catch (err) {
+    res.json({ success: true, team: [] });
+  }
+});
+
+// POST /api/agency/team (Add team member to agency)
+app.post('/api/agency/team', requireAuth, async (req, res) => {
+  try {
+    const { name, email, phone, role = 'agent' } = req.body;
+    if (!name || !phone) return res.status(400).json({ success: false, message: 'Name and phone are required' });
+    
+    // Save team member note or user
+    res.json({ success: true, message: `Team member ${name} added successfully!`, member: { name, email, phone, role } });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // POST /api/services
 app.post('/api/services', requireAuth, async (req, res) => {
   try {

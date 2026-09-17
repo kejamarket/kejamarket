@@ -1084,47 +1084,35 @@ const kejaAuth = (() => {
 
         <!-- Profile Menu -->
         <div class="profile-menu">
-          <button class="profile-menu-item" onclick="kejaDashboard.open(); kejaAuth.closeProfileDropdown();">
-            <i class="fas fa-th-large profile-menu-icon" style="color:#4f46e5;"></i>
-            <span>My Dashboard</span>
+          ${(session.role === 'admin' || session.isAdmin || session.id === 'usr-admin-01') ? `
+            <a href="/admin-dashboard.html" class="profile-menu-item" style="background:#fee2e2; color:#b91c1c; font-weight:700; border-radius:8px; margin-bottom:6px; text-decoration:none; display:flex; align-items:center; gap:10px; padding:10px 14px;">
+              <i class="fas fa-shield-alt profile-menu-icon" style="color:#dc2626;"></i>
+              <span>Admin Control Center</span>
+            </a>
+          ` : ''}
+
+          <button class="profile-menu-item" onclick="kejaDashboard.open('overview'); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-th-large profile-menu-icon" style="color:#16a34a;"></i>
+            <span>My Account / My Dashboard</span>
           </button>
 
-          <button class="profile-menu-item" onclick="kejaAuth.openAuthModal(); kejaAuth.closeProfileDropdown();">
-            <i class="fas fa-user profile-menu-icon"></i>
-            <span>My Profile</span>
+          <button class="profile-menu-item" onclick="kejaDashboard.open('settings'); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-user-cog profile-menu-icon" style="color:#4f46e5;"></i>
+            <span>My Profile & Settings</span>
           </button>
           
-          ${session.role === 'landlord' || session.role === 'agency' ? `
-            <button class="profile-menu-item" onclick="kejaLandlordPortal.openLandlordPortal(); kejaAuth.closeProfileDropdown();">
-              <i class="fas fa-home profile-menu-icon"></i>
-              <span>My Properties</span>
-            </button>
-          ` : ''}
-          
-          ${session.role === 'service' ? `
-            <button class="profile-menu-item" onclick="kejaServicePortal.openServicePortal(); kejaAuth.closeProfileDropdown();">
-              <i class="fas fa-tools profile-menu-icon"></i>
-              <span>My Services</span>
-            </button>
-          ` : ''}
-          
-          <button class="profile-menu-item" onclick="window.app.openModal('modal-saved-properties'); kejaAuth.closeProfileDropdown();">
-            <i class="fas fa-heart profile-menu-icon"></i>
-            <span>Saved Properties</span>
+          <button class="profile-menu-item" onclick="kejaDashboard.open('messages'); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-comment-dots profile-menu-icon" style="color:#2563eb;"></i>
+            <span>Messages / Inquiries</span>
           </button>
           
-          <button class="profile-menu-item" onclick="window.app.openModal('modal-whatsapp-alerts'); kejaAuth.closeProfileDropdown();">
-            <i class="fab fa-whatsapp profile-menu-icon"></i>
-            <span>WhatsApp Alerts</span>
-          </button>
-          
-          <button class="profile-menu-item" onclick="window.app.openAdminChat && window.app.openAdminChat(); kejaAuth.closeProfileDropdown();">
-            <i class="fas fa-headset profile-menu-icon"></i>
-            <span>Help & Support</span>
+          <button class="profile-menu-item" onclick="kejaDashboard.open('notifications'); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-bell profile-menu-icon" style="color:#f59e0b;"></i>
+            <span>Notifications</span>
           </button>
           
           <button class="profile-menu-item profile-logout" onclick="kejaAuth.signOut(); kejaAuth.closeProfileDropdown();">
-            <i class="fas fa-sign-out-alt profile-menu-icon"></i>
+            <i class="fas fa-sign-out-alt profile-menu-icon" style="color:#ef4444;"></i>
             <span>Sign Out</span>
           </button>
         </div>
