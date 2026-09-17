@@ -64,24 +64,30 @@ const kejaAuth = (() => {
     return token ? { 'Authorization': `Bearer ${token}` } : {};
   }
 
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  /* ─────────────────────────────────────────
      OPEN MODAL
-  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  function openAuthModal() {
+  ───────────────────────────────────────── */
+  function openAuthModal(initialTab) {
     const session = getSession();
     if (session) {
       showLoggedInPanel(session);
     } else {
-      showPanel('signin');
+      showPanel(initialTab || 'signin');
     }
     if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal('modal-auth');
+    } else {
+      const modal = document.getElementById('modal-auth');
+      if (modal) {
+        modal.classList.add('open');
+        modal.style.display = 'flex';
+      }
     }
   }
 
-  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  /* ─────────────────────────────────────────
      TAB SWITCHING
-  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  ───────────────────────────────────────── */
   function switchTab(tab) {
     const session = getSession();
     if (session) {
@@ -89,6 +95,11 @@ const kejaAuth = (() => {
       return;
     }
     showPanel(tab);
+    const modal = document.getElementById('modal-auth');
+    if (modal && !modal.classList.contains('open')) {
+      modal.classList.add('open');
+      modal.style.display = 'flex';
+    }
   }
 
   function showPanel(tab) {
@@ -150,11 +161,9 @@ const kejaAuth = (() => {
     roles.forEach(r => {
       const btn = document.getElementById(`role-${panel}-${r}`);
       if (btn) {
-        if (r === role) {
-          btn.classList.add('role-btn-active');
-        } else {
-          btn.classList.remove('role-btn-active');
-        }
+        const isActive = (r === role);
+        btn.classList.toggle('role-btn-active', isActive);
+        btn.classList.toggle('auth-role-card--active', isActive);
       }
     });
 
@@ -836,7 +845,7 @@ const kejaAuth = (() => {
       if (window.app) window.app.showToast('Only landlord or agency accounts can post properties.', 'info');
       switchTab('signup');
       setRole('landlord', 'signup');
-      openAuthModal();
+      openAuthModal('signup');
       return;
     }
 
@@ -1278,7 +1287,7 @@ const kejaAuth = (() => {
     closeProfileDropdown,
     showForgotPassword,
     handleForgotPassword,
-    handleResetPassword
+    handleResetPassword,
   };
 
 })();
@@ -1342,8 +1351,9 @@ document.addEventListener('click', function(e) {
 
 // Fix close buttons
 document.addEventListener('click', function(e) {
-  if (e.target.matches('.modal-close, .btn-modal-close, [onclick*="closeModal"]')) {
-    const modal = e.target.closest('.modal-backdrop');
+  const closeBtn = e.target.closest('.modal-close, .btn-modal-close, .modal-close-btn, .auth-close-btn, [data-modal-close]');
+  if (closeBtn) {
+    const modal = closeBtn.closest('.modal-backdrop');
     if (modal) {
       modal.classList.remove('open');
       document.body.classList.remove('modal-open');

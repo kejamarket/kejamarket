@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v29'; // Small PWA install button, one-touch install
+const CACHE_NAME = 'kejamarket-v30'; // Purge old caches and force fresh auth/UI assets
 const STATIC_ASSETS = [
   '/',
   '/index.html',

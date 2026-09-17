@@ -123,34 +123,10 @@ const KejaEnhancedAuth = {
   },
 
   /**
-   * Override default auth system
+   * Override default auth system - DISABLED to prevent hijacking standard KejaMarket auth
    */
   overrideDefaultAuth() {
-    // Override the setRole function for signup to use our enhanced flow
-    if (window.kejaAuth && typeof window.kejaAuth.setRole === 'function') {
-      const originalSetRole = window.kejaAuth.setRole;
-      window.kejaAuth.setRole = (role, panel) => {
-        if (panel === 'signup') {
-          // For signup, show our enhanced registration instead
-          this.showEnhancedRegistration();
-          return;
-        }
-        // For signin, use original function
-        originalSetRole(role, panel);
-      };
-    }
-
-    // Override any existing signup button click handlers
-    document.addEventListener('click', (e) => {
-      if (e.target.matches('[onclick*="signup"]') || 
-          e.target.matches('.role-btn[onclick*="signup"]') ||
-          e.target.closest('.role-btn[onclick*="signup"]')) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.showEnhancedRegistration();
-        return false;
-      }
-    });
+    // Disabled: let standard KejaMarket auth (js/auth.js) handle signup and signin
   },
 
   /**
@@ -1071,16 +1047,6 @@ if (document.readyState === 'loading') {
   // DOM already loaded, initialize after a short delay
   setTimeout(() => KejaEnhancedAuth.init(), 500);
 }
-
-// Also initialize when the auth modal is shown
-document.addEventListener('click', (e) => {
-  if (e.target.matches('[onclick*="openAuthModal"]') || 
-      e.target.matches('.auth-trigger') ||
-      e.target.textContent.includes('Sign Up')) {
-    // Reinitialize enhanced registration when auth modal opens
-    setTimeout(() => KejaEnhancedAuth.init(), 100);
-  }
-});
 
 // Export for global access
 window.KejaEnhancedAuth = KejaEnhancedAuth;
