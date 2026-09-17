@@ -179,6 +179,12 @@ const AdminCore = (() => {
         case 'adminUsers':
           await loadAdminUsers(viewData);
           break;
+        case 'rentals':
+          await loadProperties('rental');
+          break;
+        case 'locations':
+          await loadLocations(viewData);
+          break;
         case 'audit':
           await loadAudit(viewData);
           break;
@@ -499,9 +505,273 @@ const AdminCore = (() => {
   async function loadAdminUsers(viewData) {
     const content = document.getElementById('admin-content');
     content.innerHTML = `
-      <div class="module-header"><h1><i class="fas fa-user-shield"></i> Admin Users & Permissions</h1></div>
-      <div class="empty-state"><i class="fas fa-user-shield"></i><p>Role-based access control system</p><small>Configure admin roles and permissions</small></div>
+      <div class="module-header">
+        <h1><i class="fas fa-user-shield"></i> Admin Users & Permissions</h1>
+      </div>
+      <div class="module-actions">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="admin-user-search" placeholder="Search admins..." oninput="filterAdminList(this.value)">
+        </div>
+        <div class="action-buttons">
+          <button class="btn-primary" onclick="showAddAdminModal()">
+            <i class="fas fa-user-plus"></i> Add Admin
+          </button>
+        </div>
+      </div>
+      <div id="admin-users-content">
+        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading admins...</div>
+      </div>
+
+      <!-- Add Admin Modal -->
+      <div id="add-admin-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; display:none; align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:16px; padding:32px; max-width:480px; width:90%; max-height:90vh; overflow-y:auto; box-shadow:0 24px 60px rgba(0,0,0,0.25);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0; color:#1e293b;"><i class="fas fa-user-shield" style="color:#7c3aed;margin-right:8px;"></i>Add Admin</h2>
+            <button onclick="closeAddAdminModal()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:#64748b;">&times;</button>
+          </div>
+
+          <div style="display:flex; gap:8px; margin-bottom:20px;">
+            <button id="tab-promote" onclick="switchAdminTab('promote')" style="flex:1;padding:10px;border-radius:8px;border:2px solid #7c3aed;background:#7c3aed;color:white;font-weight:700;cursor:pointer;">Promote Existing User</button>
+            <button id="tab-create" onclick="switchAdminTab('create')" style="flex:1;padding:10px;border-radius:8px;border:2px solid #e2e8f0;background:#f8fafc;color:#64748b;font-weight:700;cursor:pointer;">Create New Admin</button>
+          </div>
+
+          <!-- Promote existing user -->
+          <div id="panel-promote">
+            <p style="color:#64748b; font-size:0.88rem; margin-bottom:16px;">Enter the User ID or email of an existing user to grant them admin access.</p>
+            <label style="font-weight:600;font-size:0.88rem;">User ID or Email</label>
+            <input id="promote-user-id" type="text" placeholder="usr-xxx or user@email.com" style="width:100%;padding:10px;border:1.5px solid #e2e8f0;border-radius:8px;margin:6px 0 16px;font-size:0.9rem;box-sizing:border-box;">
+            <button onclick="promoteUser()" style="width:100%;padding:12px;background:#7c3aed;color:white;border:none;border-radius:8px;font-weight:700;font-size:0.95rem;cursor:pointer;">
+              <i class="fas fa-crown"></i> Promote to Admin
+            </button>
+          </div>
+
+          <!-- Create new admin -->
+          <div id="panel-create" style="display:none;">
+            <label style="font-weight:600;font-size:0.88rem;">Full Name *</label>
+            <input id="new-admin-name" type="text" placeholder="e.g. Jane Mwangi" style="width:100%;padding:10px;border:1.5px solid #e2e8f0;border-radius:8px;margin:6px 0 12px;font-size:0.9rem;box-sizing:border-box;">
+            <label style="font-weight:600;font-size:0.88rem;">Email</label>
+            <input id="new-admin-email" type="email" placeholder="admin@kejamarket.co.ke" style="width:100%;padding:10px;border:1.5px solid #e2e8f0;border-radius:8px;margin:6px 0 12px;font-size:0.9rem;box-sizing:border-box;">
+            <label style="font-weight:600;font-size:0.88rem;">Phone</label>
+            <input id="new-admin-phone" type="tel" placeholder="+254700000000" style="width:100%;padding:10px;border:1.5px solid #e2e8f0;border-radius:8px;margin:6px 0 12px;font-size:0.9rem;box-sizing:border-box;">
+            <label style="font-weight:600;font-size:0.88rem;">Temporary Password (leave blank to auto-generate)</label>
+            <input id="new-admin-password" type="text" placeholder="Auto-generated if empty" style="width:100%;padding:10px;border:1.5px solid #e2e8f0;border-radius:8px;margin:6px 0 16px;font-size:0.9rem;box-sizing:border-box;">
+            <button onclick="createAdmin()" style="width:100%;padding:12px;background:#16a34a;color:white;border:none;border-radius:8px;font-weight:700;font-size:0.95rem;cursor:pointer;">
+              <i class="fas fa-user-plus"></i> Create Admin Account
+            </button>
+          </div>
+
+          <div id="add-admin-result" style="margin-top:16px;display:none;"></div>
+        </div>
+      </div>
     `;
+
+    // Inject helper functions into global scope for this module
+    window.showAddAdminModal = () => { document.getElementById('add-admin-modal').style.display = 'flex'; };
+    window.closeAddAdminModal = () => { document.getElementById('add-admin-modal').style.display = 'none'; };
+    window.switchAdminTab = (tab) => {
+      document.getElementById('panel-promote').style.display = tab === 'promote' ? 'block' : 'none';
+      document.getElementById('panel-create').style.display = tab === 'create' ? 'block' : 'none';
+      document.getElementById('tab-promote').style.background = tab === 'promote' ? '#7c3aed' : '#f8fafc';
+      document.getElementById('tab-promote').style.color = tab === 'promote' ? 'white' : '#64748b';
+      document.getElementById('tab-create').style.background = tab === 'create' ? '#16a34a' : '#f8fafc';
+      document.getElementById('tab-create').style.color = tab === 'create' ? 'white' : '#64748b';
+    };
+
+    window.promoteUser = async () => {
+      const input = document.getElementById('promote-user-id').value.trim();
+      if (!input) { alert('Please enter a User ID or email.'); return; }
+      const resultEl = document.getElementById('add-admin-result');
+      try {
+        // Try by userId first, fall back to searching by email
+        const res = await fetch('/api/admin/admins', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: input })
+        });
+        const data = await res.json();
+        resultEl.style.display = 'block';
+        resultEl.style.padding = '12px';
+        resultEl.style.borderRadius = '8px';
+        if (data.success) {
+          resultEl.style.background = '#f0fdf4';
+          resultEl.style.color = '#16a34a';
+          resultEl.innerHTML = `<i class="fas fa-check-circle"></i> ${data.message}`;
+          setTimeout(() => { closeAddAdminModal(); loadAdminUsers(); }, 1500);
+        } else {
+          resultEl.style.background = '#fef2f2';
+          resultEl.style.color = '#dc2626';
+          resultEl.innerHTML = `<i class="fas fa-times-circle"></i> ${data.message}`;
+        }
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    };
+
+    window.createAdmin = async () => {
+      const name = document.getElementById('new-admin-name').value.trim();
+      const email = document.getElementById('new-admin-email').value.trim();
+      const phone = document.getElementById('new-admin-phone').value.trim();
+      const password = document.getElementById('new-admin-password').value.trim();
+      if (!name) { alert('Name is required.'); return; }
+      if (!email && !phone) { alert('Email or phone is required.'); return; }
+      const resultEl = document.getElementById('add-admin-result');
+      try {
+        const res = await fetch('/api/admin/admins', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, password })
+        });
+        const data = await res.json();
+        resultEl.style.display = 'block';
+        resultEl.style.padding = '12px';
+        resultEl.style.borderRadius = '8px';
+        if (data.success) {
+          resultEl.style.background = '#f0fdf4';
+          resultEl.style.color = '#16a34a';
+          resultEl.innerHTML = `<i class="fas fa-check-circle"></i> Admin created!<br><strong>Temp Password:</strong> <code>${data.tempPassword}</code><br><small>Share this password securely — it won't be shown again.</small>`;
+          setTimeout(() => { closeAddAdminModal(); loadAdminUsers(); }, 4000);
+        } else {
+          resultEl.style.background = '#fef2f2';
+          resultEl.style.color = '#dc2626';
+          resultEl.innerHTML = `<i class="fas fa-times-circle"></i> ${data.message}`;
+        }
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    };
+
+    window.filterAdminList = (q) => {
+      const rows = document.querySelectorAll('#admin-users-table tbody tr');
+      rows.forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+      });
+    };
+
+    window.revokeAdmin = async (id, name) => {
+      if (!confirm(`Remove admin access from ${name}? They will become a regular user.`)) return;
+      try {
+        const res = await fetch(`/api/admin/admins/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+        });
+        const data = await res.json();
+        if (data.success) { alert(data.message); await loadAdminUsers(); }
+        else alert('Error: ' + data.message);
+      } catch (e) { alert('Error: ' + e.message); }
+    };
+
+    // Load actual admin list
+    try {
+      const res = await fetch('/api/admin/admins', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      const admins = data.admins || [];
+      const adminContent = document.getElementById('admin-users-content');
+
+      if (!admins.length) {
+        adminContent.innerHTML = '<div class="empty-state"><i class="fas fa-user-shield"></i><p>No admin users found</p></div>';
+        return;
+      }
+
+      adminContent.innerHTML = `
+        <div class="table-container">
+          <table class="admin-table" id="admin-users-table">
+            <thead><tr><th>Name</th><th>Email / Phone</th><th>ID</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${admins.map(a => `
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;">${(a.name||'A').charAt(0)}</div>
+                      <div><strong>${a.name || 'Admin'}</strong><br><span style="font-size:0.75rem;background:#f0fdf4;color:#16a34a;padding:2px 8px;border-radius:20px;font-weight:600;">Admin</span></div>
+                    </div>
+                  </td>
+                  <td>${a.email || a.phone || '-'}</td>
+                  <td><code style="font-size:0.75rem;background:#f1f5f9;padding:2px 6px;border-radius:4px;">${a.id}</code></td>
+                  <td>${a.createdAt ? new Date(a.createdAt).toLocaleDateString('en-GB') : '-'}</td>
+                  <td>
+                    ${a.id === 'usr-admin-01' 
+                      ? '<span style="color:#94a3b8;font-size:0.8rem;"><i class="fas fa-lock"></i> Super Admin</span>' 
+                      : `<button class="btn-action btn-delete" onclick="revokeAdmin('${a.id}','${(a.name||'').replace(/'/g,'')}')" title="Revoke Admin"><i class="fas fa-user-minus"></i> Revoke</button>`
+                    }
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch (err) {
+      document.getElementById('admin-users-content').innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load admins: ${err.message}</p></div>`;
+    }
+  }
+
+  async function loadLocations(viewData) {
+    const content = document.getElementById('admin-content');
+    content.innerHTML = `
+      <div class="module-header">
+        <h1><i class="fas fa-map-marker-alt"></i> Covered Locations & Estates</h1>
+      </div>
+      <div id="locations-content">
+        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading locations...</div>
+      </div>
+    `;
+    try {
+      const res = await fetch('/api/admin/all-properties', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      const props = data.properties || [];
+      const locationMap = {};
+      props.forEach(p => {
+        const loc = p.estateSuburb || p.estate_suburb || p.county || 'Nairobi Metro';
+        if (!locationMap[loc]) locationMap[loc] = { count: 0, verified: 0, rentSum: 0 };
+        locationMap[loc].count++;
+        if (p.isVerified || p.is_verified || p.status === 'verified') locationMap[loc].verified++;
+        locationMap[loc].rentSum += (p.rentKes || p.rent || p.rent_kes || 0);
+      });
+
+      const locList = Object.entries(locationMap).sort((a, b) => b[1].count - a[1].count);
+      const container = document.getElementById('locations-content');
+      if (!locList.length) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-map-marker-alt"></i><p>No locations found</p></div>';
+        return;
+      }
+      container.innerHTML = `
+        <div class="stats-row">
+          <div class="stat-box"><i class="fas fa-map-marked-alt"></i><div><div class="stat-number">${locList.length}</div><div class="stat-label">Active Estates</div></div></div>
+          <div class="stat-box"><i class="fas fa-home"></i><div><div class="stat-number">${props.length}</div><div class="stat-label">Total Listings</div></div></div>
+        </div>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Estate / Area</th>
+                <th>Total Properties</th>
+                <th>Verified</th>
+                <th>Avg Rent (KES)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${locList.map(([loc, stats]) => `
+                <tr>
+                  <td><strong><i class="fas fa-location-dot" style="color:#7c3aed;margin-right:8px;"></i>${loc}</strong></td>
+                  <td>${stats.count}</td>
+                  <td><span class="status-badge status-active">${stats.verified} Verified</span></td>
+                  <td>KES ${stats.count ? Math.round(stats.rentSum / stats.count).toLocaleString() : '-'}</td>
+                  <td><span class="status-badge status-verified">Active</span></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch (err) {
+      document.getElementById('locations-content').innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>Error loading locations: ${err.message}</p></div>`;
+    }
   }
 
   async function loadAudit(viewData) {

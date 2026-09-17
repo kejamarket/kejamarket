@@ -303,16 +303,30 @@ class Store {
 
     if (updates.name) user.name = updates.name.trim();
     if (updates.email) user.email = updates.email.trim();
+    if (updates.phone) user.phone = updates.phone.trim();
+    if (updates.role !== undefined) user.role = updates.role;
+    if (updates.isAdmin !== undefined) user.isAdmin = updates.isAdmin;
+    if (updates.is_admin !== undefined) user.is_admin = updates.is_admin;
+    if (updates.adminPermissions !== undefined) user.adminPermissions = updates.adminPermissions;
     if (updates.isVerified !== undefined) user.isVerified = updates.isVerified;
-    if (updates.area) user.area = updates.area;
-    if (updates.numProperties) user.numProperties = updates.numProperties;
+    if (updates.area !== undefined) user.area = updates.area;
+    if (updates.numProperties !== undefined) user.numProperties = updates.numProperties;
+    if (updates.promotedAt) user.promotedAt = updates.promotedAt;
+    if (updates.promotedBy) user.promotedBy = updates.promotedBy;
+    if (updates.demotedAt) user.demotedAt = updates.demotedAt;
+    if (updates.demotedBy) user.demotedBy = updates.demotedBy;
     
     this.save();
     return this.sanitizeUser(user);
   }
 
   sanitizeUser(user) {
+    if (!user) return null;
     const { password, ...safe } = user;
+    safe.isAdmin = !!(safe.isAdmin || safe.is_admin || safe.role === 'admin' || safe.id === 'usr-admin-01');
+    safe.is_admin = safe.isAdmin;
+    safe.isVerified = !!safe.isVerified;
+    safe.isPhoneVerified = !!safe.isPhoneVerified;
     return safe;
   }
 

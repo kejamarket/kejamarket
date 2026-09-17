@@ -13,6 +13,10 @@ class PostgreSQLStore {
     this.fallbackStore = null;
   }
 
+  get data() {
+    return this.fallbackStore ? this.fallbackStore.data : { properties: [], users: [], buildings: [], units: [], inquiries: [], reviews: [], reports: [], supportTickets: [] };
+  }
+
   async init() {
     const POOLER_URL = 'postgresql://postgres.cwqmtrwdbjmsrrqjkfmj:Stallonjevugwe4@aws-0-eu-central-1.pooler.supabase.com:6543/postgres';
     
@@ -143,7 +147,7 @@ class PostgreSQLStore {
       return this.fallbackStore.createUser(userData);
     }
 
-    const { name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea } = userData;
+    const { name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea, isAdmin, adminPermissions } = userData;
     
     const cleanPhone = phone.replace(/\s+/g, '');
     const cleanEmail = email ? email.trim().toLowerCase() : null;
@@ -162,12 +166,13 @@ class PostgreSQLStore {
     const userRole = role || 'tenant';
     const userId = 'usr-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
 
+    const isAdm = userRole === 'admin' || !!isAdmin;
     const query = `
       INSERT INTO users (
         id, name, phone, email, password, role, is_phone_verified, is_verified,
         num_properties, area, agency_name, contact_person, office_location, 
-        registration_no, coverage_area, created_at, raw_data
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+        registration_no, coverage_area, created_at, raw_data, is_admin
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
       RETURNING *
     `;
 
@@ -182,7 +187,8 @@ class PostgreSQLStore {
       userRole === 'agency' ? (registrationNo || '') : null,
       userRole === 'agency' ? (coverageArea || area || '') : null,
       new Date().toISOString(),
-      JSON.stringify({})
+      JSON.stringify(adminPermissions ? { adminPermissions } : {}),
+      isAdm
     ];
 
     const result = await this.query(query, values);
@@ -279,6 +285,18 @@ class PostgreSQLStore {
       fields.push(`email = $${valueIndex++}`);
       values.push(updates.email.trim());
     }
+    if (updates.phone) {
+      fields.push(`phone = $${valueIndex++}`);
+      values.push(updates.phone.trim());
+    }
+    if (updates.role !== undefined) {
+      fields.push(`role = $${valueIndex++}`);
+      values.push(updates.role);
+    }
+    if (updates.is_admin !== undefined || updates.isAdmin !== undefined) {
+      fields.push(`is_admin = $${valueIndex++}`);
+      values.push(updates.is_admin !== undefined ? updates.is_admin : updates.isAdmin);
+    }
     if (updates.isVerified !== undefined) {
       fields.push(`is_verified = $${valueIndex++}`);
       values.push(updates.isVerified);
@@ -291,8 +309,18 @@ class PostgreSQLStore {
       fields.push(`num_properties = $${valueIndex++}`);
       values.push(updates.numProperties);
     }
+    if (updates.adminPermissions !== undefined || updates.promotedAt || updates.demotedAt) {
+      const extra = {};
+      if (updates.adminPermissions !== undefined) extra.adminPermissions = updates.adminPermissions;
+      if (updates.promotedAt) extra.promotedAt = updates.promotedAt;
+      if (updates.promotedBy) extra.promotedBy = updates.promotedBy;
+      if (updates.demotedAt) extra.demotedAt = updates.demotedAt;
+      if (updates.demotedBy) extra.demotedBy = updates.demotedBy;
+      fields.push(`raw_data = COALESCE(raw_data, '{}'::jsonb) || $${valueIndex++}::jsonb`);
+      values.push(JSON.stringify(extra));
+    }
 
-    if (fields.length === 0) return null;
+    if (fields.length === 0) return this.getUserById(id);
 
     values.push(id);
     const query = `UPDATE users SET ${fields.join(', ')} WHERE id = $${valueIndex} RETURNING *`;
@@ -302,7 +330,13 @@ class PostgreSQLStore {
   }
 
   sanitizeUser(user) {
+    if (!user) return null;
     const { password, ...safe } = user;
+    safe.isAdmin = !!(safe.is_admin || safe.role === 'admin' || safe.id === 'usr-admin-01');
+    safe.is_admin = safe.isAdmin;
+    safe.isVerified = !!safe.is_verified;
+    safe.isPhoneVerified = !!safe.is_phone_verified;
+    safe.createdAt = safe.created_at || safe.createdAt;
     return safe;
   }
 

@@ -2574,14 +2574,15 @@ app.get('/api/admin/users', requireAuth, async (req, res) => {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
     const users = await store.getAllUsers();
+    const allProps = (await store.getAllProperties?.()) || store.data?.properties || [];
     
     // Add property count to each user
     const usersWithCounts = users.map(user => {
-      const userProperties = (store.data.properties || []).filter(p => p.userId === user.id);
+      const userProperties = allProps.filter(p => p.userId === user.id || p.landlordId === user.id || p.landlord_id === user.id);
       return {
         ...user,
         propertyCount: userProperties.length,
-        activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified).length
+        activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified || p.is_verified).length
       };
     });
     
@@ -2606,15 +2607,16 @@ app.get('/api/admin/users/:id', requireAuth, async (req, res) => {
     }
     
     // Add additional stats
-    const userProperties = (store.data.properties || []).filter(p => p.userId === id);
-    const inquiries = (store.data.inquiries || []).filter(i => i.userId === id);
-    const reviews = (store.data.reviews || []).filter(r => r.userId === id);
-    const reports = (store.data.reports || []).filter(r => r.reportedBy === id);
+    const allProps = (await store.getAllProperties?.()) || store.data?.properties || [];
+    const userProperties = allProps.filter(p => p.userId === id || p.landlordId === id || p.landlord_id === id);
+    const inquiries = (store.data?.inquiries || store.fallbackStore?.data?.inquiries || []).filter(i => i.userId === id || i.sender_id === id);
+    const reviews = (store.data?.reviews || store.fallbackStore?.data?.reviews || []).filter(r => r.userId === id);
+    const reports = (store.data?.reports || store.fallbackStore?.data?.reports || []).filter(r => r.reportedBy === id);
     
     const userWithStats = {
       ...user,
       propertyCount: userProperties.length,
-      activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified).length,
+      activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified || p.is_verified).length,
       inquiriesSent: inquiries.length,
       reviewsGiven: reviews.length,
       reportsCount: reports.length
@@ -3005,7 +3007,236 @@ app.post('/api/admin/broadcast', requireAuth, async (req, res) => {
   }
 });
 
-// PUT /api/properties/:id/boost (Boost a listing)
+// ─── ADMIN USER MANAGEMENT (who has admin access) ──────────────────────────
+
+// GET /api/admin/admins — list all admin users
+app.get('/api/admin/admins', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const allUsers = await store.getAllUsers();
+    const admins = allUsers.filter(u =>
+      u.role === 'admin' || u.isAdmin === true || u.is_admin === true || u.id === 'usr-admin-01'
+    );
+    res.json({ success: true, count: admins.length, admins });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/admins — promote an existing user to admin OR create a new admin
+app.post('/api/admin/admins', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+
+    const { userId, name, email, phone, password, permissions = [] } = req.body;
+
+    // If userId given — promote existing user
+    if (userId) {
+      let user = await store.getUserById(userId);
+      if (!user && store.findUserByIdentifier) {
+        user = await store.findUserByIdentifier(userId);
+      }
+      if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
+
+      const updated = await store.updateUser(user.id, {
+        role: 'admin',
+        isAdmin: true,
+        is_admin: true,
+        adminPermissions: permissions,
+        promotedAt: new Date().toISOString(),
+        promotedBy: req.user.id
+      });
+      return res.json({ success: true, message: `${user.name} promoted to admin.`, user: updated || user });
+    }
+
+    // Otherwise create a new admin user
+    if (!name || (!email && !phone)) {
+      return res.status(400).json({ success: false, message: 'Name and email or phone are required.' });
+    }
+
+    const bcrypt = require('bcryptjs');
+    const rawPassword = password || ('KejaAdmin' + Math.floor(Math.random() * 9000 + 1000));
+    const cleanPhone = phone ? formatPhone(phone) : ('0700' + Math.floor(100000 + Math.random() * 900000));
+
+    const newAdmin = await store.createUser({
+      name: name.trim(),
+      email: email ? email.trim().toLowerCase() : null,
+      phone: cleanPhone,
+      password: rawPassword,
+      role: 'admin',
+      isAdmin: true,
+      is_admin: true,
+      adminPermissions: permissions,
+      isPhoneVerified: true
+    });
+
+    if (newAdmin && !newAdmin.isAdmin) {
+      await store.updateUser(newAdmin.id, { role: 'admin', isAdmin: true, is_admin: true });
+    }
+
+    res.json({
+      success: true,
+      message: 'Admin user created.',
+      user: newAdmin,
+      tempPassword: rawPassword
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/admin/admins/:id — update admin permissions/name
+app.put('/api/admin/admins/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const user = await store.getUserById(req.params.id);
+    if (!user) return res.status(404).json({ success: false, message: 'Admin user not found.' });
+
+    if (req.params.id === 'usr-admin-01') {
+      return res.status(403).json({ success: false, message: 'Cannot modify the root super-admin.' });
+    }
+
+    const { name, email, phone, permissions } = req.body;
+    const updated = await store.updateUser(req.params.id, {
+      name, email, phone, adminPermissions: permissions
+    });
+    res.json({ success: true, message: 'Admin updated.', user: updated || user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/admins/:id — revoke admin access (demote to tenant)
+app.delete('/api/admin/admins/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    if (req.params.id === 'usr-admin-01') {
+      return res.status(403).json({ success: false, message: 'Cannot remove the root super-admin.' });
+    }
+    if (req.params.id === req.user.id) {
+      return res.status(400).json({ success: false, message: 'You cannot remove your own admin access.' });
+    }
+    const user = await store.getUserById(req.params.id);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
+
+    await store.updateUser(req.params.id, {
+      role: 'tenant',
+      isAdmin: false,
+      is_admin: false,
+      demotedAt: new Date().toISOString(),
+      demotedBy: req.user.id
+    });
+    res.json({ success: true, message: `Admin access removed from ${user.name}.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ─── ADMIN OPERATIONS DATA ENDPOINTS ────────────────────────────────────────
+
+// GET /api/admin/inquiries
+app.get('/api/admin/inquiries', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    let inquiries = [];
+    if (store.isConnected && store.query) {
+      try {
+        const r = await store.query('SELECT * FROM messages ORDER BY created_at DESC LIMIT 100');
+        inquiries = r.rows.map(row => ({
+          id: row.id,
+          name: row.sender_name || 'Anonymous',
+          phone: row.sender_phone || '',
+          propertyId: row.property_id,
+          propertyTitle: row.property_title || row.estate_suburb || 'Property Inquiry',
+          message: row.text,
+          createdAt: row.created_at,
+          status: row.is_read ? 'responded' : 'new'
+        }));
+      } catch (e) {
+        inquiries = store.data?.inquiries || store.fallbackStore?.data?.inquiries || [];
+      }
+    } else {
+      inquiries = store.data?.inquiries || store.fallbackStore?.data?.inquiries || [];
+    }
+    res.json({ success: true, count: inquiries.length, inquiries });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/reviews
+app.get('/api/admin/reviews', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    let reviews = [];
+    if (store.isConnected && store.query) {
+      try {
+        const r = await store.query(`
+          SELECT pr.*, p.title as property_title 
+          FROM property_reviews pr
+          LEFT JOIN properties p ON pr.property_id = p.id
+          ORDER BY pr.review_date DESC LIMIT 100
+        `);
+        reviews = r.rows.map(row => ({
+          id: row.id,
+          reviewerName: row.author,
+          propertyId: row.property_id,
+          propertyTitle: row.property_title || row.property_id,
+          rating: Math.round(parseFloat(row.rating_overall) || 5),
+          comment: row.review_text,
+          date: row.review_date
+        }));
+      } catch (e) {
+        reviews = store.data?.reviews || store.fallbackStore?.data?.reviews || [];
+      }
+    } else {
+      reviews = store.data?.reviews || store.fallbackStore?.data?.reviews || [];
+    }
+    res.json({ success: true, count: reviews.length, reviews });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/reports
+app.get('/api/admin/reports', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const reports = store.data?.reports || store.fallbackStore?.data?.reports || [];
+    res.json({ success: true, count: reports.length, reports });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/support
+app.get('/api/admin/support', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const tickets = store.data?.supportTickets || store.fallbackStore?.data?.supportTickets || [];
+    res.json({ success: true, count: tickets.length, tickets });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
 app.put('/api/properties/:id/boost', async (req, res) => {
   try {
     const { id } = req.params;

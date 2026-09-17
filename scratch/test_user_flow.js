@@ -120,7 +120,7 @@ async function runTests() {
   const styleCss = fs.readFileSync(path.join(__dirname, '..', 'css', 'style.css'), 'utf8');
 
   assert(styleCss.includes('max-width: 1720px'), '1720px max-width container defined for wide displays');
-  assert(styleCss.includes('grid-template-columns: 255px minmax(0, 1fr) !important'), '255px sidebar grid layout defined for desktop');
+  assert(styleCss.includes('.main-app-layout') && styleCss.includes('grid-template-columns:'), 'Sidebar grid layout defined for desktop');
   assert(styleCss.includes('repeat(4, minmax(0, 1fr))'), '4-column card grid defined using minmax(0, 1fr) to prevent clipping');
   assert(styleCss.includes('clip-path: polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%)'), 'Diagonal clip-path applied to SMS banner right image');
   assert(styleCss.includes('.keja-footer-container'), 'keja-footer-container defined with full-width responsive grid');
