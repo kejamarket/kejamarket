@@ -58,8 +58,7 @@ class LandlordPortal {
   async openLandlordPortal() {
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     if (!session || (session.role !== 'landlord' && session.role !== 'agency')) {
-      if (window.app) window.app.showToast('Please sign in as a Landlord or Agency.', 'error');
-      if (window.kejaAuth) window.kejaAuth.openAuthModal();
+      if (window.kejaAuth) window.kejaAuth.openAuthModal('signin');
       return;
     }
 

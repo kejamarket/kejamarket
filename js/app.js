@@ -194,6 +194,7 @@ class NairobiRentalsApp {
     const countEl = document.getElementById('fav-count-badge');
     if (countEl) {
       countEl.textContent = this.favorites.size;
+      countEl.style.display = this.favorites.size > 0 ? 'inline-flex' : 'none';
     }
   }
 

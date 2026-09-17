@@ -206,27 +206,42 @@ const kejaAuth = (() => {
     const passwordEl = document.getElementById('signup-password');
 
     const name = nameEl ? nameEl.value.trim() : '';
-    const phone = phoneEl ? phoneEl.value.trim() : '';
+    let rawPhone = phoneEl ? phoneEl.value.trim() : '';
     const email = emailEl ? emailEl.value.trim() : '';
     const password = passwordEl ? passwordEl.value : '';
     const role = state.signupRole;
 
+    // Normalize phone number to Kenyan E.164 (+254...)
+    let cleanDigits = rawPhone.replace(/\D/g, '');
+    let phone = '';
+    if (cleanDigits.startsWith('254')) {
+      phone = '+' + cleanDigits;
+    } else if (cleanDigits.startsWith('0')) {
+      phone = '+254' + cleanDigits.substring(1);
+    } else if (cleanDigits.length === 9) {
+      phone = '+254' + cleanDigits;
+    } else if (cleanDigits.length > 0) {
+      phone = '+' + cleanDigits;
+    } else {
+      phone = rawPhone;
+    }
+
     // STRICT VALIDATION: All fields required
-    if (!name || !phone || !email || !password) {
-      if (window.app) window.app.showToast('Ã¢ÂÅ’ All fields are required including email.', 'error');
+    if (!name || !rawPhone || !email || !password) {
+      if (window.app) window.app.showToast('All fields are required including email.', 'error');
       return;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      if (window.app) window.app.showToast('Ã¢ÂÅ’ Please enter a valid email address.', 'error');
+      if (window.app) window.app.showToast('Please enter a valid email address.', 'error');
       return;
     }
 
-    // Phone validation
-    if (phone.length < 10) {
-      if (window.app) window.app.showToast('Ã¢ÂÅ’ Please enter a valid phone number.', 'error');
+    // Phone validation (+254 followed by 9 digits = 13 characters)
+    if (phone.length < 12 || !phone.startsWith('+254')) {
+      if (window.app) window.app.showToast('Please enter a valid Kenyan phone number (e.g. 712345678 or 0712345678).', 'error');
       return;
     }
 
@@ -1420,3 +1435,21 @@ console.log('ðŸ”§ Modal fixes and profile dropdown optimization applied');
 
   // Make it globally accessible
   window.updateCommunicationButtons = updateCommunicationButtons;
+
+// Auto-clean redundant +254 or 0 prefix typed into signup phone input
+document.addEventListener('DOMContentLoaded', function() {
+  const phoneInput = document.getElementById('signup-phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function() {
+      let val = this.value.replace(/[^\d+]/g, '');
+      if (val.startsWith('+254')) {
+        val = val.substring(4);
+      } else if (val.startsWith('254')) {
+        val = val.substring(3);
+      } else if (val.startsWith('0')) {
+        val = val.substring(1);
+      }
+      this.value = val;
+    });
+  }
+});
