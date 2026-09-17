@@ -52,6 +52,9 @@ class PostgreSQLStore {
           try { await this.pool.end(); } catch (e) {}
         }
         this.pool = new Pool(config);
+        this.pool.on('error', (err) => {
+          console.warn('⚠️ Unexpected error on idle PostgreSQL client (will auto-reconnect):', err.message);
+        });
         const client = await this.pool.connect();
         await client.query('SELECT NOW()');
         client.release();
