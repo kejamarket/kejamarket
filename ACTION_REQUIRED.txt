@@ -8,7 +8,14 @@ Your database is fully populated with real data:
 ✅ 20 marketplace items (furniture, electronics)
 ✅ 30 users (sellers and service providers)
 
-All code is pushed to GitHub (commit: d9abd92)
+All code is pushed to GitHub (commit: 6ed2b0e)
+
+Features ready in this release:
+✅ Full Admin User Management (Promote users or create new admins with temporary passwords)
+✅ Revoke Admin access controls (super-admin protected)
+✅ All admin sidebar modules active (Dashboard, Users, Properties, Buildings, Units, Verification, Rentals, BNBs, Services, Marketplace, Inquiries, Reviews, Reports, Support, Locations)
+✅ Live database connectivity with Supabase pooler resilience
+✅ 100% Test Suite passed (25/25 automated tests)
 
 ═══════════════════════════════════════════════════════════════════
   CHOOSE ONE DEPLOYMENT METHOD:
