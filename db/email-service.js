@@ -35,16 +35,13 @@ function initEmailService() {
 }
 
 function initResendService() {
-  const key = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM;
+  const key = (process.env.RESEND_API_KEY || '').trim().replace(/^["']|["']$/g, '');
+  const from = (process.env.RESEND_FROM || '').trim().replace(/^["']|["']$/g, '');
 
   if (!key || !key.startsWith('re_')) {
     console.log('📧 Resend: Not configured (add RESEND_API_KEY=re_... to environment)');
     resendReady = false;
     return false;
-  }
-  if (!from) {
-    console.log('📧 Resend: RESEND_FROM not set — defaulting to noreply@kejamarket.co.ke');
   }
   resendReady = true;
   console.log(`📧 Resend email service ready (from: ${from || 'noreply@kejamarket.co.ke'})`);
@@ -81,16 +78,22 @@ async function sendEmail({ to, subject, html, text }) {
 // ── Resend sender (password-reset links only) ────────────────────────────────
 
 async function sendViaResend({ to, subject, html, text }) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM || 'noreply@kejamarket.co.ke';
+  const apiKey = (process.env.RESEND_API_KEY || '').trim().replace(/^["']|["']$/g, '');
+  let from = (process.env.RESEND_FROM || 'noreply@kejamarket.co.ke').trim().replace(/^["']|["']$/g, '');
 
-  if (!resendReady || !apiKey) {
+  if (!apiKey || !apiKey.startsWith('re_')) {
+    console.warn(`[RESEND WARNING] Cannot send email to ${to}: RESEND_API_KEY is missing or invalid`);
     console.log(`[RESEND FALLBACK] To: ${to} | Subject: ${subject}`);
     console.log(`[RESEND FALLBACK BODY] ${text || '(html only)'}`);
-    return { success: true, simulated: true };
+    return { success: false, error: 'RESEND_API_KEY not configured or does not start with re_', simulated: true };
   }
 
   try {
+    let fromHeader = from;
+    if (!fromHeader.includes('<')) {
+      fromHeader = `KejaMarket <${fromHeader}>`;
+    }
+
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -98,7 +101,7 @@ async function sendViaResend({ to, subject, html, text }) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: `KejaMarket <${from}>`,
+        from: fromHeader,
         to: [to],
         subject,
         html,
@@ -107,10 +110,10 @@ async function sendViaResend({ to, subject, html, text }) {
     });
     const body = await res.json();
     if (!res.ok) {
-      console.error(`❌ Resend API error (${res.status}):`, body.message || JSON.stringify(body));
-      return { success: false, error: body.message || `HTTP ${res.status}` };
+      console.error(`❌ Resend API error (${res.status}):`, JSON.stringify(body));
+      return { success: false, error: body.message || `HTTP ${res.status}`, details: body };
     }
-    console.log(`📧 Resend email sent to ${to}: id=${body.id}`);
+    console.log(`📧 Resend email sent successfully to ${to}: id=${body.id}`);
     return { success: true, id: body.id };
   } catch (err) {
     console.error('❌ Resend fetch error:', err.message);

@@ -188,6 +188,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-width: 0;
+  max-width: calc(100vw - var(--sidebar-width));
+  overflow-x: hidden;
   transition: margin-left 0.3s ease;
 }
 
@@ -296,9 +299,11 @@ body {
    ================================ */
 .admin-content {
   flex: 1;
-  padding: var(--space-8);
+  padding: var(--space-5) var(--space-6);
   overflow-y: auto;
+  overflow-x: hidden;
   max-width: 100%;
+  min-width: 0;
 }
 
 /* ================================
@@ -691,15 +696,37 @@ body {
   background: white;
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: var(--shadow-sm);
   margin-bottom: var(--space-6);
+  width: 100%;
+  max-width: 100%;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
 }
 
 .admin-table {
   width: 100%;
+  min-width: 780px;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 .admin-table thead {
@@ -708,18 +735,18 @@ body {
 }
 
 .admin-table th {
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4);
   text-align: left;
   font-weight: 700;
   color: var(--gray-700);
   white-space: nowrap;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .admin-table td {
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--gray-100);
   vertical-align: middle;
 }

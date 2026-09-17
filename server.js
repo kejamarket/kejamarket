@@ -1292,6 +1292,55 @@ app.post('/api/auth/reset-password', async (req, res) => {
   }
 });
 
+// GET /api/auth/email-status — diagnostic status of Resend integration
+app.get('/api/auth/email-status', async (req, res) => {
+  const rawKey = (process.env.RESEND_API_KEY || '').trim().replace(/^["']|["']$/g, '');
+  const rawFrom = (process.env.RESEND_FROM || '').trim().replace(/^["']|["']$/g, '');
+
+  const hasKey = !!rawKey;
+  const keyFormat = rawKey.startsWith('re_') ? 'valid_prefix' : (rawKey ? 'invalid_prefix' : 'missing');
+  const keyPreview = rawKey ? `${rawKey.substring(0, 6)}...${rawKey.slice(-4)}` : null;
+
+  let apiCheck = null;
+  let domains = null;
+
+  if (hasKey && rawKey.startsWith('re_')) {
+    try {
+      const resp = await fetch('https://api.resend.com/domains', {
+        headers: { 'Authorization': `Bearer ${rawKey}` }
+      });
+      apiCheck = { status: resp.status, ok: resp.ok };
+      const body = await resp.json();
+      domains = body;
+    } catch (e) {
+      apiCheck = { error: e.message };
+    }
+  }
+
+  res.json({
+    configured: hasKey && rawKey.startsWith('re_'),
+    keyFormat,
+    keyPreview,
+    resendFrom: rawFrom || 'noreply@kejamarket.co.ke',
+    apiCheck,
+    domains
+  });
+});
+
+// POST /api/auth/test-send-email — test sending a real email via Resend
+app.post('/api/auth/test-send-email', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ success: false, message: 'Email required' });
+
+  const result = await emailService.sendPasswordResetLink(
+    email.trim(),
+    'KejaMarket Test User',
+    'https://kejamarket.co.ke/?reset_token=test_diagnostic_preview'
+  );
+
+  res.json({ result });
+});
+
 // Body: { phone, amount, itemType, itemName, targetPropertyId }
 app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
   try {
