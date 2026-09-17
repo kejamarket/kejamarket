@@ -774,6 +774,12 @@ class NairobiRentalsApp {
     }
   }
 
+  onSortChange(value) {
+    this.sortBy = value;
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
   setViewMode(mode) {
     // Gate: interactive map/split view requires login
     if ((mode === 'map' || mode === 'split') && !(window.kejaAuth && window.kejaAuth.getSession())) {
@@ -1124,7 +1130,39 @@ class NairobiRentalsApp {
         const pCat = (p.category || '').toLowerCase();
         let matchesCategory = (p.category === this.activeCategory);
         if (!matchesCategory) {
-          if (cat.includes('bedsitter') || cat.includes('studio')) {
+          if (cat.includes('airbnb') || cat.includes('bnb') || cat.includes('short')) {
+            matchesCategory = Boolean(
+              p.isBnb || 
+              p.rentPeriod === 'night' || 
+              pCat.includes('bnb') || 
+              pCat.includes('airbnb') || 
+              pCat.includes('short') || 
+              pCat.includes('villa') || 
+              (p.title && (p.title.toLowerCase().includes('bnb') || p.title.toLowerCase().includes('airbnb')))
+            );
+          } else if (cat === 'rentals' || cat === 'rental') {
+            matchesCategory = Boolean(!p.isForSale && !pCat.includes('land') && !pCat.includes('plot'));
+          } else if (cat.includes('selling') || cat.includes('sale')) {
+            matchesCategory = Boolean(
+              p.isForSale || 
+              pCat.includes('selling') || 
+              pCat.includes('sale') || 
+              pCat.includes('bungalow') || 
+              pCat.includes('maisonette') || 
+              pCat.includes('plot') || 
+              (p.title && p.title.toLowerCase().includes('for sale'))
+            );
+          } else if (cat.includes('apartment')) {
+            matchesCategory = Boolean(
+              pCat.includes('apartment') || 
+              pCat.includes('bedroom') || 
+              pCat.includes('bedsitter') || 
+              pCat.includes('studio') ||
+              pCat.includes('penthouse')
+            );
+          } else if (cat.includes('land') || cat.includes('plot')) {
+            matchesCategory = Boolean(pCat.includes('land') || pCat.includes('plot') || (p.title && p.title.toLowerCase().includes('plot')));
+          } else if (cat.includes('bedsitter') || cat.includes('studio')) {
             matchesCategory = pCat.includes('bedsitter') || pCat.includes('studio') || p.bedrooms === 0;
           } else if (cat.includes('single')) {
             matchesCategory = pCat.includes('single');
@@ -1140,10 +1178,6 @@ class NairobiRentalsApp {
             matchesCategory = pCat.includes('bungalow');
           } else if (cat.includes('maisonette') || cat.includes('townhouse')) {
             matchesCategory = pCat.includes('maisonette') || pCat.includes('townhouse');
-          } else if (cat.includes('apartment')) {
-            matchesCategory = pCat.includes('apartment') || pCat.includes('bed');
-          } else if (cat.includes('land') || cat.includes('plot')) {
-            matchesCategory = pCat.includes('land') || pCat.includes('plot');
           } else {
             matchesCategory = pCat.includes(cat);
           }
@@ -1248,19 +1282,45 @@ class NairobiRentalsApp {
       'Hostels / Shared': 15
     };
 
+    // Sorting Algorithm: Boosted/Featured first, then by Newest Uploaded
+    const parseItemTime = (item) => {
+      if (item.createdAt) {
+        const t = new Date(item.createdAt).getTime();
+        if (!isNaN(t) && t > 0) return t;
+      }
+      if (item.timestamp) {
+        const t = new Date(item.timestamp).getTime();
+        if (!isNaN(t) && t > 0) return t;
+      }
+      if (typeof item.id === 'string') {
+        const num = parseInt(item.id.replace(/\D/g, ''), 10);
+        if (!isNaN(num)) return num;
+      }
+      return 0;
+    };
+
     if (this.sortBy === 'price_asc') {
-      result.sort((a, b) => a.rentKes - b.rentKes);
+      result.sort((a, b) => (a.rentKes ?? a.price ?? 0) - (b.rentKes ?? b.price ?? 0));
     } else if (this.sortBy === 'price_desc') {
-      result.sort((a, b) => b.rentKes - a.rentKes);
-    } else if (this.sortBy === 'featured') {
-      result.sort((a, b) => (b.isTopAd ? 1 : 0) - (a.isTopAd ? 1 : 0));
-    } else {
-      // Default: Arrange from single rooms ascending up to BnBs
+      result.sort((a, b) => (b.rentKes ?? b.price ?? 0) - (a.rentKes ?? a.price ?? 0));
+    } else if (this.sortBy === 'category_asc') {
       result.sort((a, b) => {
         const rankA = CATEGORY_ORDER_RANK[a.category] || 99;
         const rankB = CATEGORY_ORDER_RANK[b.category] || 99;
         if (rankA !== rankB) return rankA - rankB;
-        return a.rentKes - b.rentKes;
+        return (a.rentKes ?? 0) - (b.rentKes ?? 0);
+      });
+    } else {
+      // Default / 'newest' / 'featured':
+      // 1. Boosted / Featured ads appear first
+      // 2. All categories sorted by newest uploaded timestamp descending
+      result.sort((a, b) => {
+        const isBoostedA = (a.isTopAd || a.isFeatured || a.badgeType === 'featured' || a.isBoosted) ? 1 : 0;
+        const isBoostedB = (b.isTopAd || b.isFeatured || b.badgeType === 'featured' || b.isBoosted) ? 1 : 0;
+        if (isBoostedA !== isBoostedB) {
+          return isBoostedB - isBoostedA;
+        }
+        return parseItemTime(b) - parseItemTime(a);
       });
     }
 

@@ -258,6 +258,7 @@ const ALL_SUBURBS = NAIROBI_REGIONS.flatMap(region =>
 
 // Master categories list starting with Single Rooms, Shared Rooms, Apartments, Commercial/Conference Rooms
 const MASTER_CATEGORIES = [
+  'Airbnbs / BnBs (Short-Stay)',
   'Single Room',
   'Bedsitter / Studio',
   '1 Bedroom',
@@ -267,6 +268,7 @@ const MASTER_CATEGORIES = [
   'Maisonette / Townhouse',
   'Bungalow',
   'Penthouse',
+  'Land & Plots',
   'Room in Shared Apartment',
   'Hostels / Student Room',
   'Conference Room / Boardroom',
