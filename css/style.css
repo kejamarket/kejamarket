@@ -132,13 +132,14 @@ button, input, select, textarea {
 }
 
 .header-container {
-  max-width: 1440px;
+  max-width: 1720px;
+  width: 98%;
   margin: 0 auto;
-  padding: 10px 18px;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
 }
 
 .brand-wrapper {
@@ -583,13 +584,14 @@ button, input, select, textarea {
   color: var(--primary-color);
 }
 
-/* App Main Layout Grid (Matches reference image with 260px sidebar & 4-column cards) */
+/* App Main Layout Grid (Matches reference image with 255px sidebar & 4-column cards) */
 .main-app-layout {
-  max-width: 1560px;
+  max-width: 1720px;
+  width: 98%;
   margin: 16px auto;
   padding: 0 16px;
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 255px minmax(0, 1fr);
   gap: 20px;
   align-items: start;
 }
@@ -889,22 +891,26 @@ button, input, select, textarea {
 .property-listings-grid {
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 16px;
+  gap: 14px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1060px) {
   .property-listings-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 768px) {
   .property-listings-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
   }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 520px) {
   .property-listings-grid {
     grid-template-columns: 1fr !important;
   }
@@ -921,6 +927,7 @@ button, input, select, textarea {
   flex-direction: column;
   position: relative;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  min-width: 0;
 }
 
 .property-card:hover {
@@ -1063,6 +1070,7 @@ button, input, select, textarea {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
 }
 
 .card-price-row {
@@ -1158,9 +1166,9 @@ button, input, select, textarea {
   background: #00b53f;
   border: none;
   color: white;
-  padding: 8px 10px;
+  padding: 8px 8px;
   border-radius: 6px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -1170,6 +1178,7 @@ button, input, select, textarea {
   transition: var(--transition);
   white-space: nowrap;
   flex: 1;
+  min-width: 0;
 }
 
 .btn-card-details:hover,
@@ -1918,7 +1927,7 @@ button, input, select, textarea {
 }
 
 /* Responsive Layout Preservation:
-   Desktop only — keeps the 2-column sidebar + 3-column grid on screens >= 769px */
+   Desktop & Wide Screens — 255px sidebar + 4-column card grid */
 @media (min-width: 769px) {
   .category-pills-bar,
   .category-pills-bar--mobile-only,
@@ -1930,108 +1939,51 @@ button, input, select, textarea {
 
   .main-app-layout {
     display: grid !important;
-    grid-template-columns: 335px 1fr !important;
-    gap: 16px !important;
+    grid-template-columns: 255px minmax(0, 1fr) !important;
+    gap: 20px !important;
+    max-width: 1720px !important;
+    width: 98% !important;
+    margin: 16px auto !important;
+    padding: 0 16px !important;
+    box-sizing: border-box !important;
   }
 
   .sidebar-filters {
     display: block !important;
     position: sticky !important;
     top: 80px !important;
-    max-height: calc(100vh - 100px) !important;
+    max-height: calc(100vh - 90px) !important;
     overflow-y: auto !important;
+    width: 255px !important;
+    box-sizing: border-box !important;
   }
 
-  .sidebar-filter-cols {
-    display: grid !important;
-    grid-template-columns: 135px 1fr !important;
-    gap: 10px !important;
+  .content-area-wrapper {
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .property-listings-grid, #property-grid {
     display: grid !important;
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     gap: 14px !important;
+    width: 100% !important;
   }
 }
 
-/* ==========================================================================
-   RESPONSIVE DESIGN - DESKTOP & LARGE SCREENS
-   ========================================================================== */
-
-/* Extra Large Screens (1920px+) - 4 column grid */
-@media (min-width: 1920px) {
-  .property-listings-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 18px;
+/* Medium Tablets & Narrow Screens (769px - 1080px) */
+@media (min-width: 769px) and (max-width: 1080px) {
+  .main-app-layout {
+    grid-template-columns: 230px minmax(0, 1fr) !important;
+    gap: 14px !important;
   }
-  
   .sidebar-filters {
-    max-height: calc(100vh - 90px);
+    width: 230px !important;
   }
-}
-
-/* Large Desktop (1600px - 1919px) - 3 column grid with more space */
-@media (min-width: 1600px) and (max-width: 1919px) {
-  .property-listings-grid {
+  .property-listings-grid, #property-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 16px;
-  }
-}
-
-/* Standard Desktop (1367px - 1599px) - 3 column grid */
-@media (min-width: 1367px) and (max-width: 1599px) {
-  .property-listings-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 14px;
-  }
-}
-
-/* Small Laptops & Tablets Landscape (1024px - 1366px) - 2 column grid */
-@media (min-width: 1024px) and (max-width: 1366px) {
-  .property-listings-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 12px;
-  }
-  
-  .sidebar-filters {
-    max-height: calc(100vh - 100px);
-    font-size: 0.85rem;
-  }
-  
-  .card-media-wrapper {
-    height: 140px !important;
-  }
-  
-  .split-view-container {
-    height: calc(100vh - 200px);
-  }
-  
-  .filter-group {
-    padding: 8px;
-  }
-  
-  .sidebar-cat-item {
-    font-size: 0.8rem;
-    padding: 6px 8px;
-  }
-}
-
-/* Tablets Portrait (769px - 1023px) - 2 column grid */
-@media (min-width: 769px) and (max-width: 1023px) {
-  .property-listings-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px;
-  }
-  
-  .sidebar-filters {
-    max-width: 220px;
-    font-size: 0.8rem;
-    max-height: calc(100vh - 100px);
-  }
-  
-  .card-media-wrapper {
-    height: 130px !important;
+    gap: 12px !important;
   }
 }
 
@@ -2354,9 +2306,10 @@ button, input, select, textarea {
 }
 
 .secondary-nav-container {
-  max-width: 1440px;
+  max-width: 1720px;
+  width: 98%;
   margin: 0 auto;
-  padding: 0 18px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   overflow-x: auto;
@@ -2587,30 +2540,30 @@ button, input, select, textarea {
 }
 
 .filter-checklist-box {
-  max-height: 200px;
+  max-height: 180px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
   scrollbar-width: thin;
-  padding-right: 4px;
+  padding-right: 2px;
 }
 
 .filter-check-item {
   display: flex;
   align-items: center;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: #334155;
   cursor: pointer;
-  padding: 2px 0;
+  padding: 1.5px 0;
   user-select: none;
 }
 
 .filter-check-item input[type="checkbox"] {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   accent-color: #00b53f;
-  margin-right: 8px;
+  margin-right: 7px;
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -2622,7 +2575,7 @@ button, input, select, textarea {
 
 .filter-check-item .item-count {
   color: #94a3b8;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 600;
   margin-left: auto;
 }
@@ -2701,8 +2654,8 @@ button, input, select, textarea {
    ================================================================ */
 .green-sms-alert-banner {
   background: linear-gradient(135deg, #005a2b 0%, #008f43 55%, #007a38 100%);
-  border-radius: 12px;
-  padding: 14px 20px;
+  border-radius: 16px;
+  padding: 16px 24px;
   color: white;
   display: flex;
   align-items: center;
@@ -2710,8 +2663,10 @@ button, input, select, textarea {
   margin-bottom: 16px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 90, 43, 0.2);
-  min-height: 100px;
+  box-shadow: 0 4px 16px rgba(0, 90, 43, 0.18);
+  min-height: 110px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .green-sms-left {
@@ -2723,13 +2678,13 @@ button, input, select, textarea {
 }
 
 .sms-circle-badge {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: white;
   color: #006837;
   font-weight: 900;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2739,7 +2694,7 @@ button, input, select, textarea {
 }
 
 .sms-text-block h3 {
-  font-size: 1.12rem;
+  font-size: 1.22rem;
   font-weight: 800;
   margin-bottom: 3px;
   color: white;
@@ -2747,9 +2702,9 @@ button, input, select, textarea {
 }
 
 .sms-text-block p {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 10px;
 }
 
 .btn-sms-alert-pill {
@@ -2759,8 +2714,8 @@ button, input, select, textarea {
   background: white;
   color: #006837;
   font-weight: 800;
-  font-size: 0.8rem;
-  padding: 7px 16px;
+  font-size: 0.82rem;
+  padding: 7px 18px;
   border-radius: 9999px;
   border: none;
   cursor: pointer;
@@ -2774,33 +2729,39 @@ button, input, select, textarea {
 }
 
 .green-sms-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 360px;
+  height: 100%;
+  z-index: 1;
   display: flex;
   align-items: center;
-  gap: 12px;
-  z-index: 1;
-  position: relative;
+  justify-content: flex-end;
 }
 
 .green-sms-right-img {
-  height: 90px;
-  width: 160px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  clip-path: polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 
 .sms-cursive-text {
   position: absolute;
-  right: 10px;
-  bottom: 6px;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
   color: white;
-  font-family: 'Brush Script MT', cursive, sans-serif;
-  font-size: 1.2rem;
-  line-height: 1.1;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+  font-family: 'Brush Script MT', 'Segoe Script', cursive, sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.85);
   pointer-events: none;
   text-align: right;
   font-style: italic;
+  z-index: 2;
 }
 
 @media (max-width: 900px) {
@@ -2821,13 +2782,15 @@ button, input, select, textarea {
 }
 
 .keja-footer-container {
-  max-width: 1440px;
+  max-width: 1720px;
+  width: 98%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1.4fr;
   gap: 32px;
-  padding-bottom: 28px;
+  padding: 0 24px 28px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
 }
 
 @media (max-width: 992px) {
