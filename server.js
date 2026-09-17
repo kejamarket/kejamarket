@@ -85,6 +85,14 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Strip accidental trailing dots or punctuation from URLs (e.g. copied from markdown sentences)
+app.use((req, res, next) => {
+  if (req.url && req.url.endsWith('.') && !req.url.includes('..')) {
+    req.url = req.url.replace(/\.+$/, '');
+  }
+  next();
+});
+
 // ── BLOCK SENSITIVE FILES before static middleware ────────────────────────────
 const blockedPaths = [
   '/.env', '/.git', '/admin-token.txt', '/db/data.json',
