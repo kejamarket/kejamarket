@@ -262,7 +262,7 @@
       </div>
 
       <!-- Header Action Buttons -->
-      <div class="header-actions" style="display: flex; align-items: center; gap: 14px;">
+      <div class="header-actions" style="display: flex; align-items: center; gap: 10px; flex-shrink: 0; overflow: visible;">
         
         <!-- Post Ad Button (Landlord / Agent only) -->
         <button class="btn-post-ad" id="btn-header-post-ad" style="display: none;" onclick="kejaAuth.requireLandlordForAction('modal-post-ad')">
@@ -309,50 +309,28 @@
           <span>Pricing & Pro</span>
         </button>
 
-        <!-- Admin Access -->
-        <button class="btn-header-action" id="btn-admin-header" style="display: none; background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; font-weight: 700; border: 1px solid rgba(124,58,237,0.4);" onclick="window.open('/dashboard.html', '_blank')" title="Dashboard" aria-label="Dashboard">
-          <i class="fas fa-chart-line" style="color: #ffd700;"></i>
-          <span>Dashboard</span>
-        </button>
+                <!-- Hidden stubs kept for JS compatibility - navigation moved to Profile dropdown -->
+        <button id="btn-admin-header" style="display:none;"></button>
+        <button id="btn-landlord-header" style="display:none;"></button>
+        <button id="btn-my-dashboard" style="display:none;"></button>
+        <button id="btn-service-header" style="display:none;"></button>
+        <button id="btn-messages" style="display:none;"></button>
+        <button id="btn-notifications" style="display:none;"></button>
 
-        <!-- Landlord Access -->
-        <button class="btn-header-action" id="btn-landlord-header" style="display: none; background: linear-gradient(135deg, #7c3aed, #5b21b6); color: white; font-weight: 700;" onclick="kejaLandlordPortal.openLandlordPortal()" title="My Listings">
-          <i class="fas fa-home"></i>
-          <span>My Listings</span>
-        </button>
+        <!-- Sign In / User Profile Dropdown Trigger -->
+        <div style="position: relative; flex-shrink: 0;">
+          <button class="btn-auth-trigger" id="btn-auth-header" onclick="kejaAuth.toggleProfileDropdown()" style="display: flex; align-items: center; gap: 6px; background: #f1f5f9; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 4px 10px 4px 4px; cursor: pointer; height: 38px;">
+            <div class="header-user-avatar" id="header-user-avatar" style="width: 30px; height: 30px; border-radius: 50%; background: #064e22; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+              <i class="fas fa-user" style="font-size: 0.8rem;"></i>
+            </div>
+            <span id="auth-header-label" style="font-weight: 700; font-size: 0.88rem; color: #0f172a; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sign In</span>
+            <i class="fas fa-chevron-down" style="font-size: 0.65rem; color: #64748b;"></i>
+          </button>
 
-        <!-- My Dashboard button -->
-        <button class="btn-header-action" id="btn-my-dashboard" style="display: none; background: #4f46e5; color: white; font-weight: 700;" onclick="kejaDashboard.open()" title="My Dashboard">
-          <i class="fas fa-th-large"></i>
-          <span>Dashboard</span>
-        </button>
-
-        <!-- Service Provider Portal -->
-        <button class="btn-header-action" id="btn-service-header" style="display: none; background: linear-gradient(135deg, #0891b2, #06b6d4); color: white; font-weight: 700;" onclick="kejaServicePortal.openServicePortal()" title="Service Provider Dashboard">
-          <i class="fas fa-tools"></i>
-          <span>Services Portal</span>
-        </button>
-
-        <!-- Messages & Notifications legacy hooks -->
-        <button class="btn-messages" id="btn-messages" onclick="KejaMessages.showMessagesCenter()" style="display:none;">
-          ðŸ’¬ <span class="messages-count" id="messages-count">7</span>
-        </button>
-        <button class="btn-notifications" id="btn-notifications" onclick="KejaCommunication.NotificationSystem.showNotificationsCenter()" style="display:none;">
-          ðŸ”” <span class="notifications-count" id="notifications-count">5</span>
-        </button>
-
-        <!-- Sign In / User Profile Dropdown Trigger (Matches reference: Stallon) -->
-        <button class="btn-header-action btn-auth-trigger" id="btn-auth-header" onclick="kejaAuth.toggleProfileDropdown()" style="display: flex; align-items: center; gap: 8px; background: transparent; border: none; padding: 4px 6px; cursor: pointer;">
-          <div class="header-user-avatar" id="header-user-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: #064e22; display: flex; align-items: center; justify-content: center; color: white;">
-            <i class="fas fa-user" style="font-size: 0.95rem;"></i>
+          <!-- Compact Profile Dropdown -->
+          <div id="profile-dropdown" style="display: none;">
+            <div id="profile-dropdown-content"></div>
           </div>
-          <span id="auth-header-label" style="font-weight: 700; font-size: 0.92rem; color: #0f172a;">Sign In</span>
-          <i class="fas fa-chevron-down" style="font-size: 0.72rem; color: #64748b;"></i>
-        </button>
-
-        <!-- Compact Profile Dropdown -->
-        <div id="profile-dropdown" style="display: none;">
-          <div id="profile-dropdown-content"></div>
         </div>
 
       </div>

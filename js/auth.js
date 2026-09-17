@@ -1085,7 +1085,7 @@ const kejaAuth = (() => {
         <!-- Profile Menu -->
         <div class="profile-menu">
           ${(session.role === 'admin' || session.isAdmin || session.id === 'usr-admin-01') ? `
-            <a href="/admin-dashboard.html" class="profile-menu-item" style="background:#fee2e2; color:#b91c1c; font-weight:700; border-radius:8px; margin-bottom:6px; text-decoration:none; display:flex; align-items:center; gap:10px; padding:10px 14px;">
+            <a href="/admin-dashboard.html" class="profile-menu-item profile-menu-admin">
               <i class="fas fa-shield-alt profile-menu-icon" style="color:#dc2626;"></i>
               <span>Admin Control Center</span>
             </a>
