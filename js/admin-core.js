@@ -194,6 +194,18 @@ const AdminCore = (() => {
         case 'finance':
           await loadFinance(viewData);
           break;
+        case 'global':
+          await loadGlobal(viewData);
+          break;
+        case 'featured':
+          await loadFeatured(viewData);
+          break;
+        case 'notifications':
+          await loadNotifications(viewData);
+          break;
+        case 'appsettings':
+          await loadAppSettings(viewData);
+          break;
         default:
           contentArea.innerHTML = '<div class="empty-state">Module not implemented yet</div>';
       }
@@ -808,6 +820,136 @@ const AdminCore = (() => {
         <div class="stat-box"><i class="fas fa-check"></i><div><div class="stat-number">0</div><div class="stat-label">Transactions</div></div></div>
       </div>
       <div class="empty-state"><i class="fas fa-dollar-sign"></i><p>Financial tracking system</p><small>Payments, commissions, and reports</small></div>
+    `;
+  }
+
+  async function loadGlobal(viewData) {
+    const content = document.getElementById('admin-content');
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-globe"></i> Site Configuration</h1></div>
+      <div class="stats-row">
+        <div class="stat-box" style="border-left:4px solid #6366f1;"><i class="fas fa-check-circle" style="color:#6366f1"></i><div><div class="stat-number" style="color:#6366f1">Live</div><div class="stat-label">Site Status</div></div></div>
+        <div class="stat-box" style="border-left:4px solid #10b981;"><i class="fas fa-server" style="color:#10b981"></i><div><div class="stat-number" style="color:#10b981">Render</div><div class="stat-label">Hosting</div></div></div>
+        <div class="stat-box" style="border-left:4px solid #f59e0b;"><i class="fas fa-database" style="color:#f59e0b"></i><div><div class="stat-number" style="color:#f59e0b">PostgreSQL</div><div class="stat-label">Database</div></div></div>
+        <div class="stat-box" style="border-left:4px solid #00b53f;"><i class="fas fa-envelope" style="color:#00b53f"></i><div><div class="stat-number" style="color:#00b53f">Resend</div><div class="stat-label">Email Service</div></div></div>
+      </div>
+      <div class="table-container" style="margin-top:24px;">
+        <table class="admin-table">
+          <thead><tr><th>Config Key</th><th>Value</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Site Name</strong></td><td>KejaMarket</td><td><span class="status-badge status-active">Active</span></td></tr>
+            <tr><td><strong>Domain</strong></td><td>kejamarket.co.ke</td><td><span class="status-badge status-active">Active</span></td></tr>
+            <tr><td><strong>Email (Resend)</strong></td><td>no-reply@kejamarket.co.ke</td><td><span class="status-badge status-verified">Configured</span></td></tr>
+            <tr><td><strong>M-Pesa STK Push</strong></td><td>Safaricom Daraja API</td><td><span class="status-badge status-pending">Pending</span></td></tr>
+            <tr><td><strong>Media Storage</strong></td><td>Cloudinary CDN</td><td><span class="status-badge status-active">Active</span></td></tr>
+            <tr><td><strong>Auth Mode</strong></td><td>JWT + Bcrypt + Email Reset</td><td><span class="status-badge status-verified">Secure</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  async function loadFeatured(viewData) {
+    const content = document.getElementById('admin-content');
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-star"></i> Featured Listings</h1></div>
+      <div class="module-actions">
+        <p style="color:#64748b;font-size:0.9rem;">Feature top-quality listings that will appear in the "Featured" section on the homepage.</p>
+      </div>
+      <div id="featured-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading featured properties...</div></div>
+    `;
+    try {
+      const res = await fetch('/api/admin/all-properties', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      const props = (data.properties || []).filter(p => p.status === 'approved' || p.isFeatured);
+      const container = document.getElementById('featured-content');
+      if (!props.length) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-star"></i><p>No approved properties to feature</p></div>';
+        return;
+      }
+      container.innerHTML = `<div class="table-container"><table class="admin-table">
+        <thead><tr><th>Property</th><th>Location</th><th>Rent</th><th>Featured</th></tr></thead>
+        <tbody>${props.slice(0, 30).map(p => `
+          <tr>
+            <td><strong>${p.title || '-'}</strong></td>
+            <td>${p.estateSuburb || p.estate_suburb || '-'}</td>
+            <td>KSh ${(p.rentKes || p.rent || 0).toLocaleString()}</td>
+            <td><span class="status-badge ${p.isFeatured ? 'status-verified' : 'status-pending'}">${p.isFeatured ? '⭐ Featured' : 'Normal'}</span></td>
+          </tr>`).join('')}
+        </tbody></table></div>`;
+    } catch (err) {
+      document.getElementById('featured-content').innerHTML = `<div class="error-state"><p>Error: ${err.message}</p></div>`;
+    }
+  }
+
+  async function loadNotifications(viewData) {
+    const content = document.getElementById('admin-content');
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-bell"></i> System Notifications</h1></div>
+      <div class="stats-row">
+        <div class="stat-box"><i class="fas fa-bell" style="color:#f59e0b"></i><div><div class="stat-number">0</div><div class="stat-label">Pending Alerts</div></div></div>
+        <div class="stat-box"><i class="fas fa-paper-plane" style="color:#6366f1"></i><div><div class="stat-number">0</div><div class="stat-label">Emails Sent Today</div></div></div>
+        <div class="stat-box"><i class="fas fa-comment" style="color:#00b53f"></i><div><div class="stat-number">0</div><div class="stat-label">WhatsApp Sent Today</div></div></div>
+      </div>
+      <div class="empty-state" style="margin-top:24px;">
+        <i class="fas fa-bell"></i>
+        <p>Push Notification Management</p>
+        <small>Send broadcast messages to tenants, landlords, and agencies</small>
+        <div style="margin-top:20px;max-width:480px;text-align:left;">
+          <label style="font-weight:600;font-size:0.88rem;">Notification Message</label>
+          <textarea id="notif-msg" placeholder="Type your announcement here..." style="width:100%;padding:12px;border:1.5px solid #e2e8f0;border-radius:8px;margin:8px 0 12px;font-size:0.9rem;min-height:80px;box-sizing:border-box;"></textarea>
+          <label style="font-weight:600;font-size:0.88rem;">Target Audience</label>
+          <select id="notif-audience" style="width:100%;padding:10px;border:1.5px solid #e2e8f0;border-radius:8px;margin:6px 0 16px;font-size:0.9rem;">
+            <option value="all">All Users</option>
+            <option value="tenants">Tenants Only</option>
+            <option value="landlords">Landlords & Agencies</option>
+          </select>
+          <button onclick="alert('Notifications feature coming soon!')" style="padding:12px 24px;background:#7c3aed;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
+            <i class="fas fa-paper-plane"></i> Send Notification
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  async function loadAppSettings(viewData) {
+    const content = document.getElementById('admin-content');
+    content.innerHTML = `
+      <div class="module-header"><h1><i class="fas fa-cog"></i> App Settings</h1></div>
+      <div class="table-container">
+        <table class="admin-table">
+          <thead><tr><th>Setting</th><th>Current Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Maintenance Mode</strong></td>
+              <td><label style="position:relative;display:inline-block;width:44px;height:24px;"><input type="checkbox" style="opacity:0;width:0;height:0;"><span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:24px;transition:0.3s;"></span></label></td>
+              <td><small style="color:#64748b;">Take site offline for maintenance</small></td>
+            </tr>
+            <tr>
+              <td><strong>Tenant Verification Required</strong></td>
+              <td><span class="status-badge status-pending">On Post Only</span></td>
+              <td><small style="color:#64748b;">Tenants only need verification to post listings</small></td>
+            </tr>
+            <tr>
+              <td><strong>New User Auto-Approval</strong></td>
+              <td><span class="status-badge status-active">Enabled</span></td>
+              <td><small style="color:#64748b;">New accounts are immediately active</small></td>
+            </tr>
+            <tr>
+              <td><strong>Listing Approval Required</strong></td>
+              <td><span class="status-badge status-verified">Admin Review</span></td>
+              <td><small style="color:#64748b;">All new listings require admin approval</small></td>
+            </tr>
+            <tr>
+              <td><strong>Social Sharing</strong></td>
+              <td><span class="status-badge status-active">Open (No Auth)</span></td>
+              <td><small style="color:#64748b;">Anyone can share property links</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     `;
   }
 

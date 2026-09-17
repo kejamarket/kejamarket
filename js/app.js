@@ -3202,6 +3202,81 @@ class NairobiRentalsApp {
     }
   }
 
+  // ── SOCIAL SHARING ──────────────────────────────────────────────
+  // All share methods are open to anyone — no auth required to share
+  _getShareUrl(propertyId) {
+    const base = window.location.origin + window.location.pathname;
+    return `${base}?property=${encodeURIComponent(propertyId)}`;
+  }
+
+  _getShareText(p) {
+    if (!p) return 'Check out this property on KejaMarket!';
+    const price = p.rentKes ? `KSh ${Number(p.rentKes).toLocaleString()}` : '';
+    const loc = p.estateSuburb || p.location || '';
+    return `🏠 ${p.title}${loc ? ' – ' + loc : ''}${price ? ' | ' + price + '/mo' : ''} — Found on KejaMarket!`;
+  }
+
+  handleCardWhatsApp(propertyId, event) {
+    if (event) event.stopPropagation();
+    const p = this.properties.find(x => x.id === propertyId);
+    const text = encodeURIComponent(this._getShareText(p) + '\n' + this._getShareUrl(propertyId));
+    window.open(`https://wa.me/?text=${text}`, '_blank', 'noopener,noreferrer');
+  }
+
+  handleCardFacebook(propertyId, event) {
+    if (event) event.stopPropagation();
+    const url = encodeURIComponent(this._getShareUrl(propertyId));
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'noopener,noreferrer');
+  }
+
+  handleCardInstagram(propertyId, event) {
+    if (event) event.stopPropagation();
+    // Instagram doesn't support direct URL sharing; copy link + show toast
+    const shareUrl = this._getShareUrl(propertyId);
+    const p = this.properties.find(x => x.id === propertyId);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        this.showToast('Link copied! Open Instagram and paste in your story or bio.', 'success');
+      }).catch(() => {
+        this._fallbackCopy(shareUrl);
+        this.showToast('Link copied! Paste it in your Instagram story or bio.', 'info');
+      });
+    } else {
+      this._fallbackCopy(shareUrl);
+      this.showToast('Link copied! Paste it in your Instagram story.', 'info');
+    }
+  }
+
+  handleCardTikTok(propertyId, event) {
+    if (event) event.stopPropagation();
+    const shareUrl = this._getShareUrl(propertyId);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        this.showToast('Link copied! Add it to your TikTok video description or bio.', 'success');
+      }).catch(() => {
+        this._fallbackCopy(shareUrl);
+        this.showToast('Link copied! Paste it in your TikTok bio.', 'info');
+      });
+    } else {
+      this._fallbackCopy(shareUrl);
+      this.showToast('Link copied for TikTok!', 'info');
+    }
+  }
+
+  _fallbackCopy(text) {
+    try {
+      const el = document.createElement('textarea');
+      el.value = text;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    } catch (e) { /* silent */ }
+  }
+  // ────────────────────────────────────────────────────────────────
+
   updatePostButtonsVisibility() {
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     const postAdBtn = document.getElementById('btn-header-post-ad');
@@ -3247,4 +3322,19 @@ window.installPWAInstantly = installPWAInstantly;
 
 document.addEventListener('DOMContentLoaded', () => {
   window.app.init();
+  // Automatically open shared property if URL has ?property=xyz
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sharedPropId = urlParams.get('property') || urlParams.get('prop') || urlParams.get('p');
+    if (sharedPropId) {
+      setTimeout(() => {
+        if (window.app && typeof window.app.openPropertyDetail === 'function') {
+          window.app.openPropertyDetail(sharedPropId);
+        }
+      }, 600);
+    }
+  } catch (e) {
+    console.error('Error checking shared property URL:', e);
+  }
+
 });
