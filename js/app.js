@@ -774,6 +774,21 @@ class NairobiRentalsApp {
     }
   }
 
+  toggleFraudWarning() {
+    const details = document.getElementById('fraud-warning-details');
+    const toggleText = document.getElementById('fraud-toggle-text');
+    const toggleIcon = document.getElementById('fraud-toggle-icon');
+    if (details) {
+      const isHidden = details.style.display === 'none' || details.style.display === '';
+      details.style.display = isHidden ? 'block' : 'none';
+      if (toggleText) toggleText.textContent = isHidden ? 'Less Info' : 'Safety Tips';
+      if (toggleIcon) toggleIcon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+      if (isHidden) {
+        details.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }
+
   onSortChange(value) {
     this.sortBy = value;
     this.currentPage = 1;
@@ -2056,6 +2071,13 @@ class NairobiRentalsApp {
 
     // Load verified services to show in property detail
     this.loadPropertyDetailServices();
+
+    const fraudDetails = document.getElementById('fraud-warning-details');
+    const fraudToggleText = document.getElementById('fraud-toggle-text');
+    const fraudToggleIcon = document.getElementById('fraud-toggle-icon');
+    if (fraudDetails) fraudDetails.style.display = 'none';
+    if (fraudToggleText) fraudToggleText.textContent = 'Safety Tips';
+    if (fraudToggleIcon) fraudToggleIcon.style.transform = 'rotate(0deg)';
 
     this.openModal('modal-property-detail');
 

@@ -1139,17 +1139,25 @@
           </button>
         </div>
 
-        <!-- Prominent Anti-Fraud & Tenant Safety Warning Alert -->
-        <div class="detail-fraud-warning" style="background: #fffbeb; border: 1.5px solid #f59e0b; border-left: 6px solid #d97706; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;">
-          <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; color: #92400e; font-size: 0.95rem; margin-bottom: 6px;">
-            <i class="fas fa-shield-virus" style="font-size: 1.25rem; color: #d97706;"></i>
-            <span>ANTI-FRAUD & SAFETY ALERT: NEVER SEND MONEY BEFORE VIEWING</span>
+        <!-- Compact & Expandable Anti-Fraud & Tenant Safety Warning Banner -->
+        <div class="detail-fraud-warning-compact" id="detail-fraud-warning" style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1px solid #fde68a; border-left: 4px solid #d97706; border-radius: 8px; margin-bottom: 12px; overflow: hidden; transition: all 0.25s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <div class="fraud-warning-header" onclick="app.toggleFraudWarning()" style="display: flex; align-items: center; justify-content: space-between; padding: 7px 12px; cursor: pointer; user-select: none; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #92400e; font-size: 0.82rem; min-width: 0;">
+              <i class="fas fa-shield-alt" style="font-size: 0.95rem; color: #d97706; flex-shrink: 0;"></i>
+              <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><strong>Safety Alert:</strong> Never send money before viewing. House viewings are 100% Free.</span>
+            </div>
+            <button type="button" class="fraud-warning-toggle-btn" style="background: #ffffff; border: 1px solid #fcd34d; color: #b45309; padding: 2px 9px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; flex-shrink: 0; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+              <span id="fraud-toggle-text">Safety Tips</span>
+              <i class="fas fa-chevron-down" id="fraud-toggle-icon" style="font-size: 0.68rem; transition: transform 0.2s;"></i>
+            </button>
           </div>
-          <ul style="margin: 0; padding-left: 20px; font-size: 0.83rem; color: #78350f; line-height: 1.55;">
-            <li><strong>Zero Viewing Fees:</strong> Physical house viewings on KejaMarket are <strong>100% FREE</strong>. Never pay any "fuel" or "booking" fee.</li>
-            <li><strong>Verify In Person:</strong> Meet the verified landlord or caretaker at the building gate, inspect the vacant room, and verify keys before sending any deposit.</li>
-            <li><strong>Official M-Pesa Only:</strong> When ready to rent, pay only to an official verified Paybill / Till or in-person with written agreement.</li>
-          </ul>
+          <div id="fraud-warning-details" style="display: none; padding: 8px 12px 10px 12px; border-top: 1px dashed #fde68a; background: #ffffff;">
+            <ul style="margin: 0; padding-left: 18px; font-size: 0.8rem; color: #78350f; line-height: 1.55;">
+              <li><strong>Zero Viewing Fees:</strong> Physical house viewings on KejaMarket are <strong>100% FREE</strong>. Never pay any "fuel" or "booking" fee.</li>
+              <li><strong>Verify In Person:</strong> Meet the verified landlord or caretaker at the building gate, inspect the vacant room, and verify keys before sending any deposit.</li>
+              <li><strong>Official M-Pesa Only:</strong> When ready to rent, pay only to an official verified Paybill / Till or in-person with a written tenancy agreement.</li>
+            </ul>
+          </div>
         </div>
         <!-- Main Photo Gallery (Jiji-Style Interactive Carousel) -->
         <div class="detail-gallery-main" id="detail-gallery-main-container">
