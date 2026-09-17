@@ -48,6 +48,15 @@ const otpLimiter = rateLimit({
 });
 
 // Upload endpoint: max 30 per minute
+// Password reset limiter: max 15 requests per 15 minutes per IP
+const resetLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 15,
+  message: { success: false, message: 'Too many password reset requests. Please wait 15 minutes before trying again.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
 const uploadLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 30,
@@ -1106,146 +1115,183 @@ app.post('/api/auth/verify-landlord', optionalAuth, (req, res) => {
 
 // â”€â”€â”€ PASSWORD RESET ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/auth/forgot-password â€” send reset OTP via SMS + email
-app.post('/api/auth/forgot-password', otpLimiter, async (req, res) => {
+// ─────────────────────────────────────────────────────────────────
+// PASSWORD RESET ROUTES (Email-only via Resend)
+// ─────────────────────────────────────────────────────────────────
+
+// POST /api/auth/forgot-password — email-only reset link via Resend
+app.post('/api/auth/forgot-password', resetLimiter, async (req, res) => {
+  // Always return neutral response to prevent user enumeration
+  const neutralResponse = {
+    success: true,
+    message: 'If that email address is registered, a password reset link has been sent. Please check your inbox.'
+  };
+
   try {
-    const { identifier } = req.body;
-    if (!identifier) {
-      return res.status(400).json({ success: false, message: 'Phone number or email is required.' });
+    const { email } = req.body;
+    if (!email || !email.trim()) {
+      return res.status(400).json({ success: false, message: 'Please enter your registered email address.' });
     }
 
-    const user = await store.findUserByIdentifier(identifier.trim());
-    // Always respond success to prevent user enumeration
-    if (!user) {
-      return res.json({ success: true, message: 'If this account exists, a reset code has been sent.' });
+    const cleanEmail = email.trim().toLowerCase();
+    const user = await store.findUserByIdentifier(cleanEmail);
+
+    // If user does not exist or has no matching email, still return neutral success
+    if (!user || !user.email || user.email.toLowerCase() !== cleanEmail) {
+      return res.json(neutralResponse);
     }
 
-    // Generate 6-digit reset OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+    // Generate cryptographically random 64-character hex token
+    const crypto = require('crypto');
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
 
-    // Store token — use in-memory if DB table not ready
+    // Store token hash in DB or memory fallback
     try {
       if (store.createPasswordResetToken) {
-        await store.createPasswordResetToken(user.id, otp, expiresAt);
+        await store.createPasswordResetToken(user.id, tokenHash, expiresAt);
       } else {
-        pendingOtps.set('reset_' + formatPhone(user.phone), {
-          otp, expiresAt: Date.now() + 30 * 60 * 1000, attempts: 0, userId: user.id
+        pendingOtps.set('reset_' + tokenHash, {
+          tokenHash,
+          userId: user.id,
+          expiresAt: Date.now() + 60 * 60 * 1000
         });
       }
     } catch (tokenErr) {
-      // Table might not exist yet — fall back to in-memory
       console.warn('Token DB storage failed, using memory fallback:', tokenErr.message);
-      pendingOtps.set('reset_' + formatPhone(user.phone), {
-        otp, expiresAt: Date.now() + 30 * 60 * 1000, attempts: 0, userId: user.id
+      pendingOtps.set('reset_' + tokenHash, {
+        tokenHash,
+        userId: user.id,
+        expiresAt: Date.now() + 60 * 60 * 1000
       });
     }
 
-    const cleanPhone = formatPhone(user.phone);
+    // Build reset link using APP_URL or request host
+    const appUrl = (process.env.APP_URL || (req.protocol + '://' + req.get('host'))).replace(/\/+$/, '');
+    const resetUrl = `${appUrl}/?reset_token=${rawToken}`;
 
-    // Send SMS (non-blocking with timeout)
-    sendRealSMS(cleanPhone,
-      `KejaMarket: Your password reset code is ${otp}. Valid for 30 minutes. Do NOT share this code.`
-    ).catch(e => console.warn('Reset SMS failed:', e.message));
-
-    // Send email (completely non-blocking â€” never blocks response)
-    if (user.email) {
-      emailService.sendPasswordResetEmail(user.email, user.name, otp).catch(e => {
-        console.warn('Password reset email failed:', e.message);
-      });
-    }
-
-    console.log("[RESET] OTP sent to: ${user.name}");
-
-    // Respond immediately â€” don't wait for SMS/email
-    res.json({
-      success: true,
-      message: 'Reset code sent to your registered phone' + (user.email ? ' and email' : '') + '.',
-      phone: cleanPhone.slice(-4)
+    // Send email via Resend (non-blocking)
+    emailService.sendPasswordResetLink(user.email, user.name || 'KejaMarket User', resetUrl).catch(err => {
+      console.error('Failed to send password reset email via Resend:', err.message);
     });
+
+    console.log(`[RESET] Password reset link generated for user ID ${user.id}`);
+    return res.json(neutralResponse);
   } catch (err) {
     console.error('Forgot password error:', err);
-    res.status(500).json({ success: false, message: 'Failed to send reset code.' });
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
   }
 });
 
-// POST /api/auth/reset-password â€” verify OTP and set new password
+// GET /api/auth/reset-password/validate — validate token before showing reset form
+app.get('/api/auth/reset-password/validate', async (req, res) => {
+  try {
+    const { token } = req.query;
+    if (!token || typeof token !== 'string') {
+      return res.status(400).json({ valid: false, message: 'Invalid or missing reset token.' });
+    }
+
+    const crypto = require('crypto');
+    const tokenHash = crypto.createHash('sha256').update(token.trim()).digest('hex');
+
+    let valid = false;
+    if (store.getPasswordResetToken) {
+      const record = await store.getPasswordResetToken(tokenHash);
+      if (record && !record.used && new Date(record.expires_at) > new Date()) {
+        valid = true;
+      }
+    }
+
+    if (!valid) {
+      const mem = pendingOtps.get('reset_' + tokenHash);
+      if (mem && Date.now() < mem.expiresAt) {
+        valid = true;
+      }
+    }
+
+    return res.json({ valid, message: valid ? 'Token valid' : 'This reset link has expired or already been used.' });
+  } catch (err) {
+    console.error('Validate reset token error:', err);
+    return res.status(500).json({ valid: false, message: 'Error validating token.' });
+  }
+});
+
+// POST /api/auth/reset-password — set new password with token
 app.post('/api/auth/reset-password', async (req, res) => {
   try {
-    const { identifier, otp, newPassword } = req.body;
+    const { token, newPassword } = req.body;
 
-    if (!identifier || !otp || !newPassword) {
-      return res.status(400).json({ success: false, message: 'Phone/email, reset code, and new password are required.' });
+    if (!token || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Reset token and new password are required.' });
     }
     if (newPassword.length < 6) {
       return res.status(400).json({ success: false, message: 'Password must be at least 6 characters.' });
     }
 
-    const user = await store.findUserByIdentifier(identifier.trim());
-    if (!user) {
-      return res.status(404).json({ success: false, message: 'Account not found.' });
-    }
+    const crypto = require('crypto');
+    const tokenHash = crypto.createHash('sha256').update(token.trim()).digest('hex');
 
-    // Verify token — check DB first, fall back to in-memory
-    let tokenValid = false;
-    try {
-      if (store.getPasswordResetToken) {
-        const tokenRecord = await store.getPasswordResetToken(otp);
-        if (tokenRecord && tokenRecord.user_id === user.id) {
-          tokenValid = true;
-          await store.markResetTokenUsed(otp).catch(() => {});
+    let userId = null;
+    let tokenRecord = null;
+
+    if (store.getPasswordResetToken) {
+      try {
+        tokenRecord = await store.getPasswordResetToken(tokenHash);
+        if (tokenRecord && !tokenRecord.used && new Date(tokenRecord.expires_at) > new Date()) {
+          userId = tokenRecord.user_id;
         }
-      }
-    } catch (e) {
-      console.warn('Token DB lookup failed, checking memory:', e.message);
-    }
-
-    // Also check in-memory fallback
-    if (!tokenValid) {
-      const key = 'reset_' + formatPhone(user.phone);
-      const entry = pendingOtps.get(key);
-      if (entry && entry.otp === otp && entry.userId === user.id && Date.now() < entry.expiresAt) {
-        tokenValid = true;
-        pendingOtps.delete(key);
+      } catch (e) {
+        console.warn('Token DB lookup failed:', e.message);
       }
     }
 
-    if (!tokenValid) {
-      return res.status(400).json({ success: false, message: 'Invalid or expired reset code.' });
+    if (!userId) {
+      const memKey = 'reset_' + tokenHash;
+      const mem = pendingOtps.get(memKey);
+      if (mem && Date.now() < mem.expiresAt) {
+        userId = mem.userId;
+        pendingOtps.delete(memKey);
+      }
     }
 
-    // Set new password
+    if (!userId) {
+      return res.status(400).json({ success: false, message: 'This password reset link is invalid or has expired.' });
+    }
+
+    // Mark token as used
+    if (store.markResetTokenUsed) {
+      await store.markResetTokenUsed(tokenHash).catch(() => {});
+    }
+
+    // Hash new password & update
     const bcrypt = require('bcryptjs');
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     if (store.resetUserPassword) {
-      await store.resetUserPassword(user.id, hashedPassword);
+      await store.resetUserPassword(userId, hashedPassword);
     } else {
-      store.updateUser(user.id, { password: hashedPassword });
+      await store.updateUser(userId, { password: hashedPassword });
     }
 
-    // Send confirmation SMS
-    await sendRealSMS(formatPhone(user.phone), 'KejaMarket: Your password has been reset successfully. If you did not do this, contact support immediately.');
-
     const jwt = require('jsonwebtoken');
-    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
-    const updatedUser = await store.getUserById(user.id);
+    const user = await store.getUserById(userId);
+    const jwtToken = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
+
+    console.log(`[RESET] Password successfully reset for user ID ${userId}`);
 
     res.json({
       success: true,
-      message: 'Password reset successfully! You are now signed in.',
-      user: updatedUser,
-      token
+      message: 'Password reset successfully! You are now logged in.',
+      user,
+      token: jwtToken
     });
   } catch (err) {
     console.error('Reset password error:', err);
-    res.status(500).json({ success: false, message: 'Password reset failed.' });
+    res.status(500).json({ success: false, message: 'Password reset failed. Please try again.' });
   }
 });
 
-// â”€â”€â”€ M-PESA DARAJA STK PUSH & PAYMENT ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
-// POST /api/mpesa/stk-push
 // Body: { phone, amount, itemType, itemName, targetPropertyId }
 app.post('/api/mpesa/stk-push', optionalAuth, async (req, res) => {
   try {

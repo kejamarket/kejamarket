@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -2176,16 +2176,16 @@
         <!-- FORGOT PASSWORD PANEL -->
         <div id="auth-panel-forgot" style="display:none;">
           <div class="auth-icon-header">
-            <div class="auth-icon-circle" style="background:#e0f2fe;"><i class="fas fa-key" style="color:#0ea5e9;"></i></div>
+            <div class="auth-icon-circle" style="background:#e0f2fe;"><i class="fas fa-envelope-open-text" style="color:#0ea5e9;"></i></div>
             <h3>Reset Your Password</h3>
-            <p>Enter your phone number or email and we'll send a reset code via SMS.</p>
+            <p>Enter your registered email address and we will send you a secure password reset link.</p>
           </div>
           <form id="form-forgot-password" onsubmit="kejaAuth.handleForgotPassword(event)">
             <div class="form-group">
-              <label>Phone Number or Email</label>
-              <input type="text" id="forgot-identifier" class="form-control" placeholder="0712345678 or name@email.com" required autofocus>
+              <label>Email Address</label>
+              <input type="email" id="forgot-email" class="form-control" placeholder="name@example.com" required autofocus autocomplete="email">
             </div>
-            <button type="submit" class="btn-auth-submit"><i class="fas fa-paper-plane"></i> Send Reset Code</button>
+            <button type="submit" class="btn-auth-submit" id="btn-forgot-submit"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
             <p class="auth-switch-text"><a href="#" onclick="kejaAuth.showPanel('signin');return false;"><i class="fas fa-arrow-left"></i> Back to Sign In</a></p>
           </form>
         </div>
@@ -2195,25 +2195,22 @@
           <div class="auth-icon-header">
             <div class="auth-icon-circle" style="background:#d1fae5;"><i class="fas fa-lock-open" style="color:#16a34a;"></i></div>
             <h3>Set New Password</h3>
-            <p>Enter the 6-digit code sent to your phone and choose a new password.</p>
+            <p id="reset-panel-subtitle">Choose a new password for your KejaMarket account.</p>
           </div>
           <form id="form-reset-password" onsubmit="kejaAuth.handleResetPassword(event)">
-            <div class="form-group">
-              <label>Reset Code</label>
-              <input type="text" id="reset-otp-code" class="form-control" placeholder="6-digit code from SMS" required maxlength="6" style="letter-spacing:6px;font-size:1.2rem;text-align:center;font-weight:700;">
-            </div>
+            <input type="hidden" id="reset-token-val">
             <div class="form-group">
               <label>New Password</label>
               <div style="position:relative;">
-                <input type="password" id="reset-new-password" class="form-control" placeholder="Min 6 characters" required style="padding-right:42px;">
+                <input type="password" id="reset-new-password" class="form-control" placeholder="Min 6 characters" required minlength="6" style="padding-right:42px;">
                 <button type="button" onclick="kejaAuth.togglePwd('reset-new-password',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;"><i class="fas fa-eye"></i></button>
               </div>
             </div>
             <div class="form-group">
               <label>Confirm New Password</label>
-              <input type="password" id="reset-confirm-password" class="form-control" placeholder="Re-enter new password" required>
+              <input type="password" id="reset-confirm-password" class="form-control" placeholder="Re-enter new password" required minlength="6">
             </div>
-            <button type="submit" class="btn-auth-submit"><i class="fas fa-check-circle"></i> Reset and Sign In</button>
+            <button type="submit" class="btn-auth-submit" id="btn-reset-submit"><i class="fas fa-check-circle"></i> Save New Password & Sign In</button>
             <p class="auth-switch-text"><a href="#" onclick="kejaAuth.showPanel('signin');return false;"><i class="fas fa-arrow-left"></i> Back to Sign In</a></p>
           </form>
         </div>

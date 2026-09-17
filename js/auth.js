@@ -68,11 +68,15 @@ const kejaAuth = (() => {
      OPEN MODAL
   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function openAuthModal(initialTab) {
-    const session = getSession();
-    if (session) {
-      showLoggedInPanel(session);
+    if (initialTab === 'reset' || initialTab === 'forgot') {
+      showPanel(initialTab);
     } else {
-      showPanel(initialTab || 'signin');
+      const session = getSession();
+      if (session) {
+        showLoggedInPanel(session);
+      } else {
+        showPanel(initialTab || 'signin');
+      }
     }
     if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal('modal-auth');
@@ -1145,59 +1149,53 @@ const kejaAuth = (() => {
      PASSWORD RESET FLOW
   Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 
-  let forgotIdentifier = '';
+    let currentResetToken = '';
 
   function showForgotPassword() {
-    // Hide ALL panels completely
     ['signin', 'signup', 'otp', 'loggedin', 'reset', 'forgot'].forEach(p => {
       const el = document.getElementById(`auth-panel-${p}`);
       if (el) el.style.display = 'none';
     });
-    // Show only forgot panel
     const forgot = document.getElementById('auth-panel-forgot');
     if (forgot) forgot.style.display = 'block';
-    const input = document.getElementById('forgot-identifier');
+    const input = document.getElementById('forgot-email') || document.getElementById('forgot-identifier');
     if (input) { input.value = ''; setTimeout(() => input.focus(), 100); }
   }
 
   async function handleForgotPassword(e) {
     e.preventDefault();
-    const identifierEl = document.getElementById('forgot-identifier');
-    const identifier = identifierEl ? identifierEl.value.trim() : '';
-    if (!identifier) return;
+    const emailEl = document.getElementById('forgot-email') || document.getElementById('forgot-identifier');
+    const email = emailEl ? emailEl.value.trim() : '';
+    if (!email) return;
 
     const btn = e.target.querySelector('button[type="submit"]');
     const orig = btn ? btn.innerHTML : '';
-    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'; }
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending link...'; }
 
     try {
       const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier })
+        body: JSON.stringify({ email })
       });
       const data = await res.json();
 
-      if (data.success) {
-        forgotIdentifier = identifier;
-        // Hide forgot, show reset panel cleanly
-        ['signin', 'signup', 'otp', 'loggedin', 'forgot'].forEach(p => {
-          const el = document.getElementById(`auth-panel-${p}`);
-          if (el) el.style.display = 'none';
-        });
-        const reset = document.getElementById('auth-panel-reset');
-        if (reset) reset.style.display = 'block';
-        // Pre-focus the code input
-        setTimeout(() => {
-          const codeInput = document.getElementById('reset-otp-code');
-          if (codeInput) codeInput.focus();
-        }, 100);
-        if (window.app) window.app.showToast(`Reset code sent to your phone!`, 'success');
-      } else {
-        if (window.app) window.app.showToast(`Ã¢ÂÅ’ ${data.message || 'Failed to send reset code.'}`, 'error');
+      const msg = data.message || 'If that email address is registered, a password reset link has been sent. Please check your inbox.';
+      if (window.app) window.app.showToast(msg, 'success');
+
+      const form = document.getElementById('form-forgot-password');
+      if (form) {
+        form.innerHTML = `
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px;margin-bottom:16px;text-align:center;">
+            <p style="color:#15803d;font-weight:600;margin-bottom:8px;"><i class="fas fa-check-circle"></i> Reset Link Sent</p>
+            <p style="color:#374151;font-size:0.9rem;line-height:1.4;">${msg}</p>
+            <p style="color:#6b7280;font-size:0.8rem;margin-top:10px;">Check your spam/junk folder if you don't see it in a few minutes.</p>
+          </div>
+          <p class="auth-switch-text"><a href="#" onclick="kejaAuth.showPanel('signin');return false;"><i class="fas fa-arrow-left"></i> Back to Sign In</a></p>
+        `;
       }
     } catch (err) {
-      if (window.app) window.app.showToast('Ã¢ÂÅ’ Could not reach server. Try again.', 'error');
+      if (window.app) window.app.showToast('Could not reach server. Please try again.', 'error');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = orig; }
     }
@@ -1205,12 +1203,12 @@ const kejaAuth = (() => {
 
   async function handleResetPassword(e) {
     e.preventDefault();
-    const otp = document.getElementById('reset-otp-code')?.value.trim() || '';
+    const token = document.getElementById('reset-token-val')?.value.trim() || currentResetToken;
     const newPassword = document.getElementById('reset-new-password')?.value || '';
     const confirmPassword = document.getElementById('reset-confirm-password')?.value || '';
 
-    if (!otp || otp.length < 6) {
-      if (window.app) window.app.showToast('Enter the 6-digit reset code from your SMS.', 'info');
+    if (!token) {
+      if (window.app) window.app.showToast('Reset token is missing. Please click the link in your email again.', 'error');
       return;
     }
     if (newPassword.length < 6) {
@@ -1224,18 +1222,17 @@ const kejaAuth = (() => {
 
     const btn = e.target.querySelector('button[type="submit"]');
     const orig = btn ? btn.innerHTML : '';
-    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...'; }
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...'; }
 
     try {
       const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: forgotIdentifier, otp, newPassword })
+        body: JSON.stringify({ token, newPassword })
       });
       const data = await res.json();
 
       if (data.success && data.user && data.token) {
-        // Ensure admin flag is preserved in session
         if (data.user.role === 'admin' || data.user.id === 'usr-admin-01') {
           data.user.isAdmin = true;
         }
@@ -1244,16 +1241,69 @@ const kejaAuth = (() => {
         showLoggedInPanel(data.user);
         if (window.app) {
           window.app.closeModal('modal-auth');
-          window.app.showToast(`Password reset! Welcome back, ${data.user.name}!`, 'success');
+          window.app.showToast(`Password reset! Welcome back, ${data.user.name || 'User'}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`Ã¢ÂÅ’ ${data.message || 'Reset failed.'}`, 'error');
+        if (window.app) window.app.showToast(data.message || 'Reset failed. Link may be invalid or expired.', 'error');
       }
     } catch (err) {
-      if (window.app) window.app.showToast('Ã¢ÂÅ’ Reset failed. Check your connection.', 'error');
+      if (window.app) window.app.showToast('Reset failed. Check your connection.', 'error');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+    }
+  }
+
+  async function checkResetTokenFromUrl() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('reset_token') || urlParams.get('token');
+      if (!token) return;
+
+      currentResetToken = token;
+
+      // Clean token from address bar cleanly
+      const url = new URL(window.location.href);
+      url.searchParams.delete('reset_token');
+      url.searchParams.delete('token');
+      const cleanSearch = url.searchParams.toString();
+      const newUrl = url.pathname + (cleanSearch ? '?' + cleanSearch : '') + url.hash;
+      window.history.replaceState({}, document.title, newUrl);
+
+      // Open modal on reset panel
+      openAuthModal('reset');
+
+      const tokenInput = document.getElementById('reset-token-val');
+      if (tokenInput) tokenInput.value = token;
+
+      const subtitle = document.getElementById('reset-panel-subtitle');
+      const submitBtn = document.getElementById('btn-reset-submit');
+
+      if (subtitle) subtitle.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying your reset link...';
+
+      // Validate token with server
+      try {
+        const res = await fetch('/api/auth/reset-password/validate?token=' + encodeURIComponent(token));
+        const valData = await res.json();
+
+        if (!valData.valid) {
+          if (subtitle) {
+            subtitle.innerHTML = '<span style="color:#ef4444;font-weight:600;"><i class="fas fa-exclamation-triangle"></i> ' + (valData.message || 'This reset link has expired or has already been used.') + '</span>';
+          }
+          if (submitBtn) submitBtn.disabled = true;
+          if (window.app) window.app.showToast(valData.message || 'This reset link is invalid or expired.', 'error');
+        } else {
+          if (subtitle) subtitle.textContent = 'Choose a new password for your KejaMarket account.';
+          if (submitBtn) submitBtn.disabled = false;
+          const pwdInput = document.getElementById('reset-new-password');
+          if (pwdInput) setTimeout(() => pwdInput.focus(), 150);
+        }
+      } catch (err) {
+        console.warn('Token validation network check failed:', err);
+        if (subtitle) subtitle.textContent = 'Choose a new password for your KejaMarket account.';
+      }
+    } catch (e) {
+      console.error('checkResetTokenFromUrl error:', e);
     }
   }
 
@@ -1291,6 +1341,7 @@ const kejaAuth = (() => {
     showForgotPassword,
     handleForgotPassword,
     handleResetPassword,
+    checkResetTokenFromUrl,
   };
 
 })();
@@ -1441,3 +1492,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Check for reset token in URL on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.kejaAuth && window.kejaAuth.checkResetTokenFromUrl) {
+      window.kejaAuth.checkResetTokenFromUrl();
+    }
+  });
+} else {
+  if (window.kejaAuth && window.kejaAuth.checkResetTokenFromUrl) {
+    window.kejaAuth.checkResetTokenFromUrl();
+  }
+}

@@ -1,12 +1,15 @@
 /**
  * KejaMarket Email Service
- * Uses Nodemailer with Gmail/SendGrid/SMTP
- * Falls back to console logging if not configured
+ * - Password-reset links: Resend HTTP API (RESEND_API_KEY + RESEND_FROM)
+ * - All other emails: Nodemailer/SMTP (EMAIL_HOST/USER/PASS)
+ * Falls back to console logging if neither is configured (dev mode).
  */
 
 const nodemailer = require('nodemailer');
+const fetch = require('node-fetch');
 
 let transporter = null;
+let resendReady = false;
 
 function initEmailService() {
   const emailUser = process.env.EMAIL_USER;
@@ -15,19 +18,36 @@ function initEmailService() {
   const emailPort = parseInt(process.env.EMAIL_PORT || '587');
 
   if (!emailUser || !emailPass) {
-    console.log('📧 Email: Not configured (set EMAIL_USER and EMAIL_PASS)');
-    return false;
+    console.log('📧 SMTP email: Not configured (set EMAIL_USER and EMAIL_PASS)');
+  } else {
+    transporter = nodemailer.createTransport({
+      host: emailHost,
+      port: emailPort,
+      secure: emailPort === 465,
+      auth: { user: emailUser, pass: emailPass },
+      tls: { rejectUnauthorized: false }
+    });
+    console.log(`📧 SMTP email service initialized (${emailHost})`);
   }
 
-  transporter = nodemailer.createTransport({
-    host: emailHost,
-    port: emailPort,
-    secure: emailPort === 465,
-    auth: { user: emailUser, pass: emailPass },
-    tls: { rejectUnauthorized: false }
-  });
+  initResendService();
+  return !!(transporter || resendReady);
+}
 
-  console.log(`📧 Email service initialized (${emailHost})`);
+function initResendService() {
+  const key = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM;
+
+  if (!key || !key.startsWith('re_')) {
+    console.log('📧 Resend: Not configured (add RESEND_API_KEY=re_... to environment)');
+    resendReady = false;
+    return false;
+  }
+  if (!from) {
+    console.log('📧 Resend: RESEND_FROM not set — defaulting to noreply@kejamarket.co.ke');
+  }
+  resendReady = true;
+  console.log(`📧 Resend email service ready (from: ${from || 'noreply@kejamarket.co.ke'})`);
   return true;
 }
 
@@ -58,8 +78,87 @@ async function sendEmail({ to, subject, html, text }) {
   }
 }
 
+// ── Resend sender (password-reset links only) ────────────────────────────────
+
+async function sendViaResend({ to, subject, html, text }) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM || 'noreply@kejamarket.co.ke';
+
+  if (!resendReady || !apiKey) {
+    console.log(`[RESEND FALLBACK] To: ${to} | Subject: ${subject}`);
+    console.log(`[RESEND FALLBACK BODY] ${text || '(html only)'}`);
+    return { success: true, simulated: true };
+  }
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: `KejaMarket <${from}>`,
+        to: [to],
+        subject,
+        html,
+        text: text || ''
+      })
+    });
+    const body = await res.json();
+    if (!res.ok) {
+      console.error(`❌ Resend API error (${res.status}):`, body.message || JSON.stringify(body));
+      return { success: false, error: body.message || `HTTP ${res.status}` };
+    }
+    console.log(`📧 Resend email sent to ${to}: id=${body.id}`);
+    return { success: true, id: body.id };
+  } catch (err) {
+    console.error('❌ Resend fetch error:', err.message);
+    return { success: false, error: err.message };
+  }
+}
+
 // ── Templated emails ────────────────────────────────────────────────
 
+/**
+ * Send password-reset link via Resend.
+ * resetUrl already contains the raw token — never logged here.
+ */
+async function sendPasswordResetLink(to, name, resetUrl) {
+  const year = new Date().getFullYear();
+  return sendViaResend({
+    to,
+    subject: 'Reset your KejaMarket password',
+    html: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:-apple-system,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:40px 0;">
+<tr><td align="center">
+<table width="520" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.07);">
+<tr><td style="background:linear-gradient(135deg,#7c3aed,#4f46e5);padding:32px 40px;text-align:center;">
+  <p style="margin:0;font-size:26px;font-weight:800;color:#fff;">&#127968; KejaMarket</p>
+  <p style="margin:6px 0 0;color:rgba(255,255,255,.8);font-size:13px;">Kenya's Rental Marketplace</p>
+</td></tr>
+<tr><td style="padding:40px;">
+  <h1 style="margin:0 0 12px;font-size:22px;font-weight:700;color:#0f172a;">Reset your password</h1>
+  <p style="margin:0 0 24px;color:#475569;font-size:15px;line-height:1.6;">Hi ${name},<br><br>We received a request to reset your KejaMarket password. Click below to set a new one.</p>
+  <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="center" style="padding:8px 0 32px;">
+    <a href="${resetUrl}" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:14px 36px;border-radius:10px;">Reset Password</a>
+  </td></tr></table>
+  <div style="background:#f8fafc;border-left:4px solid #e2e8f0;border-radius:6px;padding:14px 18px;margin-bottom:24px;">
+    <p style="margin:0;color:#64748b;font-size:13px;line-height:1.6;">This link expires in <strong>1 hour</strong> and can only be used once.<br>If you did not request this, you can safely ignore this email.</p>
+  </div>
+  <p style="margin:0;color:#94a3b8;font-size:12px;">If the button does not work, paste this into your browser:<br><span style="color:#7c3aed;word-break:break-all;">${resetUrl}</span></p>
+</td></tr>
+<tr><td style="background:#f8fafc;padding:18px 40px;text-align:center;border-top:1px solid #e2e8f0;">
+  <p style="margin:0;color:#94a3b8;font-size:12px;">&copy; ${year} KejaMarket &mdash; <a href="https://kejamarket.co.ke" style="color:#7c3aed;text-decoration:none;">kejamarket.co.ke</a></p>
+</td></tr>
+</table></td></tr></table>
+</body></html>`,
+    text: `Reset your KejaMarket password\n\nHi ${name},\n\nClick to reset (expires in 1 hour):\n${resetUrl}\n\nIgnore this if you did not request it.\n\n— KejaMarket`
+  });
+}
+
+// Legacy alias — kept so any stray caller does not crash; internally delegates to link-based flow.
 async function sendPasswordResetEmail(to, name, resetToken) {
   const resetUrl = `${process.env.APP_URL || 'https://kejamarket.co.ke'}/?reset_token=${resetToken}`;
   return sendEmail({
@@ -147,8 +246,11 @@ async function sendListingApprovedEmail(to, name, propertyTitle) {
 
 module.exports = {
   initEmailService,
+  initResendService,
   sendEmail,
-  sendPasswordResetEmail,
+  sendViaResend,
+  sendPasswordResetLink,
+  sendPasswordResetEmail,  // legacy alias
   sendWelcomeEmail,
   sendPaymentReceiptEmail,
   sendListingApprovedEmail
