@@ -4163,3 +4163,178 @@ button, input, select, textarea {
   .secondary-nav { top: 48px !important; }
   .secondary-nav-container { height: 32px !important; }
 }
+
+/* ==========================================================================
+   KEJAMARKET CRITICAL FIXES — Footer compact, Sidebar narrowed, No overlap
+   ========================================================================== */
+
+/* ══ 1. SIDEBAR: Narrow to 200px, fix sticky overlap ══ */
+.main-app-layout {
+  grid-template-columns: 200px 1fr !important;
+  gap: 12px !important;
+  margin: 6px auto 0 !important;
+  padding: 0 14px !important;
+  max-width: 1440px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.sidebar-filters {
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+  box-sizing: border-box !important;
+  position: sticky !important;
+  top: 100px !important;
+  max-height: calc(100vh - 106px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 10px 10px !important;
+  border-radius: 8px !important;
+  font-size: 0.78rem !important;
+  z-index: 10 !important;
+}
+
+/* Sidebar filter inputs narrower */
+.filter-select, .suburb-search-input, .price-box-input {
+  font-size: 0.76rem !important;
+  padding: 4px 6px !important;
+}
+.filter-accordion-header {
+  padding: 6px 0 !important;
+  font-size: 0.76rem !important;
+}
+.filter-check-item {
+  font-size: 0.74rem !important;
+  padding: 1px 0 !important;
+}
+.filter-header-main { padding-bottom: 6px !important; margin-bottom: 6px !important; }
+
+/* Content area always takes remaining space */
+.content-area-wrapper {
+  min-width: 0 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* ══ 2. SMS BANNER: reduce height ══ */
+.green-sms-alert-banner {
+  height: 90px !important;
+  min-height: unset !important;
+  border-radius: 8px !important;
+}
+.green-sms-right {
+  height: 90px !important;
+  width: 240px !important;
+}
+.sms-circle-badge {
+  width: 38px !important;
+  height: 36px !important;
+  font-size: 0.85rem !important;
+}
+.sms-text-block h3 { font-size: 0.9rem !important; }
+.sms-text-block p { font-size: 0.7rem !important; margin-bottom: 5px !important; }
+.green-sms-left { padding: 0 14px !important; gap: 10px !important; }
+
+/* ══ 3. FOOTER: Compact single-row grid ══ */
+.keja-site-footer {
+  padding: 10px 0 6px 0 !important;
+  margin-top: 12px !important;
+  font-size: 0.76rem !important;
+}
+
+.keja-footer-container {
+  display: grid !important;
+  grid-template-columns: 1.2fr 1.4fr 0.9fr 0.9fr 0.9fr !important;
+  gap: 10px !important;
+  padding: 0 14px 8px !important;
+  align-items: start !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  margin: 0 auto !important;
+  max-width: 1440px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Brand column: tighten spacing */
+.footer-col-brand p { margin-bottom: 6px !important; }
+.footer-col-brand > div:first-child { margin-bottom: 4px !important; }
+.footer-col-brand svg { width: 22px !important; height: 22px !important; }
+.footer-col-brand span { font-size: 1.1rem !important; }
+
+/* Footer titles */
+.footer-col-title {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 5px !important;
+}
+
+/* Footer links */
+.footer-links-list { gap: 3px !important; }
+.footer-links-list a { font-size: 0.72rem !important; }
+.footer-links-grid-cols { gap: 4px !important; }
+
+/* Social icons row */
+.footer-social-icons {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 5px !important;
+  margin-bottom: 5px !important;
+}
+.footer-social-icons a {
+  width: 24px !important;
+  height: 24px !important;
+  font-size: 0.78rem !important;
+}
+
+/* App store badges - smaller */
+.footer-app-badges {
+  display: flex !important;
+  gap: 4px !important;
+  margin-top: 5px !important;
+  margin-bottom: 0 !important;
+  flex-wrap: wrap !important;
+}
+
+/* Cursive motto */
+.footer-cursive-motto {
+  font-size: 0.85rem !important;
+  line-height: 1.2 !important;
+  margin-bottom: 4px !important;
+}
+.footer-location-pin {
+  font-size: 0.68rem !important;
+  margin-top: 4px !important;
+}
+
+/* ══ 4. RESPONSIVE: collapse at breakpoints ══ */
+@media (max-width: 1200px) {
+  .main-app-layout { grid-template-columns: 190px 1fr !important; }
+  .sidebar-filters { width: 190px !important; min-width: 190px !important; max-width: 190px !important; }
+  .keja-footer-container { grid-template-columns: 1fr 1.2fr 0.8fr 0.8fr !important; }
+  .footer-col-slogan { display: none !important; }
+}
+
+@media (max-width: 1024px) {
+  .keja-footer-container { grid-template-columns: 1fr 1fr 0.8fr !important; }
+  .footer-col-follow, .footer-col-slogan { display: none !important; }
+}
+
+@media (max-width: 860px) {
+  .main-app-layout { grid-template-columns: 1fr !important; padding: 0 10px !important; }
+  .sidebar-filters {
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: 100% !important;
+    position: static !important;
+    max-height: none !important;
+    top: auto !important;
+  }
+  .keja-footer-container { grid-template-columns: 1fr 1fr !important; }
+  .footer-col-follow { display: block !important; }
+  .green-sms-right { display: none !important; }
+}
+
+@media (max-width: 520px) {
+  .keja-footer-container { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+}
