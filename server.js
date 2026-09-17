@@ -1317,11 +1317,17 @@ app.get('/api/auth/email-status', async (req, res) => {
     }
   }
 
+  const matchingEnvKeys = Object.keys(process.env).filter(k => 
+    k.toLowerCase().includes('resend') || 
+    (process.env[k] && typeof process.env[k] === 'string' && process.env[k].startsWith('re_'))
+  );
+
   res.json({
     configured: hasKey && rawKey.startsWith('re_'),
     keyFormat,
     keyPreview,
     resendFrom: rawFrom || 'noreply@kejamarket.co.ke',
+    matchingEnvKeys,
     apiCheck,
     domains
   });
