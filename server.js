@@ -2359,7 +2359,7 @@ app.get('/api/health', async (req, res) => {
     res.json({
       status: 'online',
       version: '2.0.0-with-real-data',
-      commit: 'ca62bc0',
+      commit: process.env.RENDER_GIT_COMMIT ? process.env.RENDER_GIT_COMMIT.substring(0, 7) : '3ed740b',
       timestamp: new Date().toISOString(),
       mpesaEnvironment: MPESA_ENV,
       hasDarajaCredentials: hasDarajaCredentials(),
