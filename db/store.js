@@ -73,13 +73,14 @@ class Store {
       u.id === 'usr-admin-01' || 
       u.email === 'admin@kejamarket.co.ke' || 
       u.email === 'admin@keja.co.ke' || 
+      u.phone === '0792409540' ||
       u.phone === '0700000000'
     );
 
     if (existingAdmin) {
       existingAdmin.email = 'admin@kejamarket.co.ke';
       existingAdmin.name = 'KejaMarket Administrator';
-      existingAdmin.phone = '0700000000';
+      existingAdmin.phone = '0792409540';
       existingAdmin.role = 'admin';
       existingAdmin.isAdmin = true;
       existingAdmin.isVerified = true;
@@ -88,7 +89,7 @@ class Store {
       this.data.users.unshift({
         id: 'usr-admin-01',
         name: 'KejaMarket Administrator',
-        phone: '0700000000',
+        phone: '0792409540',
         email: 'admin@kejamarket.co.ke',
         password: adminPasswordHash,
         role: 'admin',
@@ -258,7 +259,7 @@ class Store {
     const cleanId = identifier.trim().toLowerCase();
 
     // If attempting Admin login, ensure admin user is initialized
-    if (cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin@keja.co.ke' || cleanId === '0700000000' || cleanId === '254700000000' || cleanId === 'admin') {
+    if (cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin@keja.co.ke' || cleanId === '0792409540' || cleanId === '254792409540' || cleanId === '0700000000' || cleanId === '254700000000' || cleanId === 'admin') {
       this.ensureAdminUser();
     }
 

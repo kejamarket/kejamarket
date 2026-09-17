@@ -138,26 +138,40 @@ async function loadSeedData() {
             JSON.stringify(prop)
           ]);
 
-          // Insert images if available
-          if (prop.images && Array.isArray(prop.images)) {
-            for (let i = 0; i < prop.images.length; i++) {
-              const img = prop.images[i];
+          // Normalize images from media or images
+          const imageList = (prop.images && prop.images.length > 0) ? prop.images : (prop.media || []);
+          if (!prop.images || prop.images.length === 0) {
+            prop.images = imageList.map(m => (typeof m === 'string' ? m : m.url));
+          }
+          if (!prop.media || prop.media.length === 0) {
+            prop.media = imageList.map((m, idx) => ({
+              url: typeof m === 'string' ? m : m.url,
+              caption: typeof m === 'object' && m.caption ? m.caption : `Photo ${idx + 1}`
+            }));
+          }
+
+          // Insert images into property_media table if available
+          if (Array.isArray(imageList)) {
+            for (let i = 0; i < imageList.length; i++) {
+              const img = imageList[i];
               const imageUrl = typeof img === 'string' ? img : img.url;
-              const caption = typeof img === 'object' ? img.caption : `Photo ${i + 1}`;
+              const caption = (typeof img === 'object' && img.caption) ? img.caption : `Photo ${i + 1}`;
               
-              await client.query(`
-                INSERT INTO property_media (
-                  id, property_id, image_url, caption, display_order, raw_data
-                ) VALUES ($1, $2, $3, $4, $5, $6)
-                ON CONFLICT (id) DO NOTHING
-              `, [
-                `${prop.id}-img-${i}`,
-                prop.id,
-                imageUrl,
-                caption,
-                i,
-                JSON.stringify({ type: 'image' })
-              ]);
+              if (imageUrl) {
+                await client.query(`
+                  INSERT INTO property_media (
+                    id, property_id, image_url, caption, display_order, raw_data
+                  ) VALUES ($1, $2, $3, $4, $5, $6)
+                  ON CONFLICT (id) DO NOTHING
+                `, [
+                  `${prop.id}-img-${i}`,
+                  prop.id,
+                  imageUrl,
+                  caption,
+                  i,
+                  JSON.stringify({ type: 'image' })
+                ]);
+              }
             }
           }
 

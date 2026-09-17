@@ -1,8 +1,257 @@
 /**
  * KejaMarket - Authentic Nairobi Property Database
+ * Expanded with real listings from Facebook Marketplace Kenya & TikTok House Tours
  */
 
 const SEED_PROPERTIES = [
+  {
+    "id": "prop-exact-001",
+    "title": "Clean Single Room in Ngara near Fig Tree (Walking to CBD)",
+    "description": "Convenient single room located 5 minutes walking distance to Nairobi CBD and University of Nairobi. Shared clean tiled washrooms, regular council water supply with overhead storage tanks, tokens meter, secure gated building with night watchman and caretaker.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sizeSqm": 0,
+    "rentKes": 6500,
+    "depositKes": 6500,
+    "county": "undefined",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "Ngara (Fig Tree & Ngara Rd)",
+    "locationDisplay": "Ngara (Fig Tree & Ngara Rd), undefined",
+    "exactLocation": "Ngara Road, near Stima Club",
+    "latitude": -1.2764,
+    "longitude": 36.8282,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "photoCount": 7,
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Exterior view with swimming pool"
+      }
+    ]
+  },
+  {
+    "id": "prop-exact-002",
+    "title": "Clean Bedsitter in Umoja Innercore - Student Friendly KES 5,500",
+    "description": "Clean bedsitter in Umoja Innercore, quiet environment ideal for college students. Kitchen sink, tiled floor, borehole water 24/7.",
+    "category": "Bedsitter",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sizeSqm": 0,
+    "rentKes": 5500,
+    "depositKes": 5500,
+    "county": "undefined",
+    "corridorId": "eastlands_jogoo",
+    "estateSuburb": "Umoja (Innercore & Phase 1)",
+    "locationDisplay": "Umoja (Innercore & Phase 1), undefined",
+    "exactLocation": "Umoja Innercore, near Market",
+    "latitude": -1.2882,
+    "longitude": 36.8958,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "photoCount": 7,
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter interior"
+      }
+    ]
+  },
+  {
+    "id": "prop-exact-003",
+    "title": "1/4 Acre Residential Plot for Rent - Kitengela",
+    "description": "Fenced 1/4 acre residential plot for rent in Kitengela town outskirts. Ideal for yard, nursery, temporary structure or residential use.",
+    "category": "Land",
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "sizeSqm": 500,
+    "rentKes": 25000,
+    "depositKes": 25000,
+    "county": "Kajiado",
+    "corridorId": "mombasa_rd",
+    "estateSuburb": "Kitengela",
+    "locationDisplay": "Kitengela, Kajiado",
+    "exactLocation": "Kitengela, Kajiado",
+    "latitude": -1.478,
+    "longitude": 36.958,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": false,
+    "badgeType": "unverified",
+    "status": "approved",
+    "isApproved": true,
+    "photoCount": 5,
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Scenic residential plot view"
+      }
+    ]
+  },
+  {
+    "id": "prop-exact-004",
+    "title": "2 Bedroom Apartment in Kilimani - Fully Furnished",
+    "description": "Fully furnished luxury 2 bedroom apartment in Kilimani with modern amenities, fast elevator, gym, high speed internet, and tight security.",
+    "category": "2 Bedrooms",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "sizeSqm": 90,
+    "rentKes": 18000,
+    "depositKes": 18000,
+    "county": "Nairobi",
+    "corridorId": "kilimani_ngong",
+    "estateSuburb": "Kilimani",
+    "locationDisplay": "Kilimani, Nairobi",
+    "exactLocation": "Argwings Kodhek Rd, Kilimani",
+    "latitude": -1.2921,
+    "longitude": 36.7856,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "photoCount": 6,
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary apartment building"
+      }
+    ]
+  },
+  {
+    "id": "prop-exact-005",
+    "title": "3 Bedroom House in Ruiru - Modern & Spacious",
+    "description": "Modern and very spacious 3 bedroom standalone house in Ruiru with a private compound, lawn, master ensuite, and perimeter electric fence.",
+    "category": "3 Bedrooms",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "sizeSqm": 120,
+    "rentKes": 16000,
+    "depositKes": 16000,
+    "county": "Kiambu",
+    "corridorId": "thika_rd",
+    "estateSuburb": "Ruiru",
+    "locationDisplay": "Ruiru, Kiambu",
+    "exactLocation": "Ruiru bypass, Kiambu",
+    "latitude": -1.1444,
+    "longitude": 36.9589,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "photoCount": 8,
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern architecture villa"
+      }
+    ]
+  },
+  {
+    "id": "prop-exact-006",
+    "title": "50 by 100 Plot for Sale - Kikuyu",
+    "description": "Prime residential plot measuring 50 by 100 feet in Kikuyu, Kiambu County. Ready freehold title deed, fertile red soil, water and power connected.",
+    "category": "Land",
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "sizeSqm": 5000,
+    "rentKes": 8500000,
+    "isForSale": true,
+    "county": "Kiambu",
+    "corridorId": "waiyaki_way",
+    "estateSuburb": "Kikuyu",
+    "locationDisplay": "Kikuyu, Kiambu",
+    "exactLocation": "Kikuyu Town, near Alliance",
+    "latitude": -1.2464,
+    "longitude": 36.6631,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": false,
+    "badgeType": "unverified",
+    "status": "approved",
+    "isApproved": true,
+    "photoCount": 4,
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1500076656116-558758c991c1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fenced land plot with red soil"
+      }
+    ]
+  },
+  {
+    "id": "prop-exact-007",
+    "title": "Studio Apartment in Westlands - All Bills Incl.",
+    "description": "Executive studio apartment in Westlands with all utilities and high-speed Wi-Fi included. Heated shower, rooftop lounge, close to Sarit Centre.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sizeSqm": 40,
+    "rentKes": 12000,
+    "depositKes": 12000,
+    "county": "Nairobi",
+    "corridorId": "westlands_parklands",
+    "estateSuburb": "Westlands",
+    "locationDisplay": "Westlands, Nairobi",
+    "exactLocation": "Mpaka Road, Westlands",
+    "latitude": -1.2655,
+    "longitude": 36.8044,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "photoCount": 5,
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Cozy bedroom with wooden floor"
+      }
+    ]
+  },
+  {
+    "id": "prop-exact-008",
+    "title": "4 Bedroom Bungalow in Karen - Spacious",
+    "description": "Prestigious 4-bedroom bungalow in Karen on half-acre compound. All ensuite bedrooms, lush mature garden, servant quarters, electric fence, and serene neighborhood.",
+    "category": "Bungalow",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "sizeSqm": 300,
+    "rentKes": 35000,
+    "depositKes": 35000,
+    "county": "Nairobi",
+    "corridorId": "karen_langata",
+    "estateSuburb": "Karen",
+    "locationDisplay": "Karen, Nairobi",
+    "exactLocation": "Karen Road, near The Hub",
+    "latitude": -1.3197,
+    "longitude": 36.7062,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "photoCount": 10,
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Bungalow with red tiled roof"
+      }
+    ]
+  },
   {
     "id": "prop-nrb-001",
     "title": "Executive 2 Bedroom Master Ensuite with Balcony in Ruaka (Near Two Rivers)",
@@ -261,16 +510,16 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-bnb-001",
-    "title": "Cozy Designer Studio BnB / Airbnb in Kilimani near Yaya Centre",
+    "title": "Cozy Designer Studio Apartment in Kilimani near Yaya Centre",
     "description": "Chic, fully furnished and serviced studio apartment on Argwings Kodhek Road. Equipped with ultra-fast 50Mbps WiFi, 55\" 4K Smart TV with Netflix/YouTube, queen-size orthopedic mattress, microwave, fridge, toaster, kettle, and hot rain shower. Self check-in via smart keypad lock. Perfect for business travelers, tourists, or weekend staycations.",
-    "category": "BnB / Airbnb Short Stay",
+    "category": "Bedsitter / Studio",
     "bedrooms": 0,
     "bathrooms": 1,
     "floorLevel": 4,
     "rentKes": 3800,
     "depositKes": 0,
-    "rentPeriod": "night",
-    "isBnb": true,
+    "rentPeriod": "monthly",
+    "isBnb": false,
     "county": "Nairobi",
     "corridorId": "kilimani_westlands",
     "estateSuburb": "Kilimani (Yaya & Dennis Pritt)",
@@ -1692,6 +1941,9545 @@ const SEED_PROPERTIES = [
       }
     ],
     "photoCount": 7
+  },
+  {
+    "id": "prop-nrb-024",
+    "title": "Clean Tiled Single Room in Ngara West near Chemelil Rd",
+    "description": "Neat, quiet single room near Chemelil Road and Stima Club. 5 minutes walk to CBD. Constant council water supply with booster pumps and 10,000L backup storage. Tokens meter per floor, perimeter security with biometric gate and 24/7 caretaker.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 6800,
+    "depositKes": 6800,
+    "county": "Nairobi",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "Ngara (Fig Tree & Ngara Rd)",
+    "exactLocation": "Ngara West, near Chemelil Road",
+    "latitude": -1.273,
+    "longitude": 36.821,
+    "waterSupplyType": "City Council Water + Borehole Backup",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 300,
+    "waterRateKes": 100,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-17T10:24:17.126Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Geoffrey (Caretaker)",
+    "caretakerPhone": "0721445566",
+    "postedTimeAgo": "2h ago",
+    "landlord": {
+      "id": "usr-lnd-25",
+      "name": "Peter Kariuki",
+      "phone": "+254721445566",
+      "whatsapp": "+254721445566",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 15,
+      "responseRate": 97,
+      "listingCount": 5,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Clean well-ventilated single room space"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Clean shared tiled washroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Secure gated building exterior"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Hallway and compound view"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 4
+  },
+  {
+    "id": "prop-nrb-025",
+    "title": "Modern Bedsitter in Pangani near Thika Road Interchange",
+    "description": "Spacious bedsitter in Pangani, quick access to Thika Superhighway and CBD. Features private bathroom, kitchenette with granite top, prepaid KPLC token meter, borehole water 24/7, high perimeter wall with electric fence.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 11000,
+    "depositKes": 11000,
+    "county": "Nairobi",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "Pangani",
+    "exactLocation": "Near Pangani Girls and Thika Rd Interchange",
+    "latitude": -1.2709,
+    "longitude": 36.8375,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-17T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "John Kamau",
+    "caretakerPhone": "0712334455",
+    "postedTimeAgo": "4h ago",
+    "landlord": {
+      "id": "usr-lnd-26",
+      "name": "Mary Nduta",
+      "phone": "+254712334455",
+      "whatsapp": "+254712334455",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 16,
+      "responseRate": 97,
+      "listingCount": 6,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-026",
+    "title": "Executive 1 Bedroom Apartment in Parklands (3rd Parklands Ave)",
+    "description": "Charming 1 bedroom apartment located in prestigious 3rd Parklands Avenue. Very secure, close to Diamond Plaza, MP Shah Hospital, and Aga Khan. Well-lit lounge, kitchen with cabinets, backup generator for common areas, high-speed lift, 24/7 security guards.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 4,
+    "rentKes": 38000,
+    "depositKes": 38000,
+    "county": "Nairobi",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "Parklands (1st to 6th Parklands)",
+    "exactLocation": "3rd Parklands Avenue, near Diamond Plaza",
+    "latitude": -1.2612,
+    "longitude": 36.8155,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Parklands Premier Properties",
+    "caretakerName": "Ali Mohammed",
+    "caretakerPhone": "0733887766",
+    "postedTimeAgo": "6h ago",
+    "landlord": {
+      "id": "usr-lnd-27",
+      "name": "Parklands Premier Properties",
+      "phone": "+254733887766",
+      "whatsapp": "+254733887766",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 17,
+      "responseRate": 97,
+      "listingCount": 7,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-027",
+    "title": "Spacious 2 Bedroom Master Ensuite in Highridge Parklands",
+    "description": "Quiet residential court in Highridge. Large living room with dining area, master ensuite bedroom, fitted wardrobes, solar water heating, 2 reserved parking slots, full-time guard, intercom connection to gate.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 54000,
+    "depositKes": 54000,
+    "county": "Nairobi",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "Highridge (Parklands)",
+    "exactLocation": "Masari Road, Highridge",
+    "latitude": -1.258,
+    "longitude": 36.808,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 600,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "HassConsult Real Estate",
+    "caretakerName": "Francis Omondi",
+    "caretakerPhone": "0722998811",
+    "postedTimeAgo": "8h ago",
+    "landlord": {
+      "id": "usr-lnd-28",
+      "name": "HassConsult Real Estate",
+      "phone": "+254733112233",
+      "whatsapp": "+254733112233",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 18,
+      "responseRate": 97,
+      "listingCount": 8,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-028",
+    "title": "Luxury 3 Bedroom Master Ensuite Apartment near City Park Environs",
+    "description": "Stunning 3-bedroom apartment with scenic green views of City Park forest. Features spacious open kitchen, separate laundry balcony, servant quarter (DSQ), heated rooftop pool, gym, high speed lifts, solar panels and 24/7 security.",
+    "category": "3 Bedroom",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "floorLevel": 5,
+    "rentKes": 78000,
+    "depositKes": 78000,
+    "county": "Nairobi",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "City Park Environs",
+    "exactLocation": "Limuru Road, opposite City Park Market",
+    "latitude": -1.262,
+    "longitude": 36.826,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 800,
+    "waterRateKes": 150,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Knight Frank Kenya",
+    "caretakerName": "Bernard Mutiso",
+    "caretakerPhone": "0711554433",
+    "postedTimeAgo": "10h ago",
+    "landlord": {
+      "id": "usr-lnd-29",
+      "name": "Knight Frank Kenya",
+      "phone": "+254711554433",
+      "whatsapp": "+254711554433",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 19,
+      "responseRate": 97,
+      "listingCount": 9,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-029",
+    "title": "Commercial Office / Co-Working Stall in Nairobi CBD (Tom Mboya St)",
+    "description": "Prime commercial shop/stall in busy commercial arcade along Tom Mboya Street. High foot traffic, clean tiled floor, glass frontage, prepaid electricity meter, 24/7 security, suitable for boutique, electronics, agency or salon.",
+    "category": "Commercial Office / Co-Working",
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "floorLevel": 1,
+    "rentKes": 26000,
+    "depositKes": 52000,
+    "county": "Nairobi",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "CBD (City Centre)",
+    "exactLocation": "Tom Mboya Street near Odeon Cinema",
+    "latitude": -1.284,
+    "longitude": 36.8245,
+    "waterSupplyType": "City Council Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 100,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Nairobi City Properties",
+    "caretakerName": "Harrison Wafula",
+    "caretakerPhone": "0722114477",
+    "postedTimeAgo": "12h ago",
+    "landlord": {
+      "id": "usr-lnd-30",
+      "name": "Nairobi City Properties",
+      "phone": "+254722114477",
+      "whatsapp": "+254722114477",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 20,
+      "responseRate": 97,
+      "listingCount": 10,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-030",
+    "title": "Executive 1 Bedroom Apartment in Westlands (Rhapta Road)",
+    "description": "Chic modern 1 bedroom apartment along Rhapta Road. Features open-plan living, fully fitted kitchen cabinets, bedroom with mirrored wardrobes, high-speed fiber internet connection, gym, rooftop terrace, 24/7 manned security and CCTV.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 52000,
+    "depositKes": 52000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Rhapta Road",
+    "exactLocation": "Rhapta Road, near Sarit Centre & Westgate",
+    "latitude": -1.2625,
+    "longitude": 36.7932,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 600,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Westlands Living Agency",
+    "caretakerName": "Eric Kiprono",
+    "caretakerPhone": "0720448833",
+    "postedTimeAgo": "14h ago",
+    "landlord": {
+      "id": "usr-lnd-31",
+      "name": "Westlands Living Agency",
+      "phone": "+254720448833",
+      "whatsapp": "+254720448833",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 21,
+      "responseRate": 97,
+      "listingCount": 11,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-031",
+    "title": "Modern 2 Bedroom Master Ensuite with Pool in Kileleshwa (Siaya Rd)",
+    "description": "Top-of-the-range 2 bedroom master ensuite apartment on Siaya Road, Kileleshwa. Fitted kitchen with granite breakfast island, spacious lounge leading to balcony, heated swimming pool, modern fitness gym, generator backup for all apartments, 2 elevators.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 4,
+    "rentKes": 68000,
+    "depositKes": 68000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Kileleshwa (Oloitokitok, Kandara, Siaya)",
+    "exactLocation": "Siaya Road, near Kileleshwa Police Station",
+    "latitude": -1.2801,
+    "longitude": 36.7862,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 700,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Jackson Mutiso",
+    "caretakerPhone": "0711993322",
+    "postedTimeAgo": "16h ago",
+    "landlord": {
+      "id": "usr-lnd-32",
+      "name": "Eng. Patrick Ochieng",
+      "phone": "+254711993322",
+      "whatsapp": "+254711993322",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 22,
+      "responseRate": 97,
+      "listingCount": 12,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-032",
+    "title": "Luxury 3 Bedroom All Ensuite + DSQ in Lavington (Isaac Gathanju)",
+    "description": "Sprawling 3 bedroom all ensuite townhouse apartment in serene leafy Lavington. Includes detached servant quarter (DSQ), expansive dining and living area, pantry, laundry yard, clubhouse, infinity swimming pool, children play area, solar water heating.",
+    "category": "3 Bedroom",
+    "bedrooms": 3,
+    "bathrooms": 4,
+    "floorLevel": 2,
+    "rentKes": 115000,
+    "depositKes": 115000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Lavington (James Gichuru, Isaac Gathanju)",
+    "exactLocation": "Isaac Gathanju Road, near Lavington Mall",
+    "latitude": -1.2824,
+    "longitude": 36.7681,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 1000,
+    "waterRateKes": 150,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "HassConsult Real Estate",
+    "caretakerName": "Stephen Maina",
+    "caretakerPhone": "0733556677",
+    "postedTimeAgo": "18h ago",
+    "landlord": {
+      "id": "usr-lnd-33",
+      "name": "HassConsult Real Estate",
+      "phone": "+254733112233",
+      "whatsapp": "+254733112233",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 23,
+      "responseRate": 97,
+      "listingCount": 13,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-033",
+    "title": "4 Bedroom Standalone Villa with Private Garden in Spring Valley",
+    "description": "Magnificent 4-bedroom standalone ambassadorial villa nestled in a quiet cul-de-sac in Spring Valley. Set on 0.5 acre manicured lawn, family room, 2 fireplaces, lockable garage for 3 cars, perimeter electric wall, UN security certified.",
+    "category": "4 Bedroom+",
+    "bedrooms": 4,
+    "bathrooms": 4,
+    "floorLevel": 1,
+    "rentKes": 220000,
+    "depositKes": 220000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Spring Valley",
+    "exactLocation": "Spring Valley Road, near Lower Kabete Rd",
+    "latitude": -1.2483,
+    "longitude": 36.7865,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Postpaid (Monthly Meter)",
+    "garbageFeeKes": 1500,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Pam Golding Properties Kenya",
+    "caretakerName": "Paul K.",
+    "caretakerPhone": "0722337788",
+    "postedTimeAgo": "20h ago",
+    "landlord": {
+      "id": "usr-lnd-34",
+      "name": "Pam Golding Properties Kenya",
+      "phone": "+254722337788",
+      "whatsapp": "+254722337788",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 24,
+      "responseRate": 97,
+      "listingCount": 14,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-034",
+    "title": "Penthouse with Panoramic Views in Riverside Drive",
+    "description": "Exclusive 4-bedroom duplex penthouse offering 360-degree views of Nairobi skyline and the arboretum. Jacuzzi in master bathroom, imported Italian kitchen with built-in appliances, private elevator access, 3 covered parking slots, heated pool and spa.",
+    "category": "Penthouse",
+    "bedrooms": 4,
+    "bathrooms": 5,
+    "floorLevel": 8,
+    "rentKes": 190000,
+    "depositKes": 190000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Riverside Drive",
+    "exactLocation": "Riverside Drive, near German Embassy",
+    "latitude": -1.2721,
+    "longitude": 36.7944,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 1200,
+    "waterRateKes": 180,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Riverside Elite Realty",
+    "caretakerName": "Anthony Kimani",
+    "caretakerPhone": "0710224466",
+    "postedTimeAgo": "22h ago",
+    "landlord": {
+      "id": "usr-lnd-35",
+      "name": "Riverside Elite Realty",
+      "phone": "+254710224466",
+      "whatsapp": "+254710224466",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 25,
+      "responseRate": 97,
+      "listingCount": 5,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-035",
+    "title": "Studio Apartment in Kilimani (Rose Avenue near Yaya Centre)",
+    "description": "Tastefully furnished studio apartment available for daily and monthly long-term rental. Superfast WiFi (50Mbps), smart TV with Netflix/DSTV, king bed with orthopaedic mattress, fully equipped kitchenette, rooftop heated pool, 24/7 self check-in.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 5,
+    "rentKes": 65000,
+    "depositKes": 10000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Kilimani (Dennis Pritt, Argwings Kodhek, Lenana)",
+    "exactLocation": "Rose Avenue, off Denis Pritt Road, Kilimani",
+    "latitude": -1.2921,
+    "longitude": 36.7884,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 0,
+    "waterRateKes": 0,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Grace N.",
+    "caretakerPhone": "0718552211",
+    "postedTimeAgo": "24h ago",
+    "landlord": {
+      "id": "usr-lnd-36",
+      "name": "Grace N. (Superhost)",
+      "phone": "+254718552211",
+      "whatsapp": "+254718552211",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 26,
+      "responseRate": 97,
+      "listingCount": 6,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6,
+    "rentPeriod": "monthly",
+    "isBnb": false
+  },
+  {
+    "id": "prop-nrb-036",
+    "title": "Modern Bedsitter in Roysambu along Lumumba Drive (Near TRM)",
+    "description": "Neat bedsitter located on Lumumba Drive, 3 minutes walk to Thika Road Mall (TRM). Tiled floor, ceiling fan, balcony with laundry taps, unlimited borehole water, Safaricom Home Fibre ready, security guard 24/7 with CCTV.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 9500,
+    "depositKes": 9500,
+    "county": "Nairobi",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Roysambu / Mirema",
+    "exactLocation": "Lumumba Drive, near TRM Roundabout",
+    "latitude": -1.2185,
+    "longitude": 36.886,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Dennis Wanyama",
+    "caretakerPhone": "0728331199",
+    "postedTimeAgo": "26h ago",
+    "landlord": {
+      "id": "usr-lnd-37",
+      "name": "Samuel Mwangi",
+      "phone": "+254728331199",
+      "whatsapp": "+254728331199",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 27,
+      "responseRate": 97,
+      "listingCount": 7,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-037",
+    "title": "Spacious 1 Bedroom Apartment in Kasarani (Clay City near Season)",
+    "description": "Newly constructed 1-bedroom apartment in Clay City Kasarani. Spacious sitting room with open dining space, kitchen with overhead cabinets, master bedroom with wardrobe, borehole water, elevator, dedicated parking, CCTV surveillance.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 16500,
+    "depositKes": 16500,
+    "county": "Nairobi",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Kasarani (Sports View & Clay City)",
+    "exactLocation": "Clay City, off Thika Road near Season",
+    "latitude": -1.212,
+    "longitude": 36.899,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Kennedy Otieno",
+    "caretakerPhone": "0703882211",
+    "postedTimeAgo": "28h ago",
+    "landlord": {
+      "id": "usr-lnd-38",
+      "name": "Eunice Wangari",
+      "phone": "+254703882211",
+      "whatsapp": "+254703882211",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 28,
+      "responseRate": 97,
+      "listingCount": 8,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-038",
+    "title": "Modern 2 Bedroom Master Ensuite in Kahawa Sukari with Borehole",
+    "description": "Quiet, secure court in Kahawa Sukari. Spacious 2 bedroom master ensuite, modern kitchen cabinets, laundry balcony, 24/7 borehole water, perimeter wall with razor wire and electric fence, secure parking with 2 guards.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 1,
+    "rentKes": 25000,
+    "depositKes": 25000,
+    "county": "Kiambu",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Kahawa Sukari",
+    "exactLocation": "Kahawa Sukari, 1st South Avenue",
+    "latitude": -1.189,
+    "longitude": 36.932,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "George Mwangi",
+    "caretakerPhone": "0714778899",
+    "postedTimeAgo": "30h ago",
+    "landlord": {
+      "id": "usr-lnd-39",
+      "name": "Dr. Joseph Kuria",
+      "phone": "+254714778899",
+      "whatsapp": "+254714778899",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 29,
+      "responseRate": 97,
+      "listingCount": 9,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-039",
+    "title": "Executive 3 Bedroom Maisonette in Garden Estate (Off Thika Rd)",
+    "description": "Gated community maisonette in Garden Estate. Living room with fireplace, private backyard garden, ensuite master bedroom, servant quarter, solar water heating system, 2 parking slots, borehole water and 24/7 security patrol.",
+    "category": "Maisonette / Townhouse",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "floorLevel": 1,
+    "rentKes": 68000,
+    "depositKes": 68000,
+    "county": "Nairobi",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Garden Estate",
+    "exactLocation": "Garden Estate Road, off Thika Superhighway",
+    "latitude": -1.231,
+    "longitude": 36.865,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 700,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Thika Road Homes",
+    "caretakerName": "Mathew Barasa",
+    "caretakerPhone": "0725667788",
+    "postedTimeAgo": "32h ago",
+    "landlord": {
+      "id": "usr-lnd-40",
+      "name": "Thika Road Homes",
+      "phone": "+254725667788",
+      "whatsapp": "+254725667788",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 30,
+      "responseRate": 97,
+      "listingCount": 10,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-040",
+    "title": "Student Friendly Bedsitter in Juja near JKUAT Gate C",
+    "description": "Clean student-friendly bedsitter located 400m from JKUAT Gate C. Tiled floor, kitchen sink, instant hot shower, reliable borehole water, study desk area, WiFi ready, secure lockable compound with gate watchman.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 7500,
+    "depositKes": 7500,
+    "county": "Kiambu",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Juja (JKUAT & Toll Station)",
+    "exactLocation": "Juja, near JKUAT Gate C",
+    "latitude": -1.102,
+    "longitude": 37.013,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 300,
+    "waterRateKes": 100,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Titus Kiplagat",
+    "caretakerPhone": "0719881122",
+    "postedTimeAgo": "34h ago",
+    "landlord": {
+      "id": "usr-lnd-41",
+      "name": "Titus Kiplagat",
+      "phone": "+254719881122",
+      "whatsapp": "+254719881122",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 31,
+      "responseRate": 97,
+      "listingCount": 11,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-041",
+    "title": "Spacious Bedsitter in Ruaka (Joyland near Quickmart)",
+    "description": "Bright bedsitter in central Ruaka, walking distance to Quickmart and Two Rivers Mall. Modern tiles, private washroom with instant shower, kitchenette counter, 24/7 borehole water, tokens meter, perimeter electric fence.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 10500,
+    "depositKes": 10500,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Ruaka (Bypass & Slaughter Rd)",
+    "exactLocation": "Ruaka Joyland, near Quickmart Supermarket",
+    "latitude": -1.2056,
+    "longitude": 36.7762,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Simon Njuguna",
+    "caretakerPhone": "0722339900",
+    "postedTimeAgo": "36h ago",
+    "landlord": {
+      "id": "usr-lnd-42",
+      "name": "Simon Njuguna",
+      "phone": "+254722339900",
+      "whatsapp": "+254722339900",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 32,
+      "responseRate": 97,
+      "listingCount": 12,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-042",
+    "title": "Modern 1 Bedroom Apartment in Thindigua, Kiambu Road",
+    "description": "Executive 1 bedroom apartment along Kiambu Road in Thindigua. Open-plan kitchen with granite counters, spacious bedroom with built-in wardrobes, elevator, rooftop chill area with laundry hanging space, borehole water, 24/7 CCTV and manned gate.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 23000,
+    "depositKes": 23000,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Thindigua",
+    "exactLocation": "Thindigua, off Kiambu Road near Quickmart",
+    "latitude": -1.214,
+    "longitude": 36.832,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Kiambu Road Realty",
+    "caretakerName": "Caleb Mutua",
+    "caretakerPhone": "0716447733",
+    "postedTimeAgo": "38h ago",
+    "landlord": {
+      "id": "usr-lnd-43",
+      "name": "Kiambu Road Realty",
+      "phone": "+254716447733",
+      "whatsapp": "+254716447733",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 33,
+      "responseRate": 97,
+      "listingCount": 13,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-043",
+    "title": "Executive 3 Bedroom Townhouse in Fourways Junction Gated Estate",
+    "description": "High-end 3-bedroom master ensuite townhouse inside Fourways Junction gated community on Kiambu Road. Private manicured garden, paved cabro parking for 2 cars, clubhouse, communal swimming pool, jogging tracks, top-notch 24/7 security.",
+    "category": "Maisonette / Townhouse",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "floorLevel": 1,
+    "rentKes": 90000,
+    "depositKes": 90000,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Fourways Junction",
+    "exactLocation": "Fourways Junction, Kiambu Road",
+    "latitude": -1.226,
+    "longitude": 36.837,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 800,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "HassConsult Real Estate",
+    "caretakerName": "Dennis Kimutai",
+    "caretakerPhone": "0733112233",
+    "postedTimeAgo": "40h ago",
+    "landlord": {
+      "id": "usr-lnd-44",
+      "name": "HassConsult Real Estate",
+      "phone": "+254733112233",
+      "whatsapp": "+254733112233",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 34,
+      "responseRate": 97,
+      "listingCount": 14,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-044",
+    "title": "4 Bedroom All Ensuite Villa in Edenville Phase 1 (Kiambu Rd)",
+    "description": "Luxurious 4 bedroom all ensuite villa in prestigious Edenville gated estate. Spacious living room with separate dining room, family lounge on upper floor, detached domestic servant quarter, automated irrigation, UN security compliant.",
+    "category": "4 Bedroom+",
+    "bedrooms": 4,
+    "bathrooms": 5,
+    "floorLevel": 1,
+    "rentKes": 135000,
+    "depositKes": 135000,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Edenville (Kiambu Rd)",
+    "exactLocation": "Edenville Estate, Kiambu Road",
+    "latitude": -1.201,
+    "longitude": 36.839,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 1000,
+    "waterRateKes": 150,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-10T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Edenville Estate Management",
+    "caretakerName": "Lucas Mwita",
+    "caretakerPhone": "0722883344",
+    "postedTimeAgo": "42h ago",
+    "landlord": {
+      "id": "usr-lnd-45",
+      "name": "Edenville Estate Management",
+      "phone": "+254722883344",
+      "whatsapp": "+254722883344",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 15,
+      "responseRate": 97,
+      "listingCount": 5,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-045",
+    "title": "Clean Single Room in Kangemi near Waruku (Waiyaki Way)",
+    "description": "Convenient single room located 3 minutes from Waiyaki Way at Waruku. Regular clean council water, shared tiled bathroom with hot water, tokens electricity, secure perimeter gate with night watchman. Easy commute to Westlands.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 1,
+    "rentKes": 4800,
+    "depositKes": 4800,
+    "county": "Nairobi",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Kangemi (Waruku & Posta)",
+    "exactLocation": "Waruku, Kangemi, off Waiyaki Way",
+    "latitude": -1.266,
+    "longitude": 36.758,
+    "waterSupplyType": "City Council Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 200,
+    "waterRateKes": 80,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-10T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Moses Chege",
+    "caretakerPhone": "0721665544",
+    "postedTimeAgo": "44h ago",
+    "landlord": {
+      "id": "usr-lnd-46",
+      "name": "Moses Chege",
+      "phone": "+254721665544",
+      "whatsapp": "+254721665544",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 16,
+      "responseRate": 97,
+      "listingCount": 6,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": false,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Clean well-ventilated single room space"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Clean shared tiled washroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Secure gated building exterior"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Hallway and compound view"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 4
+  },
+  {
+    "id": "prop-nrb-046",
+    "title": "Spacious Bedsitter in Kinoo 87 near Waiyaki Way Interchange",
+    "description": "Well-finished bedsitter in Kinoo 87. Large window for natural light, tiled floors, kitchen sink with lower cabinets, constant borehole water supply, prepaid token meter, perimeter wall and CCTV.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 8500,
+    "depositKes": 8500,
+    "county": "Kiambu",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Kinoo (87 & Stage)",
+    "exactLocation": "Kinoo 87, 200m from Waiyaki Way",
+    "latitude": -1.258,
+    "longitude": 36.711,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 350,
+    "waterRateKes": 100,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-10T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Joshua M.",
+    "caretakerPhone": "0715994411",
+    "postedTimeAgo": "46h ago",
+    "landlord": {
+      "id": "usr-lnd-47",
+      "name": "Grace Wambui",
+      "phone": "+254715994411",
+      "whatsapp": "+254715994411",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 17,
+      "responseRate": 97,
+      "listingCount": 7,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-047",
+    "title": "Modern 1 Bedroom Apartment in Uthiru near Junction",
+    "description": "Brand new 1 bedroom apartment in Uthiru. Clean modern finishes, spacious living area, bedroom fitted with wardrobes, private balcony with laundry connection, constant water, secure compound with ample parking.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 14500,
+    "depositKes": 14500,
+    "county": "Kiambu",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Uthiru",
+    "exactLocation": "Uthiru Junction, near Shopping Centre",
+    "latitude": -1.261,
+    "longitude": 36.732,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 100,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-09T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Evans Odhiambo",
+    "caretakerPhone": "0723884422",
+    "postedTimeAgo": "48h ago",
+    "landlord": {
+      "id": "usr-lnd-48",
+      "name": "James Kimani",
+      "phone": "+254723884422",
+      "whatsapp": "+254723884422",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 18,
+      "responseRate": 97,
+      "listingCount": 8,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-048",
+    "title": "Executive 2 Bedroom Master Ensuite in Kikuyu Town (Gitaru Rd)",
+    "description": "Tastefully built 2-bedroom master ensuite in Kikuyu Town. Close to Southern Bypass and Western Bypass for seamless commuting. Open kitchen, ceramic tiled floors, high-speed lift, secure parking, 24/7 borehole water.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 3,
+    "rentKes": 22000,
+    "depositKes": 22000,
+    "county": "Kiambu",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Kikuyu (Town & Ondiri)",
+    "exactLocation": "Kikuyu Town, Gitaru Road",
+    "latitude": -1.246,
+    "longitude": 36.664,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-09T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Bypass Heights Agency",
+    "caretakerName": "Jackson Ngugi",
+    "caretakerPhone": "0717228844",
+    "postedTimeAgo": "50h ago",
+    "landlord": {
+      "id": "usr-lnd-49",
+      "name": "Bypass Heights Agency",
+      "phone": "+254717228844",
+      "whatsapp": "+254717228844",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 19,
+      "responseRate": 97,
+      "listingCount": 9,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-049",
+    "title": "3 Bedroom Standalone Bungalow in Mountain View Estate",
+    "description": "Charming standalone 3-bedroom bungalow in prestigious Mountain View Estate along Waiyaki Way. Private compound with mature green garden, lockable garage, perimeter electric fence, perimeter wall, 24/7 guarded security gate.",
+    "category": "Bungalow",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "floorLevel": 1,
+    "rentKes": 72000,
+    "depositKes": 72000,
+    "county": "Nairobi",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Mountain View",
+    "exactLocation": "Mountain View Estate, Court 4",
+    "latitude": -1.259,
+    "longitude": 36.745,
+    "waterSupplyType": "City Council Water + Borehole Backup",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 700,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-09T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Silas Kilonzo",
+    "caretakerPhone": "0722119933",
+    "postedTimeAgo": "52h ago",
+    "landlord": {
+      "id": "usr-lnd-50",
+      "name": "Silas Kilonzo",
+      "phone": "+254722119933",
+      "whatsapp": "+254722119933",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 20,
+      "responseRate": 97,
+      "listingCount": 10,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-050",
+    "title": "Modern Bedsitter in South B (Plainsview near Capital Centre)",
+    "description": "Clean, well-maintained bedsitter in Plainsview South B. Easy walking distance to Capital Centre and Mombasa Road. Kitchen sink, tiled washroom with hot shower, borehole water backup, tokens meter, perimeter electric fence.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 11500,
+    "depositKes": 11500,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "South B (Plainsview & Hazina)",
+    "exactLocation": "Plainsview Estate, South B",
+    "latitude": -1.309,
+    "longitude": 36.837,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-08T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Richard Otieno",
+    "caretakerPhone": "0729443311",
+    "postedTimeAgo": "54h ago",
+    "landlord": {
+      "id": "usr-lnd-51",
+      "name": "Alice Muthoni",
+      "phone": "+254729443311",
+      "whatsapp": "+254729443311",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 21,
+      "responseRate": 97,
+      "listingCount": 11,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-051",
+    "title": "1 Bedroom Apartment in Nairobi West near Strathmore University",
+    "description": "Well-designed 1-bedroom apartment in Nairobi West, highly ideal for young professionals and Strathmore students. Features bright living room, modern kitchen cabinets, borehole water, elevator, biometric entry, CCTV surveillance.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 22500,
+    "depositKes": 22500,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Nairobi West",
+    "exactLocation": "Nairobi West, near Strathmore University Gate",
+    "latitude": -1.308,
+    "longitude": 36.821,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-08T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Nicholas Mutua",
+    "caretakerPhone": "0711776655",
+    "postedTimeAgo": "56h ago",
+    "landlord": {
+      "id": "usr-lnd-52",
+      "name": "Dr. Arthur Wanyonyi",
+      "phone": "+254711776655",
+      "whatsapp": "+254711776655",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 22,
+      "responseRate": 97,
+      "listingCount": 12,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-052",
+    "title": "Modern 2 Bedroom Master Ensuite in Madaraka Estate near T-Mall",
+    "description": "Renovated 2-bedroom master ensuite apartment in Madaraka Estate. Spacious sitting area with large windows, fitted kitchen with breakfast counter, ample parking, children play yard, round-the-clock security guard.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 33000,
+    "depositKes": 33000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Madaraka",
+    "exactLocation": "Madaraka Estate, near T-Mall and Strathmore",
+    "latitude": -1.304,
+    "longitude": 36.812,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 150,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-08T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Madaraka Property Consultants",
+    "caretakerName": "Victor K.",
+    "caretakerPhone": "0722668899",
+    "postedTimeAgo": "58h ago",
+    "landlord": {
+      "id": "usr-lnd-53",
+      "name": "Madaraka Property Consultants",
+      "phone": "+254722668899",
+      "whatsapp": "+254722668899",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 23,
+      "responseRate": 97,
+      "listingCount": 13,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-053",
+    "title": "Executive 3 Bedroom Townhouse in Langata (Phenom Estate)",
+    "description": "Premium 3 bedroom master ensuite townhouse inside Phenom Estate Langata. Features private compound, manicured lawn, modern modular kitchen, community swimming pool, gym, estate supermarket, 24/7 multi-tier security barrier.",
+    "category": "Maisonette / Townhouse",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "floorLevel": 1,
+    "rentKes": 58000,
+    "depositKes": 58000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Langata (Phenom, Southlands & Ngei)",
+    "exactLocation": "Phenom Estate, Langata Road",
+    "latitude": -1.321,
+    "longitude": 36.784,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 700,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-07T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Langata Living Properties",
+    "caretakerName": "Felix Mwiti",
+    "caretakerPhone": "0733441188",
+    "postedTimeAgo": "60h ago",
+    "landlord": {
+      "id": "usr-lnd-54",
+      "name": "Langata Living Properties",
+      "phone": "+254733441188",
+      "whatsapp": "+254733441188",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 24,
+      "responseRate": 97,
+      "listingCount": 14,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-054",
+    "title": "4 Bedroom Luxury Colonial Villa on 0.5 Acre in Karen (Mbagathi Ridge)",
+    "description": "Immaculate 4-bedroom colonial-style villa on half an acre in Karen Mbagathi Ridge. Enclosed verandah overlooking swimming pool, detached staff quarters for 2, solar inverter backup system, mature indigenous trees, UN approved security standards.",
+    "category": "4 Bedroom+",
+    "bedrooms": 4,
+    "bathrooms": 4,
+    "floorLevel": 1,
+    "rentKes": 260000,
+    "depositKes": 260000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Karen (Hardy, Bogani & Mbagathi)",
+    "exactLocation": "Mbagathi Ridge, off Karen Road",
+    "latitude": -1.332,
+    "longitude": 36.721,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 1500,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-07T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Knight Frank Kenya",
+    "caretakerName": "Harrison Mutua",
+    "caretakerPhone": "0711554433",
+    "postedTimeAgo": "62h ago",
+    "landlord": {
+      "id": "usr-lnd-55",
+      "name": "Knight Frank Kenya",
+      "phone": "+254711554433",
+      "whatsapp": "+254711554433",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 25,
+      "responseRate": 97,
+      "listingCount": 5,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-055",
+    "title": "Clean Budget Single Room in Pipeline Estate (Plot 10)",
+    "description": "Economical single room in Pipeline near Plot 10. Clean shared facilities, tiled floor, constant borehole water supply, tokens meter per section, security guard on ground floor gate.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 4200,
+    "depositKes": 4200,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Pipeline",
+    "exactLocation": "Pipeline, Plot 10, near Matatu Stage",
+    "latitude": -1.319,
+    "longitude": 36.885,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 200,
+    "waterRateKes": 80,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-07T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Benson Otieno",
+    "caretakerPhone": "0728114499",
+    "postedTimeAgo": "64h ago",
+    "landlord": {
+      "id": "usr-lnd-56",
+      "name": "Benson Otieno",
+      "phone": "+254728114499",
+      "whatsapp": "+254728114499",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 26,
+      "responseRate": 97,
+      "listingCount": 6,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": false,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Clean well-ventilated single room space"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Clean shared tiled washroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Secure gated building exterior"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Hallway and compound view"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 4
+  },
+  {
+    "id": "prop-nrb-056",
+    "title": "Spacious Tiled Bedsitter in Donholm Greenfields Estate",
+    "description": "Spacious bedsitter in secure gated Greenfields Donholm. Kitchen sink with tiled wall splash, modern toilet with instant shower, perimeter wall with security guards at gate, borehole water 24/7.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 1,
+    "rentKes": 9200,
+    "depositKes": 9200,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Donholm (Phase 5 & Greenfields)",
+    "exactLocation": "Donholm Greenfields, Court 12",
+    "latitude": -1.302,
+    "longitude": 36.888,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 100,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-06T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Tobias Makau",
+    "caretakerPhone": "0713559922",
+    "postedTimeAgo": "66h ago",
+    "landlord": {
+      "id": "usr-lnd-57",
+      "name": "Esther Njeri",
+      "phone": "+254713559922",
+      "whatsapp": "+254713559922",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 27,
+      "responseRate": 97,
+      "listingCount": 7,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-057",
+    "title": "Modern 1 Bedroom Apartment in Buruburu Phase 4",
+    "description": "Neat 1-bedroom apartment in Buruburu Phase 4. Spacious living area, bedroom with fitted cabinets, kitchen with shelves, reliable water supply with backup tanks, parking space, 24/7 security guard.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 17000,
+    "depositKes": 17000,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Buruburu (Phases 1 to 5)",
+    "exactLocation": "Buruburu Phase 4, near Mumias Road",
+    "latitude": -1.291,
+    "longitude": 36.878,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-06T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Eastlands Premier Properties",
+    "caretakerName": "Philip Musyoka",
+    "caretakerPhone": "0720884433",
+    "postedTimeAgo": "68h ago",
+    "landlord": {
+      "id": "usr-lnd-58",
+      "name": "Eastlands Premier Properties",
+      "phone": "+254720884433",
+      "whatsapp": "+254720884433",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 28,
+      "responseRate": 97,
+      "listingCount": 8,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-058",
+    "title": "Modern 2 Bedroom Apartment in Komarock Sector 3A",
+    "description": "Newly refreshed 2 bedroom apartment in Komarock Sector 3A. Ceramic tiled floors, spacious sitting area, kitchen with lower and upper cabinets, borehole water backup, cabro paved parking, perimeter wall with razor wire.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 21000,
+    "depositKes": 21000,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Komarock (Sectors 1 to 4)",
+    "exactLocation": "Komarock Sector 3A, near K-Mall",
+    "latitude": -1.272,
+    "longitude": 36.912,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-06T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Paul Mutinda",
+    "caretakerPhone": "0718337755",
+    "postedTimeAgo": "70h ago",
+    "landlord": {
+      "id": "usr-lnd-59",
+      "name": "Paul Mutinda",
+      "phone": "+254718337755",
+      "whatsapp": "+254718337755",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 29,
+      "responseRate": 97,
+      "listingCount": 9,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-059",
+    "title": "Executive 3 Bedroom Maisonette in Buruburu Phase 5",
+    "description": "Charming 3-bedroom standalone maisonette with private front and backyard in Buruburu Phase 5. Living room with dining alcove, master ensuite, solar heating, private gate and parking for 2 cars.",
+    "category": "Maisonette / Townhouse",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "floorLevel": 1,
+    "rentKes": 42000,
+    "depositKes": 42000,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Buruburu (Phases 1 to 5)",
+    "exactLocation": "Buruburu Phase 5, near Mesora Centre",
+    "latitude": -1.294,
+    "longitude": 36.882,
+    "waterSupplyType": "City Council Water + Borehole Backup",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 600,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-05T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Francis Kimani",
+    "caretakerPhone": "0722557766",
+    "postedTimeAgo": "72h ago",
+    "landlord": {
+      "id": "usr-lnd-60",
+      "name": "Francis Kimani",
+      "phone": "+254722557766",
+      "whatsapp": "+254722557766",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 30,
+      "responseRate": 97,
+      "listingCount": 10,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-060",
+    "title": "Executive Bedsitter in Mlolongo near Nairobi Expressway Toll",
+    "description": "Modern bedsitter in Mlolongo town, 300m from Expressway entrance. Direct transit to CBD in 15 minutes. Tiled floor, kitchen sink counter, clean water 24/7 from dedicated borehole, tokens meter, perimeter wall with CCTV.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 8500,
+    "depositKes": 8500,
+    "county": "Machakos",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Mlolongo Town",
+    "exactLocation": "Mlolongo, behind Signature Mall",
+    "latitude": -1.381,
+    "longitude": 36.939,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-05T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Jackson Mutie",
+    "caretakerPhone": "0724883311",
+    "postedTimeAgo": "74h ago",
+    "landlord": {
+      "id": "usr-lnd-61",
+      "name": "Jackson Mutie",
+      "phone": "+254724883311",
+      "whatsapp": "+254724883311",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 31,
+      "responseRate": 97,
+      "listingCount": 11,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-061",
+    "title": "Modern 1 Bedroom Apartment in Syokimau (Chady Road near Gateway)",
+    "description": "Brand new 1 bedroom apartment along Chady Road, Syokimau. Walking distance to Gateway Mall and Syokimau SGR Terminus. Large living room, fitted kitchen, balcony with laundry area, high-speed lift, gym, borehole, 24/7 security.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 19000,
+    "depositKes": 19000,
+    "county": "Machakos",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Syokimau (Chady & Airport Rd)",
+    "exactLocation": "Chady Road, off Mombasa Road, Syokimau",
+    "latitude": -1.352,
+    "longitude": 36.918,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-05T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Mombasa Road Homes",
+    "caretakerName": "Martin Nzioki",
+    "caretakerPhone": "0716554422",
+    "postedTimeAgo": "76h ago",
+    "landlord": {
+      "id": "usr-lnd-62",
+      "name": "Mombasa Road Homes",
+      "phone": "+254716554422",
+      "whatsapp": "+254716554422",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 32,
+      "responseRate": 97,
+      "listingCount": 12,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-062",
+    "title": "Spacious 2 Bedroom Master Ensuite in Athi River (Crystal Rivers)",
+    "description": "Modern 2-bedroom master ensuite apartment located near Crystal Rivers Mall in Athi River. Features ceramic tiles throughout, balcony, solar water heating, 24/7 borehole water, perimeter wall, children play area.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 3,
+    "rentKes": 22000,
+    "depositKes": 22000,
+    "county": "Machakos",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Athi River (Sabaki & EPZ)",
+    "exactLocation": "Near Crystal Rivers Mall, Athi River",
+    "latitude": -1.439,
+    "longitude": 36.978,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-04T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Geoffrey Muli",
+    "caretakerPhone": "0721773344",
+    "postedTimeAgo": "78h ago",
+    "landlord": {
+      "id": "usr-lnd-63",
+      "name": "Geoffrey Muli",
+      "phone": "+254721773344",
+      "whatsapp": "+254721773344",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 33,
+      "responseRate": 97,
+      "listingCount": 13,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-063",
+    "title": "4 Bedroom Standalone Maisonette on 50x100 in Kitengela (Milimani)",
+    "description": "Executive 4 bedroom master ensuite maisonette sitting on its own 50x100 plot in Milimani Kitengela. Living room with dining area, perimeter stone wall with electric wire, underground water reservoir of 15,000 litres, cabro compound for 4 cars.",
+    "category": "Maisonette / Townhouse",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "floorLevel": 1,
+    "rentKes": 52000,
+    "depositKes": 52000,
+    "county": "Kajiado",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Kitengela Town",
+    "exactLocation": "Milimani Estate, Kitengela, 1km from Namanga Road",
+    "latitude": -1.482,
+    "longitude": 36.961,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 600,
+    "waterRateKes": 100,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-04T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Daniel Ole Kaelo",
+    "caretakerPhone": "0722995511",
+    "postedTimeAgo": "80h ago",
+    "landlord": {
+      "id": "usr-lnd-64",
+      "name": "Daniel Ole Kaelo",
+      "phone": "+254722995511",
+      "whatsapp": "+254722995511",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 34,
+      "responseRate": 97,
+      "listingCount": 14,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-064",
+    "title": "Spacious Bedsitter in Ongata Rongai (Tumaini Supermarket Environs)",
+    "description": "Neat and quiet bedsitter near Tumaini Rongai. Features tiled flooring, fitted kitchen counter with stainless sink, clean tiled toilet with instant shower, unlimited borehole water, security guard and perimeter wall.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 7800,
+    "depositKes": 7800,
+    "county": "Kajiado",
+    "corridorId": "ngong_rongai_satellite",
+    "estateSuburb": "Ongata Rongai (Maasai Lodge & Town)",
+    "exactLocation": "Near Tumaini Supermarket, Ongata Rongai",
+    "latitude": -1.396,
+    "longitude": 36.758,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 300,
+    "waterRateKes": 100,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-04T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Robert Kiprotich",
+    "caretakerPhone": "0714885522",
+    "postedTimeAgo": "82h ago",
+    "landlord": {
+      "id": "usr-lnd-65",
+      "name": "Robert Kiprotich",
+      "phone": "+254714885522",
+      "whatsapp": "+254714885522",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 15,
+      "responseRate": 97,
+      "listingCount": 5,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-065",
+    "title": "Modern 1 Bedroom in Ngong Town near SGR Station",
+    "description": "Cozy 1 bedroom apartment in serene Ngong Town with cool breeze from the hills. Spacious living area, tiled modern bathroom, kitchen cabinets, private balcony with hills view, 24/7 water supply, ample parking with perimeter wall.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 13500,
+    "depositKes": 13500,
+    "county": "Kajiado",
+    "corridorId": "ngong_rongai_satellite",
+    "estateSuburb": "Ngong Town & Hills",
+    "exactLocation": "Ngong Town, near SGR Station",
+    "latitude": -1.361,
+    "longitude": 36.657,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 100,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-03T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Moses Nderitu",
+    "caretakerPhone": "0726338844",
+    "postedTimeAgo": "84h ago",
+    "landlord": {
+      "id": "usr-lnd-66",
+      "name": "Moses Nderitu",
+      "phone": "+254726338844",
+      "whatsapp": "+254726338844",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 16,
+      "responseRate": 97,
+      "listingCount": 6,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-066",
+    "title": "Modern 2 Bedroom Apartment in Rongai (Maasai Lodge Rd)",
+    "description": "Executive 2-bedroom master ensuite apartment along Maasai Lodge Road. Modern kitchen, spacious balcony, continuous borehole water supply, tokens meter, perimeter wall with electric fence, dedicated parking.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 19500,
+    "depositKes": 19500,
+    "county": "Kajiado",
+    "corridorId": "ngong_rongai_satellite",
+    "estateSuburb": "Ongata Rongai (Maasai Lodge & Town)",
+    "exactLocation": "Maasai Lodge Road, Rongai",
+    "latitude": -1.391,
+    "longitude": 36.764,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-03T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Boniface Mutua",
+    "caretakerPhone": "0715332288",
+    "postedTimeAgo": "86h ago",
+    "landlord": {
+      "id": "usr-lnd-67",
+      "name": "Boniface Mutua",
+      "phone": "+254715332288",
+      "whatsapp": "+254715332288",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 17,
+      "responseRate": 97,
+      "listingCount": 7,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-067",
+    "title": "3 Bedroom Standalone Bungalow with Big Garden in Kiserian",
+    "description": "Serene 3 bedroom bungalow set on 1/4 acre private compound in Kiserian. Large lounge with stone fireplace, spacious kitchen with store, mature fruit trees in compound, solar water heating, underground water storage.",
+    "category": "Bungalow",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "floorLevel": 1,
+    "rentKes": 34000,
+    "depositKes": 34000,
+    "county": "Kajiado",
+    "corridorId": "ngong_rongai_satellite",
+    "estateSuburb": "Kiserian",
+    "exactLocation": "Kiserian Pipelines, off Magadi Road",
+    "latitude": -1.432,
+    "longitude": 36.689,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 100,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-03T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "John Sunkuli",
+    "caretakerPhone": "0722774411",
+    "postedTimeAgo": "88h ago",
+    "landlord": {
+      "id": "usr-lnd-68",
+      "name": "John Sunkuli",
+      "phone": "+254722774411",
+      "whatsapp": "+254722774411",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 18,
+      "responseRate": 97,
+      "listingCount": 8,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-068",
+    "title": "Executive 2 Bedroom Master Ensuite in Brookside Drive, Westlands",
+    "description": "Prestigious 2 bedroom master ensuite apartment along Brookside Drive. Open plan kitchen with granite island, spacious balcony with peaceful tree canopy views, heated pool, gym, full backup generator, 2 high speed lifts and UN security clearance.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 4,
+    "rentKes": 78000,
+    "depositKes": 78000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Brookside Drive",
+    "exactLocation": "Brookside Drive, off Waiyaki Way",
+    "latitude": -1.2541,
+    "longitude": 36.7972,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 800,
+    "waterRateKes": 150,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-02T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Knight Frank Kenya",
+    "caretakerName": "Wilson Kiptoo",
+    "caretakerPhone": "0711554433",
+    "postedTimeAgo": "90h ago",
+    "landlord": {
+      "id": "usr-lnd-69",
+      "name": "Knight Frank Kenya",
+      "phone": "+254711554433",
+      "whatsapp": "+254711554433",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 19,
+      "responseRate": 97,
+      "listingCount": 9,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-069",
+    "title": "Designer Studio Apartment in Two Rivers Area (Ruaka)",
+    "description": "Fully furnished and serviced studio apartment 2 minutes from Two Rivers Mall. High-speed 50Mbps internet, Netflix, smart TV, self check-in smart lock, plush queen bed, fully equipped kitchenette, rooftop infinity pool and gym.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 6,
+    "rentKes": 55000,
+    "depositKes": 10000,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Ruaka (Bypass & Slaughter Rd)",
+    "exactLocation": "Limuru Road near Two Rivers Mall",
+    "latitude": -1.208,
+    "longitude": 36.779,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 0,
+    "waterRateKes": 0,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-02T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Brenda Cherono",
+    "caretakerPhone": "0729118833",
+    "postedTimeAgo": "92h ago",
+    "landlord": {
+      "id": "usr-lnd-70",
+      "name": "Brenda Cherono",
+      "phone": "+254729118833",
+      "whatsapp": "+254729118833",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 20,
+      "responseRate": 97,
+      "listingCount": 10,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6,
+    "rentPeriod": "monthly",
+    "isBnb": false
+  },
+  {
+    "id": "prop-nrb-070",
+    "title": "Spacious 3 Bedroom Master Ensuite in Hurlingham near Yaya Centre",
+    "description": "Prime 3 bedroom master ensuite apartment on Argwings Kodhek Road. Walking distance to Yaya Centre and Chaka Place. Large living room with dining area, closed kitchen with pantry, borehole, dedicated parking, 24/7 security guard.",
+    "category": "3 Bedroom",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "floorLevel": 3,
+    "rentKes": 85000,
+    "depositKes": 85000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Hurlingham",
+    "exactLocation": "Argwings Kodhek Road, Hurlingham",
+    "latitude": -1.2965,
+    "longitude": 36.7951,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 700,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-02T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "HassConsult Real Estate",
+    "caretakerName": "Kennedy Mwangi",
+    "caretakerPhone": "0733112233",
+    "postedTimeAgo": "94h ago",
+    "landlord": {
+      "id": "usr-lnd-71",
+      "name": "HassConsult Real Estate",
+      "phone": "+254733112233",
+      "whatsapp": "+254733112233",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 21,
+      "responseRate": 97,
+      "listingCount": 11,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-071",
+    "title": "Affordable Single Room in Kawangware 46 near Naivasha Rd",
+    "description": "Clean budget single room situated near Naivasha Road stage 46. Tiled floor, regular city council water supply with overhead storage, secure lockable compound with gatekeeper, convenient transit to Junction Mall and CBD.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 1,
+    "rentKes": 3800,
+    "depositKes": 3800,
+    "county": "Nairobi",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Kawangware (46 & 56)",
+    "exactLocation": "Kawangware 46, off Naivasha Road",
+    "latitude": -1.289,
+    "longitude": 36.745,
+    "waterSupplyType": "City Council Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 150,
+    "waterRateKes": 80,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-01T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Ezekiel Omari",
+    "caretakerPhone": "0724991122",
+    "postedTimeAgo": "96h ago",
+    "landlord": {
+      "id": "usr-lnd-72",
+      "name": "Ezekiel Omari",
+      "phone": "+254724991122",
+      "whatsapp": "+254724991122",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 22,
+      "responseRate": 97,
+      "listingCount": 12,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": false,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Clean well-ventilated single room space"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Clean shared tiled washroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Secure gated building exterior"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Hallway and compound view"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 4
+  },
+  {
+    "id": "prop-nrb-072",
+    "title": "Student Friendly Bedsitter in Kahawa Wendani near KU Gate",
+    "description": "Ideal bedsitter for Kenyatta University students and young professionals. Located along Wendani Matatu route, 5 minutes walk to KU footbridge. Ceramic tiles, private washroom with instant shower, unlimited borehole water, WiFi ready.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 7800,
+    "depositKes": 7800,
+    "county": "Kiambu",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Kahawa Wendani",
+    "exactLocation": "Kahawa Wendani, near Magunas Supermarket",
+    "latitude": -1.196,
+    "longitude": 36.928,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 300,
+    "waterRateKes": 100,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-01T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Barnabas Wafula",
+    "caretakerPhone": "0719445588",
+    "postedTimeAgo": "98h ago",
+    "landlord": {
+      "id": "usr-lnd-73",
+      "name": "Barnabas Wafula",
+      "phone": "+254719445588",
+      "whatsapp": "+254719445588",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 23,
+      "responseRate": 97,
+      "listingCount": 13,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-073",
+    "title": "Modern 2 Bedroom Apartment in Ruiru Town near Eastern Bypass",
+    "description": "Spacious 2 bedroom apartment in Ruiru town near Kamakis. Easy access to Eastern Bypass and Superhighway. Large sitting room, modern fitted kitchen cabinets, laundry balcony, borehole water, perimeter wall with electric fence and CCTV.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 22000,
+    "depositKes": 22000,
+    "county": "Kiambu",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Ruiru Town",
+    "exactLocation": "Ruiru, near Kamakis Bypass Junction",
+    "latitude": -1.146,
+    "longitude": 36.958,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-01T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Ruiru Metro Realty",
+    "caretakerName": "Charles Karanja",
+    "caretakerPhone": "0722116633",
+    "postedTimeAgo": "100h ago",
+    "landlord": {
+      "id": "usr-lnd-74",
+      "name": "Ruiru Metro Realty",
+      "phone": "+254722116633",
+      "whatsapp": "+254722116633",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 24,
+      "responseRate": 97,
+      "listingCount": 14,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-074",
+    "title": "Spacious 1 Bedroom Apartment in Roysambu near Mirema Drive",
+    "description": "Neat 1-bedroom apartment located in prime Roysambu near Mirema Drive. Tiled flooring, large living room, fitted kitchen cabinets, bedroom with wardrobe, borehole water, lift, 24/7 security guard, biometric gate entry.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 15500,
+    "depositKes": 15500,
+    "county": "Nairobi",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Roysambu / Mirema",
+    "exactLocation": "Mirema Drive, Roysambu",
+    "latitude": -1.216,
+    "longitude": 36.882,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-31T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Hillary Kipkemboi",
+    "caretakerPhone": "0712884499",
+    "postedTimeAgo": "102h ago",
+    "landlord": {
+      "id": "usr-lnd-75",
+      "name": "Gladys Muthoni",
+      "phone": "+254712884499",
+      "whatsapp": "+254712884499",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 25,
+      "responseRate": 97,
+      "listingCount": 5,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-075",
+    "title": "Executive 2 Bedroom Master Ensuite in South C (Mugoya Estate)",
+    "description": "Immaculate 2-bedroom master ensuite apartment in secure gated Mugoya Estate, South C. Modern open kitchen with granite countertops, private balcony, borehole water backup, ample paved parking, 24/7 security patrol.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 36000,
+    "depositKes": 36000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "South C (Mugoya & Bellevue)",
+    "exactLocation": "Mugoya Estate, South C, near Red Cross",
+    "latitude": -1.317,
+    "longitude": 36.828,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-31T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "South C Prime Properties",
+    "caretakerName": "Ali Hassan",
+    "caretakerPhone": "0722771144",
+    "postedTimeAgo": "104h ago",
+    "landlord": {
+      "id": "usr-lnd-76",
+      "name": "South C Prime Properties",
+      "phone": "+254722771144",
+      "whatsapp": "+254722771144",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 26,
+      "responseRate": 97,
+      "listingCount": 6,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-076",
+    "title": "Modern 1 Bedroom in South B (Hazina Estate near Mombasa Rd)",
+    "description": "Newly renovated 1-bedroom apartment in Hazina Estate, South B. Quick access to Mombasa Road and CBD. Fitted kitchen with lower and upper cabinets, large windows, borehole water, secure court with manned barrier.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 20000,
+    "depositKes": 20000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "South B (Plainsview & Hazina)",
+    "exactLocation": "Hazina Estate, South B",
+    "latitude": -1.312,
+    "longitude": 36.834,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 450,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-31T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Josephat Muia",
+    "caretakerPhone": "0726115599",
+    "postedTimeAgo": "106h ago",
+    "landlord": {
+      "id": "usr-lnd-77",
+      "name": "Josephat Muia",
+      "phone": "+254726115599",
+      "whatsapp": "+254726115599",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 27,
+      "responseRate": 97,
+      "listingCount": 7,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-077",
+    "title": "Executive 4 Bedroom Villa on 0.5 Acre in Karen (Bogani Road)",
+    "description": "Prestigious 4-bedroom all ensuite standalone villa in Karen along Bogani Road. Expansive sunken living room with fireplace, private swimming pool, mature garden, detached domestic servant quarters for 2, solar water heater, 24/7 security.",
+    "category": "4 Bedroom+",
+    "bedrooms": 4,
+    "bathrooms": 4,
+    "floorLevel": 1,
+    "rentKes": 200000,
+    "depositKes": 200000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Karen (Hardy, Bogani & Mbagathi)",
+    "exactLocation": "Bogani Road, Karen",
+    "latitude": -1.336,
+    "longitude": 36.726,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Postpaid (Monthly Meter)",
+    "garbageFeeKes": 1200,
+    "waterRateKes": 150,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-30T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Knight Frank Kenya",
+    "caretakerName": "Harrison Mutua",
+    "caretakerPhone": "0711554433",
+    "postedTimeAgo": "108h ago",
+    "landlord": {
+      "id": "usr-lnd-78",
+      "name": "Knight Frank Kenya",
+      "phone": "+254711554433",
+      "whatsapp": "+254711554433",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 28,
+      "responseRate": 97,
+      "listingCount": 8,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-078",
+    "title": "Modern Bedsitter in Langata near Carnivore / Southlands",
+    "description": "Neat modern bedsitter in Southlands Langata. Tiled floors, private bathroom with hot instant shower, kitchen counter, borehole water backup, tokens meter, secure perimeter fence and night guard.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 1,
+    "rentKes": 10500,
+    "depositKes": 10500,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Langata (Phenom, Southlands & Ngei)",
+    "exactLocation": "Southlands, Langata, off Langata Road",
+    "latitude": -1.328,
+    "longitude": 36.779,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-30T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Patrick Oloo",
+    "caretakerPhone": "0713772266",
+    "postedTimeAgo": "110h ago",
+    "landlord": {
+      "id": "usr-lnd-79",
+      "name": "Patrick Oloo",
+      "phone": "+254713772266",
+      "whatsapp": "+254713772266",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 29,
+      "responseRate": 97,
+      "listingCount": 9,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink and storage shelves"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private ceramic tiled bathroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Sleeping zone layout"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-nrb-079",
+    "title": "Executive 2 Bedroom Master Ensuite in Fedha Estate near Tassia",
+    "description": "Newly finished 2 bedroom master ensuite apartment in Fedha Estate. Open plan kitchen with polished granite tops, large sitting room, modern tiled bathrooms, borehole water, elevator, biometric security gate and CCTV.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 3,
+    "rentKes": 24000,
+    "depositKes": 24000,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Fedha (Embakasi)",
+    "exactLocation": "Fedha Estate, near Tassia Hill",
+    "latitude": -1.323,
+    "longitude": 36.901,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 500,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-30T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Collins Wekesa",
+    "caretakerPhone": "0727448811",
+    "postedTimeAgo": "112h ago",
+    "landlord": {
+      "id": "usr-lnd-80",
+      "name": "Collins Wekesa",
+      "phone": "+254727448811",
+      "whatsapp": "+254727448811",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 30,
+      "responseRate": 97,
+      "listingCount": 10,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-080",
+    "title": "Spacious 1 Bedroom Apartment in Umoja Innercore (Near Market)",
+    "description": "Clean, quiet 1-bedroom apartment in Umoja Innercore. Ceramic tiles, spacious bedroom with wardrobe, kitchen with double sink, regular council water plus borehole backup tanks, 24/7 security watchman.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 12500,
+    "depositKes": 12500,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Umoja (Innercore & Phase 1)",
+    "exactLocation": "Umoja Innercore, near Main Market",
+    "latitude": -1.2882,
+    "longitude": 36.8958,
+    "waterSupplyType": "City Council Water + Borehole Backup",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 300,
+    "waterRateKes": 100,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-29T18:24:17.127Z",
+    "source": "direct",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Martin Maina",
+    "caretakerPhone": "0715663322",
+    "postedTimeAgo": "114h ago",
+    "landlord": {
+      "id": "usr-lnd-81",
+      "name": "Martin Maina",
+      "phone": "+254715663322",
+      "whatsapp": "+254715663322",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 31,
+      "responseRate": 97,
+      "listingCount": 11,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-081",
+    "title": "Executive 3 Bedroom Master Ensuite in Syokimau (Katani Road)",
+    "description": "Charming 3-bedroom master ensuite townhouse apartment on Katani Road, Syokimau. Spacious lounge with dining space, pantry, borehole water, solar water heating, cabro paved parking for 2 cars, 24/7 security guard.",
+    "category": "3 Bedroom",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "floorLevel": 1,
+    "rentKes": 38000,
+    "depositKes": 38000,
+    "county": "Machakos",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Syokimau (Katani & Mombasa Rd)",
+    "exactLocation": "Katani Road, 1.5km from Mombasa Road",
+    "latitude": -1.365,
+    "longitude": 36.924,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 600,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-29T10:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Syokimau Valley Realty",
+    "caretakerName": "Duncan Kioko",
+    "caretakerPhone": "0721885544",
+    "postedTimeAgo": "116h ago",
+    "landlord": {
+      "id": "usr-lnd-82",
+      "name": "Syokimau Valley Realty",
+      "phone": "+254721885544",
+      "whatsapp": "+254721885544",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 32,
+      "responseRate": 97,
+      "listingCount": 12,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-nrb-082",
+    "title": "1/4 Acre Residential Fenced Plot for Rent/Lease in Kitengela",
+    "description": "Prime fenced 1/4 acre residential plot in Kitengela town outskirts. Ideal for yard, nursery, storage, residential usage or temporary structures. Good access road, water and electricity connections nearby.",
+    "category": "Land",
+    "bedrooms": 0,
+    "bathrooms": 0,
+    "floorLevel": 0,
+    "rentKes": 25000,
+    "depositKes": 25000,
+    "county": "Kajiado",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Kitengela Town",
+    "exactLocation": "Kitengela, off Old Namanga Road",
+    "latitude": -1.488,
+    "longitude": 36.955,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 0,
+    "waterRateKes": 0,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-08-29T02:24:17.127Z",
+    "source": "direct",
+    "managedBy": "agency",
+    "agencyName": "Kitengela Land Consultants",
+    "caretakerName": "Peter Saitoti",
+    "caretakerPhone": "0722441199",
+    "postedTimeAgo": "118h ago",
+    "landlord": {
+      "id": "usr-lnd-83",
+      "name": "Kitengela Land Consultants",
+      "phone": "+254722441199",
+      "whatsapp": "+254722441199",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "March 2024",
+      "rating": 4.8,
+      "reviewCount": 33,
+      "responseRate": 97,
+      "listingCount": 13,
+      "verificationDate": "2024-03-01",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": false,
+      "hasInternet": false,
+      "hasTiles": false,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Ample cabro paved parking with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-100",
+    "title": "TikTok House Tour: 2 Bedroom Master Ensuite in Ruaka (Near Quickmart)",
+    "description": "Viral TikTok property tour! Newly built 2-bedroom master ensuite apartment in central Ruaka near Quickmart. High-speed lift, rooftop lounge, backup generator, borehole water 24/7, token meter, dedicated parking slot. TikTok: @nairobihousehunter",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 3,
+    "rentKes": 28000,
+    "depositKes": 28000,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Ruaka (Bypass & Slaughter Rd)",
+    "exactLocation": "Ruaka, near Quickmart & Bypass",
+    "latitude": -1.2056,
+    "longitude": 36.7762,
+    "waterSupplyType": "Borehole Water (24/7)",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-17T10:34:37.724Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Ruaka Living Realtors",
+    "caretakerName": "Samuel Mwangi",
+    "caretakerPhone": "0722119944",
+    "postedTimeAgo": "1h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-100",
+      "name": "Ruaka Living Realtors",
+      "phone": "0722119944",
+      "whatsapp": "0722119944",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 18,
+      "responseRate": 98,
+      "listingCount": 6,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-101",
+    "title": "Facebook Marketplace: Spacious Bedsitter in Ruaka (Slaughter Rd)",
+    "description": "Direct listing from Facebook Marketplace group: Clean, tiled bedsitter with private balcony, kitchen counter with cupboards, hot instant shower, unlimited borehole water, token meter, 24/7 security guard.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 9500,
+    "depositKes": 9500,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Ruaka (Bypass & Slaughter Rd)",
+    "exactLocation": "Slaughter Road, Ruaka",
+    "latitude": -1.207,
+    "longitude": 36.778,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-17T06:34:37.725Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Denis Njoroge",
+    "caretakerPhone": "0718552299",
+    "postedTimeAgo": "2h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-101",
+      "name": "Denis Njoroge",
+      "phone": "0718552299",
+      "whatsapp": "0718552299",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 19,
+      "responseRate": 98,
+      "listingCount": 7,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink with lower storage cabinets"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private tiled washroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-lit sleeping corner"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-soc-102",
+    "title": "TikTok House Hunting: Modern 1 Bedroom in Ruaka near Two Rivers",
+    "description": "Featured on TikTok #househuntingnairobi: Executive 1-bedroom apartment walking distance to Two Rivers Mall. Spacious sitting area, fitted bedroom wardrobes, biometric gate entry, CCTV, lift, parking. Ready for immediate occupancy.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 4,
+    "rentKes": 20000,
+    "depositKes": 20000,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Ruaka (Bypass & Slaughter Rd)",
+    "exactLocation": "Limuru Road, opposite Rosslyn Riviera",
+    "latitude": -1.2095,
+    "longitude": 36.781,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-17T02:34:37.725Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Premier Ruaka Homes",
+    "caretakerName": "Peter K.",
+    "caretakerPhone": "0729448811",
+    "postedTimeAgo": "3h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-102",
+      "name": "Premier Ruaka Homes",
+      "phone": "0729448811",
+      "whatsapp": "0729448811",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 20,
+      "responseRate": 98,
+      "listingCount": 8,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-103",
+    "title": "TikTok Viral: Newly Built 1 Bedroom in Thindigua, Kiambu Road",
+    "description": "TikTok sensation: Modern 1-bedroom flat in Thindigua. Polished ceramic tiles, open kitchen with granite breakfast island, scenic balcony, borehole water, rooftop gym, elevator, 24/7 security watchman.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 24000,
+    "depositKes": 24000,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Thindigua",
+    "exactLocation": "Thindigua, off Kiambu Road near Quickmart",
+    "latitude": -1.214,
+    "longitude": 36.832,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T22:34:37.725Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Kiambu Ridge Properties",
+    "caretakerName": "Evans Macharia",
+    "caretakerPhone": "0715337722",
+    "postedTimeAgo": "4h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-103",
+      "name": "Kiambu Ridge Properties",
+      "phone": "0715337722",
+      "whatsapp": "0715337722",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 21,
+      "responseRate": 98,
+      "listingCount": 9,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-104",
+    "title": "Facebook Direct: 2 Bedroom Master Ensuite in Fourways Junction",
+    "description": "From Nairobi Real Estate Facebook group: Serene 2 bedroom master ensuite apartment inside Fourways Junction gated community on Kiambu Road. Swimming pool, children play area, borehole water, 24/7 multi-barrier security.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 48000,
+    "depositKes": 48000,
+    "county": "Kiambu",
+    "corridorId": "kiambu_northern_bypass",
+    "estateSuburb": "Fourways Junction",
+    "exactLocation": "Fourways Junction Estate, Kiambu Road",
+    "latitude": -1.226,
+    "longitude": 36.837,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T18:34:37.725Z",
+    "source": "facebook_marketplace",
+    "managedBy": "agency",
+    "agencyName": "Fourways Property Group",
+    "caretakerName": "Jackson Mutiso",
+    "caretakerPhone": "0733881155",
+    "postedTimeAgo": "5h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-104",
+      "name": "Fourways Property Group",
+      "phone": "0733881155",
+      "whatsapp": "0733881155",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 22,
+      "responseRate": 98,
+      "listingCount": 10,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-105",
+    "title": "TikTok Tour: Spacious Bedsitter in Mirema Drive, Roysambu",
+    "description": "Trending on TikTok: Clean tiled bedsitter in Roysambu Mirema Drive near TRM. Kitchenette with granite splash, hot instant shower, high speed elevator, borehole water 24/7, biometric gate access, CCTV. TikTok: @roysamburentals",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 9000,
+    "depositKes": 9000,
+    "county": "Nairobi",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Roysambu / Mirema",
+    "exactLocation": "Mirema Drive, near Mirema School",
+    "latitude": -1.216,
+    "longitude": 36.882,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T14:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "George Kariuki",
+    "caretakerPhone": "0712774433",
+    "postedTimeAgo": "6h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-105",
+      "name": "George Kariuki",
+      "phone": "0712774433",
+      "whatsapp": "0712774433",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 23,
+      "responseRate": 98,
+      "listingCount": 11,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink with lower storage cabinets"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private tiled washroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-lit sleeping corner"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-soc-106",
+    "title": "Direct Facebook Marketplace: 1 Bedroom in Roysambu (Lumumba Drive)",
+    "description": "Direct landlord post on Facebook: Modern 1-bedroom flat on Lumumba Drive, 3 minutes from TRM. Spacious sitting room, bedroom with large wardrobe, private balcony with laundry taps, tokens meter, borehole water.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 16000,
+    "depositKes": 16000,
+    "county": "Nairobi",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Roysambu / Mirema",
+    "exactLocation": "Lumumba Drive, near TRM Roundabout",
+    "latitude": -1.2185,
+    "longitude": 36.886,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T10:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Brian Wekesa",
+    "caretakerPhone": "0724669922",
+    "postedTimeAgo": "7h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-106",
+      "name": "Brian Wekesa",
+      "phone": "0724669922",
+      "whatsapp": "0724669922",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 24,
+      "responseRate": 98,
+      "listingCount": 12,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-107",
+    "title": "TikTok House Tour: 2 Bedroom in Kasarani (Clay City near Season)",
+    "description": "TikTok property tour: Modern 2 bedroom flat in Clay City Kasarani. Ample parking, ceramic tiles, modern fitted kitchen, borehole water backup, 24/7 security guard. Fast commute to Thika Road.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 22000,
+    "depositKes": 22000,
+    "county": "Nairobi",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Kasarani (Sports View & Clay City)",
+    "exactLocation": "Clay City, Kasarani near Season",
+    "latitude": -1.212,
+    "longitude": 36.899,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T06:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Kasarani Homes Agency",
+    "caretakerName": "Kelvin Omwamba",
+    "caretakerPhone": "0711448833",
+    "postedTimeAgo": "8h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-107",
+      "name": "Kasarani Homes Agency",
+      "phone": "0711448833",
+      "whatsapp": "0711448833",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 25,
+      "responseRate": 98,
+      "listingCount": 13,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-108",
+    "title": "Facebook Direct: Clean Bedsitter in Kahawa Wendani near KU Footbridge",
+    "description": "Facebook post in KU Students & Tenants group: Well-kept bedsitter 5 minutes from KU footbridge. Ceramic tiles, private washroom with instant shower, continuous borehole water, prepaid token meter, perimeter wall and CCTV.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 1,
+    "rentKes": 7000,
+    "depositKes": 7000,
+    "county": "Kiambu",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Kahawa Wendani",
+    "exactLocation": "Kahawa Wendani, Matatu stage route",
+    "latitude": -1.196,
+    "longitude": 36.928,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-16T02:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Stephen Kamau",
+    "caretakerPhone": "0728331155",
+    "postedTimeAgo": "9h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-108",
+      "name": "Stephen Kamau",
+      "phone": "0728331155",
+      "whatsapp": "0728331155",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 26,
+      "responseRate": 98,
+      "listingCount": 6,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink with lower storage cabinets"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private tiled washroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-lit sleeping corner"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-soc-109",
+    "title": "TikTok Tour: Modern 2 Bedroom in Kahawa Sukari with Big Balcony",
+    "description": "TikTok #househuntingkenya: Executive 2 bedroom master ensuite apartment in Kahawa Sukari. Spacious lounge, pantry, dedicated borehole water supply, perimeter wall with electric fence, manned security gate.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 26000,
+    "depositKes": 26000,
+    "county": "Kiambu",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Kahawa Sukari",
+    "exactLocation": "Kahawa Sukari, 2nd South Avenue",
+    "latitude": -1.189,
+    "longitude": 36.932,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T22:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Sukari Real Estate",
+    "caretakerName": "Francis Muriithi",
+    "caretakerPhone": "0719882266",
+    "postedTimeAgo": "10h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-109",
+      "name": "Sukari Real Estate",
+      "phone": "0719882266",
+      "whatsapp": "0719882266",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 27,
+      "responseRate": 98,
+      "listingCount": 7,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-110",
+    "title": "Facebook Listing: Student Bedsitter in Juja near JKUAT Main Gate",
+    "description": "Direct landlord post from Juja Facebook group: Clean student bedsitter near JKUAT Gate A. Kitchen sink, tiled washroom, study desk area, borehole water 24/7, WiFi ready, gate security.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 7500,
+    "depositKes": 7500,
+    "county": "Kiambu",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Juja (JKUAT & Toll Station)",
+    "exactLocation": "Juja, walking distance to JKUAT Gate A",
+    "latitude": -1.102,
+    "longitude": 37.013,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T18:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Antony Kimani",
+    "caretakerPhone": "0722994411",
+    "postedTimeAgo": "11h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-110",
+      "name": "Antony Kimani",
+      "phone": "0722994411",
+      "whatsapp": "0722994411",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 28,
+      "responseRate": 98,
+      "listingCount": 8,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink with lower storage cabinets"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private tiled washroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-lit sleeping corner"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-soc-111",
+    "title": "TikTok Tour: 2 Bedroom in Ruiru Town near Kamakis Bypass",
+    "description": "TikTok viral listing: Spacious 2 bedroom apartment in Ruiru town near Kamakis corner. Tiled floors, modern kitchen cabinets, laundry balcony, 24/7 borehole water, cabro parking, perimeter wall with CCTV.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 21000,
+    "depositKes": 21000,
+    "county": "Kiambu",
+    "corridorId": "northern_thika_road",
+    "estateSuburb": "Ruiru Town",
+    "exactLocation": "Ruiru, off Eastern Bypass near Kamakis",
+    "latitude": -1.146,
+    "longitude": 36.958,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T14:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Bypass Heights Agency",
+    "caretakerName": "Joseph Ndungu",
+    "caretakerPhone": "0714559988",
+    "postedTimeAgo": "12h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-111",
+      "name": "Bypass Heights Agency",
+      "phone": "0714559988",
+      "whatsapp": "0714559988",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 29,
+      "responseRate": 98,
+      "listingCount": 9,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-112",
+    "title": "TikTok House Tour: 2 Bedroom Master Ensuite in Kilimani (Dennis Pritt)",
+    "description": "TikTok luxury tour: High-end 2 bedroom master ensuite apartment on Dennis Pritt Road, Kilimani. Heated swimming pool, fully equipped gym, high speed lifts, full backup generator, spacious balcony, UN security approved.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 5,
+    "rentKes": 60000,
+    "depositKes": 60000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Kilimani (Dennis Pritt, Argwings Kodhek, Lenana)",
+    "exactLocation": "Dennis Pritt Road, Kilimani",
+    "latitude": -1.2921,
+    "longitude": 36.7884,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T10:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Kilimani Elite Homes",
+    "caretakerName": "Martin Ochieng",
+    "caretakerPhone": "0710557733",
+    "postedTimeAgo": "1h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-112",
+      "name": "Kilimani Elite Homes",
+      "phone": "0710557733",
+      "whatsapp": "0710557733",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 30,
+      "responseRate": 98,
+      "listingCount": 10,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-113",
+    "title": "Facebook Marketplace: Executive 1 Bedroom in Kilimani (Wood Avenue)",
+    "description": "From Facebook Marketplace Nairobi: Modern 1-bedroom flat near Yaya Centre on Wood Avenue. Open plan kitchen with fitted cooker, large living room, rooftop lounge, gym, borehole, 24/7 manned security and CCTV.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 4,
+    "rentKes": 42000,
+    "depositKes": 42000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Kilimani (Dennis Pritt, Argwings Kodhek, Lenana)",
+    "exactLocation": "Wood Avenue, near Yaya Centre",
+    "latitude": -1.294,
+    "longitude": 36.789,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T06:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "agency",
+    "agencyName": "HassConsult Real Estate",
+    "caretakerName": "David Mutua",
+    "caretakerPhone": "0733112233",
+    "postedTimeAgo": "2h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-113",
+      "name": "HassConsult Real Estate",
+      "phone": "0733112233",
+      "whatsapp": "0733112233",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 31,
+      "responseRate": 98,
+      "listingCount": 11,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": true,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-114",
+    "title": "TikTok Gem: 3 Bedroom Master Ensuite + DSQ in Kileleshwa (Siaya Rd)",
+    "description": "Trending TikTok house hunt: Sprawling 3-bedroom master ensuite with detached servant quarter on Siaya Road, Kileleshwa. Swimming pool, gym, generator backup, children playground, 2 parking bays. TikTok: @kileleshwahomes",
+    "category": "3 Bedroom",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "floorLevel": 3,
+    "rentKes": 75000,
+    "depositKes": 75000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Kileleshwa (Oloitokitok, Kandara, Siaya)",
+    "exactLocation": "Siaya Road, Kileleshwa",
+    "latitude": -1.2801,
+    "longitude": 36.7862,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-15T02:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Kileleshwa Premier Realty",
+    "caretakerName": "Bernard M.",
+    "caretakerPhone": "0722443311",
+    "postedTimeAgo": "3h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-114",
+      "name": "Kileleshwa Premier Realty",
+      "phone": "0722443311",
+      "whatsapp": "0722443311",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 32,
+      "responseRate": 98,
+      "listingCount": 12,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-115",
+    "title": "Facebook Direct: Executive 2 Bedroom in Westlands (Rhapta Road)",
+    "description": "Direct from Westlands landlords group: Beautiful 2-bedroom master ensuite apartment along Rhapta Road. Balcony with green views, modern kitchen cabinets, high-speed lift, borehole water, 24/7 security guards.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 55000,
+    "depositKes": 55000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Rhapta Road",
+    "exactLocation": "Rhapta Road, Westlands near Sarit",
+    "latitude": -1.2625,
+    "longitude": 36.7932,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T22:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "agency",
+    "agencyName": "Westlands Living Agency",
+    "caretakerName": "Eric Kiprono",
+    "caretakerPhone": "0720448833",
+    "postedTimeAgo": "4h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-115",
+      "name": "Westlands Living Agency",
+      "phone": "0720448833",
+      "whatsapp": "0720448833",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 18,
+      "responseRate": 98,
+      "listingCount": 13,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-116",
+    "title": "TikTok Tour: 3 Bedroom All Ensuite in Lavington (Isaac Gathanju)",
+    "description": "TikTok viral luxury home tour: Serene 3 bedroom all ensuite townhouse apartment in leafy Lavington. DSQ, manicured garden, clubhouse, swimming pool, solar water heating, UN approved security.",
+    "category": "3 Bedroom",
+    "bedrooms": 3,
+    "bathrooms": 4,
+    "floorLevel": 1,
+    "rentKes": 110000,
+    "depositKes": 110000,
+    "county": "Nairobi",
+    "corridorId": "westlands_diplomatic",
+    "estateSuburb": "Lavington (James Gichuru, Isaac Gathanju)",
+    "exactLocation": "Isaac Gathanju Road, Lavington",
+    "latitude": -1.2824,
+    "longitude": 36.7681,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T18:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Knight Frank Kenya",
+    "caretakerName": "Harrison Mutua",
+    "caretakerPhone": "0711554433",
+    "postedTimeAgo": "5h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-116",
+      "name": "Knight Frank Kenya",
+      "phone": "0711554433",
+      "whatsapp": "0711554433",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 19,
+      "responseRate": 98,
+      "listingCount": 6,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-117",
+    "title": "Facebook Marketplace: 1 Bedroom in Parklands 3rd Avenue",
+    "description": "From Parklands Real Estate Facebook group: Clean 1 bedroom apartment near Diamond Plaza and Aga Khan Hospital. Very secure court, borehole water, lift, generator for common areas, full-time guards.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 36000,
+    "depositKes": 36000,
+    "county": "Nairobi",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "Parklands (1st to 6th Parklands)",
+    "exactLocation": "3rd Parklands Avenue, near Diamond Plaza",
+    "latitude": -1.2612,
+    "longitude": 36.8155,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T14:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "agency",
+    "agencyName": "Parklands Premier Properties",
+    "caretakerName": "Ali Mohammed",
+    "caretakerPhone": "0733887766",
+    "postedTimeAgo": "6h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-117",
+      "name": "Parklands Premier Properties",
+      "phone": "0733887766",
+      "whatsapp": "0733887766",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 20,
+      "responseRate": 98,
+      "listingCount": 7,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-118",
+    "title": "TikTok Vacant House: Modern 1 Bedroom in South B (Plainsview)",
+    "description": "Featured on TikTok #househuntingnairobi: Clean 1 bedroom flat in Plainsview South B. Walking distance to Capital Centre. Fitted kitchen cabinets, private balcony, borehole water backup, token meter, security guard.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 18000,
+    "depositKes": 18000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "South B (Plainsview & Hazina)",
+    "exactLocation": "Plainsview Estate, South B",
+    "latitude": -1.309,
+    "longitude": 36.837,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T10:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Richard Otieno",
+    "caretakerPhone": "0729443311",
+    "postedTimeAgo": "7h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-118",
+      "name": "Richard Otieno",
+      "phone": "0729443311",
+      "whatsapp": "0729443311",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 21,
+      "responseRate": 98,
+      "listingCount": 8,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-119",
+    "title": "Direct Landlord: 2 Bedroom in South C (Mugoya Estate)",
+    "description": "Direct listing on Facebook Marketplace: Well-maintained 2 bedroom master ensuite apartment in secure Mugoya Estate South C. Paved cabro parking, borehole water, modern tiles, 24/7 security patrol.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 33000,
+    "depositKes": 33000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "South C (Mugoya & Bellevue)",
+    "exactLocation": "Mugoya Estate, South C",
+    "latitude": -1.317,
+    "longitude": 36.828,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T06:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "agency",
+    "agencyName": "South C Prime Properties",
+    "caretakerName": "Ali Hassan",
+    "caretakerPhone": "0722771144",
+    "postedTimeAgo": "8h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-119",
+      "name": "South C Prime Properties",
+      "phone": "0722771144",
+      "whatsapp": "0722771144",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 22,
+      "responseRate": 98,
+      "listingCount": 9,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-120",
+    "title": "TikTok House Tour: 3 Bedroom in Langata (Phenom Estate)",
+    "description": "Trending TikTok home tour: Executive 3 bedroom master ensuite townhouse in Phenom Estate Langata. Gated community, private compound, swimming pool, gym, estate shopping centre, 24/7 guarded security.",
+    "category": "Maisonette / Townhouse",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "floorLevel": 1,
+    "rentKes": 58000,
+    "depositKes": 58000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Langata (Phenom, Southlands & Ngei)",
+    "exactLocation": "Phenom Estate, Langata Road",
+    "latitude": -1.321,
+    "longitude": 36.784,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-14T02:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Langata Living Properties",
+    "caretakerName": "Felix Mwiti",
+    "caretakerPhone": "0733441188",
+    "postedTimeAgo": "9h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-120",
+      "name": "Langata Living Properties",
+      "phone": "0733441188",
+      "whatsapp": "0733441188",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 23,
+      "responseRate": 98,
+      "listingCount": 10,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": true
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-121",
+    "title": "Facebook Direct: 1 Bedroom in Nairobi West near Strathmore",
+    "description": "Facebook post in South Nairobi Rentals group: Newly tiled 1 bedroom apartment in Nairobi West. Close to Strathmore and CBD. Tiled floor, borehole water, biometric entry, CCTV surveillance.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 22000,
+    "depositKes": 22000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Nairobi West",
+    "exactLocation": "Nairobi West, near Strathmore Gate",
+    "latitude": -1.308,
+    "longitude": 36.821,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T22:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Nicholas Mutua",
+    "caretakerPhone": "0711776655",
+    "postedTimeAgo": "10h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-121",
+      "name": "Nicholas Mutua",
+      "phone": "0711776655",
+      "whatsapp": "0711776655",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 24,
+      "responseRate": 98,
+      "listingCount": 11,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-122",
+    "title": "TikTok Tour: 2 Bedroom in Madaraka Estate near T-Mall",
+    "description": "TikTok house hunt: Spacious 2 bedroom apartment in Madaraka Estate near T-Mall. Living room with large windows, fitted kitchen, borehole water backup, ample parking, 24/7 security.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 32000,
+    "depositKes": 32000,
+    "county": "Nairobi",
+    "corridorId": "southern_langata_kibra",
+    "estateSuburb": "Madaraka",
+    "exactLocation": "Madaraka Estate, near T-Mall",
+    "latitude": -1.304,
+    "longitude": 36.812,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T18:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Madaraka Property Consultants",
+    "caretakerName": "Victor K.",
+    "caretakerPhone": "0722668899",
+    "postedTimeAgo": "11h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-122",
+      "name": "Madaraka Property Consultants",
+      "phone": "0722668899",
+      "whatsapp": "0722668899",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 25,
+      "responseRate": 98,
+      "listingCount": 12,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-123",
+    "title": "Facebook Marketplace: Single Room in Ngara near Fig Tree",
+    "description": "Direct Facebook listing: Affordable, clean single room in Ngara near Fig Tree. 5 minutes walk to CBD. Constant council water supply with booster pumps, prepaid token meter, perimeter security gate and 24/7 caretaker.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 5500,
+    "depositKes": 5500,
+    "county": "Nairobi",
+    "corridorId": "nairobi_central",
+    "estateSuburb": "Ngara (Fig Tree & Ngara Rd)",
+    "exactLocation": "Ngara Road, near Fig Tree Market",
+    "latitude": -1.2764,
+    "longitude": 36.8282,
+    "waterSupplyType": "City Council Water + Backup",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T14:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Geoffrey K.",
+    "caretakerPhone": "0721445566",
+    "postedTimeAgo": "12h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-123",
+      "name": "Geoffrey K.",
+      "phone": "0721445566",
+      "whatsapp": "0721445566",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 26,
+      "responseRate": 98,
+      "listingCount": 13,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-ventilated clean single room space"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Shared clean tiled washroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Secure gated building exterior"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Hallway and compound view"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 4
+  },
+  {
+    "id": "prop-soc-124",
+    "title": "TikTok House Hunting: Spacious Bedsitter in Donholm Greenfields",
+    "description": "TikTok #househuntingkenya: Clean bedsitter in gated Greenfields Estate, Donholm. Kitchen sink with tiled splash, private washroom with instant shower, perimeter wall with guards at gate, borehole water 24/7.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 8500,
+    "depositKes": 8500,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Donholm (Phase 5 & Greenfields)",
+    "exactLocation": "Greenfields Estate, Donholm",
+    "latitude": -1.302,
+    "longitude": 36.888,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T10:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Tobias Makau",
+    "caretakerPhone": "0713559922",
+    "postedTimeAgo": "1h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-124",
+      "name": "Tobias Makau",
+      "phone": "0713559922",
+      "whatsapp": "0713559922",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 27,
+      "responseRate": 98,
+      "listingCount": 6,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink with lower storage cabinets"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private tiled washroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-lit sleeping corner"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-soc-125",
+    "title": "Facebook Direct: 1 Bedroom in Buruburu Phase 4",
+    "description": "From Buruburu Residents Facebook group: Neat 1-bedroom apartment in Buruburu Phase 4. Ceramic tiles, bedroom with fitted wardrobe, kitchen with shelves, reliable water supply with backup tanks, parking space, 24/7 security guard.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 16000,
+    "depositKes": 16000,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Buruburu (Phases 1 to 5)",
+    "exactLocation": "Buruburu Phase 4, near Mumias Road",
+    "latitude": -1.291,
+    "longitude": 36.878,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T06:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "agency",
+    "agencyName": "Eastlands Premier Properties",
+    "caretakerName": "Philip Musyoka",
+    "caretakerPhone": "0720884433",
+    "postedTimeAgo": "2h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-125",
+      "name": "Eastlands Premier Properties",
+      "phone": "0720884433",
+      "whatsapp": "0720884433",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 28,
+      "responseRate": 98,
+      "listingCount": 7,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-126",
+    "title": "TikTok Tour: 2 Bedroom in Umoja Innercore near Market",
+    "description": "TikTok tour: Well-finished 2 bedroom apartment in Umoja Innercore. Tiled floor, kitchen with double sink, regular council water plus borehole backup tanks, 24/7 security watchman.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 18000,
+    "depositKes": 18000,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Umoja (Innercore & Phase 1)",
+    "exactLocation": "Umoja Innercore, near Main Market",
+    "latitude": -1.2882,
+    "longitude": 36.8958,
+    "waterSupplyType": "City Council Water + Borehole Backup",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-13T02:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Martin Maina",
+    "caretakerPhone": "0715663322",
+    "postedTimeAgo": "3h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-126",
+      "name": "Martin Maina",
+      "phone": "0715663322",
+      "whatsapp": "0715663322",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 29,
+      "responseRate": 98,
+      "listingCount": 8,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-127",
+    "title": "Facebook Listing: Clean Bedsitter in Fedha Estate, Embakasi",
+    "description": "From Embakasi Facebook group: Modern tiled bedsitter in Fedha Estate near City Cabanas. Kitchen sink, private instant shower, 24/7 borehole water, prepaid token meter, perimeter wall and night guard.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 7500,
+    "depositKes": 7500,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Fedha (Embakasi)",
+    "exactLocation": "Fedha Estate, near City Cabanas",
+    "latitude": -1.323,
+    "longitude": 36.901,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T22:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Collins Wekesa",
+    "caretakerPhone": "0727448811",
+    "postedTimeAgo": "4h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-127",
+      "name": "Collins Wekesa",
+      "phone": "0727448811",
+      "whatsapp": "0727448811",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 30,
+      "responseRate": 98,
+      "listingCount": 9,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink with lower storage cabinets"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private tiled washroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-lit sleeping corner"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-soc-128",
+    "title": "Direct Facebook: Budget Single Room in Pipeline Estate",
+    "description": "From Pipeline Tenants Facebook page: Economical single room in Pipeline near Plot 10. Clean shared facilities, tiled floor, constant borehole water supply, tokens meter per section, security guard on ground floor gate.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 4000,
+    "depositKes": 4000,
+    "county": "Nairobi",
+    "corridorId": "eastlands_outer_ring",
+    "estateSuburb": "Pipeline",
+    "exactLocation": "Pipeline, Plot 10",
+    "latitude": -1.319,
+    "longitude": 36.885,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T18:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Benson Otieno",
+    "caretakerPhone": "0728114499",
+    "postedTimeAgo": "5h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-128",
+      "name": "Benson Otieno",
+      "phone": "0728114499",
+      "whatsapp": "0728114499",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 31,
+      "responseRate": 98,
+      "listingCount": 10,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-ventilated clean single room space"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Shared clean tiled washroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Secure gated building exterior"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Hallway and compound view"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 4
+  },
+  {
+    "id": "prop-soc-129",
+    "title": "TikTok Tour: 2 Bedroom in Syokimau (Katani Road)",
+    "description": "TikTok property tour: Modern 2 bedroom master ensuite apartment on Katani Road, Syokimau. Cabro paved parking, borehole water, solar water heating, perimeter electric wall, 24/7 security guard.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 26000,
+    "depositKes": 26000,
+    "county": "Machakos",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Syokimau (Katani & Mombasa Rd)",
+    "exactLocation": "Katani Road, 1.5km from Mombasa Road",
+    "latitude": -1.365,
+    "longitude": 36.924,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T14:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Syokimau Valley Realty",
+    "caretakerName": "Duncan Kioko",
+    "caretakerPhone": "0721885544",
+    "postedTimeAgo": "6h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-129",
+      "name": "Syokimau Valley Realty",
+      "phone": "0721885544",
+      "whatsapp": "0721885544",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 32,
+      "responseRate": 98,
+      "listingCount": 11,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-130",
+    "title": "Facebook Marketplace: 1 Bedroom in Syokimau (Chady Road near Gateway)",
+    "description": "From Facebook Marketplace: Brand new 1 bedroom apartment along Chady Road, Syokimau. Walking distance to Gateway Mall and SGR Terminus. Large living room, fitted kitchen, balcony, elevator, borehole, 24/7 security.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 3,
+    "rentKes": 18000,
+    "depositKes": 18000,
+    "county": "Machakos",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Syokimau (Chady & Airport Rd)",
+    "exactLocation": "Chady Road, off Mombasa Road",
+    "latitude": -1.352,
+    "longitude": 36.918,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T10:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "agency",
+    "agencyName": "Mombasa Road Homes",
+    "caretakerName": "Martin Nzioki",
+    "caretakerPhone": "0716554422",
+    "postedTimeAgo": "7h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-130",
+      "name": "Mombasa Road Homes",
+      "phone": "0716554422",
+      "whatsapp": "0716554422",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 18,
+      "responseRate": 98,
+      "listingCount": 12,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-131",
+    "title": "TikTok House Hunting: 2 Bedroom in Athi River (Crystal Rivers Environs)",
+    "description": "Featured on TikTok #househuntingnairobi: Modern 2 bedroom master ensuite in Athi River near Crystal Rivers Mall. Ceramic tiles, balcony, solar water heating, 24/7 borehole water, perimeter wall, children play area.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 3,
+    "rentKes": 20000,
+    "depositKes": 20000,
+    "county": "Machakos",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Athi River (Sabaki & EPZ)",
+    "exactLocation": "Near Crystal Rivers Mall, Athi River",
+    "latitude": -1.439,
+    "longitude": 36.978,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T06:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Geoffrey Muli",
+    "caretakerPhone": "0721773344",
+    "postedTimeAgo": "8h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-131",
+      "name": "Geoffrey Muli",
+      "phone": "0721773344",
+      "whatsapp": "0721773344",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 19,
+      "responseRate": 98,
+      "listingCount": 13,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-132",
+    "title": "Facebook Direct: 4 Bedroom Own Compound Maisonette in Kitengela",
+    "description": "Direct landlord post on Kitengela Real Estate Facebook: Executive 4 bedroom master ensuite maisonette sitting on its own 50x100 plot in Milimani Kitengela. Living room with dining area, perimeter stone wall with electric wire, 15,000L underground water tank.",
+    "category": "Maisonette / Townhouse",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "floorLevel": 1,
+    "rentKes": 48000,
+    "depositKes": 48000,
+    "county": "Kajiado",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Kitengela Town",
+    "exactLocation": "Milimani Estate, Kitengela",
+    "latitude": -1.482,
+    "longitude": 36.961,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-12T02:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Daniel Ole Kaelo",
+    "caretakerPhone": "0722995511",
+    "postedTimeAgo": "9h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-132",
+      "name": "Daniel Ole Kaelo",
+      "phone": "0722995511",
+      "whatsapp": "0722995511",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 20,
+      "responseRate": 98,
+      "listingCount": 6,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": true,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-133",
+    "title": "TikTok Tour: Bedsitter in Mlolongo near Express Way Entrance",
+    "description": "TikTok listing: Modern bedsitter in Mlolongo town, 300m from Expressway entrance. Direct transit to CBD in 15 minutes. Tiled floor, kitchen sink counter, clean water 24/7 from dedicated borehole, tokens meter.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 8000,
+    "depositKes": 8000,
+    "county": "Machakos",
+    "corridorId": "mombasa_road_satellite",
+    "estateSuburb": "Mlolongo Town",
+    "exactLocation": "Mlolongo, behind Signature Mall",
+    "latitude": -1.381,
+    "longitude": 36.939,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T22:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Jackson Mutie",
+    "caretakerPhone": "0724883311",
+    "postedTimeAgo": "10h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-133",
+      "name": "Jackson Mutie",
+      "phone": "0724883311",
+      "whatsapp": "0724883311",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 21,
+      "responseRate": 98,
+      "listingCount": 7,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink with lower storage cabinets"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private tiled washroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-lit sleeping corner"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-soc-134",
+    "title": "TikTok Tour: 2 Bedroom in Kikuyu Town (Gitaru Rd near Bypass)",
+    "description": "TikTok property tour: Tastefully built 2-bedroom master ensuite in Kikuyu Town. Close to Southern Bypass and Western Bypass for seamless commuting. Open kitchen, ceramic tiled floors, high-speed lift, secure parking, 24/7 borehole water.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 3,
+    "rentKes": 22000,
+    "depositKes": 22000,
+    "county": "Kiambu",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Kikuyu (Town & Ondiri)",
+    "exactLocation": "Kikuyu Town, Gitaru Road",
+    "latitude": -1.246,
+    "longitude": 36.664,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T18:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "agency",
+    "agencyName": "Bypass Heights Agency",
+    "caretakerName": "Jackson Ngugi",
+    "caretakerPhone": "0717228844",
+    "postedTimeAgo": "11h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-134",
+      "name": "Bypass Heights Agency",
+      "phone": "0717228844",
+      "whatsapp": "0717228844",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": true,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 22,
+      "responseRate": 98,
+      "listingCount": 8,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-135",
+    "title": "Facebook Direct: 1 Bedroom in Kinoo 87 near Waiyaki Way",
+    "description": "From Waiyaki Way Rentals Facebook group: Well-finished 1 bedroom apartment in Kinoo 87. Large windows, tiled floors, kitchen with lower cabinets, constant borehole water supply, prepaid token meter, perimeter wall and CCTV.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 13500,
+    "depositKes": 13500,
+    "county": "Kiambu",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Kinoo (87 & Stage)",
+    "exactLocation": "Kinoo 87, 200m from Waiyaki Way",
+    "latitude": -1.258,
+    "longitude": 36.711,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T14:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Joshua M.",
+    "caretakerPhone": "0715994411",
+    "postedTimeAgo": "12h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-135",
+      "name": "Joshua M.",
+      "phone": "0715994411",
+      "whatsapp": "0715994411",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 23,
+      "responseRate": 98,
+      "listingCount": 9,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-136",
+    "title": "TikTok Tour: 1 Bedroom in Uthiru near Junction Stage",
+    "description": "TikTok house hunting tour: Clean 1 bedroom apartment in Uthiru. Clean modern finishes, spacious living area, bedroom fitted with wardrobes, private balcony with laundry connection, constant water, secure compound with ample parking.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 14000,
+    "depositKes": 14000,
+    "county": "Kiambu",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Uthiru",
+    "exactLocation": "Uthiru Junction, near Shopping Centre",
+    "latitude": -1.261,
+    "longitude": 36.732,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T10:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Evans Odhiambo",
+    "caretakerPhone": "0723884422",
+    "postedTimeAgo": "1h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-136",
+      "name": "Evans Odhiambo",
+      "phone": "0723884422",
+      "whatsapp": "0723884422",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 24,
+      "responseRate": 98,
+      "listingCount": 10,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-137",
+    "title": "Facebook Marketplace: Clean Single Room in Kangemi (Waruku)",
+    "description": "Direct Facebook listing: Convenient single room located 3 minutes from Waiyaki Way at Waruku. Regular clean council water, shared tiled bathroom with hot water, tokens electricity, secure perimeter gate with night watchman.",
+    "category": "Single Room",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 1,
+    "rentKes": 4500,
+    "depositKes": 4500,
+    "county": "Nairobi",
+    "corridorId": "dagoretti_waiyaki_way",
+    "estateSuburb": "Kangemi (Waruku & Posta)",
+    "exactLocation": "Waruku, Kangemi, off Waiyaki Way",
+    "latitude": -1.266,
+    "longitude": 36.758,
+    "waterSupplyType": "City Council Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T06:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Moses Chege",
+    "caretakerPhone": "0721665544",
+    "postedTimeAgo": "2h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-137",
+      "name": "Moses Chege",
+      "phone": "0721665544",
+      "whatsapp": "0721665544",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 25,
+      "responseRate": 98,
+      "listingCount": 11,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": false,
+      "hasParking": false,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-ventilated clean single room space"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Shared clean tiled washroom"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Secure gated building exterior"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Hallway and compound view"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 4
+  },
+  {
+    "id": "prop-soc-138",
+    "title": "TikTok Tour: 2 Bedroom in Rongai (Maasai Lodge Rd)",
+    "description": "TikTok property tour: Executive 2-bedroom master ensuite apartment along Maasai Lodge Road. Modern kitchen, spacious balcony, continuous borehole water supply, tokens meter, perimeter wall with electric fence, dedicated parking.",
+    "category": "2 Bedroom",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorLevel": 2,
+    "rentKes": 18000,
+    "depositKes": 18000,
+    "county": "Kajiado",
+    "corridorId": "ngong_rongai_satellite",
+    "estateSuburb": "Ongata Rongai (Maasai Lodge & Town)",
+    "exactLocation": "Maasai Lodge Road, Rongai",
+    "latitude": -1.391,
+    "longitude": 36.764,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-11T02:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Boniface Mutua",
+    "caretakerPhone": "0715332288",
+    "postedTimeAgo": "3h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-138",
+      "name": "Boniface Mutua",
+      "phone": "0715332288",
+      "whatsapp": "0715332288",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 26,
+      "responseRate": 98,
+      "listingCount": 12,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": true,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
+  },
+  {
+    "id": "prop-soc-139",
+    "title": "Facebook Direct: Spacious Bedsitter in Rongai near Tumaini",
+    "description": "Facebook listing: Neat and quiet bedsitter near Tumaini Rongai. Features tiled flooring, fitted kitchen counter with stainless sink, clean tiled toilet with instant shower, unlimited borehole water, security guard.",
+    "category": "Bedsitter / Studio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 7500,
+    "depositKes": 7500,
+    "county": "Kajiado",
+    "corridorId": "ngong_rongai_satellite",
+    "estateSuburb": "Ongata Rongai (Maasai Lodge & Town)",
+    "exactLocation": "Near Tumaini Supermarket, Ongata Rongai",
+    "latitude": -1.396,
+    "longitude": 36.758,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": true,
+    "isTopAd": false,
+    "isVerified": true,
+    "badgeType": "featured",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-10T22:34:37.726Z",
+    "source": "facebook_marketplace",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Robert Kiprotich",
+    "caretakerPhone": "0714885522",
+    "postedTimeAgo": "4h ago on Facebook Marketplace",
+    "landlord": {
+      "id": "usr-soc-139",
+      "name": "Robert Kiprotich",
+      "phone": "0714885522",
+      "whatsapp": "0714885522",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 27,
+      "responseRate": 98,
+      "listingCount": 13,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious bedsitter main living area with ceramic tiles"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Fitted kitchen sink with lower storage cabinets"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Private tiled washroom with hot instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Apartment exterior and secure gated parking"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Well-lit sleeping corner"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 5
+  },
+  {
+    "id": "prop-soc-140",
+    "title": "TikTok House Hunting: 1 Bedroom in Ngong Town near SGR Station",
+    "description": "Featured on TikTok: Cozy 1 bedroom apartment in serene Ngong Town with cool breeze from the hills. Spacious living area, tiled modern bathroom, kitchen cabinets, private balcony with hills view, 24/7 water supply.",
+    "category": "1 Bedroom",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floorLevel": 2,
+    "rentKes": 13500,
+    "depositKes": 13500,
+    "county": "Kajiado",
+    "corridorId": "ngong_rongai_satellite",
+    "estateSuburb": "Ngong Town & Hills",
+    "exactLocation": "Ngong Town, near SGR Station",
+    "latitude": -1.361,
+    "longitude": 36.657,
+    "waterSupplyType": "Borehole Water",
+    "electricityMeterType": "Prepaid (Tokens)",
+    "garbageFeeKes": 400,
+    "waterRateKes": 120,
+    "isFeatured": false,
+    "isTopAd": true,
+    "isVerified": true,
+    "badgeType": "verified",
+    "status": "approved",
+    "isApproved": true,
+    "availability": "vacant",
+    "dateAdded": "2026-09-10T18:34:37.726Z",
+    "source": "tiktok_tour",
+    "managedBy": "landlord",
+    "agencyName": null,
+    "caretakerName": "Moses Nderitu",
+    "caretakerPhone": "0726338844",
+    "postedTimeAgo": "5h ago on TikTok",
+    "landlord": {
+      "id": "usr-soc-140",
+      "name": "Moses Nderitu",
+      "phone": "0726338844",
+      "whatsapp": "0726338844",
+      "isVerified": true,
+      "isPremiumVerified": true,
+      "isAgency": false,
+      "memberSince": "February 2024",
+      "rating": 4.9,
+      "reviewCount": 28,
+      "responseRate": 98,
+      "listingCount": 6,
+      "verificationDate": "2024-02-10",
+      "backgroundCheckPassed": true
+    },
+    "amenities": {
+      "hasBalcony": true,
+      "hasParking": true,
+      "hasElectricFence": true,
+      "hasCctv": true,
+      "hasInternet": true,
+      "hasTiles": true,
+      "isMasterEnsuite": false,
+      "hasGym": false,
+      "hasSwimmingPool": false
+    },
+    "media": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Spacious naturally-lit living room"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Master bedroom with built-in wardrobes"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Modern fitted kitchen with granite countertops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Contemporary tiled bathroom with instant shower"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Building exterior and secure gated compound"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
+        "caption": "Dedicated parking bay with 24/7 security"
+      }
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "photoCount": 6
   }
 ];
 

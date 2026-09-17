@@ -131,6 +131,7 @@ const AdminProperties = (() => {
                 <td style="font-size: 0.85rem; color: #64748b;">${formatDate(property.createdAt)}</td>
                 <td>
                   <div class="action-buttons-group">
+                    <button class="btn-icon" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;" onclick="AdminProperties.openSocialBlast('${property.id}')" title="Social Blast (WhatsApp, Instagram, FB, TikTok)"><i class="fas fa-bullhorn"></i></button>
                     <button class="btn-icon" onclick="AdminProperties.viewPropertyDetail('${property.id}')" title="View Details">
                       <i class="fas fa-eye"></i>
                     </button>
@@ -677,7 +678,19 @@ const AdminProperties = (() => {
   }
 
   // Public API
+  
+  function openSocialBlast(propertyId) {
+    const prop = currentProperties.find(p => p.id === propertyId);
+    if (!prop) return;
+    if (window.kejaSocial && typeof window.kejaSocial.openAdminBlast === 'function') {
+      window.kejaSocial.openAdminBlast(prop, 'whatsapp');
+    } else if (window.app && typeof window.app.openAdminSocialBlast === 'function') {
+      window.app.openAdminSocialBlast(propertyId, 'whatsapp');
+    }
+  }
+
   return {
+    openSocialBlast,
     init,
     loadProperties,
     searchProperties,

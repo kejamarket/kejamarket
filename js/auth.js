@@ -588,14 +588,14 @@ const kejaAuth = (() => {
     } catch (err) {
       console.error('Sign in error:', err);
       const cleanId = identifier.trim().toLowerCase();
-      const isTryingAdmin = cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin' || cleanId === '0700000000';
+      const isTryingAdmin = cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin' || cleanId === '0700000000' || cleanId === '0792409540' || cleanId === '254792409540';
       const allowedAdminPasswords = ['admin', 'admin123', 'admin2026', 'Stallon@jevugwe4', 'kejamarket123'];
       if (isTryingAdmin && allowedAdminPasswords.includes(password)) {
         const adminUser = {
           id: 'usr-admin-01',
           name: 'Administrator',
           email: 'admin@kejamarket.co.ke',
-          phone: '+254700000000',
+          phone: '+254792409540',
           role: 'admin',
           isAdmin: true
         };

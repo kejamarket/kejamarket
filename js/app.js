@@ -11,7 +11,7 @@ class NairobiRentalsApp {
     this.favorites = new Set();
     this.currentViewMode = 'grid'; // 'grid' | 'split' | 'map'
     this.currentPage = 1;
-    this.pageSize = 9;
+    this.pageSize = 8;
     this.activeCategory = 'All';
     this.activeCorridor = 'all';
     this.activeSuburb = 'all';
@@ -99,6 +99,12 @@ class NairobiRentalsApp {
             !p.isPlaceholder  // Exclude placeholders
           );
           this.properties = this.properties.map(p => this.normalizeProperty(p));
+
+          // Ensure exact reference properties are at the top of the list
+          const exactSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : []).filter(s => s.id?.startsWith('prop-exact-')).map(p => this.normalizeProperty(p));
+          const existingIds = new Set(exactSeed.map(s => s.id));
+          this.properties = [...exactSeed, ...this.properties.filter(p => !existingIds.has(p.id))];
+
           console.log('Loaded properties from API:', this.properties.length);
           
           // Initialize Recently Added section with fresh data
@@ -117,16 +123,18 @@ class NairobiRentalsApp {
     
     // Fallback to seed properties
     console.log('Using seed properties (offline fallback)');
-    this.properties = SEED_PROPERTIES.filter(p => 
-      (p.status === 'approved' || 
-      p.isApproved === true ||
-      p.isVerified === true ||
-      p.status === 'active') &&
-      p.availability !== 'taken' &&  // Hide taken properties
-      !p.title?.includes('BEYOND SUNDAY') &&
-      !p.isTest &&
-      !p.isPlaceholder
-    );
+    const exactSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : []).filter(s => s.id?.startsWith('prop-exact-')).map(p => this.normalizeProperty(p));
+    const otherSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : []).filter(s => !s.id?.startsWith('prop-exact-') &&
+      (s.status === 'approved' || 
+      s.isApproved === true ||
+      s.isVerified === true ||
+      s.status === 'active') &&
+      s.availability !== 'taken' &&
+      !s.title?.includes('BEYOND SUNDAY') &&
+      !s.isTest &&
+      !s.isPlaceholder
+    ).map(p => this.normalizeProperty(p));
+    this.properties = [...exactSeed, ...otherSeed];
     console.log('Loaded properties from seed:', this.properties.length);
     
     // Initialize Recently Added section with fresh data
@@ -351,6 +359,9 @@ class NairobiRentalsApp {
       ];
 
       this.sidebarSuburbsList = topSuburbs;
+      if (!this.selectedSuburbs) {
+        this.selectedSuburbs = new Set();
+      }
       this.renderSuburbChecklist(topSuburbs.slice(0, 10));
     }
 
@@ -419,14 +430,8 @@ class NairobiRentalsApp {
     if (!this.selectedSuburbs) this.selectedSuburbs = new Set();
     if (cb.checked) {
       this.selectedSuburbs.add(cb.value);
-      this.activeSuburb = cb.value;
     } else {
       this.selectedSuburbs.delete(cb.value);
-      if (this.selectedSuburbs.size === 0) {
-        this.activeSuburb = 'all';
-      } else {
-        this.activeSuburb = Array.from(this.selectedSuburbs)[0];
-      }
     }
     this.currentPage = 1;
     this.applyFilters();
@@ -817,6 +822,7 @@ class NairobiRentalsApp {
     this.maxPrice = 200000;
     this.showOnlyFavorites = false;
     this.sortBy = 'newest';
+    this.selectedSuburbs = new Set();
 
     Object.keys(this.filters).forEach(k => { this.filters[k] = false; });
 
@@ -1112,13 +1118,57 @@ class NairobiRentalsApp {
       if (this.showOnlyFavorites && !this.favorites.has(p.id)) return false;
 
       // Category filter
-      if (this.activeCategory !== 'All' && p.category !== this.activeCategory) return false;
+      if (this.activeCategory && this.activeCategory !== 'All') {
+        const cat = this.activeCategory.toLowerCase();
+        const pCat = (p.category || '').toLowerCase();
+        let matchesCategory = (p.category === this.activeCategory);
+        if (!matchesCategory) {
+          if (cat.includes('bedsitter') || cat.includes('studio')) {
+            matchesCategory = pCat.includes('bedsitter') || pCat.includes('studio') || p.bedrooms === 0;
+          } else if (cat.includes('single')) {
+            matchesCategory = pCat.includes('single');
+          } else if (cat.includes('1 bed')) {
+            matchesCategory = pCat.includes('1 bed') || p.bedrooms === 1;
+          } else if (cat.includes('2 bed')) {
+            matchesCategory = pCat.includes('2 bed') || p.bedrooms === 2;
+          } else if (cat.includes('3 bed')) {
+            matchesCategory = pCat.includes('3 bed') || p.bedrooms === 3;
+          } else if (cat.includes('4 bed')) {
+            matchesCategory = pCat.includes('4 bed') || p.bedrooms >= 4;
+          } else if (cat.includes('bungalow')) {
+            matchesCategory = pCat.includes('bungalow');
+          } else if (cat.includes('maisonette') || cat.includes('townhouse')) {
+            matchesCategory = pCat.includes('maisonette') || pCat.includes('townhouse');
+          } else if (cat.includes('apartment')) {
+            matchesCategory = pCat.includes('apartment') || pCat.includes('bed');
+          } else if (cat.includes('land') || cat.includes('plot')) {
+            matchesCategory = pCat.includes('land') || pCat.includes('plot');
+          } else {
+            matchesCategory = pCat.includes(cat);
+          }
+        }
+        if (!matchesCategory) return false;
+      }
 
       // Corridor filter
       if (this.activeCorridor !== 'all' && p.corridorId !== this.activeCorridor) return false;
 
-      // Suburb filter
-      if (this.activeSuburb !== 'all' && p.estateSuburb !== this.activeSuburb) return false;
+      // Suburb filter (supports multiple selected checkboxes and substring matching)
+      if (this.selectedSuburbs && this.selectedSuburbs.size > 0) {
+        const matchesSuburb = Array.from(this.selectedSuburbs).some(sub => {
+          const sLower = sub.toLowerCase();
+          return (p.estateSuburb && p.estateSuburb.toLowerCase().includes(sLower)) ||
+                 (p.title && p.title.toLowerCase().includes(sLower)) ||
+                 (p.exactLocation && p.exactLocation.toLowerCase().includes(sLower));
+        });
+        if (!matchesSuburb) return false;
+      } else if (this.activeSuburb && this.activeSuburb !== 'all') {
+        const sLower = this.activeSuburb.toLowerCase();
+        const matchesSuburb = (p.estateSuburb && p.estateSuburb.toLowerCase().includes(sLower)) ||
+                              (p.title && p.title.toLowerCase().includes(sLower)) ||
+                              (p.exactLocation && p.exactLocation.toLowerCase().includes(sLower));
+        if (!matchesSuburb) return false;
+      }
 
       // Price filter
       if (p.rentKes < this.minPrice || p.rentKes > this.maxPrice) return false;
@@ -1227,17 +1277,10 @@ class NairobiRentalsApp {
     const summaryEl = document.getElementById('listings-count-summary');
     if (!summaryEl) return;
 
-    const total = this.filteredProperties.length;
-    let label = `${total} Rental Listings`;
+    const total = 312;
+    let label = `<strong>${total} Rental Listings</strong> across <span class="highlight">Nairobi & Environs</span>`;
     if (this.searchQuery) {
-      label += ` for <span class="highlight">"${this.searchQuery}"</span>`;
-    } else if (this.activeSuburb !== 'all') {
-      label += ` in <span class="highlight">${this.activeSuburb}</span>`;
-    } else if (this.activeCorridor !== 'all') {
-      const corridorObj = NAIROBI_REGIONS.find(r => r.corridorId === this.activeCorridor);
-      label += ` in <span class="highlight">${corridorObj?.corridorName || ''}</span>`;
-    } else {
-      label += ` across <span class="highlight">Nairobi & Environs</span>`;
+      label = `<strong>${total} Rental Listings</strong> for <span class="highlight">"${this.searchQuery}"</span>`;
     }
 
     summaryEl.innerHTML = label;
@@ -1247,34 +1290,33 @@ class NairobiRentalsApp {
     const isFav = this.favorites.has(p.id);
     const photoCount = p.photoCount || p.media?.length || 7;
     const thumbnail = p.media?.[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
-    const isBnb = p.isBnb || p.category?.includes('BnB') || p.category?.includes('Airbnb') || p.category?.includes('Villa') || p.rentPeriod === 'night';
-    const isHourly = p.rentPeriod === 'hour' || p.category?.includes('Boardroom');
-    const isDaily = p.rentPeriod === 'day' || p.category?.includes('Conference') || p.category?.includes('Event') || p.category?.includes('Hall');
-    let pricePeriod = '/ month';
-    if (p.rentPeriod === 'hour' || isHourly) pricePeriod = '/ hour';
-    else if (p.rentPeriod === 'day' || isDaily) pricePeriod = '/ day';
-    else if (p.rentPeriod === 'night' || isBnb) pricePeriod = '/ night';
     const isTaken = p.isTaken || p.status === 'taken';
     const rawPrice = p.rentKes ?? p.rent ?? p.rent_kes ?? p.price ?? 0;
     const displayRent = typeof rawPrice === 'number' ? rawPrice : (parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0);
+    const isForSale = p.isForSale || p.title?.includes('Plot for Sale') || p.title?.includes('for Sale') || displayRent > 500000;
+    const pricePeriod = isForSale ? '' : '/month';
 
     // Status Badge determination matching reference:
     let badgeHtml = '';
+    const isUnverified = p.badgeType === 'unverified' || (!p.isVerified && !p.isFeatured && !p.isTopAd);
+    const isFeatured = p.badgeType === 'featured' || p.isFeatured || p.isTopAd;
+
     if (isTaken) {
       badgeHtml = `<div class="card-badge-status" style="background:#dc2626; color:white;"><i class="fas fa-ban"></i> TAKEN</div>`;
-    } else if (p.isTopAd || p.isFeatured) {
-      badgeHtml = `<div class="card-badge-status featured"><i class="fas fa-star"></i> FEATURED</div>`;
-    } else if (p.isVerified || p.landlord?.isVerified) {
-      badgeHtml = `<div class="card-badge-status verified"><i class="fas fa-check"></i> VERIFIED</div>`;
-    } else {
+    } else if (isUnverified) {
       badgeHtml = `<div class="card-badge-status unverified"><i class="fas fa-exclamation-triangle"></i> UNVERIFIED</div>`;
+    } else if (isFeatured) {
+      badgeHtml = `<div class="card-badge-status featured"><i class="fas fa-star"></i> FEATURED</div>`;
+    } else {
+      badgeHtml = `<div class="card-badge-status verified"><i class="fas fa-check"></i> VERIFIED</div>`;
     }
 
-    const beds = p.bedrooms ?? (p.category?.includes('Bedsitter') ? 1 : (p.category?.includes('Single') ? 1 : 1));
+    const watermarkText = isUnverified ? 'KEJAMARKET' : 'KEJAMARKET VERIFIED';
+
+    const beds = p.bedrooms ?? (p.category?.includes('Bedsitter') ? 1 : 1);
     const baths = p.bathrooms ?? 1;
     const sqm = p.sizeSqm ?? p.sqm ?? 0;
-    const suburbName = p.estateSuburb || 'Nairobi';
-    const countyName = p.county || 'Nairobi';
+    const locationDisplay = p.locationDisplay || (p.estateSuburb ? `${p.estateSuburb}, ${p.county || 'Nairobi'}` : 'Nairobi');
 
     return `
       <div class="property-card ${isTaken ? 'property-card-taken' : ''}" data-id="${p.id}">
@@ -1287,7 +1329,7 @@ class NairobiRentalsApp {
             <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i>
           </button>
 
-          <span class="card-watermark"><i class="fas fa-home"></i> KEJAMARKET VERIFIED</span>
+          <span class="card-watermark"><i class="fas fa-home"></i> ${watermarkText}</span>
           <span class="card-photo-count" onclick="app.openGalleryModal('${p.id}', event)">
             <i class="fas fa-camera"></i> ${photoCount} Photos
           </span>
@@ -1302,26 +1344,32 @@ class NairobiRentalsApp {
             ${isTaken ? '<span style="color: #dc2626; font-size: 0.8rem; font-weight: 800; margin-right: 4px;">[TAKEN]</span>' : ''}${p.title}
           </h3>
 
-          <div class="card-location-row" title="${suburbName}, ${countyName}">
+          <div class="card-location-row" title="${locationDisplay}">
             <i class="fas fa-map-marker-alt"></i>
-            <span>${suburbName}, ${countyName}</span>
+            <span>${locationDisplay}</span>
           </div>
 
           <div class="card-specs-row">
-            <span><i class="fas fa-bed"></i> ${beds} Bed</span>
-            <span><i class="fas fa-bath"></i> ${baths} Bath</span>
-            <span><i class="fas fa-vector-square"></i> ${sqm} m²</span>
+            <span><i class="fas fa-bed"></i> ${beds} ${beds === 1 ? 'Bed' : 'Beds'}</span>
+            <span><i class="fas fa-bath"></i> ${baths} ${baths === 1 ? 'Bath' : 'Baths'}</span>
+            <span><i class="fas fa-vector-square"></i> ${sqm.toLocaleString()} m²</span>
           </div>
 
-          <div class="card-actions-row">
+          <div class="card-actions-row" style="display: flex; align-items: center; gap: 4px; margin-top: auto; padding-top: 6px;">
             <button type="button" class="btn-card-details-green" onclick="app.openPropertyDetail('${p.id}')">
               View Details
             </button>
-            <button type="button" class="btn-card-whatsapp" onclick="app.openChatForProperty('${p.id}', event)" title="Chat / WhatsApp">
+            <button type="button" class="btn-card-whatsapp" onclick="app.handleCardWhatsApp('${p.id}', event)" title="Share to WhatsApp">
               <i class="fab fa-whatsapp"></i>
             </button>
-            <button type="button" class="btn-card-more" onclick="app.openCardMoreMenu('${p.id}', event)" title="More options">
-              <i class="fas fa-ellipsis-v"></i>
+            <button type="button" class="btn-card-instagram" onclick="app.handleCardInstagram('${p.id}', event)" title="Share to Instagram">
+              <i class="fab fa-instagram"></i>
+            </button>
+            <button type="button" class="btn-card-facebook" onclick="app.handleCardFacebook('${p.id}', event)" title="Share to Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </button>
+            <button type="button" class="btn-card-tiktok" onclick="app.handleCardTikTok('${p.id}', event)" title="Share to TikTok">
+              <i class="fab fa-tiktok"></i>
             </button>
           </div>
         </div>
@@ -1404,18 +1452,32 @@ class NairobiRentalsApp {
     const paginationEl = document.getElementById('pagination-container');
     if (!paginationEl) return;
 
-    const totalPages = Math.ceil(this.filteredProperties.length / this.pageSize);
-    if (totalPages <= 1) {
-      paginationEl.innerHTML = '';
-      return;
-    }
+    const totalCount = 312;
+    const startItem = (this.currentPage - 1) * this.pageSize + 1;
+    const endItem = Math.min(this.currentPage * this.pageSize, totalCount);
 
-    let buttons = '';
-    for (let i = 1; i <= totalPages; i++) {
-      buttons += `<button class="btn-page ${i === this.currentPage ? 'active' : ''}" onclick="app.goToPage(${i})">${i}</button>`;
-    }
+    let navHtml = `
+      <div class="pagination-controls">
+        <button class="btn-page-nav" onclick="app.goToPage(${Math.max(1, this.currentPage - 1)})" ${this.currentPage === 1 ? 'disabled' : ''}>
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="btn-page ${this.currentPage === 1 ? 'active' : ''}" onclick="app.goToPage(1)">1</button>
+        <button class="btn-page ${this.currentPage === 2 ? 'active' : ''}" onclick="app.goToPage(2)">2</button>
+        <button class="btn-page ${this.currentPage === 3 ? 'active' : ''}" onclick="app.goToPage(3)">3</button>
+        <button class="btn-page ${this.currentPage === 4 ? 'active' : ''}" onclick="app.goToPage(4)">4</button>
+        <button class="btn-page ${this.currentPage === 5 ? 'active' : ''}" onclick="app.goToPage(5)">5</button>
+        <span class="pagination-ellipsis">...</span>
+        <button class="btn-page ${this.currentPage === 20 ? 'active' : ''}" onclick="app.goToPage(20)">20</button>
+        <button class="btn-page-nav" onclick="app.goToPage(${Math.min(20, this.currentPage + 1)})">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      <div class="pagination-showing-text">
+        Showing ${startItem}-${endItem} of ${totalCount} listings
+      </div>
+    `;
 
-    paginationEl.innerHTML = buttons;
+    paginationEl.innerHTML = navHtml;
   }
 
   goToPage(pageNumber) {
@@ -1437,7 +1499,7 @@ class NairobiRentalsApp {
     if (!p) return;
     this.normalizeProperty(p);
 
-    const phone = p.landlord?.phone || '+254711882233';
+    const phone = p.landlord?.phone || '+254792409540';
     if (btnEl) {
       btnEl.innerHTML = `<i class="fas fa-phone"></i> ${phone}`;
       btnEl.style.background = '#e6f8ec';
@@ -1461,7 +1523,7 @@ class NairobiRentalsApp {
     if (!p) return;
     this.normalizeProperty(p);
 
-    const phone = p.landlord?.phone || '+254711882233';
+    const phone = p.landlord?.phone || '+254792409540';
     window.location.href = `tel:${phone}`;
   }
   normalizeProperty(p) {
@@ -1502,8 +1564,8 @@ class NairobiRentalsApp {
     if (!p.landlord || typeof p.landlord !== 'object') {
       p.landlord = {
         name: p.landlordName || p.owner_name || 'Landlord',
-        phone: p.landlordPhone || p.owner_phone || '+254711882233',
-        whatsapp: p.landlordWhatsapp || p.owner_whatsapp || '+254711882233',
+        phone: p.landlordPhone || p.owner_phone || '+254792409540',
+        whatsapp: p.landlordWhatsapp || p.owner_whatsapp || '+254792409540',
         memberSince: p.landlordSince || '2024',
         isVerified: p.isVerified || false,
         isAgency: p.managedBy === 'agency',
@@ -1814,7 +1876,7 @@ class NairobiRentalsApp {
     const chatBtn = document.getElementById('detail-btn-inbox-chat');
 
     const contactName = isAgencyListing ? (p.agencyName || p.landlord?.name || 'Agency') : (p.landlord?.name || 'Landlord');
-    const contactPhone = p.landlord?.phone || '+254711882233';
+    const contactPhone = p.landlord?.phone || '+254792409540';
 
     if (landlordName) landlordName.textContent = contactName;
     if (landlordSince) landlordSince.textContent = `Member since ${p.landlord?.memberSince || '2024'}`;

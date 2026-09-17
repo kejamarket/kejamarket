@@ -119,7 +119,7 @@ class PostgreSQLStore {
     const values = [
       'usr-admin-01',
       'KejaMarket Administrator', 
-      '0700000000',
+      '0792409540',
       'admin@kejamarket.co.ke',
       adminPasswordHash,
       'admin',
@@ -228,7 +228,7 @@ class PostgreSQLStore {
     const cleanId = identifier.trim().toLowerCase();
 
     // Ensure admin user exists for admin logins
-    if (cleanId.includes('admin') || cleanId === '0700000000') {
+    if (cleanId.includes('admin') || cleanId === '0792409540' || cleanId === '254792409540' || cleanId === '0700000000') {
       await this.ensureAdminUser();
     }
 
