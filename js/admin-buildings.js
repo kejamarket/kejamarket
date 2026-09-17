@@ -428,27 +428,369 @@ const AdminBuildings = (() => {
 
   // View unit detail
   function viewUnitDetail(unitId) {
-    alert('Unit detail view coming soon');
+    const unit = currentUnits.find(u => u.id === unitId);
+    if (!unit) return;
+    showModal(`
+      <h3 style="margin:0 0 16px;color:#1e293b;">Unit Details</h3>
+      <table style="width:100%;border-collapse:collapse;">
+        ${[
+          ['Unit Number', unit.unitNumber || unit.unit_number || '-'],
+          ['Building', unit.buildingName || '-'],
+          ['Bedrooms', unit.bedrooms || 0],
+          ['Bathrooms', unit.bathrooms || 0],
+          ['Price', `KSh ${formatNumber(unit.price || 0)}/mo`],
+          ['Status', unit.status || 'available'],
+          ['Tenant', unit.tenantName || unit.tenant_name || 'Vacant'],
+          ['Description', unit.description || '-']
+        ].map(([k,v]) => `<tr><td style="padding:8px 4px;font-weight:600;color:#64748b;width:130px;">${k}</td><td style="padding:8px 4px;">${v}</td></tr>`).join('')}
+      </table>
+      <div style="text-align:right;margin-top:16px;">
+        <button onclick="AdminBuildings.editUnit('${unit.id}')" class="btn-primary" style="margin-right:8px;"><i class="fas fa-edit"></i> Edit</button>
+        <button onclick="closeAdminModal()" class="btn-secondary">Close</button>
+      </div>
+    `);
   }
 
   // Show add building modal
   function showAddBuildingModal() {
-    alert('Add building functionality coming soon');
+    showModal(`
+      <h3 style="margin:0 0 20px;color:#1e293b;"><i class="fas fa-building" style="color:#7c3aed;margin-right:8px;"></i>Add New Building</h3>
+      <form id="add-building-form" onsubmit="AdminBuildings.submitAddBuilding(event)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Building Name *</label>
+            <input id="bldg-name" type="text" required placeholder="e.g. Westlands Heights" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Location / Address *</label>
+            <input id="bldg-location" type="text" required placeholder="e.g. Westlands, Nairobi" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Number of Floors</label>
+            <input id="bldg-floors" type="number" min="1" value="1" placeholder="1" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Status</label>
+            <select id="bldg-status" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+              <option value="active">Active</option>
+              <option value="under-construction">Under Construction</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Description</label>
+            <textarea id="bldg-desc" rows="3" placeholder="Brief description of the building..." style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;resize:vertical;"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+          <button type="button" onclick="closeAdminModal()" class="btn-secondary">Cancel</button>
+          <button type="submit" id="add-bldg-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Building</button>
+        </div>
+      </form>
+    `);
+  }
+
+  async function submitAddBuilding(e) {
+    e.preventDefault();
+    const btn = document.getElementById('add-bldg-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/buildings`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: document.getElementById('bldg-name').value.trim(),
+          location: document.getElementById('bldg-location').value.trim(),
+          totalFloors: parseInt(document.getElementById('bldg-floors').value) || 1,
+          status: document.getElementById('bldg-status').value,
+          description: document.getElementById('bldg-desc').value.trim()
+        })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      closeAdminModal();
+      showBuildingToast('Building added successfully! ✅', 'success');
+      await loadBuildings();
+    } catch (err) {
+      showBuildingToast('Error: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-plus"></i> Add Building';
+    }
   }
 
   // Show add unit modal
   function showAddUnitModal(buildingId) {
-    alert('Add unit functionality coming soon');
+    showModal(`
+      <h3 style="margin:0 0 20px;color:#1e293b;"><i class="fas fa-door-open" style="color:#7c3aed;margin-right:8px;"></i>Add New Unit</h3>
+      <form id="add-unit-form" onsubmit="AdminBuildings.submitAddUnit(event, '${buildingId}')">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Unit Number *</label>
+            <input id="unit-number" type="text" required placeholder="e.g. A1, 101" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Status</label>
+            <select id="unit-status" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+              <option value="available">Available</option>
+              <option value="occupied">Occupied</option>
+              <option value="maintenance">Maintenance</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Bedrooms</label>
+            <input id="unit-beds" type="number" min="0" value="1" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Bathrooms</label>
+            <input id="unit-baths" type="number" min="0" value="1" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Monthly Rent (KSh)</label>
+            <input id="unit-price" type="number" min="0" placeholder="e.g. 25000" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Description</label>
+            <textarea id="unit-desc" rows="2" placeholder="Optional description..." style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;resize:vertical;"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+          <button type="button" onclick="closeAdminModal()" class="btn-secondary">Cancel</button>
+          <button type="submit" id="add-unit-btn" class="btn-primary"><i class="fas fa-plus"></i> Add Unit</button>
+        </div>
+      </form>
+    `);
+  }
+
+  async function submitAddUnit(e, buildingId) {
+    e.preventDefault();
+    const btn = document.getElementById('add-unit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/units`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          buildingId,
+          unitNumber: document.getElementById('unit-number').value.trim(),
+          bedrooms: parseInt(document.getElementById('unit-beds').value) || 0,
+          bathrooms: parseInt(document.getElementById('unit-baths').value) || 0,
+          price: parseFloat(document.getElementById('unit-price').value) || 0,
+          status: document.getElementById('unit-status').value,
+          description: document.getElementById('unit-desc').value.trim()
+        })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      closeAdminModal();
+      showBuildingToast('Unit added successfully! ✅', 'success');
+      // Reload whichever view is active
+      if (currentView === 'units') await loadUnits();
+      else await loadBuildings();
+    } catch (err) {
+      showBuildingToast('Error: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-plus"></i> Add Unit';
+    }
   }
 
   // Edit building
   function editBuilding(buildingId) {
-    alert('Edit building functionality coming soon');
+    const building = currentBuildings.find(b => b.id === buildingId);
+    if (!building) return;
+    showModal(`
+      <h3 style="margin:0 0 20px;color:#1e293b;"><i class="fas fa-edit" style="color:#7c3aed;margin-right:8px;"></i>Edit Building</h3>
+      <form id="edit-building-form" onsubmit="AdminBuildings.submitEditBuilding(event, '${buildingId}')">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Building Name</label>
+            <input id="edit-bldg-name" type="text" value="${(building.name||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Location</label>
+            <input id="edit-bldg-location" type="text" value="${(building.location||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Floors</label>
+            <input id="edit-bldg-floors" type="number" min="1" value="${building.totalFloors||building.total_floors||1}" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Status</label>
+            <select id="edit-bldg-status" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+              <option value="active" ${building.status==='active'?'selected':''}>Active</option>
+              <option value="under-construction" ${building.status==='under-construction'?'selected':''}>Under Construction</option>
+              <option value="inactive" ${building.status==='inactive'?'selected':''}>Inactive</option>
+            </select>
+          </div>
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Description</label>
+            <textarea id="edit-bldg-desc" rows="3" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;resize:vertical;">${building.description||''}</textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+          <button type="button" onclick="if(confirm('Delete this building?')) AdminBuildings.deleteBuilding('${buildingId}')" style="margin-right:auto;" class="btn-danger"><i class="fas fa-trash"></i> Delete</button>
+          <button type="button" onclick="closeAdminModal()" class="btn-secondary">Cancel</button>
+          <button type="submit" id="edit-bldg-btn" class="btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+      </form>
+    `);
+  }
+
+  async function submitEditBuilding(e, buildingId) {
+    e.preventDefault();
+    const btn = document.getElementById('edit-bldg-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/buildings/${buildingId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: document.getElementById('edit-bldg-name').value.trim(),
+          location: document.getElementById('edit-bldg-location').value.trim(),
+          totalFloors: parseInt(document.getElementById('edit-bldg-floors').value) || 1,
+          status: document.getElementById('edit-bldg-status').value,
+          description: document.getElementById('edit-bldg-desc').value.trim()
+        })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      closeAdminModal();
+      showBuildingToast('Building updated! ✅', 'success');
+      await loadBuildings();
+    } catch (err) {
+      showBuildingToast('Error: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+    }
+  }
+
+  async function deleteBuilding(buildingId) {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/buildings/${buildingId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      closeAdminModal();
+      showBuildingToast('Building deleted.', 'info');
+      await loadBuildings();
+    } catch (err) {
+      showBuildingToast('Error: ' + err.message, 'error');
+    }
   }
 
   // Edit unit
   function editUnit(unitId) {
-    alert('Edit unit functionality coming soon');
+    const unit = currentUnits.find(u => u.id === unitId);
+    if (!unit) { showBuildingToast('Unit not found', 'error'); return; }
+    showModal(`
+      <h3 style="margin:0 0 20px;color:#1e293b;"><i class="fas fa-edit" style="color:#7c3aed;margin-right:8px;"></i>Edit Unit</h3>
+      <form id="edit-unit-form" onsubmit="AdminBuildings.submitEditUnit(event, '${unitId}')">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Unit Number</label>
+            <input id="eu-number" type="text" value="${(unit.unitNumber||unit.unit_number||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Status</label>
+            <select id="eu-status" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+              <option value="available" ${unit.status==='available'?'selected':''}>Available</option>
+              <option value="occupied" ${unit.status==='occupied'?'selected':''}>Occupied</option>
+              <option value="maintenance" ${unit.status==='maintenance'?'selected':''}>Maintenance</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Bedrooms</label>
+            <input id="eu-beds" type="number" min="0" value="${unit.bedrooms||0}" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Bathrooms</label>
+            <input id="eu-baths" type="number" min="0" value="${unit.bathrooms||0}" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Monthly Rent (KSh)</label>
+            <input id="eu-price" type="number" min="0" value="${unit.price||0}" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+          <button type="button" onclick="closeAdminModal()" class="btn-secondary">Cancel</button>
+          <button type="submit" id="edit-unit-btn" class="btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+      </form>
+    `);
+  }
+
+  async function submitEditUnit(e, unitId) {
+    e.preventDefault();
+    const btn = document.getElementById('edit-unit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/units/${unitId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          unitNumber: document.getElementById('eu-number').value.trim(),
+          bedrooms: parseInt(document.getElementById('eu-beds').value)||0,
+          bathrooms: parseInt(document.getElementById('eu-baths').value)||0,
+          price: parseFloat(document.getElementById('eu-price').value)||0,
+          status: document.getElementById('eu-status').value
+        })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      closeAdminModal();
+      showBuildingToast('Unit updated! ✅', 'success');
+      if (currentView === 'units') await loadUnits();
+      else await loadBuildings();
+    } catch (err) {
+      showBuildingToast('Error: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+    }
+  }
+
+  // Modal helper
+  function showModal(html) {
+    let overlay = document.getElementById('admin-modal-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'admin-modal-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+      overlay.onclick = e => { if (e.target === overlay) closeAdminModal(); };
+      document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = `<div style="background:#fff;border-radius:16px;padding:28px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);">${html}</div>`;
+    overlay.style.display = 'flex';
+  }
+
+  function closeAdminModal() {
+    const overlay = document.getElementById('admin-modal-overlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  function showBuildingToast(message, type = 'info') {
+    const colors = { success: '#10b981', error: '#ef4444', info: '#3b82f6' };
+    const toast = document.createElement('div');
+    toast.style.cssText = `position:fixed;bottom:24px;right:24px;background:${colors[type]||colors.info};color:#fff;padding:14px 20px;border-radius:10px;font-weight:600;z-index:10000;box-shadow:0 4px 20px rgba(0,0,0,0.2);max-width:340px;`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
   }
 
   // Search buildings
@@ -521,8 +863,13 @@ const AdminBuildings = (() => {
     viewUnitDetail,
     showAddBuildingModal,
     showAddUnitModal,
+    submitAddBuilding,
+    submitAddUnit,
     editBuilding,
     editUnit,
+    submitEditBuilding,
+    submitEditUnit,
+    deleteBuilding,
     searchBuildings,
     searchUnits,
     exportBuildings,

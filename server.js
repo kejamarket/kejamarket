@@ -2671,32 +2671,187 @@ app.post('/api/admin/users/:id/suspend', requireAuth, async (req, res) => {
 
 // --- BUILDINGS & UNITS ROUTES -----------------------------------------------
 
+// Helper: get buildings list from DB if connected, else from in-memory store
+async function getBuildingsList() {
+  if (store.isConnected) {
+    try {
+      const res = await store.query(`
+        SELECT b.*, u.name AS landlord_name,
+          COUNT(un.id) FILTER (WHERE un.building_id IS NOT NULL) AS total_units,
+          COUNT(un.id) FILTER (WHERE un.status = 'occupied') AS occupied_units,
+          COUNT(un.id) FILTER (WHERE un.status = 'available') AS available_units,
+          COUNT(un.id) FILTER (WHERE un.status = 'maintenance') AS maintenance_units
+        FROM buildings b
+        LEFT JOIN users u ON u.id = b.landlord_id
+        LEFT JOIN units un ON un.building_id = b.id
+        GROUP BY b.id, u.name
+        ORDER BY b.created_at DESC
+      `);
+      return res.rows.map(b => ({
+        ...b,
+        landlordName: b.landlord_name,
+        totalUnits: parseInt(b.total_units) || 0,
+        occupiedUnits: parseInt(b.occupied_units) || 0,
+        availableUnits: parseInt(b.available_units) || 0,
+        maintenanceUnits: parseInt(b.maintenance_units) || 0,
+      }));
+    } catch (e) {
+      console.warn('DB buildings query failed, falling back to memory:', e.message);
+    }
+  }
+  // fallback to in-memory
+  const buildings = store.data.buildings || [];
+  return buildings.map(building => {
+    const units = (store.data.units || []).filter(u => u.buildingId === building.id);
+    return {
+      ...building,
+      totalUnits: units.length,
+      occupiedUnits: units.filter(u => u.status === 'occupied' || u.isOccupied).length,
+      availableUnits: units.filter(u => u.status === 'available').length,
+      maintenanceUnits: units.filter(u => u.status === 'maintenance').length,
+    };
+  });
+}
+
+// Helper: get units list from DB if connected, else from in-memory store
+async function getUnitsList(buildingId = null) {
+  if (store.isConnected) {
+    try {
+      let query = `
+        SELECT un.*, b.name AS building_name, u.name AS tenant_name
+        FROM units un
+        LEFT JOIN buildings b ON b.id = un.building_id
+        LEFT JOIN users u ON u.id = un.tenant_id
+      `;
+      const params = [];
+      if (buildingId) {
+        query += ' WHERE un.building_id = $1';
+        params.push(buildingId);
+      }
+      query += ' ORDER BY un.created_at DESC';
+      const res = await store.query(query, params);
+      return res.rows.map(u => ({ ...u, buildingName: u.building_name, tenantName: u.tenant_name }));
+    } catch (e) {
+      console.warn('DB units query failed, falling back to memory:', e.message);
+    }
+  }
+  // fallback to in-memory
+  const units = (store.data.units || []).filter(u => !buildingId || u.buildingId === buildingId);
+  return units.map(unit => {
+    const building = (store.data.buildings || []).find(b => b.id === unit.buildingId);
+    return { ...unit, buildingName: building ? building.name : 'Unknown Building' };
+  });
+}
+
 // GET /api/admin/buildings - Get all buildings
 app.get('/api/admin/buildings', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
-    
-    const buildings = store.data.buildings || [];
-    
-    // Add stats to each building
-    const buildingsWithStats = buildings.map(building => {
-      const units = (store.data.units || []).filter(u => u.buildingId === building.id);
-      const occupiedUnits = units.filter(u => u.status === 'occupied' || u.isOccupied).length;
-      const availableUnits = units.filter(u => u.status === 'available').length;
-      const maintenanceUnits = units.filter(u => u.status === 'maintenance').length;
-      
-      return {
-        ...building,
-        totalUnits: units.length,
-        occupiedUnits,
-        availableUnits,
-        maintenanceUnits
-      };
-    });
-    
-    res.json({ success: true, count: buildingsWithStats.length, buildings: buildingsWithStats });
+    const buildings = await getBuildingsList();
+    res.json({ success: true, count: buildings.length, buildings });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/buildings - Create a new building
+app.post('/api/admin/buildings', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { name, location, landlordId, totalFloors, description, amenities, status } = req.body;
+    if (!name || !location) {
+      return res.status(400).json({ success: false, message: 'Building name and location are required.' });
+    }
+    const id = 'bldg-' + Date.now();
+    const createdAt = new Date().toISOString();
+
+    if (store.isConnected) {
+      try {
+        // Ensure buildings table exists
+        await store.query(`
+          CREATE TABLE IF NOT EXISTS buildings (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            location TEXT,
+            landlord_id TEXT,
+            total_floors INTEGER DEFAULT 1,
+            description TEXT,
+            amenities JSONB DEFAULT '[]',
+            status TEXT DEFAULT 'active',
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            created_by TEXT,
+            raw_data JSONB DEFAULT '{}'
+          )
+        `);
+        await store.query(
+          `INSERT INTO buildings (id, name, location, landlord_id, total_floors, description, amenities, status, created_at, created_by)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+          [id, name.trim(), location.trim(), landlordId || null, parseInt(totalFloors) || 1,
+           description || null, JSON.stringify(amenities || []), status || 'active', createdAt, req.user.id]
+        );
+      } catch (dbErr) {
+        console.warn('DB building insert error:', dbErr.message);
+        // fallback: save in memory
+        if (!store.data.buildings) store.data.buildings = [];
+        store.data.buildings.unshift({ id, name, location, landlordId, totalFloors, description, amenities, status, createdAt, createdBy: req.user.id });
+        if (store.save) store.save();
+      }
+    } else {
+      if (!store.data.buildings) store.data.buildings = [];
+      store.data.buildings.unshift({ id, name, location, landlordId, totalFloors, description, amenities, status, createdAt, createdBy: req.user.id });
+      if (store.save) store.save();
+    }
+
+    res.json({ success: true, message: `Building "${name}" created successfully.`, building: { id, name, location, landlordId, totalFloors, description, status, createdAt } });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/admin/buildings/:id - Update a building
+app.put('/api/admin/buildings/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    const { name, location, totalFloors, description, status } = req.body;
+    if (store.isConnected) {
+      try {
+        await store.query(
+          `UPDATE buildings SET name=COALESCE($1,name), location=COALESCE($2,location), total_floors=COALESCE($3,total_floors), description=COALESCE($4,description), status=COALESCE($5,status) WHERE id=$6`,
+          [name || null, location || null, totalFloors ? parseInt(totalFloors) : null, description || null, status || null, id]
+        );
+      } catch (dbErr) {
+        console.warn('DB building update error:', dbErr.message);
+      }
+    } else {
+      const b = (store.data.buildings || []).find(b => b.id === id);
+      if (b) { Object.assign(b, { name, location, totalFloors, description, status }); if (store.save) store.save(); }
+    }
+    res.json({ success: true, message: 'Building updated successfully.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/buildings/:id - Delete a building
+app.delete('/api/admin/buildings/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    if (store.isConnected) {
+      try { await store.query('DELETE FROM buildings WHERE id = $1', [id]); } catch (e) { console.warn('DB delete building error:', e.message); }
+    } else {
+      if (store.data.buildings) { store.data.buildings = store.data.buildings.filter(b => b.id !== id); if (store.save) store.save(); }
+    }
+    res.json({ success: true, message: 'Building deleted.' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -2708,29 +2863,11 @@ app.get('/api/admin/buildings/:id', requireAuth, async (req, res) => {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
-    
     const { id } = req.params;
-    const building = (store.data.buildings || []).find(b => b.id === id);
-    
-    if (!building) {
-      return res.status(404).json({ success: false, message: 'Building not found.' });
-    }
-    
-    // Add stats
-    const units = (store.data.units || []).filter(u => u.buildingId === id);
-    const occupiedUnits = units.filter(u => u.status === 'occupied' || u.isOccupied).length;
-    const availableUnits = units.filter(u => u.status === 'available').length;
-    const maintenanceUnits = units.filter(u => u.status === 'maintenance').length;
-    
-    const buildingWithStats = {
-      ...building,
-      totalUnits: units.length,
-      occupiedUnits,
-      availableUnits,
-      maintenanceUnits
-    };
-    
-    res.json({ success: true, building: buildingWithStats });
+    const all = await getBuildingsList();
+    const building = all.find(b => b.id === id);
+    if (!building) return res.status(404).json({ success: false, message: 'Building not found.' });
+    res.json({ success: true, building });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -2742,11 +2879,59 @@ app.get('/api/admin/buildings/:id/units', requireAuth, async (req, res) => {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
-    
-    const { id } = req.params;
-    const units = (store.data.units || []).filter(u => u.buildingId === id);
-    
+    const units = await getUnitsList(req.params.id);
     res.json({ success: true, count: units.length, units });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/units - Create a new unit inside a building
+app.post('/api/admin/units', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { buildingId, unitNumber, bedrooms, bathrooms, price, status, description } = req.body;
+    if (!buildingId || !unitNumber) {
+      return res.status(400).json({ success: false, message: 'buildingId and unitNumber are required.' });
+    }
+    const id = 'unit-' + Date.now();
+    const createdAt = new Date().toISOString();
+
+    if (store.isConnected) {
+      try {
+        await store.query(`
+          CREATE TABLE IF NOT EXISTS units (
+            id TEXT PRIMARY KEY,
+            building_id TEXT,
+            unit_number TEXT,
+            bedrooms INTEGER DEFAULT 0,
+            bathrooms INTEGER DEFAULT 0,
+            price NUMERIC DEFAULT 0,
+            status TEXT DEFAULT 'available',
+            tenant_id TEXT,
+            description TEXT,
+            created_at TIMESTAMPTZ DEFAULT NOW()
+          )
+        `);
+        await store.query(
+          `INSERT INTO units (id, building_id, unit_number, bedrooms, bathrooms, price, status, description, created_at)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+          [id, buildingId, unitNumber, parseInt(bedrooms)||0, parseInt(bathrooms)||0, parseFloat(price)||0, status||'available', description||null, createdAt]
+        );
+      } catch (dbErr) {
+        console.warn('DB unit insert error:', dbErr.message);
+        if (!store.data.units) store.data.units = [];
+        store.data.units.unshift({ id, buildingId, unitNumber, bedrooms, bathrooms, price, status, description, createdAt });
+        if (store.save) store.save();
+      }
+    } else {
+      if (!store.data.units) store.data.units = [];
+      store.data.units.unshift({ id, buildingId, unitNumber, bedrooms, bathrooms, price, status, description, createdAt });
+      if (store.save) store.save();
+    }
+    res.json({ success: true, message: `Unit "${unitNumber}" created.`, unit: { id, buildingId, unitNumber, bedrooms, bathrooms, price, status, createdAt } });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -2758,19 +2943,33 @@ app.get('/api/admin/units', requireAuth, async (req, res) => {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
-    
-    const units = store.data.units || [];
-    
-    // Add building names
-    const unitsWithBuildings = units.map(unit => {
-      const building = (store.data.buildings || []).find(b => b.id === unit.buildingId);
-      return {
-        ...unit,
-        buildingName: building ? building.name : 'Unknown Building'
-      };
-    });
-    
-    res.json({ success: true, count: unitsWithBuildings.length, units: unitsWithBuildings });
+    const units = await getUnitsList();
+    res.json({ success: true, count: units.length, units });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/admin/units/:id - Update a unit
+app.put('/api/admin/units/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    const { unitNumber, bedrooms, bathrooms, price, status } = req.body;
+    if (store.isConnected) {
+      try {
+        await store.query(
+          `UPDATE units SET unit_number=COALESCE($1,unit_number), bedrooms=COALESCE($2,bedrooms), bathrooms=COALESCE($3,bathrooms), price=COALESCE($4,price), status=COALESCE($5,status) WHERE id=$6`,
+          [unitNumber || null, bedrooms != null ? parseInt(bedrooms) : null, bathrooms != null ? parseInt(bathrooms) : null, price != null ? parseFloat(price) : null, status || null, id]
+        );
+      } catch (dbErr) { console.warn('DB unit update error:', dbErr.message); }
+    } else {
+      const u = (store.data.units || []).find(u => u.id === id);
+      if (u) { Object.assign(u, { unitNumber, bedrooms, bathrooms, price, status }); if (store.save) store.save(); }
+    }
+    res.json({ success: true, message: 'Unit updated.' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -2786,7 +2985,7 @@ app.post('/api/admin/users/:id/toggle-verify', requireAuth, async (req, res) => 
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found.' });
     }
-    const updated = store.updateUser(id, { isVerified: !user.isVerified });
+    const updated = await store.updateUser(id, { isVerified: !user.isVerified });
     res.json({
       success: true,
       message: `User ${user.name} is now ${updated.isVerified ? 'VERIFIED' : 'UNVERIFIED'}`,
