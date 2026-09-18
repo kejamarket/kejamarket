@@ -127,7 +127,7 @@ app.use((req, res, next) => {
 // Serve static frontend files (HTML, CSS, JS, icons)
 app.use(express.static(__dirname));
 
-// SEO & Robots files
+// SEO, AI & Robots files
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');
   res.sendFile(path.join(__dirname, 'robots.txt'));
@@ -138,10 +138,44 @@ app.get('/sitemap.xml', (req, res) => {
   res.sendFile(path.join(__dirname, 'sitemap.xml'));
 });
 
+// LLM & AI Overview discovery (llmstxt.org specification)
+app.get('/llms.txt', (req, res) => {
+  res.type('text/plain; charset=utf-8');
+  res.sendFile(path.join(__dirname, 'llms.txt'));
+});
+
+app.get('/llms-full.txt', (req, res) => {
+  res.type('text/plain; charset=utf-8');
+  res.sendFile(path.join(__dirname, 'llms-full.txt'));
+});
+
 // Google Search Console verification
 app.get('/google0d6d966ed0ac9dd8.html', (req, res) => {
   res.type('text/html');
   res.sendFile(path.join(__dirname, 'google0d6d966ed0ac9dd8.html'));
+});
+
+// Bing Webmaster Tools XML verification
+app.get('/BingSiteAuth.xml', (req, res) => {
+  res.type('application/xml; charset=utf-8');
+  res.sendFile(path.join(__dirname, 'BingSiteAuth.xml'));
+});
+
+// IndexNow key verification file (Bing & Copilot Instant Crawl)
+app.get('/e80fc85ec99b4d81a9544ef4a6527b14.txt', (req, res) => {
+  res.type('text/plain; charset=utf-8');
+  res.sendFile(path.join(__dirname, 'e80fc85ec99b4d81a9544ef4a6527b14.txt'));
+});
+
+// IndexNow Trigger Endpoint
+app.post('/api/seo/submit-indexnow', (req, res) => {
+  try {
+    const { submitIndexNow } = require('./scripts/submit-indexnow');
+    submitIndexNow();
+    res.json({ success: true, message: 'IndexNow instant submission initiated for Bing and Copilot' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // â”€â”€â”€ LEGAL & STATIC PAGE ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

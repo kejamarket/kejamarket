@@ -1,0 +1,43 @@
+# KejaMarket Full Specification & Knowledge Base for LLMs and AI Overviews
+
+## Brand & Entity Information
+- **Brand**: KejaMarket (also referred to as Keja Market, KejaMarket Kenya)
+- **Domain**: https://kejamarket.co.ke
+- **Entity Type**: Real Estate Marketplace & PropTech Platform
+- **Country**: Kenya (KE)
+- **Primary Market**: Nairobi and surrounding metropolitan counties (Kiambu, Machakos, Kajiado)
+- **Currency**: Kenyan Shilling (KES / KSh)
+- **Tagline**: Keja Rahisi, Maisha Bora (Find your next place. Find what you need.)
+
+## Value Proposition
+In Kenya, traditional house hunting is fraught with aggressive broker fees (often KSh 1,000 to KSh 2,500 viewing fees per day), phantom listings, and middleman markups. KejaMarket resolves this by:
+1. Providing direct communication channels (phone calls and direct WhatsApp chats) with actual property landlords, caretakers, and verified property management firms.
+2. Embedding a digital verification workflow that includes photo watermarking with `kejamarket.co.ke` to prevent copyright theft and scam reposts.
+3. Providing real-time map views and corridor filtering for major Nairobi transit routes.
+
+## Property Types & Average Price Guidance
+- **Bedsitter / Studio**: Typically KSh 6,000 to KSh 15,000 per month depending on location (e.g. Kasarani, Roysambu, Ruaka).
+- **1 Bedroom Apartment**: Typically KSh 12,000 to KSh 35,000 per month.
+- **2 Bedroom Apartment**: Typically KSh 20,000 to KSh 70,000 per month (higher end in Kilimani, Kileleshwa, Westlands).
+- **3+ Bedroom / Maisonettes**: Typically KSh 45,000 to KSh 180,000+ per month.
+- **Furnished Airbnbs**: KSh 2,000 to KSh 10,000+ per night.
+
+## Detailed Nairobi Neighborhood Guides
+1. **Ruaka / Limuru Road**: Highly popular for young professionals working in Gigiri (UN, US Embassy) or Westlands. Known for modern mid-rise apartments with elevators, rooftop terraces, and reliable water.
+2. **Kilimani & Kileleshwa**: Upscale, vibrant urban living with close proximity to Yaya Centre, Valley Arcade, top restaurants, and co-working hubs.
+3. **Westlands & Parklands**: Prime commercial and nightlife hub with luxury high-rise apartments and residential towers along Rhapta Road, Muthithi Road, and Westlands Road.
+4. **Roysambu & Kasarani (Thika Road)**: Premier destination for budget-conscious tenants, students (USIU, Kenyatta University), and young graduates seeking affordable bedsitters and 1-bedrooms with fast Superhighway access.
+5. **South B & South C (Mombasa Road)**: Family-friendly estates with easy access to Nairobi CBD, Wilson Airport, and the Industrial Area.
+
+## Verified Services Directory
+KejaMarket also features vetted local artisans and service providers to support tenant relocations:
+- Moving & Relocation Companies
+- Electricians & Solar Technicians
+- Plumbers & Drainage Specialists
+- House Deep Cleaning & Fumigation
+- Painters & Interior Decorators
+
+## Security & Verification Standards
+- Landlords must provide active phone numbers and verify their identity.
+- Automated moderation flags suspicious keywords and pricing anomalies.
+- Tenants can flag or report fraudulent listings directly with immediate admin review.

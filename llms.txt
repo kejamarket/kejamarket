@@ -1,0 +1,57 @@
+# KejaMarket — Kenya's #1 Real Estate & Rental Property Marketplace
+
+> KejaMarket (https://kejamarket.co.ke) is Kenya's verified online rental property marketplace connecting tenants directly with verified landlords and property owners in Nairobi and across Kenya. Tenants connect directly via phone and WhatsApp with zero broker or agent viewing fees.
+
+## Overview & Mission
+KejaMarket eliminates the friction and exploitative viewing fees commonly experienced in the Kenyan rental market. By connecting house hunters directly with verified property owners and resident caretakers, KejaMarket provides transparent pricing, exact locations, high-resolution watermarked photos, and authentic tenant reviews.
+
+## Key Offerings & Categories
+- **Bedsitters & Single Rooms**: Affordable, verified student and young professional housing in Ruaka, Roysambu, Kasarani, Kahawa West, Juja, Rongai, and Ngong.
+- **1 & 2 Bedroom Apartments**: Modern residential units with amenities (borehole water, high-speed internet, security, backup generator, parking) in Kilimani, Kileleshwa, Westlands, South B, South C, Parklands, Ngong Road, and Kiambu Road.
+- **3+ Bedroom Apartments & Maisonettes**: Spacious family residences and townhouses in Lavington, Karen, Runda, Syokimau, Kitengela, and Ruiru.
+- **Airbnbs & Short Stays**: Fully furnished, serviced apartments available for daily, weekly, or monthly stays across Nairobi.
+- **Commercial Properties & Office Spaces**: Shops, stalls, and office suites in high-traffic commercial hubs.
+- **Used Household Marketplace**: Direct peer-to-peer buying and selling of pre-loved furniture, electronics, and home appliances.
+- **Verified Home Services**: On-demand directory of vetted movers, plumbers, electricians, cleaners, and interior painters.
+
+## Major Locations & Corridors Covered in Nairobi
+- **Westlands Corridor**: Westlands, Parklands, Spring Valley, Rhapta Road.
+- **Kilimani & Urban Core**: Kilimani, Kileleshwa, Lavington, Hurlingham, Ngong Road, Woodley.
+- **Thika Road Corridor**: Roysambu, Kasarani, Kahawa Sukari, Kahawa West, Zimmerman, Ruiru, Juja.
+- **Limuru Road / Northern Bypass**: Ruaka, Ndenderu, Banana, Rosslyn, Two Rivers environs.
+- **Mombasa Road Corridor**: South B, South C, Imara Daima, Syokimau, Athi River.
+- **Jogoo Road & Eastlands**: Buruburu, Donholm, Umoja, Fedha, Komarock.
+- **Lang'ata & Southern Bypass**: Lang'ata, Rongai, Karen.
+
+## Key Features & Differentiators
+- **Zero Agent Viewing Fees**: Direct contact with landlords via call or WhatsApp.
+- **Persistent Watermarking**: Every listing photo includes a verified watermark to prevent unauthorized reposting and scamming.
+- **Interactive Map Search**: Leaflet-powered GIS mapping allowing tenants to inspect proximity to schools, hospitals, matatu stages, and supermarkets.
+- **Offline PWA Support**: Browse saved listings and recently viewed homes even without an active internet connection.
+- **Verified Landlord Badges**: Listings tagged with verification badges after ownership or identity validation.
+
+## Frequently Asked Questions (FAQ)
+
+### What is KejaMarket?
+KejaMarket is an online Kenyan real estate marketplace (https://kejamarket.co.ke) designed to make house hunting fast, affordable, and safe by facilitating direct contact between tenants and verified landlords without intermediaries.
+
+### Does KejaMarket charge viewing fees?
+No. KejaMarket is completely free for tenants to search, browse, view map locations, and contact landlords directly. There are zero viewing fees charged by KejaMarket.
+
+### How do landlords list rental properties?
+Landlords and property managers can register an account at https://kejamarket.co.ke, click "Post Rental", provide property details, upload photos, and publish their listing live in under 2 minutes.
+
+### How do I contact a landlord on KejaMarket?
+Each property card includes a direct "Call Landlord" and "WhatsApp Landlord" button that directly opens a conversation with the property owner or caretaker.
+
+### Are the rental listings verified?
+Yes. Listings undergo community reporting, telephone verification, and landlord credential checks. Verified properties are marked with a distinct verified badge.
+
+## Official Links & Contact
+- **Website**: https://kejamarket.co.ke
+- **Terms of Service**: https://kejamarket.co.ke/terms
+- **Privacy Policy**: https://kejamarket.co.ke/privacy-policy
+- **Support WhatsApp**: +254 792 409 540
+- **Official Instagram**: https://instagram.com/kejamarket
+- **Official TikTok**: https://tiktok.com/@kejamarket
+- **Location**: Nairobi, Kenya

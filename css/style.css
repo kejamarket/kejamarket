@@ -4457,3 +4457,220 @@ body.kejamarket-offline .post-btn {
   opacity: 0.9;
 }
 
+/* ====================================================================
+   SEO & AI OVERVIEW CONTENT BLOCK & ACCORDION
+   ==================================================================== */
+.keja-seo-content-block {
+  margin: 40px auto 20px auto;
+  max-width: 1400px;
+  width: 96%;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.keja-seo-container {
+  padding: 36px 32px;
+}
+
+.keja-seo-hero {
+  max-width: 920px;
+  margin-bottom: 28px;
+}
+
+.keja-seo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0fdf4;
+  color: #15803d;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #bbf7d0;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.keja-seo-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.28;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.keja-seo-intro {
+  font-size: 0.96rem;
+  color: #475569;
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+.keja-corridors-guide {
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #edf2f7;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+
+.keja-corridors-heading {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.keja-corridor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.seo-location-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 0.86rem;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+}
+
+.seo-location-chip:hover {
+  border-color: #008744;
+  background: #f0fdf4;
+  color: #008744;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 135, 68, 0.12);
+}
+
+.seo-location-chip small {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.keja-faq-wrapper {
+  margin-top: 10px;
+}
+
+.keja-faq-header {
+  margin-bottom: 20px;
+}
+
+.keja-faq-header h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.keja-faq-header p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.keja-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .keja-faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.keja-faq-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.keja-faq-item[open] {
+  border-color: #86efac;
+  box-shadow: 0 4px 12px rgba(0, 135, 68, 0.06);
+}
+
+.keja-faq-question {
+  padding: 14px 18px;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  user-select: none;
+  background: #f8fafc;
+  transition: background 0.15s;
+}
+
+.keja-faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.keja-faq-item[open] .keja-faq-question {
+  background: #f0fdf4;
+  color: #047857;
+}
+
+.keja-faq-question .faq-icon {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  transition: transform 0.2s ease;
+}
+
+.keja-faq-item[open] .faq-icon {
+  transform: rotate(180deg);
+  color: #047857;
+}
+
+.keja-faq-answer {
+  padding: 16px 18px;
+  font-size: 0.88rem;
+  color: #334155;
+  line-height: 1.6;
+  border-top: 1px solid #f1f5f9;
+}
+
+.keja-faq-answer p {
+  margin: 0 0 8px 0;
+}
+
+.keja-faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
+.keja-faq-answer ul {
+  margin: 6px 0 0 18px;
+  padding: 0;
+}
+
+.keja-faq-answer li {
+  margin-bottom: 4px;
+}
+
+

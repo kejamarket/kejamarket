@@ -2,38 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   
-  <!-- Homepage - Main marketplace -->
+  <!-- Homepage - Main Nairobi Rental Marketplace -->
   <url>
     <loc>https://kejamarket.co.ke/</loc>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <lastmod>2026-09-16</lastmod>
+    <image:image>
+      <image:loc>https://kejamarket.co.ke/icons/android-chrome-512x512.png</image:loc>
+      <image:title>KejaMarket - Kenya's #1 Real Estate and Rental Property Marketplace</image:title>
+      <image:caption>Find verified rental houses, bedsitters and apartments directly from landlords in Nairobi, Kenya.</image:caption>
+    </image:image>
   </url>
-  
-  <!-- Public API endpoints for properties -->
+
+  <!-- Terms & Conditions -->
   <url>
-    <loc>https://kejamarket.co.ke/api/properties</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <loc>https://kejamarket.co.ke/terms</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
-  
-  <!-- Public API endpoints for services -->
+
+  <!-- Privacy Policy -->
   <url>
-    <loc>https://kejamarket.co.ke/api/services</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://kejamarket.co.ke/privacy-policy</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
-  
-  <!-- Public API endpoints for marketplace -->
+
+  <!-- Offline PWA Portal -->
   <url>
-    <loc>https://kejamarket.co.ke/api/marketplace</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Offline page (PWA) -->
-  <url>
-    <loc>https://kejamarket.co.ke/offline.html</loc>
+    <loc>https://kejamarket.co.ke/offline</loc>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
