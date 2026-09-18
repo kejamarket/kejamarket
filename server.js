@@ -150,6 +150,11 @@ app.get('/llms-full.txt', (req, res) => {
 });
 
 // Google Search Console verification
+app.get('/google642f7a569b79cbd3.html', (req, res) => {
+  res.type('text/html');
+  res.sendFile(path.join(__dirname, 'google642f7a569b79cbd3.html'));
+});
+
 app.get('/google0d6d966ed0ac9dd8.html', (req, res) => {
   res.type('text/html');
   res.sendFile(path.join(__dirname, 'google0d6d966ed0ac9dd8.html'));

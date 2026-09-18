@@ -55,6 +55,7 @@ Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /BingSiteAuth.xml
 Allow: /e80fc85ec99b4d81a9544ef4a6527b14.txt
+Allow: /google642f7a569b79cbd3.html
 Allow: /google0d6d966ed0ac9dd8.html
 Allow: /robots.txt
 Allow: /sitemap.xml
