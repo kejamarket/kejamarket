@@ -3242,47 +3242,72 @@ class NairobiRentalsApp {
   handleCardWhatsApp(propertyId, event) {
     if (event) event.stopPropagation();
     const p = this.properties.find(x => x.id === propertyId);
-    const text = encodeURIComponent(this._getShareText(p) + '\n' + this._getShareUrl(propertyId));
-    window.open(`https://wa.me/?text=${text}`, '_blank', 'noopener,noreferrer');
+    const shareUrl = this._getShareUrl(propertyId);
+    const text = this._getShareText(p) + '\n' + shareUrl;
+    // On mobile, open WhatsApp directly; on desktop open WhatsApp Web
+    const encodedText = encodeURIComponent(text);
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const waUrl = isMobile
+      ? `whatsapp://send?text=${encodedText}`
+      : `https://web.whatsapp.com/send?text=${encodedText}`;
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
   }
 
   handleCardFacebook(propertyId, event) {
     if (event) event.stopPropagation();
-    const url = encodeURIComponent(this._getShareUrl(propertyId));
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'noopener,noreferrer');
+    const shareUrl = this._getShareUrl(propertyId);
+    const p = this.properties.find(x => x.id === propertyId);
+    const quote = encodeURIComponent(this._getShareText(p));
+    const url = encodeURIComponent(shareUrl);
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${quote}`,
+      '_blank', 'noopener,noreferrer,width=600,height=500'
+    );
   }
 
   handleCardInstagram(propertyId, event) {
     if (event) event.stopPropagation();
-    // Instagram doesn't support direct URL sharing; copy link + show toast
     const shareUrl = this._getShareUrl(propertyId);
     const p = this.properties.find(x => x.id === propertyId);
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        this.showToast('Link copied! Open Instagram and paste in your story or bio.', 'success');
-      }).catch(() => {
-        this._fallbackCopy(shareUrl);
-        this.showToast('Link copied! Paste it in your Instagram story or bio.', 'info');
-      });
+    const shareText = this._getShareText(p) + '\n' + shareUrl;
+    // Use Web Share API on mobile (shows native share sheet → user can pick Instagram)
+    if (navigator.share) {
+      navigator.share({
+        title: p ? p.title : 'KejaMarket Listing',
+        text: shareText,
+        url: shareUrl
+      }).catch(() => {/* user cancelled */});
     } else {
-      this._fallbackCopy(shareUrl);
-      this.showToast('Link copied! Paste it in your Instagram story.', 'info');
+      // Desktop fallback: copy link + open Instagram
+      const copyFn = navigator.clipboard
+        ? navigator.clipboard.writeText(shareUrl)
+        : Promise.resolve(this._fallbackCopy(shareUrl));
+      copyFn.then ? copyFn.then(() => {}).catch(() => this._fallbackCopy(shareUrl)) : null;
+      this.showToast('Link copied! Paste it in your Instagram story or bio.', 'success');
+      setTimeout(() => window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer'), 600);
     }
   }
 
   handleCardTikTok(propertyId, event) {
     if (event) event.stopPropagation();
     const shareUrl = this._getShareUrl(propertyId);
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        this.showToast('Link copied! Add it to your TikTok video description or bio.', 'success');
-      }).catch(() => {
-        this._fallbackCopy(shareUrl);
-        this.showToast('Link copied! Paste it in your TikTok bio.', 'info');
-      });
+    const p = this.properties.find(x => x.id === propertyId);
+    const shareText = this._getShareText(p) + '\n' + shareUrl;
+    // Use Web Share API on mobile (shows native share sheet → user can pick TikTok)
+    if (navigator.share) {
+      navigator.share({
+        title: p ? p.title : 'KejaMarket Listing',
+        text: shareText,
+        url: shareUrl
+      }).catch(() => {/* user cancelled */});
     } else {
-      this._fallbackCopy(shareUrl);
-      this.showToast('Link copied for TikTok!', 'info');
+      // Desktop fallback: copy link + open TikTok
+      const copyFn = navigator.clipboard
+        ? navigator.clipboard.writeText(shareUrl)
+        : Promise.resolve(this._fallbackCopy(shareUrl));
+      copyFn.then ? copyFn.then(() => {}).catch(() => this._fallbackCopy(shareUrl)) : null;
+      this.showToast('Link copied! Paste it in your TikTok video description or bio.', 'success');
+      setTimeout(() => window.open('https://www.tiktok.com/@kejamarket', '_blank', 'noopener,noreferrer'), 600);
     }
   }
 
