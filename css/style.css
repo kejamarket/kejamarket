@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Nairobi Rentals Live (Jiji Kenya Style Real Estate Platform)
    Main Application Stylesheet
    ========================================================================== */
@@ -4435,3 +4435,25 @@ button, input, select, textarea {
 @media (max-width: 520px) {
   .keja-footer-container { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
 }
+
+/* Offline Mode Polish & Fallbacks */
+@keyframes kejaFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body.kejamarket-offline .online-only-badge {
+  display: inline-block !important;
+}
+
+body.kejamarket-offline .auth-btn,
+body.kejamarket-offline .post-btn {
+  opacity: 0.9;
+}
+

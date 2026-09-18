@@ -3,18 +3,205 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Keja – Offline</title>
+  <title>KejaMarket – Offline Mode</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="stylesheet" href="/vendor/fonts/plus-jakarta-sans.css">
+  <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
   <style>
-    body {font-family: 'Plus Jakarta Sans', sans-serif; background:#f4f7f6; color:#1f2937; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;}
-    .card {background:#fff; padding:2rem; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); text-align:center;}
-    h1 {margin-bottom:0.5rem; color:#4f46e5;}
-    p {margin:0;}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .offline-card {
+      background: #ffffff;
+      color: #0f172a;
+      max-width: 480px;
+      width: 100%;
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .offline-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #00b53f 0%, #ca8a04 100%);
+    }
+    .icon-wrapper {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: #fef3c7;
+      color: #ca8a04;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 16px rgba(202, 138, 4, 0.15);
+    }
+    h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .brand-tag {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #00b53f;
+      background: #e8f8ee;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    p {
+      color: #64748b;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn-primary {
+      background: #00b53f;
+      color: #ffffff;
+      border: none;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0, 181, 63, 0.3);
+    }
+    .btn-primary:hover {
+      background: #009634;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    .network-indicator {
+      margin-top: 20px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>You're Offline</h1>
-    <p>Keja cannot fetch new data right now. Please check your internet connection.</p>
+  <div class="offline-card">
+    <div class="icon-wrapper">
+      <i class="fas fa-wifi-slash"></i>
+    </div>
+    <div class="brand-tag">KejaMarket Kenya</div>
+    <h1>You're Currently Offline</h1>
+    <p>
+      It seems your internet connection is unavailable. Don't worry — previously viewed listings and the KejaMarket app shell remain accessible offline.
+    </p>
+
+    <div class="actions">
+      <button class="btn-primary" id="btn-retry" onclick="retryConnection()">
+        <i class="fas fa-rotate-right"></i> Try Reconnecting
+      </button>
+      <a href="/" class="btn-secondary">
+        <i class="fas fa-home"></i> View Cached Properties
+      </a>
+    </div>
+
+    <div class="network-indicator" id="net-status">
+      <span class="dot" id="status-dot"></span>
+      <span id="status-text">No active internet connection detected</span>
+    </div>
   </div>
+
+  <script>
+    async function retryConnection() {
+      const btn = document.getElementById('btn-retry');
+      const dot = document.getElementById('status-dot');
+      const text = document.getElementById('status-text');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking connection...';
+
+      try {
+        const res = await fetch('/manifest.json?t=' + Date.now(), { method: 'HEAD', cache: 'no-store' });
+        if (res.ok) {
+          dot.style.background = '#22c55e';
+          text.textContent = 'Connection restored! Redirecting...';
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 800);
+        } else {
+          throw new Error('Still offline');
+        }
+      } catch (e) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-rotate-right"></i> Try Reconnecting';
+        dot.style.background = '#ef4444';
+        text.textContent = 'Still offline. Please check your WiFi or mobile data.';
+      }
+    }
+
+    window.addEventListener('online', () => {
+      document.getElementById('status-dot').style.background = '#22c55e';
+      document.getElementById('status-text').textContent = 'Back online! Redirecting...';
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
