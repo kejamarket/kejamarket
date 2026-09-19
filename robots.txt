@@ -50,6 +50,9 @@ Allow: /privacy-policy
 Allow: /privacy-policy.html
 Allow: /terms
 Allow: /terms.html
+Allow: /property/
+Allow: /rentals/
+Allow: /guides/
 Allow: /manifest.json
 Allow: /llms.txt
 Allow: /llms-full.txt
@@ -59,6 +62,9 @@ Allow: /google642f7a569b79cbd3.html
 Allow: /google0d6d966ed0ac9dd8.html
 Allow: /robots.txt
 Allow: /sitemap.xml
+Allow: /sitemap-properties.xml
+Allow: /sitemap-locations.xml
+Allow: /sitemap-guides.xml
 Allow: /css/
 Allow: /js/
 Allow: /icons/
@@ -68,12 +74,18 @@ Allow: /api/services
 Allow: /api/marketplace
 Allow: /api/health
 
-# Disallow Internal Systems & Dashboards
+# Disallow Private User & Admin Portals
+Disallow: /dashboard
+Disallow: /dashboard.html
+Disallow: /admin
 Disallow: /admin-dashboard.html
 Disallow: /admin-dashboard-old.html
-Disallow: /dashboard.html
+Disallow: /landlord
 Disallow: /landlord.html
 Disallow: /landlord-portal.html
+Disallow: /profile
+Disallow: /messages
+Disallow: /messages.html
 
 # Disallow Admin Scripts & Sensitive APIs
 Disallow: /js/admin*.js
@@ -103,4 +115,7 @@ Disallow: /*.log
 # SITEMAPS & AI SPECIFICATIONS
 # ═══════════════════════════════════════════════════════════
 Sitemap: https://kejamarket.co.ke/sitemap.xml
+Sitemap: https://kejamarket.co.ke/sitemap-properties.xml
+Sitemap: https://kejamarket.co.ke/sitemap-locations.xml
+Sitemap: https://kejamarket.co.ke/sitemap-guides.xml
 LLMs-Txt: https://kejamarket.co.ke/llms.txt

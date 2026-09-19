@@ -7576,7 +7576,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-100",
-    "title": "TikTok House Tour: 2 Bedroom Master Ensuite in Ruaka (Near Quickmart)",
+    "title": "2 Bedroom Master Ensuite in Ruaka (Near Quickmart)",
     "description": "Viral TikTok property tour! Newly built 2-bedroom master ensuite apartment in central Ruaka near Quickmart. High-speed lift, rooftop lounge, backup generator, borehole water 24/7, token meter, dedicated parking slot. TikTok: @nairobihousehunter",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -7673,7 +7673,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-101",
-    "title": "Facebook Marketplace: Spacious Bedsitter in Ruaka (Slaughter Rd)",
+    "title": "Spacious Bedsitter in Ruaka (Slaughter Rd)",
     "description": "Direct listing from Facebook Marketplace group: Clean, tiled bedsitter with private balcony, kitchen counter with cupboards, hot instant shower, unlimited borehole water, token meter, 24/7 security guard.",
     "category": "Bedsitter / Studio",
     "bedrooms": 1,
@@ -7765,7 +7765,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-102",
-    "title": "TikTok House Hunting: Modern 1 Bedroom in Ruaka near Two Rivers",
+    "title": "Modern 1 Bedroom in Ruaka near Two Rivers",
     "description": "Featured on TikTok #househuntingnairobi: Executive 1-bedroom apartment walking distance to Two Rivers Mall. Spacious sitting area, fitted bedroom wardrobes, biometric gate entry, CCTV, lift, parking. Ready for immediate occupancy.",
     "category": "1 Bedroom",
     "bedrooms": 1,
@@ -7862,8 +7862,8 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-103",
-    "title": "TikTok Viral: Newly Built 1 Bedroom in Thindigua, Kiambu Road",
-    "description": "TikTok sensation: Modern 1-bedroom flat in Thindigua. Polished ceramic tiles, open kitchen with granite breakfast island, scenic balcony, borehole water, rooftop gym, elevator, 24/7 security watchman.",
+    "title": "Newly Built 1 Bedroom in Thindigua, Kiambu Road",
+    "description": "Modern 1-bedroom flat in Thindigua. Polished ceramic tiles, open kitchen with granite breakfast island, scenic balcony, borehole water, rooftop gym, elevator, 24/7 security watchman.",
     "category": "1 Bedroom",
     "bedrooms": 1,
     "bathrooms": 1,
@@ -7959,7 +7959,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-104",
-    "title": "Facebook Direct: 2 Bedroom Master Ensuite in Fourways Junction",
+    "title": "2 Bedroom Master Ensuite in Fourways Junction",
     "description": "From Nairobi Real Estate Facebook group: Serene 2 bedroom master ensuite apartment inside Fourways Junction gated community on Kiambu Road. Swimming pool, children play area, borehole water, 24/7 multi-barrier security.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -8056,7 +8056,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-105",
-    "title": "TikTok Tour: Spacious Bedsitter in Mirema Drive, Roysambu",
+    "title": "Spacious Bedsitter in Mirema Drive, Roysambu",
     "description": "Trending on TikTok: Clean tiled bedsitter in Roysambu Mirema Drive near TRM. Kitchenette with granite splash, hot instant shower, high speed elevator, borehole water 24/7, biometric gate access, CCTV. TikTok: @roysamburentals",
     "category": "Bedsitter / Studio",
     "bedrooms": 1,
@@ -8245,7 +8245,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-107",
-    "title": "TikTok House Tour: 2 Bedroom in Kasarani (Clay City near Season)",
+    "title": "2 Bedroom in Kasarani (Clay City near Season)",
     "description": "TikTok property tour: Modern 2 bedroom flat in Clay City Kasarani. Ample parking, ceramic tiles, modern fitted kitchen, borehole water backup, 24/7 security guard. Fast commute to Thika Road.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -8342,7 +8342,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-108",
-    "title": "Facebook Direct: Clean Bedsitter in Kahawa Wendani near KU Footbridge",
+    "title": "Clean Bedsitter in Kahawa Wendani near KU Footbridge",
     "description": "Facebook post in KU Students & Tenants group: Well-kept bedsitter 5 minutes from KU footbridge. Ceramic tiles, private washroom with instant shower, continuous borehole water, prepaid token meter, perimeter wall and CCTV.",
     "category": "Bedsitter / Studio",
     "bedrooms": 1,
@@ -8434,7 +8434,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-109",
-    "title": "TikTok Tour: Modern 2 Bedroom in Kahawa Sukari with Big Balcony",
+    "title": "Modern 2 Bedroom in Kahawa Sukari with Big Balcony",
     "description": "TikTok #househuntingkenya: Executive 2 bedroom master ensuite apartment in Kahawa Sukari. Spacious lounge, pantry, dedicated borehole water supply, perimeter wall with electric fence, manned security gate.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -8623,7 +8623,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-111",
-    "title": "TikTok Tour: 2 Bedroom in Ruiru Town near Kamakis Bypass",
+    "title": "2 Bedroom in Ruiru Town near Kamakis Bypass",
     "description": "TikTok viral listing: Spacious 2 bedroom apartment in Ruiru town near Kamakis corner. Tiled floors, modern kitchen cabinets, laundry balcony, 24/7 borehole water, cabro parking, perimeter wall with CCTV.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -8720,7 +8720,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-112",
-    "title": "TikTok House Tour: 2 Bedroom Master Ensuite in Kilimani (Dennis Pritt)",
+    "title": "2 Bedroom Master Ensuite in Kilimani (Dennis Pritt)",
     "description": "TikTok luxury tour: High-end 2 bedroom master ensuite apartment on Dennis Pritt Road, Kilimani. Heated swimming pool, fully equipped gym, high speed lifts, full backup generator, spacious balcony, UN security approved.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -8817,7 +8817,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-113",
-    "title": "Facebook Marketplace: Executive 1 Bedroom in Kilimani (Wood Avenue)",
+    "title": "Executive 1 Bedroom in Kilimani (Wood Avenue)",
     "description": "From Facebook Marketplace Nairobi: Modern 1-bedroom flat near Yaya Centre on Wood Avenue. Open plan kitchen with fitted cooker, large living room, rooftop lounge, gym, borehole, 24/7 manned security and CCTV.",
     "category": "1 Bedroom",
     "bedrooms": 1,
@@ -8914,7 +8914,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-114",
-    "title": "TikTok Gem: 3 Bedroom Master Ensuite + DSQ in Kileleshwa (Siaya Rd)",
+    "title": "3 Bedroom Master Ensuite + DSQ in Kileleshwa (Siaya Rd)",
     "description": "Trending TikTok house hunt: Sprawling 3-bedroom master ensuite with detached servant quarter on Siaya Road, Kileleshwa. Swimming pool, gym, generator backup, children playground, 2 parking bays. TikTok: @kileleshwahomes",
     "category": "3 Bedroom",
     "bedrooms": 3,
@@ -9011,7 +9011,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-115",
-    "title": "Facebook Direct: Executive 2 Bedroom in Westlands (Rhapta Road)",
+    "title": "Executive 2 Bedroom in Westlands (Rhapta Road)",
     "description": "Direct from Westlands landlords group: Beautiful 2-bedroom master ensuite apartment along Rhapta Road. Balcony with green views, modern kitchen cabinets, high-speed lift, borehole water, 24/7 security guards.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -9108,7 +9108,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-116",
-    "title": "TikTok Tour: 3 Bedroom All Ensuite in Lavington (Isaac Gathanju)",
+    "title": "3 Bedroom All Ensuite in Lavington (Isaac Gathanju)",
     "description": "TikTok viral luxury home tour: Serene 3 bedroom all ensuite townhouse apartment in leafy Lavington. DSQ, manicured garden, clubhouse, swimming pool, solar water heating, UN approved security.",
     "category": "3 Bedroom",
     "bedrooms": 3,
@@ -9205,7 +9205,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-117",
-    "title": "Facebook Marketplace: 1 Bedroom in Parklands 3rd Avenue",
+    "title": "1 Bedroom in Parklands 3rd Avenue",
     "description": "From Parklands Real Estate Facebook group: Clean 1 bedroom apartment near Diamond Plaza and Aga Khan Hospital. Very secure court, borehole water, lift, generator for common areas, full-time guards.",
     "category": "1 Bedroom",
     "bedrooms": 1,
@@ -9496,7 +9496,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-120",
-    "title": "TikTok House Tour: 3 Bedroom in Langata (Phenom Estate)",
+    "title": "3 Bedroom in Langata (Phenom Estate)",
     "description": "Trending TikTok home tour: Executive 3 bedroom master ensuite townhouse in Phenom Estate Langata. Gated community, private compound, swimming pool, gym, estate shopping centre, 24/7 guarded security.",
     "category": "Maisonette / Townhouse",
     "bedrooms": 3,
@@ -9593,7 +9593,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-121",
-    "title": "Facebook Direct: 1 Bedroom in Nairobi West near Strathmore",
+    "title": "1 Bedroom in Nairobi West near Strathmore",
     "description": "Facebook post in South Nairobi Rentals group: Newly tiled 1 bedroom apartment in Nairobi West. Close to Strathmore and CBD. Tiled floor, borehole water, biometric entry, CCTV surveillance.",
     "category": "1 Bedroom",
     "bedrooms": 1,
@@ -9690,7 +9690,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-122",
-    "title": "TikTok Tour: 2 Bedroom in Madaraka Estate near T-Mall",
+    "title": "2 Bedroom in Madaraka Estate near T-Mall",
     "description": "TikTok house hunt: Spacious 2 bedroom apartment in Madaraka Estate near T-Mall. Living room with large windows, fitted kitchen, borehole water backup, ample parking, 24/7 security.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -9787,7 +9787,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-123",
-    "title": "Facebook Marketplace: Single Room in Ngara near Fig Tree",
+    "title": "Single Room in Ngara near Fig Tree",
     "description": "Direct Facebook listing: Affordable, clean single room in Ngara near Fig Tree. 5 minutes walk to CBD. Constant council water supply with booster pumps, prepaid token meter, perimeter security gate and 24/7 caretaker.",
     "category": "Single Room",
     "bedrooms": 1,
@@ -9874,7 +9874,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-124",
-    "title": "TikTok House Hunting: Spacious Bedsitter in Donholm Greenfields",
+    "title": "Spacious Bedsitter in Donholm Greenfields",
     "description": "TikTok #househuntingkenya: Clean bedsitter in gated Greenfields Estate, Donholm. Kitchen sink with tiled splash, private washroom with instant shower, perimeter wall with guards at gate, borehole water 24/7.",
     "category": "Bedsitter / Studio",
     "bedrooms": 1,
@@ -9966,7 +9966,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-125",
-    "title": "Facebook Direct: 1 Bedroom in Buruburu Phase 4",
+    "title": "1 Bedroom in Buruburu Phase 4",
     "description": "From Buruburu Residents Facebook group: Neat 1-bedroom apartment in Buruburu Phase 4. Ceramic tiles, bedroom with fitted wardrobe, kitchen with shelves, reliable water supply with backup tanks, parking space, 24/7 security guard.",
     "category": "1 Bedroom",
     "bedrooms": 1,
@@ -10063,8 +10063,8 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-126",
-    "title": "TikTok Tour: 2 Bedroom in Umoja Innercore near Market",
-    "description": "TikTok tour: Well-finished 2 bedroom apartment in Umoja Innercore. Tiled floor, kitchen with double sink, regular council water plus borehole backup tanks, 24/7 security watchman.",
+    "title": "2 Bedroom in Umoja Innercore near Market",
+    "description": "Well-finished 2 bedroom apartment in Umoja Innercore. Tiled floor, kitchen with double sink, regular council water plus borehole backup tanks, 24/7 security watchman.",
     "category": "2 Bedroom",
     "bedrooms": 2,
     "bathrooms": 1,
@@ -10339,7 +10339,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-129",
-    "title": "TikTok Tour: 2 Bedroom in Syokimau (Katani Road)",
+    "title": "2 Bedroom in Syokimau (Katani Road)",
     "description": "TikTok property tour: Modern 2 bedroom master ensuite apartment on Katani Road, Syokimau. Cabro paved parking, borehole water, solar water heating, perimeter electric wall, 24/7 security guard.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -10436,7 +10436,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-130",
-    "title": "Facebook Marketplace: 1 Bedroom in Syokimau (Chady Road near Gateway)",
+    "title": "1 Bedroom in Syokimau (Chady Road near Gateway)",
     "description": "From Facebook Marketplace: Brand new 1 bedroom apartment along Chady Road, Syokimau. Walking distance to Gateway Mall and SGR Terminus. Large living room, fitted kitchen, balcony, elevator, borehole, 24/7 security.",
     "category": "1 Bedroom",
     "bedrooms": 1,
@@ -10533,7 +10533,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-131",
-    "title": "TikTok House Hunting: 2 Bedroom in Athi River (Crystal Rivers Environs)",
+    "title": "2 Bedroom in Athi River (Crystal Rivers Environs)",
     "description": "Featured on TikTok #househuntingnairobi: Modern 2 bedroom master ensuite in Athi River near Crystal Rivers Mall. Ceramic tiles, balcony, solar water heating, 24/7 borehole water, perimeter wall, children play area.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -10630,7 +10630,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-132",
-    "title": "Facebook Direct: 4 Bedroom Own Compound Maisonette in Kitengela",
+    "title": "4 Bedroom Own Compound Maisonette in Kitengela",
     "description": "Direct landlord post on Kitengela Real Estate Facebook: Executive 4 bedroom master ensuite maisonette sitting on its own 50x100 plot in Milimani Kitengela. Living room with dining area, perimeter stone wall with electric wire, 15,000L underground water tank.",
     "category": "Maisonette / Townhouse",
     "bedrooms": 4,
@@ -10727,7 +10727,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-133",
-    "title": "TikTok Tour: Bedsitter in Mlolongo near Express Way Entrance",
+    "title": "Bedsitter in Mlolongo near Express Way Entrance",
     "description": "TikTok listing: Modern bedsitter in Mlolongo town, 300m from Expressway entrance. Direct transit to CBD in 15 minutes. Tiled floor, kitchen sink counter, clean water 24/7 from dedicated borehole, tokens meter.",
     "category": "Bedsitter / Studio",
     "bedrooms": 1,
@@ -10819,7 +10819,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-134",
-    "title": "TikTok Tour: 2 Bedroom in Kikuyu Town (Gitaru Rd near Bypass)",
+    "title": "2 Bedroom in Kikuyu Town (Gitaru Rd near Bypass)",
     "description": "TikTok property tour: Tastefully built 2-bedroom master ensuite in Kikuyu Town. Close to Southern Bypass and Western Bypass for seamless commuting. Open kitchen, ceramic tiled floors, high-speed lift, secure parking, 24/7 borehole water.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -10916,7 +10916,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-135",
-    "title": "Facebook Direct: 1 Bedroom in Kinoo 87 near Waiyaki Way",
+    "title": "1 Bedroom in Kinoo 87 near Waiyaki Way",
     "description": "From Waiyaki Way Rentals Facebook group: Well-finished 1 bedroom apartment in Kinoo 87. Large windows, tiled floors, kitchen with lower cabinets, constant borehole water supply, prepaid token meter, perimeter wall and CCTV.",
     "category": "1 Bedroom",
     "bedrooms": 1,
@@ -11013,7 +11013,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-136",
-    "title": "TikTok Tour: 1 Bedroom in Uthiru near Junction Stage",
+    "title": "1 Bedroom in Uthiru near Junction Stage",
     "description": "TikTok house hunting tour: Clean 1 bedroom apartment in Uthiru. Clean modern finishes, spacious living area, bedroom fitted with wardrobes, private balcony with laundry connection, constant water, secure compound with ample parking.",
     "category": "1 Bedroom",
     "bedrooms": 1,
@@ -11110,7 +11110,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-137",
-    "title": "Facebook Marketplace: Clean Single Room in Kangemi (Waruku)",
+    "title": "Clean Single Room in Kangemi (Waruku)",
     "description": "Direct Facebook listing: Convenient single room located 3 minutes from Waiyaki Way at Waruku. Regular clean council water, shared tiled bathroom with hot water, tokens electricity, secure perimeter gate with night watchman.",
     "category": "Single Room",
     "bedrooms": 1,
@@ -11197,7 +11197,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-138",
-    "title": "TikTok Tour: 2 Bedroom in Rongai (Maasai Lodge Rd)",
+    "title": "2 Bedroom in Rongai (Maasai Lodge Rd)",
     "description": "TikTok property tour: Executive 2-bedroom master ensuite apartment along Maasai Lodge Road. Modern kitchen, spacious balcony, continuous borehole water supply, tokens meter, perimeter wall with electric fence, dedicated parking.",
     "category": "2 Bedroom",
     "bedrooms": 2,
@@ -11294,7 +11294,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-139",
-    "title": "Facebook Direct: Spacious Bedsitter in Rongai near Tumaini",
+    "title": "Spacious Bedsitter in Rongai near Tumaini",
     "description": "Facebook listing: Neat and quiet bedsitter near Tumaini Rongai. Features tiled flooring, fitted kitchen counter with stainless sink, clean tiled toilet with instant shower, unlimited borehole water, security guard.",
     "category": "Bedsitter / Studio",
     "bedrooms": 1,
@@ -11386,7 +11386,7 @@ const SEED_PROPERTIES = [
   },
   {
     "id": "prop-soc-140",
-    "title": "TikTok House Hunting: 1 Bedroom in Ngong Town near SGR Station",
+    "title": "1 Bedroom in Ngong Town near SGR Station",
     "description": "Featured on TikTok: Cozy 1 bedroom apartment in serene Ngong Town with cool breeze from the hills. Spacious living area, tiled modern bathroom, kitchen cabinets, private balcony with hills view, 24/7 water supply.",
     "category": "1 Bedroom",
     "bedrooms": 1,

@@ -127,6 +127,10 @@ app.use((req, res, next) => {
 // Serve static frontend files (HTML, CSS, JS, icons)
 app.use(express.static(__dirname));
 
+// ── SEO PUBLIC CRAWLABLE PAGES & DYNAMIC SITEMAPS ────────────────────────────
+const { createSeoRouter } = require('./seo/routes');
+app.use(createSeoRouter(() => store));
+
 // SEO, AI & Robots files
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');

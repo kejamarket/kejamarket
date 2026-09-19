@@ -1120,6 +1120,11 @@ const kejaAuth = (() => {
             <span>Notifications</span>
           </button>
           
+          <button class="profile-menu-item" onclick="kejaDashboard.open('faq'); kejaAuth.closeProfileDropdown();">
+            <i class="fas fa-question-circle profile-menu-icon" style="color:#008744;"></i>
+            <span>Help & FAQs</span>
+          </button>
+          
           <button class="profile-menu-item profile-logout" onclick="kejaAuth.signOut(); kejaAuth.closeProfileDropdown();">
             <i class="fas fa-sign-out-alt profile-menu-icon" style="color:#ef4444;"></i>
             <span>Sign Out</span>

@@ -101,8 +101,12 @@ const kejaDashboard = (() => {
   async function open(targetTab = 'overview') {
     _session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     if (!_session) {
-      if (window.kejaAuth) window.kejaAuth.openAuthModal();
-      return;
+      if (targetTab === 'faq' || targetTab === 'help') {
+        _session = { name: 'Guest', role: 'tenant' };
+      } else {
+        if (window.kejaAuth) window.kejaAuth.openAuthModal();
+        return;
+      }
     }
 
     _currentTab = targetTab || 'overview';
@@ -184,6 +188,9 @@ const kejaDashboard = (() => {
       <button class="ud-tab-btn" data-tab="settings" onclick="kejaDashboard.switchTab('settings')">
         <i class="fas fa-user-cog"></i> Profile & Settings
       </button>
+      <button class="ud-tab-btn" data-tab="faq" onclick="kejaDashboard.switchTab('faq')">
+        <i class="fas fa-question-circle"></i> Help & FAQs
+      </button>
     `;
 
     body.innerHTML = `
@@ -257,6 +264,10 @@ const kejaDashboard = (() => {
         break;
       case 'settings':
         _renderSettingsTab(container);
+        break;
+      case 'faq':
+      case 'help':
+        _renderFaqTab(container);
         break;
       default:
         _renderOverview(container);
@@ -1243,6 +1254,132 @@ const kejaDashboard = (() => {
     } catch (err) {
       if (window.app) window.app.showToast('Network error updating profile', 'error');
     }
+  }
+
+  // ─── FAQ & HELP TAB ───────────────────────────────────────────────────────
+  function _renderFaqTab(container) {
+    container.innerHTML = `
+      <div class="ud-tab-section" style="padding: 10px 0;">
+        <div style="margin-bottom: 20px;">
+          <h3 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-question-circle" style="color: #16a34a;"></i> Help & Frequently Asked Questions
+          </h3>
+          <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+            Everything you need to know about house hunting, direct landlord contacts, and listing properties on KejaMarket.
+          </p>
+        </div>
+
+        <!-- Neighborhood Explorer Chips -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 22px;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <i class="fas fa-map-marked-alt" style="color: #16a34a;"></i> Explore Popular Nairobi Rental Neighborhoods:
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <button type="button" class="seo-location-chip" onclick="kejaDashboard.close(); document.getElementById('header-search-input').value = 'Ruaka'; app.searchQuery = 'Ruaka'; app.currentPage = 1; app.applyFilters(); window.scrollTo({top: 0, behavior: 'smooth'});">
+              <strong>Ruaka</strong> <small>(Bedsitters & 1-Beds)</small>
+            </button>
+            <button type="button" class="seo-location-chip" onclick="kejaDashboard.close(); document.getElementById('header-search-input').value = 'Kilimani'; app.searchQuery = 'Kilimani'; app.currentPage = 1; app.applyFilters(); window.scrollTo({top: 0, behavior: 'smooth'});">
+              <strong>Kilimani</strong> <small>(Modern Apartments)</small>
+            </button>
+            <button type="button" class="seo-location-chip" onclick="kejaDashboard.close(); document.getElementById('header-search-input').value = 'Westlands'; app.searchQuery = 'Westlands'; app.currentPage = 1; app.applyFilters(); window.scrollTo({top: 0, behavior: 'smooth'});">
+              <strong>Westlands</strong> <small>(Prime Urban Living)</small>
+            </button>
+            <button type="button" class="seo-location-chip" onclick="kejaDashboard.close(); document.getElementById('header-search-input').value = 'Roysambu'; app.searchQuery = 'Roysambu'; app.currentPage = 1; app.applyFilters(); window.scrollTo({top: 0, behavior: 'smooth'});">
+              <strong>Roysambu / Kasarani</strong>
+            </button>
+            <button type="button" class="seo-location-chip" onclick="kejaDashboard.close(); document.getElementById('header-search-input').value = 'South B'; app.searchQuery = 'South B'; app.currentPage = 1; app.applyFilters(); window.scrollTo({top: 0, behavior: 'smooth'});">
+              <strong>South B & C</strong>
+            </button>
+            <button type="button" class="seo-location-chip" onclick="kejaDashboard.close(); document.getElementById('header-search-input').value = 'Kileleshwa'; app.searchQuery = 'Kileleshwa'; app.currentPage = 1; app.applyFilters(); window.scrollTo({top: 0, behavior: 'smooth'});">
+              <strong>Kileleshwa</strong>
+            </button>
+            <button type="button" class="seo-location-chip" onclick="kejaDashboard.close(); document.getElementById('header-search-input').value = 'Ngong Road'; app.searchQuery = 'Ngong Road'; app.currentPage = 1; app.applyFilters(); window.scrollTo({top: 0, behavior: 'smooth'});">
+              <strong>Ngong Road</strong>
+            </button>
+          </div>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <details class="keja-faq-item" open style="background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px;">
+            <summary style="font-weight: 700; color: #0f172a; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <span>What is KejaMarket and how does it work?</span>
+              <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
+            </summary>
+            <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
+              KejaMarket (<strong>kejamarket.co.ke</strong>) is Kenya's verified online rental property marketplace. We eliminate middleman brokers by allowing verified landlords and property managers to list vacant houses, apartments, bedsitters, and Airbnbs directly. Tenants can browse with real-time interactive maps, view watermarked photos, and contact landlords directly via phone call or WhatsApp without paying any viewing fees.
+            </div>
+          </details>
+
+          <details class="keja-faq-item" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px;">
+            <summary style="font-weight: 700; color: #0f172a; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <span>Does KejaMarket charge viewing fees or broker commission?</span>
+              <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
+            </summary>
+            <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
+              No. KejaMarket is 100% free for house hunters and tenants. You can search rentals, filter by neighborhood and price range, view exact building coordinates, and contact property owners directly without paying broker viewing fees.
+            </div>
+          </details>
+
+          <details class="keja-faq-item" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px;">
+            <summary style="font-weight: 700; color: #0f172a; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <span>Which areas in Nairobi have affordable rentals on KejaMarket?</span>
+              <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
+            </summary>
+            <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
+              We feature listings across all major Nairobi residential corridors:
+              <ul style="margin: 8px 0 0 18px; padding: 0;">
+                <li><strong>Thika Road</strong> (Roysambu, Kasarani, Kahawa Sukari, Zimmerman) for affordable bedsitters and 1-bedrooms (KSh 8k – 20k).</li>
+                <li><strong>Limuru Road</strong> (Ruaka, Ndenderu, Two Rivers environs) for modern mid-rise apartments with elevators and backup water (KSh 15k – 35k).</li>
+                <li><strong>Kilimani, Kileleshwa & Westlands</strong> for premium 1, 2, and 3-bedroom residences and serviced Airbnbs.</li>
+                <li><strong>Mombasa Road</strong> (South B, South C, Imara Daima, Syokimau) for convenient CBD commuting.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="keja-faq-item" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px;">
+            <summary style="font-weight: 700; color: #0f172a; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <span>How do landlords and property owners post listings on KejaMarket?</span>
+              <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
+            </summary>
+            <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
+              Landlords and caretakers can create a free account, tap the <strong>Post Rental</strong> button at the top of the page, fill in property details (rent, deposit, bedrooms, amenities), upload photos, and publish immediately. Every image is automatically stamped with an authentic <code>kejamarket.co.ke</code> watermark to protect your property photos from copycat scams.
+            </div>
+          </details>
+
+          <details class="keja-faq-item" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px;">
+            <summary style="font-weight: 700; color: #0f172a; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <span>How does KejaMarket protect tenants from online rental scams?</span>
+              <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
+            </summary>
+            <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
+              We maintain strict verification standards: landlord telephone validation, photo watermarking, community reviews, and an active moderation team. We always advise tenants never to send rental deposits before physically inspecting a property and meeting the on-site landlord or caretaker.
+            </div>
+          </details>
+
+          <details class="keja-faq-item" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px;">
+            <summary style="font-weight: 700; color: #0f172a; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <span>Are short stays and furnished Airbnbs available in Kenya on KejaMarket?</span>
+              <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
+            </summary>
+            <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
+              Yes. Simply click the <strong>Airbnbs</strong> tab in our category navigation to discover verified short-stay apartments, studios, and vacation homes in Nairobi with transparent daily and weekly rates.
+            </div>
+          </details>
+        </div>
+
+        <!-- Contact Support banner -->
+        <div style="margin-top: 24px; padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-weight: 700; color: #166534; font-size: 0.95rem;">Have a question that's not answered here?</div>
+            <div style="color: #15803d; font-size: 0.85rem;">Our local support team is ready to help you directly.</div>
+          </div>
+          <button class="ud-primary-action-btn" onclick="kejaDashboard.close(); app.openAdminChat();" style="margin: 0; padding: 8px 16px; font-size: 0.85rem;">
+            <i class="fas fa-comment-dots"></i> Message Support
+          </button>
+        </div>
+      </div>
+    `;
   }
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
