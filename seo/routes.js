@@ -1,3 +1,4 @@
+const { cache } = require('../db/cache');
 /**
  * KejaMarket SEO — Express Router
  * Wires up all public, crawlable SSR routes and XML sitemaps.
@@ -66,9 +67,17 @@ function createSeoRouter(storeGetter) {
   // ── SITEMAP ROUTES ──────────────────────────────────────────────────────────
 
   router.get('/sitemap.xml', (req, res) => {
+    const cached = cache.get('seo:sitemap.xml');
+    if (cached) {
+      res.set('Content-Type', 'application/xml; charset=utf-8');
+      res.set('Cache-Control', 'public, max-age=3600');
+      return res.send(cached);
+    }
     res.set('Content-Type', 'application/xml; charset=utf-8');
     res.set('Cache-Control', 'public, max-age=3600');
-    res.send(renderSitemapIndex());
+    const xml = renderSitemapIndex();
+    cache.set('seo:sitemap.xml', xml, 3600);
+    res.send(xml);
   });
 
   router.get('/sitemap-properties.xml', async (req, res, next) => {
@@ -104,10 +113,17 @@ function createSeoRouter(storeGetter) {
   // ── INDIVIDUAL PROPERTY PAGES ───────────────────────────────────────────────
 
   router.get('/property/:slug', async (req, res, next) => {
+    const cacheKey = 'seo:property:' + req.params.slug;
+    const cached = cache.get(cacheKey);
+    if (cached) {
+      res.set('Cache-Control', 'public, max-age=60, s-maxage=300');
+      return res.status(cached.status).send(cached.html);
+    }
     try {
       const store = resolveStore();
       const result = await renderPropertyPage(store, req.params.slug);
       res.set('Cache-Control', 'public, max-age=60, s-maxage=300');
+      cache.set(cacheKey, result, 60);
       res.status(result.status).send(result.html);
     } catch (err) {
       console.error('Error rendering property page:', err);

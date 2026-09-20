@@ -1,3 +1,4 @@
+const { cache } = require('./cache');
 /**
  * KejaMarket - PostgreSQL Database Layer
  * Production-ready database for 50,000+ users with full ACID compliance
@@ -10,7 +11,11 @@ class PostgreSQLStore {
   constructor() {
     this.pool = null;
     this.isConnected = false;
-    this.fallbackStore = null;
+    try {
+      this.fallbackStore = require('./store.js');
+    } catch (_) {
+      this.fallbackStore = null;
+    }
   }
 
   get data() {
@@ -42,9 +47,10 @@ class PostgreSQLStore {
       const config = {
         connectionString: dbUrl,
         ssl: { rejectUnauthorized: false },
-        max: 10,
+        max: 25, // Optimized for 10,000+ concurrent users with connection pooler
         idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 10000,
+        connectionTimeoutMillis: 5000,
+        statement_timeout: 10000, // Prevent slow queries from hanging connections
       };
 
       try {
@@ -349,18 +355,62 @@ class PostgreSQLStore {
   // ═══════════════════════════════════════════════════════════════════
 
   async getAllProperties() {
-    if (!this.isConnected) {
-      return this.fallbackStore.getAllProperties();
+    if (this.isConnected) {
+      try {
+        const result = await this.query(`
+          SELECT p.*, 
+                 COALESCE(array_agg(pm.image_url) FILTER (WHERE pm.image_url IS NOT NULL), '{}') as photos
+          FROM properties p 
+          LEFT JOIN property_media pm ON p.id = pm.property_id 
+          GROUP BY p.id 
+          ORDER BY p.created_at DESC
+        `);
+        return result.rows.map(row => {
+          const rentNum = parseFloat(row.rent_kes) || 0;
+          const depNum = parseFloat(row.deposit_kes) || 0;
+          const isVer = row.is_verified !== false;
+          const photosArr = (row.photos && row.photos.length > 0) ? row.photos : (row.raw_data?.photos || []);
+          return {
+            ...row.raw_data,
+            id: row.id,
+            title: row.title,
+            rent: rentNum,
+            rentKes: rentNum,
+            rent_kes: rentNum,
+            deposit: depNum,
+            depositKes: depNum,
+            deposit_kes: depNum,
+            category: row.category,
+            estateSuburb: row.estate_suburb,
+            estate_suburb: row.estate_suburb,
+            county: row.county || (row.raw_data && row.raw_data.county) || 'Nairobi',
+            isFeatured: !!row.is_featured,
+            is_featured: !!row.is_featured,
+            isTopAd: !!row.is_top_ad,
+            is_top_ad: !!row.is_top_ad,
+            isVerified: isVer,
+            is_verified: isVer,
+            corridorId: row.corridor_id,
+            corridor_id: row.corridor_id,
+            waterSupplyType: row.water_supply_type || (row.raw_data && row.raw_data.waterSupplyType) || '',
+            electricityMeterType: row.electricity_meter_type || (row.raw_data && row.raw_data.electricityMeterType) || '',
+            postedTimeAgo: row.posted_time_ago || 'Today',
+            photos: photosArr,
+            media: photosArr.map((url, idx) => ({ url, caption: `Photo ${idx + 1}` }))
+          };
+        });
+      } catch (err) {
+        console.warn('⚠️ PostgreSQL query failed, using local store cache:', err.message);
+      }
     }
 
-    const result = await this.query(`
-      SELECT p.*, 
-             COALESCE(array_agg(pm.image_url) FILTER (WHERE pm.image_url IS NOT NULL), '{}') as photos
-      FROM properties p 
-      LEFT JOIN property_media pm ON p.id = pm.property_id 
-      GROUP BY p.id 
-      ORDER BY p.created_at DESC
-    `);
+    if (!this.fallbackStore) {
+      try { this.fallbackStore = require('./store.js'); } catch (_) {}
+    }
+    return this.fallbackStore ? this.fallbackStore.getAllProperties() : [];
+  }
+
+  async _unused_getAllProperties() {
     
     return result.rows.map(row => {
       const rentNum = parseFloat(row.rent_kes) || 0;
@@ -399,11 +449,52 @@ class PostgreSQLStore {
   }
 
   async getPropertyById(id) {
-    if (!this.isConnected) {
-      return this.fallbackStore.getPropertyById(id);
+    if (this.isConnected) {
+      try {
+        const result = await this.query('SELECT * FROM properties WHERE id = $1', [id]);
+        if (result.rows.length > 0) {
+          const property = result.rows[0];
+          const rentNum = parseFloat(property.rent_kes) || 0;
+          const depNum = parseFloat(property.deposit_kes) || 0;
+          const isVer = property.is_verified !== false;
+          return {
+            ...property.raw_data,
+            id: property.id,
+            title: property.title,
+            rent: rentNum,
+            rentKes: rentNum,
+            rent_kes: rentNum,
+            deposit: depNum,
+            depositKes: depNum,
+            deposit_kes: depNum,
+            category: property.category,
+            estateSuburb: property.estate_suburb,
+            estate_suburb: property.estate_suburb,
+            county: property.county || (property.raw_data && property.raw_data.county) || 'Nairobi',
+            isFeatured: !!property.is_featured,
+            is_featured: !!property.is_featured,
+            isTopAd: !!property.is_top_ad,
+            is_top_ad: !!property.is_top_ad,
+            isVerified: isVer,
+            is_verified: isVer,
+            waterSupplyType: property.water_supply_type || '',
+            electricityMeterType: property.electricity_meter_type || '',
+            postedTimeAgo: property.posted_time_ago || 'Today'
+          };
+        }
+      } catch (err) {
+        console.warn('⚠️ getPropertyById DB failed, using local store cache:', err.message);
+      }
     }
 
-    const result = await this.query('SELECT * FROM properties WHERE id = $1', [id]);
+    if (!this.fallbackStore) {
+      try { this.fallbackStore = require('./store.js'); } catch (_) {}
+    }
+    return this.fallbackStore ? this.fallbackStore.getPropertyById(id) : null;
+  }
+
+  async _unused_getPropertyById(id) {
+    const result = { rows: [] };
     if (result.rows.length === 0) return null;
 
     const property = result.rows[0];
@@ -511,6 +602,7 @@ class PostgreSQLStore {
     );
 
     // Get updated property
+    try { cache.invalidate('properties'); cache.invalidate('property'); cache.invalidate('stats'); } catch (_) {}
     return await this.getPropertyById(id);
   }
 
@@ -520,6 +612,7 @@ class PostgreSQLStore {
     }
 
     const result = await this.query('DELETE FROM properties WHERE id = $1', [id]);
+    try { cache.invalidate('properties'); cache.invalidate('property'); cache.invalidate('stats'); } catch (_) {}
     return result.rowCount > 0;
   }
 

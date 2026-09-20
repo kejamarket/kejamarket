@@ -1371,52 +1371,56 @@ class NairobiRentalsApp {
   renderListingsSummary() {
     const summaryEl = document.getElementById('listings-count-summary');
     if (!summaryEl) return;
-
-    const total = 312;
-    let label = `<strong>${total} Rental Listings</strong> across <span class="highlight">Nairobi & Environs</span>`;
-    if (this.searchQuery) {
-      label = `<strong>${total} Rental Listings</strong> for <span class="highlight">"${this.searchQuery}"</span>`;
-    }
-
-    summaryEl.innerHTML = label;
+    summaryEl.style.display = 'none';
+    summaryEl.innerHTML = '';
   }
 
   generateCardHtml(p) {
     const isFav = this.favorites.has(p.id);
     const photoCount = p.photoCount || p.media?.length || 7;
     const thumbnail = p.media?.[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
-    const isTaken = p.isTaken || p.status === 'taken';
+    const isTaken = p.isTaken || p.status === 'taken' || p.status === 'occupied' || p.availability === 'occupied';
     const rawPrice = p.rentKes ?? p.rent ?? p.rent_kes ?? p.price ?? 0;
     const displayRent = typeof rawPrice === 'number' ? rawPrice : (parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0);
     const isForSale = p.isForSale || p.title?.includes('Plot for Sale') || p.title?.includes('for Sale') || displayRent > 500000;
     const pricePeriod = isForSale ? '' : '/month';
 
-    // Status Badge determination matching reference:
-    let badgeHtml = '';
-    const isUnverified = p.badgeType === 'unverified' || (!p.isVerified && !p.isFeatured && !p.isTopAd);
-    const isFeatured = p.badgeType === 'featured' || p.isFeatured || p.isTopAd;
+    // Clean TikTok / Facebook tour prefixes from listing titles
+    const cleanTitle = (str) => {
+      if (!str) return '';
+      return str
+        .replace(/^TikTok\s+(House\s+)?(Tours?|Hunting|Viral|Gem|Sensation):\s*/i, '')
+        .replace(/^TikTok\s+Tour:\s*/i, '')
+        .replace(/^Facebook\s+(Direct|Tours?|Marketplace):\s*/i, '')
+        .trim();
+    };
+    const displayTitle = cleanTitle(p.title);
 
-    if (isTaken) {
-      badgeHtml = `<div class="card-badge-status" style="background:#dc2626; color:white;"><i class="fas fa-ban"></i> TAKEN</div>`;
-    } else if (isUnverified) {
-      badgeHtml = `<div class="card-badge-status unverified"><i class="fas fa-exclamation-triangle"></i> UNVERIFIED</div>`;
-    } else if (isFeatured) {
-      badgeHtml = `<div class="card-badge-status featured"><i class="fas fa-star"></i> FEATURED</div>`;
+    // Availability status on picture
+    const isOccupied = Boolean(isTaken);
+    const isFeatured = Boolean(p.badgeType === 'featured' || p.isFeatured || p.isTopAd);
+
+    let badgeHtml = '';
+    if (isOccupied) {
+      badgeHtml = `<div class="card-badge-status occupied"><i class="fas fa-ban"></i> OCCUPIED</div>`;
     } else {
-      badgeHtml = `<div class="card-badge-status verified"><i class="fas fa-check"></i> VERIFIED</div>`;
+      badgeHtml = `<div class="card-badge-status available"><i class="fas fa-check-circle"></i> AVAILABLE</div>`;
     }
 
-    const watermarkText = isUnverified ? 'KEJAMARKET' : 'KEJAMARKET VERIFIED';
+    if (isFeatured && !isOccupied) {
+      badgeHtml += `<div class="card-badge-status featured"><i class="fas fa-star"></i> FEATURED</div>`;
+    }
 
+    const watermarkText = 'KEJAMARKET VERIFIED';
     const beds = p.bedrooms ?? (p.category?.includes('Bedsitter') ? 1 : 1);
     const baths = p.bathrooms ?? 1;
     const sqm = p.sizeSqm ?? p.sqm ?? 0;
     const locationDisplay = p.locationDisplay || (p.estateSuburb ? `${p.estateSuburb}, ${p.county || 'Nairobi'}` : 'Nairobi');
 
     return `
-      <div class="property-card ${isTaken ? 'property-card-taken' : ''}" data-id="${p.id}">
+      <div class="property-card ${isOccupied ? 'property-card-taken' : ''}" data-id="${p.id}">
         <div class="card-media-wrapper" onclick="app.openGalleryModal('${p.id}', event)" style="cursor: pointer;">
-          <img src="${thumbnail}" alt="${p.title}" loading="lazy" style="${isTaken ? 'filter: grayscale(50%) opacity(0.8);' : ''}">
+          <img src="${thumbnail}" alt="${displayTitle}" loading="lazy" style="${isOccupied ? 'filter: grayscale(40%) opacity(0.85);' : ''}">
           
           ${badgeHtml}
 
@@ -1435,8 +1439,8 @@ class NairobiRentalsApp {
             <div class="card-price">KSh ${displayRent.toLocaleString()} <span class="period">${pricePeriod}</span></div>
           </div>
 
-          <h3 class="card-title" onclick="app.openPropertyDetail('${p.id}')" title="${p.title}">
-            ${isTaken ? '<span style="color: #dc2626; font-size: 0.8rem; font-weight: 800; margin-right: 4px;">[TAKEN]</span>' : ''}${p.title}
+          <h3 class="card-title" onclick="app.openPropertyDetail('${p.id}')" title="${displayTitle}">
+            ${isOccupied ? '<span style="color: #dc2626; font-size: 0.8rem; font-weight: 800; margin-right: 4px;">[OCCUPIED]</span>' : ''}${displayTitle}
           </h3>
 
           <div class="card-location-row" title="${locationDisplay}">
@@ -1447,25 +1451,35 @@ class NairobiRentalsApp {
           <div class="card-specs-row">
             <span><i class="fas fa-bed"></i> ${beds} ${beds === 1 ? 'Bed' : 'Beds'}</span>
             <span><i class="fas fa-bath"></i> ${baths} ${baths === 1 ? 'Bath' : 'Baths'}</span>
-            <span><i class="fas fa-vector-square"></i> ${sqm.toLocaleString()} m²</span>
+            ${sqm ? `<span><i class="fas fa-vector-square"></i> ${sqm.toLocaleString()} m²</span>` : ''}
           </div>
 
-          <div class="card-actions-row" style="display: flex; align-items: center; gap: 4px; margin-top: auto; padding-top: 6px;">
+          <div class="card-actions-row">
             <button type="button" class="btn-card-details-green" onclick="app.openPropertyDetail('${p.id}')">
               View Details
             </button>
-            <button type="button" class="btn-card-whatsapp" onclick="app.handleCardWhatsApp('${p.id}', event)" title="Share to WhatsApp">
-              <i class="fab fa-whatsapp"></i>
-            </button>
-            <button type="button" class="btn-card-instagram" onclick="app.handleCardInstagram('${p.id}', event)" title="Share to Instagram">
-              <i class="fab fa-instagram"></i>
-            </button>
-            <button type="button" class="btn-card-facebook" onclick="app.handleCardFacebook('${p.id}', event)" title="Share to Facebook">
-              <i class="fab fa-facebook-f"></i>
-            </button>
-            <button type="button" class="btn-card-tiktok" onclick="app.handleCardTikTok('${p.id}', event)" title="Share to TikTok">
-              <i class="fab fa-tiktok"></i>
-            </button>
+            <div class="card-share-wrap">
+              <button type="button" class="btn-card-share-action" onclick="app.toggleShareMenu('${p.id}', event)" title="Share Property">
+                <i class="fas fa-share-alt"></i> <span>Share</span>
+              </button>
+              <div class="card-share-popover" id="share-popover-${p.id}" style="display: none;">
+                <a href="#" class="share-pop-item share-pop-whatsapp" onclick="app.handleCardWhatsApp('${p.id}', event)">
+                  <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="#" class="share-pop-item share-pop-facebook" onclick="app.handleCardFacebook('${p.id}', event)">
+                  <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+                <a href="#" class="share-pop-item share-pop-instagram" onclick="app.handleCardInstagram('${p.id}', event)">
+                  <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="#" class="share-pop-item share-pop-tiktok" onclick="app.handleCardTikTok('${p.id}', event)">
+                  <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <a href="#" class="share-pop-item share-pop-copy" onclick="app.copyShareLink('${p.id}', event)">
+                  <i class="fas fa-link"></i> Copy Link
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -3325,6 +3339,47 @@ class NairobiRentalsApp {
   }
   // ────────────────────────────────────────────────────────────────
 
+
+  // -- SHARE POPOVER --------------------------------------------------------
+  toggleShareMenu(propertyId, event) {
+    if (event) event.stopPropagation();
+    const popover = document.getElementById('share-popover-' + propertyId);
+    if (!popover) return;
+    const isVisible = popover.style.display !== 'none';
+    document.querySelectorAll('.card-share-popover').forEach(function(el) { el.style.display = 'none'; });
+    if (!isVisible) popover.style.display = 'flex';
+  }
+
+  copyShareLink(propertyId, event) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
+    const self = this;
+    const url = window.location.origin + '/?property=' + encodeURIComponent(propertyId);
+    const done = function() { self.showToast('Link copied to clipboard!', 'success'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(function() { self._fallbackCopy(url); done(); });
+    } else { this._fallbackCopy(url); done(); }
+    const popover = document.getElementById('share-popover-' + propertyId);
+    if (popover) popover.style.display = 'none';
+  }
+
+  _fallbackCopy(text) {
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+    document.body.appendChild(el);
+    el.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(el);
+  }
+
+  // -- CLOSE ALL OPEN POPOVERS / DROPDOWNS ----------------------------------
+  closeAllPopups() {
+    document.querySelectorAll('.card-share-popover').forEach(function(el) { el.style.display = 'none'; });
+    const postMenu = document.getElementById('header-post-menu');
+    if (postMenu) postMenu.style.display = 'none';
+    const locMenu = document.getElementById('header-location-menu');
+    if (locMenu) locMenu.style.display = 'none';
+  }
   updatePostButtonsVisibility() {
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     const postAdBtn = document.getElementById('btn-header-post-ad');
@@ -3385,4 +3440,15 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Error checking shared property URL:', e);
   }
 
+});
+
+// Global popup dismissal on click outside
+document.addEventListener('click', function kejaGlobalPopupCloser(e) {
+  if (window.app && typeof window.app.closeAllPopups === 'function') {
+    if (!e.target.closest('.header-post-dropdown-wrapper') &&
+        !e.target.closest('.header-location-picker') &&
+        !e.target.closest('.card-share-wrap')) {
+      window.app.closeAllPopups();
+    }
+  }
 });

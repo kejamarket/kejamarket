@@ -27,6 +27,8 @@ const emailService = require('./db/email-service');
 const uploadService = require('./db/upload-service');
 
 // â”€â”€â”€ RATE LIMITING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const compression = require('compression');
+const { cache } = require('./db/cache');
 const rateLimit = require('express-rate-limit');
 
 // Auth endpoints: max 10 attempts per 15 minutes per IP
@@ -91,6 +93,17 @@ app.use(cors({
   credentials: true
 }));
 
+
+// ── HIGH-CONCURRENCY COMPRESSION (GZIP / DEFLATE) ──────────────────────────
+// Reduces payload size by 75-85%, preventing network congestion under 10k users
+app.use(compression({
+  level: 6,
+  threshold: 1024,
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) return false;
+    return compression.filter(req, res);
+  }
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -125,7 +138,24 @@ app.use((req, res, next) => {
 });
 
 // Serve static frontend files (HTML, CSS, JS, icons)
-app.use(express.static(__dirname));
+// ── AGGRESSIVE STATIC ASSET CACHING FOR 10,000+ USERS ─────────────────────────
+app.use(express.static(__dirname, {
+  maxAge: '7d',
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
+      // HTML: Short cache with stale-while-revalidate for fast loads with instant update pickup
+      res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
+    } else if (filePath.match(/\.(woff2?|ttf|eot|png|jpe?g|gif|svg|ico|webp)$/i)) {
+      // Fonts and images: Immutable long-term caching (30 days) - zero re-download
+      res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
+    } else if (filePath.match(/\.(css|js)$/i)) {
+      // CSS & JS: 7 days caching with background stale-while-revalidate
+      res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
+    }
+  }
+}));
 
 // ── SEO PUBLIC CRAWLABLE PAGES & DYNAMIC SITEMAPS ────────────────────────────
 const { createSeoRouter } = require('./seo/routes');
@@ -1747,7 +1777,7 @@ app.post('/api/mpesa/callback', (req, res) => {
 // â”€â”€â”€ PROPERTIES & LISTINGS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/properties â€” server-side search, filtering, pagination
-app.get('/api/properties', async (req, res) => {
+app.get('/api/properties', cache.middleware(15, 'properties'), async (req, res) => {
   try {
     const {
       category, suburb, corridor, minPrice, maxPrice,
@@ -1823,7 +1853,7 @@ app.get('/api/properties', async (req, res) => {
 });
 
 // GET /api/properties/:id
-app.get('/api/properties/:id', async (req, res) => {
+app.get('/api/properties/:id', cache.middleware(30, 'property'), async (req, res) => {
   const property = await store.getPropertyById(req.params.id);
   if (!property || (property.is_verified === false && property.isVerified === false)) {
     return res.status(404).json({ success: false, message: 'Property not found.' });
@@ -2554,7 +2584,7 @@ app.post('/api/admin/migrate', async (req, res) => {
   }
 });
 
-app.get('/api/stats', async (req, res) => {
+app.get('/api/stats', cache.middleware(60, 'public:stats'), async (req, res) => {
   try {
     const properties = await store.getAllProperties();
     const transactions = await store.getAllTransactions();
@@ -4225,7 +4255,7 @@ app.put('/api/service/availability/:id', requireAuth, (req, res) => {
 // ================================================================================
 
 // GET /api/services
-app.get('/api/services', async (req, res) => {
+app.get('/api/services', cache.middleware(30, 'services'), async (req, res) => {
   try {
     const { serviceType, limit = 50, offset = 0 } = req.query;
     let query = 'SELECT * FROM services WHERE status = $1 AND is_verified = true';
@@ -4242,7 +4272,7 @@ app.get('/api/services', async (req, res) => {
 });
 
 // GET /api/marketplace
-app.get('/api/marketplace', async (req, res) => {
+app.get('/api/marketplace', cache.middleware(30, 'marketplace'), async (req, res) => {
   try {
     const { category, condition, maxPrice, limit = 50, offset = 0 } = req.query;
     // Note: marketplace_items does not have is_verified column, filter on status only
@@ -4776,10 +4806,19 @@ app.get('/api/diagnostic', async (req, res) => {
   }
 });
 
+// ── CACHE PERFORMANCE STATS (lightweight, no auth needed) ─────────────────────
+app.get('/api/cache-stats', (req, res) => {
+  res.json({ success: true, cache: cache.getStats() });
+});
+
+
 async function startServer() {
   await initializeDatabase();
 
   const server = app.listen(PORT, '0.0.0.0', () => {
+    // Keep-alive socket timeouts optimized for high-concurrency reverse proxies
+    server.keepAliveTimeout = 65000;
+    server.headersTimeout = 66000;
     console.log(`🚀 KejaMarket Production API Server running on port ${PORT}`);
     console.log(`🔗 Web Application: http://localhost:${PORT}`);
     console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);

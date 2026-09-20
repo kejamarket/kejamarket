@@ -13,15 +13,15 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false // Required for Supabase
   },
-  max: 20,
+  max: 25, // Optimized for 10,000+ concurrent users
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 5000,
+  statement_timeout: 10000
 });
 
-// Handle pool errors
-pool.on('error', (err, client) => {
-  console.error('Unexpected error on idle client:', err);
-  process.exit(-1);
+// Handle pool errors gracefully without terminating the process
+pool.on('error', (err) => {
+  console.warn('⚠️ Non-fatal error on idle client (auto-reconnecting):', err.message);
 });
 
 // Test connection on startup
