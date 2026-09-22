@@ -145,6 +145,9 @@ const kejaDashboard = (() => {
 
     if (role === 'tenant' || role === 'buyer') {
       tabsHtml += `
+        <button class="ud-tab-btn" data-tab="house-hunt" onclick="if(window.app) window.app.openHouseHuntModal()">
+          <i class="fas fa-search-location" style="color: #10b981;"></i> My 3-Day House Hunt
+        </button>
         <button class="ud-tab-btn" data-tab="items" onclick="kejaDashboard.switchTab('items')">
           <i class="fas fa-shopping-bag"></i> My Items for Sale
         </button>

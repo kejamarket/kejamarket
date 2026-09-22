@@ -386,6 +386,19 @@
           </div>
         </div>
 
+        <!-- Rent Affordability Calculator CTA -->
+        <button type="button" class="btn-header-tool" id="btn-header-calculator" onclick="app.openAffordabilityCalculator()" title="What Can I Afford? Rent Calculator">
+          <i class="fas fa-calculator" style="color: #059669;"></i>
+          <span class="header-tool-label">What Can I Afford?</span>
+        </button>
+
+        <!-- 3-Day House Hunt Concierge CTA -->
+        <button type="button" class="btn-header-tool btn-header-hunt" id="btn-header-hunt" onclick="app.openHouseHuntModal()" title="Hire a Dedicated House Hunter (72-Hour Search)">
+          <i class="fas fa-search-location"></i>
+          <span class="header-tool-label">House Hunt</span>
+          <span class="hunt-pill-badge">3 Days</span>
+        </button>
+
         <!-- Favorites (Heart) -->
         <button class="btn-header-action" id="btn-header-favs" onclick="app.toggleFavoritesView()" title="Saved Favorites">
           <i class="far fa-heart" style="color: #ef4444; font-size: 1.15rem;"></i>
@@ -1198,11 +1211,14 @@
       <div class="modal-body">
         
         <!-- Property Status Alert Banner & Landlord Control Bar -->
-        <div id="detail-taken-banner" style="display: none; background: #fef2f2; border: 1.5px solid #fca5a5; color: #991b1b; padding: 12px 16px; border-radius: 10px; margin-bottom: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div id="detail-taken-banner" style="display: none; background: #fef2f2; border: 1.5px solid #fca5a5; color: #991b1b; padding: 14px 18px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
           <div style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem;">
-            <i class="fas fa-ban" style="font-size: 1.3rem; color: #dc2626;"></i>
-            <span>THIS HOUSE HAS BEEN TAKEN / OCCUPIED â€” It is no longer available for renting.</span>
+            <span style="background: #dc2626; color: white; padding: 3px 9px; border-radius: 6px; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.5px;">JUST RENTED OUT</span>
+            <span>This house has been rented out! Units in this area go fast.</span>
           </div>
+          <button type="button" class="btn-notify-similar" id="btn-detail-notify-similar" onclick="app.openSimilarAlertModal(app.currentPropertyId)" style="background: #0f172a; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.84rem; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+            <i class="fas fa-bell" style="color: #f59e0b;"></i> Notify Me When Similar Becomes Available
+          </button>
         </div>
 
         <div id="detail-landlord-status-bar" style="display: none; background: #f8fafc; border: 1.5px dashed #0284c7; padding: 12px 16px; border-radius: 10px; margin-bottom: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
@@ -3402,7 +3418,479 @@
   </div>
 
 
-  <!-- Floating Social Connect Widget (@kejamarket & WhatsApp) -->
+  
+  <!-- ====================================================================
+       MODAL: RENT AFFORDABILITY CALCULATOR ("What Can I Afford?")
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-affordability-calculator" style="display: none; align-items: center; justify-content: center; z-index: 2800;">
+    <div class="modal-dialog afford-modal-dialog">
+      <div class="modal-header" style="background: linear-gradient(135deg, #064e3b 0%, #047857 100%); color: white; padding: 18px 24px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">What Can I Afford?</h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #a7f3d0; opacity: 0.9;">Kenyan Tenant Smart Rent Affordability Calculator</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-affordability-calculator')" style="color: white; font-size: 1.8rem;">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 24px; background: #ffffff; max-height: 80vh; overflow-y: auto;">
+        
+        <!-- Interactive Inputs Grid -->
+        <div class="afford-grid">
+          
+          <!-- Net Income -->
+          <div class="afford-input-card">
+            <label for="afford-net-income">
+              <span><i class="fas fa-money-bill-wave" style="color: #10b981;"></i> Monthly Net Income</span>
+              <strong id="afford-income-disp" style="color: #059669;">KSh 60,000</strong>
+            </label>
+            <input type="number" id="afford-net-income" class="afford-num-input" value="60000" min="5000" max="1000000" step="1000" oninput="app.syncAffordability()">
+            <input type="range" id="afford-income-slider" class="afford-range-slider" min="10000" max="300000" step="2000" value="60000" oninput="app.syncAffordability(this, 'income')">
+          </div>
+
+          <!-- Expenses -->
+          <div class="afford-input-card">
+            <label for="afford-expenses">
+              <span><i class="fas fa-shopping-basket" style="color: #ef4444;"></i> Monthly Living Expenses</span>
+              <strong id="afford-expenses-disp" style="color: #dc2626;">KSh 25,000</strong>
+            </label>
+            <input type="number" id="afford-expenses" class="afford-num-input" value="25000" min="0" max="500000" step="1000" oninput="app.syncAffordability()">
+            <input type="range" id="afford-expenses-slider" class="afford-range-slider" min="0" max="150000" step="1000" value="25000" oninput="app.syncAffordability(this, 'expenses')">
+          </div>
+
+          <!-- Savings -->
+          <div class="afford-input-card">
+            <label for="afford-savings">
+              <span><i class="fas fa-piggy-bank" style="color: #3b82f6;"></i> Monthly Target Savings</span>
+              <strong id="afford-savings-disp" style="color: #2563eb;">KSh 5,000</strong>
+            </label>
+            <input type="number" id="afford-savings" class="afford-num-input" value="5000" min="0" max="300000" step="500" oninput="app.syncAffordability()">
+            <input type="range" id="afford-savings-slider" class="afford-range-slider" min="0" max="80000" step="500" value="5000" oninput="app.syncAffordability(this, 'savings')">
+          </div>
+
+          <!-- Location Selector -->
+          <div class="afford-input-card">
+            <label for="afford-location">
+              <span><i class="fas fa-map-marker-alt" style="color: #8b5cf6;"></i> Preferred Nairobi Area</span>
+              <span style="font-size: 0.72rem; color: #64748b;">(Optional)</span>
+            </label>
+            <select id="afford-location" class="afford-num-input" style="font-size: 0.92rem; font-weight: 600;" onchange="app.syncAffordability()">
+              <option value="">All Nairobi & Environs</option>
+              <option value="Westlands">Westlands / Parklands</option>
+              <option value="Kilimani">Kilimani / Kileleshwa</option>
+              <option value="Roysambu">Roysambu / Kasarani / Thika Rd</option>
+              <option value="South B">South B / South C / Mombasa Rd</option>
+              <option value="Ruaka">Ruaka / Rosslyn</option>
+              <option value="Ngong Road">Ngong Rd / Adams Arcade</option>
+              <option value="Langata">Langata / Karen</option>
+              <option value="Eastlands">Eastlands / Buruburu / Donholm</option>
+              <option value="Syokimau">Syokimau / Mlolongo / Athi River</option>
+              <option value="Kikuyu">Kikuyu / Uthiru / Waiyaki Way</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Real-Time Calculation Results Banner -->
+        <div class="afford-results-box" id="afford-results-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #a7f3d0;">
+              <i class="fas fa-check-circle"></i> Recommended Monthly Rent Bracket
+            </div>
+            <div id="afford-health-badge" class="afford-health-pill comfort">
+              <i class="fas fa-shield-alt"></i> Comfort Zone (Safe)
+            </div>
+          </div>
+
+          <div class="afford-hero-range" id="afford-range-display">
+            KSh 15,000 — 20,000
+          </div>
+          <div style="font-size: 0.82rem; opacity: 0.9; margin-bottom: 12px;" id="afford-rule-note">
+            Calculated at 25%–30% of your take-home pay, leaving a healthy buffer for savings & living.
+          </div>
+
+          <!-- Visual Breakdown Stacked Bar -->
+          <div class="afford-breakdown-bar" title="Monthly Budget Allocation">
+            <div class="afford-bar-rent" id="bar-rent" style="width: 30%;"></div>
+            <div class="afford-bar-expenses" id="bar-expenses" style="width: 42%;"></div>
+            <div class="afford-bar-savings" id="bar-savings" style="width: 8%;"></div>
+            <div class="afford-bar-buffer" id="bar-buffer" style="width: 20%;"></div>
+          </div>
+
+          <div class="afford-breakdown-legend">
+            <div class="afford-legend-item"><span class="afford-legend-dot afford-bar-rent"></span> Rent (<span id="pct-rent">30%</span>)</div>
+            <div class="afford-legend-item"><span class="afford-legend-dot afford-bar-expenses"></span> Living (<span id="pct-expenses">42%</span>)</div>
+            <div class="afford-legend-item"><span class="afford-legend-dot afford-bar-savings"></span> Savings (<span id="pct-savings">8%</span>)</div>
+            <div class="afford-legend-item"><span class="afford-legend-dot afford-bar-buffer"></span> Emergency Buffer (<span id="pct-buffer">20%</span>)</div>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button type="button" class="btn-primary" onclick="app.applyAffordabilityFilter()" style="flex: 2; min-width: 220px; padding: 12px 20px; font-size: 0.95rem; font-weight: 800; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #059669; border: none; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);">
+            <i class="fas fa-search"></i> Show Matching Houses
+          </button>
+          <button type="button" class="btn-secondary" onclick="app.closeModal('modal-affordability-calculator'); app.openHouseHuntModal();" style="flex: 1; min-width: 180px; padding: 12px 16px; font-size: 0.88rem; font-weight: 700; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; background: #f8fafc; border: 1.5px solid #cbd5e1; color: #0f172a;">
+            <i class="fas fa-search-location" style="color: #10b981;"></i> Let Agent Hunt For You
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ====================================================================
+       MODAL: SIMILAR PROPERTY DEMAND ALERT ("Notify Me When Similar Available")
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-similar-alert" style="display: none; align-items: center; justify-content: center; z-index: 2850;">
+    <div class="modal-dialog similar-modal-dialog">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 18px 22px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #f59e0b;">
+            <i class="fas fa-bell"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">Get Instant Similar Unit Alert</h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #94a3b8;">Never miss when a similar rental is listed in this area</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-similar-alert')" style="color: white; font-size: 1.8rem;">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 22px; background: #ffffff;">
+        
+        <!-- Target Property Card Preview -->
+        <div class="similar-prop-preview" id="similar-preview-box">
+          <img src="" alt="Property" class="similar-prop-thumb" id="similar-preview-thumb">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 0.72rem; font-weight: 800; color: #dc2626; text-transform: uppercase; margin-bottom: 2px;">
+              <i class="fas fa-ban"></i> Recently Taken Unit
+            </div>
+            <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="similar-preview-title">
+              Loading property...
+            </div>
+            <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;" id="similar-preview-sub">
+              Area · Category
+            </div>
+            <div style="font-weight: 800; font-size: 0.95rem; color: #059669; margin-top: 4px;" id="similar-preview-price">
+              KSh — / mo
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.84rem; color: #475569; margin-bottom: 16px; line-height: 1.5;">
+          Houses in this area rent out very quickly. Enter your phone number below and our automated matching system will alert you via <strong>SMS and WhatsApp</strong> the instant a similar unit becomes vacant.
+        </p>
+
+        <!-- Subscription Form -->
+        <form id="form-similar-alert" onsubmit="app.submitSimilarAlert(event)">
+          <input type="hidden" id="similar-prop-id">
+          <input type="hidden" id="similar-prop-category">
+          <input type="hidden" id="similar-prop-location">
+          <input type="hidden" id="similar-prop-bedrooms">
+
+          <div style="margin-bottom: 14px;">
+            <label for="similar-alert-phone" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">
+              M-Pesa / WhatsApp Phone Number <span style="color: #dc2626;">*</span>
+            </label>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #64748b; font-size: 0.9rem;">+254</span>
+              <input type="tel" id="similar-alert-phone" placeholder="712345678" required style="width: 100%; padding: 10px 12px 10px 54px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-weight: 700; color: #0f172a; outline: none;">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label for="similar-alert-budget" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Max Budget (KSh)</label>
+              <input type="number" id="similar-alert-budget" placeholder="e.g. 25000" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; font-weight: 700; color: #0f172a; outline: none;">
+            </div>
+            <div>
+              <label for="similar-alert-email" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Email (Optional)</label>
+              <input type="email" id="similar-alert-email" placeholder="you@example.com" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; outline: none;">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 18px; font-size: 0.82rem; color: #475569;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="checkbox" id="similar-ch-sms" checked style="accent-color: #059669;">
+              <span>Instant SMS Alert</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="checkbox" id="similar-ch-wa" checked style="accent-color: #25d366;">
+              <span>WhatsApp Alert</span>
+            </label>
+          </div>
+
+          <button type="submit" id="btn-submit-similar-alert" class="btn-primary" style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; background: #0f172a; color: white; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background 0.2s;">
+            <i class="fas fa-bell" style="color: #f59e0b;"></i> Set Instant Alert (100% Free)
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ====================================================================
+       MODAL: 3-DAY HOUSE HUNT CONCIERGE REQUEST & PAYMENT WIZARD
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-house-hunt" style="display: none; align-items: center; justify-content: center; z-index: 2900;">
+    <div class="modal-dialog" style="max-width: 660px; width: 95%; border-radius: 20px; overflow: hidden;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #065f46 0%, #059669 100%); color: white; padding: 20px 24px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+            <i class="fas fa-search-location"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #ffffff;">Hire a House Hunter</h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #a7f3d0;">3-Day Dedicated Concierge Property Search · KSh 2,000</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-house-hunt')" style="color: white; font-size: 1.8rem;">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 24px; background: #ffffff; max-height: 80vh; overflow-y: auto;">
+        
+        <!-- Value Prop Banner -->
+        <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
+          <i class="fas fa-shield-check" style="font-size: 1.5rem; color: #059669; margin-top: 2px;"></i>
+          <div style="font-size: 0.84rem; color: #064e3b; line-height: 1.5;">
+            <strong>Stop wasting days on frustrating house hunts and rogue brokers.</strong> For a flat KSh 2,000, our verified team scours on-the-ground vacancies matching your exact criteria for 72 hours, verifies water/power/security, and arranges physical viewings for you.
+          </div>
+        </div>
+
+        <form id="form-house-hunt" onsubmit="app.submitHouseHuntRequest(event)">
+          
+          <!-- Locations -->
+          <div style="margin-bottom: 16px;">
+            <label for="hunt-locations" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">
+              Preferred Location(s) / Estates <span style="color: #dc2626;">*</span>
+            </label>
+            <input type="text" id="hunt-locations" placeholder="e.g. Kilimani, Kileleshwa, Westlands, Ruaka" required style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; font-weight: 600; outline: none;">
+            <small style="color: #64748b; font-size: 0.72rem;">Separate multiple locations with commas</small>
+          </div>
+
+          <!-- Budget Range -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+            <div>
+              <label for="hunt-budget-min" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">
+                Min Budget (KSh) <span style="color: #dc2626;">*</span>
+              </label>
+              <input type="number" id="hunt-budget-min" placeholder="15000" required style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-weight: 700; outline: none;">
+            </div>
+            <div>
+              <label for="hunt-budget-max" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">
+                Max Budget (KSh) <span style="color: #dc2626;">*</span>
+              </label>
+              <input type="number" id="hunt-budget-max" placeholder="30000" required style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-weight: 700; outline: none;">
+            </div>
+          </div>
+
+          <!-- Category & Bedrooms -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+            <div>
+              <label for="hunt-property-type" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Property Type</label>
+              <select id="hunt-property-type" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; font-weight: 600; outline: none;">
+                <option value="Apartment / Flat">Apartment / Flat</option>
+                <option value="Bedsitter / Studio">Bedsitter / Studio</option>
+                <option value="Maisonette / Townhouse">Maisonette / Townhouse</option>
+                <option value="Bungalow">Bungalow</option>
+                <option value="Hostel / Student Room">Hostel / Student Room</option>
+                <option value="Commercial / Office">Commercial / Office</option>
+              </select>
+            </div>
+            <div>
+              <label for="hunt-bedrooms" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Bedrooms</label>
+              <select id="hunt-bedrooms" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; font-weight: 600; outline: none;">
+                <option value="0">Studio / Bedsitter</option>
+                <option value="1">1 Bedroom</option>
+                <option value="2" selected>2 Bedroom</option>
+                <option value="3">3 Bedroom</option>
+                <option value="4">4+ Bedroom</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Move in Date & Furnished -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+            <div>
+              <label for="hunt-movein" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Expected Move-in Date</label>
+              <input type="date" id="hunt-movein" style="width: 100%; padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; font-weight: 600; outline: none;">
+            </div>
+            <div>
+              <label for="hunt-furnished" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Furnishing</label>
+              <select id="hunt-furnished" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; font-weight: 600; outline: none;">
+                <option value="unfurnished">Unfurnished (Standard)</option>
+                <option value="furnished">Furnished</option>
+                <option value="any">Any / Doesn't matter</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Must-have amenities -->
+          <div style="margin-bottom: 18px;">
+            <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 8px;">Must-Have Features</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 0.8rem; color: #475569;">
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <input type="checkbox" name="hunt-amenity" value="Dedicated Parking" style="accent-color: #059669;"> Dedicated Parking
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <input type="checkbox" name="hunt-amenity" value="Borehole / 24h Water" checked style="accent-color: #059669;"> 24h Water / Borehole
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <input type="checkbox" name="hunt-amenity" value="Balcony" style="accent-color: #059669;"> Balcony
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <input type="checkbox" name="hunt-amenity" value="Token Meter (Prepaid)" checked style="accent-color: #059669;"> Token Meter
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <input type="checkbox" name="hunt-amenity" value="High-Speed Fiber" style="accent-color: #059669;"> WiFi / Fiber Ready
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <input type="checkbox" name="hunt-amenity" value="Perimeter Wall & CCTV" checked style="accent-color: #059669;"> CCTV & Security
+              </label>
+            </div>
+          </div>
+
+          <!-- Special Preferences -->
+          <div style="margin-bottom: 20px;">
+            <label for="hunt-notes" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Any specific requirements or roads?</label>
+            <textarea id="hunt-notes" placeholder="e.g. Near main road, pet-friendly, quiet neighborhood, floor 1-3 only..." rows="2" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.88rem; outline: none; resize: vertical;"></textarea>
+          </div>
+
+          <!-- Customer Phone -->
+          <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+            <label for="hunt-phone" style="display: block; font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+              Your Contact Phone (for M-Pesa & WhatsApp Updates) <span style="color: #dc2626;">*</span>
+            </label>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #64748b;">+254</span>
+              <input type="tel" id="hunt-phone" placeholder="712345678" required style="width: 100%; padding: 10px 12px 10px 54px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-weight: 700; outline: none; background: white;">
+            </div>
+          </div>
+
+          <!-- Submission & Payment -->
+          <button type="submit" id="btn-submit-hunt" class="btn-primary" style="width: 100%; padding: 14px; font-size: 1.05rem; font-weight: 800; border-radius: 10px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; border: none; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
+            <i class="fas fa-bolt"></i> Start 3-Day House Hunt (KSh 2,000)
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ====================================================================
+       MODAL: HOUSE HUNT LIVE 72-HOUR TRACKER & CONCIERGE CHAT
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-hunt-tracker" style="display: none; align-items: center; justify-content: center; z-index: 2950;">
+    <div class="modal-dialog hunt-tracker-dialog">
+      <div class="modal-header" style="background: #0f172a; color: white; padding: 16px 22px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: #059669; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: white;">
+            <i class="fas fa-radar"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">House Hunt Live Tracker</h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #94a3b8;" id="tracker-hunt-id">Hunt ID: —</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-hunt-tracker')" style="color: white; font-size: 1.8rem;">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 0; background: #ffffff; max-height: 85vh; overflow-y: auto;">
+        
+        <!-- Live Countdown Timer Hero -->
+        <div class="hunt-timer-hero">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #a7f3d0; text-transform: uppercase; letter-spacing: 1px;">
+            <i class="fas fa-clock"></i> 72-Hour Search In Progress
+          </div>
+          <div class="hunt-countdown-digits" id="hunt-clock-digits">
+            71h : 59m : 59s
+          </div>
+          <div style="font-size: 0.82rem; color: #cbd5e1;" id="hunt-status-desc">
+            Your dedicated KejaMarket agent is currently cross-checking verified on-ground vacancies.
+          </div>
+        </div>
+
+        <div style="padding: 20px 24px;">
+          
+          <!-- Stepper Progression -->
+          <div class="hunt-stepper" id="hunt-stepper-nodes">
+            <div class="hunt-step-node active" data-step="1">
+              <div class="hunt-step-circle">1</div>
+              <div class="hunt-step-label">Requirements</div>
+            </div>
+            <div class="hunt-step-node active" data-step="2">
+              <div class="hunt-step-circle">2</div>
+              <div class="hunt-step-label">Searching</div>
+            </div>
+            <div class="hunt-step-node" data-step="3">
+              <div class="hunt-step-circle">3</div>
+              <div class="hunt-step-label">Found</div>
+            </div>
+            <div class="hunt-step-node" data-step="4">
+              <div class="hunt-step-circle">4</div>
+              <div class="hunt-step-label">Viewing</div>
+            </div>
+            <div class="hunt-step-node" data-step="5">
+              <div class="hunt-step-circle">5</div>
+              <div class="hunt-step-label">Completed</div>
+            </div>
+          </div>
+
+          <!-- Tabs: Curated Found Properties & Concierge Chat -->
+          <div style="display: flex; gap: 8px; border-bottom: 2px solid #e2e8f0; margin-bottom: 16px;">
+            <button type="button" class="btn-hunt-tab active" id="btn-tab-hunt-props" onclick="app.switchHuntTrackerTab('props')" style="padding: 8px 16px; font-size: 0.88rem; font-weight: 800; background: none; border: none; border-bottom: 3px solid #059669; color: #064e3b; cursor: pointer;">
+              <i class="fas fa-home"></i> Curated Properties (<span id="hunt-found-count">0</span>)
+            </button>
+            <button type="button" class="btn-hunt-tab" id="btn-tab-hunt-chat" onclick="app.switchHuntTrackerTab('chat')" style="padding: 8px 16px; font-size: 0.88rem; font-weight: 700; background: none; border: none; border-bottom: 3px solid transparent; color: #64748b; cursor: pointer;">
+              <i class="fas fa-comments"></i> Agent Chat & Updates
+            </button>
+          </div>
+
+          <!-- Tab Content: Found Properties -->
+          <div id="hunt-pane-props">
+            <div id="hunt-properties-list" style="display: grid; gap: 14px;">
+              <!-- Empty state default -->
+              <div style="text-align: center; padding: 36px 16px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                <i class="fas fa-search-location" style="font-size: 2.2rem; color: #94a3b8; margin-bottom: 10px;"></i>
+                <h4 style="font-size: 1.05rem; font-weight: 800; color: #1e293b; margin-bottom: 6px;">Agent Is Hunting Units For You</h4>
+                <p style="font-size: 0.85rem; color: #64748b; max-width: 420px; margin: 0 auto;">
+                  Verified matches found in your selected areas will appear right here as our agent confirms them with caretakers.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content: Concierge Chat -->
+          <div id="hunt-pane-chat" style="display: none;">
+            <div id="hunt-chat-messages" style="height: 280px; overflow-y: auto; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px;">
+              <div style="background: #e2e8f0; color: #334155; padding: 8px 12px; border-radius: 10px; font-size: 0.82rem; max-width: 80%;">
+                <strong>KejaMarket Concierge:</strong> Habari! Your 3-day search is live. Please message us here if you have any questions or want to prioritize specific streets.
+              </div>
+            </div>
+            <form id="form-hunt-chat" onsubmit="app.sendHuntChatMessage(event)" style="display: flex; gap: 8px;">
+              <input type="text" id="hunt-chat-input" placeholder="Type a message to your concierge agent..." required style="flex: 1; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.88rem; outline: none;">
+              <button type="submit" style="background: #059669; color: white; border: none; padding: 0 18px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; cursor: pointer;">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+<!-- Floating Social Connect Widget (@kejamarket & WhatsApp) -->
   <div id="floating-social-widget" style="position: fixed; bottom: 22px; right: 22px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
     <!-- Expandable popup menu -->
     <div id="social-widget-menu" style="display: none; background: white; border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,0.18); border: 1px solid #e2e8f0; padding: 12px; min-width: 230px; animation: fadeIn 0.2s ease;">

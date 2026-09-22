@@ -5069,3 +5069,328 @@ body {
 .share-pop-instagram i { color: #E1306C; font-size: 0.95rem; }
 .share-pop-tiktok i { color: #010101; font-size: 0.95rem; }
 .share-pop-copy i { color: #64748b; font-size: 0.95rem; }
+
+/* ====================================================================
+   AFFORDABILITY CALCULATOR, RECENTLY TAKEN ALERTS & HOUSE HUNT
+   ==================================================================== */
+
+/* Header Tool Buttons */
+.btn-header-tool {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.btn-header-tool:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+  transform: translateY(-1px);
+}
+.btn-header-hunt {
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+}
+.btn-header-hunt:hover {
+  background: linear-gradient(135deg, #047857, #059669) !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.45);
+}
+.hunt-pill-badge {
+  background: #fef08a;
+  color: #854d0e;
+  font-size: 0.65rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 992px) {
+  .btn-header-tool .header-tool-label {
+    display: none;
+  }
+  .btn-header-tool {
+    padding: 6px 9px;
+  }
+}
+
+/* Affordability Modal Styles */
+.afford-modal-dialog {
+  max-width: 680px !important;
+  width: 95% !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  box-shadow: 0 25px 60px -15px rgba(0,0,0,0.3) !important;
+}
+.afford-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+@media (max-width: 640px) {
+  .afford-grid { grid-template-columns: 1fr; gap: 12px; }
+}
+.afford-input-card {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.afford-input-card:focus-within {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  background: #ffffff;
+}
+.afford-input-card label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 8px;
+}
+.afford-input-card .afford-num-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+}
+.afford-range-slider {
+  width: 100%;
+  margin-top: 10px;
+  accent-color: #059669;
+  cursor: pointer;
+}
+.afford-results-box {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.3);
+}
+.afford-hero-range {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: #fef08a;
+  letter-spacing: -0.5px;
+  margin: 6px 0;
+}
+.afford-health-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.afford-health-pill.comfort {
+  background: rgba(255, 255, 255, 0.18);
+  color: #a7f3d0;
+  border: 1px solid rgba(167, 243, 208, 0.4);
+}
+.afford-health-pill.stretch {
+  background: rgba(254, 240, 138, 0.2);
+  color: #fef08a;
+  border: 1px solid rgba(254, 240, 138, 0.4);
+}
+.afford-health-pill.risk {
+  background: rgba(248, 113, 113, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+}
+.afford-breakdown-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 14px 0 8px 0;
+  background: rgba(255, 255, 255, 0.15);
+}
+.afford-bar-rent { background: #34d399; }
+.afford-bar-expenses { background: #f87171; }
+.afford-bar-savings { background: #60a5fa; }
+.afford-bar-buffer { background: #fef08a; }
+
+.afford-breakdown-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.74rem;
+  opacity: 0.9;
+}
+.afford-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.afford-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Recently Taken Property Card Badges & Buttons */
+.card-badge-status.taken,
+.card-badge-status.occupied {
+  background: #991b1b !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(153, 27, 27, 0.4) !important;
+}
+.btn-card-notify-similar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  color: #0f172a;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: 6px;
+}
+.btn-card-notify-similar:hover {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+.btn-card-notify-similar i {
+  color: #f59e0b;
+}
+
+/* Similar Alert Modal */
+.similar-modal-dialog {
+  max-width: 520px !important;
+  width: 95% !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+.similar-prop-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 18px;
+}
+.similar-prop-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* House Hunt Concierge Live Tracker Styles */
+.hunt-tracker-dialog {
+  max-width: 800px !important;
+  width: 96% !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+.hunt-timer-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);
+  color: #ffffff;
+  padding: 24px;
+  text-align: center;
+  position: relative;
+}
+.hunt-countdown-digits {
+  font-size: 2.3rem;
+  font-weight: 900;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 2px;
+  color: #34d399;
+  text-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+  margin: 10px 0;
+}
+.hunt-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0 24px 0;
+  position: relative;
+}
+.hunt-stepper::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 30px;
+  right: 30px;
+  height: 3px;
+  background: #e2e8f0;
+  z-index: 1;
+}
+.hunt-step-node {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+.hunt-step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 3px solid #cbd5e1;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  transition: all 0.3s;
+}
+.hunt-step-node.active .hunt-step-circle {
+  background: #059669;
+  border-color: #a7f3d0;
+  color: white;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.2);
+}
+.hunt-step-node.done .hunt-step-circle {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+.hunt-step-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  text-align: center;
+}
+.hunt-step-node.active .hunt-step-label {
+  color: #064e3b;
+  font-weight: 800;
+}
+

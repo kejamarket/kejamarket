@@ -179,6 +179,13 @@ const AdminCore = (() => {
         case 'support':
           await loadSupport(viewData);
           break;
+        case 'house-hunts':
+          if (window.AdminHunts && typeof window.AdminHunts.loadHouseHunts === 'function') {
+            await window.AdminHunts.loadHouseHunts(viewData);
+          } else {
+            document.getElementById('admin-content').innerHTML = '<div class="loading-state">Loading House Hunts...</div>';
+          }
+          break;
         case 'adminUsers':
           await loadAdminUsers(viewData);
           break;

@@ -2396,6 +2396,51 @@ app.post('/api/alerts/whatsapp', requireAuth, async (req, res) => {
   }
 });
 
+// POST /api/alerts/similar — Demand generation alerts for "Recently Taken" properties
+app.post('/api/alerts/similar', async (req, res) => {
+  try {
+    const { phone, email, propertyId, propertyTitle, location, category, bedrooms, maxBudget, sendWhatsapp } = req.body;
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Phone number is required for alerts.' });
+    }
+    const cleanPhone = formatPhone(phone);
+    const alertData = {
+      phone: cleanPhone,
+      email: email ? String(email).trim() : null,
+      propertyId: propertyId || null,
+      propertyTitle: propertyTitle || 'Similar Property',
+      location: location || 'Nairobi',
+      category: category || 'Rental',
+      bedrooms: bedrooms ? parseInt(bedrooms) : null,
+      maxBudget: maxBudget ? parseFloat(maxBudget) : null,
+      sendWhatsapp: !!sendWhatsapp
+    };
+
+    let alert;
+    if (store.saveSimilarPropertyAlert) {
+      alert = await store.saveSimilarPropertyAlert(alertData);
+    } else {
+      alert = { id: 'spa-' + Date.now(), ...alertData };
+    }
+
+    // Send instant SMS confirmation to tenant
+    const budgetStr = alertData.maxBudget ? `under KSh ${Number(alertData.maxBudget).toLocaleString('en-KE')}` : '';
+    sendRealSMS(
+      cleanPhone,
+      `[KejaMarket Alert] 🔔 Subscribed! We will notify you the moment a similar ${alertData.category} in ${alertData.location} ${budgetStr} becomes available. - kejamarket.co.ke`
+    );
+
+    res.status(201).json({
+      success: true,
+      message: `Alert set! You will receive instant alerts for similar units in ${alertData.location}.`,
+      alert
+    });
+  } catch (err) {
+    console.error('Similar alert error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // POST /api/leads/movers
 app.post('/api/leads/movers', async (req, res) => {
   try {
@@ -4810,6 +4855,453 @@ app.get('/api/diagnostic', async (req, res) => {
 app.get('/api/cache-stats', (req, res) => {
   res.json({ success: true, cache: cache.getStats() });
 });
+
+// ══════════════════════════════════════════════════════════════════════════════
+// HOUSE HUNT ROUTES
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ── CUSTOMER: Create a new House Hunt (before payment) ─────────────────────
+app.post('/api/house-hunt', requireAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    const {
+      preferredLocations, budgetMin, budgetMax, propertyType,
+      bedrooms, bathrooms, moveInDate, amenities,
+      parkingRequired, furnished, otherPreferences
+    } = req.body;
+
+    if (!budgetMin && !budgetMax) {
+      return res.status(400).json({ success: false, message: 'Please provide a budget range.' });
+    }
+    if (!preferredLocations || !preferredLocations.length) {
+      return res.status(400).json({ success: false, message: 'Please provide at least one preferred location.' });
+    }
+
+    // Check if customer already has an active hunt
+    const existing = await store.getHouseHuntsByCustomer(user.id);
+    const active = existing.find(h => ['ACTIVE','REQUIREMENTS_REVIEW','SEARCHING','PROPERTIES_FOUND','VIEWING_ARRANGED','CUSTOMER_REVIEWING'].includes(h.status));
+    if (active) {
+      return res.status(400).json({
+        success: false,
+        message: 'You already have an active House Hunt. Complete or cancel it before starting a new one.',
+        existingHuntId: active.id
+      });
+    }
+
+    const hunt = await store.createHouseHunt({
+      customerId: user.id,
+      preferredLocations: Array.isArray(preferredLocations) ? preferredLocations : [preferredLocations],
+      budgetMin: budgetMin ? parseFloat(budgetMin) : null,
+      budgetMax: budgetMax ? parseFloat(budgetMax) : null,
+      propertyType: propertyType || null,
+      bedrooms: bedrooms ? parseInt(bedrooms) : null,
+      bathrooms: bathrooms ? parseInt(bathrooms) : null,
+      moveInDate: moveInDate || null,
+      amenities: Array.isArray(amenities) ? amenities : [],
+      parkingRequired: !!parkingRequired,
+      furnished: furnished || 'any',
+      otherPreferences: otherPreferences || null,
+      paymentAmount: 2000
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'House Hunt created. Complete payment to activate your 3-day search.',
+      hunt
+    });
+  } catch (err) {
+    console.error('House Hunt create error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ── CUSTOMER: Get my House Hunts ────────────────────────────────────────────
+app.get('/api/house-hunt/my', requireAuth, async (req, res) => {
+  try {
+    const hunts = await store.getHouseHuntsByCustomer(req.user.id);
+    // Attach countdown data
+    const now = Date.now();
+    const enriched = hunts.map(h => ({
+      ...h,
+      timeRemainingMs: h.expiresAt ? Math.max(0, new Date(h.expiresAt).getTime() - now) : null,
+      isExpired: h.expiresAt ? new Date(h.expiresAt).getTime() < now : false
+    }));
+    res.json({ success: true, hunts: enriched });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ── CUSTOMER: Get a single House Hunt with properties ───────────────────────
+app.get('/api/house-hunt/:id', requireAuth, async (req, res) => {
+  try {
+    const hunt = await store.getHouseHuntById(req.params.id);
+    if (!hunt) return res.status(404).json({ success: false, message: 'House Hunt not found.' });
+
+    // Only the owner or an admin may view it
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+    if (hunt.customerId !== req.user.id && !isAdmin) {
+      return res.status(403).json({ success: false, message: 'Access denied.' });
+    }
+
+    const properties = await store.getPropertiesForHunt(req.params.id);
+    const messages = await store.getHuntMessages(req.params.id);
+    const now = Date.now();
+    res.json({
+      success: true,
+      hunt: {
+        ...hunt,
+        timeRemainingMs: hunt.expiresAt ? Math.max(0, new Date(hunt.expiresAt).getTime() - now) : null,
+        isExpired: hunt.expiresAt ? new Date(hunt.expiresAt).getTime() < now : false
+      },
+      properties,
+      messages
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ── CUSTOMER: Initiate M-Pesa payment for House Hunt ───────────────────────
+app.post('/api/house-hunt/:id/pay', requireAuth, async (req, res) => {
+  try {
+    const hunt = await store.getHouseHuntById(req.params.id);
+    if (!hunt) return res.status(404).json({ success: false, message: 'House Hunt not found.' });
+    if (hunt.customerId !== req.user.id) return res.status(403).json({ success: false, message: 'Access denied.' });
+    if (hunt.paymentStatus === 'SUCCESS') {
+      return res.status(400).json({ success: false, message: 'House Hunt is already paid and active.' });
+    }
+
+    const phone = req.body.phone || req.user.phone;
+    if (!phone) return res.status(400).json({ success: false, message: 'Phone number required for M-Pesa payment.' });
+
+    const formattedPhone = formatPhone(phone);
+    const amount = hunt.paymentAmount || 2000;
+
+    // Update hunt with checkout info
+    await store.updateHouseHunt(hunt.id, { checkoutRequestId: null });
+
+    if (hasDarajaCredentials()) {
+      try {
+        const token = await getMpesaToken();
+        const timestamp = getDarajaTimestamp();
+        const password = generatePassword(timestamp);
+        const payload = {
+          BusinessShortCode: PAYBILL, Password: password, Timestamp: timestamp,
+          TransactionType: 'CustomerPayBillOnline', Amount: Math.ceil(amount),
+          PartyA: formattedPhone, PartyB: PAYBILL, PhoneNumber: formattedPhone,
+          CallBackURL: CALLBACK_URL,
+          AccountReference: `HOUSEHUNT-${hunt.id.slice(-6).toUpperCase()}`,
+          TransactionDesc: `KejaMarket House Hunt - KSh ${amount}`
+        };
+        const stkRes = await fetch(`${MPESA_BASE}/mpesa/stkpush/v1/processrequest`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const stkData = await stkRes.json();
+        if (stkData.ResponseCode === '0') {
+          await store.updateHouseHunt(hunt.id, { checkoutRequestId: stkData.CheckoutRequestID });
+          // Also create a transaction record for tracking
+          await store.createTransaction({
+            checkoutRequestId: stkData.CheckoutRequestID,
+            merchantRequestId: stkData.MerchantRequestID,
+            phone: formattedPhone, amount,
+            itemType: 'house_hunt', itemName: 'KejaMarket House Hunt (3 Days)',
+            targetPropertyId: hunt.id, userId: req.user.id, status: 'PENDING'
+          });
+          return res.json({
+            success: true, hasDaraja: true,
+            checkoutRequestId: stkData.CheckoutRequestID,
+            huntId: hunt.id,
+            message: `STK Push sent to +${formattedPhone}. Enter your M-Pesa PIN to activate your House Hunt.`
+          });
+        } else {
+          return res.status(400).json({ success: false, hasDaraja: true, message: stkData.errorMessage || 'STK Push failed.' });
+        }
+      } catch (darajaErr) {
+        console.error('House Hunt Daraja error:', darajaErr.message);
+      }
+    }
+
+    // Fallback: manual Paybill
+    res.json({
+      success: false, requiresPaybill: true, hasDaraja: false,
+      paybill: PAYBILL, account: `HOUSEHUNT-${hunt.id.slice(-6).toUpperCase()}`,
+      amount, phone: formattedPhone, huntId: hunt.id,
+      message: `Pay KSh ${amount} via Lipa na M-Pesa Paybill ${PAYBILL}, Account: HOUSEHUNT-${hunt.id.slice(-6).toUpperCase()}, then enter your receipt below.`
+    });
+  } catch (err) {
+    console.error('House Hunt pay error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ── CUSTOMER: Confirm House Hunt payment via receipt ────────────────────────
+app.post('/api/house-hunt/:id/confirm-payment', requireAuth, async (req, res) => {
+  try {
+    const hunt = await store.getHouseHuntById(req.params.id);
+    if (!hunt) return res.status(404).json({ success: false, message: 'House Hunt not found.' });
+    if (hunt.customerId !== req.user.id) return res.status(403).json({ success: false, message: 'Access denied.' });
+    if (hunt.paymentStatus === 'SUCCESS') {
+      return res.json({ success: true, message: 'Already active.', hunt });
+    }
+
+    const { receiptCode } = req.body;
+    if (!receiptCode || !/^[A-Z0-9]{10}$/.test(receiptCode.trim().toUpperCase())) {
+      return res.status(400).json({ success: false, message: 'Invalid M-Pesa receipt code. Must be 10 characters (e.g. QKJ89XYZ12).' });
+    }
+
+    const updatedHunt = await store.activateHouseHunt(hunt.id, receiptCode.trim().toUpperCase(), hunt.checkoutRequestId);
+
+    // SMS confirmation
+    if (req.user.phone) {
+      sendRealSMS(req.user.phone,
+        `[KejaMarket] 🏠 House Hunt ACTIVATED! Receipt: ${receiptCode.toUpperCase()}. We'll search verified properties matching your requirements for 3 days. Check your dashboard at kejamarket.co.ke`
+      );
+    }
+
+    // Notify admin
+    sendRealSMS('254180511492',
+      `[House Hunt] New Hunt from ${req.user.name} (${req.user.phone}). Budget: KSh ${hunt.budgetMin||0}-${hunt.budgetMax||0}. Locations: ${(hunt.preferredLocations||[]).join(', ')}. Hunt ID: ${hunt.id}`
+    );
+
+    res.json({ success: true, message: 'House Hunt activated! Your 3-day search has started.', hunt: updatedHunt });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ── CUSTOMER: Send message in House Hunt ────────────────────────────────────
+app.post('/api/house-hunt/:id/message', requireAuth, async (req, res) => {
+  try {
+    const hunt = await store.getHouseHuntById(req.params.id);
+    if (!hunt) return res.status(404).json({ success: false, message: 'House Hunt not found.' });
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+    if (hunt.customerId !== req.user.id && !isAdmin) return res.status(403).json({ success: false, message: 'Access denied.' });
+
+    const { text } = req.body;
+    if (!text || !text.trim()) return res.status(400).json({ success: false, message: 'Message text required.' });
+
+    const isCustomer = hunt.customerId === req.user.id;
+    const msg = await store.saveHuntMessage({
+      huntId: hunt.id,
+      senderId: req.user.id,
+      senderName: req.user.name,
+      senderPhone: req.user.phone,
+      recipientId: isCustomer ? 'usr-admin-01' : hunt.customerId,
+      recipientName: isCustomer ? 'KejaMarket' : hunt.customerName,
+      customerId: hunt.customerId,
+      text: text.trim()
+    });
+
+    // SMS notification
+    if (isCustomer) {
+      sendRealSMS('254180511492', `[House Hunt ${hunt.id.slice(-6)}] Customer ${req.user.name}: "${text.substring(0,80)}"`);
+    } else if (hunt.customerPhone) {
+      sendRealSMS(hunt.customerPhone, `[KejaMarket House Hunt] New message from KejaMarket: "${text.substring(0,100)}". View at kejamarket.co.ke`);
+    }
+
+    res.status(201).json({ success: true, message: msg });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ADMIN: House Hunt Management
+// ══════════════════════════════════════════════════════════════════════════════
+
+function requireHouseHuntAdmin(req, res, next) {
+  if (!req.user || (req.user.role !== 'admin' && !req.user.isAdmin)) {
+    return res.status(403).json({ success: false, message: 'Admin access required.' });
+  }
+  next();
+}
+
+// GET all House Hunts
+app.get('/api/admin/house-hunts', requireAuth, requireHouseHuntAdmin, async (req, res) => {
+  try {
+    const { status, limit, offset } = req.query;
+    const hunts = await store.getAllHouseHunts({
+      status: status || null,
+      limit: limit ? parseInt(limit) : 100,
+      offset: offset ? parseInt(offset) : 0
+    });
+    const now = Date.now();
+    const enriched = hunts.map(h => ({
+      ...h,
+      timeRemainingMs: h.expiresAt ? Math.max(0, new Date(h.expiresAt).getTime() - now) : null,
+      isExpired: h.expiresAt ? new Date(h.expiresAt).getTime() < now : false
+    }));
+    res.json({ success: true, count: enriched.length, hunts: enriched });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET single House Hunt with full details
+app.get('/api/admin/house-hunts/:id', requireAuth, requireHouseHuntAdmin, async (req, res) => {
+  try {
+    const hunt = await store.getHouseHuntById(req.params.id);
+    if (!hunt) return res.status(404).json({ success: false, message: 'House Hunt not found.' });
+    const properties = await store.getPropertiesForHunt(req.params.id, true); // include removed
+    const messages = await store.getHuntMessages(req.params.id);
+    const now = Date.now();
+    res.json({
+      success: true,
+      hunt: { ...hunt, timeRemainingMs: hunt.expiresAt ? Math.max(0, new Date(hunt.expiresAt).getTime() - now) : null },
+      properties, messages
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PATCH update House Hunt status / notes
+app.patch('/api/admin/house-hunts/:id', requireAuth, requireHouseHuntAdmin, async (req, res) => {
+  try {
+    const { status, adminNotes, assignedAdminId, viewingsArranged } = req.body;
+    const allowed = ['ACTIVE','REQUIREMENTS_REVIEW','SEARCHING','PROPERTIES_FOUND','VIEWING_ARRANGED','CUSTOMER_REVIEWING','COMPLETED','EXPIRED','CANCELLED'];
+    if (status && !allowed.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status.' });
+    }
+    const updates = {};
+    if (status) updates.status = status;
+    if (adminNotes !== undefined) updates.adminNotes = adminNotes;
+    if (assignedAdminId) updates.assignedAdminId = assignedAdminId;
+    if (viewingsArranged !== undefined) updates.viewingsArranged = parseInt(viewingsArranged);
+
+    const hunt = await store.updateHouseHunt(req.params.id, updates);
+    res.json({ success: true, hunt });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST add property to House Hunt
+app.post('/api/admin/house-hunts/:id/properties', requireAuth, requireHouseHuntAdmin, async (req, res) => {
+  try {
+    const hunt = await store.getHouseHuntById(req.params.id);
+    if (!hunt) return res.status(404).json({ success: false, message: 'House Hunt not found.' });
+
+    // If a propertyId is given, enrich with DB data
+    let propertyData = { ...req.body };
+    if (req.body.propertyId) {
+      try {
+        const dbProp = await store.getPropertyById(req.body.propertyId);
+        if (dbProp) {
+          propertyData = {
+            propertyId: dbProp.id,
+            title: dbProp.title, location: `${dbProp.estateSuburb || ''}, ${dbProp.county || 'Nairobi'}`,
+            price: dbProp.rentKes, bedrooms: dbProp.bedrooms, bathrooms: dbProp.bathrooms,
+            images: Array.isArray(dbProp.media) ? dbProp.media.map(m => m.url || m) : [],
+            amenities: Object.keys(dbProp.amenities || {}).filter(k => dbProp.amenities[k]),
+            isVerified: dbProp.isVerified || false,
+            availability: dbProp.isTaken ? 'taken' : 'available',
+            adminNote: req.body.adminNote || null,
+            ...req.body // allow override
+          };
+        }
+      } catch (e) { /* use req.body as-is */ }
+    }
+
+    const prop = await store.addPropertyToHunt(req.params.id, propertyData);
+
+    // Notify customer via SMS
+    if (hunt.customerPhone) {
+      const prevCount = hunt.propertiesFound || 0;
+      sendRealSMS(hunt.customerPhone,
+        `[KejaMarket House Hunt] Great news! We found a new matching property for you. You now have ${prevCount + 1} propert${prevCount + 1 === 1 ? 'y' : 'ies'} to review. Check your dashboard at kejamarket.co.ke`
+      );
+    }
+
+    res.status(201).json({ success: true, property: prop });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PATCH update a property in the hunt (confirm availability, arrange viewing, add note)
+app.patch('/api/admin/house-hunts/:huntId/properties/:propId', requireAuth, requireHouseHuntAdmin, async (req, res) => {
+  try {
+    const updates = {};
+    const { availability, adminNote, viewingStatus, viewingDate, isVerified } = req.body;
+    if (availability !== undefined) {
+      updates.availability = availability;
+      if (availability === 'available' || availability === 'taken') {
+        updates.availabilityConfirmedAt = new Date().toISOString();
+        updates.availabilityConfirmedBy = req.user.name || req.user.id;
+      }
+    }
+    if (adminNote !== undefined) updates.adminNote = adminNote;
+    if (viewingStatus !== undefined) {
+      updates.viewingStatus = viewingStatus;
+      // Update parent viewings count
+      if (viewingStatus === 'arranged') {
+        const hunt = await store.getHouseHuntById(req.params.huntId);
+        if (hunt) {
+          const props = await store.getPropertiesForHunt(req.params.huntId);
+          const arranged = props.filter(p => p.viewing_status === 'arranged' || p.viewing_status === 'done').length + 1;
+          await store.updateHouseHunt(req.params.huntId, { viewingsArranged: arranged, status: 'VIEWING_ARRANGED' });
+        }
+      }
+    }
+    if (viewingDate !== undefined) updates.viewingDate = viewingDate;
+    if (isVerified !== undefined) updates.isVerified = isVerified;
+
+    const prop = await store.updateHuntProperty(req.params.propId, updates);
+    res.json({ success: true, property: prop });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE remove property from hunt
+app.delete('/api/admin/house-hunts/:huntId/properties/:propId', requireAuth, requireHouseHuntAdmin, async (req, res) => {
+  try {
+    const result = await store.removePropertyFromHunt(req.params.propId, req.body.reason, req.params.huntId);
+    res.json({ success: true, property: result });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ── Webhook: activate hunt after M-Pesa callback confirms house_hunt itemType ─
+// (The existing /api/mpesa/callback already updates transactions — we hook in via
+//  a separate payment-check endpoint so the frontend can poll after STK push)
+app.get('/api/house-hunt/:id/payment-status', requireAuth, async (req, res) => {
+  try {
+    const hunt = await store.getHouseHuntById(req.params.id);
+    if (!hunt) return res.status(404).json({ success: false, message: 'House Hunt not found.' });
+    if (hunt.customerId !== req.user.id && req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Access denied.' });
+    }
+
+    // Check if the associated transaction succeeded
+    if (hunt.checkoutRequestId) {
+      try {
+        const tx = await store.getTransactionByCheckoutId(hunt.checkoutRequestId);
+        if (tx && tx.status === 'SUCCESS' && hunt.paymentStatus !== 'SUCCESS') {
+          const updated = await store.activateHouseHunt(hunt.id, tx.mpesa_receipt || tx.mpesaReceipt, hunt.checkoutRequestId);
+          if (req.user.phone) {
+            sendRealSMS(req.user.phone, `[KejaMarket] 🏠 House Hunt ACTIVATED! Your 3-day search has started. Check your dashboard at kejamarket.co.ke`);
+          }
+          return res.json({ success: true, paymentStatus: 'SUCCESS', activated: true, hunt: updated });
+        }
+        if (tx) {
+          return res.json({ success: true, paymentStatus: tx.status, activated: false, hunt });
+        }
+      } catch (e) { /* non-fatal */ }
+    }
+
+    res.json({ success: true, paymentStatus: hunt.paymentStatus, activated: hunt.status !== 'PAYMENT_PENDING', hunt });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
 
 
 async function startServer() {

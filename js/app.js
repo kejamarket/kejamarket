@@ -1402,7 +1402,7 @@ class NairobiRentalsApp {
 
     let badgeHtml = '';
     if (isOccupied) {
-      badgeHtml = `<div class="card-badge-status occupied"><i class="fas fa-ban"></i> OCCUPIED</div>`;
+      badgeHtml = `<div class="card-badge-status occupied taken"><i class="fas fa-ban"></i> JUST RENTED OUT</div>`;
     } else {
       badgeHtml = `<div class="card-badge-status available"><i class="fas fa-check-circle"></i> AVAILABLE</div>`;
     }
@@ -1454,6 +1454,11 @@ class NairobiRentalsApp {
             ${sqm ? `<span><i class="fas fa-vector-square"></i> ${sqm.toLocaleString()} m²</span>` : ''}
           </div>
 
+          ${isOccupied ? `
+            <button type="button" class="btn-card-notify-similar" onclick="app.openSimilarAlertModal('${p.id}', event)">
+              <i class="fas fa-bell"></i> Notify Me When Similar Available
+            </button>
+          ` : ''}
           <div class="card-actions-row">
             <button type="button" class="btn-card-details-green" onclick="app.openPropertyDetail('${p.id}')">
               View Details
@@ -3398,6 +3403,652 @@ class NairobiRentalsApp {
     if (postServiceBtn) postServiceBtn.style.display = isLandlord ? 'block' : 'none';
     if (postMarketplaceBtn) postMarketplaceBtn.style.display = 'block';
   }
+
+  // ══════════════════════════════════════════════════════════════════
+  // RENT AFFORDABILITY CALCULATOR ("What Can I Afford?")
+  // ══════════════════════════════════════════════════════════════════
+
+  openAffordabilityCalculator() {
+    this.closeAllPopups();
+    this.openModal('modal-affordability-calculator');
+    this.syncAffordability();
+  }
+
+  syncAffordability(sliderElem, type) {
+    const incomeInput = document.getElementById('afford-net-income');
+    const incomeSlider = document.getElementById('afford-income-slider');
+    const incomeDisp = document.getElementById('afford-income-disp');
+
+    const expensesInput = document.getElementById('afford-expenses');
+    const expensesSlider = document.getElementById('afford-expenses-slider');
+    const expensesDisp = document.getElementById('afford-expenses-disp');
+
+    const savingsInput = document.getElementById('afford-savings');
+    const savingsSlider = document.getElementById('afford-savings-slider');
+    const savingsDisp = document.getElementById('afford-savings-disp');
+
+    if (sliderElem && type === 'income') {
+      incomeInput.value = sliderElem.value;
+    } else if (incomeSlider && incomeInput) {
+      incomeSlider.value = incomeInput.value;
+    }
+
+    if (sliderElem && type === 'expenses') {
+      expensesInput.value = sliderElem.value;
+    } else if (expensesSlider && expensesInput) {
+      expensesSlider.value = expensesInput.value;
+    }
+
+    if (sliderElem && type === 'savings') {
+      savingsInput.value = sliderElem.value;
+    } else if (savingsSlider && savingsInput) {
+      savingsSlider.value = savingsInput.value;
+    }
+
+    const income = Math.max(0, parseFloat(incomeInput.value) || 0);
+    const expenses = Math.max(0, parseFloat(expensesInput.value) || 0);
+    const savings = Math.max(0, parseFloat(savingsInput.value) || 0);
+
+    if (incomeDisp) incomeDisp.textContent = 'KSh ' + income.toLocaleString('en-KE');
+    if (expensesDisp) expensesDisp.textContent = 'KSh ' + expenses.toLocaleString('en-KE');
+    if (savingsDisp) savingsDisp.textContent = 'KSh ' + savings.toLocaleString('en-KE');
+
+    this.calculateAffordability(income, expenses, savings);
+  }
+
+  calculateAffordability(income, expenses, savings) {
+    const rangeDisp = document.getElementById('afford-range-display');
+    const badge = document.getElementById('afford-health-badge');
+    const note = document.getElementById('afford-rule-note');
+
+    const barRent = document.getElementById('bar-rent');
+    const barExp = document.getElementById('bar-expenses');
+    const barSav = document.getElementById('bar-savings');
+    const barBuf = document.getElementById('bar-buffer');
+
+    const pctRentEl = document.getElementById('pct-rent');
+    const pctExpEl = document.getElementById('pct-expenses');
+    const pctSavEl = document.getElementById('pct-savings');
+    const pctBufEl = document.getElementById('pct-buffer');
+
+    if (!income || income <= 0) {
+      if (rangeDisp) rangeDisp.textContent = 'KSh 0';
+      return;
+    }
+
+    // Standard Kenyan 25-30% prudent rule
+    const safe30Pct = income * 0.30;
+    const safe25Pct = income * 0.25;
+
+    // Discretionary cashflow limit (after living expenses and savings)
+    const discretionary = Math.max(0, income - expenses - savings);
+    const cashFlowCeiling = discretionary * 0.75; // leave at least 25% of leftover as emergency cushion
+
+    // Calculate realistic min & max
+    let minRent = Math.round(Math.min(safe25Pct, discretionary * 0.5) / 500) * 500;
+    let maxRent = Math.round(Math.min(safe30Pct, cashFlowCeiling) / 500) * 500;
+
+    if (minRent < 3000) minRent = 3000;
+    if (maxRent < minRent) maxRent = minRent + 2000;
+
+    // Save for filter action
+    this._calculatedRentMin = minRent;
+    this._calculatedRentMax = maxRent;
+
+    if (rangeDisp) {
+      rangeDisp.textContent = `KSh ${minRent.toLocaleString('en-KE')} — ${maxRent.toLocaleString('en-KE')}`;
+    }
+
+    // Evaluate Financial Health
+    const midRent = (minRent + maxRent) / 2;
+    const rentRatio = midRent / income;
+    const expenseRatio = expenses / income;
+    const savingsRatio = savings / income;
+    const bufferRatio = Math.max(0, 1 - (rentRatio + expenseRatio + savingsRatio));
+
+    if (badge) {
+      if (rentRatio <= 0.30 && bufferRatio >= 0.15) {
+        badge.className = 'afford-health-pill comfort';
+        badge.innerHTML = '<i class="fas fa-shield-alt"></i> Comfort Zone (Safe & Prudent)';
+        if (note) note.textContent = 'Calculated within 25%–30% of take-home pay, with room for savings and unexpected emergencies.';
+      } else if (rentRatio <= 0.38 && bufferRatio >= 0.05) {
+        badge.className = 'afford-health-pill stretch';
+        badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Stretch Zone (Manageable)';
+        if (note) note.textContent = 'Rent is slightly higher than ideal. You can afford this if non-essential lifestyle expenses are trimmed.';
+      } else {
+        badge.className = 'afford-health-pill risk';
+        badge.innerHTML = '<i class="fas fa-exclamation-circle"></i> High Burden Risk';
+        if (note) note.textContent = 'Living expenses take up a large share of your income. Consider looking for units under KSh ' + minRent.toLocaleString('en-KE') + '.';
+      }
+    }
+
+    // Update stacked breakdown bar
+    const pRent = Math.min(100, Math.round(rentRatio * 100));
+    const pExp = Math.min(100 - pRent, Math.round(expenseRatio * 100));
+    const pSav = Math.min(100 - pRent - pExp, Math.round(savingsRatio * 100));
+    const pBuf = Math.max(0, 100 - pRent - pExp - pSav);
+
+    if (barRent) barRent.style.width = pRent + '%';
+    if (barExp) barExp.style.width = pExp + '%';
+    if (barSav) barSav.style.width = pSav + '%';
+    if (barBuf) barBuf.style.width = pBuf + '%';
+
+    if (pctRentEl) pctRentEl.textContent = pRent + '%';
+    if (pctExpEl) pctExpEl.textContent = pExp + '%';
+    if (pctSavEl) pctSavEl.textContent = pSav + '%';
+    if (pctBufEl) pctBufEl.textContent = pBuf + '%';
+  }
+
+  applyAffordabilityFilter() {
+    const locSelect = document.getElementById('afford-location');
+    const selectedLoc = locSelect ? locSelect.value : '';
+
+    const minRent = this._calculatedRentMin || 15000;
+    const maxRent = this._calculatedRentMax || 25000;
+
+    // Apply to main filter inputs
+    const minInput = document.getElementById('filter-price-min') || document.getElementById('price-min');
+    const maxInput = document.getElementById('filter-price-max') || document.getElementById('price-max');
+    if (minInput) minInput.value = minRent;
+    if (maxInput) maxInput.value = maxRent;
+
+    if (selectedLoc) {
+      const searchInput = document.getElementById('header-search-input');
+      if (searchInput) searchInput.value = selectedLoc;
+      this.searchQuery = selectedLoc;
+    }
+
+    this.priceMin = minRent;
+    this.priceMax = maxRent;
+
+    this.closeModal('modal-affordability-calculator');
+
+    // Trigger filter re-render
+    if (typeof this.filterProperties === 'function') {
+      this.filterProperties();
+    } else if (typeof this.renderProperties === 'function') {
+      this.renderProperties();
+    }
+
+    // Scroll to results
+    const resultsElem = document.getElementById('properties-container') || document.getElementById('listings-container') || document.querySelector('.properties-grid');
+    if (resultsElem) {
+      resultsElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    this.showToast(`Showing rentals within KSh ${minRent.toLocaleString()} – ${maxRent.toLocaleString()}/mo`, 'success');
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // SIMILAR PROPERTY DEMAND ALERTS ("Recently Taken")
+  // ══════════════════════════════════════════════════════════════════
+
+  openSimilarAlertModal(propertyId, event) {
+    if (event) event.stopPropagation();
+    this.closeAllPopups();
+
+    const p = (this.properties || []).find(item => item.id === propertyId);
+    if (!p) {
+      this.showToast('Property not found.', 'error');
+      return;
+    }
+
+    // Populate modal fields
+    const propIdEl = document.getElementById('similar-prop-id');
+    const propCatEl = document.getElementById('similar-prop-category');
+    const propLocEl = document.getElementById('similar-prop-location');
+    const propBedsEl = document.getElementById('similar-prop-bedrooms');
+
+    const previewThumb = document.getElementById('similar-preview-thumb');
+    const previewTitle = document.getElementById('similar-preview-title');
+    const previewSub = document.getElementById('similar-preview-sub');
+    const previewPrice = document.getElementById('similar-preview-price');
+    const budgetInput = document.getElementById('similar-alert-budget');
+    const phoneInput = document.getElementById('similar-alert-phone');
+
+    if (propIdEl) propIdEl.value = p.id;
+    if (propCatEl) propCatEl.value = p.category || 'Rental';
+    if (propLocEl) propLocEl.value = p.estateSuburb || p.location || 'Nairobi';
+    if (propBedsEl) propBedsEl.value = p.bedrooms || 1;
+
+    const rawPrice = p.rentKes ?? p.rent ?? p.price ?? 0;
+    const numPrice = typeof rawPrice === 'number' ? rawPrice : (parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0);
+
+    if (previewThumb) {
+      previewThumb.src = p.media?.[0]?.url || p.thumbnail || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80';
+    }
+    if (previewTitle) previewTitle.textContent = p.title || 'Apartment';
+    if (previewSub) previewSub.textContent = `${p.estateSuburb || 'Nairobi'} · ${p.category || 'Rental'}`;
+    if (previewPrice) previewPrice.textContent = `KSh ${numPrice.toLocaleString('en-KE')} / mo`;
+    if (budgetInput) budgetInput.value = numPrice || '';
+
+    // Auto-fill phone from user session if available
+    const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function') ? window.kejaAuth.getSession() : null;
+    if (session && session.phone && phoneInput && !phoneInput.value) {
+      let clean = String(session.phone).replace(/^254|^0/, '');
+      phoneInput.value = clean;
+    }
+
+    this.openModal('modal-similar-alert');
+  }
+
+  async submitSimilarAlert(e) {
+    e.preventDefault();
+
+    const phoneRaw = document.getElementById('similar-alert-phone').value.trim();
+    const budgetRaw = document.getElementById('similar-alert-budget').value.trim();
+    const emailRaw = document.getElementById('similar-alert-email').value.trim();
+    const propId = document.getElementById('similar-prop-id').value;
+    const category = document.getElementById('similar-prop-category').value;
+    const location = document.getElementById('similar-prop-location').value;
+    const bedrooms = document.getElementById('similar-prop-bedrooms').value;
+    const propTitle = document.getElementById('similar-preview-title')?.textContent || 'Rental';
+    const sendWa = document.getElementById('similar-ch-wa')?.checked ?? true;
+
+    if (!phoneRaw) {
+      this.showToast('Please enter your phone number.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-submit-similar-alert');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing to alerts...';
+    }
+
+    try {
+      const res = await fetch('/api/alerts/similar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: phoneRaw,
+          email: emailRaw || null,
+          propertyId: propId,
+          propertyTitle: propTitle,
+          location,
+          category,
+          bedrooms: parseInt(bedrooms) || 1,
+          maxBudget: parseFloat(budgetRaw) || null,
+          sendWhatsapp: sendWa
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        this.closeModal('modal-similar-alert');
+        this.showToast(data.message || 'Alert set! Check your phone for confirmation SMS.', 'success');
+      } else {
+        this.showToast(data.message || 'Failed to register alert.', 'error');
+      }
+    } catch (err) {
+      console.error('Similar alert submission error:', err);
+      this.showToast('Network error while setting alert.', 'error');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-bell" style="color: #f59e0b;"></i> Set Instant Alert (100% Free)';
+      }
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // 3-DAY HOUSE HUNT CONCIERGE SERVICE
+  // ══════════════════════════════════════════════════════════════════
+
+  openHouseHuntModal() {
+    this.closeAllPopups();
+
+    // Check if user already has an active hunt
+    const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function') ? window.kejaAuth.getSession() : null;
+    if (session && localStorage.getItem('keja_active_hunt_id')) {
+      const activeHuntId = localStorage.getItem('keja_active_hunt_id');
+      this.openHuntTracker(activeHuntId);
+      return;
+    }
+
+    // Pre-fill phone from session
+    if (session && session.phone) {
+      const phoneInput = document.getElementById('hunt-phone');
+      if (phoneInput && !phoneInput.value) {
+        phoneInput.value = String(session.phone).replace(/^254|^0/, '');
+      }
+    }
+
+    this.openModal('modal-house-hunt');
+  }
+
+  async submitHouseHuntRequest(e) {
+    e.preventDefault();
+
+    const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function') ? window.kejaAuth.getSession() : null;
+    const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
+
+    if (!session || !token) {
+      this.showToast('Please sign in first to start a House Hunt.', 'info');
+      this.openAuthModal('login');
+      return;
+    }
+
+    const locationsRaw = document.getElementById('hunt-locations').value.trim();
+    const budgetMin = parseFloat(document.getElementById('hunt-budget-min').value) || 0;
+    const budgetMax = parseFloat(document.getElementById('hunt-budget-max').value) || 0;
+    const propertyType = document.getElementById('hunt-property-type').value;
+    const bedrooms = parseInt(document.getElementById('hunt-bedrooms').value) || 0;
+    const moveInDate = document.getElementById('hunt-movein').value;
+    const furnished = document.getElementById('hunt-furnished').value;
+    const notes = document.getElementById('hunt-notes').value.trim();
+    const phone = document.getElementById('hunt-phone').value.trim();
+
+    const amenities = Array.from(document.querySelectorAll('input[name="hunt-amenity"]:checked')).map(cb => cb.value);
+
+    if (!locationsRaw) {
+      this.showToast('Please provide at least one preferred location.', 'error');
+      return;
+    }
+    if (!budgetMin || !budgetMax) {
+      this.showToast('Please specify a min and max budget.', 'error');
+      return;
+    }
+
+    const preferredLocations = locationsRaw.split(',').map(s => s.trim()).filter(Boolean);
+
+    const btn = document.getElementById('btn-submit-hunt');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Initializing 3-Day Hunt...';
+    }
+
+    try {
+      // Step 1: Create the Hunt record
+      const res = await fetch('/api/house-hunt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          preferredLocations,
+          budgetMin,
+          budgetMax,
+          propertyType,
+          bedrooms,
+          moveInDate: moveInDate || null,
+          furnished,
+          amenities,
+          otherPreferences: notes,
+          paymentAmount: 2000
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        if (data.existingHuntId) {
+          localStorage.setItem('keja_active_hunt_id', data.existingHuntId);
+          this.closeModal('modal-house-hunt');
+          this.openHuntTracker(data.existingHuntId);
+          return;
+        }
+        throw new Error(data.message || 'Could not create House Hunt');
+      }
+
+      const hunt = data.hunt;
+      localStorage.setItem('keja_active_hunt_id', hunt.id);
+
+      // Step 2: Trigger M-Pesa Payment STK Push
+      if (btn) btn.innerHTML = '<i class="fas fa-mobile-alt"></i> Sending M-Pesa STK Push...';
+      const payRes = await fetch(`/api/house-hunt/${hunt.id}/pay`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ phone })
+      });
+
+      const payData = await payRes.json();
+      this.closeModal('modal-house-hunt');
+
+      if (payData.hasDaraja) {
+        this.showToast(payData.message || 'M-Pesa prompt sent to your phone. Enter PIN to activate!', 'info', 8000);
+        // Start polling for payment activation
+        this.pollHuntPaymentStatus(hunt.id, payData.checkoutRequestId);
+      } else {
+        // Fallback Paybill
+        this.showToast(`Pay KSh 2,000 via Paybill ${payData.paybill || '4165507'}, Account: ${payData.account || 'HOUSEHUNT'}`, 'info', 10000);
+      }
+
+      // Open live tracker immediately
+      this.openHuntTracker(hunt.id);
+
+    } catch (err) {
+      console.error('House Hunt submission error:', err);
+      this.showToast(err.message || 'Failed to initialize House Hunt.', 'error');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-bolt"></i> Start 3-Day House Hunt (KSh 2,000)';
+      }
+    }
+  }
+
+  async pollHuntPaymentStatus(huntId, checkoutRequestId) {
+    const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
+    let attempts = 0;
+    const maxAttempts = 15;
+
+    const interval = setInterval(async () => {
+      attempts++;
+      if (attempts > maxAttempts) {
+        clearInterval(interval);
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/house-hunt/${huntId}/payment-status`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success && data.activated) {
+          clearInterval(interval);
+          this.showToast('🎉 House Hunt ACTIVATED! Your 72-hour dedicated search has officially started.', 'success', 8000);
+          this.openHuntTracker(huntId);
+        }
+      } catch (e) { /* ignore */ }
+    }, 4000);
+  }
+
+  async openHuntTracker(huntId) {
+    this.closeAllPopups();
+    this.openModal('modal-hunt-tracker');
+
+    const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
+    this._currentActiveHuntId = huntId;
+
+    try {
+      const res = await fetch(`/api/house-hunt/${huntId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Could not load hunt');
+      }
+
+      this.renderHuntTracker(data);
+    } catch (err) {
+      console.error('Hunt tracker load error:', err);
+      this.showToast('Error loading hunt details.', 'error');
+    }
+  }
+
+  renderHuntTracker(data) {
+    const hunt = data.hunt;
+    const properties = data.properties || [];
+    const messages = data.messages || [];
+
+    const huntIdEl = document.getElementById('tracker-hunt-id');
+    const statusDesc = document.getElementById('hunt-status-desc');
+    const foundCount = document.getElementById('hunt-found-count');
+
+    if (huntIdEl) huntIdEl.textContent = `Hunt ID: #${hunt.id.slice(-6).toUpperCase()} · Budget KSh ${(hunt.budgetMin||0).toLocaleString()} - ${(hunt.budgetMax||0).toLocaleString()}`;
+    if (foundCount) foundCount.textContent = properties.length;
+
+    // Start Live Clock
+    if (hunt.expiresAt) {
+      this.startHuntCountdown(new Date(hunt.expiresAt).getTime());
+    } else {
+      const clockDigits = document.getElementById('hunt-clock-digits');
+      if (clockDigits) clockDigits.textContent = '72h : 00m : 00s (Pending Payment)';
+    }
+
+    // Update Stepper
+    const stepper = document.getElementById('hunt-stepper-nodes');
+    if (stepper) {
+      const statusMap = {
+        'PAYMENT_PENDING': 1,
+        'REQUIREMENTS_REVIEW': 1,
+        'ACTIVE': 2,
+        'SEARCHING': 2,
+        'PROPERTIES_FOUND': 3,
+        'VIEWING_ARRANGED': 4,
+        'CUSTOMER_REVIEWING': 4,
+        'COMPLETED': 5
+      };
+      const activeStep = statusMap[hunt.status] || 2;
+      stepper.querySelectorAll('.hunt-step-node').forEach(node => {
+        const stepNum = parseInt(node.dataset.step);
+        node.classList.toggle('done', stepNum < activeStep);
+        node.classList.toggle('active', stepNum === activeStep);
+      });
+    }
+
+    // Render Curated Properties
+    const propsList = document.getElementById('hunt-properties-list');
+    if (propsList) {
+      if (properties.length === 0) {
+        propsList.innerHTML = `
+          <div style="text-align: center; padding: 36px 16px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
+            <i class="fas fa-search-location" style="font-size: 2.2rem; color: #94a3b8; margin-bottom: 10px;"></i>
+            <h4 style="font-size: 1.05rem; font-weight: 800; color: #1e293b; margin-bottom: 6px;">Agent Is Hunting Units For You</h4>
+            <p style="font-size: 0.85rem; color: #64748b; max-width: 420px; margin: 0 auto;">
+              Verified matches in ${(hunt.preferredLocations || []).join(', ')} will appear here as soon as our agent checks them on the ground.
+            </p>
+          </div>
+        `;
+      } else {
+        propsList.innerHTML = properties.map(p => `
+          <div style="display: flex; gap: 14px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px; align-items: center; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 220px;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="background: #dcfce7; color: #166534; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; text-transform: uppercase;">
+                  <i class="fas fa-check-circle"></i> Verified
+                </span>
+                ${p.viewing_status === 'arranged' ? '<span style="background:#fef08a; color:#854d0e; font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:10px;"><i class="fas fa-calendar-alt"></i> Viewing Arranged</span>' : ''}
+              </div>
+              <h4 style="margin: 0 0 4px 0; font-size: 1rem; font-weight: 800; color: #0f172a;">${p.property_title}</h4>
+              <div style="font-size: 0.82rem; color: #64748b;">📍 ${p.property_location} · ${p.property_bedrooms ? p.property_bedrooms + ' Bed' : ''}</div>
+              ${p.admin_note ? `<div style="font-size: 0.78rem; color: #334155; margin-top: 6px; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border-left: 3px solid #059669;"><strong>Agent Note:</strong> ${p.admin_note}</div>` : ''}
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 1.15rem; font-weight: 900; color: #059669;">KSh ${Number(p.property_price||0).toLocaleString('en-KE')}</div>
+              <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 8px;">per month</div>
+              ${p.property_id ? `<button type="button" class="btn-primary" onclick="app.openPropertyDetail('${p.property_id}')" style="background:#0f172a; padding:6px 14px; font-size:0.8rem; font-weight:700; border-radius:6px; border:none; color:white; cursor:pointer;">View Listing</button>` : ''}
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Render Messages
+    const chatBox = document.getElementById('hunt-chat-messages');
+    if (chatBox) {
+      chatBox.innerHTML = messages.map(m => `
+        <div style="align-self: ${m.sender_id === hunt.customer_id ? 'flex-end' : 'flex-start'}; background: ${m.sender_id === hunt.customer_id ? '#059669' : '#e2e8f0'}; color: ${m.sender_id === hunt.customer_id ? '#ffffff' : '#0f172a'}; padding: 8px 12px; border-radius: 10px; font-size: 0.84rem; max-width: 80%;">
+          <div style="font-size: 0.7rem; font-weight: 800; opacity: 0.85; margin-bottom: 2px;">${m.sender_name || 'Agent'}</div>
+          ${m.text || m.message_content || ''}
+        </div>
+      `).join('');
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  }
+
+  startHuntCountdown(expiresAtMs) {
+    if (this._huntClockInterval) clearInterval(this._huntClockInterval);
+
+    const updateClock = () => {
+      const now = Date.now();
+      const diff = Math.max(0, expiresAtMs - now);
+      const clockDigits = document.getElementById('hunt-clock-digits');
+      if (!clockDigits) return;
+
+      if (diff <= 0) {
+        clockDigits.textContent = '00h : 00m : 00s (Search Period Ended)';
+        clockDigits.style.color = '#ef4444';
+        clearInterval(this._huntClockInterval);
+        return;
+      }
+
+      const totalSecs = Math.floor(diff / 1000);
+      const hours = String(Math.floor(totalSecs / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, '0');
+      const secs = String(totalSecs % 60).padStart(2, '0');
+
+      clockDigits.textContent = `${hours}h : ${mins}m : ${secs}s`;
+    };
+
+    updateClock();
+    this._huntClockInterval = setInterval(updateClock, 1000);
+  }
+
+  switchHuntTrackerTab(tab) {
+    const btnProps = document.getElementById('btn-tab-hunt-props');
+    const btnChat = document.getElementById('btn-tab-hunt-chat');
+    const paneProps = document.getElementById('hunt-pane-props');
+    const paneChat = document.getElementById('hunt-pane-chat');
+
+    if (tab === 'props') {
+      if (btnProps) { btnProps.classList.add('active'); btnProps.style.borderBottomColor = '#059669'; btnProps.style.color = '#064e3b'; }
+      if (btnChat) { btnChat.classList.remove('active'); btnChat.style.borderBottomColor = 'transparent'; btnChat.style.color = '#64748b'; }
+      if (paneProps) paneProps.style.display = 'block';
+      if (paneChat) paneChat.style.display = 'none';
+    } else {
+      if (btnChat) { btnChat.classList.add('active'); btnChat.style.borderBottomColor = '#059669'; btnChat.style.color = '#064e3b'; }
+      if (btnProps) { btnProps.classList.remove('active'); btnProps.style.borderBottomColor = 'transparent'; btnProps.style.color = '#64748b'; }
+      if (paneProps) paneProps.style.display = 'none';
+      if (paneChat) paneChat.style.display = 'block';
+    }
+  }
+
+  async sendHuntChatMessage(e) {
+    e.preventDefault();
+    const input = document.getElementById('hunt-chat-input');
+    const text = input ? input.value.trim() : '';
+    if (!text || !this._currentActiveHuntId) return;
+
+    const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
+
+    try {
+      const res = await fetch(`/api/house-hunt/${this._currentActiveHuntId}/message`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ text })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        input.value = '';
+        // Refresh tracker
+        this.openHuntTracker(this._currentActiveHuntId);
+      } else {
+        this.showToast(data.message || 'Failed to send message.', 'error');
+      }
+    } catch (err) {
+      console.error('Chat error:', err);
+    }
+  }
+
 }
 
 // Global instance

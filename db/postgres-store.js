@@ -1227,6 +1227,285 @@ class PostgreSQLStore {
     };
   }
 
+  async saveSimilarPropertyAlert(data) {
+    const id = 'spa-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    const now = new Date().toISOString();
+    if (this.isConnected) {
+      try {
+        const res = await this.query(`
+          INSERT INTO similar_property_alerts (
+            id, property_id, property_title, phone, email, location,
+            category, bedrooms, max_budget, status, created_at, raw_data
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'active', $10, $11)
+          RETURNING *
+        `, [
+          id, data.propertyId || null, data.propertyTitle || null, data.phone,
+          data.email || null, data.location || null, data.category || null,
+          data.bedrooms ? parseInt(data.bedrooms) : null,
+          data.maxBudget ? parseFloat(data.maxBudget) : null,
+          now, JSON.stringify(data)
+        ]);
+        return res.rows[0];
+      } catch (e) {
+        console.error('saveSimilarPropertyAlert error:', e.message);
+      }
+    }
+    return { id, ...data, createdAt: now };
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // HOUSE HUNT METHODS
+  // ═══════════════════════════════════════════════════════════════════
+
+  async _ensureHouseHuntTables() {
+    try {
+      await this.query(`
+        CREATE TABLE IF NOT EXISTS house_hunts (
+          id TEXT PRIMARY KEY, customer_id TEXT NOT NULL,
+          status TEXT NOT NULL DEFAULT 'PAYMENT_PENDING',
+          payment_status TEXT NOT NULL DEFAULT 'PENDING',
+          payment_amount NUMERIC(12,2) DEFAULT 2000,
+          mpesa_receipt TEXT, checkout_request_id TEXT, paid_at TIMESTAMPTZ,
+          started_at TIMESTAMPTZ, expires_at TIMESTAMPTZ,
+          preferred_locations TEXT, budget_min NUMERIC(12,2), budget_max NUMERIC(12,2),
+          property_type TEXT, bedrooms INTEGER, bathrooms INTEGER,
+          move_in_date TEXT, amenities TEXT, parking_required BOOLEAN DEFAULT FALSE,
+          furnished TEXT DEFAULT 'any', other_preferences TEXT,
+          assigned_admin_id TEXT, admin_notes TEXT,
+          properties_found INTEGER DEFAULT 0, viewings_arranged INTEGER DEFAULT 0,
+          created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ DEFAULT NOW(),
+          raw_data JSONB NOT NULL DEFAULT '{}'::jsonb
+        );
+        CREATE TABLE IF NOT EXISTS house_hunt_properties (
+          id TEXT PRIMARY KEY, hunt_id TEXT NOT NULL,
+          property_id TEXT, property_title TEXT, property_location TEXT,
+          property_price NUMERIC(12,2), property_bedrooms INTEGER, property_bathrooms INTEGER,
+          property_images TEXT, property_amenities TEXT,
+          is_verified BOOLEAN DEFAULT FALSE, availability TEXT DEFAULT 'available',
+          availability_confirmed_at TIMESTAMPTZ, availability_confirmed_by TEXT,
+          admin_note TEXT, viewing_status TEXT DEFAULT 'none',
+          viewing_date TEXT, removed_at TIMESTAMPTZ, removed_reason TEXT,
+          added_at TIMESTAMPTZ DEFAULT NOW(), raw_data JSONB NOT NULL DEFAULT '{}'::jsonb
+        );
+        ALTER TABLE messages ADD COLUMN IF NOT EXISTS house_hunt_id TEXT;
+      `);
+    } catch (e) { /* non-fatal — tables may already exist */ }
+  }
+
+  async createHouseHunt(data) {
+    if (!this.isConnected) return this._hhFbCreate(data);
+    await this._ensureHouseHuntTables();
+    const id = 'hh-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    const now = new Date().toISOString();
+    const r = await this.query(`
+      INSERT INTO house_hunts (
+        id, customer_id, status, payment_status, payment_amount,
+        checkout_request_id, preferred_locations, budget_min, budget_max,
+        property_type, bedrooms, bathrooms, move_in_date, amenities,
+        parking_required, furnished, other_preferences,
+        created_at, updated_at, raw_data
+      ) VALUES ($1,$2,'PAYMENT_PENDING','PENDING',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$16,$17)
+      RETURNING *`,
+      [
+        id, data.customerId, data.paymentAmount || 2000,
+        data.checkoutRequestId || null,
+        JSON.stringify(data.preferredLocations || []),
+        data.budgetMin || null, data.budgetMax || null,
+        data.propertyType || null, data.bedrooms || null, data.bathrooms || null,
+        data.moveInDate || null,
+        JSON.stringify(data.amenities || []),
+        data.parkingRequired || false, data.furnished || 'any',
+        data.otherPreferences || null, now, JSON.stringify(data)
+      ]
+    );
+    return this._fmtHunt(r.rows[0]);
+  }
+
+  async getHouseHuntById(id) {
+    if (!this.isConnected) return this._hhFbGetById(id);
+    const r = await this.query('SELECT hh.*, u.name as customer_name, u.phone as customer_phone, u.email as customer_email FROM house_hunts hh LEFT JOIN users u ON hh.customer_id = u.id WHERE hh.id = $1', [id]);
+    return r.rows.length ? this._fmtHunt(r.rows[0]) : null;
+  }
+
+  async getHouseHuntsByCustomer(customerId) {
+    if (!this.isConnected) return this._hhFbGetByCust(customerId);
+    const r = await this.query('SELECT * FROM house_hunts WHERE customer_id = $1 ORDER BY created_at DESC', [customerId]);
+    return r.rows.map(h => this._fmtHunt(h));
+  }
+
+  async getAllHouseHunts({ status, limit = 100, offset = 0 } = {}) {
+    if (!this.isConnected) return this._hhFbGetAll();
+    let q = `SELECT hh.*, u.name as customer_name, u.phone as customer_phone, u.email as customer_email
+             FROM house_hunts hh LEFT JOIN users u ON hh.customer_id = u.id`;
+    const v = [];
+    if (status) { q += ` WHERE hh.status = $1`; v.push(status); }
+    q += ` ORDER BY hh.created_at DESC LIMIT $${v.length+1} OFFSET $${v.length+2}`;
+    v.push(limit, offset);
+    const r = await this.query(q, v);
+    return r.rows.map(h => this._fmtHunt(h));
+  }
+
+  async updateHouseHunt(id, updates) {
+    if (!this.isConnected) return this._hhFbUpdate(id, updates);
+    const colMap = {
+      status:'status', paymentStatus:'payment_status', mpesaReceipt:'mpesa_receipt',
+      checkoutRequestId:'checkout_request_id', paidAt:'paid_at',
+      startedAt:'started_at', expiresAt:'expires_at',
+      adminNotes:'admin_notes', assignedAdminId:'assigned_admin_id',
+      propertiesFound:'properties_found', viewingsArranged:'viewings_arranged'
+    };
+    const fields = []; const v = []; let i = 1;
+    for (const [k, col] of Object.entries(colMap)) {
+      if (updates[k] !== undefined) { fields.push(`${col}=$${i++}`); v.push(updates[k]); }
+    }
+    if (!fields.length) return this.getHouseHuntById(id);
+    fields.push(`updated_at=$${i++}`); v.push(new Date().toISOString()); v.push(id);
+    const r = await this.query(`UPDATE house_hunts SET ${fields.join(',')} WHERE id=$${i} RETURNING *`, v);
+    return r.rows.length ? this._fmtHunt(r.rows[0]) : null;
+  }
+
+  async activateHouseHunt(id, mpesaReceipt, checkoutRequestId) {
+    const now = new Date();
+    const expires = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+    return this.updateHouseHunt(id, {
+      status: 'ACTIVE', paymentStatus: 'SUCCESS',
+      mpesaReceipt, checkoutRequestId,
+      paidAt: now.toISOString(),
+      startedAt: now.toISOString(),
+      expiresAt: expires.toISOString()
+    });
+  }
+
+  async addPropertyToHunt(huntId, pd) {
+    if (!this.isConnected) return this._hhFbAddProp(huntId, pd);
+    const id = 'hhp-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    const r = await this.query(`
+      INSERT INTO house_hunt_properties (
+        id, hunt_id, property_id, property_title, property_location,
+        property_price, property_bedrooms, property_bathrooms,
+        property_images, property_amenities, is_verified, availability, admin_note, raw_data
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *`,
+      [id, huntId, pd.propertyId||null, pd.title||pd.propertyTitle||'',
+       pd.location||pd.propertyLocation||'', pd.price||pd.propertyPrice||null,
+       pd.bedrooms||null, pd.bathrooms||null,
+       JSON.stringify(pd.images||[]), JSON.stringify(pd.amenities||[]),
+       pd.isVerified||false, pd.availability||'available', pd.adminNote||null, JSON.stringify(pd)]
+    );
+    await this.query(
+      `UPDATE house_hunts SET properties_found=(SELECT COUNT(*) FROM house_hunt_properties WHERE hunt_id=$1 AND removed_at IS NULL),updated_at=NOW() WHERE id=$1`,
+      [huntId]
+    );
+    return r.rows[0];
+  }
+
+  async getPropertiesForHunt(huntId, includeRemoved = false) {
+    if (!this.isConnected) return [];
+    let q = 'SELECT * FROM house_hunt_properties WHERE hunt_id=$1';
+    if (!includeRemoved) q += ' AND removed_at IS NULL';
+    q += ' ORDER BY added_at ASC';
+    const r = await this.query(q, [huntId]);
+    return r.rows.map(p => ({
+      ...p,
+      propertyImages: this._safeJson(p.property_images, []),
+      propertyAmenities: this._safeJson(p.property_amenities, [])
+    }));
+  }
+
+  async updateHuntProperty(propId, updates) {
+    if (!this.isConnected) return null;
+    const colMap = {
+      availability:'availability', availabilityConfirmedAt:'availability_confirmed_at',
+      availabilityConfirmedBy:'availability_confirmed_by', adminNote:'admin_note',
+      viewingStatus:'viewing_status', viewingDate:'viewing_date',
+      removedAt:'removed_at', removedReason:'removed_reason', isVerified:'is_verified'
+    };
+    const fields = []; const v = []; let i = 1;
+    for (const [k, col] of Object.entries(colMap)) {
+      if (updates[k] !== undefined) { fields.push(`${col}=$${i++}`); v.push(updates[k]); }
+    }
+    if (!fields.length) return null;
+    v.push(propId);
+    const r = await this.query(`UPDATE house_hunt_properties SET ${fields.join(',')} WHERE id=$${i} RETURNING *`, v);
+    return r.rows[0] || null;
+  }
+
+  async removePropertyFromHunt(propId, reason, huntId) {
+    const r = await this.updateHuntProperty(propId, { removedAt: new Date().toISOString(), removedReason: reason || 'Removed by admin' });
+    if (huntId) await this.query(`UPDATE house_hunts SET properties_found=(SELECT COUNT(*) FROM house_hunt_properties WHERE hunt_id=$1 AND removed_at IS NULL),updated_at=NOW() WHERE id=$1`, [huntId]);
+    return r;
+  }
+
+  async saveHuntMessage(msg) {
+    if (!this.isConnected) return this.saveMessage({ ...msg, huntId: msg.huntId });
+    const id = 'msg-hh-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    const r = await this.query(`
+      INSERT INTO messages (id, house_hunt_id, sender_id, sender_name, sender_phone, recipient_id, recipient_name, text, is_read, created_at, raw_data)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,false,NOW(),$9) RETURNING *`,
+      [id, msg.huntId, msg.senderId||'system', msg.senderName||'KejaMarket',
+       msg.senderPhone||'', msg.recipientId||msg.customerId,
+       msg.recipientName||'Customer', (msg.text||'').trim(), JSON.stringify(msg)]
+    );
+    return r.rows[0];
+  }
+
+  async getHuntMessages(huntId) {
+    if (!this.isConnected) return [];
+    const r = await this.query('SELECT * FROM messages WHERE house_hunt_id=$1 ORDER BY created_at ASC', [huntId]);
+    return r.rows;
+  }
+
+  _fmtHunt(row) {
+    if (!row) return null;
+    return {
+      ...row,
+      id: row.id, customerId: row.customer_id,
+      customerName: row.customer_name, customerPhone: row.customer_phone, customerEmail: row.customer_email,
+      status: row.status, paymentStatus: row.payment_status,
+      paymentAmount: parseFloat(row.payment_amount) || 2000,
+      mpesaReceipt: row.mpesa_receipt, checkoutRequestId: row.checkout_request_id,
+      paidAt: row.paid_at, startedAt: row.started_at, expiresAt: row.expires_at,
+      preferredLocations: this._safeJson(row.preferred_locations, []),
+      budgetMin: row.budget_min ? parseFloat(row.budget_min) : null,
+      budgetMax: row.budget_max ? parseFloat(row.budget_max) : null,
+      propertyType: row.property_type, bedrooms: row.bedrooms, bathrooms: row.bathrooms,
+      moveInDate: row.move_in_date, amenities: this._safeJson(row.amenities, []),
+      parkingRequired: row.parking_required, furnished: row.furnished,
+      otherPreferences: row.other_preferences,
+      adminNotes: row.admin_notes, assignedAdminId: row.assigned_admin_id,
+      propertiesFound: parseInt(row.properties_found) || 0,
+      viewingsArranged: parseInt(row.viewings_arranged) || 0,
+      createdAt: row.created_at, updatedAt: row.updated_at
+    };
+  }
+
+  _safeJson(val, fallback) {
+    if (!val) return fallback;
+    if (typeof val === 'object') return val;
+    try { return JSON.parse(val); } catch { return fallback; }
+  }
+
+  // In-memory fallbacks
+  _hhFbCreate(data) {
+    const h = { id:'hh-'+Date.now(), ...data, status:'PAYMENT_PENDING', paymentStatus:'PENDING', createdAt:new Date().toISOString(), propertiesFound:0, viewingsArranged:0 };
+    if (!this.fallbackStore?.data) return h;
+    if (!this.fallbackStore.data.houseHunts) this.fallbackStore.data.houseHunts = [];
+    this.fallbackStore.data.houseHunts.push(h); return h;
+  }
+  _hhFbGetById(id) { return (this.fallbackStore?.data?.houseHunts||[]).find(h=>h.id===id)||null; }
+  _hhFbGetByCust(cid) { return (this.fallbackStore?.data?.houseHunts||[]).filter(h=>h.customerId===cid); }
+  _hhFbGetAll() { return this.fallbackStore?.data?.houseHunts||[]; }
+  _hhFbUpdate(id, u) {
+    const list = this.fallbackStore?.data?.houseHunts||[];
+    const i = list.findIndex(h=>h.id===id);
+    if (i===-1) return null;
+    list[i]={...list[i],...u,updatedAt:new Date().toISOString()}; return list[i];
+  }
+  _hhFbAddProp(huntId, pd) {
+    const p={id:'hhp-'+Date.now(),huntId,...pd,addedAt:new Date().toISOString()};
+    if (!this.fallbackStore?.data) return p;
+    if (!this.fallbackStore.data.huntProperties) this.fallbackStore.data.huntProperties=[];
+    this.fallbackStore.data.huntProperties.push(p); return p;
+  }
 }
 
 module.exports = new PostgreSQLStore();

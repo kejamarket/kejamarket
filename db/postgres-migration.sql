@@ -611,3 +611,86 @@ COMMENT ON TABLE user_communication_stats IS 'Communication statistics and analy
 
 -- Success message
 SELECT 'KejaMarket Communication System database schema installed successfully!' as result;
+
+-- ════════════════════════════════════════
+-- HOUSE HUNT
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS house_hunts (
+  id TEXT PRIMARY KEY,
+  customer_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status TEXT NOT NULL DEFAULT 'PAYMENT_PENDING',
+  -- Status values:
+  -- PAYMENT_PENDING | ACTIVE | REQUIREMENTS_REVIEW | SEARCHING |
+  -- PROPERTIES_FOUND | VIEWING_ARRANGED | CUSTOMER_REVIEWING |
+  -- COMPLETED | EXPIRED | CANCELLED
+
+  -- Payment
+  payment_status TEXT NOT NULL DEFAULT 'PENDING',
+  payment_amount NUMERIC(12,2) DEFAULT 2000,
+  mpesa_receipt TEXT,
+  checkout_request_id TEXT,
+  paid_at TIMESTAMPTZ,
+
+  -- Countdown (server-controlled, never client-controlled)
+  started_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ,
+
+  -- Customer requirements
+  preferred_locations TEXT,          -- JSON array of strings
+  budget_min NUMERIC(12,2),
+  budget_max NUMERIC(12,2),
+  property_type TEXT,
+  bedrooms INTEGER,
+  bathrooms INTEGER,
+  move_in_date TEXT,
+  amenities TEXT,                    -- JSON array of strings
+  parking_required BOOLEAN DEFAULT FALSE,
+  furnished TEXT DEFAULT 'any',      -- 'furnished' | 'unfurnished' | 'any'
+  other_preferences TEXT,
+
+  -- Admin workflow
+  assigned_admin_id TEXT,
+  admin_notes TEXT,
+  properties_found INTEGER DEFAULT 0,
+  viewings_arranged INTEGER DEFAULT 0,
+
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  raw_data JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+
+CREATE INDEX IF NOT EXISTS idx_house_hunts_customer ON house_hunts(customer_id);
+CREATE INDEX IF NOT EXISTS idx_house_hunts_status ON house_hunts(status);
+CREATE INDEX IF NOT EXISTS idx_house_hunts_payment ON house_hunts(payment_status);
+
+-- Properties added to a House Hunt by admin
+CREATE TABLE IF NOT EXISTS house_hunt_properties (
+  id TEXT PRIMARY KEY,
+  hunt_id TEXT NOT NULL REFERENCES house_hunts(id) ON DELETE CASCADE,
+  property_id TEXT,                  -- FK to properties table (nullable for external props)
+  property_title TEXT,
+  property_location TEXT,
+  property_price NUMERIC(12,2),
+  property_bedrooms INTEGER,
+  property_bathrooms INTEGER,
+  property_images TEXT,              -- JSON array
+  property_amenities TEXT,           -- JSON array
+  is_verified BOOLEAN DEFAULT FALSE,
+  availability TEXT DEFAULT 'available',  -- 'available' | 'taken' | 'unconfirmed'
+  availability_confirmed_at TIMESTAMPTZ,
+  availability_confirmed_by TEXT,
+  admin_note TEXT,
+  viewing_status TEXT DEFAULT 'none', -- 'none' | 'requested' | 'arranged' | 'done'
+  viewing_date TEXT,
+  removed_at TIMESTAMPTZ,
+  removed_reason TEXT,
+  added_at TIMESTAMPTZ DEFAULT NOW(),
+  raw_data JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+
+CREATE INDEX IF NOT EXISTS idx_hhp_hunt ON house_hunt_properties(hunt_id);
+CREATE INDEX IF NOT EXISTS idx_hhp_property ON house_hunt_properties(property_id);
+
+-- Messages specific to a House Hunt (reuses messages table but with house_hunt_id)
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS house_hunt_id TEXT;
+CREATE INDEX IF NOT EXISTS idx_messages_hunt ON messages(house_hunt_id);
