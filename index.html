@@ -216,7 +216,7 @@
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 
   <!-- App Styles -->
-  <link rel="stylesheet" href="css/style.css?v=4.4&t=202609171315">
+  <link rel="stylesheet" href="css/style.css?v=5.2&t=202609240030">
   <link rel="stylesheet" href="css/map.css?v=4.4&t=202609171315">
   <link rel="stylesheet" href="css/monetization.css?v=4.4&t=202609171315">
   <link rel="stylesheet" href="css/verification.css?v=4.4&t=202609171315">
@@ -387,16 +387,16 @@
         </div>
 
         <!-- Rent Affordability Calculator CTA -->
-        <button type="button" class="btn-header-tool" id="btn-header-calculator" onclick="app.openAffordabilityCalculator()" title="What Can I Afford? Rent Calculator">
-          <i class="fas fa-calculator" style="color: #059669;"></i>
-          <span class="header-tool-label">What Can I Afford?</span>
+        <button type="button" class="btn-header-tool" id="btn-header-calculator" onclick="app.openAffordabilityCalculator()" title="What Can I Afford? Rent Calculator" style="display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; cursor: pointer; white-space: nowrap; height: 36px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.2s;">
+          <i class="fas fa-calculator" style="color: #059669; font-size: 0.9rem;"></i>
+          <span class="header-tool-label">Calculator</span>
         </button>
 
         <!-- 3-Day House Hunt Concierge CTA -->
-        <button type="button" class="btn-header-tool btn-header-hunt" id="btn-header-hunt" onclick="app.openHouseHuntModal()" title="Hire a Dedicated House Hunter (72-Hour Search)">
-          <i class="fas fa-search-location"></i>
-          <span class="header-tool-label">House Hunt</span>
-          <span class="hunt-pill-badge">3 Days</span>
+        <button type="button" class="btn-header-tool btn-header-hunt" id="btn-header-hunt" onclick="app.openHouseHuntModal()" title="Hire a Dedicated House Hunter (72-Hour Search)" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #059669, #10b981); border: none; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; cursor: pointer; white-space: nowrap; height: 36px; box-shadow: 0 2px 8px rgba(16,185,129,0.35); transition: all 0.2s;">
+          <i class="fas fa-search-location" style="font-size: 0.9rem;"></i>
+          <span class="header-tool-label">Smart Hunt</span>
+          <span class="hunt-pill-badge" style="background: #fef08a; color: #854d0e; font-size: 0.65rem; padding: 1px 6px; border-radius: 10px; font-weight: 800;">3 Days</span>
         </button>
 
         <!-- Favorites (Heart) -->
@@ -483,6 +483,14 @@
       <a href="#" class="secondary-nav-item" id="sec-nav-services"
          onclick="app.switchFilterTab('services'); kejaUI.setSecondaryNav(this); return false;">
         <i class="fas fa-tools"></i> Services
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-smart-hunt"
+         onclick="app.openHouseHuntModal(); return false;" style="background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #047857; font-weight: 700; border-radius: 20px; padding: 5px 12px;">
+        <i class="fas fa-search-location" style="color: #059669;"></i> 🎯 Smart Hunt (3 Days)
+      </a>
+      <a href="#" class="secondary-nav-item" id="sec-nav-calc-tool"
+         onclick="app.openAffordabilityCalculator(); return false;" style="background: #eef2ff; border: 1.5px solid #c7d2fe; color: #4338ca; font-weight: 700; border-radius: 20px; padding: 5px 12px;">
+        <i class="fas fa-calculator" style="color: #4f46e5;"></i> 🧮 What Can I Afford?
       </a>
     </div>
   </nav>
@@ -613,25 +621,93 @@
     <!-- Main Content Area: View Mode, Listings Grid, Interactive Map -->
     <section class="content-area-wrapper">
 
-      <!-- Compact SMS Rental Alerts Banner -->
-      <div class="compact-sms-banner" id="tenant-whatsapp-alert-banner">
-        <div class="compact-sms-left">
-          <div class="compact-sms-icon">
-            <i class="fas fa-sms"></i>
+      <!-- ====================================================================
+           SMART RENTAL & HUNTING ACTION HUB (High Visibility on Homepage)
+           ==================================================================== -->
+      <div class="smart-tools-hero-hub" id="smart-tools-hero-hub" style="margin-bottom: 22px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+
+          <!-- CARD 1: 3-Day Smart House Hunt -->
+          <div class="smart-tool-banner-card" style="background: linear-gradient(135deg, #064e3b 0%, #047857 60%, #059669 100%); border-radius: 14px; padding: 18px 20px; color: #ffffff; position: relative; overflow: hidden; box-shadow: 0 4px 16px rgba(4,120,87,0.20); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,0.12);">
+            <div style="position: absolute; right: -12px; bottom: -12px; font-size: 5rem; color: rgba(255,255,255,0.08); pointer-events: none;">
+              <i class="fas fa-search-location"></i>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <span style="background: #fef08a; color: #854d0e; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  ⚡ 72-Hour Search Guarantee
+                </span>
+                <span style="font-size: 0.8rem; font-weight: 800; color: #a7f3d0;">KSh 2,000</span>
+              </div>
+              <h3 style="margin: 0 0 6px; font-size: 1.15rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-binoculars" style="color: #6ee7b7;"></i> 3-Day Smart House Hunt
+              </h3>
+              <p style="margin: 0 0 16px; font-size: 0.84rem; color: #e2e8f0; line-height: 1.45;">
+                Can't find a house? Let our verified ground team inspect & match rentals matching your budget in 72 hours. Zero broker scams!
+              </p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <button type="button" onclick="app.openHouseHuntModal()" style="background: #ffffff; color: #064e3b; border: none; padding: 9px 18px; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                <i class="fas fa-search-location" style="color: #059669;"></i> Start Smart Hunt
+              </button>
+              <button type="button" onclick="app.openHuntTrackerModal()" style="background: rgba(255,255,255,0.15); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); padding: 9px 14px; border-radius: 8px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                <i class="fas fa-clock"></i> Track Hunt
+              </button>
+            </div>
           </div>
-          <div class="compact-sms-text">
-            <div class="compact-sms-title">Looking for a house? <strong>Get Instant SMS Alerts!</strong></div>
-            <div class="compact-sms-desc">Be the first to receive matching rentals directly on your phone.</div>
+
+          <!-- CARD 2: Rent Affordability Calculator -->
+          <div class="smart-tool-banner-card" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%); border-radius: 14px; padding: 18px 20px; color: #ffffff; position: relative; overflow: hidden; box-shadow: 0 4px 16px rgba(49,46,129,0.20); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,0.12);">
+            <div style="position: absolute; right: -10px; bottom: -10px; font-size: 5rem; color: rgba(255,255,255,0.07); pointer-events: none;">
+              <i class="fas fa-calculator"></i>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <span style="background: #e0e7ff; color: #3730a3; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  🧮 30% Income Rule
+                </span>
+                <span style="font-size: 0.75rem; font-weight: 700; color: #c7d2fe;">Free Tool</span>
+              </div>
+              <h3 style="margin: 0 0 6px; font-size: 1.15rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-calculator" style="color: #a5b4fc;"></i> What Can I Afford?
+              </h3>
+              <p style="margin: 0 0 16px; font-size: 0.84rem; color: #e0e7ff; line-height: 1.45;">
+                Avoid rent stress. Enter your monthly net income to instantly discover your safe rent budget and see matching verified units in Nairobi.
+              </p>
+            </div>
+            <div>
+              <button type="button" onclick="app.openAffordabilityCalculator()" style="background: #ffffff; color: #312e81; border: none; padding: 9px 18px; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                <i class="fas fa-coins" style="color: #4338ca;"></i> Calculate Safe Rent
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="compact-sms-right">
-          <span class="compact-sms-price-badge">KSh 100</span>
-          <button type="button" class="btn-compact-sms-pill" onclick="openWhatsAppAlertsWithAuth()">
-            <i class="fas fa-bell"></i> Set Alert
-          </button>
-          <button type="button" class="btn-dismiss-compact-sms" onclick="app.dismissSmsAlertBanner()" title="Dismiss">
-            <i class="fas fa-times"></i>
-          </button>
+
+          <!-- CARD 3: Instant Vacancy / Demand Alerts -->
+          <div class="smart-tool-banner-card" style="background: linear-gradient(135deg, #701a75 0%, #86198f 60%, #a21caf 100%); border-radius: 14px; padding: 18px 20px; color: #ffffff; position: relative; overflow: hidden; box-shadow: 0 4px 16px rgba(134,25,143,0.20); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,0.12);">
+            <div style="position: absolute; right: -10px; bottom: -10px; font-size: 5rem; color: rgba(255,255,255,0.07); pointer-events: none;">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <span style="background: #fef08a; color: #854d0e; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  🔔 Instant SMS Alerts
+                </span>
+                <span style="font-size: 0.8rem; font-weight: 800; color: #f5d0fe;">KSh 100</span>
+              </div>
+              <h3 style="margin: 0 0 6px; font-size: 1.15rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-bolt" style="color: #f0abfc;"></i> Instant Vacancy Alerts
+              </h3>
+              <p style="margin: 0 0 16px; font-size: 0.84rem; color: #fae8ff; line-height: 1.45;">
+                Hot rentals in Ruaka, Roysambu & Kilimani get taken fast. Get an instant SMS the moment a matching unit is vacant!
+              </p>
+            </div>
+            <div>
+              <button type="button" onclick="openWhatsAppAlertsWithAuth()" style="background: #ffffff; color: #701a75; border: none; padding: 9px 18px; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                <i class="fas fa-bell" style="color: #86198f;"></i> Set Up Instant Alert
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -3266,7 +3342,7 @@
   <script src="js/recently-added.js?v=4.0&t=202609170130"></script>
   <script src="js/botSimulator.js?v=4.0&t=202609170130"></script>
   <script src="js/monetization.js?v=4.0&t=202609170130"></script>
-  <script src="js/app.js?v=7.2&t=202609172330"></script>
+  <script src="js/app.js?v=5.2&t=202609240030"></script>
   <script src="js/instagram-integration.js?v=6.0&t=202609171355"></script>
   <script src="js/admin.js?v=4.0&t=202609170130"></script>
   <!-- Profile Dropdown Test Script -->

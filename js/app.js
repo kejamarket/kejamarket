@@ -2389,7 +2389,8 @@ class NairobiRentalsApp {
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.classList.add('open');
-      if (modalId === 'modal-post-ad') {
+      modal.style.setProperty('display', 'flex', 'important');
+      if (modalId === 'modal-post-ad' && window.landlordManager && typeof window.landlordManager.initPostMap === 'function') {
         window.landlordManager.initPostMap();
       }
     }
@@ -2399,6 +2400,7 @@ class NairobiRentalsApp {
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.classList.remove('open');
+      modal.style.setProperty('display', 'none', 'important');
     }
     // Stop chat polling when messages modal closes
     if (modalId === 'modal-messages') {

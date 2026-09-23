@@ -5115,7 +5115,7 @@ body {
   letter-spacing: 0.3px;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1280px) {
   .btn-header-tool .header-tool-label {
     display: none;
   }
@@ -5394,3 +5394,18 @@ body {
   font-weight: 800;
 }
 
+
+
+/* Smart Tool Hero Banner Cards */
+.smart-tool-banner-card {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
+}
+.smart-tool-banner-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.28) !important;
+}
+@media (max-width: 768px) {
+  .smart-tools-hero-hub {
+    margin-bottom: 14px !important;
+  }
+}
