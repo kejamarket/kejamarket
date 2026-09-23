@@ -606,27 +606,8 @@ const kejaAuth = (() => {
       }
     } catch (err) {
       console.error('Sign in error:', err);
-      const cleanId = identifier.trim().toLowerCase();
-      const isTryingAdmin = cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin' || cleanId === '0700000000' || cleanId === '0792409540' || cleanId === '254792409540';
-      const allowedAdminPasswords = ['admin', 'admin123', 'admin2026', 'Stallon@jevugwe4', 'kejamarket123'];
-      if (isTryingAdmin && allowedAdminPasswords.includes(password)) {
-        const adminUser = {
-          id: 'usr-admin-01',
-          name: 'Administrator',
-          email: 'admin@kejamarket.co.ke',
-          phone: '+254792409540',
-          role: 'admin',
-          isAdmin: true
-        };
-        saveSession(adminUser, 'admin-token-session');
-        updateHeaderUI(adminUser);
-        showLoggedInPanel(adminUser);
-        if (window.app) window.app.showToast('Welcome back, Administrator!', 'success');
-        handleAuthSuccess(adminUser);
-        return;
-      }
       if (window.app) {
-        window.app.showToast('Unable to connect to server. Please try again.', 'error');
+        window.app.showToast('Unable to connect to server. Please check your connection and try again.', 'error');
       }
     } finally {
       if (submitBtn) {

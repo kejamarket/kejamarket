@@ -54,6 +54,10 @@ async function sendEmail({ to, subject, html, text }) {
   const emailFrom = process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@kejamarket.co.ke';
 
   if (!transporter) {
+    const resendKey = (process.env.RESEND_API_KEY || '').trim().replace(/^["']|["']$/g, '');
+    if (resendReady || (resendKey && resendKey.startsWith('re_'))) {
+      return sendViaResend({ to, subject, html, text });
+    }
     console.log(`[EMAIL LOG] To: ${to} | Subject: ${subject}`);
     console.log(`[EMAIL BODY] ${text || html}`);
     return { success: true, simulated: true };
@@ -247,6 +251,209 @@ async function sendListingApprovedEmail(to, name, propertyTitle) {
   });
 }
 
+/**
+ * Send House Hunt activation / confirmation email to customer
+ */
+async function sendHouseHuntConfirmation(to, name, hunt) {
+  const huntId = hunt.id || '';
+  const shortId = huntId.slice(-6).toUpperCase();
+  const trackUrl = `${process.env.APP_URL || 'https://kejamarket.co.ke'}/?track_hunt=${huntId}`;
+  const locations = Array.isArray(hunt.preferredLocations) ? hunt.preferredLocations.join(', ') : (hunt.preferredLocations || 'Nairobi');
+  const budgetStr = hunt.budgetMin && hunt.budgetMax
+    ? `KSh ${Number(hunt.budgetMin).toLocaleString('en-KE')} - ${Number(hunt.budgetMax).toLocaleString('en-KE')}`
+    : hunt.budgetMax ? `Up to KSh ${Number(hunt.budgetMax).toLocaleString('en-KE')}` : 'Flexible';
+  const bedsStr = hunt.bedrooms ? `${hunt.bedrooms} Bedroom(s)` : 'Any size';
+  const year = new Date().getFullYear();
+
+  return sendEmail({
+    to,
+    subject: `🏠 3-Day House Hunt Activated! (Ref: #${shortId})`,
+    html: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;padding:32px 12px;">
+  <tr><td align="center">
+    <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #e2e8f0;max-width:100%;">
+      <tr>
+        <td style="background:linear-gradient(135deg,#00b53f,#059669);padding:28px 32px;text-align:center;">
+          <h1 style="margin:0;font-size:24px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">🏡 KejaMarket Concierge</h1>
+          <p style="margin:6px 0 0;color:rgba(255,255,255,0.9);font-size:14px;">Your 3-Day House Hunt is officially ACTIVE</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:32px;">
+          <h2 style="margin:0 0 12px;font-size:18px;color:#0f172a;">Hi ${name || 'Neighbor'},</h2>
+          <p style="margin:0 0 20px;color:#475569;font-size:14px;line-height:1.6;">
+            We've received your requirements and your dedicated house-hunting concierge has been dispatched. Our field agents are actively inspecting units matching your criteria.
+          </p>
+
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;border-radius:10px;padding:16px;margin-bottom:24px;">
+            <tr>
+              <td style="padding:6px 12px;color:#64748b;font-size:13px;font-weight:600;width:40%;">Hunt Reference</td>
+              <td style="padding:6px 12px;color:#0f172a;font-size:13px;font-weight:700;">#${shortId}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 12px;color:#64748b;font-size:13px;font-weight:600;">Preferred Area(s)</td>
+              <td style="padding:6px 12px;color:#0f172a;font-size:13px;font-weight:700;">${locations}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 12px;color:#64748b;font-size:13px;font-weight:600;">Monthly Budget</td>
+              <td style="padding:6px 12px;color:#00b53f;font-size:13px;font-weight:700;">${budgetStr}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 12px;color:#64748b;font-size:13px;font-weight:600;">House Type</td>
+              <td style="padding:6px 12px;color:#0f172a;font-size:13px;font-weight:700;">${bedsStr} (${hunt.propertyType || 'Apartment'})</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 12px;color:#64748b;font-size:13px;font-weight:600;">Timeline</td>
+              <td style="padding:6px 12px;color:#0f172a;font-size:13px;font-weight:700;">72-Hour Search Guarantee</td>
+            </tr>
+          </table>
+
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+            <tr>
+              <td align="center">
+                <a href="${trackUrl}" style="display:inline-block;background:#00b53f;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 32px;border-radius:8px;box-shadow:0 3px 12px rgba(0,181,63,0.3);">
+                  🔍 Track House Hunt Live
+                </a>
+              </td>
+            </tr>
+          </table>
+
+          <p style="margin:0 0 10px;color:#64748b;font-size:13px;line-height:1.5;">
+            Whenever a matching unit is verified, it will instantly appear in your live tracker with photos, landlord verification badges, and viewing slots.
+          </p>
+          <p style="margin:0;color:#94a3b8;font-size:12px;">Need help? Reply to this email or chat with our team on WhatsApp at +254 792 409 540.</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#f8fafc;padding:16px 32px;text-align:center;border-top:1px solid #e2e8f0;">
+          <p style="margin:0;color:#94a3b8;font-size:12px;">&copy; ${year} KejaMarket &mdash; Kenya's #1 Rental Marketplace &mdash; kejamarket.co.ke</p>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`,
+    text: `Your 3-Day House Hunt (#${shortId}) is ACTIVE!\n\nPreferred Locations: ${locations}\nBudget: ${budgetStr}\nType: ${bedsStr}\n\nTrack your search live here: ${trackUrl}\n\n— KejaMarket Concierge Team`
+  });
+}
+
+/**
+ * Send notification when admin adds a matched property to customer's hunt
+ */
+async function sendHouseHuntPropertyFound(to, name, hunt, property) {
+  const huntId = hunt.id || '';
+  const trackUrl = `${process.env.APP_URL || 'https://kejamarket.co.ke'}/?track_hunt=${huntId}`;
+  const priceStr = property.price ? `KSh ${Number(property.price).toLocaleString('en-KE')}/mo` : 'Price on request';
+  const year = new Date().getFullYear();
+
+  return sendEmail({
+    to,
+    subject: `✨ New Match Found: ${property.title || 'Verified Property'} in ${property.location || 'Nairobi'}`,
+    html: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;padding:32px 12px;">
+  <tr><td align="center">
+    <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #e2e8f0;max-width:100%;">
+      <tr>
+        <td style="background:linear-gradient(135deg,#2563eb,#1d4ed8);padding:24px 32px;text-align:center;">
+          <h1 style="margin:0;font-size:22px;font-weight:800;color:#ffffff;">✨ New Property Match!</h1>
+          <p style="margin:4px 0 0;color:rgba(255,255,255,0.9);font-size:13px;">Added to your House Hunt search</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:28px 32px;">
+          <h2 style="margin:0 0 10px;font-size:17px;color:#0f172a;">Hi ${name || 'there'},</h2>
+          <p style="margin:0 0 18px;color:#475569;font-size:14px;line-height:1.5;">
+            Our team just added a newly verified unit that fits your preferences:
+          </p>
+
+          <div style="background:#f1f5f9;border-radius:10px;padding:16px;margin-bottom:20px;">
+            <h3 style="margin:0 0 8px;font-size:16px;color:#0f172a;">${property.title || 'Verified Rental'}</h3>
+            <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#00b53f;">${priceStr}</p>
+            <p style="margin:0;font-size:13px;color:#64748b;">📍 ${property.location || 'Nairobi'} &bull; ${property.bedrooms ? property.bedrooms + ' Beds' : ''}</p>
+            ${property.adminNote ? `<p style="margin:8px 0 0;font-size:13px;color:#1e293b;font-style:italic;">"${property.adminNote}"</p>` : ''}
+          </div>
+
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;">
+            <tr>
+              <td align="center">
+                <a href="${trackUrl}" style="display:inline-block;background:#00b53f;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 28px;border-radius:8px;">
+                  View Property & Book Viewing
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#f8fafc;padding:14px;text-align:center;border-top:1px solid #e2e8f0;">
+          <p style="margin:0;color:#94a3b8;font-size:11px;">&copy; ${year} KejaMarket &bull; kejamarket.co.ke</p>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`,
+    text: `New Property Match for your House Hunt!\n\n${property.title} in ${property.location}\nRent: ${priceStr}\n\nReview matches here: ${trackUrl}`
+  });
+}
+
+/**
+ * Send Similar Property / Demand Alert confirmation to tenant
+ */
+async function sendSimilarPropertyAlert(to, alertData) {
+  const budgetStr = alertData.maxBudget ? `under KSh ${Number(alertData.maxBudget).toLocaleString('en-KE')}` : '';
+  const searchUrl = `https://kejamarket.co.ke/?location=${encodeURIComponent(alertData.location || 'Nairobi')}`;
+  const year = new Date().getFullYear();
+
+  return sendEmail({
+    to,
+    subject: `🔔 KejaMarket Alert: We'll notify you for ${alertData.category || 'rentals'} in ${alertData.location || 'Nairobi'}`,
+    html: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;padding:32px 12px;">
+  <tr><td align="center">
+    <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.06);border:1px solid #e2e8f0;max-width:100%;">
+      <tr>
+        <td style="background:#00b53f;padding:24px;text-align:center;">
+          <h1 style="margin:0;font-size:22px;color:#ffffff;font-weight:800;">🔔 Alert Confirmed!</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:28px 32px;">
+          <p style="margin:0 0 16px;color:#334155;font-size:14px;line-height:1.6;">
+            You have successfully subscribed to alerts for <strong>${alertData.category || 'Rentals'}</strong> in <strong>${alertData.location || 'Nairobi'}</strong> ${budgetStr}.
+          </p>
+          <div style="background:#f1f5f9;border-radius:8px;padding:14px 18px;margin-bottom:20px;">
+            <p style="margin:0;color:#64748b;font-size:13px;line-height:1.5;">
+              Because units in high-demand estates get taken fast, you'll be among the first to receive an instant notification when a matching unit is posted or becomes vacant.
+            </p>
+          </div>
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td align="center">
+                <a href="${searchUrl}" style="display:inline-block;background:#00b53f;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 28px;border-radius:8px;">
+                  Explore Current Rentals
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#f8fafc;padding:14px;text-align:center;border-top:1px solid #e2e8f0;">
+          <p style="margin:0;color:#94a3b8;font-size:11px;">&copy; ${year} KejaMarket &bull; kejamarket.co.ke</p>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`,
+    text: `KejaMarket Alert Confirmed!\n\nWe will notify you the moment a similar unit in ${alertData.location} ${budgetStr} is available.\n\nBrowse now: ${searchUrl}`
+  });
+}
+
 module.exports = {
   initEmailService,
   initResendService,
@@ -256,5 +463,8 @@ module.exports = {
   sendPasswordResetEmail,  // legacy alias
   sendWelcomeEmail,
   sendPaymentReceiptEmail,
-  sendListingApprovedEmail
+  sendListingApprovedEmail,
+  sendHouseHuntConfirmation,
+  sendHouseHuntPropertyFound,
+  sendSimilarPropertyAlert
 };

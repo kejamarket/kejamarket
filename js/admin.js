@@ -121,26 +121,9 @@ class AdminPortalEngine {
     let token = window.kejaAuth ? window.kejaAuth.getToken() : null;
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
 
-    // Auto-acquire token if session is admin but token is missing
-    if (!token && session && (session.isAdmin || session.role === 'admin' || session.id === 'usr-admin-01')) {
-      try {
-        const loginRes = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ identifier: session.email || 'admin@kejamarket.co.ke', password: 'Stallon@jevugwe4' })
-        });
-        const loginData = await loginRes.json();
-        if (loginData.success && loginData.token) {
-          token = loginData.token;
-          if (window.kejaAuth && typeof window.kejaAuth.saveSession === 'function') {
-            window.kejaAuth.saveSession(loginData.user, loginData.token);
-          } else {
-            localStorage.setItem('keja_token', token);
-          }
-        }
-      } catch (e) {
-        console.warn('Auto-token acquisition warning:', e);
-      }
+    // If token is missing, check localStorage for valid auth token
+    if (!token) {
+      token = localStorage.getItem('keja_token') || (session && session.token ? session.token : null);
     }
 
     const h = token ? { 'Authorization': `Bearer ${token}` } : {};

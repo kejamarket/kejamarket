@@ -2430,6 +2430,13 @@ app.post('/api/alerts/similar', async (req, res) => {
       `[KejaMarket Alert] 🔔 Subscribed! We will notify you the moment a similar ${alertData.category} in ${alertData.location} ${budgetStr} becomes available. - kejamarket.co.ke`
     );
 
+    // Send email alert confirmation if email provided
+    if (alertData.email) {
+      emailService.sendSimilarPropertyAlert(alertData.email, alertData).catch(err => {
+        console.warn('[EMAIL ALERT] Similar alert confirmation failed:', err.message);
+      });
+    }
+
     res.status(201).json({
       success: true,
       message: `Alert set! You will receive instant alerts for similar units in ${alertData.location}.`,
@@ -5061,6 +5068,13 @@ app.post('/api/house-hunt/:id/confirm-payment', requireAuth, async (req, res) =>
       );
     }
 
+    // Email confirmation
+    if (req.user.email) {
+      emailService.sendHouseHuntConfirmation(req.user.email, req.user.name, updatedHunt).catch(err => {
+        console.warn('[EMAIL] House hunt confirmation email failed:', err.message);
+      });
+    }
+
     // Notify admin
     sendRealSMS('254180511492',
       `[House Hunt] New Hunt from ${req.user.name} (${req.user.phone}). Budget: KSh ${hunt.budgetMin||0}-${hunt.budgetMax||0}. Locations: ${(hunt.preferredLocations||[]).join(', ')}. Hunt ID: ${hunt.id}`
@@ -5214,6 +5228,17 @@ app.post('/api/admin/house-hunts/:id/properties', requireAuth, requireHouseHuntA
       sendRealSMS(hunt.customerPhone,
         `[KejaMarket House Hunt] Great news! We found a new matching property for you. You now have ${prevCount + 1} propert${prevCount + 1 === 1 ? 'y' : 'ies'} to review. Check your dashboard at kejamarket.co.ke`
       );
+    }
+
+    // Notify customer via Email if customer has email
+    if (hunt.customerId) {
+      store.getUserById(hunt.customerId).then(customerUser => {
+        if (customerUser && customerUser.email) {
+          emailService.sendHouseHuntPropertyFound(customerUser.email, customerUser.name, hunt, propertyData).catch(err => {
+            console.warn('[EMAIL] House hunt property match email failed:', err.message);
+          });
+        }
+      }).catch(() => {});
     }
 
     res.status(201).json({ success: true, property: prop });
