@@ -269,6 +269,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
   </style>
+  <link rel="stylesheet" href="css/mobile-pixel-perfect.css?v=2.0">
 </head>
 <body>
 
@@ -430,6 +431,25 @@
           <!-- Compact Profile Dropdown -->
           <div id="profile-dropdown" style="display: none;">
             <div id="profile-dropdown-content"></div>
+          </div>
+        </div>
+
+        <!-- Mobile Header Icons (Search, Messages, Notifications, User) — Mobile Only -->
+        <div class="mobile-header-actions" id="mobile-header-actions">
+          <button class="mobile-hdr-btn" onclick="app.focusMobileSearch()" title="Search" aria-label="Search">
+            <i class="fas fa-search"></i>
+          </button>
+          <button class="mobile-hdr-btn" onclick="app.openAdminChat()" title="Messages" aria-label="Messages">
+            <i class="far fa-comment-dots"></i>
+          </button>
+          <button class="mobile-hdr-btn" onclick="if(window.KejaCommunication&&window.KejaCommunication.NotificationSystem){window.KejaCommunication.NotificationSystem.showNotificationsCenter();}else{app.openAdminChat();}" title="Notifications" aria-label="Notifications">
+            <i class="far fa-bell"></i>
+          </button>
+          <div class="mobile-hdr-user-btn" onclick="kejaAuth.toggleProfileDropdown()">
+            <div class="mobile-hdr-avatar" id="mobile-hdr-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <i class="fas fa-chevron-down" style="font-size:0.6rem; color:#64748b;"></i>
           </div>
         </div>
 
@@ -620,6 +640,121 @@
 
     <!-- Main Content Area: View Mode, Listings Grid, Interactive Map -->
     <section class="content-area-wrapper">
+      <!-- ====================================================================
+           MOBILE-ONLY HERO, ACTION ROW & FILTER CARD (Exact Screenshot Match)
+           ==================================================================== -->
+      <!-- 1. Hero Promotional Banner -->
+      <div class="mobile-hero-promo" id="mobile-hero-promo" onclick="openWhatsAppAlertsWithAuth()">
+        <div class="m-hero-content">
+          <h2 class="m-hero-heading">Find the perfect home or<br>property in Kenya</h2>
+          <div class="m-hero-alert-pill">
+            <i class="fab fa-whatsapp"></i>
+            <div class="m-hero-alert-text">
+              <span>Get instant alerts on WhatsApp</span>
+              <strong>with sh100</strong>
+            </div>
+          </div>
+        </div>
+        <div class="m-hero-bell-graphic">
+          <div class="m-hero-bell-circle">
+            <i class="fas fa-bell"></i>
+            <div class="m-hero-bell-wa-badge">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Primary Action Row -->
+      <div class="mobile-quick-actions-row">
+        <button type="button" class="m-action-btn" onclick="app.openAffordabilityCalculator()">
+          <i class="fas fa-plus"></i>
+          <span>What Can I Afford?</span>
+          <i class="fas fa-chevron-down m-action-chevron"></i>
+        </button>
+        <button type="button" class="m-action-btn" onclick="app.openHouseHuntModal()">
+          <i class="fas fa-calendar-alt"></i>
+          <span>House Hunt 3 Days</span>
+          <i class="fas fa-chevron-down m-action-chevron"></i>
+        </button>
+        <button type="button" class="m-action-fav-btn" onclick="app.toggleFavoritesView()" title="Saved Favorites">
+          <i class="far fa-heart"></i>
+        </button>
+      </div>
+
+      <!-- 3. Search Filter Card Container (White Rounded Container) -->
+      <div class="mobile-filter-card-container" id="mobile-filter-card-container">
+        <!-- Row 1: Location -->
+        <div class="m-filter-row" onclick="app.openMobileFilterPicker('location')">
+          <div class="m-filter-left">
+            <div class="m-f-icon-box"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="m-f-text">
+              <span class="m-f-label">Location</span>
+              <span class="m-f-val" id="m-filter-location-display">Nairobi & Environs</span>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right m-f-chevron"></i>
+        </div>
+
+        <!-- Row 2: Estate / Suburb -->
+        <div class="m-filter-row" onclick="app.openMobileFilterPicker('suburb')">
+          <div class="m-filter-left">
+            <div class="m-f-icon-box"><i class="fas fa-city"></i></div>
+            <div class="m-f-text">
+              <span class="m-f-label">Estate / Suburb</span>
+              <span class="m-f-val m-f-placeholder" id="m-filter-suburb-display">Search estate or suburb...</span>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right m-f-chevron"></i>
+        </div>
+
+        <!-- Row 3: Property Type -->
+        <div class="m-filter-row" onclick="app.openMobileFilterPicker('type')">
+          <div class="m-filter-left">
+            <div class="m-f-icon-box"><i class="fas fa-home"></i></div>
+            <div class="m-f-text">
+              <span class="m-f-label">Property Type</span>
+              <span class="m-f-val" id="m-filter-type-display">Any Property Type</span>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right m-f-chevron"></i>
+        </div>
+
+        <!-- Row 4: Bedrooms -->
+        <div class="m-filter-row" onclick="app.openMobileFilterPicker('bedrooms')">
+          <div class="m-filter-left">
+            <div class="m-f-icon-box"><i class="fas fa-bed"></i></div>
+            <div class="m-f-text">
+              <span class="m-f-label">Bedrooms</span>
+            </div>
+          </div>
+          <div class="m-filter-right">
+            <span class="m-f-link">More Filters</span>
+            <i class="fas fa-chevron-right m-f-chevron"></i>
+          </div>
+        </div>
+
+        <!-- Row 5: Price Range -->
+        <div class="m-filter-row" onclick="app.openMobileFilterPicker('price')">
+          <div class="m-filter-left">
+            <div class="m-f-icon-box m-f-icon-circle"><i class="fas fa-dollar-sign"></i></div>
+            <div class="m-f-text">
+              <span class="m-f-label">Price Range</span>
+            </div>
+          </div>
+          <div class="m-filter-right">
+            <span class="m-f-link">More Filters</span>
+            <i class="fas fa-chevron-right m-f-chevron"></i>
+          </div>
+        </div>
+
+        <!-- More Filters Full-Width Button -->
+        <button type="button" class="m-btn-more-filters" onclick="app.toggleMobileFilters()">
+          <i class="fas fa-sliders-h"></i>
+          <span>More Filters</span>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
 
       <!-- ====================================================================
            SMART RENTAL & HUNTING ACTION HUB (High Visibility on Homepage)
@@ -2626,13 +2761,13 @@
 
   </div>
 
-  <!-- Mobile Bottom Navigation Bar (Jiji style) -->
+  <!-- Mobile Bottom Navigation Bar (Matches reference screenshot) -->
   <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
     <a href="#" class="mobile-nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
       <i class="fas fa-home"></i>
       <span>Home</span>
     </a>
-    <a href="#" class="mobile-nav-item" onclick="document.getElementById('header-search-input').focus(); return false;">
+    <a href="#" class="mobile-nav-item" onclick="app.focusMobileSearch(); return false;">
       <i class="fas fa-search"></i>
       <span>Search</span>
     </a>
@@ -2640,15 +2775,15 @@
       <div class="mobile-nav-post-btn">
         <i class="fas fa-plus"></i>
       </div>
-      <span>Post Ad</span>
+      <span>Post</span>
     </a>
-    <a href="#" class="mobile-nav-item" onclick="if(window.kejaAuth && window.kejaAuth.getSession()){ app.toggleFavoritesView(); } else { kejaAuth.requireTenantAuth(() => app.toggleFavoritesView()); } return false;">
-      <i class="fas fa-heart"></i>
-      <span>Saved</span>
+    <a href="#" class="mobile-nav-item" onclick="app.openAdminChat(); return false;">
+      <i class="far fa-comment-dots"></i>
+      <span>Messages</span>
     </a>
     <a href="#" class="mobile-nav-item" onclick="if(window.kejaAuth && window.kejaAuth.getSession()){ kejaDashboard.open(); } else { kejaAuth.openAuthModal(); } return false;">
-      <i class="fas fa-user"></i>
-      <span id="mobile-nav-user-label">Profile</span>
+      <i class="far fa-user"></i>
+      <span id="mobile-nav-user-label">Account</span>
     </a>
   </nav>
 
@@ -3990,6 +4125,35 @@
       <i class="fab fa-instagram"></i>
     </button>
   </div>
+
+<!-- ================================================================
+     MOBILE BOTTOM NAVIGATION (Fixed, matches reference screenshot)
+     ================================================================ -->
+<nav class="mobile-bottom-nav" id="mobile-bottom-nav" role="navigation" aria-label="Mobile Navigation">
+  <a href="#" class="mobile-nav-item mobile-nav-item--active" id="mob-nav-home" onclick="app.switchFilterTab('properties'); app.setCategory('All'); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Home">
+    <i class="fas fa-home"></i>
+    <span>Home</span>
+  </a>
+  <a href="#" class="mobile-nav-item" id="mob-nav-search" onclick="app.focusMobileSearch(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Search">
+    <i class="fas fa-search"></i>
+    <span>Search</span>
+  </a>
+  <a href="#" class="mobile-nav-item mobile-nav-post" id="mob-nav-post" onclick="app.togglePostDropdown(event); return false;" aria-label="Post">
+    <div class="mobile-nav-post-btn">
+      <i class="fas fa-plus"></i>
+    </div>
+    <span>Post</span>
+  </a>
+  <a href="#" class="mobile-nav-item" id="mob-nav-messages" onclick="app.openAdminChat(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Messages">
+    <i class="far fa-comment-dots"></i>
+    <span>Messages</span>
+  </a>
+  <a href="#" class="mobile-nav-item" id="mob-nav-account" onclick="kejaAuth.toggleProfileDropdown(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Account">
+    <i class="far fa-user"></i>
+    <span>Account</span>
+  </a>
+</nav>
+
 </body>
 </html>
 

@@ -1463,27 +1463,11 @@ class NairobiRentalsApp {
             <button type="button" class="btn-card-details-green" onclick="app.openPropertyDetail('${p.id}')">
               View Details
             </button>
-            <div class="card-share-wrap">
-              <button type="button" class="btn-card-share-action" onclick="app.toggleShareMenu('${p.id}', event)" title="Share Property">
-                <i class="fas fa-share-alt"></i> <span>Share</span>
-              </button>
-              <div class="card-share-popover" id="share-popover-${p.id}" style="display: none;">
-                <a href="#" class="share-pop-item share-pop-whatsapp" onclick="app.handleCardWhatsApp('${p.id}', event)">
-                  <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
-                <a href="#" class="share-pop-item share-pop-facebook" onclick="app.handleCardFacebook('${p.id}', event)">
-                  <i class="fab fa-facebook-f"></i> Facebook
-                </a>
-                <a href="#" class="share-pop-item share-pop-instagram" onclick="app.handleCardInstagram('${p.id}', event)">
-                  <i class="fab fa-instagram"></i> Instagram
-                </a>
-                <a href="#" class="share-pop-item share-pop-tiktok" onclick="app.handleCardTikTok('${p.id}', event)">
-                  <i class="fab fa-tiktok"></i> TikTok
-                </a>
-                <a href="#" class="share-pop-item share-pop-copy" onclick="app.copyShareLink('${p.id}', event)">
-                  <i class="fas fa-link"></i> Copy Link
-                </a>
-              </div>
+            <div class="card-direct-social-btns">
+              <button type="button" class="card-social-btn card-social-wa" onclick="app.handleCardWhatsApp('${p.id}', event)" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></button>
+              <button type="button" class="card-social-btn card-social-ig" onclick="app.handleCardInstagram('${p.id}', event)" title="Share on Instagram"><i class="fab fa-instagram"></i></button>
+              <button type="button" class="card-social-btn card-social-fb" onclick="app.handleCardFacebook('${p.id}', event)" title="Share on Facebook"><i class="fab fa-facebook-f"></i></button>
+              <button type="button" class="card-social-btn card-social-tt" onclick="app.handleCardTikTok('${p.id}', event)" title="Share on TikTok"><i class="fab fa-tiktok"></i></button>
             </div>
           </div>
         </div>
@@ -2406,6 +2390,23 @@ class NairobiRentalsApp {
     if (modalId === 'modal-messages') {
       this.stopChatPolling();
     }
+  }
+
+  
+  focusMobileSearch() {
+    const card = document.getElementById('mobile-filter-card-container');
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  openMobileFilterPicker(type) {
+    this.toggleMobileFilters();
+    if (type === 'location') this.toggleFilterSection('filter-sec-location', true);
+    if (type === 'suburb') this.toggleFilterSection('filter-sec-suburb', true);
+    if (type === 'type') this.toggleFilterSection('filter-sec-category', true);
+    if (type === 'bedrooms') this.toggleFilterSection('filter-sec-bedrooms', true);
+    if (type === 'price') this.toggleFilterSection('filter-sec-price', true);
   }
 
   toggleMobileFilters() {
@@ -4049,6 +4050,59 @@ class NairobiRentalsApp {
     } catch (err) {
       console.error('Chat error:', err);
     }
+  }
+
+  // ── Mobile-specific utility methods ──────────────────────────────
+  focusMobileSearch() {
+    // On mobile, scroll to top and focus the desktop search input,
+    // or open the sidebar filters section
+    const searchInput = document.getElementById('header-search-input');
+    if (searchInput) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        searchInput.focus();
+        searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+  }
+
+  openMobileFilterPicker(filterType) {
+    // Open the sidebar filters panel in mobile slide-in mode
+    const sidebar = document.getElementById('sidebar-filters');
+    if (sidebar) {
+      sidebar.classList.add('mobile-open');
+      // Add backdrop
+      let backdrop = document.getElementById('mobile-sidebar-backdrop');
+      if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.id = 'mobile-sidebar-backdrop';
+        backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:1499;';
+        backdrop.onclick = () => {
+          sidebar.classList.remove('mobile-open');
+          backdrop.remove();
+        };
+        document.body.appendChild(backdrop);
+      }
+      // Scroll to the relevant section
+      const sectionMap = {
+        location: 'filter-sec-location',
+        suburb: 'filter-sec-suburb',
+        type: 'filter-sec-type',
+        bedrooms: 'filter-sec-amenities',
+        price: 'filter-sec-price'
+      };
+      const sectionId = sectionMap[filterType];
+      if (sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+        }
+      }
+    }
+  }
+
+  toggleMobileFilters() {
+    this.openMobileFilterPicker('location');
   }
 
 }
