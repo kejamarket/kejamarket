@@ -77,7 +77,7 @@ const KejaEnhancedAuth = {
       title: 'Property Account',
       icon: '🏠',
       description: 'List and manage rental properties, connect with tenants and manage available units.',
-      subtitle: 'Landlord / Agent',
+      subtitle: 'Landlord / Caretaker',
       subRoles: ['landlord', 'agent', 'caretaker', 'property-manager']
     },
     'tenant': {
@@ -206,7 +206,7 @@ const KejaEnhancedAuth = {
           <div class="user-type-card" onclick="KejaEnhancedAuth.selectUserType('property-account')" data-type="property-account">
             <div class="user-type-icon">🏠</div>
             <div class="user-type-content">
-              <div class="user-type-title">Landlord / Agent</div>
+              <div class="user-type-title">Landlord / Caretaker</div>
               <div class="user-type-desc">List property • Manage property listings • Receive tenant inquiries • Sell property-related items • Optionally offer services</div>
             </div>
           </div>
@@ -818,7 +818,7 @@ const KejaEnhancedAuth = {
    * Update registration summary
    */
   updateRegistrationSummary() {
-    const userTypeText = this.selectedUserType === 'property-account' ? 'Property Account (Landlord / Agent)' : 
+    const userTypeText = this.selectedUserType === 'property-account' ? 'Property Account (Landlord / Caretaker)' : 
                         this.selectedUserType === 'tenant' ? 'Tenant' : 
                         this.selectedUserType === 'service-provider' ? 'Service Provider' : 'User';
     

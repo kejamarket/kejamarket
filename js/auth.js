@@ -189,7 +189,7 @@ const kejaAuth = (() => {
       }
       if (nameLabel) {
         if (role === 'agency') {
-          nameLabel.textContent = 'Director / Principal Agent Name *';
+          nameLabel.textContent = 'Caretaker / Contact Person Name *';
         } else if (role === 'service') {
           nameLabel.textContent = 'Service Provider Name *';
         } else {

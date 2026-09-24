@@ -41,7 +41,7 @@ const kejaDashboard = (() => {
       postAction: () => window.app && window.app.openModal('modal-post-marketplace')
     },
     landlord: {
-      label: 'Property Owner / Agent',
+      label: 'Landlord / Caretaker',
       color: '#4f46e5',
       gradient: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
       icon: 'fas fa-home',

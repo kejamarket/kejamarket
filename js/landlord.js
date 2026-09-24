@@ -611,10 +611,60 @@ class LandlordManager {
               }
             }
           } catch (uploadErr) {
-            console.warn('Photo CDN upload failed, using base64 fallback:', uploadErr.message);
+            console.warn('Photo CDN upload failed, using fallback:', uploadErr.message);
           }
-          if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing listing...';
         }
+
+        // Upload videos to CDN or server if any
+        if (this.uploadedVideos && this.uploadedVideos.length > 0) {
+          const finalVideos = [];
+          for (let i = 0; i < this.uploadedVideos.length; i++) {
+            const vid = this.uploadedVideos[i];
+            if (submitBtn) {
+              submitBtn.innerHTML = `<i class="fas fa-video fa-spin"></i> Uploading video tour (${i + 1}/${this.uploadedVideos.length})...`;
+            }
+
+            // If already a hosted URL (not base64 data URI)
+            if (vid.url && !vid.url.startsWith('data:')) {
+              finalVideos.push(vid);
+              continue;
+            }
+
+            try {
+              const vidRes = await fetch('/api/upload/video', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                  video: vid.url,
+                  folder: 'kejamarket/videos'
+                })
+              });
+
+              if (vidRes.ok) {
+                const vidData = await vidRes.json();
+                if (vidData.success && vidData.url) {
+                  finalVideos.push({
+                    url: vidData.url,
+                    duration: vid.duration || 0,
+                    name: vid.name || `Video Tour ${i + 1}`,
+                    poster: vid.poster || ''
+                  });
+                } else {
+                  console.warn('Video upload returned error message:', vidData.message);
+                }
+              } else {
+                console.warn('Video upload endpoint failed with status:', vidRes.status);
+              }
+            } catch (vidErr) {
+              console.warn('Video upload network error:', vidErr.message);
+            }
+          }
+
+          newListing.videos = finalVideos;
+          newListing.videoCount = finalVideos.length;
+        }
+
+        if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing listing...';
 
         const res = await fetch('/api/properties', {
           method: 'POST',
@@ -622,31 +672,37 @@ class LandlordManager {
           body: JSON.stringify(newListing)
         });
 
-        const data = await res.json();
-        const createdProp = (data.success && data.property) ? data.property : newListing;
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok || !data || !data.success) {
+          const errMsg = (data && data.message) ? data.message : 'Server could not save listing. Please check required fields.';
+          if (window.app) window.app.showToast(`❌ ${errMsg}`, 'error');
+          return;
+        }
+
+        const createdProp = data.property || newListing;
 
         if (window.app) {
           window.app.addProperty(createdProp);
           window.app.closeModal('modal-post-ad');
-          window.app.showToast('🎉 Listing published successfully! Watermark applied and live on Nairobi map.', 'success');
+          window.app.showToast('🎉 Listing published successfully! Video tour and photos are live on Nairobi map.', 'success');
         }
+
+        form.reset();
+        this.uploadedImages = [];
+        this.uploadedVideos = [];
+        this.renderPhotoPreviews();
+        this.renderVideoPreviews();
       } catch (err) {
-        console.warn('Backend sync error, adding to local state:', err);
+        console.error('Listing publication error:', err);
         if (window.app) {
-          window.app.addProperty(newListing);
-          window.app.closeModal('modal-post-ad');
-          window.app.showToast('Listing published locally! Watermark applied.', 'success');
+          window.app.showToast(`❌ Could not publish listing: ${err.message || 'Network error'}. Please try again.`, 'error');
         }
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Free Ad Now';
         }
-        form.reset();
-        this.uploadedImages = [];
-        this.uploadedVideos = [];
-        this.renderPhotoPreviews();
-        this.renderVideoPreviews();
       }
     });
   }

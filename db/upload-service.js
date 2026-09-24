@@ -75,46 +75,90 @@ async function uploadMultipleImages(images, folder = 'kejamarket/properties') {
   return results.map(r => r.url);
 }
 
+const fs = require('fs');
+const path = require('path');
+
 /**
  * Upload a video to Cloudinary with kejamarket.co.ke watermark overlay
+ * Falls back to local disk storage if Cloudinary is not configured or fails
  */
 async function uploadVideo(videoData, folder = 'kejamarket/videos') {
-  if (!cloudinaryConfigured) {
-    return { success: true, url: videoData, cdn: false };
+  if (cloudinaryConfigured) {
+    try {
+      const result = await cloudinary.uploader.upload(videoData, {
+        folder,
+        resource_type: 'video',
+        transformation: [
+          { width: 1280, height: 720, crop: 'limit' },
+          {
+            overlay: {
+              font_family: 'Arial',
+              font_size: 26,
+              font_weight: 'bold',
+              text: 'kejamarket.co.ke'
+            },
+            gravity: 'south_east',
+            x: 20,
+            y: 20,
+            opacity: 80
+          }
+        ]
+      });
+
+      return {
+        success: true,
+        url: result.secure_url,
+        publicId: result.public_id,
+        duration: result.duration,
+        cdn: true
+      };
+    } catch (err) {
+      console.warn('Cloudinary video upload with watermark failed, attempting simple upload:', err.message);
+      try {
+        const resultSimple = await cloudinary.uploader.upload(videoData, {
+          folder,
+          resource_type: 'video'
+        });
+        return {
+          success: true,
+          url: resultSimple.secure_url,
+          publicId: resultSimple.public_id,
+          duration: resultSimple.duration,
+          cdn: true
+        };
+      } catch (err2) {
+        console.error('Cloudinary video upload completely failed:', err2.message);
+      }
+    }
   }
 
+  // Local disk storage fallback for base64 video data URIs
   try {
-    const result = await cloudinary.uploader.upload(videoData, {
-      folder,
-      resource_type: 'video',
-      transformation: [
-        { width: 1280, height: 720, crop: 'limit' },
-        {
-          overlay: {
-            font_family: 'Arial',
-            font_size: 26,
-            font_weight: 'bold',
-            text: 'kejamarket.co.ke'
-          },
-          gravity: 'south_east',
-          x: 20,
-          y: 20,
-          opacity: 80
+    if (typeof videoData === 'string' && videoData.startsWith('data:video/')) {
+      const matches = videoData.match(/^data:video\/([a-zA-Z0-9]+);base64,(.+)$/);
+      if (matches) {
+        let ext = matches[1].toLowerCase();
+        if (ext === 'quicktime') ext = 'mov';
+        const buffer = Buffer.from(matches[2], 'base64');
+        const filename = `vid_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${ext}`;
+        const uploadsDir = path.join(__dirname, '..', 'uploads', 'videos');
+        if (!fs.existsSync(uploadsDir)) {
+          fs.mkdirSync(uploadsDir, { recursive: true });
         }
-      ]
-    });
-
-    return {
-      success: true,
-      url: result.secure_url,
-      publicId: result.public_id,
-      duration: result.duration,
-      cdn: true
-    };
-  } catch (err) {
-    console.error('Cloudinary video upload error:', err.message);
-    return { success: true, url: videoData, cdn: false, error: err.message };
+        fs.writeFileSync(path.join(uploadsDir, filename), buffer);
+        console.log(`🎥 Video saved locally to /uploads/videos/${filename} (${(buffer.length / (1024 * 1024)).toFixed(2)} MB)`);
+        return {
+          success: true,
+          url: `/uploads/videos/${filename}`,
+          cdn: false
+        };
+      }
+    }
+  } catch (fsErr) {
+    console.error('Local video save error:', fsErr.message);
   }
+
+  return { success: true, url: videoData, cdn: false };
 }
 
 /**

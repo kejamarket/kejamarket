@@ -104,8 +104,8 @@ app.use(compression({
     return compression.filter(req, res);
   }
 }));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 // Strip accidental trailing dots or punctuation from URLs (e.g. copied from markdown sentences)
 app.use((req, res, next) => {
@@ -1895,6 +1895,28 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
         data.media = cdnUrls.map((url, i) => ({ url, caption: `Photo ${i + 1}` }));
       } catch (uploadErr) {
         console.warn('Photo upload error (keeping original):', uploadErr.message);
+      }
+    }
+
+    // â”€â”€ Process video tours safety net (convert any base64 video to CDN/hosted URL) â”€â”€
+    if (data.videos && Array.isArray(data.videos) && data.videos.length > 0) {
+      for (let i = 0; i < data.videos.length; i++) {
+        const v = data.videos[i];
+        const vUrl = (typeof v === 'string') ? v : (v && v.url);
+        if (vUrl && typeof vUrl === 'string' && vUrl.startsWith('data:video/')) {
+          try {
+            const uploaded = await uploadService.uploadVideo(vUrl, 'kejamarket/videos');
+            if (uploaded && uploaded.url) {
+              if (typeof v === 'string') {
+                data.videos[i] = uploaded.url;
+              } else {
+                data.videos[i].url = uploaded.url;
+              }
+            }
+          } catch (vErr) {
+            console.warn('Server-side video fallback error:', vErr.message);
+          }
+        }
       }
     }
 
