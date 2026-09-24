@@ -25,6 +25,7 @@ const fetch = require('node-fetch');
 // Email & Upload services
 const emailService = require('./db/email-service');
 const uploadService = require('./db/upload-service');
+const locationService = require('./db/location-service');
 
 // â”€â”€â”€ RATE LIMITING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const compression = require('compression');
@@ -1772,6 +1773,81 @@ app.post('/api/mpesa/callback', (req, res) => {
     console.error('Error processing Daraja callback:', err);
     res.json({ ResultCode: 0, ResultDesc: 'Accepted' });
   }
+});
+
+
+// ─── LOCATION SEARCH & MANAGEMENT API ───────────────────────────────────────
+
+app.get('/api/locations/search', cache.middleware(60, 'locations'), async (req, res) => {
+  try {
+    const { q = '', limit = 25 } = req.query;
+    const results = locationService.search(q, parseInt(limit) || 25);
+    res.json({ success: true, results, count: results.length, query: q });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+app.get('/api/locations', cache.middleware(60, 'locations'), async (req, res) => {
+  try {
+    const { county, type, parentId, limit } = req.query;
+    const results = locationService.getAll({ county, type, parentId }).slice(0, parseInt(limit) || 1000);
+    res.json({ success: true, results, count: results.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+app.get('/api/locations/:id', async (req, res) => {
+  try {
+    const loc = locationService.getById(req.params.id);
+    if (!loc) return res.status(404).json({ success: false, message: 'Location not found' });
+    const ancestors = locationService.getAncestors(req.params.id);
+    const children = locationService.getChildren(req.params.id);
+    res.json({ success: true, location: loc, ancestors, children });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+app.get('/api/locations/:id/children', cache.middleware(60, 'locations'), async (req, res) => {
+  try {
+    const children = locationService.getChildren(req.params.id);
+    res.json({ success: true, results: children, count: children.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+app.post('/api/admin/locations', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin)
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const loc = locationService.addLocation(req.body);
+    res.status(201).json({ success: true, location: loc, message: 'Location created successfully.' });
+  } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+});
+
+app.put('/api/admin/locations/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin)
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const loc = locationService.updateLocation(req.params.id, req.body);
+    res.json({ success: true, location: loc, message: 'Location updated successfully.' });
+  } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+});
+
+app.delete('/api/admin/locations/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin)
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    locationService.deleteLocation(req.params.id);
+    res.json({ success: true, message: 'Location archived successfully.' });
+  } catch (err) { res.status(400).json({ success: false, message: err.message }); }
+});
+
+app.post('/api/admin/locations/merge', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin)
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { sourceId, targetId } = req.body;
+    if (!sourceId || !targetId)
+      return res.status(400).json({ success: false, message: 'sourceId and targetId are required.' });
+    const merged = locationService.mergeLocations(sourceId, targetId);
+    res.json({ success: true, location: merged, message: 'Locations merged successfully.' });
+  } catch (err) { res.status(400).json({ success: false, message: err.message }); }
 });
 
 // â”€â”€â”€ PROPERTIES & LISTINGS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
