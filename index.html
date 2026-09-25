@@ -229,6 +229,7 @@
   <link rel="stylesheet" href="css/simplified-management.css?v=4.4&t=202609171315">
   <link rel="stylesheet" href="css/communication-system.css?v=4.4&t=202609171315">
   <link rel="stylesheet" href="css/enhanced-portal.css?v=4.4&t=202609171315">
+  <link rel="stylesheet" href="css/location-picker.css?v=1.0">
 
   <style>
     .header-search-wrapper {
@@ -322,20 +323,10 @@
           </div>
 
           <!-- Location Picker inside Search Bar -->
-          <div class="header-location-picker" id="header-location-picker" onclick="app.toggleHeaderLocationSelect(event)">
+          <div class="header-location-picker" id="header-location-picker" onclick="app.openLocationPicker('header', event)">
             <i class="fas fa-map-marker-alt"></i>
-            <span id="header-location-label">Nairobi & Environs</span>
+            <span id="header-location-label">Nairobi &amp; Environs</span>
             <i class="fas fa-chevron-down" style="font-size: 0.65rem;"></i>
-            
-            <div class="header-location-menu" id="header-location-menu" style="display: none;">
-              <div class="loc-item" onclick="app.selectHeaderLocation('all', 'Nairobi & Environs', event)">All Nairobi & Environs</div>
-              <div class="loc-item" onclick="app.selectHeaderLocation('Westlands', 'Westlands', event)">Westlands</div>
-              <div class="loc-item" onclick="app.selectHeaderLocation('Kilimani', 'Kilimani & Kileleshwa', event)">Kilimani & Kileleshwa</div>
-              <div class="loc-item" onclick="app.selectHeaderLocation('Ruaka', 'Ruaka & Kiambu', event)">Ruaka & Kiambu</div>
-              <div class="loc-item" onclick="app.selectHeaderLocation('Ngong', 'Ngong & Rongai', event)">Ngong & Rongai</div>
-              <div class="loc-item" onclick="app.selectHeaderLocation('Thika', 'Thika Road Corridor', event)">Thika Road Corridor</div>
-              <div class="loc-item" onclick="app.selectHeaderLocation('Mombasa', 'Mombasa & Coast', event)">Mombasa & Coast</div>
-            </div>
           </div>
 
           <button type="submit" class="search-submit-btn">

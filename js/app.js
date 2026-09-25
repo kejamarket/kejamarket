@@ -371,11 +371,32 @@ class NairobiRentalsApp {
       const types = [
         { name: 'Single Room', count: '3,245' },
         { name: 'Bedsitter', count: '4,502' },
+        { name: 'Studio', count: '1,890' },
         { name: '1 Bedroom', count: '2,187' },
-        { name: '2 Bedrooms', count: '1,432' },
-        { name: '3 Bedrooms', count: '986' },
-        { name: '4+ Bedrooms', count: '521' },
-        { name: 'Bungalow', count: '318' }
+        { name: '2 Bedroom', count: '1,432' },
+        { name: '3 Bedroom', count: '986' },
+        { name: '4 Bedroom', count: '521' },
+        { name: '5+ Bedroom', count: '210' },
+        { name: 'Maisonette', count: '640' },
+        { name: 'Townhouse', count: '412' },
+        { name: 'Bungalow', count: '318' },
+        { name: 'Apartment', count: '5,120' },
+        { name: 'Flat', count: '1,840' },
+        { name: 'Serviced Apartment', count: '320' },
+        { name: 'Penthouse', count: '145' },
+        { name: 'Villa', count: '280' },
+        { name: 'Mansion', count: '95' },
+        { name: 'Office', count: '450' },
+        { name: 'Shop', count: '380' },
+        { name: 'Warehouse', count: '115' },
+        { name: 'Commercial Property', count: '510' },
+        { name: 'Land', count: '780' },
+        { name: 'Plot', count: '620' },
+        { name: 'Farm', count: '140' },
+        { name: 'Airbnb', count: '1,250' },
+        { name: 'Roommate / Shared Room', count: '340' },
+        { name: 'Hostel', count: '290' },
+        { name: 'Other', count: '120' }
       ];
 
       typeContainer.innerHTML = types.map(t => `
@@ -927,22 +948,45 @@ class NairobiRentalsApp {
     const q = query.toLowerCase().trim();
     const suggestions = [];
 
-    // 1. Check Estates / Suburbs
-    const commonEstates = ['Kilimani', 'Westlands', 'Ruaka', 'Roysambu', 'Kasarani', 'Ngara', 'Umoja', 'Kahawa West', 'Embakasi', 'Parklands', 'Lavington', 'Kileleshwa', 'South B', 'South C', 'Thika Road', 'Juja', 'Karen'];
-    commonEstates.forEach(est => {
-      if (est.toLowerCase().includes(q)) {
-        suggestions.push({ type: 'location', text: est, icon: 'fas fa-map-marker-alt', category: 'Estate / Location' });
-      }
-    });
+    // 1. Check Master Hierarchical Locations (All 418+ Kenyan Estates, Phases, Gates, Sections)
+    if (window.kejaLocationPicker && typeof window.kejaLocationPicker.searchLocations === 'function') {
+      const locMatches = window.kejaLocationPicker.searchLocations(q, 6);
+      locMatches.forEach(loc => {
+        const typeLabel = window.kejaLocationPicker.formatTypeBadge(loc.type) || 'Location';
+        suggestions.push({
+          type: 'location',
+          id: loc.id,
+          text: loc.name,
+          fullPath: loc.pathString || loc.name,
+          icon: window.kejaLocationPicker.getTypeIcon(loc.type),
+          category: typeLabel
+        });
+      });
+    } else if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
+      const locMatches = window.KEJA_MASTER_LOCATIONS.filter(l => 
+        (l.name && l.name.toLowerCase().includes(q)) || 
+        (l.pathString && l.pathString.toLowerCase().includes(q))
+      ).slice(0, 6);
+      locMatches.forEach(loc => {
+        suggestions.push({
+          type: 'location',
+          id: loc.id,
+          text: loc.name,
+          fullPath: loc.pathString || loc.name,
+          icon: 'fas fa-map-marker-alt',
+          category: loc.type || 'Location'
+        });
+      });
+    }
 
-    // 2. House Types & Categories
+    // 2. House Types & Categories (Handling room count as Property Type without separate bedrooms filter)
     const houseTypes = [
-      'Single Room', 'Bedsitter / Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom+', 
-      'Maisonette / Townhouse', 'Bungalow', 'Penthouse', 'BnB / Airbnb Stay', 'Commercial / Office'
+      'Single Room', 'Bedsitter', 'Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom', '5+ Bedroom',
+      'Maisonette', 'Townhouse', 'Bungalow', 'Apartment', 'Penthouse', 'Villa', 'Airbnb'
     ];
     houseTypes.forEach(ht => {
       if (ht.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === ht.toLowerCase())) {
-        suggestions.push({ type: 'category', text: ht, icon: 'fas fa-home', category: 'House Type' });
+        suggestions.push({ type: 'category', text: ht, icon: 'fas fa-home', category: 'Property Type' });
       }
     });
 
@@ -975,12 +1019,23 @@ class NairobiRentalsApp {
         </div>`;
     } else {
       dropdown.innerHTML = topSuggestions.map(item => `
-        <div class="search-suggestion-item" onclick="app.selectSearchSuggestion('${this.escapeHtml(item.text).replace(/'/g, "\\'")}')">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="${item.icon}" style="color: #00b53f; font-size: 0.95rem;"></i>
-            <span style="font-weight: 600; font-size: 0.9rem; color: #0f172a;">${this.highlightMatch(item.text, query)}</span>
+        <div class="search-suggestion-item" onclick="app.selectSearchSuggestion('${this.escapeHtml(item.text).replace(/'/g, "\\'")}', '${item.id || ''}')">
+          <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+            <i class="${item.icon}" style="color: #00b53f; font-size: 0.95rem; flex-shrink: 0;"></i>
+            <div style="min-width: 0;">
+              <div style="font-weight: 700; font-size: 0.88rem; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                ${this.highlightMatch(item.text, query)}
+              </div>
+              ${item.fullPath && item.fullPath !== item.text ? `
+                <div style="font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  ${this.highlightMatch(item.fullPath, query)}
+                </div>
+              ` : ''}
+            </div>
           </div>
-          <span style="font-size: 0.72rem; color: #64748b; background: #f1f5f9; padding: 2px 8px; border-radius: 12px; font-weight: 600;">${item.category}</span>
+          <span style="font-size: 0.7rem; color: #475569; background: #f1f5f9; padding: 2px 8px; border-radius: 10px; font-weight: 700; flex-shrink: 0; margin-left: 8px;">
+            ${item.category}
+          </span>
         </div>
       `).join('');
     }
@@ -988,13 +1043,19 @@ class NairobiRentalsApp {
     dropdown.style.display = 'block';
   }
 
-  selectSearchSuggestion(text) {
+  selectSearchSuggestion(text, locId = '') {
     const searchInput = document.getElementById('header-search-input');
     if (searchInput) searchInput.value = text;
     const dropdown = document.getElementById('header-search-suggestions');
     if (dropdown) dropdown.style.display = 'none';
     const clearBtn = document.getElementById('btn-clear-search');
     if (clearBtn) clearBtn.style.display = 'flex';
+
+    if (locId && window.kejaLocationPicker && window.kejaLocationPicker.locationMap.has(locId)) {
+      const loc = window.kejaLocationPicker.locationMap.get(locId);
+      this.applySelectedLocation(loc);
+      return;
+    }
 
     this.searchQuery = text;
     this.currentPage = 1;
@@ -1233,6 +1294,29 @@ class NairobiRentalsApp {
         if (!matchesCategory) return false;
       }
 
+      // Hierarchical Location Filter (County -> Area -> Estate -> Sub-area -> Phase/Gate/Section)
+      if (this.selectedLocation) {
+        const loc = this.selectedLocation;
+        const locName = (loc.name || '').toLowerCase();
+        const locId = loc.id;
+
+        const matchesId = p.locationId === locId || 
+          (p.locationPathIds && p.locationPathIds.includes(locId)) ||
+          (p.estateId && p.estateId === locId) ||
+          (p.areaId && p.areaId === locId) ||
+          (p.countyId && p.countyId === locId);
+
+        const matchesPath = (p.locationPath && p.locationPath.some(item => item.toLowerCase() === locName)) ||
+          (p.estateSuburb && p.estateSuburb.toLowerCase().includes(locName)) ||
+          (p.displayLocation && p.displayLocation.toLowerCase().includes(locName)) ||
+          (p.locationDisplay && p.locationDisplay.toLowerCase().includes(locName)) ||
+          (p.exactLocation && p.exactLocation.toLowerCase().includes(locName)) ||
+          (p.area && p.area.toLowerCase() === locName) ||
+          (p.county && p.county.toLowerCase() === locName);
+
+        if (!matchesId && !matchesPath) return false;
+      }
+
       // Corridor filter
       if (this.activeCorridor !== 'all' && p.corridorId !== this.activeCorridor) return false;
 
@@ -1282,6 +1366,16 @@ class NairobiRentalsApp {
         const matchCorridor = p.corridorId ? p.corridorId.toLowerCase().includes(q) : false;
         const matchAgency = (p.agencyName && p.agencyName.toLowerCase().includes(q)) || (p.landlord?.name && p.landlord.name.toLowerCase().includes(q));
 
+        // Hierarchical Location matching
+        const locPathStr = (p.locationPath || []).join(' ').toLowerCase();
+        const matchLocPath = locPathStr.includes(q);
+        const matchExactLoc = p.exactLocation ? p.exactLocation.toLowerCase().includes(q) : false;
+        const matchDisplayLoc = p.displayLocation ? p.displayLocation.toLowerCase().includes(q) : (p.locationDisplay ? p.locationDisplay.toLowerCase().includes(q) : false);
+        const matchArea = p.area ? p.area.toLowerCase().includes(q) : false;
+        const matchSubArea = p.subArea ? p.subArea.toLowerCase().includes(q) : false;
+        const matchPhase = p.phase ? p.phase.toLowerCase().includes(q) : false;
+        const matchSection = p.section ? p.section.toLowerCase().includes(q) : false;
+
         // Keywords for bedrooms
         const matchBedsitter = (q.includes('bedsitter') || q.includes('studio')) && (p.category.includes('Bedsitter') || p.bedrooms === 0);
         const matchSingle = (q.includes('single') || q.includes('single room')) && p.category.includes('Single Room');
@@ -1301,6 +1395,7 @@ class NairobiRentalsApp {
         if (
           !matchTitle && !matchDesc && !matchEstate && !matchCounty && 
           !matchCategory && !matchCorridor && !matchAgency && 
+          !matchLocPath && !matchExactLoc && !matchDisplayLoc && !matchArea && !matchSubArea && !matchPhase && !matchSection &&
           !matchBedsitter && !matchSingle && !match1Bed && !match2Bed && !match3Bed && !matchBnb &&
           !matchAgencyWord && !matchCaretakerWord && !matchBorehole && !matchTokens
         ) {
@@ -1430,7 +1525,8 @@ class NairobiRentalsApp {
     const beds = p.bedrooms ?? (p.category?.includes('Bedsitter') ? 1 : 1);
     const baths = p.bathrooms ?? 1;
     const sqm = p.sizeSqm ?? p.sqm ?? 0;
-    const locationDisplay = p.locationDisplay || (p.estateSuburb ? `${p.estateSuburb}, ${p.county || 'Nairobi'}` : 'Nairobi');
+    const locationDisplay = p.displayLocation || p.locationDisplay || 
+      (p.locationPath && p.locationPath.length > 0 ? p.locationPath.join(' · ') : (p.estateSuburb ? `${p.estateSuburb}, ${p.county || 'Nairobi'}` : 'Nairobi'));
 
     return `
       <div class="property-card ${isOccupied ? 'property-card-taken' : ''}" data-id="${p.id}">
@@ -2435,13 +2531,63 @@ class NairobiRentalsApp {
     }
   }
 
+  openLocationPicker(source = 'default', event = null) {
+    if (event) event.stopPropagation();
+    if (window.kejaLocationPicker) {
+      window.kejaLocationPicker.open(null, (loc) => {
+        this.applySelectedLocation(loc);
+      });
+    }
+  }
+
+  applySelectedLocation(loc) {
+    this.selectedLocation = loc;
+    const headerLocLabel = document.getElementById('header-location-label');
+    const mobileLocDisplay = document.getElementById('m-filter-location-display');
+    const mobileSuburbDisplay = document.getElementById('m-filter-suburb-display');
+    const kspLocationDisplay = document.getElementById('ksp-location-display');
+    const kspEstateDisplay = document.getElementById('ksp-estate-display');
+
+    if (loc) {
+      const displayStr = loc.displayLocation || loc.pathString || loc.name;
+      if (headerLocLabel) headerLocLabel.textContent = loc.name;
+      if (mobileLocDisplay) mobileLocDisplay.textContent = loc.county || loc.name;
+      if (mobileSuburbDisplay) {
+        mobileSuburbDisplay.textContent = loc.name;
+        mobileSuburbDisplay.classList.remove('m-f-placeholder');
+      }
+      if (kspLocationDisplay) kspLocationDisplay.textContent = loc.county || loc.name;
+      if (kspEstateDisplay) {
+        kspEstateDisplay.textContent = loc.name;
+        kspEstateDisplay.classList.remove('placeholder');
+      }
+    } else {
+      if (headerLocLabel) headerLocLabel.textContent = 'Nairobi & Environs';
+      if (mobileLocDisplay) mobileLocDisplay.textContent = 'Nairobi & Environs';
+      if (mobileSuburbDisplay) {
+        mobileSuburbDisplay.textContent = 'Search estate or suburb...';
+        mobileSuburbDisplay.classList.add('m-f-placeholder');
+      }
+      if (kspLocationDisplay) kspLocationDisplay.textContent = 'Nairobi & Environs';
+      if (kspEstateDisplay) {
+        kspEstateDisplay.textContent = 'Search estate or neighbourhood...';
+        kspEstateDisplay.classList.add('placeholder');
+      }
+    }
+
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
   openMobileFilterPicker(type) {
+    if (type === 'location' || type === 'suburb') {
+      this.openLocationPicker(type);
+      return;
+    }
     this.toggleMobileFilters();
-    if (type === 'location') this.toggleFilterSection('filter-sec-location', true);
-    if (type === 'suburb') this.toggleFilterSection('filter-sec-suburb', true);
-    if (type === 'type') this.toggleFilterSection('filter-sec-category', true);
-    if (type === 'bedrooms') this.toggleFilterSection('filter-sec-bedrooms', true);
+    if (type === 'type') this.toggleFilterSection('filter-sec-type', true);
     if (type === 'price') this.toggleFilterSection('filter-sec-price', true);
+    if (type === 'amenities') this.toggleFilterSection('filter-sec-amenities', true);
   }
 
   toggleMobileFilters() {
@@ -4102,6 +4248,10 @@ class NairobiRentalsApp {
   }
 
   openMobileFilterPicker(filterType) {
+    if (filterType === 'location' || filterType === 'suburb') {
+      this.openLocationPicker(filterType);
+      return;
+    }
     // Open the sidebar filters panel in mobile slide-in mode
     const sidebar = document.getElementById('sidebar-filters');
     if (sidebar) {

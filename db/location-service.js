@@ -114,10 +114,12 @@ class LocationService {
         .slice(0, limit);
     }
 
+    const STOP_WORDS = new Set(['phase', 'gate', 'section', 'sec', 'court', 'stage', 'road', 'estate', 'area', 'sub-area', 'town', 'county', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+
     const rawQ = query.trim().toLowerCase();
-    // Normalize punctuation
     const cleanQ = rawQ.replace(/['’]/g, '');
     const tokens = cleanQ.split(/\s+/).filter(t => t.length > 0);
+    const nonStopTokens = tokens.filter(t => !STOP_WORDS.has(t));
 
     const scored = [];
 
@@ -131,64 +133,71 @@ class LocationService {
 
       let score = 0;
 
+      // Check if ALL tokens appear in the path, search terms, or aliases
+      const allTokensInPath = tokens.every(token => 
+        pathStr.includes(token) || searchTerms.some(st => st.includes(token)) || aliases.some(a => a.includes(token))
+      );
+
+      // In multi-token queries, verify distinctive (non-stop) words are matched
+      const matchesNonStop = nonStopTokens.length === 0 || nonStopTokens.every(token => 
+        pathStr.includes(token) || searchTerms.some(st => st.includes(token)) || aliases.some(a => a.includes(token))
+      );
+
+      // For queries with 2+ tokens, skip candidates that don't match the distinctive parent keywords
+      if (tokens.length >= 2 && !matchesNonStop) {
+        continue;
+      }
+
       // 1. Exact name match
       if (locName === cleanQ) {
-        score += 200;
+        score += 300;
       } else if (locName.startsWith(cleanQ)) {
-        score += 150;
+        score += 200;
       } else if (locName.includes(cleanQ)) {
-        score += 100;
+        score += 150;
       }
 
       // 2. Exact alias match
       if (aliases.some(a => a === cleanQ)) {
-        score += 180;
+        score += 250;
       } else if (aliases.some(a => a.startsWith(cleanQ))) {
-        score += 130;
+        score += 180;
       } else if (aliases.some(a => a.includes(cleanQ))) {
-        score += 90;
+        score += 120;
       }
 
       // 3. Multi-token hierarchical matching (e.g. "Nyayo Phase 2" or "Sheshe Gardens Phase 1")
-      // Check if ALL tokens appear in the path or search terms
-      const allTokensInPath = tokens.every(token => 
-        pathStr.includes(token) || searchTerms.some(st => st.includes(token))
-      );
-
       if (allTokensInPath) {
-        score += 120 + (tokens.length * 20);
+        score += 200 + (tokens.length * 30);
 
-        // Boost leaf nodes that match the query specifically
+        // Boost leaf nodes that specifically match the query
         const lastToken = tokens[tokens.length - 1];
         if (locName.includes(lastToken)) {
-          score += 40;
+          score += 50;
         }
 
         // Boost if query matches the sequence in pathString
         if (pathStr.includes(cleanQ)) {
-          score += 80;
+          score += 100;
         }
-      }
-
-      // 4. Any token matches name or direct alias
-      const anyTokenInName = tokens.some(token => locName.includes(token));
-      if (anyTokenInName) {
-        score += 30;
+      } else {
+        const matchCount = tokens.filter(t => pathStr.includes(t) || aliases.some(a => a.includes(t)) || searchTerms.some(st => st.includes(t))).length;
+        score += matchCount * 30;
       }
 
       // Boost verified locations
       if (loc.verified) {
-        score += 5;
+        score += 10;
       }
 
-      // Slightly prefer more specific micro-locations when exact phrases match
+      // Specific micro-locations boost
       if (loc.type === 'PHASE' || loc.type === 'GATE' || loc.type === 'SECTION') {
         if (tokens.length > 1) {
-          score += 15;
+          score += 20;
         }
       }
 
-      if (score > 40) {
+      if (score > 60) {
         scored.push({
           location: loc,
           score,

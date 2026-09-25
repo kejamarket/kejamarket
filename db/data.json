@@ -16,6 +16,700 @@
   ],
   "properties": [
     {
+      "id": "prop-nyayo-001",
+      "title": "Spacious 2 Bedroom Apartment in Nyayo Estate Gate A (Phase 2)",
+      "description": "Executive 2 bedroom master ensuite apartment situated in the serene and highly secure Nyayo Estate, Gate A, Phase 2. Features fitted kitchen cabinets, built-in wardrobes, private balcony, solar water heating, continuous 24/7 water supply, dedicated parking slot, and 24hr security barrier with patrols.",
+      "category": "2 Bedroom",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "sizeSqm": 88,
+      "rentKes": 38000,
+      "depositKes": 38000,
+      "county": "Nairobi",
+      "countyId": "loc-county-nairobi",
+      "corridorId": "embakasi_mombasa_rd",
+      "area": "Embakasi",
+      "areaId": "loc-county-nairobi-embakasi",
+      "estateSuburb": "Nyayo Estate",
+      "estateId": "loc-county-nairobi-embakasi-nyayo-estate",
+      "subArea": "Gate A",
+      "subAreaId": "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+      "phase": "Phase 2",
+      "phaseId": "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-2",
+      "locationId": "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-2",
+      "locationPath": [
+        "Nairobi",
+        "Embakasi",
+        "Nyayo Estate",
+        "Gate A",
+        "Phase 2"
+      ],
+      "locationPathIds": [
+        "loc-county-nairobi",
+        "loc-county-nairobi-embakasi",
+        "loc-county-nairobi-embakasi-nyayo-estate",
+        "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+        "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-2"
+      ],
+      "displayLocation": "Nyayo Estate · Gate A · Phase 2 · Embakasi, Nairobi",
+      "locationDisplay": "Nyayo Estate · Gate A · Phase 2 · Embakasi, Nairobi",
+      "exactLocation": "Gate A, Court 4, Nyayo Estate, Embakasi",
+      "latitude": -1.3175,
+      "longitude": 36.897,
+      "isFeatured": true,
+      "isTopAd": true,
+      "isVerified": true,
+      "badgeType": "verified",
+      "status": "approved",
+      "isApproved": true,
+      "photoCount": 7,
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Modern living room"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Master bedroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Fitted kitchen"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Ensuite washroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Balcony view"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Estate compound"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Gate entrance"
+        }
+      ],
+      "amenities": {
+        "hasBalcony": true,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": true
+      },
+      "waterSupplyType": "Borehole & Council Water",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "landlord": {
+        "name": "Dennis O.",
+        "phone": "+254792409540",
+        "whatsapp": "+254792409540",
+        "isVerified": true
+      }
+    },
+    {
+      "id": "prop-nyayo-002",
+      "title": "Modern 3 Bedroom Maisonette in Nyayo Estate Gate A (Phase 1)",
+      "description": "Charming 3 bedroom family home located in Nyayo Estate Gate A Phase 1. Features self-contained DSQ, spacious open dining area, secure perimeter, garden, parking for 2 cars, and dependable 24/7 security. Walking distance to estate commercial centre.",
+      "category": "3 Bedroom",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "sizeSqm": 120,
+      "rentKes": 48000,
+      "depositKes": 48000,
+      "county": "Nairobi",
+      "countyId": "loc-county-nairobi",
+      "corridorId": "embakasi_mombasa_rd",
+      "area": "Embakasi",
+      "areaId": "loc-county-nairobi-embakasi",
+      "estateSuburb": "Nyayo Estate",
+      "estateId": "loc-county-nairobi-embakasi-nyayo-estate",
+      "subArea": "Gate A",
+      "subAreaId": "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+      "phase": "Phase 1",
+      "phaseId": "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-1",
+      "locationId": "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-1",
+      "locationPath": [
+        "Nairobi",
+        "Embakasi",
+        "Nyayo Estate",
+        "Gate A",
+        "Phase 1"
+      ],
+      "locationPathIds": [
+        "loc-county-nairobi",
+        "loc-county-nairobi-embakasi",
+        "loc-county-nairobi-embakasi-nyayo-estate",
+        "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+        "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-1"
+      ],
+      "displayLocation": "Nyayo Estate · Gate A · Phase 1 · Embakasi, Nairobi",
+      "locationDisplay": "Nyayo Estate · Gate A · Phase 1 · Embakasi, Nairobi",
+      "exactLocation": "Gate A, Phase 1, Nyayo Estate, Embakasi",
+      "latitude": -1.316,
+      "longitude": 36.8965,
+      "isFeatured": true,
+      "isTopAd": true,
+      "isVerified": true,
+      "badgeType": "verified",
+      "status": "approved",
+      "isApproved": true,
+      "photoCount": 7,
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Exterior view"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Living area"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Kitchen area"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Master bedroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Washroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Balcony"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Parking area"
+        }
+      ],
+      "amenities": {
+        "hasBalcony": true,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": true
+      },
+      "waterSupplyType": "Borehole & Council Water",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "landlord": {
+        "name": "Sarah W.",
+        "phone": "+254792409540",
+        "whatsapp": "+254792409540",
+        "isVerified": true
+      }
+    },
+    {
+      "id": "prop-buru-003",
+      "title": "Classic 3 Bedroom Maisonette in Buruburu Phase 3 with Private Compound",
+      "description": "Well-maintained 3 bedroom maisonette with private front and back yard in Buruburu Phase 3, Eastlands. Easy access to Mumias Road, reputable schools, shopping centres, and public transit. Perimeter wall with razor wire, separate dining, and constant water.",
+      "category": "3 Bedroom",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "sizeSqm": 110,
+      "rentKes": 42000,
+      "depositKes": 42000,
+      "county": "Nairobi",
+      "countyId": "loc-county-nairobi",
+      "corridorId": "eastlands_jogoo",
+      "area": "Eastlands",
+      "areaId": "loc-county-nairobi-eastlands",
+      "estateSuburb": "Buruburu",
+      "estateId": "loc-county-nairobi-eastlands-buruburu",
+      "phase": "Phase 3",
+      "phaseId": "loc-county-nairobi-eastlands-buruburu-phase-3",
+      "locationId": "loc-county-nairobi-eastlands-buruburu-phase-3",
+      "locationPath": [
+        "Nairobi",
+        "Eastlands",
+        "Buruburu",
+        "Phase 3"
+      ],
+      "locationPathIds": [
+        "loc-county-nairobi",
+        "loc-county-nairobi-eastlands",
+        "loc-county-nairobi-eastlands-buruburu",
+        "loc-county-nairobi-eastlands-buruburu-phase-3"
+      ],
+      "displayLocation": "Buruburu · Phase 3 · Eastlands, Nairobi",
+      "locationDisplay": "Buruburu · Phase 3 · Eastlands, Nairobi",
+      "exactLocation": "Buruburu Phase 3, near Mesora Centre",
+      "latitude": -1.2905,
+      "longitude": 36.8785,
+      "isFeatured": true,
+      "isTopAd": true,
+      "isVerified": true,
+      "badgeType": "verified",
+      "status": "approved",
+      "isApproved": true,
+      "photoCount": 7,
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Front view"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Living room"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Kitchen"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Bedroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Bathroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Garden compound"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Secure gate"
+        }
+      ],
+      "amenities": {
+        "hasBalcony": true,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": false
+      },
+      "waterSupplyType": "Council & Storage Tanks",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "landlord": {
+        "name": "Peter Mwangi",
+        "phone": "+254792409540",
+        "whatsapp": "+254792409540",
+        "isVerified": true
+      }
+    },
+    {
+      "id": "prop-eastleigh-007",
+      "title": "Modern 2 Bedroom Apartment in Eastleigh Section 7",
+      "description": "Bright and newly finished 2 bedroom apartment in Eastleigh Section 7. Features high-speed lift, high-spec modern tiling, clean municipal water plus borehole backup, 24/7 security guard and CCTV. Located steps away from malls and transit points.",
+      "category": "2 Bedroom",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "sizeSqm": 72,
+      "rentKes": 30000,
+      "depositKes": 30000,
+      "county": "Nairobi",
+      "countyId": "loc-county-nairobi",
+      "corridorId": "nairobi_central",
+      "area": "Eastlands",
+      "areaId": "loc-county-nairobi-eastlands",
+      "estateSuburb": "Eastleigh",
+      "estateId": "loc-county-nairobi-eastlands-eastleigh",
+      "section": "Section 7",
+      "sectionId": "loc-county-nairobi-eastlands-eastleigh-section-7",
+      "locationId": "loc-county-nairobi-eastlands-eastleigh-section-7",
+      "locationPath": [
+        "Nairobi",
+        "Eastlands",
+        "Eastleigh",
+        "Section 7"
+      ],
+      "locationPathIds": [
+        "loc-county-nairobi",
+        "loc-county-nairobi-eastlands",
+        "loc-county-nairobi-eastlands-eastleigh",
+        "loc-county-nairobi-eastlands-eastleigh-section-7"
+      ],
+      "displayLocation": "Eastleigh · Section 7 · Nairobi",
+      "locationDisplay": "Eastleigh · Section 7 · Nairobi",
+      "exactLocation": "11th Street, Section 7, Eastleigh, Nairobi",
+      "latitude": -1.278,
+      "longitude": 36.8525,
+      "isFeatured": true,
+      "isTopAd": true,
+      "isVerified": true,
+      "badgeType": "verified",
+      "status": "approved",
+      "isApproved": true,
+      "photoCount": 7,
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Modern living room"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Bedrooms"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Kitchen"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Washroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Balcony"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Elevator lobby"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Building exterior"
+        }
+      ],
+      "amenities": {
+        "hasBalcony": true,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": false
+      },
+      "waterSupplyType": "Borehole & Council",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "landlord": {
+        "name": "Abdi Hassan",
+        "phone": "+254792409540",
+        "whatsapp": "+254792409540",
+        "isVerified": true
+      }
+    },
+    {
+      "id": "prop-runda-mimosa-001",
+      "title": "Luxury 4 Bedroom Villa in Runda Mimosa with Private Garden",
+      "description": "Magnificent 4 bedroom standalone diplomatic residence set on 0.5 acre manicured grounds in prestigious Runda Mimosa. Features all ensuite bedrooms, private study, family room, 2 DSQs, electric perimeter fence, backup generator, UN security approval, and quiet leafy cul-de-sac.",
+      "category": "4 Bedroom",
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "sizeSqm": 380,
+      "rentKes": 250000,
+      "depositKes": 250000,
+      "county": "Nairobi",
+      "countyId": "loc-county-nairobi",
+      "corridorId": "westlands_diplomatic",
+      "area": "Westlands",
+      "areaId": "loc-county-nairobi-westlands",
+      "estateSuburb": "Runda",
+      "estateId": "loc-county-nairobi-westlands-runda",
+      "subArea": "Mimosa",
+      "subAreaId": "loc-county-nairobi-westlands-runda-mimosa",
+      "locationId": "loc-county-nairobi-westlands-runda-mimosa",
+      "locationPath": [
+        "Nairobi",
+        "Westlands",
+        "Runda",
+        "Mimosa"
+      ],
+      "locationPathIds": [
+        "loc-county-nairobi",
+        "loc-county-nairobi-westlands",
+        "loc-county-nairobi-westlands-runda",
+        "loc-county-nairobi-westlands-runda-mimosa"
+      ],
+      "displayLocation": "Runda · Mimosa · Westlands, Nairobi",
+      "locationDisplay": "Runda · Mimosa · Westlands, Nairobi",
+      "exactLocation": "Mimosa Drive, Runda Estate, Nairobi",
+      "latitude": -1.2185,
+      "longitude": 36.8202,
+      "isFeatured": true,
+      "isTopAd": true,
+      "isVerified": true,
+      "badgeType": "featured",
+      "status": "approved",
+      "isApproved": true,
+      "photoCount": 7,
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Villa exterior"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Lounge"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Designer kitchen"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Master suite"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Ensuite bath"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Patio & lawn"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Gated driveway"
+        }
+      ],
+      "amenities": {
+        "hasBalcony": true,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": true,
+        "hasSwimmingPool": true
+      },
+      "waterSupplyType": "Borehole & Council",
+      "electricityMeterType": "Postpaid (KPLC) + Generator",
+      "landlord": {
+        "name": "Ambassador K.",
+        "phone": "+254792409540",
+        "whatsapp": "+254792409540",
+        "isVerified": true
+      }
+    },
+    {
+      "id": "prop-sheshe-001",
+      "title": "Cozy 2 Bedroom Apartment in Sheshe Gardens Phase 1 (Mlolongo)",
+      "description": "Modern 2 bedroom apartment located inside Sheshe Gardens, Phase 1 in Mlolongo / Mavoko area. Gated community with landscaped children play area, borehole water 24/7, token electricity meter, ample car parking, and convenient access to Mombasa Road and Expressway.",
+      "category": "2 Bedroom",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "sizeSqm": 75,
+      "rentKes": 26000,
+      "depositKes": 26000,
+      "county": "Machakos",
+      "countyId": "loc-county-machakos",
+      "corridorId": "mombasa_rd",
+      "area": "Mlolongo",
+      "areaId": "loc-county-machakos-mlolongo",
+      "estateSuburb": "Sheshe Gardens",
+      "estateId": "loc-county-machakos-mlolongo-sheshe-gardens",
+      "phase": "Phase 1",
+      "phaseId": "loc-county-machakos-mlolongo-sheshe-gardens-phase-1",
+      "locationId": "loc-county-machakos-mlolongo-sheshe-gardens-phase-1",
+      "locationPath": [
+        "Machakos",
+        "Mlolongo",
+        "Sheshe Gardens",
+        "Phase 1"
+      ],
+      "locationPathIds": [
+        "loc-county-machakos",
+        "loc-county-machakos-mlolongo",
+        "loc-county-machakos-mlolongo-sheshe-gardens",
+        "loc-county-machakos-mlolongo-sheshe-gardens-phase-1"
+      ],
+      "displayLocation": "Sheshe Gardens · Phase 1 · Mlolongo, Mavoko",
+      "locationDisplay": "Sheshe Gardens · Phase 1 · Mlolongo, Mavoko",
+      "exactLocation": "Sheshe Gardens Phase 1, off Mombasa Road, Mlolongo",
+      "latitude": -1.378,
+      "longitude": 36.938,
+      "isFeatured": true,
+      "isTopAd": true,
+      "isVerified": true,
+      "badgeType": "verified",
+      "status": "approved",
+      "isApproved": true,
+      "photoCount": 7,
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Living area"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Master bedroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Kitchen with cabinets"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Washroom"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Balcony view"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Compound"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Gated entrance"
+        }
+      ],
+      "amenities": {
+        "hasBalcony": true,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": false
+      },
+      "waterSupplyType": "Borehole Water 24/7",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "landlord": {
+        "name": "Grace Mutua",
+        "phone": "+254792409540",
+        "whatsapp": "+254792409540",
+        "isVerified": true
+      }
+    },
+    {
+      "id": "prop-komarock-002",
+      "title": "Bright 2 Bedroom Apartment in Komarock Sector 2 (Phase 1)",
+      "description": "Neat 2 bedroom apartment in Komarock Sector 2 Phase 1, near Spine Road and K-Mall. Features spacious living room, separate kitchen, tiled floors, continuous borehole water supply, perimeter wall with guard post.",
+      "category": "2 Bedroom",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "sizeSqm": 68,
+      "rentKes": 24000,
+      "depositKes": 24000,
+      "county": "Nairobi",
+      "countyId": "loc-county-nairobi",
+      "corridorId": "eastlands_jogoo",
+      "area": "Eastlands",
+      "areaId": "loc-county-nairobi-eastlands",
+      "estateSuburb": "Komarock",
+      "estateId": "loc-county-nairobi-eastlands-komarock",
+      "subArea": "Sector 2",
+      "subAreaId": "loc-county-nairobi-eastlands-komarock-sector-2",
+      "phase": "Phase 1",
+      "phaseId": "loc-county-nairobi-eastlands-komarock-phase-1",
+      "locationId": "loc-county-nairobi-eastlands-komarock-phase-1",
+      "locationPath": [
+        "Nairobi",
+        "Eastlands",
+        "Komarock",
+        "Phase 1"
+      ],
+      "locationPathIds": [
+        "loc-county-nairobi",
+        "loc-county-nairobi-eastlands",
+        "loc-county-nairobi-eastlands-komarock",
+        "loc-county-nairobi-eastlands-komarock-phase-1"
+      ],
+      "displayLocation": "Komarock · Sector 2 · Phase 1 · Eastlands, Nairobi",
+      "locationDisplay": "Komarock · Sector 2 · Phase 1 · Eastlands, Nairobi",
+      "exactLocation": "Sector 2, off Spine Road, Komarock",
+      "latitude": -1.272,
+      "longitude": 36.901,
+      "isFeatured": true,
+      "isTopAd": false,
+      "isVerified": true,
+      "badgeType": "verified",
+      "status": "approved",
+      "isApproved": true,
+      "photoCount": 7,
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Apartment interior"
+        }
+      ],
+      "amenities": {
+        "hasBalcony": true,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": false
+      },
+      "waterSupplyType": "Borehole",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "landlord": {
+        "name": "John K.",
+        "phone": "+254792409540",
+        "whatsapp": "+254792409540",
+        "isVerified": true
+      }
+    },
+    {
+      "id": "prop-ruaka-001",
+      "title": "Modern 1 Bedroom Apartment in Ruaka (Joyland)",
+      "description": "Chic 1 bedroom apartment along Limuru Road / Joyland in Ruaka. Rooftop chill area, solar water heating, high-speed Wi-Fi, modern kitchen cabinets, backup generator for common areas, and CCTV surveillance.",
+      "category": "1 Bedroom",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "sizeSqm": 52,
+      "rentKes": 22000,
+      "depositKes": 22000,
+      "county": "Kiambu",
+      "countyId": "loc-county-kiambu",
+      "corridorId": "kiambu_northern_bypass",
+      "area": "Ruaka",
+      "areaId": "loc-county-kiambu-ruaka",
+      "estateSuburb": "Ruaka",
+      "estateId": "loc-county-kiambu-ruaka",
+      "subArea": "Joyland",
+      "locationId": "loc-county-kiambu-ruaka",
+      "locationPath": [
+        "Kiambu",
+        "Ruaka"
+      ],
+      "locationPathIds": [
+        "loc-county-kiambu",
+        "loc-county-kiambu-ruaka"
+      ],
+      "displayLocation": "Ruaka · Joyland · Kiambu",
+      "locationDisplay": "Ruaka · Joyland · Kiambu",
+      "exactLocation": "Joyland, off Limuru Road, Ruaka",
+      "latitude": -1.2064,
+      "longitude": 36.7786,
+      "isFeatured": true,
+      "isTopAd": true,
+      "isVerified": true,
+      "badgeType": "verified",
+      "status": "approved",
+      "isApproved": true,
+      "photoCount": 7,
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+          "caption": "Living space"
+        }
+      ],
+      "amenities": {
+        "hasBalcony": true,
+        "hasParking": true,
+        "hasElectricFence": true,
+        "hasCctv": true,
+        "hasInternet": true,
+        "hasTiles": true,
+        "isMasterEnsuite": false
+      },
+      "waterSupplyType": "Borehole & Council",
+      "electricityMeterType": "Prepaid (Tokens)",
+      "landlord": {
+        "name": "Faith N.",
+        "phone": "+254792409540",
+        "whatsapp": "+254792409540",
+        "isVerified": true
+      }
+    },
+    {
       "id": "prop-exact-001",
       "title": "Clean Single Room in Ngara near Fig Tree (Walking to CBD)",
       "description": "Convenient single room located 5 minutes walking distance to Nairobi CBD and University of Nairobi. Shared clean tiled washrooms, regular council water supply with overhead storage tanks, tokens meter, secure gated building with night watchman and caretaker.",
@@ -25,10 +719,10 @@
       "sizeSqm": 0,
       "rentKes": 6500,
       "depositKes": 6500,
-      "county": "undefined",
+      "county": "Nairobi",
       "corridorId": "nairobi_central",
       "estateSuburb": "Ngara (Fig Tree & Ngara Rd)",
-      "locationDisplay": "Ngara (Fig Tree & Ngara Rd), undefined",
+      "locationDisplay": "Ngara (Fig Tree & Ngara Rd), Nairobi",
       "exactLocation": "Ngara Road, near Stima Club",
       "latitude": -1.2764,
       "longitude": 36.8282,
@@ -56,10 +750,10 @@
       "sizeSqm": 0,
       "rentKes": 5500,
       "depositKes": 5500,
-      "county": "undefined",
+      "county": "Nairobi",
       "corridorId": "eastlands_jogoo",
       "estateSuburb": "Umoja (Innercore & Phase 1)",
-      "locationDisplay": "Umoja (Innercore & Phase 1), undefined",
+      "locationDisplay": "Umoja (Innercore & Phase 1), Nairobi",
       "exactLocation": "Umoja Innercore, near Market",
       "latitude": -1.2882,
       "longitude": 36.8958,

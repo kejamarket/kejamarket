@@ -731,6 +731,10 @@ const AdminCore = (() => {
   }
 
   async function loadLocations(viewData) {
+    if (window.AdminLocations && typeof window.AdminLocations.loadLocations === 'function') {
+      await window.AdminLocations.loadLocations(viewData);
+      return;
+    }
     const content = document.getElementById('admin-content');
     content.innerHTML = `
       <div class="module-header">

@@ -1,0 +1,15021 @@
+/**
+ * KejaMarket Master Locations Seed Bundle
+ * Generated automatically from db/locations-data.json
+ */
+window.KEJA_MASTER_LOCATIONS = [
+  {
+    "id": "loc-county-nairobi",
+    "name": "Nairobi",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nairobi County",
+      "Nai"
+    ],
+    "searchTerms": [
+      "nairobi",
+      "nairobi county",
+      "nai"
+    ],
+    "latitude": -1.2921,
+    "longitude": 36.8219,
+    "verified": true,
+    "sortOrder": 1,
+    "status": "active",
+    "path": [
+      "Nairobi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi"
+    ],
+    "pathString": "Nairobi",
+    "displayLocation": "Nairobi"
+  },
+  {
+    "id": "loc-county-kiambu",
+    "name": "Kiambu",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kiambu County"
+    ],
+    "searchTerms": [
+      "kiambu",
+      "kiambu county"
+    ],
+    "latitude": -1.1714,
+    "longitude": 36.8356,
+    "verified": true,
+    "sortOrder": 2,
+    "status": "active",
+    "path": [
+      "Kiambu"
+    ],
+    "pathIds": [
+      "loc-county-kiambu"
+    ],
+    "pathString": "Kiambu",
+    "displayLocation": "Kiambu"
+  },
+  {
+    "id": "loc-county-machakos",
+    "name": "Machakos",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Machakos County",
+      "Mks"
+    ],
+    "searchTerms": [
+      "machakos",
+      "machakos county",
+      "mks"
+    ],
+    "latitude": -1.5177,
+    "longitude": 37.2634,
+    "verified": true,
+    "sortOrder": 3,
+    "status": "active",
+    "path": [
+      "Machakos"
+    ],
+    "pathIds": [
+      "loc-county-machakos"
+    ],
+    "pathString": "Machakos",
+    "displayLocation": "Machakos"
+  },
+  {
+    "id": "loc-county-kajiado",
+    "name": "Kajiado",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kajiado County"
+    ],
+    "searchTerms": [
+      "kajiado",
+      "kajiado county"
+    ],
+    "latitude": -1.8524,
+    "longitude": 36.7768,
+    "verified": true,
+    "sortOrder": 4,
+    "status": "active",
+    "path": [
+      "Kajiado"
+    ],
+    "pathIds": [
+      "loc-county-kajiado"
+    ],
+    "pathString": "Kajiado",
+    "displayLocation": "Kajiado"
+  },
+  {
+    "id": "loc-county-nairobi-westlands",
+    "name": "Westlands",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Westlands Area"
+    ],
+    "searchTerms": [
+      "westlands",
+      "nairobi westlands",
+      "westlands nairobi",
+      "westlands area",
+      "nairobi westlands area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands"
+    ],
+    "pathString": "Nairobi > Westlands",
+    "displayLocation": "Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-westlands-cbd",
+    "name": "Westlands CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Westlands Centre",
+      "Sarit Area",
+      "Westgate Area"
+    ],
+    "searchTerms": [
+      "westlands cbd",
+      "westlands westlands cbd",
+      "westlands cbd westlands",
+      "nairobi westlands cbd",
+      "westlands centre",
+      "westlands westlands centre",
+      "sarit area",
+      "westlands sarit area",
+      "westgate area",
+      "westlands westgate area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Westlands CBD"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-westlands-cbd"
+    ],
+    "pathString": "Nairobi > Westlands > Westlands CBD",
+    "displayLocation": "Westlands · Westlands CBD, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands",
+    "name": "Parklands",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Parklands Area"
+    ],
+    "searchTerms": [
+      "parklands",
+      "westlands parklands",
+      "parklands westlands",
+      "nairobi parklands",
+      "parklands area",
+      "westlands parklands area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands",
+    "displayLocation": "Westlands · Parklands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands-1st-parklands",
+    "name": "1st Parklands",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-westlands-parklands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "1st Parklands Ave"
+    ],
+    "searchTerms": [
+      "1st parklands",
+      "parklands 1st parklands",
+      "1st parklands parklands",
+      "nairobi 1st parklands",
+      "westlands 1st parklands",
+      "1st parklands ave",
+      "parklands 1st parklands ave"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands",
+      "1st Parklands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands",
+      "loc-county-nairobi-westlands-parklands-1st-parklands"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands > 1st Parklands",
+    "displayLocation": "Parklands · 1st Parklands · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands-2nd-parklands",
+    "name": "2nd Parklands",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-westlands-parklands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "2nd Parklands Ave"
+    ],
+    "searchTerms": [
+      "2nd parklands",
+      "parklands 2nd parklands",
+      "2nd parklands parklands",
+      "nairobi 2nd parklands",
+      "westlands 2nd parklands",
+      "2nd parklands ave",
+      "parklands 2nd parklands ave"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands",
+      "2nd Parklands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands",
+      "loc-county-nairobi-westlands-parklands-2nd-parklands"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands > 2nd Parklands",
+    "displayLocation": "Parklands · 2nd Parklands · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands-3rd-parklands",
+    "name": "3rd Parklands",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-westlands-parklands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "3rd Parklands Ave"
+    ],
+    "searchTerms": [
+      "3rd parklands",
+      "parklands 3rd parklands",
+      "3rd parklands parklands",
+      "nairobi 3rd parklands",
+      "westlands 3rd parklands",
+      "3rd parklands ave",
+      "parklands 3rd parklands ave"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands",
+      "3rd Parklands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands",
+      "loc-county-nairobi-westlands-parklands-3rd-parklands"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands > 3rd Parklands",
+    "displayLocation": "Parklands · 3rd Parklands · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands-4th-parklands",
+    "name": "4th Parklands",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-westlands-parklands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "4th Parklands Ave"
+    ],
+    "searchTerms": [
+      "4th parklands",
+      "parklands 4th parklands",
+      "4th parklands parklands",
+      "nairobi 4th parklands",
+      "westlands 4th parklands",
+      "4th parklands ave",
+      "parklands 4th parklands ave"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands",
+      "4th Parklands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands",
+      "loc-county-nairobi-westlands-parklands-4th-parklands"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands > 4th Parklands",
+    "displayLocation": "Parklands · 4th Parklands · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands-5th-parklands",
+    "name": "5th Parklands",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-westlands-parklands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "5th Parklands Ave"
+    ],
+    "searchTerms": [
+      "5th parklands",
+      "parklands 5th parklands",
+      "5th parklands parklands",
+      "nairobi 5th parklands",
+      "westlands 5th parklands",
+      "5th parklands ave",
+      "parklands 5th parklands ave"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands",
+      "5th Parklands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands",
+      "loc-county-nairobi-westlands-parklands-5th-parklands"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands > 5th Parklands",
+    "displayLocation": "Parklands · 5th Parklands · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands-6th-parklands",
+    "name": "6th Parklands",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-westlands-parklands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "6th Parklands Ave"
+    ],
+    "searchTerms": [
+      "6th parklands",
+      "parklands 6th parklands",
+      "6th parklands parklands",
+      "nairobi 6th parklands",
+      "westlands 6th parklands",
+      "6th parklands ave",
+      "parklands 6th parklands ave"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands",
+      "6th Parklands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands",
+      "loc-county-nairobi-westlands-parklands-6th-parklands"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands > 6th Parklands",
+    "displayLocation": "Parklands · 6th Parklands · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands-highridge",
+    "name": "Highridge",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-westlands-parklands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "highridge",
+      "parklands highridge",
+      "highridge parklands",
+      "nairobi highridge",
+      "westlands highridge"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands",
+      "Highridge"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands",
+      "loc-county-nairobi-westlands-parklands-highridge"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands > Highridge",
+    "displayLocation": "Parklands · Highridge · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-parklands-city-park",
+    "name": "City Park",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-westlands-parklands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "City Park Environs"
+    ],
+    "searchTerms": [
+      "city park",
+      "parklands city park",
+      "city park parklands",
+      "nairobi city park",
+      "westlands city park",
+      "city park environs",
+      "parklands city park environs"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Parklands",
+      "City Park"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-parklands",
+      "loc-county-nairobi-westlands-parklands-city-park"
+    ],
+    "pathString": "Nairobi > Westlands > Parklands > City Park",
+    "displayLocation": "Parklands · City Park · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-highridge",
+    "name": "Highridge",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "highridge",
+      "westlands highridge",
+      "highridge westlands",
+      "nairobi highridge"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Highridge"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-highridge"
+    ],
+    "pathString": "Nairobi > Westlands > Highridge",
+    "displayLocation": "Westlands · Highridge, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-kitisuru",
+    "name": "Kitisuru",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Old Kitisuru",
+      "New Kitisuru"
+    ],
+    "searchTerms": [
+      "kitisuru",
+      "westlands kitisuru",
+      "kitisuru westlands",
+      "nairobi kitisuru",
+      "old kitisuru",
+      "westlands old kitisuru",
+      "new kitisuru",
+      "westlands new kitisuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Kitisuru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-kitisuru"
+    ],
+    "pathString": "Nairobi > Westlands > Kitisuru",
+    "displayLocation": "Westlands · Kitisuru, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-loresho",
+    "name": "Loresho",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "loresho",
+      "westlands loresho",
+      "loresho westlands",
+      "nairobi loresho"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Loresho"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-loresho"
+    ],
+    "pathString": "Nairobi > Westlands > Loresho",
+    "displayLocation": "Westlands · Loresho, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-spring-valley",
+    "name": "Spring Valley",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "spring valley",
+      "westlands spring valley",
+      "spring valley westlands",
+      "nairobi spring valley"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Spring Valley"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-spring-valley"
+    ],
+    "pathString": "Nairobi > Westlands > Spring Valley",
+    "displayLocation": "Westlands · Spring Valley, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-kangemi",
+    "name": "Kangemi",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Waruku",
+      "Posta Kangemi"
+    ],
+    "searchTerms": [
+      "kangemi",
+      "westlands kangemi",
+      "kangemi westlands",
+      "nairobi kangemi",
+      "waruku",
+      "westlands waruku",
+      "posta kangemi",
+      "westlands posta kangemi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Kangemi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-kangemi"
+    ],
+    "pathString": "Nairobi > Westlands > Kangemi",
+    "displayLocation": "Westlands · Kangemi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-mountain-view",
+    "name": "Mountain View",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mountain view",
+      "westlands mountain view",
+      "mountain view westlands",
+      "nairobi mountain view"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Mountain View"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-mountain-view"
+    ],
+    "pathString": "Nairobi > Westlands > Mountain View",
+    "displayLocation": "Westlands · Mountain View, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-lower-kabete",
+    "name": "Lower Kabete",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "lower kabete",
+      "westlands lower kabete",
+      "lower kabete westlands",
+      "nairobi lower kabete"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Lower Kabete"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-lower-kabete"
+    ],
+    "pathString": "Nairobi > Westlands > Lower Kabete",
+    "displayLocation": "Westlands · Lower Kabete, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-upper-kabete",
+    "name": "Upper Kabete",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "upper kabete",
+      "westlands upper kabete",
+      "upper kabete westlands",
+      "nairobi upper kabete"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Upper Kabete"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-upper-kabete"
+    ],
+    "pathString": "Nairobi > Westlands > Upper Kabete",
+    "displayLocation": "Westlands · Upper Kabete, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-brookside",
+    "name": "Brookside",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Brookside Drive"
+    ],
+    "searchTerms": [
+      "brookside",
+      "westlands brookside",
+      "brookside westlands",
+      "nairobi brookside",
+      "brookside drive",
+      "westlands brookside drive"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Brookside"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-brookside"
+    ],
+    "pathString": "Nairobi > Westlands > Brookside",
+    "displayLocation": "Westlands · Brookside, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-muthangari",
+    "name": "Muthangari",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "muthangari",
+      "westlands muthangari",
+      "muthangari westlands",
+      "nairobi muthangari"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Muthangari"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-muthangari"
+    ],
+    "pathString": "Nairobi > Westlands > Muthangari",
+    "displayLocation": "Westlands · Muthangari, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-riverside",
+    "name": "Riverside",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Riverside Drive"
+    ],
+    "searchTerms": [
+      "riverside",
+      "westlands riverside",
+      "riverside westlands",
+      "nairobi riverside",
+      "riverside drive",
+      "westlands riverside drive"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Riverside"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-riverside"
+    ],
+    "pathString": "Nairobi > Westlands > Riverside",
+    "displayLocation": "Westlands · Riverside, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-gigiri",
+    "name": "Gigiri",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "UN Gigiri"
+    ],
+    "searchTerms": [
+      "gigiri",
+      "westlands gigiri",
+      "gigiri westlands",
+      "nairobi gigiri",
+      "un gigiri",
+      "westlands un gigiri"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Gigiri"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-gigiri"
+    ],
+    "pathString": "Nairobi > Westlands > Gigiri",
+    "displayLocation": "Westlands · Gigiri, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-runda",
+    "name": "Runda",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Runda Estate"
+    ],
+    "searchTerms": [
+      "runda",
+      "westlands runda",
+      "runda westlands",
+      "nairobi runda",
+      "runda estate",
+      "westlands runda estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Runda"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-runda"
+    ],
+    "pathString": "Nairobi > Westlands > Runda",
+    "displayLocation": "Westlands · Runda, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-runda-mimosa",
+    "name": "Mimosa",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-westlands-runda",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Runda Mimosa"
+    ],
+    "searchTerms": [
+      "mimosa",
+      "runda mimosa",
+      "mimosa runda",
+      "nairobi mimosa",
+      "westlands mimosa",
+      "runda runda mimosa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Runda",
+      "Mimosa"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-runda",
+      "loc-county-nairobi-westlands-runda-mimosa"
+    ],
+    "pathString": "Nairobi > Westlands > Runda > Mimosa",
+    "displayLocation": "Runda · Mimosa · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-runda-meadows",
+    "name": "Meadows",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-westlands-runda",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Runda Meadows"
+    ],
+    "searchTerms": [
+      "meadows",
+      "runda meadows",
+      "meadows runda",
+      "nairobi meadows",
+      "westlands meadows",
+      "runda runda meadows"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Runda",
+      "Meadows"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-runda",
+      "loc-county-nairobi-westlands-runda-meadows"
+    ],
+    "pathString": "Nairobi > Westlands > Runda > Meadows",
+    "displayLocation": "Runda · Meadows · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-runda-evergreen",
+    "name": "Evergreen",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-westlands-runda",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Runda Evergreen"
+    ],
+    "searchTerms": [
+      "evergreen",
+      "runda evergreen",
+      "evergreen runda",
+      "nairobi evergreen",
+      "westlands evergreen",
+      "runda runda evergreen"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Runda",
+      "Evergreen"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-runda",
+      "loc-county-nairobi-westlands-runda-evergreen"
+    ],
+    "pathString": "Nairobi > Westlands > Runda > Evergreen",
+    "displayLocation": "Runda · Evergreen · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-runda-paradise",
+    "name": "Paradise",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-westlands-runda",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Runda Paradise"
+    ],
+    "searchTerms": [
+      "paradise",
+      "runda paradise",
+      "paradise runda",
+      "nairobi paradise",
+      "westlands paradise",
+      "runda runda paradise"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Runda",
+      "Paradise"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-runda",
+      "loc-county-nairobi-westlands-runda-paradise"
+    ],
+    "pathString": "Nairobi > Westlands > Runda > Paradise",
+    "displayLocation": "Runda · Paradise · Westlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-rosslyn",
+    "name": "Rosslyn",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Rosslyn Lone Tree",
+      "Rosslyn Riviera"
+    ],
+    "searchTerms": [
+      "rosslyn",
+      "westlands rosslyn",
+      "rosslyn westlands",
+      "nairobi rosslyn",
+      "rosslyn lone tree",
+      "westlands rosslyn lone tree",
+      "rosslyn riviera",
+      "westlands rosslyn riviera"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Rosslyn"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-rosslyn"
+    ],
+    "pathString": "Nairobi > Westlands > Rosslyn",
+    "displayLocation": "Westlands · Rosslyn, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-nyari",
+    "name": "Nyari",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "nyari",
+      "westlands nyari",
+      "nyari westlands",
+      "nairobi nyari"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Nyari"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-nyari"
+    ],
+    "pathString": "Nairobi > Westlands > Nyari",
+    "displayLocation": "Westlands · Nyari, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-thigiri",
+    "name": "Thigiri",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Thigiri Ridge"
+    ],
+    "searchTerms": [
+      "thigiri",
+      "westlands thigiri",
+      "thigiri westlands",
+      "nairobi thigiri",
+      "thigiri ridge",
+      "westlands thigiri ridge"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Thigiri"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-thigiri"
+    ],
+    "pathString": "Nairobi > Westlands > Thigiri",
+    "displayLocation": "Westlands · Thigiri, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-ridgeways",
+    "name": "Ridgeways",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ridgeways",
+      "westlands ridgeways",
+      "ridgeways westlands",
+      "nairobi ridgeways"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Ridgeways"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-ridgeways"
+    ],
+    "pathString": "Nairobi > Westlands > Ridgeways",
+    "displayLocation": "Westlands · Ridgeways, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-garden-estate",
+    "name": "Garden Estate",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "garden estate",
+      "westlands garden estate",
+      "garden estate westlands",
+      "nairobi garden estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Garden Estate"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-garden-estate"
+    ],
+    "pathString": "Nairobi > Westlands > Garden Estate",
+    "displayLocation": "Westlands · Garden Estate, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-muthaiga",
+    "name": "Muthaiga",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Old Muthaiga"
+    ],
+    "searchTerms": [
+      "muthaiga",
+      "westlands muthaiga",
+      "muthaiga westlands",
+      "nairobi muthaiga",
+      "old muthaiga",
+      "westlands old muthaiga"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Muthaiga"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-muthaiga"
+    ],
+    "pathString": "Nairobi > Westlands > Muthaiga",
+    "displayLocation": "Westlands · Muthaiga, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-muthaiga-north",
+    "name": "Muthaiga North",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "muthaiga north",
+      "westlands muthaiga north",
+      "muthaiga north westlands",
+      "nairobi muthaiga north"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Muthaiga North"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-muthaiga-north"
+    ],
+    "pathString": "Nairobi > Westlands > Muthaiga North",
+    "displayLocation": "Westlands · Muthaiga North, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-new-muthaiga",
+    "name": "New Muthaiga",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "new muthaiga",
+      "westlands new muthaiga",
+      "new muthaiga westlands",
+      "nairobi new muthaiga"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "New Muthaiga"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-new-muthaiga"
+    ],
+    "pathString": "Nairobi > Westlands > New Muthaiga",
+    "displayLocation": "Westlands · New Muthaiga, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-marurui",
+    "name": "Marurui",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "marurui",
+      "westlands marurui",
+      "marurui westlands",
+      "nairobi marurui"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Marurui"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-marurui"
+    ],
+    "pathString": "Nairobi > Westlands > Marurui",
+    "displayLocation": "Westlands · Marurui, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-githogoro",
+    "name": "Githogoro",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "githogoro",
+      "westlands githogoro",
+      "githogoro westlands",
+      "nairobi githogoro"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Githogoro"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-githogoro"
+    ],
+    "pathString": "Nairobi > Westlands > Githogoro",
+    "displayLocation": "Westlands · Githogoro, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-kibagare",
+    "name": "Kibagare",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kibagare",
+      "westlands kibagare",
+      "kibagare westlands",
+      "nairobi kibagare"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Kibagare"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-kibagare"
+    ],
+    "pathString": "Nairobi > Westlands > Kibagare",
+    "displayLocation": "Westlands · Kibagare, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-fourways",
+    "name": "Fourways",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Fourways Junction"
+    ],
+    "searchTerms": [
+      "fourways",
+      "westlands fourways",
+      "fourways westlands",
+      "nairobi fourways",
+      "fourways junction",
+      "westlands fourways junction"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Fourways"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-fourways"
+    ],
+    "pathString": "Nairobi > Westlands > Fourways",
+    "displayLocation": "Westlands · Fourways, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-thome",
+    "name": "Thome",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "thome",
+      "westlands thome",
+      "thome westlands",
+      "nairobi thome"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Thome"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-thome"
+    ],
+    "pathString": "Nairobi > Westlands > Thome",
+    "displayLocation": "Westlands · Thome, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-safari-park",
+    "name": "Safari Park",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "safari park",
+      "westlands safari park",
+      "safari park westlands",
+      "nairobi safari park"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "Safari Park"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-safari-park"
+    ],
+    "pathString": "Nairobi > Westlands > Safari Park",
+    "displayLocation": "Westlands · Safari Park, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-westlands-city-park",
+    "name": "City Park",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-westlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "city park",
+      "westlands city park",
+      "city park westlands",
+      "nairobi city park"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Westlands",
+      "City Park"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-westlands",
+      "loc-county-nairobi-westlands-city-park"
+    ],
+    "pathString": "Nairobi > Westlands > City Park",
+    "displayLocation": "Westlands · City Park, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani",
+    "name": "Kilimani",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kilimani Area"
+    ],
+    "searchTerms": [
+      "kilimani",
+      "nairobi kilimani",
+      "kilimani nairobi",
+      "kilimani area",
+      "nairobi kilimani area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani"
+    ],
+    "pathString": "Nairobi > Kilimani",
+    "displayLocation": "Kilimani, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-yaya",
+    "name": "Yaya",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Yaya Centre",
+      "Yaya Area"
+    ],
+    "searchTerms": [
+      "yaya",
+      "kilimani yaya",
+      "yaya kilimani",
+      "nairobi yaya",
+      "yaya centre",
+      "kilimani yaya centre",
+      "yaya area",
+      "kilimani yaya area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Yaya"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-yaya"
+    ],
+    "pathString": "Nairobi > Kilimani > Yaya",
+    "displayLocation": "Kilimani · Yaya, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-hurlingham",
+    "name": "Hurlingham",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "hurlingham",
+      "kilimani hurlingham",
+      "hurlingham kilimani",
+      "nairobi hurlingham"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Hurlingham"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-hurlingham"
+    ],
+    "pathString": "Nairobi > Kilimani > Hurlingham",
+    "displayLocation": "Kilimani · Hurlingham, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-adams-arcade",
+    "name": "Adams Arcade",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Adams"
+    ],
+    "searchTerms": [
+      "adams arcade",
+      "kilimani adams arcade",
+      "adams arcade kilimani",
+      "nairobi adams arcade",
+      "adams",
+      "kilimani adams"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Adams Arcade"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-adams-arcade"
+    ],
+    "pathString": "Nairobi > Kilimani > Adams Arcade",
+    "displayLocation": "Kilimani · Adams Arcade, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-adams",
+    "name": "Adams",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "adams",
+      "kilimani adams",
+      "adams kilimani",
+      "nairobi adams"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Adams"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-adams"
+    ],
+    "pathString": "Nairobi > Kilimani > Adams",
+    "displayLocation": "Kilimani · Adams, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-hatheru",
+    "name": "Hatheru",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Hatheru Road"
+    ],
+    "searchTerms": [
+      "hatheru",
+      "kilimani hatheru",
+      "hatheru kilimani",
+      "nairobi hatheru",
+      "hatheru road",
+      "kilimani hatheru road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Hatheru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-hatheru"
+    ],
+    "pathString": "Nairobi > Kilimani > Hatheru",
+    "displayLocation": "Kilimani · Hatheru, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-valley-arcade",
+    "name": "Valley Arcade",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "valley arcade",
+      "kilimani valley arcade",
+      "valley arcade kilimani",
+      "nairobi valley arcade"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Valley Arcade"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-valley-arcade"
+    ],
+    "pathString": "Nairobi > Kilimani > Valley Arcade",
+    "displayLocation": "Kilimani · Valley Arcade, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-woodlands",
+    "name": "Woodlands",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "woodlands",
+      "kilimani woodlands",
+      "woodlands kilimani",
+      "nairobi woodlands"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Woodlands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-woodlands"
+    ],
+    "pathString": "Nairobi > Kilimani > Woodlands",
+    "displayLocation": "Kilimani · Woodlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-wood-avenue",
+    "name": "Wood Avenue",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "wood avenue",
+      "kilimani wood avenue",
+      "wood avenue kilimani",
+      "nairobi wood avenue"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Wood Avenue"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-wood-avenue"
+    ],
+    "pathString": "Nairobi > Kilimani > Wood Avenue",
+    "displayLocation": "Kilimani · Wood Avenue, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-dennis-pritt-road",
+    "name": "Dennis Pritt Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Dennis Pritt"
+    ],
+    "searchTerms": [
+      "dennis pritt road",
+      "kilimani dennis pritt road",
+      "dennis pritt road kilimani",
+      "nairobi dennis pritt road",
+      "dennis pritt",
+      "kilimani dennis pritt"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Dennis Pritt Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-dennis-pritt-road"
+    ],
+    "pathString": "Nairobi > Kilimani > Dennis Pritt Road",
+    "displayLocation": "Kilimani · Dennis Pritt Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-argwings-kodhek-road",
+    "name": "Argwings Kodhek Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Argwings Kodhek"
+    ],
+    "searchTerms": [
+      "argwings kodhek road",
+      "kilimani argwings kodhek road",
+      "argwings kodhek road kilimani",
+      "nairobi argwings kodhek road",
+      "argwings kodhek",
+      "kilimani argwings kodhek"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Argwings Kodhek Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-argwings-kodhek-road"
+    ],
+    "pathString": "Nairobi > Kilimani > Argwings Kodhek Road",
+    "displayLocation": "Kilimani · Argwings Kodhek Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-kabarnet-gardens",
+    "name": "Kabarnet Gardens",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kabarnet gardens",
+      "kilimani kabarnet gardens",
+      "kabarnet gardens kilimani",
+      "nairobi kabarnet gardens"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Kabarnet Gardens"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-kabarnet-gardens"
+    ],
+    "pathString": "Nairobi > Kilimani > Kabarnet Gardens",
+    "displayLocation": "Kilimani · Kabarnet Gardens, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-riara",
+    "name": "Riara",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Riara Road"
+    ],
+    "searchTerms": [
+      "riara",
+      "kilimani riara",
+      "riara kilimani",
+      "nairobi riara",
+      "riara road",
+      "kilimani riara road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Riara"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-riara"
+    ],
+    "pathString": "Nairobi > Kilimani > Riara",
+    "displayLocation": "Kilimani · Riara, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-woodley",
+    "name": "Woodley",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "woodley",
+      "kilimani woodley",
+      "woodley kilimani",
+      "nairobi woodley"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Woodley"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-woodley"
+    ],
+    "pathString": "Nairobi > Kilimani > Woodley",
+    "displayLocation": "Kilimani · Woodley, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-golf-course",
+    "name": "Golf Course",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "golf course",
+      "kilimani golf course",
+      "golf course kilimani",
+      "nairobi golf course"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Golf Course"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-golf-course"
+    ],
+    "pathString": "Nairobi > Kilimani > Golf Course",
+    "displayLocation": "Kilimani · Golf Course, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-jamhuri",
+    "name": "Jamhuri",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Jamhuri Estate"
+    ],
+    "searchTerms": [
+      "jamhuri",
+      "kilimani jamhuri",
+      "jamhuri kilimani",
+      "nairobi jamhuri",
+      "jamhuri estate",
+      "kilimani jamhuri estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Jamhuri"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-jamhuri"
+    ],
+    "pathString": "Nairobi > Kilimani > Jamhuri",
+    "displayLocation": "Kilimani · Jamhuri, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-ngong-road",
+    "name": "Ngong Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ngong road",
+      "kilimani ngong road",
+      "ngong road kilimani",
+      "nairobi ngong road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Ngong Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-ngong-road"
+    ],
+    "pathString": "Nairobi > Kilimani > Ngong Road",
+    "displayLocation": "Kilimani · Ngong Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kilimani-prestige-area",
+    "name": "Prestige area",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-kilimani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Prestige Plaza",
+      "Prestige"
+    ],
+    "searchTerms": [
+      "prestige area",
+      "kilimani prestige area",
+      "prestige area kilimani",
+      "nairobi prestige area",
+      "prestige plaza",
+      "kilimani prestige plaza",
+      "prestige",
+      "kilimani prestige"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kilimani",
+      "Prestige area"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kilimani",
+      "loc-county-nairobi-kilimani-prestige-area"
+    ],
+    "pathString": "Nairobi > Kilimani > Prestige area",
+    "displayLocation": "Kilimani · Prestige area, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kileleshwa",
+    "name": "Kileleshwa",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kile"
+    ],
+    "searchTerms": [
+      "kileleshwa",
+      "nairobi kileleshwa",
+      "kileleshwa nairobi",
+      "kile",
+      "nairobi kile"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kileleshwa"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kileleshwa"
+    ],
+    "pathString": "Nairobi > Kileleshwa",
+    "displayLocation": "Kileleshwa, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kileleshwa-riverside",
+    "name": "Riverside",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kileleshwa",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Riverside Drive"
+    ],
+    "searchTerms": [
+      "riverside",
+      "kileleshwa riverside",
+      "riverside kileleshwa",
+      "nairobi riverside",
+      "riverside drive",
+      "kileleshwa riverside drive"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kileleshwa",
+      "Riverside"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kileleshwa",
+      "loc-county-nairobi-kileleshwa-riverside"
+    ],
+    "pathString": "Nairobi > Kileleshwa > Riverside",
+    "displayLocation": "Kileleshwa · Riverside, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kileleshwa-laikipia-road",
+    "name": "Laikipia Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kileleshwa",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "laikipia road",
+      "kileleshwa laikipia road",
+      "laikipia road kileleshwa",
+      "nairobi laikipia road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kileleshwa",
+      "Laikipia Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kileleshwa",
+      "loc-county-nairobi-kileleshwa-laikipia-road"
+    ],
+    "pathString": "Nairobi > Kileleshwa > Laikipia Road",
+    "displayLocation": "Kileleshwa · Laikipia Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kileleshwa-oloitoktok-road",
+    "name": "Oloitoktok Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kileleshwa",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "oloitoktok road",
+      "kileleshwa oloitoktok road",
+      "oloitoktok road kileleshwa",
+      "nairobi oloitoktok road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kileleshwa",
+      "Oloitoktok Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kileleshwa",
+      "loc-county-nairobi-kileleshwa-oloitoktok-road"
+    ],
+    "pathString": "Nairobi > Kileleshwa > Oloitoktok Road",
+    "displayLocation": "Kileleshwa · Oloitoktok Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kileleshwa-mandera-road",
+    "name": "Mandera Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kileleshwa",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mandera road",
+      "kileleshwa mandera road",
+      "mandera road kileleshwa",
+      "nairobi mandera road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kileleshwa",
+      "Mandera Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kileleshwa",
+      "loc-county-nairobi-kileleshwa-mandera-road"
+    ],
+    "pathString": "Nairobi > Kileleshwa > Mandera Road",
+    "displayLocation": "Kileleshwa · Mandera Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kileleshwa-ring-road",
+    "name": "Ring Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kileleshwa",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kileleshwa Ring Road"
+    ],
+    "searchTerms": [
+      "ring road",
+      "kileleshwa ring road",
+      "ring road kileleshwa",
+      "nairobi ring road",
+      "kileleshwa kileleshwa ring road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kileleshwa",
+      "Ring Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kileleshwa",
+      "loc-county-nairobi-kileleshwa-ring-road"
+    ],
+    "pathString": "Nairobi > Kileleshwa > Ring Road",
+    "displayLocation": "Kileleshwa · Ring Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kileleshwa-gatundu-road",
+    "name": "Gatundu Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-kileleshwa",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "gatundu road",
+      "kileleshwa gatundu road",
+      "gatundu road kileleshwa",
+      "nairobi gatundu road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kileleshwa",
+      "Gatundu Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kileleshwa",
+      "loc-county-nairobi-kileleshwa-gatundu-road"
+    ],
+    "pathString": "Nairobi > Kileleshwa > Gatundu Road",
+    "displayLocation": "Kileleshwa · Gatundu Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kileleshwa-arboretum-side",
+    "name": "Arboretum side",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-kileleshwa",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Arboretum"
+    ],
+    "searchTerms": [
+      "arboretum side",
+      "kileleshwa arboretum side",
+      "arboretum side kileleshwa",
+      "nairobi arboretum side",
+      "arboretum",
+      "kileleshwa arboretum"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kileleshwa",
+      "Arboretum side"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kileleshwa",
+      "loc-county-nairobi-kileleshwa-arboretum-side"
+    ],
+    "pathString": "Nairobi > Kileleshwa > Arboretum side",
+    "displayLocation": "Kileleshwa · Arboretum side, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington",
+    "name": "Lavington",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Lavington Area"
+    ],
+    "searchTerms": [
+      "lavington",
+      "nairobi lavington",
+      "lavington nairobi",
+      "lavington area",
+      "nairobi lavington area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington"
+    ],
+    "pathString": "Nairobi > Lavington",
+    "displayLocation": "Lavington, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington-lavington-green",
+    "name": "Lavington Green",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-lavington",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "lavington green",
+      "lavington lavington green",
+      "lavington green lavington",
+      "nairobi lavington green"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington",
+      "Lavington Green"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington",
+      "loc-county-nairobi-lavington-lavington-green"
+    ],
+    "pathString": "Nairobi > Lavington > Lavington Green",
+    "displayLocation": "Lavington · Lavington Green, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington-lavington-curve",
+    "name": "Lavington Curve",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-lavington",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "lavington curve",
+      "lavington lavington curve",
+      "lavington curve lavington",
+      "nairobi lavington curve"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington",
+      "Lavington Curve"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington",
+      "loc-county-nairobi-lavington-lavington-curve"
+    ],
+    "pathString": "Nairobi > Lavington > Lavington Curve",
+    "displayLocation": "Lavington · Lavington Curve, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington-muthangari",
+    "name": "Muthangari",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-lavington",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Muthangari Drive"
+    ],
+    "searchTerms": [
+      "muthangari",
+      "lavington muthangari",
+      "muthangari lavington",
+      "nairobi muthangari",
+      "muthangari drive",
+      "lavington muthangari drive"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington",
+      "Muthangari"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington",
+      "loc-county-nairobi-lavington-muthangari"
+    ],
+    "pathString": "Nairobi > Lavington > Muthangari",
+    "displayLocation": "Lavington · Muthangari, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington-valley-arcade-side",
+    "name": "Valley Arcade side",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-lavington",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "valley arcade side",
+      "lavington valley arcade side",
+      "valley arcade side lavington",
+      "nairobi valley arcade side"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington",
+      "Valley Arcade side"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington",
+      "loc-county-nairobi-lavington-valley-arcade-side"
+    ],
+    "pathString": "Nairobi > Lavington > Valley Arcade side",
+    "displayLocation": "Lavington · Valley Arcade side, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington-james-gichuru",
+    "name": "James Gichuru",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-lavington",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "James Gichuru Road"
+    ],
+    "searchTerms": [
+      "james gichuru",
+      "lavington james gichuru",
+      "james gichuru lavington",
+      "nairobi james gichuru",
+      "james gichuru road",
+      "lavington james gichuru road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington",
+      "James Gichuru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington",
+      "loc-county-nairobi-lavington-james-gichuru"
+    ],
+    "pathString": "Nairobi > Lavington > James Gichuru",
+    "displayLocation": "Lavington · James Gichuru, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington-gitanga-road",
+    "name": "Gitanga Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-lavington",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "gitanga road",
+      "lavington gitanga road",
+      "gitanga road lavington",
+      "nairobi gitanga road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington",
+      "Gitanga Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington",
+      "loc-county-nairobi-lavington-gitanga-road"
+    ],
+    "pathString": "Nairobi > Lavington > Gitanga Road",
+    "displayLocation": "Lavington · Gitanga Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington-amboseli-road",
+    "name": "Amboseli Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-lavington",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "amboseli road",
+      "lavington amboseli road",
+      "amboseli road lavington",
+      "nairobi amboseli road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington",
+      "Amboseli Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington",
+      "loc-county-nairobi-lavington-amboseli-road"
+    ],
+    "pathString": "Nairobi > Lavington > Amboseli Road",
+    "displayLocation": "Lavington · Amboseli Road, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-lavington-chalbi-drive",
+    "name": "Chalbi Drive",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-lavington",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "chalbi drive",
+      "lavington chalbi drive",
+      "chalbi drive lavington",
+      "nairobi chalbi drive"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lavington",
+      "Chalbi Drive"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-lavington",
+      "loc-county-nairobi-lavington-chalbi-drive"
+    ],
+    "pathString": "Nairobi > Lavington > Chalbi Drive",
+    "displayLocation": "Lavington · Chalbi Drive, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill",
+    "name": "Upper Hill",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Upperhill"
+    ],
+    "searchTerms": [
+      "upper hill",
+      "nairobi upper hill",
+      "upper hill nairobi",
+      "upperhill",
+      "nairobi upperhill"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill"
+    ],
+    "pathString": "Nairobi > Upper Hill",
+    "displayLocation": "Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-madaraka",
+    "name": "Madaraka",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-upper-hill",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Madaraka Estate"
+    ],
+    "searchTerms": [
+      "madaraka",
+      "upper hill madaraka",
+      "madaraka upper hill",
+      "nairobi madaraka",
+      "madaraka estate",
+      "upper hill madaraka estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Madaraka"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-madaraka"
+    ],
+    "pathString": "Nairobi > Upper Hill > Madaraka",
+    "displayLocation": "Upper Hill · Madaraka, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-nairobi-west",
+    "name": "Nairobi West",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-upper-hill",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nai West"
+    ],
+    "searchTerms": [
+      "nairobi west",
+      "upper hill nairobi west",
+      "nairobi west upper hill",
+      "nairobi nairobi west",
+      "nai west",
+      "upper hill nai west"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Nairobi West"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-nairobi-west"
+    ],
+    "pathString": "Nairobi > Upper Hill > Nairobi West",
+    "displayLocation": "Upper Hill · Nairobi West, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-nairobi-west-nairobi-west-estate",
+    "name": "Nairobi West Estate",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-nairobi-west",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "nairobi west estate",
+      "nairobi west nairobi west estate",
+      "nairobi west estate nairobi west",
+      "nairobi nairobi west estate",
+      "upper hill nairobi west estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Nairobi West",
+      "Nairobi West Estate"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-nairobi-west",
+      "loc-county-nairobi-upper-hill-nairobi-west-nairobi-west-estate"
+    ],
+    "pathString": "Nairobi > Upper Hill > Nairobi West > Nairobi West Estate",
+    "displayLocation": "Nairobi West · Nairobi West Estate · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-nairobi-west-nyayo-highrise",
+    "name": "Nyayo Highrise",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-upper-hill-nairobi-west",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "nyayo highrise",
+      "nairobi west nyayo highrise",
+      "nyayo highrise nairobi west",
+      "nairobi nyayo highrise",
+      "upper hill nyayo highrise"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Nairobi West",
+      "Nyayo Highrise"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-nairobi-west",
+      "loc-county-nairobi-upper-hill-nairobi-west-nyayo-highrise"
+    ],
+    "pathString": "Nairobi > Upper Hill > Nairobi West > Nyayo Highrise",
+    "displayLocation": "Nairobi West · Nyayo Highrise · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-nairobi-west-mugumo-ini",
+    "name": "Mugumo-ini",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-upper-hill-nairobi-west",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mugumo-ini",
+      "nairobi west mugumo-ini",
+      "mugumo-ini nairobi west",
+      "nairobi mugumo-ini",
+      "upper hill mugumo-ini"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Nairobi West",
+      "Mugumo-ini"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-nairobi-west",
+      "loc-county-nairobi-upper-hill-nairobi-west-mugumo-ini"
+    ],
+    "pathString": "Nairobi > Upper Hill > Nairobi West > Mugumo-ini",
+    "displayLocation": "Nairobi West · Mugumo-ini · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-nairobi-west-mbagathi",
+    "name": "Mbagathi",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-upper-hill-nairobi-west",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Mbagathi Way",
+      "Raila Odinga Way"
+    ],
+    "searchTerms": [
+      "mbagathi",
+      "nairobi west mbagathi",
+      "mbagathi nairobi west",
+      "nairobi mbagathi",
+      "upper hill mbagathi",
+      "mbagathi way",
+      "nairobi west mbagathi way",
+      "raila odinga way",
+      "nairobi west raila odinga way"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Nairobi West",
+      "Mbagathi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-nairobi-west",
+      "loc-county-nairobi-upper-hill-nairobi-west-mbagathi"
+    ],
+    "pathString": "Nairobi > Upper Hill > Nairobi West > Mbagathi",
+    "displayLocation": "Nairobi West · Mbagathi · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-nairobi-west-wilson",
+    "name": "Wilson",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-upper-hill-nairobi-west",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Wilson Airport side"
+    ],
+    "searchTerms": [
+      "wilson",
+      "nairobi west wilson",
+      "wilson nairobi west",
+      "nairobi wilson",
+      "upper hill wilson",
+      "wilson airport side",
+      "nairobi west wilson airport side"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Nairobi West",
+      "Wilson"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-nairobi-west",
+      "loc-county-nairobi-upper-hill-nairobi-west-wilson"
+    ],
+    "pathString": "Nairobi > Upper Hill > Nairobi West > Wilson",
+    "displayLocation": "Nairobi West · Wilson · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-nairobi-west-southlands",
+    "name": "Southlands",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-upper-hill-nairobi-west",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "southlands",
+      "nairobi west southlands",
+      "southlands nairobi west",
+      "nairobi southlands",
+      "upper hill southlands"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Nairobi West",
+      "Southlands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-nairobi-west",
+      "loc-county-nairobi-upper-hill-nairobi-west-southlands"
+    ],
+    "pathString": "Nairobi > Upper Hill > Nairobi West > Southlands",
+    "displayLocation": "Nairobi West · Southlands · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b",
+    "name": "South B",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-upper-hill",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "South B Estate",
+      "Hazina South B"
+    ],
+    "searchTerms": [
+      "south b",
+      "upper hill south b",
+      "south b upper hill",
+      "nairobi south b",
+      "south b estate",
+      "upper hill south b estate",
+      "hazina south b",
+      "upper hill hazina south b"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B",
+    "displayLocation": "Upper Hill · South B, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b-golden-gate",
+    "name": "Golden Gate",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-b",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "golden gate",
+      "south b golden gate",
+      "golden gate south b",
+      "nairobi golden gate",
+      "upper hill golden gate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B",
+      "Golden Gate"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b",
+      "loc-county-nairobi-upper-hill-south-b-golden-gate"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B > Golden Gate",
+    "displayLocation": "South B · Golden Gate · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b-hazina",
+    "name": "Hazina",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-b",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Hazina Estate"
+    ],
+    "searchTerms": [
+      "hazina",
+      "south b hazina",
+      "hazina south b",
+      "nairobi hazina",
+      "upper hill hazina",
+      "hazina estate",
+      "south b hazina estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B",
+      "Hazina"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b",
+      "loc-county-nairobi-upper-hill-south-b-hazina"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B > Hazina",
+    "displayLocation": "South B · Hazina · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b-akiba",
+    "name": "Akiba",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-b",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Akiba Estate"
+    ],
+    "searchTerms": [
+      "akiba",
+      "south b akiba",
+      "akiba south b",
+      "nairobi akiba",
+      "upper hill akiba",
+      "akiba estate",
+      "south b akiba estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B",
+      "Akiba"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b",
+      "loc-county-nairobi-upper-hill-south-b-akiba"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B > Akiba",
+    "displayLocation": "South B · Akiba · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b-mariakani",
+    "name": "Mariakani",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-b",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mariakani",
+      "south b mariakani",
+      "mariakani south b",
+      "nairobi mariakani",
+      "upper hill mariakani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B",
+      "Mariakani"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b",
+      "loc-county-nairobi-upper-hill-south-b-mariakani"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B > Mariakani",
+    "displayLocation": "South B · Mariakani · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b-villa-franca",
+    "name": "Villa Franca",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-b",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "villa franca",
+      "south b villa franca",
+      "villa franca south b",
+      "nairobi villa franca",
+      "upper hill villa franca"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B",
+      "Villa Franca"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b",
+      "loc-county-nairobi-upper-hill-south-b-villa-franca"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B > Villa Franca",
+    "displayLocation": "South B · Villa Franca · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b-plainsview",
+    "name": "Plainsview",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-b",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "plainsview",
+      "south b plainsview",
+      "plainsview south b",
+      "nairobi plainsview",
+      "upper hill plainsview"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B",
+      "Plainsview"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b",
+      "loc-county-nairobi-upper-hill-south-b-plainsview"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B > Plainsview",
+    "displayLocation": "South B · Plainsview · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b-riverbank",
+    "name": "Riverbank",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-b",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "riverbank",
+      "south b riverbank",
+      "riverbank south b",
+      "nairobi riverbank",
+      "upper hill riverbank"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B",
+      "Riverbank"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b",
+      "loc-county-nairobi-upper-hill-south-b-riverbank"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B > Riverbank",
+    "displayLocation": "South B · Riverbank · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-b-bellevue",
+    "name": "Bellevue",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-upper-hill-south-b",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "bellevue",
+      "south b bellevue",
+      "bellevue south b",
+      "nairobi bellevue",
+      "upper hill bellevue"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South B",
+      "Bellevue"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-b",
+      "loc-county-nairobi-upper-hill-south-b-bellevue"
+    ],
+    "pathString": "Nairobi > Upper Hill > South B > Bellevue",
+    "displayLocation": "South B · Bellevue · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-c",
+    "name": "South C",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-upper-hill",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "South C Estate"
+    ],
+    "searchTerms": [
+      "south c",
+      "upper hill south c",
+      "south c upper hill",
+      "nairobi south c",
+      "south c estate",
+      "upper hill south c estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South C"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-c"
+    ],
+    "pathString": "Nairobi > Upper Hill > South C",
+    "displayLocation": "Upper Hill · South C, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-c-hazina",
+    "name": "Hazina",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-c",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "hazina",
+      "south c hazina",
+      "hazina south c",
+      "nairobi hazina",
+      "upper hill hazina"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South C",
+      "Hazina"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-c",
+      "loc-county-nairobi-upper-hill-south-c-hazina"
+    ],
+    "pathString": "Nairobi > Upper Hill > South C > Hazina",
+    "displayLocation": "South C · Hazina · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-c-akiba",
+    "name": "Akiba",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-c",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "akiba",
+      "south c akiba",
+      "akiba south c",
+      "nairobi akiba",
+      "upper hill akiba"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South C",
+      "Akiba"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-c",
+      "loc-county-nairobi-upper-hill-south-c-akiba"
+    ],
+    "pathString": "Nairobi > Upper Hill > South C > Akiba",
+    "displayLocation": "South C · Akiba · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-c-plainsview",
+    "name": "Plainsview",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-c",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "plainsview",
+      "south c plainsview",
+      "plainsview south c",
+      "nairobi plainsview",
+      "upper hill plainsview"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South C",
+      "Plainsview"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-c",
+      "loc-county-nairobi-upper-hill-south-c-plainsview"
+    ],
+    "pathString": "Nairobi > Upper Hill > South C > Plainsview",
+    "displayLocation": "South C · Plainsview · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-c-bellevue",
+    "name": "Bellevue",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-upper-hill-south-c",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "bellevue",
+      "south c bellevue",
+      "bellevue south c",
+      "nairobi bellevue",
+      "upper hill bellevue"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South C",
+      "Bellevue"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-c",
+      "loc-county-nairobi-upper-hill-south-c-bellevue"
+    ],
+    "pathString": "Nairobi > Upper Hill > South C > Bellevue",
+    "displayLocation": "South C · Bellevue · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-c-mugoya",
+    "name": "Mugoya",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-c",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Mugoya Estate"
+    ],
+    "searchTerms": [
+      "mugoya",
+      "south c mugoya",
+      "mugoya south c",
+      "nairobi mugoya",
+      "upper hill mugoya",
+      "mugoya estate",
+      "south c mugoya estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South C",
+      "Mugoya"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-c",
+      "loc-county-nairobi-upper-hill-south-c-mugoya"
+    ],
+    "pathString": "Nairobi > Upper Hill > South C > Mugoya",
+    "displayLocation": "South C · Mugoya · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-c-savanna",
+    "name": "Savanna",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-upper-hill-south-c",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "savanna",
+      "south c savanna",
+      "savanna south c",
+      "nairobi savanna",
+      "upper hill savanna"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South C",
+      "Savanna"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-c",
+      "loc-county-nairobi-upper-hill-south-c-savanna"
+    ],
+    "pathString": "Nairobi > Upper Hill > South C > Savanna",
+    "displayLocation": "South C · Savanna · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-south-c-south-c-shopping-centre",
+    "name": "South C Shopping Centre",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-upper-hill-south-c",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "south c shopping centre",
+      "south c south c shopping centre",
+      "south c shopping centre south c",
+      "nairobi south c shopping centre",
+      "upper hill south c shopping centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "South C",
+      "South C Shopping Centre"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-south-c",
+      "loc-county-nairobi-upper-hill-south-c-south-c-shopping-centre"
+    ],
+    "pathString": "Nairobi > Upper Hill > South C > South C Shopping Centre",
+    "displayLocation": "South C · South C Shopping Centre · Upper Hill, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-industrial-area",
+    "name": "Industrial Area",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi-upper-hill",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Inda"
+    ],
+    "searchTerms": [
+      "industrial area",
+      "upper hill industrial area",
+      "industrial area upper hill",
+      "nairobi industrial area",
+      "inda",
+      "upper hill inda"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Industrial Area"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-industrial-area"
+    ],
+    "pathString": "Nairobi > Upper Hill > Industrial Area",
+    "displayLocation": "Upper Hill · Industrial Area, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-mbagathi",
+    "name": "Mbagathi",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-upper-hill",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mbagathi",
+      "upper hill mbagathi",
+      "mbagathi upper hill",
+      "nairobi mbagathi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Mbagathi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-mbagathi"
+    ],
+    "pathString": "Nairobi > Upper Hill > Mbagathi",
+    "displayLocation": "Upper Hill · Mbagathi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-upper-hill-ngumo",
+    "name": "Ngumo",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-upper-hill",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Ngumo Estate"
+    ],
+    "searchTerms": [
+      "ngumo",
+      "upper hill ngumo",
+      "ngumo upper hill",
+      "nairobi ngumo",
+      "ngumo estate",
+      "upper hill ngumo estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Upper Hill",
+      "Ngumo"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-upper-hill",
+      "loc-county-nairobi-upper-hill-ngumo"
+    ],
+    "pathString": "Nairobi > Upper Hill > Ngumo",
+    "displayLocation": "Upper Hill · Ngumo, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen",
+    "name": "Karen",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Karen Nairobi"
+    ],
+    "searchTerms": [
+      "karen",
+      "nairobi karen",
+      "karen nairobi",
+      "nairobi karen nairobi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen"
+    ],
+    "pathString": "Nairobi > Karen",
+    "displayLocation": "Karen, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-hardy",
+    "name": "Hardy",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Hardy Karen"
+    ],
+    "searchTerms": [
+      "hardy",
+      "karen hardy",
+      "hardy karen",
+      "nairobi hardy",
+      "karen hardy karen"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Hardy"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-hardy"
+    ],
+    "pathString": "Nairobi > Karen > Hardy",
+    "displayLocation": "Karen · Hardy, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-karen-c",
+    "name": "Karen C",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "karen c",
+      "karen karen c",
+      "karen c karen",
+      "nairobi karen c"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Karen C"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-karen-c"
+    ],
+    "pathString": "Nairobi > Karen > Karen C",
+    "displayLocation": "Karen · Karen C, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-karen-green",
+    "name": "Karen Green",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "karen green",
+      "karen karen green",
+      "karen green karen",
+      "nairobi karen green"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Karen Green"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-karen-green"
+    ],
+    "pathString": "Nairobi > Karen > Karen Green",
+    "displayLocation": "Karen · Karen Green, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-karen-crossroads",
+    "name": "Karen Crossroads",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "karen crossroads",
+      "karen karen crossroads",
+      "karen crossroads karen",
+      "nairobi karen crossroads"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Karen Crossroads"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-karen-crossroads"
+    ],
+    "pathString": "Nairobi > Karen > Karen Crossroads",
+    "displayLocation": "Karen · Karen Crossroads, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-windy-ridge",
+    "name": "Windy Ridge",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "windy ridge",
+      "karen windy ridge",
+      "windy ridge karen",
+      "nairobi windy ridge"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Windy Ridge"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-windy-ridge"
+    ],
+    "pathString": "Nairobi > Karen > Windy Ridge",
+    "displayLocation": "Karen · Windy Ridge, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-bogani",
+    "name": "Bogani",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Bogani Road",
+      "Bogani East"
+    ],
+    "searchTerms": [
+      "bogani",
+      "karen bogani",
+      "bogani karen",
+      "nairobi bogani",
+      "bogani road",
+      "karen bogani road",
+      "bogani east",
+      "karen bogani east"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Bogani"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-bogani"
+    ],
+    "pathString": "Nairobi > Karen > Bogani",
+    "displayLocation": "Karen · Bogani, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-kuwinda",
+    "name": "Kuwinda",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kuwinda",
+      "karen kuwinda",
+      "kuwinda karen",
+      "nairobi kuwinda"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Kuwinda"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-kuwinda"
+    ],
+    "pathString": "Nairobi > Karen > Kuwinda",
+    "displayLocation": "Karen · Kuwinda, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-karen-shopping-centre",
+    "name": "Karen Shopping Centre",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "karen shopping centre",
+      "karen karen shopping centre",
+      "karen shopping centre karen",
+      "nairobi karen shopping centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Karen Shopping Centre"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-karen-shopping-centre"
+    ],
+    "pathString": "Nairobi > Karen > Karen Shopping Centre",
+    "displayLocation": "Karen · Karen Shopping Centre, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-karen-hardy-shopping-centre",
+    "name": "Hardy Shopping Centre",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-karen",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "hardy shopping centre",
+      "karen hardy shopping centre",
+      "hardy shopping centre karen",
+      "nairobi hardy shopping centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Karen",
+      "Hardy Shopping Centre"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-karen",
+      "loc-county-nairobi-karen-hardy-shopping-centre"
+    ],
+    "pathString": "Nairobi > Karen > Hardy Shopping Centre",
+    "displayLocation": "Karen · Hardy Shopping Centre, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata",
+    "name": "Lang'ata",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Langata",
+      "Langata Area"
+    ],
+    "searchTerms": [
+      "lang'ata",
+      "nairobi lang'ata",
+      "lang'ata nairobi",
+      "langata",
+      "nairobi langata",
+      "langata area",
+      "nairobi langata area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata"
+    ],
+    "pathString": "Nairobi > Lang'ata",
+    "displayLocation": "Lang'ata, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata-otiende",
+    "name": "Otiende",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-langata",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Otiende Estate"
+    ],
+    "searchTerms": [
+      "otiende",
+      "lang'ata otiende",
+      "otiende lang'ata",
+      "nairobi otiende",
+      "otiende estate",
+      "lang'ata otiende estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata",
+      "Otiende"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata",
+      "loc-county-nairobi-langata-otiende"
+    ],
+    "pathString": "Nairobi > Lang'ata > Otiende",
+    "displayLocation": "Lang'ata · Otiende, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata-onyonka",
+    "name": "Onyonka",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-langata",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Onyonka Estate"
+    ],
+    "searchTerms": [
+      "onyonka",
+      "lang'ata onyonka",
+      "onyonka lang'ata",
+      "nairobi onyonka",
+      "onyonka estate",
+      "lang'ata onyonka estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata",
+      "Onyonka"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata",
+      "loc-county-nairobi-langata-onyonka"
+    ],
+    "pathString": "Nairobi > Lang'ata > Onyonka",
+    "displayLocation": "Lang'ata · Onyonka, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata-southlands",
+    "name": "Southlands",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-langata",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "southlands",
+      "lang'ata southlands",
+      "southlands lang'ata",
+      "nairobi southlands"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata",
+      "Southlands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata",
+      "loc-county-nairobi-langata-southlands"
+    ],
+    "pathString": "Nairobi > Lang'ata > Southlands",
+    "displayLocation": "Lang'ata · Southlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata-nyayo-highrise",
+    "name": "Nyayo Highrise",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-langata",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Highrise"
+    ],
+    "searchTerms": [
+      "nyayo highrise",
+      "lang'ata nyayo highrise",
+      "nyayo highrise lang'ata",
+      "nairobi nyayo highrise",
+      "highrise",
+      "lang'ata highrise"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata",
+      "Nyayo Highrise"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata",
+      "loc-county-nairobi-langata-nyayo-highrise"
+    ],
+    "pathString": "Nairobi > Lang'ata > Nyayo Highrise",
+    "displayLocation": "Lang'ata · Nyayo Highrise, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata-mugumo-ini",
+    "name": "Mugumo-ini",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-langata",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mugumo-ini",
+      "lang'ata mugumo-ini",
+      "mugumo-ini lang'ata",
+      "nairobi mugumo-ini"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata",
+      "Mugumo-ini"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata",
+      "loc-county-nairobi-langata-mugumo-ini"
+    ],
+    "pathString": "Nairobi > Lang'ata > Mugumo-ini",
+    "displayLocation": "Lang'ata · Mugumo-ini, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata-nhc-langata",
+    "name": "NHC Langata",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-langata",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "NHC Houses",
+      "NHC Lang'ata"
+    ],
+    "searchTerms": [
+      "nhc langata",
+      "lang'ata nhc langata",
+      "nhc langata lang'ata",
+      "nairobi nhc langata",
+      "nhc houses",
+      "lang'ata nhc houses",
+      "nhc lang'ata",
+      "lang'ata nhc lang'ata"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata",
+      "NHC Langata"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata",
+      "loc-county-nairobi-langata-nhc-langata"
+    ],
+    "pathString": "Nairobi > Lang'ata > NHC Langata",
+    "displayLocation": "Lang'ata · NHC Langata, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata-wilson",
+    "name": "Wilson",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-langata",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Wilson Airport"
+    ],
+    "searchTerms": [
+      "wilson",
+      "lang'ata wilson",
+      "wilson lang'ata",
+      "nairobi wilson",
+      "wilson airport",
+      "lang'ata wilson airport"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata",
+      "Wilson"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata",
+      "loc-county-nairobi-langata-wilson"
+    ],
+    "pathString": "Nairobi > Lang'ata > Wilson",
+    "displayLocation": "Lang'ata · Wilson, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-langata-carnivore-area",
+    "name": "Carnivore area",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-langata",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Carnivore",
+      "Langata Road area"
+    ],
+    "searchTerms": [
+      "carnivore area",
+      "lang'ata carnivore area",
+      "carnivore area lang'ata",
+      "nairobi carnivore area",
+      "carnivore",
+      "lang'ata carnivore",
+      "langata road area",
+      "lang'ata langata road area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Lang'ata",
+      "Carnivore area"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-langata",
+      "loc-county-nairobi-langata-carnivore-area"
+    ],
+    "pathString": "Nairobi > Lang'ata > Carnivore area",
+    "displayLocation": "Lang'ata · Carnivore area, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti",
+    "name": "Dagoretti",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Dagoretti Corner"
+    ],
+    "searchTerms": [
+      "dagoretti",
+      "nairobi dagoretti",
+      "dagoretti nairobi",
+      "dagoretti corner",
+      "nairobi dagoretti corner"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti"
+    ],
+    "pathString": "Nairobi > Dagoretti",
+    "displayLocation": "Dagoretti, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-dagoretti-corner",
+    "name": "Dagoretti Corner",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-dagoretti",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Corner"
+    ],
+    "searchTerms": [
+      "dagoretti corner",
+      "dagoretti dagoretti corner",
+      "dagoretti corner dagoretti",
+      "nairobi dagoretti corner",
+      "corner"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Dagoretti Corner"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-dagoretti-corner"
+    ],
+    "pathString": "Nairobi > Dagoretti > Dagoretti Corner",
+    "displayLocation": "Dagoretti · Dagoretti Corner, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-kawangware",
+    "name": "Kawangware",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-dagoretti",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kware Ngong"
+    ],
+    "searchTerms": [
+      "kawangware",
+      "dagoretti kawangware",
+      "kawangware dagoretti",
+      "nairobi kawangware",
+      "kware ngong",
+      "dagoretti kware ngong"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Kawangware"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-kawangware"
+    ],
+    "pathString": "Nairobi > Dagoretti > Kawangware",
+    "displayLocation": "Dagoretti · Kawangware, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-kawangware-kawangware-46",
+    "name": "Kawangware 46",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-dagoretti-kawangware",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Stage 46",
+      "46"
+    ],
+    "searchTerms": [
+      "kawangware 46",
+      "kawangware kawangware 46",
+      "kawangware 46 kawangware",
+      "nairobi kawangware 46",
+      "dagoretti kawangware 46",
+      "stage 46",
+      "kawangware stage 46",
+      "46"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Kawangware",
+      "Kawangware 46"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-kawangware",
+      "loc-county-nairobi-dagoretti-kawangware-kawangware-46"
+    ],
+    "pathString": "Nairobi > Dagoretti > Kawangware > Kawangware 46",
+    "displayLocation": "Kawangware · Kawangware 46 · Dagoretti, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-kawangware-kawangware-56",
+    "name": "Kawangware 56",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-dagoretti-kawangware",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Stage 56",
+      "56"
+    ],
+    "searchTerms": [
+      "kawangware 56",
+      "kawangware kawangware 56",
+      "kawangware 56 kawangware",
+      "nairobi kawangware 56",
+      "dagoretti kawangware 56",
+      "stage 56",
+      "kawangware stage 56",
+      "56"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Kawangware",
+      "Kawangware 56"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-kawangware",
+      "loc-county-nairobi-dagoretti-kawangware-kawangware-56"
+    ],
+    "pathString": "Nairobi > Dagoretti > Kawangware > Kawangware 56",
+    "displayLocation": "Kawangware · Kawangware 56 · Dagoretti, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-kawangware-kawangware-stage",
+    "name": "Kawangware Stage",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-dagoretti-kawangware",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kawangware stage",
+      "kawangware kawangware stage",
+      "kawangware stage kawangware",
+      "nairobi kawangware stage",
+      "dagoretti kawangware stage"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Kawangware",
+      "Kawangware Stage"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-kawangware",
+      "loc-county-nairobi-dagoretti-kawangware-kawangware-stage"
+    ],
+    "pathString": "Nairobi > Dagoretti > Kawangware > Kawangware Stage",
+    "displayLocation": "Kawangware · Kawangware Stage · Dagoretti, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-kawangware-congo",
+    "name": "Congo",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-dagoretti-kawangware",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Congo Stage"
+    ],
+    "searchTerms": [
+      "congo",
+      "kawangware congo",
+      "congo kawangware",
+      "nairobi congo",
+      "dagoretti congo",
+      "congo stage",
+      "kawangware congo stage"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Kawangware",
+      "Congo"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-kawangware",
+      "loc-county-nairobi-dagoretti-kawangware-congo"
+    ],
+    "pathString": "Nairobi > Dagoretti > Kawangware > Congo",
+    "displayLocation": "Kawangware · Congo · Dagoretti, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-kawangware-gatina",
+    "name": "Gatina",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-dagoretti-kawangware",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "gatina",
+      "kawangware gatina",
+      "gatina kawangware",
+      "nairobi gatina",
+      "dagoretti gatina"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Kawangware",
+      "Gatina"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-kawangware",
+      "loc-county-nairobi-dagoretti-kawangware-gatina"
+    ],
+    "pathString": "Nairobi > Dagoretti > Kawangware > Gatina",
+    "displayLocation": "Kawangware · Gatina · Dagoretti, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-kawangware-kabiro",
+    "name": "Kabiro",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-dagoretti-kawangware",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kabiro",
+      "kawangware kabiro",
+      "kabiro kawangware",
+      "nairobi kabiro",
+      "dagoretti kabiro"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Kawangware",
+      "Kabiro"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-kawangware",
+      "loc-county-nairobi-dagoretti-kawangware-kabiro"
+    ],
+    "pathString": "Nairobi > Dagoretti > Kawangware > Kabiro",
+    "displayLocation": "Kawangware · Kabiro · Dagoretti, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-riruta",
+    "name": "Riruta",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-dagoretti",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Riruta Satellite",
+      "Satellite"
+    ],
+    "searchTerms": [
+      "riruta",
+      "dagoretti riruta",
+      "riruta dagoretti",
+      "nairobi riruta",
+      "riruta satellite",
+      "dagoretti riruta satellite",
+      "satellite",
+      "dagoretti satellite"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Riruta"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-riruta"
+    ],
+    "pathString": "Nairobi > Dagoretti > Riruta",
+    "displayLocation": "Dagoretti · Riruta, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-ngando",
+    "name": "Ngando",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-dagoretti",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ngando",
+      "dagoretti ngando",
+      "ngando dagoretti",
+      "nairobi ngando"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Ngando"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-ngando"
+    ],
+    "pathString": "Nairobi > Dagoretti > Ngando",
+    "displayLocation": "Dagoretti · Ngando, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-mutuini",
+    "name": "Mutuini",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-dagoretti",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mutuini",
+      "dagoretti mutuini",
+      "mutuini dagoretti",
+      "nairobi mutuini"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Mutuini"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-mutuini"
+    ],
+    "pathString": "Nairobi > Dagoretti > Mutuini",
+    "displayLocation": "Dagoretti · Mutuini, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-waithaka",
+    "name": "Waithaka",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-dagoretti",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "waithaka",
+      "dagoretti waithaka",
+      "waithaka dagoretti",
+      "nairobi waithaka"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Waithaka"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-waithaka"
+    ],
+    "pathString": "Nairobi > Dagoretti > Waithaka",
+    "displayLocation": "Dagoretti · Waithaka, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-ruthimitu",
+    "name": "Ruthimitu",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-dagoretti",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ruthimitu",
+      "dagoretti ruthimitu",
+      "ruthimitu dagoretti",
+      "nairobi ruthimitu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Ruthimitu"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-ruthimitu"
+    ],
+    "pathString": "Nairobi > Dagoretti > Ruthimitu",
+    "displayLocation": "Dagoretti · Ruthimitu, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-dagoretti-uthiru",
+    "name": "Uthiru",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-dagoretti",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Uthiru Nairobi"
+    ],
+    "searchTerms": [
+      "uthiru",
+      "dagoretti uthiru",
+      "uthiru dagoretti",
+      "nairobi uthiru",
+      "uthiru nairobi",
+      "dagoretti uthiru nairobi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Dagoretti",
+      "Uthiru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-dagoretti",
+      "loc-county-nairobi-dagoretti-uthiru"
+    ],
+    "pathString": "Nairobi > Dagoretti > Uthiru",
+    "displayLocation": "Dagoretti · Uthiru, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera",
+    "name": "Kibera",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kibra"
+    ],
+    "searchTerms": [
+      "kibera",
+      "nairobi kibera",
+      "kibera nairobi",
+      "kibra",
+      "nairobi kibra"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera"
+    ],
+    "pathString": "Nairobi > Kibera",
+    "displayLocation": "Kibera, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-laini-saba",
+    "name": "Laini Saba",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "laini saba",
+      "kibera laini saba",
+      "laini saba kibera",
+      "nairobi laini saba"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Laini Saba"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-laini-saba"
+    ],
+    "pathString": "Nairobi > Kibera > Laini Saba",
+    "displayLocation": "Kibera · Laini Saba, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-lindi",
+    "name": "Lindi",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "lindi",
+      "kibera lindi",
+      "lindi kibera",
+      "nairobi lindi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Lindi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-lindi"
+    ],
+    "pathString": "Nairobi > Kibera > Lindi",
+    "displayLocation": "Kibera · Lindi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-makina",
+    "name": "Makina",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "makina",
+      "kibera makina",
+      "makina kibera",
+      "nairobi makina"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Makina"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-makina"
+    ],
+    "pathString": "Nairobi > Kibera > Makina",
+    "displayLocation": "Kibera · Makina, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-kianda",
+    "name": "Kianda",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kianda",
+      "kibera kianda",
+      "kianda kibera",
+      "nairobi kianda"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Kianda"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-kianda"
+    ],
+    "pathString": "Nairobi > Kibera > Kianda",
+    "displayLocation": "Kibera · Kianda, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-olympic",
+    "name": "Olympic",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Olympic Stage"
+    ],
+    "searchTerms": [
+      "olympic",
+      "kibera olympic",
+      "olympic kibera",
+      "nairobi olympic",
+      "olympic stage",
+      "kibera olympic stage"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Olympic"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-olympic"
+    ],
+    "pathString": "Nairobi > Kibera > Olympic",
+    "displayLocation": "Kibera · Olympic, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-ayany",
+    "name": "Ayany",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Ayany Estate"
+    ],
+    "searchTerms": [
+      "ayany",
+      "kibera ayany",
+      "ayany kibera",
+      "nairobi ayany",
+      "ayany estate",
+      "kibera ayany estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Ayany"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-ayany"
+    ],
+    "pathString": "Nairobi > Kibera > Ayany",
+    "displayLocation": "Kibera · Ayany, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-gatwekera",
+    "name": "Gatwekera",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "gatwekera",
+      "kibera gatwekera",
+      "gatwekera kibera",
+      "nairobi gatwekera"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Gatwekera"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-gatwekera"
+    ],
+    "pathString": "Nairobi > Kibera > Gatwekera",
+    "displayLocation": "Kibera · Gatwekera, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-soweto",
+    "name": "Soweto",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "soweto",
+      "kibera soweto",
+      "soweto kibera",
+      "nairobi soweto"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Soweto"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-soweto"
+    ],
+    "pathString": "Nairobi > Kibera > Soweto",
+    "displayLocation": "Kibera · Soweto, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-mashimoni",
+    "name": "Mashimoni",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mashimoni",
+      "kibera mashimoni",
+      "mashimoni kibera",
+      "nairobi mashimoni"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Mashimoni"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-mashimoni"
+    ],
+    "pathString": "Nairobi > Kibera > Mashimoni",
+    "displayLocation": "Kibera · Mashimoni, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-sarangombe",
+    "name": "Sarang'ombe",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "sarang'ombe",
+      "kibera sarang'ombe",
+      "sarang'ombe kibera",
+      "nairobi sarang'ombe"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Sarang'ombe"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-sarangombe"
+    ],
+    "pathString": "Nairobi > Kibera > Sarang'ombe",
+    "displayLocation": "Kibera · Sarang'ombe, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibera-woodley",
+    "name": "Woodley",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kibera",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "woodley",
+      "kibera woodley",
+      "woodley kibera",
+      "nairobi woodley"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibera",
+      "Woodley"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibera",
+      "loc-county-nairobi-kibera-woodley"
+    ],
+    "pathString": "Nairobi > Kibera > Woodley",
+    "displayLocation": "Kibera · Woodley, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi",
+    "name": "Central Nairobi",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nairobi CBD",
+      "CBD",
+      "Town"
+    ],
+    "searchTerms": [
+      "central nairobi",
+      "nairobi central nairobi",
+      "central nairobi nairobi",
+      "nairobi cbd",
+      "nairobi nairobi cbd",
+      "cbd",
+      "town",
+      "nairobi town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi"
+    ],
+    "pathString": "Nairobi > Central Nairobi",
+    "displayLocation": "Central Nairobi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-nairobi-cbd",
+    "name": "Nairobi CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "CBD",
+      "City Centre"
+    ],
+    "searchTerms": [
+      "nairobi cbd",
+      "central nairobi nairobi cbd",
+      "nairobi cbd central nairobi",
+      "nairobi nairobi cbd",
+      "cbd",
+      "central nairobi cbd",
+      "city centre",
+      "central nairobi city centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Nairobi CBD"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-nairobi-cbd"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Nairobi CBD",
+    "displayLocation": "Central Nairobi · Nairobi CBD, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-ngara",
+    "name": "Ngara",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Ngara Road",
+      "Fig Tree"
+    ],
+    "searchTerms": [
+      "ngara",
+      "central nairobi ngara",
+      "ngara central nairobi",
+      "nairobi ngara",
+      "ngara road",
+      "central nairobi ngara road",
+      "fig tree",
+      "central nairobi fig tree"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Ngara"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-ngara"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Ngara",
+    "displayLocation": "Central Nairobi · Ngara, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-pangani",
+    "name": "Pangani",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "pangani",
+      "central nairobi pangani",
+      "pangani central nairobi",
+      "nairobi pangani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Pangani"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-pangani"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Pangani",
+    "displayLocation": "Central Nairobi · Pangani, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-ziwani",
+    "name": "Ziwani",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ziwani",
+      "central nairobi ziwani",
+      "ziwani central nairobi",
+      "nairobi ziwani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Ziwani"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-ziwani"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Ziwani",
+    "displayLocation": "Central Nairobi · Ziwani, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-kariokor",
+    "name": "Kariokor",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kariokor",
+      "central nairobi kariokor",
+      "kariokor central nairobi",
+      "nairobi kariokor"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Kariokor"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-kariokor"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Kariokor",
+    "displayLocation": "Central Nairobi · Kariokor, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-gikomba",
+    "name": "Gikomba",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Gikomba Market"
+    ],
+    "searchTerms": [
+      "gikomba",
+      "central nairobi gikomba",
+      "gikomba central nairobi",
+      "nairobi gikomba",
+      "gikomba market",
+      "central nairobi gikomba market"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Gikomba"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-gikomba"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Gikomba",
+    "displayLocation": "Central Nairobi · Gikomba, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-pumwani",
+    "name": "Pumwani",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "pumwani",
+      "central nairobi pumwani",
+      "pumwani central nairobi",
+      "nairobi pumwani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Pumwani"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-pumwani"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Pumwani",
+    "displayLocation": "Central Nairobi · Pumwani, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-majengo",
+    "name": "Majengo",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "majengo",
+      "central nairobi majengo",
+      "majengo central nairobi",
+      "nairobi majengo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Majengo"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-majengo"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Majengo",
+    "displayLocation": "Central Nairobi · Majengo, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-shauri-moyo",
+    "name": "Shauri Moyo",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "shauri moyo",
+      "central nairobi shauri moyo",
+      "shauri moyo central nairobi",
+      "nairobi shauri moyo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Shauri Moyo"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-shauri-moyo"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Shauri Moyo",
+    "displayLocation": "Central Nairobi · Shauri Moyo, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-california",
+    "name": "California",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "california",
+      "central nairobi california",
+      "california central nairobi",
+      "nairobi california"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "California"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-california"
+    ],
+    "pathString": "Nairobi > Central Nairobi > California",
+    "displayLocation": "Central Nairobi · California, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-bondeni",
+    "name": "Bondeni",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "bondeni",
+      "central nairobi bondeni",
+      "bondeni central nairobi",
+      "nairobi bondeni"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Bondeni"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-bondeni"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Bondeni",
+    "displayLocation": "Central Nairobi · Bondeni, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-kaloleni",
+    "name": "Kaloleni",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kaloleni",
+      "central nairobi kaloleni",
+      "kaloleni central nairobi",
+      "nairobi kaloleni"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Kaloleni"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-kaloleni"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Kaloleni",
+    "displayLocation": "Central Nairobi · Kaloleni, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-jericho",
+    "name": "Jericho",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "jericho",
+      "central nairobi jericho",
+      "jericho central nairobi",
+      "nairobi jericho"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Jericho"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-jericho"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Jericho",
+    "displayLocation": "Central Nairobi · Jericho, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-lumumba",
+    "name": "Lumumba",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "lumumba",
+      "central nairobi lumumba",
+      "lumumba central nairobi",
+      "nairobi lumumba"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Lumumba"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-lumumba"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Lumumba",
+    "displayLocation": "Central Nairobi · Lumumba, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-ofafa",
+    "name": "Ofafa",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ofafa",
+      "central nairobi ofafa",
+      "ofafa central nairobi",
+      "nairobi ofafa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Ofafa"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-ofafa"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Ofafa",
+    "displayLocation": "Central Nairobi · Ofafa, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-maringo",
+    "name": "Maringo",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "maringo",
+      "central nairobi maringo",
+      "maringo central nairobi",
+      "nairobi maringo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Maringo"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-maringo"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Maringo",
+    "displayLocation": "Central Nairobi · Maringo, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-hamza",
+    "name": "Hamza",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "hamza",
+      "central nairobi hamza",
+      "hamza central nairobi",
+      "nairobi hamza"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Hamza"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-hamza"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Hamza",
+    "displayLocation": "Central Nairobi · Hamza, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-makongeni",
+    "name": "Makongeni",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "makongeni",
+      "central nairobi makongeni",
+      "makongeni central nairobi",
+      "nairobi makongeni"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Makongeni"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-makongeni"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Makongeni",
+    "displayLocation": "Central Nairobi · Makongeni, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-mbotela",
+    "name": "Mbotela",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mbotela",
+      "central nairobi mbotela",
+      "mbotela central nairobi",
+      "nairobi mbotela"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Mbotela"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-mbotela"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Mbotela",
+    "displayLocation": "Central Nairobi · Mbotela, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-harambee",
+    "name": "Harambee",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "harambee",
+      "central nairobi harambee",
+      "harambee central nairobi",
+      "nairobi harambee"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Harambee"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-harambee"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Harambee",
+    "displayLocation": "Central Nairobi · Harambee, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-landimawe",
+    "name": "Landimawe",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "landimawe",
+      "central nairobi landimawe",
+      "landimawe central nairobi",
+      "nairobi landimawe"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Landimawe"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-landimawe"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Landimawe",
+    "displayLocation": "Central Nairobi · Landimawe, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-muthurwa",
+    "name": "Muthurwa",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "muthurwa",
+      "central nairobi muthurwa",
+      "muthurwa central nairobi",
+      "nairobi muthurwa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Muthurwa"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-muthurwa"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Muthurwa",
+    "displayLocation": "Central Nairobi · Muthurwa, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-central-nairobi-starehe",
+    "name": "Starehe",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-central-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "starehe",
+      "central nairobi starehe",
+      "starehe central nairobi",
+      "nairobi starehe"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Central Nairobi",
+      "Starehe"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-central-nairobi",
+      "loc-county-nairobi-central-nairobi-starehe"
+    ],
+    "pathString": "Nairobi > Central Nairobi > Starehe",
+    "displayLocation": "Central Nairobi · Starehe, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands",
+    "name": "Eastlands",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastlands Nairobi"
+    ],
+    "searchTerms": [
+      "eastlands",
+      "nairobi eastlands",
+      "eastlands nairobi",
+      "nairobi eastlands nairobi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands"
+    ],
+    "pathString": "Nairobi > Eastlands",
+    "displayLocation": "Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-buruburu",
+    "name": "Buruburu",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Buru",
+      "Buruburu Estate"
+    ],
+    "searchTerms": [
+      "buruburu",
+      "eastlands buruburu",
+      "buruburu eastlands",
+      "nairobi buruburu",
+      "buru",
+      "eastlands buru",
+      "buruburu estate",
+      "eastlands buruburu estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Buruburu"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-buruburu"
+    ],
+    "pathString": "Nairobi > Eastlands > Buruburu",
+    "displayLocation": "Eastlands · Buruburu, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-buruburu-phase-1",
+    "name": "Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-buruburu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Buruburu Phase 1",
+      "Buru 1"
+    ],
+    "searchTerms": [
+      "phase 1",
+      "buruburu phase 1",
+      "phase 1 buruburu",
+      "nairobi phase 1",
+      "eastlands phase 1",
+      "buruburu buruburu phase 1",
+      "buru 1",
+      "buruburu buru 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Buruburu",
+      "Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-buruburu",
+      "loc-county-nairobi-eastlands-buruburu-phase-1"
+    ],
+    "pathString": "Nairobi > Eastlands > Buruburu > Phase 1",
+    "displayLocation": "Buruburu · Phase 1 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-buruburu-phase-2",
+    "name": "Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-buruburu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Buruburu Phase 2",
+      "Buru 2"
+    ],
+    "searchTerms": [
+      "phase 2",
+      "buruburu phase 2",
+      "phase 2 buruburu",
+      "nairobi phase 2",
+      "eastlands phase 2",
+      "buruburu buruburu phase 2",
+      "buru 2",
+      "buruburu buru 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Buruburu",
+      "Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-buruburu",
+      "loc-county-nairobi-eastlands-buruburu-phase-2"
+    ],
+    "pathString": "Nairobi > Eastlands > Buruburu > Phase 2",
+    "displayLocation": "Buruburu · Phase 2 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-buruburu-phase-3",
+    "name": "Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-buruburu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Buruburu Phase 3",
+      "Buru 3"
+    ],
+    "searchTerms": [
+      "phase 3",
+      "buruburu phase 3",
+      "phase 3 buruburu",
+      "nairobi phase 3",
+      "eastlands phase 3",
+      "buruburu buruburu phase 3",
+      "buru 3",
+      "buruburu buru 3"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Buruburu",
+      "Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-buruburu",
+      "loc-county-nairobi-eastlands-buruburu-phase-3"
+    ],
+    "pathString": "Nairobi > Eastlands > Buruburu > Phase 3",
+    "displayLocation": "Buruburu · Phase 3 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-buruburu-phase-4",
+    "name": "Phase 4",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-buruburu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Buruburu Phase 4",
+      "Buru 4"
+    ],
+    "searchTerms": [
+      "phase 4",
+      "buruburu phase 4",
+      "phase 4 buruburu",
+      "nairobi phase 4",
+      "eastlands phase 4",
+      "buruburu buruburu phase 4",
+      "buru 4",
+      "buruburu buru 4"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Buruburu",
+      "Phase 4"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-buruburu",
+      "loc-county-nairobi-eastlands-buruburu-phase-4"
+    ],
+    "pathString": "Nairobi > Eastlands > Buruburu > Phase 4",
+    "displayLocation": "Buruburu · Phase 4 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-buruburu-phase-5",
+    "name": "Phase 5",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-buruburu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Buruburu Phase 5",
+      "Buru 5"
+    ],
+    "searchTerms": [
+      "phase 5",
+      "buruburu phase 5",
+      "phase 5 buruburu",
+      "nairobi phase 5",
+      "eastlands phase 5",
+      "buruburu buruburu phase 5",
+      "buru 5",
+      "buruburu buru 5"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Buruburu",
+      "Phase 5"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-buruburu",
+      "loc-county-nairobi-eastlands-buruburu-phase-5"
+    ],
+    "pathString": "Nairobi > Eastlands > Buruburu > Phase 5",
+    "displayLocation": "Buruburu · Phase 5 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-buruburu-phase-5-annex",
+    "name": "Phase 5 Annex",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-buruburu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Phase 5 Annex"
+    ],
+    "searchTerms": [
+      "phase 5 annex",
+      "buruburu phase 5 annex",
+      "phase 5 annex buruburu",
+      "nairobi phase 5 annex",
+      "eastlands phase 5 annex"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Buruburu",
+      "Phase 5 Annex"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-buruburu",
+      "loc-county-nairobi-eastlands-buruburu-phase-5-annex"
+    ],
+    "pathString": "Nairobi > Eastlands > Buruburu > Phase 5 Annex",
+    "displayLocation": "Buruburu · Phase 5 Annex · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja",
+    "name": "Umoja",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Umoja Estate"
+    ],
+    "searchTerms": [
+      "umoja",
+      "eastlands umoja",
+      "umoja eastlands",
+      "nairobi umoja",
+      "umoja estate",
+      "eastlands umoja estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja",
+    "displayLocation": "Eastlands · Umoja, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-umoja-i",
+    "name": "Umoja I",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Umoja 1"
+    ],
+    "searchTerms": [
+      "umoja i",
+      "umoja umoja i",
+      "umoja i umoja",
+      "nairobi umoja i",
+      "eastlands umoja i",
+      "umoja 1",
+      "umoja umoja 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Umoja I"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-umoja-i"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Umoja I",
+    "displayLocation": "Umoja · Umoja I · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-umoja-ii",
+    "name": "Umoja II",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Umoja 2"
+    ],
+    "searchTerms": [
+      "umoja ii",
+      "umoja umoja ii",
+      "umoja ii umoja",
+      "nairobi umoja ii",
+      "eastlands umoja ii",
+      "umoja 2",
+      "umoja umoja 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Umoja II"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-umoja-ii"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Umoja II",
+    "displayLocation": "Umoja · Umoja II · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-umoja-innercore",
+    "name": "Umoja Innercore",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Innercore"
+    ],
+    "searchTerms": [
+      "umoja innercore",
+      "umoja umoja innercore",
+      "umoja innercore umoja",
+      "nairobi umoja innercore",
+      "eastlands umoja innercore",
+      "innercore"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Umoja Innercore"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-umoja-innercore"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Umoja Innercore",
+    "displayLocation": "Umoja · Umoja Innercore · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-moi-drive",
+    "name": "Moi Drive",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "moi drive",
+      "umoja moi drive",
+      "moi drive umoja",
+      "nairobi moi drive",
+      "eastlands moi drive"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Moi Drive"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-moi-drive"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Moi Drive",
+    "displayLocation": "Umoja · Moi Drive · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-caltex-area",
+    "name": "Caltex Area",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "caltex area",
+      "umoja caltex area",
+      "caltex area umoja",
+      "nairobi caltex area",
+      "eastlands caltex area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Caltex Area"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-caltex-area"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Caltex Area",
+    "displayLocation": "Umoja · Caltex Area · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-mowlem-road-area",
+    "name": "Mowlem Road Area",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mowlem road area",
+      "umoja mowlem road area",
+      "mowlem road area umoja",
+      "nairobi mowlem road area",
+      "eastlands mowlem road area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Mowlem Road Area"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-mowlem-road-area"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Mowlem Road Area",
+    "displayLocation": "Umoja · Mowlem Road Area · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-busara",
+    "name": "Busara",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "busara",
+      "umoja busara",
+      "busara umoja",
+      "nairobi busara",
+      "eastlands busara"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Busara"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-busara"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Busara",
+    "displayLocation": "Umoja · Busara · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-tumaini",
+    "name": "Tumaini",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "tumaini",
+      "umoja tumaini",
+      "tumaini umoja",
+      "nairobi tumaini",
+      "eastlands tumaini"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Tumaini"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-tumaini"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Tumaini",
+    "displayLocation": "Umoja · Tumaini · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-umoja-kifaru",
+    "name": "Kifaru",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-umoja",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kifaru",
+      "umoja kifaru",
+      "kifaru umoja",
+      "nairobi kifaru",
+      "eastlands kifaru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Umoja",
+      "Kifaru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-umoja",
+      "loc-county-nairobi-eastlands-umoja-kifaru"
+    ],
+    "pathString": "Nairobi > Eastlands > Umoja > Kifaru",
+    "displayLocation": "Umoja · Kifaru · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-dandora",
+    "name": "Dandora",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Dandora Estate"
+    ],
+    "searchTerms": [
+      "dandora",
+      "eastlands dandora",
+      "dandora eastlands",
+      "nairobi dandora",
+      "dandora estate",
+      "eastlands dandora estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Dandora"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-dandora"
+    ],
+    "pathString": "Nairobi > Eastlands > Dandora",
+    "displayLocation": "Eastlands · Dandora, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-dandora-phase-1",
+    "name": "Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-dandora",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Dandora Phase 1"
+    ],
+    "searchTerms": [
+      "phase 1",
+      "dandora phase 1",
+      "phase 1 dandora",
+      "nairobi phase 1",
+      "eastlands phase 1",
+      "dandora dandora phase 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Dandora",
+      "Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-dandora",
+      "loc-county-nairobi-eastlands-dandora-phase-1"
+    ],
+    "pathString": "Nairobi > Eastlands > Dandora > Phase 1",
+    "displayLocation": "Dandora · Phase 1 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-dandora-phase-2",
+    "name": "Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-dandora",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Dandora Phase 2"
+    ],
+    "searchTerms": [
+      "phase 2",
+      "dandora phase 2",
+      "phase 2 dandora",
+      "nairobi phase 2",
+      "eastlands phase 2",
+      "dandora dandora phase 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Dandora",
+      "Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-dandora",
+      "loc-county-nairobi-eastlands-dandora-phase-2"
+    ],
+    "pathString": "Nairobi > Eastlands > Dandora > Phase 2",
+    "displayLocation": "Dandora · Phase 2 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-dandora-phase-3",
+    "name": "Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-dandora",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Dandora Phase 3"
+    ],
+    "searchTerms": [
+      "phase 3",
+      "dandora phase 3",
+      "phase 3 dandora",
+      "nairobi phase 3",
+      "eastlands phase 3",
+      "dandora dandora phase 3"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Dandora",
+      "Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-dandora",
+      "loc-county-nairobi-eastlands-dandora-phase-3"
+    ],
+    "pathString": "Nairobi > Eastlands > Dandora > Phase 3",
+    "displayLocation": "Dandora · Phase 3 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-dandora-phase-4",
+    "name": "Phase 4",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-dandora",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Dandora Phase 4"
+    ],
+    "searchTerms": [
+      "phase 4",
+      "dandora phase 4",
+      "phase 4 dandora",
+      "nairobi phase 4",
+      "eastlands phase 4",
+      "dandora dandora phase 4"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Dandora",
+      "Phase 4"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-dandora",
+      "loc-county-nairobi-eastlands-dandora-phase-4"
+    ],
+    "pathString": "Nairobi > Eastlands > Dandora > Phase 4",
+    "displayLocation": "Dandora · Phase 4 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-dandora-phase-5",
+    "name": "Phase 5",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-dandora",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Dandora Phase 5"
+    ],
+    "searchTerms": [
+      "phase 5",
+      "dandora phase 5",
+      "phase 5 dandora",
+      "nairobi phase 5",
+      "eastlands phase 5",
+      "dandora dandora phase 5"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Dandora",
+      "Phase 5"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-dandora",
+      "loc-county-nairobi-eastlands-dandora-phase-5"
+    ],
+    "pathString": "Nairobi > Eastlands > Dandora > Phase 5",
+    "displayLocation": "Dandora · Phase 5 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole",
+    "name": "Kayole",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kayole Estate"
+    ],
+    "searchTerms": [
+      "kayole",
+      "eastlands kayole",
+      "kayole eastlands",
+      "nairobi kayole",
+      "kayole estate",
+      "eastlands kayole estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole",
+    "displayLocation": "Eastlands · Kayole, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole-kayole-north",
+    "name": "Kayole North",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-kayole",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kayole north",
+      "kayole kayole north",
+      "kayole north kayole",
+      "nairobi kayole north",
+      "eastlands kayole north"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole",
+      "Kayole North"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole",
+      "loc-county-nairobi-eastlands-kayole-kayole-north"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole > Kayole North",
+    "displayLocation": "Kayole · Kayole North · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole-kayole-central",
+    "name": "Kayole Central",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-kayole",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kayole central",
+      "kayole kayole central",
+      "kayole central kayole",
+      "nairobi kayole central",
+      "eastlands kayole central"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole",
+      "Kayole Central"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole",
+      "loc-county-nairobi-eastlands-kayole-kayole-central"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole > Kayole Central",
+    "displayLocation": "Kayole · Kayole Central · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole-kayole-south",
+    "name": "Kayole South",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-kayole",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kayole south",
+      "kayole kayole south",
+      "kayole south kayole",
+      "nairobi kayole south",
+      "eastlands kayole south"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole",
+      "Kayole South"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole",
+      "loc-county-nairobi-eastlands-kayole-kayole-south"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole > Kayole South",
+    "displayLocation": "Kayole · Kayole South · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole-soweto",
+    "name": "Soweto",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-kayole",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kayole Soweto"
+    ],
+    "searchTerms": [
+      "soweto",
+      "kayole soweto",
+      "soweto kayole",
+      "nairobi soweto",
+      "eastlands soweto",
+      "kayole kayole soweto"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole",
+      "Soweto"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole",
+      "loc-county-nairobi-eastlands-kayole-soweto"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole > Soweto",
+    "displayLocation": "Kayole · Soweto · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole-spine-road",
+    "name": "Spine Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-eastlands-kayole",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "spine road",
+      "kayole spine road",
+      "spine road kayole",
+      "nairobi spine road",
+      "eastlands spine road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole",
+      "Spine Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole",
+      "loc-county-nairobi-eastlands-kayole-spine-road"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole > Spine Road",
+    "displayLocation": "Kayole · Spine Road · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole-junction",
+    "name": "Junction",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-eastlands-kayole",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "junction",
+      "kayole junction",
+      "junction kayole",
+      "nairobi junction",
+      "eastlands junction"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole",
+      "Junction"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole",
+      "loc-county-nairobi-eastlands-kayole-junction"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole > Junction",
+    "displayLocation": "Kayole · Junction · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole-stage",
+    "name": "Stage",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-eastlands-kayole",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "stage",
+      "kayole stage",
+      "stage kayole",
+      "nairobi stage",
+      "eastlands stage"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole",
+      "Stage"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole",
+      "loc-county-nairobi-eastlands-kayole-stage"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole > Stage",
+    "displayLocation": "Kayole · Stage · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kayole-saika",
+    "name": "Saika",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands-kayole",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "saika",
+      "kayole saika",
+      "saika kayole",
+      "nairobi saika",
+      "eastlands saika"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kayole",
+      "Saika"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kayole",
+      "loc-county-nairobi-eastlands-kayole-saika"
+    ],
+    "pathString": "Nairobi > Eastlands > Kayole > Saika",
+    "displayLocation": "Kayole · Saika · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock",
+    "name": "Komarock",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Komarock Estate"
+    ],
+    "searchTerms": [
+      "komarock",
+      "eastlands komarock",
+      "komarock eastlands",
+      "nairobi komarock",
+      "komarock estate",
+      "eastlands komarock estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock",
+    "displayLocation": "Eastlands · Komarock, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock-sector-1",
+    "name": "Sector 1",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-komarock",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "sector 1",
+      "komarock sector 1",
+      "sector 1 komarock",
+      "nairobi sector 1",
+      "eastlands sector 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock",
+      "Sector 1"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock",
+      "loc-county-nairobi-eastlands-komarock-sector-1"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock > Sector 1",
+    "displayLocation": "Komarock · Sector 1 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock-sector-2",
+    "name": "Sector 2",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-komarock",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "sector 2",
+      "komarock sector 2",
+      "sector 2 komarock",
+      "nairobi sector 2",
+      "eastlands sector 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock",
+      "Sector 2"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock",
+      "loc-county-nairobi-eastlands-komarock-sector-2"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock > Sector 2",
+    "displayLocation": "Komarock · Sector 2 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock-sector-3",
+    "name": "Sector 3",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-komarock",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "sector 3",
+      "komarock sector 3",
+      "sector 3 komarock",
+      "nairobi sector 3",
+      "eastlands sector 3"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock",
+      "Sector 3"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock",
+      "loc-county-nairobi-eastlands-komarock-sector-3"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock > Sector 3",
+    "displayLocation": "Komarock · Sector 3 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock-sector-4",
+    "name": "Sector 4",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-komarock",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "sector 4",
+      "komarock sector 4",
+      "sector 4 komarock",
+      "nairobi sector 4",
+      "eastlands sector 4"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock",
+      "Sector 4"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock",
+      "loc-county-nairobi-eastlands-komarock-sector-4"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock > Sector 4",
+    "displayLocation": "Komarock · Sector 4 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock-phase-1",
+    "name": "Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-komarock",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "phase 1",
+      "komarock phase 1",
+      "phase 1 komarock",
+      "nairobi phase 1",
+      "eastlands phase 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock",
+      "Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock",
+      "loc-county-nairobi-eastlands-komarock-phase-1"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock > Phase 1",
+    "displayLocation": "Komarock · Phase 1 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock-phase-2",
+    "name": "Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-komarock",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "phase 2",
+      "komarock phase 2",
+      "phase 2 komarock",
+      "nairobi phase 2",
+      "eastlands phase 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock",
+      "Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock",
+      "loc-county-nairobi-eastlands-komarock-phase-2"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock > Phase 2",
+    "displayLocation": "Komarock · Phase 2 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock-phase-3",
+    "name": "Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-eastlands-komarock",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "phase 3",
+      "komarock phase 3",
+      "phase 3 komarock",
+      "nairobi phase 3",
+      "eastlands phase 3"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock",
+      "Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock",
+      "loc-county-nairobi-eastlands-komarock-phase-3"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock > Phase 3",
+    "displayLocation": "Komarock · Phase 3 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-komarock-spine-road",
+    "name": "Spine Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nairobi-eastlands-komarock",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "spine road",
+      "komarock spine road",
+      "spine road komarock",
+      "nairobi spine road",
+      "eastlands spine road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Komarock",
+      "Spine Road"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-komarock",
+      "loc-county-nairobi-eastlands-komarock-spine-road"
+    ],
+    "pathString": "Nairobi > Eastlands > Komarock > Spine Road",
+    "displayLocation": "Komarock · Spine Road · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh",
+    "name": "Eastleigh",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Nairobi",
+      "Isli"
+    ],
+    "searchTerms": [
+      "eastleigh",
+      "eastlands eastleigh",
+      "eastleigh eastlands",
+      "nairobi eastleigh",
+      "eastleigh nairobi",
+      "eastlands eastleigh nairobi",
+      "isli",
+      "eastlands isli"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh",
+    "displayLocation": "Eastlands · Eastleigh, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-eastleigh-north",
+    "name": "Eastleigh North",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "eastleigh north",
+      "eastleigh eastleigh north",
+      "eastleigh north eastleigh",
+      "nairobi eastleigh north",
+      "eastlands eastleigh north"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Eastleigh North"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-eastleigh-north"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Eastleigh North",
+    "displayLocation": "Eastleigh · Eastleigh North · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-eastleigh-south",
+    "name": "Eastleigh South",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "eastleigh south",
+      "eastleigh eastleigh south",
+      "eastleigh south eastleigh",
+      "nairobi eastleigh south",
+      "eastlands eastleigh south"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Eastleigh South"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-eastleigh-south"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Eastleigh South",
+    "displayLocation": "Eastleigh · Eastleigh South · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-1",
+    "name": "Section 1",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 1",
+      "Eastleigh 1"
+    ],
+    "searchTerms": [
+      "section 1",
+      "eastleigh section 1",
+      "section 1 eastleigh",
+      "nairobi section 1",
+      "eastlands section 1",
+      "eastleigh eastleigh section 1",
+      "eastleigh 1",
+      "eastleigh eastleigh 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 1"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-1"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 1",
+    "displayLocation": "Eastleigh · Section 1 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-2",
+    "name": "Section 2",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 2",
+      "Eastleigh 2"
+    ],
+    "searchTerms": [
+      "section 2",
+      "eastleigh section 2",
+      "section 2 eastleigh",
+      "nairobi section 2",
+      "eastlands section 2",
+      "eastleigh eastleigh section 2",
+      "eastleigh 2",
+      "eastleigh eastleigh 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 2"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-2"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 2",
+    "displayLocation": "Eastleigh · Section 2 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-3",
+    "name": "Section 3",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 3",
+      "Eastleigh 3"
+    ],
+    "searchTerms": [
+      "section 3",
+      "eastleigh section 3",
+      "section 3 eastleigh",
+      "nairobi section 3",
+      "eastlands section 3",
+      "eastleigh eastleigh section 3",
+      "eastleigh 3",
+      "eastleigh eastleigh 3"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 3"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-3"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 3",
+    "displayLocation": "Eastleigh · Section 3 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-4",
+    "name": "Section 4",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 4",
+      "Eastleigh 4"
+    ],
+    "searchTerms": [
+      "section 4",
+      "eastleigh section 4",
+      "section 4 eastleigh",
+      "nairobi section 4",
+      "eastlands section 4",
+      "eastleigh eastleigh section 4",
+      "eastleigh 4",
+      "eastleigh eastleigh 4"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 4"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-4"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 4",
+    "displayLocation": "Eastleigh · Section 4 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-5",
+    "name": "Section 5",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 5",
+      "Eastleigh 5"
+    ],
+    "searchTerms": [
+      "section 5",
+      "eastleigh section 5",
+      "section 5 eastleigh",
+      "nairobi section 5",
+      "eastlands section 5",
+      "eastleigh eastleigh section 5",
+      "eastleigh 5",
+      "eastleigh eastleigh 5"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 5"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-5"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 5",
+    "displayLocation": "Eastleigh · Section 5 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-6",
+    "name": "Section 6",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 6",
+      "Eastleigh 6"
+    ],
+    "searchTerms": [
+      "section 6",
+      "eastleigh section 6",
+      "section 6 eastleigh",
+      "nairobi section 6",
+      "eastlands section 6",
+      "eastleigh eastleigh section 6",
+      "eastleigh 6",
+      "eastleigh eastleigh 6"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 6"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-6"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 6",
+    "displayLocation": "Eastleigh · Section 6 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-7",
+    "name": "Section 7",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 7",
+      "Eastleigh 7",
+      "Eastleigh Sec 7"
+    ],
+    "searchTerms": [
+      "section 7",
+      "eastleigh section 7",
+      "section 7 eastleigh",
+      "nairobi section 7",
+      "eastlands section 7",
+      "eastleigh eastleigh section 7",
+      "eastleigh 7",
+      "eastleigh eastleigh 7",
+      "eastleigh sec 7",
+      "eastleigh eastleigh sec 7"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 7"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-7"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 7",
+    "displayLocation": "Eastleigh · Section 7 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-8",
+    "name": "Section 8",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 8",
+      "Eastleigh 8"
+    ],
+    "searchTerms": [
+      "section 8",
+      "eastleigh section 8",
+      "section 8 eastleigh",
+      "nairobi section 8",
+      "eastlands section 8",
+      "eastleigh eastleigh section 8",
+      "eastleigh 8",
+      "eastleigh eastleigh 8"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 8"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-8"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 8",
+    "displayLocation": "Eastleigh · Section 8 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-9",
+    "name": "Section 9",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 9",
+      "Eastleigh 9"
+    ],
+    "searchTerms": [
+      "section 9",
+      "eastleigh section 9",
+      "section 9 eastleigh",
+      "nairobi section 9",
+      "eastlands section 9",
+      "eastleigh eastleigh section 9",
+      "eastleigh 9",
+      "eastleigh eastleigh 9"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 9"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-9"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 9",
+    "displayLocation": "Eastleigh · Section 9 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-10",
+    "name": "Section 10",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 10",
+      "Eastleigh 10"
+    ],
+    "searchTerms": [
+      "section 10",
+      "eastleigh section 10",
+      "section 10 eastleigh",
+      "nairobi section 10",
+      "eastlands section 10",
+      "eastleigh eastleigh section 10",
+      "eastleigh 10",
+      "eastleigh eastleigh 10"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 10"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-10"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 10",
+    "displayLocation": "Eastleigh · Section 10 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-11",
+    "name": "Section 11",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 11",
+      "Eastleigh 11"
+    ],
+    "searchTerms": [
+      "section 11",
+      "eastleigh section 11",
+      "section 11 eastleigh",
+      "nairobi section 11",
+      "eastlands section 11",
+      "eastleigh eastleigh section 11",
+      "eastleigh 11",
+      "eastleigh eastleigh 11"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 11"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-11"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 11",
+    "displayLocation": "Eastleigh · Section 11 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-12",
+    "name": "Section 12",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 12",
+      "Eastleigh 12"
+    ],
+    "searchTerms": [
+      "section 12",
+      "eastleigh section 12",
+      "section 12 eastleigh",
+      "nairobi section 12",
+      "eastlands section 12",
+      "eastleigh eastleigh section 12",
+      "eastleigh 12",
+      "eastleigh eastleigh 12"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 12"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-12"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 12",
+    "displayLocation": "Eastleigh · Section 12 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-13",
+    "name": "Section 13",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 13",
+      "Eastleigh 13"
+    ],
+    "searchTerms": [
+      "section 13",
+      "eastleigh section 13",
+      "section 13 eastleigh",
+      "nairobi section 13",
+      "eastlands section 13",
+      "eastleigh eastleigh section 13",
+      "eastleigh 13",
+      "eastleigh eastleigh 13"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 13"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-13"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 13",
+    "displayLocation": "Eastleigh · Section 13 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-14",
+    "name": "Section 14",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 14",
+      "Eastleigh 14"
+    ],
+    "searchTerms": [
+      "section 14",
+      "eastleigh section 14",
+      "section 14 eastleigh",
+      "nairobi section 14",
+      "eastlands section 14",
+      "eastleigh eastleigh section 14",
+      "eastleigh 14",
+      "eastleigh eastleigh 14"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 14"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-14"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 14",
+    "displayLocation": "Eastleigh · Section 14 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-section-15",
+    "name": "Section 15",
+    "type": "SECTION",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastleigh Section 15",
+      "Eastleigh 15"
+    ],
+    "searchTerms": [
+      "section 15",
+      "eastleigh section 15",
+      "section 15 eastleigh",
+      "nairobi section 15",
+      "eastlands section 15",
+      "eastleigh eastleigh section 15",
+      "eastleigh 15",
+      "eastleigh eastleigh 15"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Section 15"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-section-15"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Section 15",
+    "displayLocation": "Eastleigh · Section 15 · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-california",
+    "name": "California",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "california",
+      "eastleigh california",
+      "california eastleigh",
+      "nairobi california",
+      "eastlands california"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "California"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-california"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > California",
+    "displayLocation": "Eastleigh · California · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-airbase",
+    "name": "Airbase",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Moi Air Base"
+    ],
+    "searchTerms": [
+      "airbase",
+      "eastleigh airbase",
+      "airbase eastleigh",
+      "nairobi airbase",
+      "eastlands airbase",
+      "moi air base",
+      "eastleigh moi air base"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Airbase"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-airbase"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Airbase",
+    "displayLocation": "Eastleigh · Airbase · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-eastleigh-pumwani-gikomba-side",
+    "name": "Pumwani / Gikomba side",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-eastlands-eastleigh",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "pumwani / gikomba side",
+      "eastleigh pumwani / gikomba side",
+      "pumwani / gikomba side eastleigh",
+      "nairobi pumwani / gikomba side",
+      "eastlands pumwani / gikomba side"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Eastleigh",
+      "Pumwani / Gikomba side"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-eastleigh",
+      "loc-county-nairobi-eastlands-eastleigh-pumwani-gikomba-side"
+    ],
+    "pathString": "Nairobi > Eastlands > Eastleigh > Pumwani / Gikomba side",
+    "displayLocation": "Eastleigh · Pumwani / Gikomba side · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kariobangi",
+    "name": "Kariobangi",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kariobangi Area"
+    ],
+    "searchTerms": [
+      "kariobangi",
+      "eastlands kariobangi",
+      "kariobangi eastlands",
+      "nairobi kariobangi",
+      "kariobangi area",
+      "eastlands kariobangi area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kariobangi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kariobangi"
+    ],
+    "pathString": "Nairobi > Eastlands > Kariobangi",
+    "displayLocation": "Eastlands · Kariobangi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kariobangi-kariobangi-north",
+    "name": "Kariobangi North",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-kariobangi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kariobangi north",
+      "kariobangi kariobangi north",
+      "kariobangi north kariobangi",
+      "nairobi kariobangi north",
+      "eastlands kariobangi north"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kariobangi",
+      "Kariobangi North"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kariobangi",
+      "loc-county-nairobi-eastlands-kariobangi-kariobangi-north"
+    ],
+    "pathString": "Nairobi > Eastlands > Kariobangi > Kariobangi North",
+    "displayLocation": "Kariobangi · Kariobangi North · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kariobangi-kariobangi-south",
+    "name": "Kariobangi South",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-kariobangi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kariobangi south",
+      "kariobangi kariobangi south",
+      "kariobangi south kariobangi",
+      "nairobi kariobangi south",
+      "eastlands kariobangi south"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kariobangi",
+      "Kariobangi South"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kariobangi",
+      "loc-county-nairobi-eastlands-kariobangi-kariobangi-south"
+    ],
+    "pathString": "Nairobi > Eastlands > Kariobangi > Kariobangi South",
+    "displayLocation": "Kariobangi · Kariobangi South · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kariobangi-kariobangi-light-industries",
+    "name": "Kariobangi Light Industries",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-kariobangi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kariobangi light industries",
+      "kariobangi kariobangi light industries",
+      "kariobangi light industries kariobangi",
+      "nairobi kariobangi light industries",
+      "eastlands kariobangi light industries"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kariobangi",
+      "Kariobangi Light Industries"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kariobangi",
+      "loc-county-nairobi-eastlands-kariobangi-kariobangi-light-industries"
+    ],
+    "pathString": "Nairobi > Eastlands > Kariobangi > Kariobangi Light Industries",
+    "displayLocation": "Kariobangi · Kariobangi Light Industries · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-kariobangi-kariobangi-south-estate",
+    "name": "Kariobangi South Estate",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-kariobangi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kariobangi south estate",
+      "kariobangi kariobangi south estate",
+      "kariobangi south estate kariobangi",
+      "nairobi kariobangi south estate",
+      "eastlands kariobangi south estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Kariobangi",
+      "Kariobangi South Estate"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-kariobangi",
+      "loc-county-nairobi-eastlands-kariobangi-kariobangi-south-estate"
+    ],
+    "pathString": "Nairobi > Eastlands > Kariobangi > Kariobangi South Estate",
+    "displayLocation": "Kariobangi · Kariobangi South Estate · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru",
+    "name": "Mukuru",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mukuru",
+      "eastlands mukuru",
+      "mukuru eastlands",
+      "nairobi mukuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru",
+    "displayLocation": "Eastlands · Mukuru, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru-mukuru-kwa-njenga",
+    "name": "Mukuru Kwa Njenga",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-mukuru",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mukuru kwa njenga",
+      "mukuru mukuru kwa njenga",
+      "mukuru kwa njenga mukuru",
+      "nairobi mukuru kwa njenga",
+      "eastlands mukuru kwa njenga"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru",
+      "Mukuru Kwa Njenga"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru",
+      "loc-county-nairobi-eastlands-mukuru-mukuru-kwa-njenga"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru > Mukuru Kwa Njenga",
+    "displayLocation": "Mukuru · Mukuru Kwa Njenga · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru-mukuru-kwa-reuben",
+    "name": "Mukuru Kwa Reuben",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-mukuru",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mukuru kwa reuben",
+      "mukuru mukuru kwa reuben",
+      "mukuru kwa reuben mukuru",
+      "nairobi mukuru kwa reuben",
+      "eastlands mukuru kwa reuben"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru",
+      "Mukuru Kwa Reuben"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru",
+      "loc-county-nairobi-eastlands-mukuru-mukuru-kwa-reuben"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru > Mukuru Kwa Reuben",
+    "displayLocation": "Mukuru · Mukuru Kwa Reuben · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru-kware",
+    "name": "Kware",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-mukuru",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kware",
+      "mukuru kware",
+      "kware mukuru",
+      "nairobi kware",
+      "eastlands kware"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru",
+      "Kware"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru",
+      "loc-county-nairobi-eastlands-mukuru-kware"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru > Kware",
+    "displayLocation": "Mukuru · Kware · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru-viwandani",
+    "name": "Viwandani",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-mukuru",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "viwandani",
+      "mukuru viwandani",
+      "viwandani mukuru",
+      "nairobi viwandani",
+      "eastlands viwandani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru",
+      "Viwandani"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru",
+      "loc-county-nairobi-eastlands-mukuru-viwandani"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru > Viwandani",
+    "displayLocation": "Mukuru · Viwandani · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru-sinai",
+    "name": "Sinai",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-mukuru",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "sinai",
+      "mukuru sinai",
+      "sinai mukuru",
+      "nairobi sinai",
+      "eastlands sinai"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru",
+      "Sinai"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru",
+      "loc-county-nairobi-eastlands-mukuru-sinai"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru > Sinai",
+    "displayLocation": "Mukuru · Sinai · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru-kwa-maringo",
+    "name": "Kwa Maringo",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-mukuru",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kwa maringo",
+      "mukuru kwa maringo",
+      "kwa maringo mukuru",
+      "nairobi kwa maringo",
+      "eastlands kwa maringo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru",
+      "Kwa Maringo"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru",
+      "loc-county-nairobi-eastlands-mukuru-kwa-maringo"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru > Kwa Maringo",
+    "displayLocation": "Mukuru · Kwa Maringo · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru-mukuru-kayaba",
+    "name": "Mukuru Kayaba",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-mukuru",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mukuru kayaba",
+      "mukuru mukuru kayaba",
+      "mukuru kayaba mukuru",
+      "nairobi mukuru kayaba",
+      "eastlands mukuru kayaba"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru",
+      "Mukuru Kayaba"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru",
+      "loc-county-nairobi-eastlands-mukuru-mukuru-kayaba"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru > Mukuru Kayaba",
+    "displayLocation": "Mukuru · Mukuru Kayaba · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-mukuru-fuata-nyayo",
+    "name": "Fuata Nyayo",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-eastlands-mukuru",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "fuata nyayo",
+      "mukuru fuata nyayo",
+      "fuata nyayo mukuru",
+      "nairobi fuata nyayo",
+      "eastlands fuata nyayo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Mukuru",
+      "Fuata Nyayo"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-mukuru",
+      "loc-county-nairobi-eastlands-mukuru-fuata-nyayo"
+    ],
+    "pathString": "Nairobi > Eastlands > Mukuru > Fuata Nyayo",
+    "displayLocation": "Mukuru · Fuata Nyayo · Eastlands, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-matopeni",
+    "name": "Matopeni",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "matopeni",
+      "eastlands matopeni",
+      "matopeni eastlands",
+      "nairobi matopeni"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Matopeni"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-matopeni"
+    ],
+    "pathString": "Nairobi > Eastlands > Matopeni",
+    "displayLocation": "Eastlands · Matopeni, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-bahati",
+    "name": "Bahati",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "bahati",
+      "eastlands bahati",
+      "bahati eastlands",
+      "nairobi bahati"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Bahati"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-bahati"
+    ],
+    "pathString": "Nairobi > Eastlands > Bahati",
+    "displayLocation": "Eastlands · Bahati, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-eastlands-uhuru",
+    "name": "Uhuru",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-eastlands",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "uhuru",
+      "eastlands uhuru",
+      "uhuru eastlands",
+      "nairobi uhuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Eastlands",
+      "Uhuru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-eastlands",
+      "loc-county-nairobi-eastlands-uhuru"
+    ],
+    "pathString": "Nairobi > Eastlands > Uhuru",
+    "displayLocation": "Eastlands · Uhuru, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi",
+    "name": "Embakasi",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Embakasi Sub-County"
+    ],
+    "searchTerms": [
+      "embakasi",
+      "nairobi embakasi",
+      "embakasi nairobi",
+      "embakasi sub-county",
+      "nairobi embakasi sub-county"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi"
+    ],
+    "pathString": "Nairobi > Embakasi",
+    "displayLocation": "Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate",
+    "name": "Nyayo Estate",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Embakasi",
+      "Nyayo"
+    ],
+    "searchTerms": [
+      "nyayo estate",
+      "embakasi nyayo estate",
+      "nyayo estate embakasi",
+      "nairobi nyayo estate",
+      "nyayo embakasi",
+      "embakasi nyayo embakasi",
+      "nyayo",
+      "embakasi nyayo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate",
+    "displayLocation": "Embakasi · Nyayo Estate, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+    "name": "Gate A",
+    "type": "GATE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Gate A"
+    ],
+    "searchTerms": [
+      "gate a",
+      "nyayo estate gate a",
+      "gate a nyayo estate",
+      "nairobi gate a",
+      "embakasi gate a",
+      "nyayo gate a",
+      "nyayo estate nyayo gate a"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate A"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-a"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate A",
+    "displayLocation": "Nyayo Estate · Gate A · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-1",
+    "name": "Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Phase 1",
+      "Gate A Phase 1"
+    ],
+    "searchTerms": [
+      "phase 1",
+      "gate a phase 1",
+      "phase 1 gate a",
+      "nairobi phase 1",
+      "embakasi phase 1",
+      "nyayo estate phase 1",
+      "nyayo phase 1",
+      "gate a nyayo phase 1",
+      "gate a gate a phase 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate A",
+      "Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-1"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate A > Phase 1",
+    "displayLocation": "Gate A · Phase 1 · Embakasi, Nyayo Estate, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-2",
+    "name": "Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Phase 2",
+      "Gate A Phase 2"
+    ],
+    "searchTerms": [
+      "phase 2",
+      "gate a phase 2",
+      "phase 2 gate a",
+      "nairobi phase 2",
+      "embakasi phase 2",
+      "nyayo estate phase 2",
+      "nyayo phase 2",
+      "gate a nyayo phase 2",
+      "gate a gate a phase 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate A",
+      "Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-2"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate A > Phase 2",
+    "displayLocation": "Gate A · Phase 2 · Embakasi, Nyayo Estate, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-b",
+    "name": "Gate B",
+    "type": "GATE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Gate B"
+    ],
+    "searchTerms": [
+      "gate b",
+      "nyayo estate gate b",
+      "gate b nyayo estate",
+      "nairobi gate b",
+      "embakasi gate b",
+      "nyayo gate b",
+      "nyayo estate nyayo gate b"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate B"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-b"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate B",
+    "displayLocation": "Nyayo Estate · Gate B · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-c",
+    "name": "Gate C",
+    "type": "GATE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Gate C"
+    ],
+    "searchTerms": [
+      "gate c",
+      "nyayo estate gate c",
+      "gate c nyayo estate",
+      "nairobi gate c",
+      "embakasi gate c",
+      "nyayo gate c",
+      "nyayo estate nyayo gate c"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate C"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-c"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate C",
+    "displayLocation": "Nyayo Estate · Gate C · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-d",
+    "name": "Gate D",
+    "type": "GATE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Gate D"
+    ],
+    "searchTerms": [
+      "gate d",
+      "nyayo estate gate d",
+      "gate d nyayo estate",
+      "nairobi gate d",
+      "embakasi gate d",
+      "nyayo gate d",
+      "nyayo estate nyayo gate d"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate D"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-d"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate D",
+    "displayLocation": "Nyayo Estate · Gate D · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-d-phase-3",
+    "name": "Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate-gate-d",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Phase 3",
+      "Gate D Phase 3"
+    ],
+    "searchTerms": [
+      "phase 3",
+      "gate d phase 3",
+      "phase 3 gate d",
+      "nairobi phase 3",
+      "embakasi phase 3",
+      "nyayo estate phase 3",
+      "nyayo phase 3",
+      "gate d nyayo phase 3",
+      "gate d gate d phase 3"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate D",
+      "Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-d",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-d-phase-3"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate D > Phase 3",
+    "displayLocation": "Gate D · Phase 3 · Embakasi, Nyayo Estate, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-d-phase-4",
+    "name": "Phase 4",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate-gate-d",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Phase 4",
+      "Gate D Phase 4"
+    ],
+    "searchTerms": [
+      "phase 4",
+      "gate d phase 4",
+      "phase 4 gate d",
+      "nairobi phase 4",
+      "embakasi phase 4",
+      "nyayo estate phase 4",
+      "nyayo phase 4",
+      "gate d nyayo phase 4",
+      "gate d gate d phase 4"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate D",
+      "Phase 4"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-d",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-d-phase-4"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate D > Phase 4",
+    "displayLocation": "Gate D · Phase 4 · Embakasi, Nyayo Estate, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-nyayo-estate-gate-d-phase-5",
+    "name": "Phase 5",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-nyayo-estate-gate-d",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Nyayo Phase 5",
+      "Gate D Phase 5"
+    ],
+    "searchTerms": [
+      "phase 5",
+      "gate d phase 5",
+      "phase 5 gate d",
+      "nairobi phase 5",
+      "embakasi phase 5",
+      "nyayo estate phase 5",
+      "nyayo phase 5",
+      "gate d nyayo phase 5",
+      "gate d gate d phase 5"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Nyayo Estate",
+      "Gate D",
+      "Phase 5"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-nyayo-estate",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-d",
+      "loc-county-nairobi-embakasi-nyayo-estate-gate-d-phase-5"
+    ],
+    "pathString": "Nairobi > Embakasi > Nyayo Estate > Gate D > Phase 5",
+    "displayLocation": "Gate D · Phase 5 · Embakasi, Nyayo Estate, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm",
+    "name": "Donholm",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Doni",
+      "Donholm Estate"
+    ],
+    "searchTerms": [
+      "donholm",
+      "embakasi donholm",
+      "donholm embakasi",
+      "nairobi donholm",
+      "doni",
+      "embakasi doni",
+      "donholm estate",
+      "embakasi donholm estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm",
+    "displayLocation": "Embakasi · Donholm, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-phase-1",
+    "name": "Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Phase 1"
+    ],
+    "searchTerms": [
+      "phase 1",
+      "donholm phase 1",
+      "phase 1 donholm",
+      "nairobi phase 1",
+      "embakasi phase 1",
+      "donholm donholm phase 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-phase-1"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Phase 1",
+    "displayLocation": "Donholm · Phase 1 · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-phase-2",
+    "name": "Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Phase 2"
+    ],
+    "searchTerms": [
+      "phase 2",
+      "donholm phase 2",
+      "phase 2 donholm",
+      "nairobi phase 2",
+      "embakasi phase 2",
+      "donholm donholm phase 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-phase-2"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Phase 2",
+    "displayLocation": "Donholm · Phase 2 · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-phase-3",
+    "name": "Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Phase 3"
+    ],
+    "searchTerms": [
+      "phase 3",
+      "donholm phase 3",
+      "phase 3 donholm",
+      "nairobi phase 3",
+      "embakasi phase 3",
+      "donholm donholm phase 3"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-phase-3"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Phase 3",
+    "displayLocation": "Donholm · Phase 3 · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-phase-4",
+    "name": "Phase 4",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Phase 4"
+    ],
+    "searchTerms": [
+      "phase 4",
+      "donholm phase 4",
+      "phase 4 donholm",
+      "nairobi phase 4",
+      "embakasi phase 4",
+      "donholm donholm phase 4"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Phase 4"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-phase-4"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Phase 4",
+    "displayLocation": "Donholm · Phase 4 · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-phase-5",
+    "name": "Phase 5",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Phase 5"
+    ],
+    "searchTerms": [
+      "phase 5",
+      "donholm phase 5",
+      "phase 5 donholm",
+      "nairobi phase 5",
+      "embakasi phase 5",
+      "donholm donholm phase 5"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Phase 5"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-phase-5"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Phase 5",
+    "displayLocation": "Donholm · Phase 5 · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-phase-6",
+    "name": "Phase 6",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Phase 6"
+    ],
+    "searchTerms": [
+      "phase 6",
+      "donholm phase 6",
+      "phase 6 donholm",
+      "nairobi phase 6",
+      "embakasi phase 6",
+      "donholm donholm phase 6"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Phase 6"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-phase-6"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Phase 6",
+    "displayLocation": "Donholm · Phase 6 · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-phase-7",
+    "name": "Phase 7",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Phase 7"
+    ],
+    "searchTerms": [
+      "phase 7",
+      "donholm phase 7",
+      "phase 7 donholm",
+      "nairobi phase 7",
+      "embakasi phase 7",
+      "donholm donholm phase 7"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Phase 7"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-phase-7"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Phase 7",
+    "displayLocation": "Donholm · Phase 7 · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-phase-8",
+    "name": "Phase 8",
+    "type": "PHASE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Phase 8"
+    ],
+    "searchTerms": [
+      "phase 8",
+      "donholm phase 8",
+      "phase 8 donholm",
+      "nairobi phase 8",
+      "embakasi phase 8",
+      "donholm donholm phase 8"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Phase 8"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-phase-8"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Phase 8",
+    "displayLocation": "Donholm · Phase 8 · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-greenfields",
+    "name": "Greenfields",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "greenfields",
+      "donholm greenfields",
+      "greenfields donholm",
+      "nairobi greenfields",
+      "embakasi greenfields"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Greenfields"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-greenfields"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Greenfields",
+    "displayLocation": "Donholm · Greenfields · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-greenspan",
+    "name": "Greenspan",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Greenspan Mall",
+      "Greenspan Estate"
+    ],
+    "searchTerms": [
+      "greenspan",
+      "donholm greenspan",
+      "greenspan donholm",
+      "nairobi greenspan",
+      "embakasi greenspan",
+      "greenspan mall",
+      "donholm greenspan mall",
+      "greenspan estate",
+      "donholm greenspan estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Greenspan"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-greenspan"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Greenspan",
+    "displayLocation": "Donholm · Greenspan · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-jacaranda",
+    "name": "Jacaranda",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "jacaranda",
+      "donholm jacaranda",
+      "jacaranda donholm",
+      "nairobi jacaranda",
+      "embakasi jacaranda"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Jacaranda"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-jacaranda"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Jacaranda",
+    "displayLocation": "Donholm · Jacaranda · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-savannah",
+    "name": "Savannah",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Donholm Savannah"
+    ],
+    "searchTerms": [
+      "savannah",
+      "donholm savannah",
+      "savannah donholm",
+      "nairobi savannah",
+      "embakasi savannah",
+      "donholm donholm savannah"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Savannah"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-savannah"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Savannah",
+    "displayLocation": "Donholm · Savannah · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-donholm-lower-savannah",
+    "name": "Lower Savannah",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi-donholm",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "lower savannah",
+      "donholm lower savannah",
+      "lower savannah donholm",
+      "nairobi lower savannah",
+      "embakasi lower savannah"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Donholm",
+      "Lower Savannah"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-donholm",
+      "loc-county-nairobi-embakasi-donholm-lower-savannah"
+    ],
+    "pathString": "Nairobi > Embakasi > Donholm > Lower Savannah",
+    "displayLocation": "Donholm · Lower Savannah · Embakasi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-embakasi-village",
+    "name": "Embakasi Village",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "embakasi village",
+      "embakasi embakasi village",
+      "embakasi village embakasi",
+      "nairobi embakasi village"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Embakasi Village"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-embakasi-village"
+    ],
+    "pathString": "Nairobi > Embakasi > Embakasi Village",
+    "displayLocation": "Embakasi · Embakasi Village, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-pipeline",
+    "name": "Pipeline",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Pipeline Embakasi"
+    ],
+    "searchTerms": [
+      "pipeline",
+      "embakasi pipeline",
+      "pipeline embakasi",
+      "nairobi pipeline",
+      "embakasi pipeline embakasi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Pipeline"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-pipeline"
+    ],
+    "pathString": "Nairobi > Embakasi > Pipeline",
+    "displayLocation": "Embakasi · Pipeline, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-tassia",
+    "name": "Tassia",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Tassia Estate",
+      "Tassia Hill"
+    ],
+    "searchTerms": [
+      "tassia",
+      "embakasi tassia",
+      "tassia embakasi",
+      "nairobi tassia",
+      "tassia estate",
+      "embakasi tassia estate",
+      "tassia hill",
+      "embakasi tassia hill"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Tassia"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-tassia"
+    ],
+    "pathString": "Nairobi > Embakasi > Tassia",
+    "displayLocation": "Embakasi · Tassia, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-fedha",
+    "name": "Fedha",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Fedha Estate"
+    ],
+    "searchTerms": [
+      "fedha",
+      "embakasi fedha",
+      "fedha embakasi",
+      "nairobi fedha",
+      "fedha estate",
+      "embakasi fedha estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Fedha"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-fedha"
+    ],
+    "pathString": "Nairobi > Embakasi > Fedha",
+    "displayLocation": "Embakasi · Fedha, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-kwa-njenga",
+    "name": "Kwa Njenga",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kwa njenga",
+      "embakasi kwa njenga",
+      "kwa njenga embakasi",
+      "nairobi kwa njenga"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Kwa Njenga"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-kwa-njenga"
+    ],
+    "pathString": "Nairobi > Embakasi > Kwa Njenga",
+    "displayLocation": "Embakasi · Kwa Njenga, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-kwa-reuben",
+    "name": "Kwa Reuben",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kwa reuben",
+      "embakasi kwa reuben",
+      "kwa reuben embakasi",
+      "nairobi kwa reuben"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Kwa Reuben"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-kwa-reuben"
+    ],
+    "pathString": "Nairobi > Embakasi > Kwa Reuben",
+    "displayLocation": "Embakasi · Kwa Reuben, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-kware",
+    "name": "Kware",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kware",
+      "embakasi kware",
+      "kware embakasi",
+      "nairobi kware"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Kware"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-kware"
+    ],
+    "pathString": "Nairobi > Embakasi > Kware",
+    "displayLocation": "Embakasi · Kware, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-imara-daima",
+    "name": "Imara Daima",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "imara daima",
+      "embakasi imara daima",
+      "imara daima embakasi",
+      "nairobi imara daima"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Imara Daima"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-imara-daima"
+    ],
+    "pathString": "Nairobi > Embakasi > Imara Daima",
+    "displayLocation": "Embakasi · Imara Daima, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-transami",
+    "name": "Transami",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "transami",
+      "embakasi transami",
+      "transami embakasi",
+      "nairobi transami"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Transami"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-transami"
+    ],
+    "pathString": "Nairobi > Embakasi > Transami",
+    "displayLocation": "Embakasi · Transami, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-tena",
+    "name": "Tena",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Tena Estate"
+    ],
+    "searchTerms": [
+      "tena",
+      "embakasi tena",
+      "tena embakasi",
+      "nairobi tena",
+      "tena estate",
+      "embakasi tena estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Tena"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-tena"
+    ],
+    "pathString": "Nairobi > Embakasi > Tena",
+    "displayLocation": "Embakasi · Tena, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-mowlem",
+    "name": "Mowlem",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mowlem",
+      "embakasi mowlem",
+      "mowlem embakasi",
+      "nairobi mowlem"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Mowlem"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-mowlem"
+    ],
+    "pathString": "Nairobi > Embakasi > Mowlem",
+    "displayLocation": "Embakasi · Mowlem, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-savannah",
+    "name": "Savannah",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "savannah",
+      "embakasi savannah",
+      "savannah embakasi",
+      "nairobi savannah"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Savannah"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-savannah"
+    ],
+    "pathString": "Nairobi > Embakasi > Savannah",
+    "displayLocation": "Embakasi · Savannah, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-upper-savannah",
+    "name": "Upper Savannah",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "upper savannah",
+      "embakasi upper savannah",
+      "upper savannah embakasi",
+      "nairobi upper savannah"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Upper Savannah"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-upper-savannah"
+    ],
+    "pathString": "Nairobi > Embakasi > Upper Savannah",
+    "displayLocation": "Embakasi · Upper Savannah, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-lower-savannah",
+    "name": "Lower Savannah",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "lower savannah",
+      "embakasi lower savannah",
+      "lower savannah embakasi",
+      "nairobi lower savannah"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Lower Savannah"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-lower-savannah"
+    ],
+    "pathString": "Nairobi > Embakasi > Lower Savannah",
+    "displayLocation": "Embakasi · Lower Savannah, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-mihango",
+    "name": "Mihang'o",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Mihango"
+    ],
+    "searchTerms": [
+      "mihang'o",
+      "embakasi mihang'o",
+      "mihang'o embakasi",
+      "nairobi mihang'o",
+      "mihango",
+      "embakasi mihango"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Mihang'o"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-mihango"
+    ],
+    "pathString": "Nairobi > Embakasi > Mihang'o",
+    "displayLocation": "Embakasi · Mihang'o, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-utawala",
+    "name": "Utawala",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Utawala Area",
+      "Shooters"
+    ],
+    "searchTerms": [
+      "utawala",
+      "embakasi utawala",
+      "utawala embakasi",
+      "nairobi utawala",
+      "utawala area",
+      "embakasi utawala area",
+      "shooters",
+      "embakasi shooters"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Utawala"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-utawala"
+    ],
+    "pathString": "Nairobi > Embakasi > Utawala",
+    "displayLocation": "Embakasi · Utawala, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-embakasi-mukuru-kwa-njenga",
+    "name": "Mukuru Kwa Njenga",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-embakasi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mukuru kwa njenga",
+      "embakasi mukuru kwa njenga",
+      "mukuru kwa njenga embakasi",
+      "nairobi mukuru kwa njenga"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Embakasi",
+      "Mukuru Kwa Njenga"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-embakasi",
+      "loc-county-nairobi-embakasi-mukuru-kwa-njenga"
+    ],
+    "pathString": "Nairobi > Embakasi > Mukuru Kwa Njenga",
+    "displayLocation": "Embakasi · Mukuru Kwa Njenga, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani",
+    "name": "Kasarani",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kasarani Area"
+    ],
+    "searchTerms": [
+      "kasarani",
+      "nairobi kasarani",
+      "kasarani nairobi",
+      "kasarani area",
+      "nairobi kasarani area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani"
+    ],
+    "pathString": "Nairobi > Kasarani",
+    "displayLocation": "Kasarani, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-mwiki",
+    "name": "Mwiki",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mwiki",
+      "kasarani mwiki",
+      "mwiki kasarani",
+      "nairobi mwiki"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Mwiki"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-mwiki"
+    ],
+    "pathString": "Nairobi > Kasarani > Mwiki",
+    "displayLocation": "Kasarani · Mwiki, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-clay-city",
+    "name": "Clay City",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "clay city",
+      "kasarani clay city",
+      "clay city kasarani",
+      "nairobi clay city"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Clay City"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-clay-city"
+    ],
+    "pathString": "Nairobi > Kasarani > Clay City",
+    "displayLocation": "Kasarani · Clay City, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-njiru",
+    "name": "Njiru",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "njiru",
+      "kasarani njiru",
+      "njiru kasarani",
+      "nairobi njiru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Njiru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-njiru"
+    ],
+    "pathString": "Nairobi > Kasarani > Njiru",
+    "displayLocation": "Kasarani · Njiru, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-ruai",
+    "name": "Ruai",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ruai",
+      "kasarani ruai",
+      "ruai kasarani",
+      "nairobi ruai"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Ruai"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-ruai"
+    ],
+    "pathString": "Nairobi > Kasarani > Ruai",
+    "displayLocation": "Kasarani · Ruai, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-seasons",
+    "name": "Seasons",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Seasons Kasarani"
+    ],
+    "searchTerms": [
+      "seasons",
+      "kasarani seasons",
+      "seasons kasarani",
+      "nairobi seasons",
+      "kasarani seasons kasarani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Seasons"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-seasons"
+    ],
+    "pathString": "Nairobi > Kasarani > Seasons",
+    "displayLocation": "Kasarani · Seasons, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-sunton",
+    "name": "Sunton",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "sunton",
+      "kasarani sunton",
+      "sunton kasarani",
+      "nairobi sunton"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Sunton"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-sunton"
+    ],
+    "pathString": "Nairobi > Kasarani > Sunton",
+    "displayLocation": "Kasarani · Sunton, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-hunters",
+    "name": "Hunters",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Hunters Kasarani"
+    ],
+    "searchTerms": [
+      "hunters",
+      "kasarani hunters",
+      "hunters kasarani",
+      "nairobi hunters",
+      "kasarani hunters kasarani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Hunters"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-hunters"
+    ],
+    "pathString": "Nairobi > Kasarani > Hunters",
+    "displayLocation": "Kasarani · Hunters, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-kwa-chief",
+    "name": "Kwa Chief",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kwa chief",
+      "kasarani kwa chief",
+      "kwa chief kasarani",
+      "nairobi kwa chief"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Kwa Chief"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-kwa-chief"
+    ],
+    "pathString": "Nairobi > Kasarani > Kwa Chief",
+    "displayLocation": "Kasarani · Kwa Chief, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-kasarani-stage",
+    "name": "Kasarani Stage",
+    "type": "STAGE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kasarani stage",
+      "kasarani kasarani stage",
+      "kasarani stage kasarani",
+      "nairobi kasarani stage"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Kasarani Stage"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-kasarani-stage"
+    ],
+    "pathString": "Nairobi > Kasarani > Kasarani Stage",
+    "displayLocation": "Kasarani · Kasarani Stage, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-ruaraka",
+    "name": "Ruaraka",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ruaraka",
+      "kasarani ruaraka",
+      "ruaraka kasarani",
+      "nairobi ruaraka"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Ruaraka"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-ruaraka"
+    ],
+    "pathString": "Nairobi > Kasarani > Ruaraka",
+    "displayLocation": "Kasarani · Ruaraka, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-babadogo",
+    "name": "Babadogo",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "babadogo",
+      "kasarani babadogo",
+      "babadogo kasarani",
+      "nairobi babadogo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Babadogo"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-babadogo"
+    ],
+    "pathString": "Nairobi > Kasarani > Babadogo",
+    "displayLocation": "Kasarani · Babadogo, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-utalii",
+    "name": "Utalii",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "utalii",
+      "kasarani utalii",
+      "utalii kasarani",
+      "nairobi utalii"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Utalii"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-utalii"
+    ],
+    "pathString": "Nairobi > Kasarani > Utalii",
+    "displayLocation": "Kasarani · Utalii, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-mathare-north",
+    "name": "Mathare North",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mathare north",
+      "kasarani mathare north",
+      "mathare north kasarani",
+      "nairobi mathare north"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Mathare North"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-mathare-north"
+    ],
+    "pathString": "Nairobi > Kasarani > Mathare North",
+    "displayLocation": "Kasarani · Mathare North, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-lucky-summer",
+    "name": "Lucky Summer",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "lucky summer",
+      "kasarani lucky summer",
+      "lucky summer kasarani",
+      "nairobi lucky summer"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Lucky Summer"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-lucky-summer"
+    ],
+    "pathString": "Nairobi > Kasarani > Lucky Summer",
+    "displayLocation": "Kasarani · Lucky Summer, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-korogocho",
+    "name": "Korogocho",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "korogocho",
+      "kasarani korogocho",
+      "korogocho kasarani",
+      "nairobi korogocho"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Korogocho"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-korogocho"
+    ],
+    "pathString": "Nairobi > Kasarani > Korogocho",
+    "displayLocation": "Kasarani · Korogocho, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-mathare",
+    "name": "Mathare",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mathare",
+      "kasarani mathare",
+      "mathare kasarani",
+      "nairobi mathare"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Mathare"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-mathare"
+    ],
+    "pathString": "Nairobi > Kasarani > Mathare",
+    "displayLocation": "Kasarani · Mathare, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-huruma",
+    "name": "Huruma",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "huruma",
+      "kasarani huruma",
+      "huruma kasarani",
+      "nairobi huruma"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Huruma"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-huruma"
+    ],
+    "pathString": "Nairobi > Kasarani > Huruma",
+    "displayLocation": "Kasarani · Huruma, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-mlango-kubwa",
+    "name": "Mlango Kubwa",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mlango kubwa",
+      "kasarani mlango kubwa",
+      "mlango kubwa kasarani",
+      "nairobi mlango kubwa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Mlango Kubwa"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-mlango-kubwa"
+    ],
+    "pathString": "Nairobi > Kasarani > Mlango Kubwa",
+    "displayLocation": "Kasarani · Mlango Kubwa, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-ngei",
+    "name": "Ngei",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ngei",
+      "kasarani ngei",
+      "ngei kasarani",
+      "nairobi ngei"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Ngei"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-ngei"
+    ],
+    "pathString": "Nairobi > Kasarani > Ngei",
+    "displayLocation": "Kasarani · Ngei, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kasarani-mabatini",
+    "name": "Mabatini",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kasarani",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mabatini",
+      "kasarani mabatini",
+      "mabatini kasarani",
+      "nairobi mabatini"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kasarani",
+      "Mabatini"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kasarani",
+      "loc-county-nairobi-kasarani-mabatini"
+    ],
+    "pathString": "Nairobi > Kasarani > Mabatini",
+    "displayLocation": "Kasarani · Mabatini, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu",
+    "name": "Roysambu",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Roysambu Area"
+    ],
+    "searchTerms": [
+      "roysambu",
+      "nairobi roysambu",
+      "roysambu nairobi",
+      "roysambu area",
+      "nairobi roysambu area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu"
+    ],
+    "pathString": "Nairobi > Roysambu",
+    "displayLocation": "Roysambu, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-roysambu",
+    "name": "Roysambu",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Roysambu Roundabout",
+      "TRM Area"
+    ],
+    "searchTerms": [
+      "roysambu",
+      "roysambu roysambu",
+      "nairobi roysambu",
+      "roysambu roundabout",
+      "roysambu roysambu roundabout",
+      "trm area",
+      "roysambu trm area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Roysambu"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-roysambu"
+    ],
+    "pathString": "Nairobi > Roysambu > Roysambu",
+    "displayLocation": "Roysambu · Roysambu, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-zimmerman",
+    "name": "Zimmerman",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Zimma"
+    ],
+    "searchTerms": [
+      "zimmerman",
+      "roysambu zimmerman",
+      "zimmerman roysambu",
+      "nairobi zimmerman",
+      "zimma",
+      "roysambu zimma"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Zimmerman"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-zimmerman"
+    ],
+    "pathString": "Nairobi > Roysambu > Zimmerman",
+    "displayLocation": "Roysambu · Zimmerman, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-githurai",
+    "name": "Githurai",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Githurai 44"
+    ],
+    "searchTerms": [
+      "githurai",
+      "roysambu githurai",
+      "githurai roysambu",
+      "nairobi githurai",
+      "githurai 44",
+      "roysambu githurai 44"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Githurai"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-githurai"
+    ],
+    "pathString": "Nairobi > Roysambu > Githurai",
+    "displayLocation": "Roysambu · Githurai, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-kahawa",
+    "name": "Kahawa",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kahawa",
+      "roysambu kahawa",
+      "kahawa roysambu",
+      "nairobi kahawa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Kahawa"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-kahawa"
+    ],
+    "pathString": "Nairobi > Roysambu > Kahawa",
+    "displayLocation": "Roysambu · Kahawa, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-kahawa-west",
+    "name": "Kahawa West",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kahawa west",
+      "roysambu kahawa west",
+      "kahawa west roysambu",
+      "nairobi kahawa west"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Kahawa West"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-kahawa-west"
+    ],
+    "pathString": "Nairobi > Roysambu > Kahawa West",
+    "displayLocation": "Roysambu · Kahawa West, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-kahawa-sukari",
+    "name": "Kahawa Sukari",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kahawa sukari",
+      "roysambu kahawa sukari",
+      "kahawa sukari roysambu",
+      "nairobi kahawa sukari"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Kahawa Sukari"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-kahawa-sukari"
+    ],
+    "pathString": "Nairobi > Roysambu > Kahawa Sukari",
+    "displayLocation": "Roysambu · Kahawa Sukari, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-mirema",
+    "name": "Mirema",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Mirema Drive"
+    ],
+    "searchTerms": [
+      "mirema",
+      "roysambu mirema",
+      "mirema roysambu",
+      "nairobi mirema",
+      "mirema drive",
+      "roysambu mirema drive"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Mirema"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-mirema"
+    ],
+    "pathString": "Nairobi > Roysambu > Mirema",
+    "displayLocation": "Roysambu · Mirema, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-thome",
+    "name": "Thome",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "thome",
+      "roysambu thome",
+      "thome roysambu",
+      "nairobi thome"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Thome"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-thome"
+    ],
+    "pathString": "Nairobi > Roysambu > Thome",
+    "displayLocation": "Roysambu · Thome, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-marurui",
+    "name": "Marurui",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "marurui",
+      "roysambu marurui",
+      "marurui roysambu",
+      "nairobi marurui"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Marurui"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-marurui"
+    ],
+    "pathString": "Nairobi > Roysambu > Marurui",
+    "displayLocation": "Roysambu · Marurui, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-garden-estate",
+    "name": "Garden Estate",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "garden estate",
+      "roysambu garden estate",
+      "garden estate roysambu",
+      "nairobi garden estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Garden Estate"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-garden-estate"
+    ],
+    "pathString": "Nairobi > Roysambu > Garden Estate",
+    "displayLocation": "Roysambu · Garden Estate, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-roysambu-ridgeways",
+    "name": "Ridgeways",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-roysambu",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ridgeways",
+      "roysambu ridgeways",
+      "ridgeways roysambu",
+      "nairobi ridgeways"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Roysambu",
+      "Ridgeways"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-roysambu",
+      "loc-county-nairobi-roysambu-ridgeways"
+    ],
+    "pathString": "Nairobi > Roysambu > Ridgeways",
+    "displayLocation": "Roysambu · Ridgeways, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor",
+    "name": "Ruai Corridor",
+    "type": "AREA",
+    "parentId": "loc-county-nairobi",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Ruai Area"
+    ],
+    "searchTerms": [
+      "ruai corridor",
+      "nairobi ruai corridor",
+      "ruai corridor nairobi",
+      "ruai area",
+      "nairobi ruai area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor"
+    ],
+    "pathString": "Nairobi > Ruai Corridor",
+    "displayLocation": "Ruai Corridor, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor-ruai",
+    "name": "Ruai",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-ruai-corridor",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ruai",
+      "ruai corridor ruai",
+      "ruai ruai corridor",
+      "nairobi ruai"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor",
+      "Ruai"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor",
+      "loc-county-nairobi-ruai-corridor-ruai"
+    ],
+    "pathString": "Nairobi > Ruai Corridor > Ruai",
+    "displayLocation": "Ruai Corridor · Ruai, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor-kamulu",
+    "name": "Kamulu",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-ruai-corridor",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kamulu",
+      "ruai corridor kamulu",
+      "kamulu ruai corridor",
+      "nairobi kamulu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor",
+      "Kamulu"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor",
+      "loc-county-nairobi-ruai-corridor-kamulu"
+    ],
+    "pathString": "Nairobi > Ruai Corridor > Kamulu",
+    "displayLocation": "Ruai Corridor · Kamulu, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor-njiru",
+    "name": "Njiru",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-ruai-corridor",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "njiru",
+      "ruai corridor njiru",
+      "njiru ruai corridor",
+      "nairobi njiru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor",
+      "Njiru"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor",
+      "loc-county-nairobi-ruai-corridor-njiru"
+    ],
+    "pathString": "Nairobi > Ruai Corridor > Njiru",
+    "displayLocation": "Ruai Corridor · Njiru, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor-mihango",
+    "name": "Mihang'o",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-ruai-corridor",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mihang'o",
+      "ruai corridor mihang'o",
+      "mihang'o ruai corridor",
+      "nairobi mihang'o"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor",
+      "Mihang'o"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor",
+      "loc-county-nairobi-ruai-corridor-mihango"
+    ],
+    "pathString": "Nairobi > Ruai Corridor > Mihang'o",
+    "displayLocation": "Ruai Corridor · Mihang'o, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor-mowlem",
+    "name": "Mowlem",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-ruai-corridor",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mowlem",
+      "ruai corridor mowlem",
+      "mowlem ruai corridor",
+      "nairobi mowlem"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor",
+      "Mowlem"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor",
+      "loc-county-nairobi-ruai-corridor-mowlem"
+    ],
+    "pathString": "Nairobi > Ruai Corridor > Mowlem",
+    "displayLocation": "Ruai Corridor · Mowlem, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor-njathaini",
+    "name": "Njathaini",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-ruai-corridor",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "njathaini",
+      "ruai corridor njathaini",
+      "njathaini ruai corridor",
+      "nairobi njathaini"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor",
+      "Njathaini"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor",
+      "loc-county-nairobi-ruai-corridor-njathaini"
+    ],
+    "pathString": "Nairobi > Ruai Corridor > Njathaini",
+    "displayLocation": "Ruai Corridor · Njathaini, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor-tena",
+    "name": "Tena",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-ruai-corridor",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "tena",
+      "ruai corridor tena",
+      "tena ruai corridor",
+      "nairobi tena"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor",
+      "Tena"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor",
+      "loc-county-nairobi-ruai-corridor-tena"
+    ],
+    "pathString": "Nairobi > Ruai Corridor > Tena",
+    "displayLocation": "Ruai Corridor · Tena, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-ruai-corridor-utawala",
+    "name": "Utawala",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-ruai-corridor",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "utawala",
+      "ruai corridor utawala",
+      "utawala ruai corridor",
+      "nairobi utawala"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Ruai Corridor",
+      "Utawala"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-ruai-corridor",
+      "loc-county-nairobi-ruai-corridor-utawala"
+    ],
+    "pathString": "Nairobi > Ruai Corridor > Utawala",
+    "displayLocation": "Ruai Corridor · Utawala, Nairobi"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo",
+    "name": "Mlolongo",
+    "type": "TOWN",
+    "parentId": "loc-county-machakos",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Mlolongo Town"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "machakos mlolongo",
+      "mlolongo machakos",
+      "mlolongo town",
+      "machakos mlolongo town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo"
+    ],
+    "pathString": "Machakos > Mlolongo",
+    "displayLocation": "Mlolongo, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-mlolongo-town",
+    "name": "Mlolongo Town",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mlolongo town",
+      "mlolongo mlolongo town",
+      "mlolongo town mlolongo",
+      "machakos mlolongo town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Town"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-mlolongo-town"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Town",
+    "displayLocation": "Mlolongo · Mlolongo Town, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-katani",
+    "name": "Katani",
+    "type": "ESTATE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Katani Road"
+    ],
+    "searchTerms": [
+      "katani",
+      "mlolongo katani",
+      "katani mlolongo",
+      "machakos katani",
+      "katani road",
+      "mlolongo katani road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Katani"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-katani"
+    ],
+    "pathString": "Machakos > Mlolongo > Katani",
+    "displayLocation": "Mlolongo · Katani, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-syokimau",
+    "name": "Syokimau",
+    "type": "ESTATE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Syokimau Gateway"
+    ],
+    "searchTerms": [
+      "syokimau",
+      "mlolongo syokimau",
+      "syokimau mlolongo",
+      "machakos syokimau",
+      "syokimau gateway",
+      "mlolongo syokimau gateway"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Syokimau"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-syokimau"
+    ],
+    "pathString": "Machakos > Mlolongo > Syokimau",
+    "displayLocation": "Mlolongo · Syokimau, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-athi-river",
+    "name": "Athi River",
+    "type": "TOWN",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "athi river",
+      "mlolongo athi river",
+      "athi river mlolongo",
+      "machakos athi river"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Athi River"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-athi-river"
+    ],
+    "pathString": "Machakos > Mlolongo > Athi River",
+    "displayLocation": "Mlolongo · Athi River, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-great-wall",
+    "name": "Great Wall",
+    "type": "ESTATE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Great Wall Gardens"
+    ],
+    "searchTerms": [
+      "great wall",
+      "mlolongo great wall",
+      "great wall mlolongo",
+      "machakos great wall",
+      "great wall gardens",
+      "mlolongo great wall gardens"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall",
+    "displayLocation": "Mlolongo · Great Wall, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-sheshe-gardens",
+    "name": "Sheshe Gardens",
+    "type": "ESTATE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Sheshe Gardens Mlolongo",
+      "Sheshe"
+    ],
+    "searchTerms": [
+      "sheshe gardens",
+      "mlolongo sheshe gardens",
+      "sheshe gardens mlolongo",
+      "machakos sheshe gardens",
+      "mlolongo sheshe gardens mlolongo",
+      "sheshe",
+      "mlolongo sheshe"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Sheshe Gardens"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-sheshe-gardens"
+    ],
+    "pathString": "Machakos > Mlolongo > Sheshe Gardens",
+    "displayLocation": "Mlolongo · Sheshe Gardens, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-sheshe-gardens-phase-1",
+    "name": "Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-sheshe-gardens",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Sheshe Gardens Phase 1",
+      "Sheshe Phase 1"
+    ],
+    "searchTerms": [
+      "phase 1",
+      "sheshe gardens phase 1",
+      "phase 1 sheshe gardens",
+      "machakos phase 1",
+      "mlolongo phase 1",
+      "sheshe gardens sheshe gardens phase 1",
+      "sheshe phase 1",
+      "sheshe gardens sheshe phase 1"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Sheshe Gardens",
+      "Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-sheshe-gardens",
+      "loc-county-machakos-mlolongo-sheshe-gardens-phase-1"
+    ],
+    "pathString": "Machakos > Mlolongo > Sheshe Gardens > Phase 1",
+    "displayLocation": "Sheshe Gardens · Phase 1 · Mlolongo, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-sheshe-gardens-phase-2",
+    "name": "Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-sheshe-gardens",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Sheshe Gardens Phase 2",
+      "Sheshe Phase 2"
+    ],
+    "searchTerms": [
+      "phase 2",
+      "sheshe gardens phase 2",
+      "phase 2 sheshe gardens",
+      "machakos phase 2",
+      "mlolongo phase 2",
+      "sheshe gardens sheshe gardens phase 2",
+      "sheshe phase 2",
+      "sheshe gardens sheshe phase 2"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Sheshe Gardens",
+      "Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-sheshe-gardens",
+      "loc-county-machakos-mlolongo-sheshe-gardens-phase-2"
+    ],
+    "pathString": "Machakos > Mlolongo > Sheshe Gardens > Phase 2",
+    "displayLocation": "Sheshe Gardens · Phase 2 · Mlolongo, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-sabaki",
+    "name": "Sabaki",
+    "type": "ESTATE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "sabaki",
+      "mlolongo sabaki",
+      "sabaki mlolongo",
+      "machakos sabaki"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Sabaki"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-sabaki"
+    ],
+    "pathString": "Machakos > Mlolongo > Sabaki",
+    "displayLocation": "Mlolongo · Sabaki, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-mavoko",
+    "name": "Mavoko",
+    "type": "AREA",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mavoko",
+      "mlolongo mavoko",
+      "mavoko mlolongo",
+      "machakos mavoko"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mavoko"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-mavoko"
+    ],
+    "pathString": "Machakos > Mlolongo > Mavoko",
+    "displayLocation": "Mlolongo · Mavoko, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-kinanie",
+    "name": "Kinanie",
+    "type": "ESTATE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kinanie",
+      "mlolongo kinanie",
+      "kinanie mlolongo",
+      "machakos kinanie"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Kinanie"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-kinanie"
+    ],
+    "pathString": "Machakos > Mlolongo > Kinanie",
+    "displayLocation": "Mlolongo · Kinanie, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-athi-river",
+    "name": "Athi River",
+    "type": "TOWN",
+    "parentId": "loc-county-machakos",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Athi River Town"
+    ],
+    "searchTerms": [
+      "athi river",
+      "machakos athi river",
+      "athi river machakos",
+      "athi river town",
+      "machakos athi river town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Athi River"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-athi-river"
+    ],
+    "pathString": "Machakos > Athi River",
+    "displayLocation": "Athi River, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-athi-river-mavoko",
+    "name": "Mavoko",
+    "type": "AREA",
+    "parentId": "loc-county-machakos-athi-river",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mavoko",
+      "athi river mavoko",
+      "mavoko athi river",
+      "machakos mavoko"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Athi River",
+      "Mavoko"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-athi-river",
+      "loc-county-machakos-athi-river-mavoko"
+    ],
+    "pathString": "Machakos > Athi River > Mavoko",
+    "displayLocation": "Athi River · Mavoko, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-athi-river-daystar",
+    "name": "Daystar",
+    "type": "LANDMARK",
+    "parentId": "loc-county-machakos-athi-river",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Daystar University Environs"
+    ],
+    "searchTerms": [
+      "daystar",
+      "athi river daystar",
+      "daystar athi river",
+      "machakos daystar",
+      "daystar university environs",
+      "athi river daystar university environs"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Athi River",
+      "Daystar"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-athi-river",
+      "loc-county-machakos-athi-river-daystar"
+    ],
+    "pathString": "Machakos > Athi River > Daystar",
+    "displayLocation": "Athi River · Daystar, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-athi-river-kinanie",
+    "name": "Kinanie",
+    "type": "ESTATE",
+    "parentId": "loc-county-machakos-athi-river",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kinanie",
+      "athi river kinanie",
+      "kinanie athi river",
+      "machakos kinanie"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Athi River",
+      "Kinanie"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-athi-river",
+      "loc-county-machakos-athi-river-kinanie"
+    ],
+    "pathString": "Machakos > Athi River > Kinanie",
+    "displayLocation": "Athi River · Kinanie, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-athi-river-great-wall",
+    "name": "Great Wall",
+    "type": "ESTATE",
+    "parentId": "loc-county-machakos-athi-river",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "great wall",
+      "athi river great wall",
+      "great wall athi river",
+      "machakos great wall"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Athi River",
+      "Great Wall"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-athi-river",
+      "loc-county-machakos-athi-river-great-wall"
+    ],
+    "pathString": "Machakos > Athi River > Great Wall",
+    "displayLocation": "Athi River · Great Wall, Machakos"
+  },
+  {
+    "id": "loc-county-machakos-athi-river-mlolongo-corridor",
+    "name": "Mlolongo corridor",
+    "type": "AREA",
+    "parentId": "loc-county-machakos-athi-river",
+    "countyId": "loc-county-machakos",
+    "county": "Machakos",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mlolongo corridor",
+      "athi river mlolongo corridor",
+      "mlolongo corridor athi river",
+      "machakos mlolongo corridor"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Machakos",
+      "Athi River",
+      "Mlolongo corridor"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-athi-river",
+      "loc-county-machakos-athi-river-mlolongo-corridor"
+    ],
+    "pathString": "Machakos > Athi River > Mlolongo corridor",
+    "displayLocation": "Athi River · Mlolongo corridor, Machakos"
+  },
+  {
+    "id": "loc-county-kajiado-kitengela",
+    "name": "Kitengela",
+    "type": "TOWN",
+    "parentId": "loc-county-kajiado",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kitengela Town",
+      "Kite"
+    ],
+    "searchTerms": [
+      "kitengela",
+      "kajiado kitengela",
+      "kitengela kajiado",
+      "kitengela town",
+      "kajiado kitengela town",
+      "kite",
+      "kajiado kite"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Kitengela"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-kitengela"
+    ],
+    "pathString": "Kajiado > Kitengela",
+    "displayLocation": "Kitengela, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-kitengela-acacia",
+    "name": "Acacia",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-kitengela",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Acacia Kitengela"
+    ],
+    "searchTerms": [
+      "acacia",
+      "kitengela acacia",
+      "acacia kitengela",
+      "kajiado acacia",
+      "kitengela acacia kitengela"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Kitengela",
+      "Acacia"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-kitengela",
+      "loc-county-kajiado-kitengela-acacia"
+    ],
+    "pathString": "Kajiado > Kitengela > Acacia",
+    "displayLocation": "Kitengela · Acacia, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-kitengela-milimani",
+    "name": "Milimani",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-kitengela",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Milimani Kitengela"
+    ],
+    "searchTerms": [
+      "milimani",
+      "kitengela milimani",
+      "milimani kitengela",
+      "kajiado milimani",
+      "kitengela milimani kitengela"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Kitengela",
+      "Milimani"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-kitengela",
+      "loc-county-kajiado-kitengela-milimani"
+    ],
+    "pathString": "Kajiado > Kitengela > Milimani",
+    "displayLocation": "Kitengela · Milimani, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-kitengela-yukos",
+    "name": "Yukos",
+    "type": "STAGE",
+    "parentId": "loc-county-kajiado-kitengela",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Yukos Kitengela"
+    ],
+    "searchTerms": [
+      "yukos",
+      "kitengela yukos",
+      "yukos kitengela",
+      "kajiado yukos",
+      "kitengela yukos kitengela"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Kitengela",
+      "Yukos"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-kitengela",
+      "loc-county-kajiado-kitengela-yukos"
+    ],
+    "pathString": "Kajiado > Kitengela > Yukos",
+    "displayLocation": "Kitengela · Yukos, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-kitengela-new-valley",
+    "name": "New Valley",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-kitengela",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "new valley",
+      "kitengela new valley",
+      "new valley kitengela",
+      "kajiado new valley"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Kitengela",
+      "New Valley"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-kitengela",
+      "loc-county-kajiado-kitengela-new-valley"
+    ],
+    "pathString": "Kajiado > Kitengela > New Valley",
+    "displayLocation": "Kitengela · New Valley, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-kitengela-muigai",
+    "name": "Muigai",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-kitengela",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "muigai",
+      "kitengela muigai",
+      "muigai kitengela",
+      "kajiado muigai"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Kitengela",
+      "Muigai"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-kitengela",
+      "loc-county-kajiado-kitengela-muigai"
+    ],
+    "pathString": "Kajiado > Kitengela > Muigai",
+    "displayLocation": "Kitengela · Muigai, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-kitengela-isinya-road",
+    "name": "Isinya Road",
+    "type": "ROAD",
+    "parentId": "loc-county-kajiado-kitengela",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "isinya road",
+      "kitengela isinya road",
+      "isinya road kitengela",
+      "kajiado isinya road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Kitengela",
+      "Isinya Road"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-kitengela",
+      "loc-county-kajiado-kitengela-isinya-road"
+    ],
+    "pathString": "Kajiado > Kitengela > Isinya Road",
+    "displayLocation": "Kitengela · Isinya Road, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-kitengela-epz",
+    "name": "EPZ",
+    "type": "LANDMARK",
+    "parentId": "loc-county-kajiado-kitengela",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "epz",
+      "kitengela epz",
+      "epz kitengela",
+      "kajiado epz"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Kitengela",
+      "EPZ"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-kitengela",
+      "loc-county-kajiado-kitengela-epz"
+    ],
+    "pathString": "Kajiado > Kitengela > EPZ",
+    "displayLocation": "Kitengela · EPZ, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ongata-rongai",
+    "name": "Ongata Rongai",
+    "type": "TOWN",
+    "parentId": "loc-county-kajiado",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Rongai",
+      "Ronga"
+    ],
+    "searchTerms": [
+      "ongata rongai",
+      "kajiado ongata rongai",
+      "ongata rongai kajiado",
+      "rongai",
+      "kajiado rongai",
+      "ronga",
+      "kajiado ronga"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ongata Rongai"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ongata-rongai"
+    ],
+    "pathString": "Kajiado > Ongata Rongai",
+    "displayLocation": "Ongata Rongai, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ongata-rongai-rongai",
+    "name": "Rongai",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-ongata-rongai",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Rongai Town"
+    ],
+    "searchTerms": [
+      "rongai",
+      "ongata rongai rongai",
+      "rongai ongata rongai",
+      "kajiado rongai",
+      "rongai town",
+      "ongata rongai rongai town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ongata Rongai",
+      "Rongai"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ongata-rongai",
+      "loc-county-kajiado-ongata-rongai-rongai"
+    ],
+    "pathString": "Kajiado > Ongata Rongai > Rongai",
+    "displayLocation": "Ongata Rongai · Rongai, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ongata-rongai-tuala",
+    "name": "Tuala",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-ongata-rongai",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "tuala",
+      "ongata rongai tuala",
+      "tuala ongata rongai",
+      "kajiado tuala"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ongata Rongai",
+      "Tuala"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ongata-rongai",
+      "loc-county-kajiado-ongata-rongai-tuala"
+    ],
+    "pathString": "Kajiado > Ongata Rongai > Tuala",
+    "displayLocation": "Ongata Rongai · Tuala, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ongata-rongai-kiserian",
+    "name": "Kiserian",
+    "type": "TOWN",
+    "parentId": "loc-county-kajiado-ongata-rongai",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kiserian Town"
+    ],
+    "searchTerms": [
+      "kiserian",
+      "ongata rongai kiserian",
+      "kiserian ongata rongai",
+      "kajiado kiserian",
+      "kiserian town",
+      "ongata rongai kiserian town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ongata Rongai",
+      "Kiserian"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ongata-rongai",
+      "loc-county-kajiado-ongata-rongai-kiserian"
+    ],
+    "pathString": "Kajiado > Ongata Rongai > Kiserian",
+    "displayLocation": "Ongata Rongai · Kiserian, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ongata-rongai-oloolua",
+    "name": "Oloolua",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-ongata-rongai",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "oloolua",
+      "ongata rongai oloolua",
+      "oloolua ongata rongai",
+      "kajiado oloolua"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ongata Rongai",
+      "Oloolua"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ongata-rongai",
+      "loc-county-kajiado-ongata-rongai-oloolua"
+    ],
+    "pathString": "Kajiado > Ongata Rongai > Oloolua",
+    "displayLocation": "Ongata Rongai · Oloolua, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ongata-rongai-kibiko",
+    "name": "Kibiko",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-ongata-rongai",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kibiko",
+      "ongata rongai kibiko",
+      "kibiko ongata rongai",
+      "kajiado kibiko"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ongata Rongai",
+      "Kibiko"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ongata-rongai",
+      "loc-county-kajiado-ongata-rongai-kibiko"
+    ],
+    "pathString": "Kajiado > Ongata Rongai > Kibiko",
+    "displayLocation": "Ongata Rongai · Kibiko, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ngong",
+    "name": "Ngong",
+    "type": "TOWN",
+    "parentId": "loc-county-kajiado",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Ngong Town"
+    ],
+    "searchTerms": [
+      "ngong",
+      "kajiado ngong",
+      "ngong kajiado",
+      "ngong town",
+      "kajiado ngong town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ngong"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ngong"
+    ],
+    "pathString": "Kajiado > Ngong",
+    "displayLocation": "Ngong, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ngong-ngong-town",
+    "name": "Ngong Town",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-kajiado-ngong",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ngong town",
+      "ngong ngong town",
+      "ngong town ngong",
+      "kajiado ngong town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ngong",
+      "Ngong Town"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ngong",
+      "loc-county-kajiado-ngong-ngong-town"
+    ],
+    "pathString": "Kajiado > Ngong > Ngong Town",
+    "displayLocation": "Ngong · Ngong Town, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ngong-oloolua",
+    "name": "Oloolua",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-ngong",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "oloolua",
+      "ngong oloolua",
+      "oloolua ngong",
+      "kajiado oloolua"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ngong",
+      "Oloolua"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ngong",
+      "loc-county-kajiado-ngong-oloolua"
+    ],
+    "pathString": "Kajiado > Ngong > Oloolua",
+    "displayLocation": "Ngong · Oloolua, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ngong-kibiko",
+    "name": "Kibiko",
+    "type": "ESTATE",
+    "parentId": "loc-county-kajiado-ngong",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kibiko",
+      "ngong kibiko",
+      "kibiko ngong",
+      "kajiado kibiko"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ngong",
+      "Kibiko"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ngong",
+      "loc-county-kajiado-ngong-kibiko"
+    ],
+    "pathString": "Kajiado > Ngong > Kibiko",
+    "displayLocation": "Ngong · Kibiko, Kajiado"
+  },
+  {
+    "id": "loc-county-kajiado-ngong-kiserian",
+    "name": "Kiserian",
+    "type": "TOWN",
+    "parentId": "loc-county-kajiado-ngong",
+    "countyId": "loc-county-kajiado",
+    "county": "Kajiado",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kiserian",
+      "ngong kiserian",
+      "kiserian ngong",
+      "kajiado kiserian"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kajiado",
+      "Ngong",
+      "Kiserian"
+    ],
+    "pathIds": [
+      "loc-county-kajiado",
+      "loc-county-kajiado-ngong",
+      "loc-county-kajiado-ngong-kiserian"
+    ],
+    "pathString": "Kajiado > Ngong > Kiserian",
+    "displayLocation": "Ngong · Kiserian, Kajiado"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka",
+    "name": "Ruaka",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Ruaka Town",
+      "Ruaka Bypass"
+    ],
+    "searchTerms": [
+      "ruaka",
+      "kiambu ruaka",
+      "ruaka kiambu",
+      "ruaka town",
+      "kiambu ruaka town",
+      "ruaka bypass",
+      "kiambu ruaka bypass"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka"
+    ],
+    "pathString": "Kiambu > Ruaka",
+    "displayLocation": "Ruaka, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka-ndenderu",
+    "name": "Ndenderu",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruaka",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "ndenderu",
+      "ruaka ndenderu",
+      "ndenderu ruaka",
+      "kiambu ndenderu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka",
+      "Ndenderu"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka",
+      "loc-county-kiambu-ruaka-ndenderu"
+    ],
+    "pathString": "Kiambu > Ruaka > Ndenderu",
+    "displayLocation": "Ruaka · Ndenderu, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka-rosslyn",
+    "name": "Rosslyn",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruaka",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "rosslyn",
+      "ruaka rosslyn",
+      "rosslyn ruaka",
+      "kiambu rosslyn"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka",
+      "Rosslyn"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka",
+      "loc-county-kiambu-ruaka-rosslyn"
+    ],
+    "pathString": "Kiambu > Ruaka > Rosslyn",
+    "displayLocation": "Ruaka · Rosslyn, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka-banana",
+    "name": "Banana",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu-ruaka",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Banana Hill"
+    ],
+    "searchTerms": [
+      "banana",
+      "ruaka banana",
+      "banana ruaka",
+      "kiambu banana",
+      "banana hill",
+      "ruaka banana hill"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka",
+      "Banana"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka",
+      "loc-county-kiambu-ruaka-banana"
+    ],
+    "pathString": "Kiambu > Ruaka > Banana",
+    "displayLocation": "Ruaka · Banana, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka-muchatha",
+    "name": "Muchatha",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruaka",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "muchatha",
+      "ruaka muchatha",
+      "muchatha ruaka",
+      "kiambu muchatha"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka",
+      "Muchatha"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka",
+      "loc-county-kiambu-ruaka-muchatha"
+    ],
+    "pathString": "Kiambu > Ruaka > Muchatha",
+    "displayLocation": "Ruaka · Muchatha, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka-kiambu",
+    "name": "Kiambu",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu-ruaka",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kiambu",
+      "ruaka kiambu",
+      "kiambu ruaka",
+      "kiambu kiambu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka",
+      "Kiambu"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka",
+      "loc-county-kiambu-ruaka-kiambu"
+    ],
+    "pathString": "Kiambu > Ruaka > Kiambu",
+    "displayLocation": "Ruaka · Kiambu, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka-thindigua",
+    "name": "Thindigua",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruaka",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Thindigua Kiambu Road"
+    ],
+    "searchTerms": [
+      "thindigua",
+      "ruaka thindigua",
+      "thindigua ruaka",
+      "kiambu thindigua",
+      "thindigua kiambu road",
+      "ruaka thindigua kiambu road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka",
+      "Thindigua"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka",
+      "loc-county-kiambu-ruaka-thindigua"
+    ],
+    "pathString": "Kiambu > Ruaka > Thindigua",
+    "displayLocation": "Ruaka · Thindigua, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka-gachie",
+    "name": "Gachie",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruaka",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "gachie",
+      "ruaka gachie",
+      "gachie ruaka",
+      "kiambu gachie"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka",
+      "Gachie"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka",
+      "loc-county-kiambu-ruaka-gachie"
+    ],
+    "pathString": "Kiambu > Ruaka > Gachie",
+    "displayLocation": "Ruaka · Gachie, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruaka-kiambu-road",
+    "name": "Kiambu Road",
+    "type": "ROAD",
+    "parentId": "loc-county-kiambu-ruaka",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kiambu road",
+      "ruaka kiambu road",
+      "kiambu road ruaka",
+      "kiambu kiambu road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruaka",
+      "Kiambu Road"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruaka",
+      "loc-county-kiambu-ruaka-kiambu-road"
+    ],
+    "pathString": "Kiambu > Ruaka > Kiambu Road",
+    "displayLocation": "Ruaka · Kiambu Road, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruiru",
+    "name": "Ruiru",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Ruiru Town"
+    ],
+    "searchTerms": [
+      "ruiru",
+      "kiambu ruiru",
+      "ruiru kiambu",
+      "ruiru town",
+      "kiambu ruiru town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruiru"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruiru"
+    ],
+    "pathString": "Kiambu > Ruiru",
+    "displayLocation": "Ruiru, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruiru-membley",
+    "name": "Membley",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruiru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Membley Estate"
+    ],
+    "searchTerms": [
+      "membley",
+      "ruiru membley",
+      "membley ruiru",
+      "kiambu membley",
+      "membley estate",
+      "ruiru membley estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruiru",
+      "Membley"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruiru",
+      "loc-county-kiambu-ruiru-membley"
+    ],
+    "pathString": "Kiambu > Ruiru > Membley",
+    "displayLocation": "Ruiru · Membley, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruiru-kimbo",
+    "name": "Kimbo",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruiru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Ruiru Kimbo"
+    ],
+    "searchTerms": [
+      "kimbo",
+      "ruiru kimbo",
+      "kimbo ruiru",
+      "kiambu kimbo",
+      "ruiru ruiru kimbo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruiru",
+      "Kimbo"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruiru",
+      "loc-county-kiambu-ruiru-kimbo"
+    ],
+    "pathString": "Kiambu > Ruiru > Kimbo",
+    "displayLocation": "Ruiru · Kimbo, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruiru-githurai",
+    "name": "Githurai",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruiru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Githurai 45"
+    ],
+    "searchTerms": [
+      "githurai",
+      "ruiru githurai",
+      "githurai ruiru",
+      "kiambu githurai",
+      "githurai 45",
+      "ruiru githurai 45"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruiru",
+      "Githurai"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruiru",
+      "loc-county-kiambu-ruiru-githurai"
+    ],
+    "pathString": "Kiambu > Ruiru > Githurai",
+    "displayLocation": "Ruiru · Githurai, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruiru-rainbow",
+    "name": "Rainbow",
+    "type": "LANDMARK",
+    "parentId": "loc-county-kiambu-ruiru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "rainbow",
+      "ruiru rainbow",
+      "rainbow ruiru",
+      "kiambu rainbow"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruiru",
+      "Rainbow"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruiru",
+      "loc-county-kiambu-ruiru-rainbow"
+    ],
+    "pathString": "Kiambu > Ruiru > Rainbow",
+    "displayLocation": "Ruiru · Rainbow, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruiru-kwa-kairu",
+    "name": "Kwa Kairu",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-ruiru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kwa kairu",
+      "ruiru kwa kairu",
+      "kwa kairu ruiru",
+      "kiambu kwa kairu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruiru",
+      "Kwa Kairu"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruiru",
+      "loc-county-kiambu-ruiru-kwa-kairu"
+    ],
+    "pathString": "Kiambu > Ruiru > Kwa Kairu",
+    "displayLocation": "Ruiru · Kwa Kairu, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-ruiru-kamakis",
+    "name": "Kamakis",
+    "type": "AREA",
+    "parentId": "loc-county-kiambu-ruiru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kamakis Eastern Bypass"
+    ],
+    "searchTerms": [
+      "kamakis",
+      "ruiru kamakis",
+      "kamakis ruiru",
+      "kiambu kamakis",
+      "kamakis eastern bypass",
+      "ruiru kamakis eastern bypass"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Ruiru",
+      "Kamakis"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-ruiru",
+      "loc-county-kiambu-ruiru-kamakis"
+    ],
+    "pathString": "Kiambu > Ruiru > Kamakis",
+    "displayLocation": "Ruiru · Kamakis, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-kikuyu",
+    "name": "Kikuyu",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kikuyu Town"
+    ],
+    "searchTerms": [
+      "kikuyu",
+      "kiambu kikuyu",
+      "kikuyu kiambu",
+      "kikuyu town",
+      "kiambu kikuyu town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Kikuyu"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-kikuyu"
+    ],
+    "pathString": "Kiambu > Kikuyu",
+    "displayLocation": "Kikuyu, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-kikuyu-kinoo",
+    "name": "Kinoo",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-kikuyu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kinoo 87",
+      "Kinoo Stage"
+    ],
+    "searchTerms": [
+      "kinoo",
+      "kikuyu kinoo",
+      "kinoo kikuyu",
+      "kiambu kinoo",
+      "kinoo 87",
+      "kikuyu kinoo 87",
+      "kinoo stage",
+      "kikuyu kinoo stage"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Kikuyu",
+      "Kinoo"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-kikuyu",
+      "loc-county-kiambu-kikuyu-kinoo"
+    ],
+    "pathString": "Kiambu > Kikuyu > Kinoo",
+    "displayLocation": "Kikuyu · Kinoo, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-kikuyu-wangige",
+    "name": "Wangige",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu-kikuyu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "wangige",
+      "kikuyu wangige",
+      "wangige kikuyu",
+      "kiambu wangige"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Kikuyu",
+      "Wangige"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-kikuyu",
+      "loc-county-kiambu-kikuyu-wangige"
+    ],
+    "pathString": "Kiambu > Kikuyu > Wangige",
+    "displayLocation": "Kikuyu · Wangige, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-kikuyu-uthiru",
+    "name": "Uthiru",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-kikuyu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Uthiru Kiambu"
+    ],
+    "searchTerms": [
+      "uthiru",
+      "kikuyu uthiru",
+      "uthiru kikuyu",
+      "kiambu uthiru",
+      "uthiru kiambu",
+      "kikuyu uthiru kiambu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Kikuyu",
+      "Uthiru"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-kikuyu",
+      "loc-county-kiambu-kikuyu-uthiru"
+    ],
+    "pathString": "Kiambu > Kikuyu > Uthiru",
+    "displayLocation": "Kikuyu · Uthiru, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-kikuyu-zambezi",
+    "name": "Zambezi",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-kikuyu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "zambezi",
+      "kikuyu zambezi",
+      "zambezi kikuyu",
+      "kiambu zambezi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Kikuyu",
+      "Zambezi"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-kikuyu",
+      "loc-county-kiambu-kikuyu-zambezi"
+    ],
+    "pathString": "Kiambu > Kikuyu > Zambezi",
+    "displayLocation": "Kikuyu · Zambezi, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-kikuyu-regen",
+    "name": "Regen",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-kikuyu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "regen",
+      "kikuyu regen",
+      "regen kikuyu",
+      "kiambu regen"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Kikuyu",
+      "Regen"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-kikuyu",
+      "loc-county-kiambu-kikuyu-regen"
+    ],
+    "pathString": "Kiambu > Kikuyu > Regen",
+    "displayLocation": "Kikuyu · Regen, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-kikuyu-karura",
+    "name": "Karura",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-kiambu-kikuyu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "karura",
+      "kikuyu karura",
+      "karura kikuyu",
+      "kiambu karura"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Kikuyu",
+      "Karura"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-kikuyu",
+      "loc-county-kiambu-kikuyu-karura"
+    ],
+    "pathString": "Kiambu > Kikuyu > Karura",
+    "displayLocation": "Kikuyu · Karura, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-limuru",
+    "name": "Limuru",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Limuru Town"
+    ],
+    "searchTerms": [
+      "limuru",
+      "kiambu limuru",
+      "limuru kiambu",
+      "limuru town",
+      "kiambu limuru town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Limuru"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-limuru"
+    ],
+    "pathString": "Kiambu > Limuru",
+    "displayLocation": "Limuru, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-limuru-tigoni",
+    "name": "Tigoni",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-limuru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Tigoni Tea"
+    ],
+    "searchTerms": [
+      "tigoni",
+      "limuru tigoni",
+      "tigoni limuru",
+      "kiambu tigoni",
+      "tigoni tea",
+      "limuru tigoni tea"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Limuru",
+      "Tigoni"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-limuru",
+      "loc-county-kiambu-limuru-tigoni"
+    ],
+    "pathString": "Kiambu > Limuru > Tigoni",
+    "displayLocation": "Limuru · Tigoni, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-limuru-redhill",
+    "name": "Redhill",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-limuru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Redhill Road"
+    ],
+    "searchTerms": [
+      "redhill",
+      "limuru redhill",
+      "redhill limuru",
+      "kiambu redhill",
+      "redhill road",
+      "limuru redhill road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Limuru",
+      "Redhill"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-limuru",
+      "loc-county-kiambu-limuru-redhill"
+    ],
+    "pathString": "Kiambu > Limuru > Redhill",
+    "displayLocation": "Limuru · Redhill, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-limuru-kentmere",
+    "name": "Kentmere",
+    "type": "LANDMARK",
+    "parentId": "loc-county-kiambu-limuru",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "kentmere",
+      "limuru kentmere",
+      "kentmere limuru",
+      "kiambu kentmere"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Limuru",
+      "Kentmere"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-limuru",
+      "loc-county-kiambu-limuru-kentmere"
+    ],
+    "pathString": "Kiambu > Limuru > Kentmere",
+    "displayLocation": "Limuru · Kentmere, Kiambu"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-phase-1",
+    "name": "Mlolongo Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "county": "Machakos",
+    "aliases": [
+      "phase 1 mlolongo",
+      "mlolongo phase 1",
+      "mlolongo 1",
+      "phase 1"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "phase 1",
+      "mlolongo phase 1",
+      "machakos mlolongo phase 1",
+      "phase 1 mlolongo"
+    ],
+    "verified": true,
+    "sortOrder": 1,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-phase-1"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Phase 1",
+    "displayLocation": "Mlolongo Phase 1, Machakos",
+    "latitude": -1.382,
+    "longitude": 36.958,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-phase-2",
+    "name": "Mlolongo Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "county": "Machakos",
+    "aliases": [
+      "phase 2 mlolongo",
+      "mlolongo phase 2",
+      "mlolongo 2",
+      "phase 2"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "phase 2",
+      "mlolongo phase 2",
+      "machakos mlolongo phase 2",
+      "phase 2 mlolongo"
+    ],
+    "verified": true,
+    "sortOrder": 2,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-phase-2"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Phase 2",
+    "displayLocation": "Mlolongo Phase 2, Machakos",
+    "latitude": -1.3835,
+    "longitude": 36.9605,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-phase-3",
+    "name": "Mlolongo Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "county": "Machakos",
+    "aliases": [
+      "phase 3 mlolongo",
+      "mlolongo phase 3",
+      "mlolongo 3",
+      "phase 3",
+      "weighbridge",
+      "expressway end"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "phase 3",
+      "mlolongo phase 3",
+      "machakos mlolongo phase 3",
+      "weighbridge",
+      "expressway end"
+    ],
+    "verified": true,
+    "sortOrder": 3,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-phase-3"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Phase 3",
+    "displayLocation": "Mlolongo Phase 3, Machakos",
+    "latitude": -1.385,
+    "longitude": 36.962,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-phase-4",
+    "name": "Mlolongo Phase 4",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "county": "Machakos",
+    "aliases": [
+      "phase 4 mlolongo",
+      "mlolongo phase 4",
+      "mlolongo 4",
+      "phase 4"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "phase 4",
+      "mlolongo phase 4",
+      "machakos mlolongo phase 4",
+      "phase 4 mlolongo"
+    ],
+    "verified": true,
+    "sortOrder": 4,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Phase 4"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-phase-4"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Phase 4",
+    "displayLocation": "Mlolongo Phase 4, Machakos",
+    "latitude": -1.387,
+    "longitude": 36.964,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-1",
+    "name": "Greatwall Gardens Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 1",
+      "gwg 1",
+      "great wall phase 1"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 1",
+      "greatwall phase 1"
+    ],
+    "verified": true,
+    "sortOrder": 1,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-1"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 1",
+    "displayLocation": "Greatwall Gardens Phase 1, Mlolongo",
+    "latitude": -1.388,
+    "longitude": 36.97,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-2",
+    "name": "Greatwall Gardens Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 2",
+      "gwg 2",
+      "great wall phase 2"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 2",
+      "greatwall phase 2"
+    ],
+    "verified": true,
+    "sortOrder": 2,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-2"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 2",
+    "displayLocation": "Greatwall Gardens Phase 2, Mlolongo",
+    "latitude": -1.3885,
+    "longitude": 36.971,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-3",
+    "name": "Greatwall Gardens Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 3",
+      "gwg 3",
+      "great wall phase 3"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 3",
+      "greatwall phase 3"
+    ],
+    "verified": true,
+    "sortOrder": 3,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-3"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 3",
+    "displayLocation": "Greatwall Gardens Phase 3, Mlolongo",
+    "latitude": -1.389,
+    "longitude": 36.972,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-4",
+    "name": "Greatwall Gardens Phase 4",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 4",
+      "gwg 4",
+      "great wall phase 4"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 4",
+      "greatwall phase 4"
+    ],
+    "verified": true,
+    "sortOrder": 4,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 4"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-4"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 4",
+    "displayLocation": "Greatwall Gardens Phase 4, Mlolongo",
+    "latitude": -1.3895,
+    "longitude": 36.973,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-5",
+    "name": "Greatwall Gardens Phase 5",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 5",
+      "gwg 5",
+      "great wall phase 5"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 5",
+      "greatwall phase 5"
+    ],
+    "verified": true,
+    "sortOrder": 5,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 5"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-5"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 5",
+    "displayLocation": "Greatwall Gardens Phase 5, Mlolongo",
+    "latitude": -1.39,
+    "longitude": 36.974,
+    "corridorId": "mombasa_road_satellite"
+  }
+];
