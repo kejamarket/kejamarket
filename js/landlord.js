@@ -50,6 +50,29 @@ class LandlordManager {
       return [];
     };
 
+    const renderItems = (items) => {
+      if (!items || items.length === 0) {
+        suggestionsDiv.innerHTML = `<div style="padding: 10px 12px; color: #64748b; font-size: 0.85rem;">Using "${searchInput.value.trim()}"</div>`;
+        suggestionsDiv.style.display = 'block';
+        return;
+      }
+
+      suggestionsDiv.innerHTML = items.map(s => `
+        <div style="padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;" 
+             onmouseover="this.style.background='#f0fdf4'" 
+             onmouseout="this.style.background='white'"
+             onclick="landlordManager.selectSuburb('${(s.name || '').replace(/'/g, "\\'")}', ${s.lat || s.latitude || -1.286}, ${s.lng || s.longitude || 36.817}, '${(s.county || 'Nairobi').replace(/'/g, "\\'")}', '${s.corridorId || ''}')">
+          <div>
+            <div style="font-weight: 700; color: #0f172a; font-size: 0.9rem;">${s.name}</div>
+            ${s.pathString ? `<div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">${s.pathString}</div>` : ''}
+          </div>
+          <div style="font-size: 0.75rem; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap; margin-left: 8px;">${s.county || 'Nairobi'}</div>
+        </div>
+      `).join('');
+
+      suggestionsDiv.style.display = 'block';
+    };
+
     const handleSearch = (e) => {
       const query = (e ? e.target.value : searchInput.value || '').trim().toLowerCase();
       const allSuburbs = getSuburbs();
@@ -64,23 +87,43 @@ class LandlordManager {
         (s.county && s.county.toLowerCase().includes(query))
       ).slice(0, 15);
 
-      if (matches.length === 0) {
-        suggestionsDiv.innerHTML = `<div style="padding: 10px 12px; color: #64748b; font-size: 0.85rem;">Using "${searchInput.value.trim()}"</div>`;
-        suggestionsDiv.style.display = 'block';
-        return;
-      }
+      renderItems(matches);
 
-      suggestionsDiv.innerHTML = matches.map(s => `
-        <div style="padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;" 
-             onmouseover="this.style.background='#f0fdf4'" 
-             onmouseout="this.style.background='white'"
-             onclick="landlordManager.selectSuburb('${s.name.replace(/'/g, "\\'")}', ${s.lat}, ${s.lng}, '${s.county}', '${s.corridorId}')">
-          <div style="font-weight: 700; color: #0f172a; font-size: 0.9rem;">${s.name}</div>
-          <div style="font-size: 0.75rem; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 999px; font-weight: 600;">${s.county}</div>
-        </div>
-      `).join('');
-
-      suggestionsDiv.style.display = 'block';
+      clearTimeout(searchInput._searchTimer);
+      searchInput._searchTimer = setTimeout(async () => {
+        try {
+          const apiRes = await fetch(`/api/locations/search?q=${encodeURIComponent(query)}&limit=15`);
+          if (apiRes.ok) {
+            const apiData = await apiRes.json();
+            if (apiData.success && Array.isArray(apiData.locations) && apiData.locations.length > 0) {
+              const seen = new Set();
+              const combined = [];
+              for (const loc of apiData.locations) {
+                const k = (loc.name || '').toLowerCase();
+                if (!seen.has(k)) {
+                  seen.add(k);
+                  combined.push({
+                    name: loc.name,
+                    county: loc.county || 'Machakos',
+                    lat: loc.latitude || -1.3835,
+                    lng: loc.longitude || 36.9605,
+                    corridorId: loc.corridorId || '',
+                    pathString: loc.pathString
+                  });
+                }
+              }
+              for (const loc of matches) {
+                const k = (loc.name || '').toLowerCase();
+                if (!seen.has(k)) {
+                  seen.add(k);
+                  combined.push(loc);
+                }
+              }
+              renderItems(combined.slice(0, 20));
+            }
+          }
+        } catch (_) {}
+      }, 150);
     };
 
     searchInput.removeEventListener('input', searchInput._autoHandler || (()=>{}));
@@ -249,7 +292,7 @@ class LandlordManager {
   }
 
   handleVideoFiles(files) {
-    const videoFiles = Array.from(files).filter(f => f.type.startsWith('video/'));
+    const videoFiles = Array.from(files).filter(f => f.type.startsWith('video/') || /\.(mp4|webm|mov|m4v|3gp)$/i.test(f.name));
     if (videoFiles.length === 0) {
       if (window.app) window.app.showToast('Please select valid video files (MP4, WebM, MOV).', 'info');
       return;
@@ -259,6 +302,10 @@ class LandlordManager {
       if (this.uploadedVideos.length >= 2) {
         if (window.app) window.app.showToast('Maximum 2 video tours allowed per listing.', 'info');
         return;
+      }
+
+      if (file.size > 80 * 1024 * 1024) {
+        if (window.app) window.app.showToast(`⚠️ Video is ${(file.size / (1024*1024)).toFixed(1)}MB. Max recommended is 80MB.`, 'warning');
       }
 
       // Check video duration (max 1m 30s / 90 seconds)
@@ -291,6 +338,7 @@ class LandlordManager {
           }
           this.uploadedVideos.push({
             url: videoDataUrl,
+            file: file,
             duration: Math.round(duration),
             name: file.name,
             poster: posterUrl
@@ -305,7 +353,16 @@ class LandlordManager {
 
       videoEl.onerror = () => {
         URL.revokeObjectURL(blobUrl);
-        if (window.app) window.app.showToast('Could not process video file. Please try another format.', 'error');
+        // Fallback: attach file directly
+        this.uploadedVideos.push({
+          url: URL.createObjectURL(file),
+          file: file,
+          duration: 30,
+          name: file.name,
+          poster: ''
+        });
+        this.renderVideoPreviews();
+        if (window.app) window.app.showToast(`🎥 Video tour attached (${file.name})!`, 'success');
       };
     });
   }
@@ -469,7 +526,13 @@ class LandlordManager {
       agencyRow.style.display = managedBy === 'agency' ? 'grid' : 'none';
     }
     if (contactLabel) {
-      contactLabel.textContent = managedBy === 'agency' ? 'Principal Agent / Contact Person *' : 'Your Full Name / Landlord *';
+      if (managedBy === 'agency') {
+        contactLabel.textContent = 'Principal Agent / Agency Name *';
+      } else if (managedBy === 'caretaker') {
+        contactLabel.textContent = 'Caretaker Full Name *';
+      } else {
+        contactLabel.textContent = 'Your Full Name / Landlord *';
+      }
     }
     if (session && session.role === 'agency' && agencyInput) {
       agencyInput.value = session.agencyName || session.name;
@@ -501,7 +564,7 @@ class LandlordManager {
       const electricityType = document.getElementById('post-electricity')?.value || 'Prepaid (Tokens)';
       
       // Auto-fill landlord details from session (no form fields needed)
-      const landlordName = this.landlordName || (session ? session.name : (managedBy === 'agency' ? 'Verified Agency' : 'Direct Landlord'));
+      const landlordName = this.landlordName || (session ? session.name : (managedBy === 'agency' ? 'Verified Agency' : (managedBy === 'caretaker' ? 'Caretaker' : 'Direct Landlord')));
       const phone = this.landlordPhone || (session ? session.phone : '+254700000000');
 
       const suburbObj = this.selectedSuburb || (typeof ALL_SUBURBS !== 'undefined' && ALL_SUBURBS.find(s => s.name === suburb)) || { county: 'Nairobi', corridorId: 'nairobi_central' };
@@ -545,19 +608,20 @@ class LandlordManager {
         isFeatured: false,
         isTopAd: false,
         isVerified: true,
-        source: managedBy === 'agency' ? 'agency' : 'direct',
+        source: managedBy === 'agency' ? 'agency' : (managedBy === 'caretaker' ? 'caretaker' : 'direct'),
         managedBy: managedBy,
         agencyName: managedBy === 'agency' ? (agencyName || landlordName) : null,
-        caretakerName: caretakerName || null,
-        caretakerPhone: caretakerPhone || null,
+        caretakerName: caretakerName || (managedBy === 'caretaker' ? landlordName : null),
+        caretakerPhone: caretakerPhone || (managedBy === 'caretaker' ? phone : null),
         postedTimeAgo: 'Just now',
         landlord: {
           id: session ? session.id : ('usr-' + Date.now()),
-          name: managedBy === 'agency' ? (agencyName || landlordName) : landlordName,
+          name: managedBy === 'agency' ? (agencyName || landlordName) : (managedBy === 'caretaker' ? (caretakerName || landlordName) : landlordName),
           phone,
           whatsapp: phone,
           isVerified: session ? session.isVerified : true,
           isAgency: managedBy === 'agency',
+          isCaretaker: managedBy === 'caretaker',
           agencyName: managedBy === 'agency' ? (agencyName || landlordName) : null,
           memberSince: 'September 2026',
           rating: 5.0,
@@ -624,21 +688,34 @@ class LandlordManager {
               submitBtn.innerHTML = `<i class="fas fa-video fa-spin"></i> Uploading video tour (${i + 1}/${this.uploadedVideos.length})...`;
             }
 
-            // If already a hosted URL (not base64 data URI)
-            if (vid.url && !vid.url.startsWith('data:')) {
+            // If already a hosted URL (not base64 data URI and not blob:)
+            if (vid.url && !vid.url.startsWith('data:') && !vid.url.startsWith('blob:')) {
               finalVideos.push(vid);
               continue;
             }
 
             try {
-              const vidRes = await fetch('/api/upload/video', {
-                method: 'POST',
-                headers,
-                body: JSON.stringify({
-                  video: vid.url,
-                  folder: 'kejamarket/videos'
-                })
-              });
+              let vidRes;
+              if (vid.file) {
+                const formData = new FormData();
+                formData.append('video', vid.file);
+                formData.append('folder', 'kejamarket/videos');
+                const authHeader = (window.kejaAuth && window.kejaAuth.getToken()) ? { 'Authorization': `Bearer ${window.kejaAuth.getToken()}` } : {};
+                vidRes = await fetch('/api/upload/video', {
+                  method: 'POST',
+                  headers: authHeader,
+                  body: formData
+                });
+              } else {
+                vidRes = await fetch('/api/upload/video', {
+                  method: 'POST',
+                  headers,
+                  body: JSON.stringify({
+                    video: vid.url,
+                    folder: 'kejamarket/videos'
+                  })
+                });
+              }
 
               if (vidRes.ok) {
                 const vidData = await vidRes.json();

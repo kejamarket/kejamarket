@@ -16,6 +16,33 @@ class PostgreSQLStore {
     } catch (_) {
       this.fallbackStore = null;
     }
+
+    return new Proxy(this, {
+      get(target, prop, receiver) {
+        if (prop in target) {
+          const val = Reflect.get(target, prop, receiver);
+          return typeof val === 'function' ? val.bind(target) : val;
+        }
+        if (target.fallbackStore && typeof target.fallbackStore[prop] === 'function') {
+          return target.fallbackStore[prop].bind(target.fallbackStore);
+        }
+        return Reflect.get(target, prop, receiver);
+      }
+    });
+  }
+
+  saveLandlordMessage(message) {
+    if (this.fallbackStore && typeof this.fallbackStore.saveLandlordMessage === 'function') {
+      return this.fallbackStore.saveLandlordMessage(message);
+    }
+    return message;
+  }
+
+  getLandlordMessages(userId, role) {
+    if (this.fallbackStore && typeof this.fallbackStore.getLandlordMessages === 'function') {
+      return this.fallbackStore.getLandlordMessages(userId, role);
+    }
+    return [];
   }
 
   get data() {

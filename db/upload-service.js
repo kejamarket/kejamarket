@@ -135,11 +135,18 @@ async function uploadVideo(videoData, folder = 'kejamarket/videos') {
   // Local disk storage fallback for base64 video data URIs
   try {
     if (typeof videoData === 'string' && videoData.startsWith('data:video/')) {
-      const matches = videoData.match(/^data:video\/([a-zA-Z0-9]+);base64,(.+)$/);
-      if (matches) {
-        let ext = matches[1].toLowerCase();
-        if (ext === 'quicktime') ext = 'mov';
-        const buffer = Buffer.from(matches[2], 'base64');
+      const commaIdx = videoData.indexOf(',');
+      if (commaIdx !== -1) {
+        const header = videoData.slice(0, commaIdx).toLowerCase();
+        let ext = 'mp4';
+        if (header.includes('webm')) ext = 'webm';
+        else if (header.includes('quicktime') || header.includes('mov')) ext = 'mov';
+        else if (header.includes('ogg') || header.includes('ogv')) ext = 'ogv';
+        else if (header.includes('3gp')) ext = '3gp';
+        else if (header.includes('mp4')) ext = 'mp4';
+
+        const base64Data = videoData.slice(commaIdx + 1);
+        const buffer = Buffer.from(base64Data, 'base64');
         const filename = `vid_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${ext}`;
         const uploadsDir = path.join(__dirname, '..', 'uploads', 'videos');
         if (!fs.existsSync(uploadsDir)) {

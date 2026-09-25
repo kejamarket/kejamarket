@@ -14672,5 +14672,346 @@
     ],
     "pathString": "Kiambu > Limuru > Kentmere",
     "displayLocation": "Limuru · Kentmere, Kiambu"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-phase-1",
+    "name": "Mlolongo Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "county": "Machakos",
+    "aliases": [
+      "phase 1 mlolongo",
+      "mlolongo phase 1",
+      "mlolongo 1",
+      "phase 1"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "phase 1",
+      "mlolongo phase 1",
+      "machakos mlolongo phase 1",
+      "phase 1 mlolongo"
+    ],
+    "verified": true,
+    "sortOrder": 1,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-phase-1"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Phase 1",
+    "displayLocation": "Mlolongo Phase 1, Machakos",
+    "latitude": -1.382,
+    "longitude": 36.958,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-phase-2",
+    "name": "Mlolongo Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "county": "Machakos",
+    "aliases": [
+      "phase 2 mlolongo",
+      "mlolongo phase 2",
+      "mlolongo 2",
+      "phase 2"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "phase 2",
+      "mlolongo phase 2",
+      "machakos mlolongo phase 2",
+      "phase 2 mlolongo"
+    ],
+    "verified": true,
+    "sortOrder": 2,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-phase-2"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Phase 2",
+    "displayLocation": "Mlolongo Phase 2, Machakos",
+    "latitude": -1.3835,
+    "longitude": 36.9605,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-phase-3",
+    "name": "Mlolongo Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "county": "Machakos",
+    "aliases": [
+      "phase 3 mlolongo",
+      "mlolongo phase 3",
+      "mlolongo 3",
+      "phase 3",
+      "weighbridge",
+      "expressway end"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "phase 3",
+      "mlolongo phase 3",
+      "machakos mlolongo phase 3",
+      "weighbridge",
+      "expressway end"
+    ],
+    "verified": true,
+    "sortOrder": 3,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-phase-3"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Phase 3",
+    "displayLocation": "Mlolongo Phase 3, Machakos",
+    "latitude": -1.385,
+    "longitude": 36.962,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-phase-4",
+    "name": "Mlolongo Phase 4",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo",
+    "county": "Machakos",
+    "aliases": [
+      "phase 4 mlolongo",
+      "mlolongo phase 4",
+      "mlolongo 4",
+      "phase 4"
+    ],
+    "searchTerms": [
+      "mlolongo",
+      "phase 4",
+      "mlolongo phase 4",
+      "machakos mlolongo phase 4",
+      "phase 4 mlolongo"
+    ],
+    "verified": true,
+    "sortOrder": 4,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Mlolongo Phase 4"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-phase-4"
+    ],
+    "pathString": "Machakos > Mlolongo > Mlolongo Phase 4",
+    "displayLocation": "Mlolongo Phase 4, Machakos",
+    "latitude": -1.387,
+    "longitude": 36.964,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-1",
+    "name": "Greatwall Gardens Phase 1",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 1",
+      "gwg 1",
+      "great wall phase 1"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 1",
+      "greatwall phase 1"
+    ],
+    "verified": true,
+    "sortOrder": 1,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 1"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-1"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 1",
+    "displayLocation": "Greatwall Gardens Phase 1, Mlolongo",
+    "latitude": -1.388,
+    "longitude": 36.97,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-2",
+    "name": "Greatwall Gardens Phase 2",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 2",
+      "gwg 2",
+      "great wall phase 2"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 2",
+      "greatwall phase 2"
+    ],
+    "verified": true,
+    "sortOrder": 2,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 2"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-2"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 2",
+    "displayLocation": "Greatwall Gardens Phase 2, Mlolongo",
+    "latitude": -1.3885,
+    "longitude": 36.971,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-3",
+    "name": "Greatwall Gardens Phase 3",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 3",
+      "gwg 3",
+      "great wall phase 3"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 3",
+      "greatwall phase 3"
+    ],
+    "verified": true,
+    "sortOrder": 3,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 3"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-3"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 3",
+    "displayLocation": "Greatwall Gardens Phase 3, Mlolongo",
+    "latitude": -1.389,
+    "longitude": 36.972,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-4",
+    "name": "Greatwall Gardens Phase 4",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 4",
+      "gwg 4",
+      "great wall phase 4"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 4",
+      "greatwall phase 4"
+    ],
+    "verified": true,
+    "sortOrder": 4,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 4"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-4"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 4",
+    "displayLocation": "Greatwall Gardens Phase 4, Mlolongo",
+    "latitude": -1.3895,
+    "longitude": 36.973,
+    "corridorId": "mombasa_road_satellite"
+  },
+  {
+    "id": "loc-county-machakos-mlolongo-greatwall-phase-5",
+    "name": "Greatwall Gardens Phase 5",
+    "type": "PHASE",
+    "parentId": "loc-county-machakos-mlolongo-great-wall",
+    "county": "Machakos",
+    "aliases": [
+      "greatwall phase 5",
+      "gwg 5",
+      "great wall phase 5"
+    ],
+    "searchTerms": [
+      "greatwall",
+      "great wall",
+      "mlolongo",
+      "phase 5",
+      "greatwall phase 5"
+    ],
+    "verified": true,
+    "sortOrder": 5,
+    "path": [
+      "Machakos",
+      "Mlolongo",
+      "Great Wall",
+      "Greatwall Gardens Phase 5"
+    ],
+    "pathIds": [
+      "loc-county-machakos",
+      "loc-county-machakos-mlolongo",
+      "loc-county-machakos-mlolongo-great-wall",
+      "loc-county-machakos-mlolongo-greatwall-phase-5"
+    ],
+    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 5",
+    "displayLocation": "Greatwall Gardens Phase 5, Mlolongo",
+    "latitude": -1.39,
+    "longitude": 36.974,
+    "corridorId": "mombasa_road_satellite"
   }
 ]

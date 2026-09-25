@@ -5,7 +5,7 @@
       "name": "KejaMarket Administrator",
       "phone": "0792409540",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$XUl//WBX4g9tS1Tzsf3IU.pM5CqDbjplk2cDbNjE3Mf3rB6XT0/Z.",
+      "password": "$2b$10$6RyvNJgniZolAzFc03f3H.SNVDgbUz/3QlcDMwE26cMjexrDUHB8a",
       "role": "admin",
       "isAdmin": true,
       "isVerified": true,
@@ -12802,7 +12802,32 @@
   "transactions": [],
   "alerts": [],
   "leads": [],
-  "messages": [],
+  "messages": [
+    {
+      "fromUserId": "usr-test-123",
+      "fromUserName": "John Mutua",
+      "fromRole": "landlord",
+      "toRole": "admin",
+      "message": "Test message for verification",
+      "propertyId": "prop-usr-1790263352858",
+      "propertyTitle": "Test Caretaker Listing Mlolongo Phase 2",
+      "id": "msg-1790263353124-57dv6r3r9"
+    },
+    {
+      "fromUserId": "usr-test-123",
+      "fromUserName": "John Mutua",
+      "fromRole": "landlord",
+      "toRole": "admin",
+      "message": "Test message for verification",
+      "propertyId": "prop-usr-1790262022525",
+      "propertyTitle": "Test Caretaker Listing Mlolongo Phase 2",
+      "id": "msg-1790262022798-xkxdeyiy3"
+    },
+    {
+      "message": "test",
+      "id": "msg-1790261531873-lkj2e9cy4"
+    }
+  ],
   "comments": {},
   "verification_logs": []
 }

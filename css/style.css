@@ -4,7 +4,7 @@
    ========================================================================== */
 
 :root {
-  /* â”€â”€ Brand Colors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Brand Colors ─────────────────────────────────────── */
   --primary-color: #00b53f;          /* KejaMarket Green */
   --primary-hover: #009634;
   --primary-light: #e8f8ee;
@@ -19,13 +19,13 @@
   --btn-sell-red: #e62e2d;           /* Red - Sell Item button */
   --btn-sell-hover: #cc2524;
   
-  /* â”€â”€ Text Colors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Text Colors ──────────────────────────────────────── */
   --text-primary: #0F172A;           /* Dark navy - main text */
   --text-secondary: #334155;
   --text-muted: #64748b;
   --text-light: #94a3b8;
   
-  /* â”€â”€ Backgrounds â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Backgrounds ──────────────────────────────────────── */
   --bg-body: #f0f4f8;                /* Very light blue-gray */
   --bg-card: #ffffff;                /* White cards */
   --bg-surface: #ffffff;
@@ -624,14 +624,14 @@ button, input, select, textarea {
   box-shadow: 0 2px 6px rgba(0, 181, 63, 0.3);
 }
 
-/* Hide horizontal pills bar on desktop â€” replaced by sidebar column */
+/* Hide horizontal pills bar on desktop — replaced by sidebar column */
 @media (min-width: 769px) {
   .category-pills-bar--mobile-only {
     display: none;
   }
 }
 
-/* â”€â”€ Sidebar Category Vertical List â”€â”€ */
+/* ── Sidebar Category Vertical List ── */
 .sidebar-category-group {
   padding-bottom: 4px;
 }
@@ -1234,7 +1234,7 @@ button, input, select, textarea {
   flex-shrink: 0;
 }
 
-/* Card Specs Row (1 Bed | 1 Bath | 0 mÂ²) */
+/* Card Specs Row (1 Bed | 1 Bath | 0 m²) */
 .card-specs-row {
   display: flex;
   align-items: center;
@@ -1686,6 +1686,14 @@ button, input, select, textarea {
   cursor: pointer;
 }
 
+/* Detail Modal Affiliate Service Cards */
+.detail-affiliate-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
 /* Detail Modal Jiji-Style Gallery Specifics */
 .detail-gallery-main {
   height: 200px;
@@ -2108,14 +2116,14 @@ button, input, select, textarea {
    ========================================================================== */
 @media (max-width: 768px) {
 
-  /* â”€â”€ Body â”€â”€ */
+  /* ── Body ── */
   body {
     min-width: 0;
     overflow-x: hidden;
     padding-bottom: 70px; /* room for mobile bottom nav */
   }
 
-  /* â”€â”€ Top Notice Bar â”€â”€ */
+  /* ── Top Notice Bar ── */
   .top-notice-bar {
     font-size: 0.74rem;
     padding: 5px 12px;
@@ -2124,7 +2132,7 @@ button, input, select, textarea {
     display: none;
   }
 
-  /* â”€â”€ Header â”€â”€ */
+  /* ── Header ── */
   .header-container {
     padding: 8px 12px;
     gap: 8px;
@@ -2160,7 +2168,7 @@ button, input, select, textarea {
     display: none; /* hide text, show only icon */
   }
 
-  /* â”€â”€ Category Pills Bar â€” show on mobile â”€â”€ */
+  /* ── Category Pills Bar — show on mobile ── */
   .category-pills-bar {
     display: block !important;
     padding: 5px 10px;
@@ -2175,7 +2183,7 @@ button, input, select, textarea {
     padding: 5px 10px;
   }
 
-  /* â”€â”€ Main Layout: stack sidebar below or hide it â”€â”€ */
+  /* ── Main Layout: stack sidebar below or hide it ── */
   .main-app-layout {
     display: flex !important;
     flex-direction: column !important;
@@ -2206,7 +2214,7 @@ button, input, select, textarea {
     display: block !important;
   }
 
-  /* â”€â”€ Mobile Filter Bar â€” show â”€â”€ */
+  /* ── Mobile Filter Bar — show ── */
   .mobile-filter-bar {
     display: flex !important;
     top: 56px;
@@ -2214,7 +2222,7 @@ button, input, select, textarea {
     gap: 8px;
   }
 
-  /* â”€â”€ Property Grid: 2 columns on mobile â”€â”€ */
+  /* ── Property Grid: 2 columns on mobile ── */
   .property-listings-grid,
   #property-grid {
     display: grid !important;
@@ -2222,7 +2230,7 @@ button, input, select, textarea {
     gap: 10px !important;
   }
 
-  /* â”€â”€ Property Card â”€â”€ */
+  /* ── Property Card ── */
   .card-media-wrapper {
     height: 130px;
   }
@@ -2248,7 +2256,7 @@ button, input, select, textarea {
     padding: 6px 4px;
   }
 
-  /* â”€â”€ Content Area â”€â”€ */
+  /* ── Content Area ── */
   .content-area-wrapper {
     width: 100%;
   }
@@ -2264,27 +2272,183 @@ button, input, select, textarea {
     gap: 4px;
   }
 
-  /* â”€â”€ Modals â”€â”€ */
+  /* ── Modals ── */
   .modal-backdrop {
-    padding: 12px;
-    align-items: center;
+    padding: max(16px, env(safe-area-inset-top, 16px)) 12px max(16px, env(safe-area-inset-bottom, 16px)) 12px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
   .modal-dialog {
     max-width: 100% !important;
     width: calc(100% - 24px) !important;
-    max-height: 90dvh !important;
+    max-height: calc(100dvh - 36px) !important;
     border-radius: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    margin: auto !important;
   }
   .modal-header {
-    padding: 0 16px;
-    height: 48px;
-    min-height: 48px;
+    padding: 12px 16px !important;
+    height: auto !important;
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .modal-header h3 {
+    font-size: 1.02rem !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+  .modal-close-btn {
+    flex-shrink: 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-top: -2px !important;
   }
   .modal-body {
-    padding: 12px 16px;
+    padding: 14px 16px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
   }
   .modal-footer {
-    padding: 12px 16px;
+    padding: 12px 16px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Service cards inside Property Details Popup (Item 3) */
+  .detail-affiliate-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 12px !important;
+    margin-bottom: 22px !important;
+    padding-bottom: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    scrollbar-width: thin !important;
+  }
+  .detail-affiliate-grid > div {
+    flex: 0 0 85% !important;
+    min-width: 260px !important;
+    max-width: 320px !important;
+    box-sizing: border-box !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* Support Popup (#modal-messages) (Item 4) */
+  #modal-messages .modal-dialog {
+    max-width: 520px !important;
+    width: calc(100% - 24px) !important;
+    max-height: calc(100dvh - 36px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    margin: auto !important;
+  }
+  #chat-messages-container {
+    flex: 1 1 auto !important;
+    min-height: 180px !important;
+    max-height: calc(88dvh - 180px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  #chat-quick-replies {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    gap: 8px !important;
+    padding: 8px 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  #chat-quick-replies::-webkit-scrollbar {
+    display: none !important;
+  }
+  #chat-quick-replies .category-pill {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+  #form-chat-send {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+  }
+  #chat-message-input {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    width: auto !important;
+    box-sizing: border-box !important;
+  }
+  #form-chat-send button[type="submit"] {
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* WhatsApp Alert Popup (Item 5) */
+  #modal-whatsapp-alerts .modal-dialog {
+    max-width: 480px !important;
+    width: calc(100% - 24px) !important;
+    max-height: calc(100dvh - 36px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    margin: auto !important;
+  }
+  #modal-whatsapp-alerts .modal-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+  #alert-tenant-budget-min,
+  #alert-tenant-budget-max {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
   /* Detail modal gallery */
@@ -2307,23 +2471,23 @@ button, input, select, textarea {
     grid-template-columns: 1fr !important;
   }
 
-  /* â”€â”€ Mobile Bottom Nav â€” show â”€â”€ */
+  /* ── Mobile Bottom Nav — show ── */
   .mobile-bottom-nav {
     display: flex !important;
   }
 
-  /* â”€â”€ Split view: single column on mobile â”€â”€ */
+  /* ── Split view: single column on mobile ── */
   .split-view-container {
     grid-template-columns: 1fr !important;
     height: auto !important;
   }
 
-  /* â”€â”€ Map full width â”€â”€ */
+  /* ── Map full width ── */
   #main-map-container {
     height: 60vh !important;
   }
 
-  /* â”€â”€ Pagination â”€â”€ */
+  /* ── Pagination ── */
   .pagination-bar {
     padding: 10px 0;
     gap: 4px;
@@ -2334,7 +2498,7 @@ button, input, select, textarea {
     font-size: 0.82rem;
   }
 
-  /* â”€â”€ Toast notifications: full width on mobile â”€â”€ */
+  /* ── Toast notifications: full width on mobile ── */
   .toast-container {
     bottom: 80px;
     right: 10px;
@@ -2345,14 +2509,14 @@ button, input, select, textarea {
     padding: 10px 14px;
   }
 
-  /* â”€â”€ WhatsApp alert banner â”€â”€ */
+  /* ── WhatsApp alert banner ── */
   .whatsapp-alert-banner {
     flex-direction: column;
     gap: 8px;
     padding: 10px 12px;
   }
 
-  /* â”€â”€ Modals: Full-screen on mobile â”€â”€ */
+  /* ── Modals: Full-screen on mobile ── */
   .modal-content {
     width: 100vw !important;
     max-width: 100vw !important;
@@ -2468,10 +2632,10 @@ button, input, select, textarea {
 .secondary-nav-item i { font-size: 0.8rem; }
 
 /* ================================================================
-   SELL ITEM BUTTON â€” always visible in header
+   SELL ITEM BUTTON — always visible in header
    ================================================================ */
 /* ================================================================
-   SELL ITEM BUTTON â€” RED button matching reference image
+   SELL ITEM BUTTON — RED button matching reference image
    ================================================================ */
 .btn-sell-item {
   background: #e62e2d !important;
@@ -2997,11 +3161,11 @@ button, input, select, textarea {
 }
 
 /* ==========================================================================
-   KEJAMARKET COMPACT LAYOUT â€” Reference-matched to 1536Ã—1024 viewport
+   KEJAMARKET COMPACT LAYOUT — Reference-matched to 1536×1024 viewport
    All height budgets totalling ~940px (header sticky + scroll content)
    ========================================================================== */
 
-/* â”€â”€ 1. MAIN HEADER (target: ~62px total) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 1. MAIN HEADER (target: ~62px total) ──────────────────────────────── */
 .site-header {
   background: #ffffff !important;
   border-bottom: 1px solid #e2e8f0 !important;
@@ -3144,7 +3308,7 @@ button, input, select, textarea {
   white-space: nowrap !important;
 }
 
-/* â”€â”€ 2. SECONDARY NAV (target: ~40px) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 2. SECONDARY NAV (target: ~40px) ──────────────────────────────────── */
 .secondary-nav {
   background: #ffffff !important;
   border-bottom: 1px solid #e2e8f0 !important;
@@ -3201,7 +3365,7 @@ button, input, select, textarea {
   color: #008744 !important;
 }
 
-/* â”€â”€ 3. MAIN APP LAYOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 3. MAIN APP LAYOUT ─────────────────────────────────────────────────── */
 .main-app-layout {
   max-width: 1440px !important;
   width: 100% !important;
@@ -3214,7 +3378,7 @@ button, input, select, textarea {
   align-items: start !important;
 }
 
-/* â”€â”€ 4. SIDEBAR FILTERS (target: 300px, compact) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 4. SIDEBAR FILTERS (target: 300px, compact) ───────────────────────── */
 .sidebar-filters {
   background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
@@ -3418,7 +3582,7 @@ button, input, select, textarea {
   background: #007038 !important;
 }
 
-/* â”€â”€ 5. CONTENT AREA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 5. CONTENT AREA ────────────────────────────────────────────────────── */
 .content-area-wrapper {
   display: flex !important;
   flex-direction: column !important;
@@ -3426,7 +3590,7 @@ button, input, select, textarea {
   min-width: 0 !important;
 }
 
-/* â”€â”€ 6. SMS ALERT BANNER (target: ~110px) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 6. SMS ALERT BANNER (target: ~110px) ───────────────────────────────── */
 .green-sms-alert-banner {
   background: linear-gradient(90deg, #0b6623 0%, #15803d 55%, #064e22 100%) !important;
   border-radius: 10px !important;
@@ -3520,7 +3684,7 @@ button, input, select, textarea {
   pointer-events: none !important;
 }
 
-/* â”€â”€ 7. VIEW CONTROLS BAR (target: ~48px) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 7. VIEW CONTROLS BAR (target: ~48px) ───────────────────────────────── */
 .view-controls-bar {
   background: #ffffff !important;
   border-radius: 8px !important;
@@ -3594,7 +3758,7 @@ button, input, select, textarea {
   font-family: inherit !important;
 }
 
-/* â”€â”€ 8. PROPERTY LISTINGS GRID (4 cols) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 8. PROPERTY LISTINGS GRID (4 cols) ─────────────────────────────────── */
 .property-listings-grid {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;
@@ -3603,7 +3767,7 @@ button, input, select, textarea {
   box-sizing: border-box !important;
 }
 
-/* â”€â”€ 9. PROPERTY CARDS (target: ~250px tall) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 9. PROPERTY CARDS (target: ~250px tall) ─────────────────────────────── */
 .property-card {
   background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
@@ -3865,7 +4029,7 @@ button, input, select, textarea {
 
 .btn-card-more:hover { background: #f8fafc !important; color: #0f172a !important; }
 
-/* â”€â”€ 10. PAGINATION (target: ~30px) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 10. PAGINATION (target: ~30px) ─────────────────────────────────────── */
 .pagination-wrapper {
   display: flex !important;
   align-items: center !important;
@@ -3930,7 +4094,7 @@ button, input, select, textarea {
   font-weight: 500 !important;
 }
 
-/* â”€â”€ 11. FOOTER (target: ~90px) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 11. FOOTER (target: ~90px) ─────────────────────────────────────────── */
 .keja-site-footer {
   background: #042316 !important;
   color: #ffffff !important;
@@ -3976,7 +4140,7 @@ button, input, select, textarea {
 
 .footer-location-pin i { color: #008744 !important; }
 
-/* â”€â”€ 12. RESPONSIVE BREAKPOINTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 12. RESPONSIVE BREAKPOINTS ─────────────────────────────────────────── */
 @media (max-width: 1400px) {
   .main-app-layout {
     grid-template-columns: 240px 1fr !important;
