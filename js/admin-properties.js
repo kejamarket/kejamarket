@@ -47,19 +47,19 @@ const AdminProperties = (() => {
       case 'all':
         return properties;
       case 'verified':
-        return properties.filter(p => p.status === 'verified' || p.isVerified);
+        return properties.filter(p => p.status === 'approved' || p.status === 'verified' || p.isVerified || p.is_verified);
       case 'pending':
-        return properties.filter(p => p.status === 'pending' || (!p.isVerified && p.status !== 'rejected'));
+        return properties.filter(p => p.status === 'pending' || (!p.isVerified && !p.is_verified && p.status !== 'rejected'));
       case 'rejected':
         return properties.filter(p => p.status === 'rejected');
       case 'available':
-        return properties.filter(p => !p.isTaken && p.status !== 'taken');
+        return properties.filter(p => !p.isTaken && p.status !== 'taken' && p.availability !== 'taken');
       case 'taken':
-        return properties.filter(p => p.isTaken || p.status === 'taken');
+        return properties.filter(p => p.isTaken || p.status === 'taken' || p.availability === 'taken');
       case 'rental':
-        return properties.filter(p => p.propertyType === 'rental' || !p.propertyType);
+        return properties.filter(p => !p.is_bnb && !p.isBnb && !(p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb'))));
       case 'bnb':
-        return properties.filter(p => p.propertyType === 'bnb' || p.propertyType === 'short-stay');
+        return properties.filter(p => p.propertyType === 'bnb' || p.propertyType === 'short-stay' || p.is_bnb || p.isBnb || (p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb'))));
       default:
         return properties;
     }

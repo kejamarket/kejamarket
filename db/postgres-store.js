@@ -395,7 +395,9 @@ class PostgreSQLStore {
         return result.rows.map(row => {
           const rentNum = parseFloat(row.rent_kes) || 0;
           const depNum = parseFloat(row.deposit_kes) || 0;
-          const isVer = row.is_verified !== false;
+          // Explicit: only true when the column is literally true — null/undefined means PENDING
+          const isVer = row.is_verified === true;
+          const status = row.raw_data?.status || (isVer ? 'approved' : 'pending');
           const photosArr = (row.photos && row.photos.length > 0) ? row.photos : (row.raw_data?.photos || []);
           return {
             ...row.raw_data,
@@ -417,6 +419,8 @@ class PostgreSQLStore {
             is_top_ad: !!row.is_top_ad,
             isVerified: isVer,
             is_verified: isVer,
+            status: status,
+            isApproved: isVer,
             corridorId: row.corridor_id,
             corridor_id: row.corridor_id,
             waterSupplyType: row.water_supply_type || (row.raw_data && row.raw_data.waterSupplyType) || '',
@@ -483,7 +487,9 @@ class PostgreSQLStore {
           const property = result.rows[0];
           const rentNum = parseFloat(property.rent_kes) || 0;
           const depNum = parseFloat(property.deposit_kes) || 0;
-          const isVer = property.is_verified !== false;
+          // Explicit: only true when the column is literally true
+          const isVer = property.is_verified === true;
+          const status = property.raw_data?.status || (isVer ? 'approved' : 'pending');
           return {
             ...property.raw_data,
             id: property.id,
@@ -504,6 +510,8 @@ class PostgreSQLStore {
             is_top_ad: !!property.is_top_ad,
             isVerified: isVer,
             is_verified: isVer,
+            status: status,
+            isApproved: isVer,
             waterSupplyType: property.water_supply_type || '',
             electricityMeterType: property.electricity_meter_type || '',
             postedTimeAgo: property.posted_time_ago || 'Today'
@@ -585,10 +593,14 @@ class PostgreSQLStore {
       property.corridorId || '', property.estateSuburb || '', property.exactLocation || '',
       property.latitude || null, property.longitude || null, 
       property.waterSupplyType || '', property.electricityMeterType || '',
-      property.isFeatured || false, property.isTopAd || false, property.isVerified !== false,
+      property.isFeatured || false, property.isTopAd || false,
+      // New submissions always start as UNVERIFIED (false) — admin must approve
+      false,
       property.managedBy || 'landlord', property.agencyName || '',
       property.caretakerName || '', property.caretakerPhone || '', property.landlordId || '',
-      createdAt, property.postedTimeAgo || 'Just now', JSON.stringify(property)
+      createdAt, property.postedTimeAgo || 'Just now',
+      // Store pending status in raw_data too
+      JSON.stringify({ ...property, status: 'pending', isVerified: false, isApproved: false })
     ];
 
     const result = await this.query(query, values);
@@ -612,6 +624,10 @@ class PostgreSQLStore {
       deposit: depNum, 
       depositKes: depNum, 
       deposit_kes: depNum, 
+      isVerified: false,
+      is_verified: false,
+      status: 'pending',
+      isApproved: false,
       createdAt, 
       postedTimeAgo: 'Just now' 
     };
@@ -622,10 +638,33 @@ class PostgreSQLStore {
       return this.fallbackStore.updateProperty(id, updates);
     }
 
-    // Update PostgreSQL record
+    // Build SQL for explicit column updates (is_verified, is_featured, is_top_ad)
+    const colUpdates = [];
+    const colValues = [];
+    let colIdx = 1;
+
+    if (updates.isVerified !== undefined || updates.is_verified !== undefined) {
+      const verVal = updates.isVerified !== undefined ? updates.isVerified : updates.is_verified;
+      colUpdates.push(`is_verified = $${colIdx++}`);
+      colValues.push(!!verVal);
+    }
+    if (updates.isFeatured !== undefined || updates.is_featured !== undefined) {
+      colUpdates.push(`is_featured = $${colIdx++}`);
+      colValues.push(!!(updates.isFeatured ?? updates.is_featured));
+    }
+    if (updates.isTopAd !== undefined || updates.is_top_ad !== undefined) {
+      colUpdates.push(`is_top_ad = $${colIdx++}`);
+      colValues.push(!!(updates.isTopAd ?? updates.is_top_ad));
+    }
+
+    // Always patch raw_data with all updates
+    colUpdates.push(`raw_data = raw_data || $${colIdx++}::jsonb`);
+    colValues.push(JSON.stringify(updates));
+    colValues.push(id);
+
     await this.query(
-      'UPDATE properties SET raw_data = raw_data || $1::jsonb WHERE id = $2',
-      [JSON.stringify(updates), id]
+      `UPDATE properties SET ${colUpdates.join(', ')} WHERE id = $${colIdx}`,
+      colValues
     );
 
     // Get updated property
@@ -829,11 +868,22 @@ class PostgreSQLStore {
         (SELECT COUNT(*) FROM users) as total_users,
         (SELECT COUNT(*) FROM users WHERE role = 'tenant') as tenants,
         (SELECT COUNT(*) FROM users WHERE role = 'landlord') as landlords,
+        (SELECT COUNT(*) FROM users) as active_users,
         (SELECT COUNT(*) FROM properties) as total_properties,
+        (SELECT COUNT(*) FROM properties WHERE is_verified = true) as active_listings,
+        (SELECT COUNT(*) FROM properties WHERE is_verified IS NOT TRUE) as pending_listings,
         (SELECT COUNT(*) FROM properties WHERE raw_data->>'availability' != 'taken') as available_properties,
         (SELECT COUNT(*) FROM properties WHERE raw_data->>'availability' = 'taken') as taken_properties,
+        (SELECT COUNT(*) FROM properties WHERE is_bnb = true OR category ILIKE '%bnb%') as total_bnbs,
+        (SELECT COUNT(*) FROM buildings) as total_buildings,
+        (SELECT COUNT(*) FROM units) as total_units,
+        (SELECT COUNT(*) FROM services) as total_services,
+        (SELECT COUNT(*) FROM marketplace_items) as total_marketplace,
         (SELECT COUNT(*) FROM transactions) as total_transactions,
-        (SELECT COUNT(*) FROM messages) as total_messages
+        (SELECT COUNT(*) FROM messages) as total_messages,
+        (SELECT COUNT(*) FROM messages WHERE is_read = false) as new_inquiries,
+        (SELECT COUNT(*) FROM house_hunts) as total_house_hunts,
+        (SELECT COUNT(*) FROM similar_property_alerts) as total_similar_alerts
     `);
 
     const recentUsers = await this.query(`
@@ -842,16 +892,29 @@ class PostgreSQLStore {
       LIMIT 50
     `);
 
+    const r = stats.rows[0];
     return {
-      ...stats.rows[0],
-      totalUsers: parseInt(stats.rows[0].total_users),
-      tenants: parseInt(stats.rows[0].tenants),
-      landlords: parseInt(stats.rows[0].landlords),
-      totalProperties: parseInt(stats.rows[0].total_properties),
-      availableProperties: parseInt(stats.rows[0].available_properties),
-      takenProperties: parseInt(stats.rows[0].taken_properties),
-      totalTransactions: parseInt(stats.rows[0].total_transactions),
-      totalMessages: parseInt(stats.rows[0].total_messages),
+      ...r,
+      totalUsers: parseInt(r.total_users) || 0,
+      activeUsers: parseInt(r.active_users) || 0,
+      tenants: parseInt(r.tenants) || 0,
+      landlords: parseInt(r.landlords) || 0,
+      totalProperties: parseInt(r.total_properties) || 0,
+      activeListings: parseInt(r.active_listings) || 0,
+      pendingListings: parseInt(r.pending_listings) || 0,
+      totalBNBs: parseInt(r.total_bnbs) || 0,
+      totalBuildings: parseInt(r.total_buildings) || 0,
+      totalUnits: parseInt(r.total_units) || 0,
+      totalServices: parseInt(r.total_services) || 0,
+      totalMarketplace: parseInt(r.total_marketplace) || 0,
+      availableProperties: parseInt(r.available_properties) || 0,
+      takenProperties: parseInt(r.taken_properties) || 0,
+      totalTransactions: parseInt(r.total_transactions) || 0,
+      totalMessages: parseInt(r.total_messages) || 0,
+      newInquiries: parseInt(r.new_inquiries) || 0,
+      openReports: 0,
+      totalHouseHunts: parseInt(r.total_house_hunts) || 0,
+      totalSimilarAlerts: parseInt(r.total_similar_alerts) || 0,
       dbFilePath: 'PostgreSQL Database',
       recentUsers: recentUsers.rows.map(u => this.sanitizeUser(u))
     };
@@ -1077,9 +1140,12 @@ class PostgreSQLStore {
   // SERVER-SIDE SEARCH & FILTERING
   // ═══════════════════════════════════════════════════════════════════
 
-  async searchProperties({ category, suburb, corridor, minPrice, maxPrice, query, page = 1, pageSize = 12, sort = 'newest', landlordId } = {}) {
+  async searchProperties({ category, suburb, corridor, minPrice, maxPrice, query, page = 1, pageSize = 12, sort = 'newest', landlordId, isVerified } = {}) {
     if (!this.isConnected) {
-      const all = this.fallbackStore.getAllProperties();
+      let all = this.fallbackStore.getAllProperties();
+      if (isVerified !== undefined) {
+        all = all.filter(p => (p.is_verified === true || p.isVerified === true) === !!isVerified);
+      }
       return { properties: all, total: all.length, page: 1, pageSize: all.length, totalPages: 1 };
     }
 
@@ -1087,6 +1153,10 @@ class PostgreSQLStore {
     const values = [];
     let idx = 1;
 
+    if (isVerified !== undefined) {
+      conditions.push(`is_verified = $${idx++}`);
+      values.push(!!isVerified);
+    }
     if (category && category !== 'All') {
       conditions.push(`category = $${idx++}`);
       values.push(category);
@@ -1139,19 +1209,26 @@ class PostgreSQLStore {
       [...values, pageSize, offset]
     );
 
-    const properties = dataResult.rows.map(row => ({
-      ...row.raw_data,
-      id: row.id,
-      title: row.title,
-      rent: row.rent_kes,
-      rentKes: row.rent_kes,
-      category: row.category,
-      estateSuburb: row.estate_suburb,
-      isFeatured: row.is_featured,
-      isTopAd: row.is_top_ad,
-      isVerified: row.is_verified,
-      createdAt: row.created_at
-    }));
+    const properties = dataResult.rows.map(row => {
+      const isVer = row.is_verified === true;
+      const status = row.raw_data?.status || (isVer ? 'approved' : 'pending');
+      return {
+        ...row.raw_data,
+        id: row.id,
+        title: row.title,
+        rent: row.rent_kes,
+        rentKes: row.rent_kes,
+        category: row.category,
+        estateSuburb: row.estate_suburb,
+        isFeatured: row.is_featured,
+        isTopAd: row.is_top_ad,
+        isVerified: isVer,
+        is_verified: isVer,
+        status: status,
+        isApproved: isVer,
+        createdAt: row.created_at
+      };
+    });
 
     return {
       properties,

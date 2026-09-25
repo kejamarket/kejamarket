@@ -1,4 +1,4 @@
-﻿/**
+/**
  * KejaMarket â€“ Production Backend API & M-Pesa Daraja Integration
  * ===============================================================
  * Provides:
@@ -1878,7 +1878,7 @@ app.get('/api/properties', cache.middleware(15, 'properties'), async (req, res) 
     }
 
     // Fallback: filter and return only verified properties
-    let properties = (await store.getAllProperties() || []).filter(p => p.is_verified === true || p.isVerified === true || p.isVerified === undefined);
+    let properties = (await store.getAllProperties() || []).filter(p => (p.is_verified === true || p.isVerified === true) && p.status !== 'pending' && p.status !== 'rejected');
 
     // Apply client-side filters
     if (category) {
@@ -1929,10 +1929,22 @@ app.get('/api/properties', cache.middleware(15, 'properties'), async (req, res) 
 });
 
 // GET /api/properties/:id
-app.get('/api/properties/:id', cache.middleware(30, 'property'), async (req, res) => {
+app.get('/api/properties/:id', optionalAuth, async (req, res) => {
   const property = await store.getPropertyById(req.params.id);
-  if (!property || (property.is_verified === false && property.isVerified === false)) {
+  if (!property) {
     return res.status(404).json({ success: false, message: 'Property not found.' });
+  }
+  const isUnverified = (property.is_verified === false || property.isVerified === false || property.status === 'pending');
+  if (isUnverified) {
+    const isAuthorized = req.user && (
+      req.user.isAdmin || 
+      req.user.role === 'admin' || 
+      req.user.id === property.landlordId || 
+      (property.landlord && req.user.id === property.landlord.id)
+    );
+    if (!isAuthorized) {
+      return res.status(404).json({ success: false, message: 'Property listing is pending admin verification.' });
+    }
   }
   res.json({ success: true, property });
 });
@@ -2025,6 +2037,22 @@ app.post('/api/properties', optionalAuth, async (req, res) => {
     // Caretaker on-site details (optional)
     if (data.caretakerPhone) {
       data.caretakerPhone = formatPhone(data.caretakerPhone);
+    }
+
+    // LISTING VERIFICATION GATE: All submissions by non-admins MUST remain pending
+    const isAdmin = req.user && (req.user.isAdmin || req.user.role === 'admin');
+    if (!isAdmin) {
+      data.isVerified = false;
+      data.is_verified = false;
+      data.isApproved = false;
+      data.status = 'pending';
+    } else {
+      if (data.isVerified === undefined && data.is_verified === undefined) {
+        data.isVerified = true;
+        data.is_verified = true;
+        data.isApproved = true;
+        data.status = 'approved';
+      }
     }
 
     const newProperty = await store.addProperty(data);
@@ -3599,7 +3627,7 @@ app.get('/api/admin/all-properties', requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/admin/pending-listings â€” listings awaiting approval
+// GET /api/admin/pending-listings — listings awaiting approval
 app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
@@ -3607,14 +3635,11 @@ app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
     }
     const all = await store.getAllProperties();
     const pending = all.filter(p =>
-      !p.isVerified && !p.is_verified &&
-      !p.isApproved &&
-      p.status !== 'approved' &&
-      p.status !== 'rejected' &&
-      !p.isPlaceholder &&
-      !p.isTest
-    );
-    res.json({ success: true, count: pending.length, listings: pending });
+      (!p.isVerified && !p.is_verified) ||
+      p.status === 'pending' ||
+      (!p.isApproved && p.status !== 'approved' && p.status !== 'rejected')
+    ).filter(p => !p.isPlaceholder && !p.isTest && p.status !== 'approved' && p.isVerified !== true && p.is_verified !== true);
+    res.json({ success: true, count: pending.length, listings: pending, properties: pending });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -4796,13 +4821,31 @@ app.get('/api/admin/pending', requireAuth, async (req, res) => {
 // POST /api/admin/approve
 app.post('/api/admin/approve', requireAuth, async (req, res) => {
   try {
-    if (!req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required' });
-    const { itemType, itemId } = req.body;
+    if (!req.user.isAdmin && req.user.role !== 'admin') return res.status(403).json({ success: false, message: 'Admin access required' });
+    const itemType = req.body.itemType || (req.body.propertyId ? 'property' : null);
+    const itemId = req.body.itemId || req.body.propertyId;
     if (!itemType || !itemId) return res.status(400).json({ success: false, message: 'itemType and itemId required' });
     let updatedItem = null;
-    if (itemType === 'property') updatedItem = await Promise.resolve(store.updateProperty(itemId, { is_verified: true }));
-    else if (itemType === 'service' && store.updateService) updatedItem = await Promise.resolve(store.updateService(itemId, { is_verified: true }));
-    else if (itemType === 'marketplace' && store.updateMarketplaceItem) updatedItem = await Promise.resolve(store.updateMarketplaceItem(itemId, { is_verified: true }));
+    if (itemType === 'property') {
+      updatedItem = await Promise.resolve(store.updateProperty(itemId, { 
+        is_verified: true, 
+        isVerified: true, 
+        status: 'approved', 
+        isApproved: true 
+      }));
+      // Notify landlord via SMS if phone exists
+      try {
+        const prop = await (store.getPropertyById ? store.getPropertyById(itemId) : (store.getProperty ? store.getProperty(itemId) : updatedItem));
+        const phone = prop?.landlord?.phone || prop?.caretakerPhone;
+        if (phone) {
+          await sendSMS(phone, `🎉 Congratulations! Your KejaMarket property listing "${prop.title || 'listing'}" has been approved by admin and is now LIVE for renters!`);
+        }
+      } catch (smsErr) {
+        console.warn('Approval SMS notification error:', smsErr.message);
+      }
+    }
+    else if (itemType === 'service' && store.updateService) updatedItem = await Promise.resolve(store.updateService(itemId, { is_verified: true, isVerified: true, status: 'active' }));
+    else if (itemType === 'marketplace' && store.updateMarketplaceItem) updatedItem = await Promise.resolve(store.updateMarketplaceItem(itemId, { is_verified: true, isVerified: true, status: 'available' }));
     else return res.status(400).json({ success: false, message: 'Invalid itemType' });
     if (!updatedItem) return res.status(404).json({ success: false, message: 'Item not found' });
     res.json({ success: true, message: `${itemType} approved successfully`, item: updatedItem });
@@ -4814,22 +4857,42 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
 // POST /api/admin/reject
 app.post('/api/admin/reject', requireAuth, async (req, res) => {
   try {
-    if (!req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required' });
-    const { itemType, itemId } = req.body;
+    if (!req.user.isAdmin && req.user.role !== 'admin') return res.status(403).json({ success: false, message: 'Admin access required' });
+    const itemType = req.body.itemType || (req.body.propertyId ? 'property' : null);
+    const itemId = req.body.itemId || req.body.propertyId;
+    const reason = req.body.reason || req.body.rejectionReason || 'Listing does not meet verification requirements';
     if (!itemType || !itemId) return res.status(400).json({ success: false, message: 'itemType and itemId required' });
-    let deletedItem = null;
+    let rejectedItem = null;
     if (itemType === 'property') {
-      if (store.getProperty) deletedItem = await Promise.resolve(store.getProperty(itemId));
-      if (deletedItem) await Promise.resolve(store.deleteProperty(itemId));
-    } else if (itemType === 'service' && store.getService && store.deleteService) {
-      deletedItem = await Promise.resolve(store.getService(itemId));
-      if (deletedItem) await Promise.resolve(store.deleteService(itemId));
-    } else if (itemType === 'marketplace' && store.getMarketplaceItem && store.deleteMarketplaceItem) {
-      deletedItem = await Promise.resolve(store.getMarketplaceItem(itemId));
-      if (deletedItem) await Promise.resolve(store.deleteMarketplaceItem(itemId));
+      const prop = await (store.getPropertyById ? store.getPropertyById(itemId) : (store.getProperty ? store.getProperty(itemId) : null));
+      if (!prop) return res.status(404).json({ success: false, message: 'Property not found' });
+      rejectedItem = await Promise.resolve(store.updateProperty(itemId, { 
+        status: 'rejected', 
+        is_verified: false, 
+        isVerified: false, 
+        isApproved: false,
+        rejectionReason: reason 
+      }));
+      // Notify landlord via SMS
+      try {
+        const phone = prop.landlord?.phone || prop.caretakerPhone;
+        if (phone) {
+          await sendSMS(phone, `⚠️ KejaMarket Notice: Your property listing "${prop.title || 'listing'}" was not approved.\n\nReason: ${reason}\n\nPlease update details in your Landlord Portal to resubmit.`);
+        }
+      } catch (smsErr) {
+        console.warn('Rejection SMS error:', smsErr.message);
+      }
+    } else if (itemType === 'service' && store.getService) {
+      rejectedItem = await Promise.resolve(store.getService(itemId));
+      if (store.updateService) await Promise.resolve(store.updateService(itemId, { status: 'rejected', is_verified: false }));
+      else if (store.deleteService) await Promise.resolve(store.deleteService(itemId));
+    } else if (itemType === 'marketplace' && store.getMarketplaceItem) {
+      rejectedItem = await Promise.resolve(store.getMarketplaceItem(itemId));
+      if (store.updateMarketplaceItem) await Promise.resolve(store.updateMarketplaceItem(itemId, { status: 'rejected', is_verified: false }));
+      else if (store.deleteMarketplaceItem) await Promise.resolve(store.deleteMarketplaceItem(itemId));
     }
-    if (!deletedItem) return res.status(404).json({ success: false, message: 'Item not found' });
-    res.json({ success: true, message: `${itemType} rejected and removed`, item: deletedItem });
+    if (!rejectedItem) return res.status(404).json({ success: false, message: 'Item not found' });
+    res.json({ success: true, message: `${itemType} rejected`, item: rejectedItem });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

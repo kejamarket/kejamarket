@@ -92,7 +92,9 @@ class NairobiRentalsApp {
             (p.status === 'approved' || 
             p.isApproved === true ||
             p.isVerified === true ||
-            p.status === 'active') &&
+            p.is_verified === true) &&
+            p.status !== 'pending' &&
+            p.status !== 'rejected' &&
             p.availability !== 'taken' &&  // Hide taken properties from tenant view
             !p.title?.includes('BEYOND SUNDAY') &&  // Exclude test data
             !p.isTest &&  // Exclude test properties
@@ -100,12 +102,7 @@ class NairobiRentalsApp {
           );
           this.properties = this.properties.map(p => this.normalizeProperty(p));
 
-          // Ensure exact reference properties are at the top of the list
-          const exactSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : []).filter(s => s.id?.startsWith('prop-exact-')).map(p => this.normalizeProperty(p));
-          const existingIds = new Set(exactSeed.map(s => s.id));
-          this.properties = [...exactSeed, ...this.properties.filter(p => !existingIds.has(p.id))];
-
-          console.log('Loaded properties from API:', this.properties.length);
+          console.log('Loaded real properties from API:', this.properties.length);
           
           // Initialize Recently Added section with fresh data
           if (window.KejaRecentlyAdded && window.KejaRecentlyAdded.refresh) {

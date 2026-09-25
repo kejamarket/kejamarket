@@ -29,7 +29,13 @@ const AdminBNB = (() => {
       if (!res.ok) throw new Error('Failed to load BNBs');
 
       const data = await res.json();
-      const bnbs = (data.properties || []).filter(p => p.propertyType === 'bnb' || p.propertyType === 'short-stay');
+      const bnbs = (data.properties || []).filter(p => 
+        p.propertyType === 'bnb' || 
+        p.propertyType === 'short-stay' || 
+        p.is_bnb === true || 
+        p.isBnb === true || 
+        (p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb') || p.category.toLowerCase().includes('short-stay')))
+      );
       currentBNBs = filterBNBsByTab(bnbs);
       renderBNBsGrid(currentBNBs);
       
