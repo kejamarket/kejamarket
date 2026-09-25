@@ -181,7 +181,7 @@ class NairobiRentalsApp {
         this.saveFavorites();
       }
     } catch (e) {
-      // Silent — offline fallback to localStorage
+      // Silent — offline fallback to localStorage
     }
   }
 
@@ -223,7 +223,7 @@ class NairobiRentalsApp {
       fetch(`/api/favourites/${encodeURIComponent(propertyId)}`, {
         method,
         headers: { 'Authorization': `Bearer ${token}` }
-      }).catch(() => {}); // Silent — localStorage is fallback
+      }).catch(() => {}); // Silent — localStorage is fallback
     }
   }
 
@@ -833,9 +833,23 @@ class NairobiRentalsApp {
     }
   }
 
+  // Set active suburb (used by Popular Areas chips)
+  setActiveSuburb(suburb) {
+    this.activeSuburb = suburb || 'all';
+    this.selectedSuburbs = suburb ? new Set([suburb]) : new Set();
+    this.currentPage = 1;
+  }
+
+  // Update the results count display in header area
+  updateResultsCountDisplay() {
+    const el = document.getElementById('results-count-display');
+    if (el) {
+      const count = this.filteredProperties ? this.filteredProperties.length : 0;
+      el.textContent = count.toLocaleString();
+    }
+  }
+
   resetFilters() {
-    this.activeCategory = 'All';
-    this.activeCorridor = 'all';
     this.activeSuburb = 'all';
     this.activeServiceCorridor = 'all';
     this.activeServiceSuburb = 'all';
@@ -1360,6 +1374,7 @@ class NairobiRentalsApp {
 
     this.filteredProperties = result;
     this.renderListingsSummary();
+    this.updateResultsCountDisplay();
     this.renderCardsGrid();
     this.renderSplitView();
     this.renderPagination();
@@ -1459,6 +1474,13 @@ class NairobiRentalsApp {
               <i class="fas fa-bell"></i> Notify Me When Similar Available
             </button>
           ` : ''}
+
+          <!-- Status tags: Furnished / Available Now -->
+          <div class="card-status-tags">
+            ${p.amenities?.isMasterEnsuite || p.amenities?.hasInternet || (p.category && (p.category.toLowerCase().includes('furnished') || p.category.toLowerCase().includes('serviced'))) ? `<span class="card-tag card-tag--furnished">Furnished</span>` : `<span class="card-tag card-tag--unfurnished">Unfurnished</span>`}
+            ${isOccupied ? '' : `<span class="card-tag card-tag--available">Available Now</span>`}
+          </div>
+
           <div class="card-actions-row">
             <button type="button" class="btn-card-details-green" onclick="app.openPropertyDetail('${p.id}')">
               View Details
@@ -1469,6 +1491,19 @@ class NairobiRentalsApp {
               <button type="button" class="card-social-btn card-social-fb" onclick="app.handleCardFacebook('${p.id}', event)" title="Share on Facebook"><i class="fab fa-facebook-f"></i></button>
               <button type="button" class="card-social-btn card-social-tt" onclick="app.handleCardTikTok('${p.id}', event)" title="Share on TikTok"><i class="fab fa-tiktok"></i></button>
             </div>
+          </div>
+
+          <!-- Bottom row: share / map / more -->
+          <div class="card-bottom-actions">
+            <button type="button" class="card-bottom-btn" onclick="app.handleCardWhatsApp('${p.id}', event)">
+              <i class="fab fa-share-alt"></i> Share
+            </button>
+            <button type="button" class="card-bottom-btn" onclick="app.focusPropertyOnMap('${p.id}', event)">
+              <i class="fas fa-map-marker-alt"></i> Map
+            </button>
+            <button type="button" class="card-bottom-btn" onclick="app.openPropertyDetail('${p.id}')">
+              <i class="fas fa-ellipsis-h"></i> More
+            </button>
           </div>
         </div>
       </div>
@@ -2068,7 +2103,7 @@ class NairobiRentalsApp {
       }
     }
 
-    // Google Maps Link + Map visibility — gated behind login
+    // Google Maps Link + Map visibility — gated behind login
     const directionsBtn = document.getElementById('detail-btn-directions');
     const mapSection = document.getElementById('detail-map-section');
     const gpsLockOverlay = document.getElementById('detail-map-lock-overlay');
@@ -2570,7 +2605,7 @@ class NairobiRentalsApp {
         container.innerHTML = `
           <div style="text-align: center; padding: 24px 16px; color: #64748b;">
             <div style="width: 50px; height: 50px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; font-size: 1.4rem;">
-              Ã°Å¸â€ºÂ¡Ã¯Â¸Â
+              🛡️
             </div>
             <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem; margin-bottom: 4px;">Reach out to KejaMarket Admin</div>
             <div style="font-size: 0.82rem; color: #64748b; max-width: 360px; margin: 0 auto; line-height: 1.5;">
@@ -2701,15 +2736,15 @@ class NairobiRentalsApp {
     }
 
     if (isAdminChat) {
-      // No auto-reply — admin responds manually through the admin portal
+      // No auto-reply — admin responds manually through the admin portal
       this.showToast('Message sent to KejaMarket Admin. We will respond via SMS shortly.', 'success');
     } else if (prop) {
-      // No auto-reply — landlord replies manually through their portal
+      // No auto-reply — landlord replies manually through their portal
       this.showToast(`Message sent to ${prop.landlord?.name || 'landlord'}. They will reply shortly.`, 'info');
     }
   }
 
-  // simulateLandlordReply removed — landlords reply manually
+  // simulateLandlordReply removed — landlords reply manually
 
   loadChatMessages() {
     // Load from localStorage as cache first
@@ -2777,7 +2812,7 @@ class NairobiRentalsApp {
           this.renderChatMessages();
         }
       } catch (err) {
-        // Silent fail — polling in background
+        // Silent fail — polling in background
       }
     }, 5000); // Poll every 5 seconds
   }
