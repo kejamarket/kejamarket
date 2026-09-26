@@ -160,7 +160,147 @@ const kajiadoCounty = addLocation({
   sortOrder: 4
 });
 
+// MOMBASA COUNTY
+const mombasaCounty = addLocation({
+  id: 'loc-county-mombasa',
+  name: 'Mombasa',
+  type: 'COUNTY',
+  countyId: 'loc-county-mombasa',
+  county: 'Mombasa',
+  aliases: ['Mombasa County', 'Coast', 'Mvita'],
+  latitude: -4.0435,
+  longitude: 39.6682,
+  metroGroup: 'Mombasa & Coast',
+  sortOrder: 5
+});
+
+// NAKURU COUNTY
+const nakuruCounty = addLocation({
+  id: 'loc-county-nakuru',
+  name: 'Nakuru',
+  type: 'COUNTY',
+  countyId: 'loc-county-nakuru',
+  county: 'Nakuru',
+  aliases: ['Nakuru County'],
+  latitude: -0.3031,
+  longitude: 36.0800,
+  metroGroup: 'Rift Valley',
+  sortOrder: 6
+});
+
+// KISUMU COUNTY
+const kisumuCounty = addLocation({
+  id: 'loc-county-kisumu',
+  name: 'Kisumu',
+  type: 'COUNTY',
+  countyId: 'loc-county-kisumu',
+  county: 'Kisumu',
+  aliases: ['Kisumu County', 'Lakeside City'],
+  latitude: -0.1022,
+  longitude: 34.7617,
+  metroGroup: 'Western Kenya',
+  sortOrder: 7
+});
+
+// UASIN GISHU COUNTY (Eldoret)
+const uasinGishuCounty = addLocation({
+  id: 'loc-county-uasin-gishu',
+  name: 'Uasin Gishu',
+  type: 'COUNTY',
+  countyId: 'loc-county-uasin-gishu',
+  county: 'Uasin Gishu',
+  aliases: ['Uasin Gishu County', 'Eldoret County'],
+  latitude: 0.5143,
+  longitude: 35.2698,
+  metroGroup: 'Rift Valley',
+  sortOrder: 8
+});
+
+// MERU COUNTY
+const meruCounty = addLocation({
+  id: 'loc-county-meru',
+  name: 'Meru',
+  type: 'COUNTY',
+  countyId: 'loc-county-meru',
+  county: 'Meru',
+  aliases: ['Meru County'],
+  latitude: 0.0470,
+  longitude: 37.6490,
+  metroGroup: 'Central Kenya',
+  sortOrder: 9
+});
+
+// NYERI COUNTY
+const nyeriCounty = addLocation({
+  id: 'loc-county-nyeri',
+  name: 'Nyeri',
+  type: 'COUNTY',
+  countyId: 'loc-county-nyeri',
+  county: 'Nyeri',
+  aliases: ['Nyeri County'],
+  latitude: -0.4169,
+  longitude: 36.9530,
+  metroGroup: 'Central Kenya',
+  sortOrder: 10
+});
+
+// LAIKIPIA COUNTY (Nanyuki)
+const laikipiaCounty = addLocation({
+  id: 'loc-county-laikipia',
+  name: 'Laikipia',
+  type: 'COUNTY',
+  countyId: 'loc-county-laikipia',
+  county: 'Laikipia',
+  aliases: ['Laikipia County', 'Nanyuki County'],
+  latitude: 0.3580,
+  longitude: 36.9530,
+  metroGroup: 'Central Kenya',
+  sortOrder: 11
+});
+
+// NAIVASHA / NAKURU NAIVASHA
+const naivashaCounty = addLocation({
+  id: 'loc-county-nakuru-naivasha',
+  name: 'Naivasha',
+  type: 'TOWN',
+  parent: nakuruCounty,
+  countyId: 'loc-county-nakuru',
+  county: 'Nakuru',
+  aliases: ['Naivasha Town', 'Hell\'s Gate Area'],
+  metroGroup: 'Rift Valley',
+  sortOrder: 1
+});
+
+// KILIFI COUNTY (Malindi / Diani / Watamu)
+const kilifiCounty = addLocation({
+  id: 'loc-county-kilifi',
+  name: 'Kilifi',
+  type: 'COUNTY',
+  countyId: 'loc-county-kilifi',
+  county: 'Kilifi',
+  aliases: ['Kilifi County', 'North Coast'],
+  latitude: -3.6305,
+  longitude: 39.8499,
+  metroGroup: 'Mombasa & Coast',
+  sortOrder: 12
+});
+
+// KWALE COUNTY (Diani)
+const kwaleCounty = addLocation({
+  id: 'loc-county-kwale',
+  name: 'Kwale',
+  type: 'COUNTY',
+  countyId: 'loc-county-kwale',
+  county: 'Kwale',
+  aliases: ['Kwale County', 'South Coast'],
+  latitude: -4.1737,
+  longitude: 39.4523,
+  metroGroup: 'Mombasa & Coast',
+  sortOrder: 13
+});
+
 // Helper builder
+
 function createSubTree(parent, data) {
   for (const item of data) {
     const loc = addLocation({
@@ -457,26 +597,28 @@ createSubTree(dagorettiArea, [
 
 // KIBERA / KIBRA
 const kiberaArea = addLocation({
-  name: 'Kibera',
+  name: 'Kibra',
   type: 'AREA',
   parent: nairobiCounty,
   countyId: nairobiCounty.id,
   county: 'Nairobi',
-  aliases: ['Kibra']
+  aliases: ['Kibera', 'Kibra / Kibera', 'Kibera / Kibra', 'Kibra Nairobi', 'Kibera Nairobi']
 });
 
 createSubTree(kiberaArea, [
-  { name: 'Laini Saba', type: 'SUB_AREA' },
-  { name: 'Lindi', type: 'SUB_AREA' },
-  { name: 'Makina', type: 'SUB_AREA' },
-  { name: 'Kianda', type: 'SUB_AREA' },
-  { name: 'Olympic', type: 'SUB_AREA', aliases: ['Olympic Stage'] },
-  { name: 'Ayany', type: 'ESTATE', aliases: ['Ayany Estate'] },
-  { name: 'Gatwekera', type: 'SUB_AREA' },
-  { name: 'Soweto', type: 'SUB_AREA' },
-  { name: 'Mashimoni', type: 'SUB_AREA' },
-  { name: 'Sarang\'ombe', type: 'SUB_AREA' },
-  { name: 'Woodley', type: 'ESTATE' }
+  { name: 'Kibra', type: 'ESTATE', aliases: ['Kibra Town', 'Kibra Centre', 'Kibera'] },
+  { name: 'Olympic', type: 'SUB_AREA', aliases: ['Olympic Stage', 'Olympic Plaza', 'Olympic Kibra', 'Olympic Kibera'] },
+  { name: 'Ayany', type: 'ESTATE', aliases: ['Ayany Estate', 'Ayany Kibra', 'Ayany Kibera'] },
+  { name: 'Makina', type: 'SUB_AREA', aliases: ['Makina Kibra', 'Makina Kibera', 'Karanja Road'] },
+  { name: 'Laini Saba', type: 'SUB_AREA', aliases: ['Laini Saba Kibra', 'Laini Saba Kibera'] },
+  { name: 'Lindi', type: 'SUB_AREA', aliases: ['Lindi Kibra', 'Lindi Kibera'] },
+  { name: 'Kianda', type: 'SUB_AREA', aliases: ['Kianda Kibra', 'Kianda Kibera'] },
+  { name: 'Gatwekera', type: 'SUB_AREA', aliases: ['Gatwekera Kibra', 'Gatwekera Kibera'] },
+  { name: 'Soweto', type: 'SUB_AREA', aliases: ['Soweto Kibra', 'Soweto Kibera'] },
+  { name: 'Mashimoni', type: 'SUB_AREA', aliases: ['Mashimoni Kibra', 'Mashimoni Kibera'] },
+  { name: 'Sarang\'ombe', type: 'SUB_AREA', aliases: ['Sarangombe Kibra', 'Sarangombe Kibera'] },
+  { name: 'Woodley', type: 'ESTATE', aliases: ['Woodley Estate', 'Woodley Kibra', 'Woodley Kibera'] },
+  { name: 'Kenyatta Golf Course', type: 'LANDMARK', aliases: ['Golf Course Kibra', 'Golf Course Kibera', 'Golf Course'] }
 ]);
 
 // CBD / CENTRAL
@@ -989,7 +1131,293 @@ createSubTree(limuruTown, [
   { name: 'Kentmere', type: 'LANDMARK' }
 ]);
 
+// THIKA (Kiambu County)
+const thikaTown = addLocation({
+  name: 'Thika',
+  type: 'TOWN',
+  parent: kiambuCounty,
+  countyId: kiambuCounty.id,
+  county: 'Kiambu',
+  aliases: ['Thika Town', 'Thika City']
+});
+
+createSubTree(thikaTown, [
+  { name: 'Thika CBD', type: 'NEIGHBOURHOOD', aliases: ['Thika Town Centre'] },
+  { name: 'Makongeni', type: 'ESTATE', aliases: ['Makongeni Thika'] },
+  { name: 'Ngoingwa', type: 'ESTATE' },
+  { name: 'Landless', type: 'ESTATE', aliases: ['Landless Thika'] },
+  { name: 'Blue Post', type: 'LANDMARK', aliases: ['Blue Post Hotel', 'Chania Falls'] },
+  { name: 'Stadium', type: 'AREA', aliases: ['Thika Stadium'] },
+  { name: 'Thika Road Mall', type: 'LANDMARK', aliases: ['TRM', 'Thika Road'] },
+  { name: 'Mangu', type: 'AREA', aliases: ['Mangu Thika'] },
+  { name: 'Gatuanyaga', type: 'ESTATE' },
+  { name: 'Juja Farm', type: 'ESTATE', aliases: ['Juja Farm Thika'] }
+]);
+
+// JUJA (Kiambu County)
+const jujaTown = addLocation({
+  name: 'Juja',
+  type: 'TOWN',
+  parent: kiambuCounty,
+  countyId: kiambuCounty.id,
+  county: 'Kiambu',
+  aliases: ['Juja Town', 'JKUAT Area']
+});
+
+createSubTree(jujaTown, [
+  { name: 'JKUAT', type: 'LANDMARK', aliases: ['Juja University', 'JKUAT Campus'] },
+  { name: 'Juja City', type: 'AREA' },
+  { name: 'Suswa', type: 'ESTATE' },
+  { name: 'Eastern Bypass Juja', type: 'AREA', aliases: ['Eastern Bypass'] },
+  { name: 'Mugutha', type: 'ESTATE' }
+]);
+
+// Write output — insert new county towns ABOVE
+// ============================================================
+// MOMBASA COUNTY TOWNS & AREAS
+// ============================================================
+const mombasaIsland = addLocation({
+  name: 'Mombasa Island', type: 'AREA', parent: mombasaCounty,
+  countyId: mombasaCounty.id, county: 'Mombasa', metroGroup: 'Mombasa & Coast',
+  aliases: ['Mombasa CBD', 'Old Town Mombasa']
+});
+createSubTree(mombasaIsland, [
+  { name: 'Old Town', type: 'NEIGHBOURHOOD', aliases: ['Mombasa Old Town'] },
+  { name: 'Mvita', type: 'NEIGHBOURHOOD', aliases: ['Mvita Mombasa'] },
+  { name: 'Mombasa CBD', type: 'NEIGHBOURHOOD', aliases: ['Mombasa Town Centre', 'City Centre Mombasa'] },
+  { name: 'Fort Jesus Area', type: 'LANDMARK' }
+]);
+
+const mombasaNorth = addLocation({
+  name: 'Nyali', type: 'AREA', parent: mombasaCounty,
+  countyId: mombasaCounty.id, county: 'Mombasa', metroGroup: 'Mombasa & Coast',
+  aliases: ['Nyali Mombasa', 'North Mombasa']
+});
+createSubTree(mombasaNorth, [
+  { name: 'Nyali Beach', type: 'NEIGHBOURHOOD', aliases: ['Nyali Beach Road'] },
+  { name: 'Links Road', type: 'ROAD', aliases: ['Links Nyali'] },
+  { name: 'Bombolulu', type: 'ESTATE', aliases: ['Bombolulu Nyali'] },
+  { name: 'Mkomani', type: 'ESTATE' },
+  { name: 'Kongowea', type: 'ESTATE' }
+]);
+
+const mombasaSouth = addLocation({
+  name: 'Likoni', type: 'AREA', parent: mombasaCounty,
+  countyId: mombasaCounty.id, county: 'Mombasa', metroGroup: 'Mombasa & Coast',
+  aliases: ['Likoni Ferry', 'South Mombasa']
+});
+createSubTree(mombasaSouth, [
+  { name: 'Likoni Ferry', type: 'LANDMARK' },
+  { name: 'Shika Adabu', type: 'ESTATE' },
+  { name: 'Mtongwe', type: 'ESTATE' }
+]);
+
+const mombasaWest = addLocation({
+  name: 'Mombasa West', type: 'AREA', parent: mombasaCounty,
+  countyId: mombasaCounty.id, county: 'Mombasa', metroGroup: 'Mombasa & Coast',
+  aliases: ['Changamwe', 'Port Reitz']
+});
+createSubTree(mombasaWest, [
+  { name: 'Changamwe', type: 'ESTATE', aliases: ['Changamwe Mombasa'] },
+  { name: 'Port Reitz', type: 'AREA' },
+  { name: 'Jomvu', type: 'ESTATE' },
+  { name: 'Mikindani', type: 'ESTATE' }
+]);
+
+const mombasaEast = addLocation({
+  name: 'Bamburi', type: 'AREA', parent: mombasaCounty,
+  countyId: mombasaCounty.id, county: 'Mombasa', metroGroup: 'Mombasa & Coast',
+  aliases: ['Bamburi Beach', 'Mombasa North Coast']
+});
+createSubTree(mombasaEast, [
+  { name: 'Bamburi Beach', type: 'NEIGHBOURHOOD', aliases: ['Bamburi Hotel Area'] },
+  { name: 'Shanzu', type: 'ESTATE', aliases: ['Shanzu Beach'] },
+  { name: 'Kanamai', type: 'ESTATE' },
+  { name: 'Mtwapa', type: 'TOWN', aliases: ['Mtwapa Creek'] },
+  { name: 'Kisauni', type: 'AREA', aliases: ['Kisauni Mombasa'] },
+  { name: 'Mishomoroni', type: 'ESTATE' },
+  { name: 'Majengo', type: 'ESTATE', aliases: ['Majengo Mombasa'] },
+  { name: 'Magongo', type: 'ESTATE', aliases: ['Magongo Road'] }
+]);
+
+// ============================================================
+// KILIFI COUNTY TOWNS (Malindi, Watamu, Kilifi)
+// ============================================================
+const kilifiTown = addLocation({
+  name: 'Kilifi Town', type: 'TOWN', parent: kilifiCounty,
+  countyId: kilifiCounty.id, county: 'Kilifi', metroGroup: 'Mombasa & Coast',
+  aliases: ['Kilifi']
+});
+createSubTree(kilifiTown, [
+  { name: 'Kilifi Creek', type: 'AREA' },
+  { name: 'Bofa', type: 'ESTATE', aliases: ['Bofa Road Kilifi'] },
+  { name: 'Mnarani', type: 'ESTATE' }
+]);
+
+const malindiTown = addLocation({
+  name: 'Malindi', type: 'TOWN', parent: kilifiCounty,
+  countyId: kilifiCounty.id, county: 'Kilifi', metroGroup: 'Mombasa & Coast',
+  aliases: ['Malindi Town', 'Malindi Coast']
+});
+createSubTree(malindiTown, [
+  { name: 'Malindi CBD', type: 'NEIGHBOURHOOD', aliases: ['Malindi Town Centre'] },
+  { name: 'Silversands', type: 'ESTATE', aliases: ['Silversands Malindi'] },
+  { name: 'Casuarina', type: 'ESTATE', aliases: ['Casuarina Road'] },
+  { name: 'Shella', type: 'ESTATE' },
+  { name: 'Watamu', type: 'TOWN', aliases: ['Watamu Beach', 'Watamu Village'] }
+]);
+
+// ============================================================
+// KWALE COUNTY (Diani, Ukunda)
+// ============================================================
+const dianiArea = addLocation({
+  name: 'Diani', type: 'TOWN', parent: kwaleCounty,
+  countyId: kwaleCounty.id, county: 'Kwale', metroGroup: 'Mombasa & Coast',
+  aliases: ['Diani Beach', 'South Coast Kenya', 'Ukunda']
+});
+createSubTree(dianiArea, [
+  { name: 'Diani Beach Road', type: 'ROAD', aliases: ['Diani Beach'] },
+  { name: 'Ukunda', type: 'ESTATE', aliases: ['Ukunda Town'] },
+  { name: 'Galu Beach', type: 'ESTATE', aliases: ['Galu Kinondo'] },
+  { name: 'Tiwi', type: 'ESTATE', aliases: ['Tiwi Beach'] },
+  { name: 'Mvindeni', type: 'ESTATE' },
+  { name: 'Msambweni', type: 'AREA' }
+]);
+
+// ============================================================
+// NAKURU COUNTY TOWNS
+// ============================================================
+const nakuruTown = addLocation({
+  name: 'Nakuru Town', type: 'TOWN', parent: nakuruCounty,
+  countyId: nakuruCounty.id, county: 'Nakuru', metroGroup: 'Rift Valley',
+  aliases: ['Nakuru', 'Nakuru City']
+});
+createSubTree(nakuruTown, [
+  { name: 'Nakuru CBD', type: 'NEIGHBOURHOOD', aliases: ['Nakuru Town Centre', 'Oginga Odinga'] },
+  { name: 'Section 58', type: 'ESTATE', aliases: ['Section 58 Nakuru'] },
+  { name: 'Milimani', type: 'ESTATE', aliases: ['Milimani Nakuru'] },
+  { name: 'Freehold', type: 'ESTATE', aliases: ['Freehold Estate Nakuru'] },
+  { name: 'Pangani', type: 'ESTATE', aliases: ['Pangani Nakuru'] },
+  { name: 'Lanet', type: 'ESTATE', aliases: ['Lanet Nakuru'] },
+  { name: 'Kabarak', type: 'AREA', aliases: ['Kabarak University Area'] },
+  { name: 'London', type: 'ESTATE', aliases: ['London Estate Nakuru'] },
+  { name: 'Kivumbini', type: 'ESTATE' },
+  { name: 'Flamingo', type: 'ESTATE' },
+  { name: 'Pipeline', type: 'ESTATE', aliases: ['Pipeline Nakuru'] }
+]);
+
+createSubTree(naivashaCounty, [
+  { name: 'Naivasha Town Centre', type: 'NEIGHBOURHOOD', aliases: ['Naivasha CBD'] },
+  { name: 'Hell\'s Gate', type: 'LANDMARK', aliases: ['Hells Gate National Park'] },
+  { name: 'Lake Naivasha', type: 'LANDMARK', aliases: ['Naivasha Lake'] },
+  { name: 'Mai Mahiu', type: 'TOWN', aliases: ['Maai Mahiu'] },
+  { name: 'South Lake Road', type: 'ROAD', aliases: ['South Lake Naivasha'] }
+]);
+
+// ============================================================
+// KISUMU COUNTY TOWNS
+// ============================================================
+const kisumuTown = addLocation({
+  name: 'Kisumu Town', type: 'TOWN', parent: kisumuCounty,
+  countyId: kisumuCounty.id, county: 'Kisumu', metroGroup: 'Western Kenya',
+  aliases: ['Kisumu', 'Kisumu City']
+});
+createSubTree(kisumuTown, [
+  { name: 'Kisumu CBD', type: 'NEIGHBOURHOOD', aliases: ['Kisumu Town Centre', 'City Centre Kisumu'] },
+  { name: 'Milimani', type: 'ESTATE', aliases: ['Milimani Kisumu'] },
+  { name: 'Nyalenda', type: 'ESTATE', aliases: ['Nyalenda Kisumu'] },
+  { name: 'Kondele', type: 'ESTATE', aliases: ['Kondele Kisumu'] },
+  { name: 'Mamboleo', type: 'ESTATE', aliases: ['Mamboleo Kisumu'] },
+  { name: 'Riat Hills', type: 'ESTATE', aliases: ['Riat Kisumu'] },
+  { name: 'Tom Mboya Estate', type: 'ESTATE', aliases: ['Tom Mboya'] },
+  { name: 'Lolwe', type: 'ESTATE' },
+  { name: 'Manyatta', type: 'ESTATE', aliases: ['Manyatta Kisumu'] },
+  { name: 'Migosi', type: 'ESTATE' },
+  { name: 'Dunga', type: 'AREA', aliases: ['Dunga Beach'] },
+  { name: 'Nyawita', type: 'ESTATE' }
+]);
+
+// ============================================================
+// UASIN GISHU COUNTY (Eldoret)
+// ============================================================
+const eldoretTown = addLocation({
+  name: 'Eldoret', type: 'TOWN', parent: uasinGishuCounty,
+  countyId: uasinGishuCounty.id, county: 'Uasin Gishu', metroGroup: 'Rift Valley',
+  aliases: ['Eldoret Town', 'Eldoret City', 'Athletics Capital']
+});
+createSubTree(eldoretTown, [
+  { name: 'Eldoret CBD', type: 'NEIGHBOURHOOD', aliases: ['Eldoret Town Centre'] },
+  { name: 'Kimumu', type: 'ESTATE', aliases: ['Kimumu Eldoret'] },
+  { name: 'Langas', type: 'ESTATE', aliases: ['Langas Eldoret'] },
+  { name: 'Huruma', type: 'ESTATE', aliases: ['Huruma Eldoret'] },
+  { name: 'Kapsabet Road', type: 'ROAD' },
+  { name: 'Moi University Area', type: 'AREA', aliases: ['Moi University', 'Eldoret Moi'] },
+  { name: 'Elgon View', type: 'ESTATE', aliases: ['Elgon View Estate'] },
+  { name: 'West Indies', type: 'ESTATE', aliases: ['West Indies Eldoret'] },
+  { name: 'Kesses', type: 'AREA' },
+  { name: 'Annex', type: 'ESTATE', aliases: ['Eldoret Annex'] }
+]);
+
+// ============================================================
+// MERU COUNTY TOWNS
+// ============================================================
+const meruTown = addLocation({
+  name: 'Meru Town', type: 'TOWN', parent: meruCounty,
+  countyId: meruCounty.id, county: 'Meru', metroGroup: 'Central Kenya',
+  aliases: ['Meru', 'Meru City']
+});
+createSubTree(meruTown, [
+  { name: 'Meru CBD', type: 'NEIGHBOURHOOD', aliases: ['Meru Town Centre'] },
+  { name: 'Makutano', type: 'ESTATE', aliases: ['Makutano Meru'] },
+  { name: 'Kaaga', type: 'AREA', aliases: ['Kaaga Meru'] },
+  { name: 'Gakoromone', type: 'ESTATE' },
+  { name: 'Timau', type: 'TOWN', aliases: ['Timau Road'] }
+]);
+
+// ============================================================
+// NYERI COUNTY TOWNS
+// ============================================================
+const nyeriTown = addLocation({
+  name: 'Nyeri Town', type: 'TOWN', parent: nyeriCounty,
+  countyId: nyeriCounty.id, county: 'Nyeri', metroGroup: 'Central Kenya',
+  aliases: ['Nyeri']
+});
+createSubTree(nyeriTown, [
+  { name: 'Nyeri CBD', type: 'NEIGHBOURHOOD', aliases: ['Nyeri Town Centre'] },
+  { name: 'Karatina', type: 'TOWN', aliases: ['Karatina Market'] },
+  { name: 'Othaya', type: 'TOWN' },
+  { name: 'Mukurweini', type: 'AREA' },
+  { name: 'Tetu', type: 'AREA' }
+]);
+
+// ============================================================
+// LAIKIPIA COUNTY (Nanyuki)
+// ============================================================
+const nanyukiTown = addLocation({
+  name: 'Nanyuki', type: 'TOWN', parent: laikipiaCounty,
+  countyId: laikipiaCounty.id, county: 'Laikipia', metroGroup: 'Central Kenya',
+  aliases: ['Nanyuki Town', 'Mt Kenya Area']
+});
+createSubTree(nanyukiTown, [
+  { name: 'Nanyuki CBD', type: 'NEIGHBOURHOOD', aliases: ['Nanyuki Town Centre'] },
+  { name: 'Equator Area', type: 'LANDMARK', aliases: ['Equator Nanyuki'] },
+  { name: 'Laikipia Air Base', type: 'LANDMARK', aliases: ['Nanyuki Air Base'] },
+  { name: 'Sweetwaters', type: 'AREA', aliases: ['Sweetwaters Game Reserve'] },
+  { name: 'Lewa', type: 'AREA', aliases: ['Lewa Downs', 'Lewa Wildlife Conservancy'] }
+]);
+
 // Write output
 const targetPath = path.join(__dirname, '..', 'db', 'locations-data.json');
 fs.writeFileSync(targetPath, JSON.stringify(locations, null, 2), 'utf-8');
 console.log(`✅ Master location dataset created with ${locations.length} verified records at ${targetPath}`);
+
+// Also write frontend bundle js/data/locations-master.js
+const targetJsPath = path.join(__dirname, '..', 'js', 'data', 'locations-master.js');
+const jsBundle = `/**
+ * KejaMarket Master Locations Seed Bundle
+ * Generated automatically from scripts/build-master-locations.js
+ */
+window.KEJA_MASTER_LOCATIONS = ${JSON.stringify(locations, null, 2)};
+`;
+fs.writeFileSync(targetJsPath, jsBundle, 'utf-8');
+console.log(`✅ Master location JS bundle created with ${locations.length} records at ${targetJsPath}`);

@@ -1,6 +1,6 @@
 /**
  * KejaMarket Master Locations Seed Bundle
- * Generated automatically from db/locations-data.json
+ * Generated automatically from scripts/build-master-locations.js
  */
 window.KEJA_MASTER_LOCATIONS = [
   {
@@ -122,6 +122,318 @@ window.KEJA_MASTER_LOCATIONS = [
     ],
     "pathString": "Kajiado",
     "displayLocation": "Kajiado"
+  },
+  {
+    "id": "loc-county-mombasa",
+    "name": "Mombasa",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Mombasa County",
+      "Coast",
+      "Mvita"
+    ],
+    "searchTerms": [
+      "mombasa",
+      "mombasa county",
+      "coast",
+      "mvita"
+    ],
+    "latitude": -4.0435,
+    "longitude": 39.6682,
+    "verified": true,
+    "sortOrder": 5,
+    "status": "active",
+    "path": [
+      "Mombasa"
+    ],
+    "pathIds": [
+      "loc-county-mombasa"
+    ],
+    "pathString": "Mombasa",
+    "displayLocation": "Mombasa"
+  },
+  {
+    "id": "loc-county-nakuru",
+    "name": "Nakuru",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Nakuru County"
+    ],
+    "searchTerms": [
+      "nakuru",
+      "nakuru county"
+    ],
+    "latitude": -0.3031,
+    "longitude": 36.08,
+    "verified": true,
+    "sortOrder": 6,
+    "status": "active",
+    "path": [
+      "Nakuru"
+    ],
+    "pathIds": [
+      "loc-county-nakuru"
+    ],
+    "pathString": "Nakuru",
+    "displayLocation": "Nakuru"
+  },
+  {
+    "id": "loc-county-kisumu",
+    "name": "Kisumu",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Kisumu County",
+      "Lakeside City"
+    ],
+    "searchTerms": [
+      "kisumu",
+      "kisumu county",
+      "lakeside city"
+    ],
+    "latitude": -0.1022,
+    "longitude": 34.7617,
+    "verified": true,
+    "sortOrder": 7,
+    "status": "active",
+    "path": [
+      "Kisumu"
+    ],
+    "pathIds": [
+      "loc-county-kisumu"
+    ],
+    "pathString": "Kisumu",
+    "displayLocation": "Kisumu"
+  },
+  {
+    "id": "loc-county-uasin-gishu",
+    "name": "Uasin Gishu",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Uasin Gishu County",
+      "Eldoret County"
+    ],
+    "searchTerms": [
+      "uasin gishu",
+      "uasin gishu county",
+      "eldoret county"
+    ],
+    "latitude": 0.5143,
+    "longitude": 35.2698,
+    "verified": true,
+    "sortOrder": 8,
+    "status": "active",
+    "path": [
+      "Uasin Gishu"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu"
+    ],
+    "pathString": "Uasin Gishu",
+    "displayLocation": "Uasin Gishu"
+  },
+  {
+    "id": "loc-county-meru",
+    "name": "Meru",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-meru",
+    "county": "Meru",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Meru County"
+    ],
+    "searchTerms": [
+      "meru",
+      "meru county"
+    ],
+    "latitude": 0.047,
+    "longitude": 37.649,
+    "verified": true,
+    "sortOrder": 9,
+    "status": "active",
+    "path": [
+      "Meru"
+    ],
+    "pathIds": [
+      "loc-county-meru"
+    ],
+    "pathString": "Meru",
+    "displayLocation": "Meru"
+  },
+  {
+    "id": "loc-county-nyeri",
+    "name": "Nyeri",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-nyeri",
+    "county": "Nyeri",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Nyeri County"
+    ],
+    "searchTerms": [
+      "nyeri",
+      "nyeri county"
+    ],
+    "latitude": -0.4169,
+    "longitude": 36.953,
+    "verified": true,
+    "sortOrder": 10,
+    "status": "active",
+    "path": [
+      "Nyeri"
+    ],
+    "pathIds": [
+      "loc-county-nyeri"
+    ],
+    "pathString": "Nyeri",
+    "displayLocation": "Nyeri"
+  },
+  {
+    "id": "loc-county-laikipia",
+    "name": "Laikipia",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-laikipia",
+    "county": "Laikipia",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Laikipia County",
+      "Nanyuki County"
+    ],
+    "searchTerms": [
+      "laikipia",
+      "laikipia county",
+      "nanyuki county"
+    ],
+    "latitude": 0.358,
+    "longitude": 36.953,
+    "verified": true,
+    "sortOrder": 11,
+    "status": "active",
+    "path": [
+      "Laikipia"
+    ],
+    "pathIds": [
+      "loc-county-laikipia"
+    ],
+    "pathString": "Laikipia",
+    "displayLocation": "Laikipia"
+  },
+  {
+    "id": "loc-county-nakuru-naivasha",
+    "name": "Naivasha",
+    "type": "TOWN",
+    "parentId": "loc-county-nakuru",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Naivasha Town",
+      "Hell's Gate Area"
+    ],
+    "searchTerms": [
+      "naivasha",
+      "nakuru naivasha",
+      "naivasha nakuru",
+      "naivasha town",
+      "nakuru naivasha town",
+      "hell's gate area",
+      "nakuru hell's gate area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 1,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Naivasha"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-naivasha"
+    ],
+    "pathString": "Nakuru > Naivasha",
+    "displayLocation": "Naivasha, Nakuru"
+  },
+  {
+    "id": "loc-county-kilifi",
+    "name": "Kilifi",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Kilifi County",
+      "North Coast"
+    ],
+    "searchTerms": [
+      "kilifi",
+      "kilifi county",
+      "north coast"
+    ],
+    "latitude": -3.6305,
+    "longitude": 39.8499,
+    "verified": true,
+    "sortOrder": 12,
+    "status": "active",
+    "path": [
+      "Kilifi"
+    ],
+    "pathIds": [
+      "loc-county-kilifi"
+    ],
+    "pathString": "Kilifi",
+    "displayLocation": "Kilifi"
+  },
+  {
+    "id": "loc-county-kwale",
+    "name": "Kwale",
+    "type": "COUNTY",
+    "parentId": null,
+    "countyId": "loc-county-kwale",
+    "county": "Kwale",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Kwale County",
+      "South Coast"
+    ],
+    "searchTerms": [
+      "kwale",
+      "kwale county",
+      "south coast"
+    ],
+    "latitude": -4.1737,
+    "longitude": 39.4523,
+    "verified": true,
+    "sortOrder": 13,
+    "status": "active",
+    "path": [
+      "Kwale"
+    ],
+    "pathIds": [
+      "loc-county-kwale"
+    ],
+    "pathString": "Kwale",
+    "displayLocation": "Kwale"
   },
   {
     "id": "loc-county-nairobi-westlands",
@@ -5188,22 +5500,33 @@ window.KEJA_MASTER_LOCATIONS = [
     "displayLocation": "Dagoretti · Uthiru, Nairobi"
   },
   {
-    "id": "loc-county-nairobi-kibera",
-    "name": "Kibera",
+    "id": "loc-county-nairobi-kibra",
+    "name": "Kibra",
     "type": "AREA",
     "parentId": "loc-county-nairobi",
     "countyId": "loc-county-nairobi",
     "county": "Nairobi",
     "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "Kibra"
+      "Kibera",
+      "Kibra / Kibera",
+      "Kibera / Kibra",
+      "Kibra Nairobi",
+      "Kibera Nairobi"
     ],
     "searchTerms": [
+      "kibra",
+      "nairobi kibra",
+      "kibra nairobi",
       "kibera",
       "nairobi kibera",
+      "kibra / kibera",
+      "nairobi kibra / kibera",
+      "kibera / kibra",
+      "nairobi kibera / kibra",
+      "nairobi kibra nairobi",
       "kibera nairobi",
-      "kibra",
-      "nairobi kibra"
+      "nairobi kibera nairobi"
     ],
     "latitude": null,
     "longitude": null,
@@ -5212,165 +5535,38 @@ window.KEJA_MASTER_LOCATIONS = [
     "status": "active",
     "path": [
       "Nairobi",
-      "Kibera"
+      "Kibra"
     ],
     "pathIds": [
       "loc-county-nairobi",
-      "loc-county-nairobi-kibera"
+      "loc-county-nairobi-kibra"
     ],
-    "pathString": "Nairobi > Kibera",
-    "displayLocation": "Kibera, Nairobi"
+    "pathString": "Nairobi > Kibra",
+    "displayLocation": "Kibra, Nairobi"
   },
   {
-    "id": "loc-county-nairobi-kibera-laini-saba",
-    "name": "Laini Saba",
-    "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
-    "countyId": "loc-county-nairobi",
-    "county": "Nairobi",
-    "metroGroup": "Nairobi & Environs",
-    "aliases": [],
-    "searchTerms": [
-      "laini saba",
-      "kibera laini saba",
-      "laini saba kibera",
-      "nairobi laini saba"
-    ],
-    "latitude": null,
-    "longitude": null,
-    "verified": true,
-    "sortOrder": 0,
-    "status": "active",
-    "path": [
-      "Nairobi",
-      "Kibera",
-      "Laini Saba"
-    ],
-    "pathIds": [
-      "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-laini-saba"
-    ],
-    "pathString": "Nairobi > Kibera > Laini Saba",
-    "displayLocation": "Kibera · Laini Saba, Nairobi"
-  },
-  {
-    "id": "loc-county-nairobi-kibera-lindi",
-    "name": "Lindi",
-    "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
-    "countyId": "loc-county-nairobi",
-    "county": "Nairobi",
-    "metroGroup": "Nairobi & Environs",
-    "aliases": [],
-    "searchTerms": [
-      "lindi",
-      "kibera lindi",
-      "lindi kibera",
-      "nairobi lindi"
-    ],
-    "latitude": null,
-    "longitude": null,
-    "verified": true,
-    "sortOrder": 0,
-    "status": "active",
-    "path": [
-      "Nairobi",
-      "Kibera",
-      "Lindi"
-    ],
-    "pathIds": [
-      "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-lindi"
-    ],
-    "pathString": "Nairobi > Kibera > Lindi",
-    "displayLocation": "Kibera · Lindi, Nairobi"
-  },
-  {
-    "id": "loc-county-nairobi-kibera-makina",
-    "name": "Makina",
-    "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
-    "countyId": "loc-county-nairobi",
-    "county": "Nairobi",
-    "metroGroup": "Nairobi & Environs",
-    "aliases": [],
-    "searchTerms": [
-      "makina",
-      "kibera makina",
-      "makina kibera",
-      "nairobi makina"
-    ],
-    "latitude": null,
-    "longitude": null,
-    "verified": true,
-    "sortOrder": 0,
-    "status": "active",
-    "path": [
-      "Nairobi",
-      "Kibera",
-      "Makina"
-    ],
-    "pathIds": [
-      "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-makina"
-    ],
-    "pathString": "Nairobi > Kibera > Makina",
-    "displayLocation": "Kibera · Makina, Nairobi"
-  },
-  {
-    "id": "loc-county-nairobi-kibera-kianda",
-    "name": "Kianda",
-    "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
-    "countyId": "loc-county-nairobi",
-    "county": "Nairobi",
-    "metroGroup": "Nairobi & Environs",
-    "aliases": [],
-    "searchTerms": [
-      "kianda",
-      "kibera kianda",
-      "kianda kibera",
-      "nairobi kianda"
-    ],
-    "latitude": null,
-    "longitude": null,
-    "verified": true,
-    "sortOrder": 0,
-    "status": "active",
-    "path": [
-      "Nairobi",
-      "Kibera",
-      "Kianda"
-    ],
-    "pathIds": [
-      "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-kianda"
-    ],
-    "pathString": "Nairobi > Kibera > Kianda",
-    "displayLocation": "Kibera · Kianda, Nairobi"
-  },
-  {
-    "id": "loc-county-nairobi-kibera-olympic",
-    "name": "Olympic",
-    "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
+    "id": "loc-county-nairobi-kibra-kibra",
+    "name": "Kibra",
+    "type": "ESTATE",
+    "parentId": "loc-county-nairobi-kibra",
     "countyId": "loc-county-nairobi",
     "county": "Nairobi",
     "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "Olympic Stage"
+      "Kibra Town",
+      "Kibra Centre",
+      "Kibera"
     ],
     "searchTerms": [
-      "olympic",
-      "kibera olympic",
-      "olympic kibera",
-      "nairobi olympic",
-      "olympic stage",
-      "kibera olympic stage"
+      "kibra",
+      "kibra kibra",
+      "nairobi kibra",
+      "kibra town",
+      "kibra kibra town",
+      "kibra centre",
+      "kibra kibra centre",
+      "kibera",
+      "kibra kibera"
     ],
     "latitude": null,
     "longitude": null,
@@ -5379,35 +5575,85 @@ window.KEJA_MASTER_LOCATIONS = [
     "status": "active",
     "path": [
       "Nairobi",
-      "Kibera",
+      "Kibra",
+      "Kibra"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-kibra"
+    ],
+    "pathString": "Nairobi > Kibra > Kibra",
+    "displayLocation": "Kibra · Kibra, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibra-olympic",
+    "name": "Olympic",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibra",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Olympic Stage",
+      "Olympic Plaza",
+      "Olympic Kibra",
+      "Olympic Kibera"
+    ],
+    "searchTerms": [
+      "olympic",
+      "kibra olympic",
+      "olympic kibra",
+      "nairobi olympic",
+      "olympic stage",
+      "kibra olympic stage",
+      "olympic plaza",
+      "kibra olympic plaza",
+      "kibra olympic kibra",
+      "olympic kibera",
+      "kibra olympic kibera"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibra",
       "Olympic"
     ],
     "pathIds": [
       "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-olympic"
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-olympic"
     ],
-    "pathString": "Nairobi > Kibera > Olympic",
-    "displayLocation": "Kibera · Olympic, Nairobi"
+    "pathString": "Nairobi > Kibra > Olympic",
+    "displayLocation": "Kibra · Olympic, Nairobi"
   },
   {
-    "id": "loc-county-nairobi-kibera-ayany",
+    "id": "loc-county-nairobi-kibra-ayany",
     "name": "Ayany",
     "type": "ESTATE",
-    "parentId": "loc-county-nairobi-kibera",
+    "parentId": "loc-county-nairobi-kibra",
     "countyId": "loc-county-nairobi",
     "county": "Nairobi",
     "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "Ayany Estate"
+      "Ayany Estate",
+      "Ayany Kibra",
+      "Ayany Kibera"
     ],
     "searchTerms": [
       "ayany",
-      "kibera ayany",
-      "ayany kibera",
+      "kibra ayany",
+      "ayany kibra",
       "nairobi ayany",
       "ayany estate",
-      "kibera ayany estate"
+      "kibra ayany estate",
+      "kibra ayany kibra",
+      "ayany kibera",
+      "kibra ayany kibera"
     ],
     "latitude": null,
     "longitude": null,
@@ -5416,31 +5662,40 @@ window.KEJA_MASTER_LOCATIONS = [
     "status": "active",
     "path": [
       "Nairobi",
-      "Kibera",
+      "Kibra",
       "Ayany"
     ],
     "pathIds": [
       "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-ayany"
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-ayany"
     ],
-    "pathString": "Nairobi > Kibera > Ayany",
-    "displayLocation": "Kibera · Ayany, Nairobi"
+    "pathString": "Nairobi > Kibra > Ayany",
+    "displayLocation": "Kibra · Ayany, Nairobi"
   },
   {
-    "id": "loc-county-nairobi-kibera-gatwekera",
-    "name": "Gatwekera",
+    "id": "loc-county-nairobi-kibra-makina",
+    "name": "Makina",
     "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
+    "parentId": "loc-county-nairobi-kibra",
     "countyId": "loc-county-nairobi",
     "county": "Nairobi",
     "metroGroup": "Nairobi & Environs",
-    "aliases": [],
+    "aliases": [
+      "Makina Kibra",
+      "Makina Kibera",
+      "Karanja Road"
+    ],
     "searchTerms": [
-      "gatwekera",
-      "kibera gatwekera",
-      "gatwekera kibera",
-      "nairobi gatwekera"
+      "makina",
+      "kibra makina",
+      "makina kibra",
+      "nairobi makina",
+      "kibra makina kibra",
+      "makina kibera",
+      "kibra makina kibera",
+      "karanja road",
+      "kibra karanja road"
     ],
     "latitude": null,
     "longitude": null,
@@ -5449,31 +5704,193 @@ window.KEJA_MASTER_LOCATIONS = [
     "status": "active",
     "path": [
       "Nairobi",
-      "Kibera",
+      "Kibra",
+      "Makina"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-makina"
+    ],
+    "pathString": "Nairobi > Kibra > Makina",
+    "displayLocation": "Kibra · Makina, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibra-laini-saba",
+    "name": "Laini Saba",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibra",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Laini Saba Kibra",
+      "Laini Saba Kibera"
+    ],
+    "searchTerms": [
+      "laini saba",
+      "kibra laini saba",
+      "laini saba kibra",
+      "nairobi laini saba",
+      "kibra laini saba kibra",
+      "laini saba kibera",
+      "kibra laini saba kibera"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibra",
+      "Laini Saba"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-laini-saba"
+    ],
+    "pathString": "Nairobi > Kibra > Laini Saba",
+    "displayLocation": "Kibra · Laini Saba, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibra-lindi",
+    "name": "Lindi",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibra",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Lindi Kibra",
+      "Lindi Kibera"
+    ],
+    "searchTerms": [
+      "lindi",
+      "kibra lindi",
+      "lindi kibra",
+      "nairobi lindi",
+      "kibra lindi kibra",
+      "lindi kibera",
+      "kibra lindi kibera"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibra",
+      "Lindi"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-lindi"
+    ],
+    "pathString": "Nairobi > Kibra > Lindi",
+    "displayLocation": "Kibra · Lindi, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibra-kianda",
+    "name": "Kianda",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibra",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Kianda Kibra",
+      "Kianda Kibera"
+    ],
+    "searchTerms": [
+      "kianda",
+      "kibra kianda",
+      "kianda kibra",
+      "nairobi kianda",
+      "kibra kianda kibra",
+      "kianda kibera",
+      "kibra kianda kibera"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibra",
+      "Kianda"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-kianda"
+    ],
+    "pathString": "Nairobi > Kibra > Kianda",
+    "displayLocation": "Kibra · Kianda, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibra-gatwekera",
+    "name": "Gatwekera",
+    "type": "SUB_AREA",
+    "parentId": "loc-county-nairobi-kibra",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Gatwekera Kibra",
+      "Gatwekera Kibera"
+    ],
+    "searchTerms": [
+      "gatwekera",
+      "kibra gatwekera",
+      "gatwekera kibra",
+      "nairobi gatwekera",
+      "kibra gatwekera kibra",
+      "gatwekera kibera",
+      "kibra gatwekera kibera"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibra",
       "Gatwekera"
     ],
     "pathIds": [
       "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-gatwekera"
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-gatwekera"
     ],
-    "pathString": "Nairobi > Kibera > Gatwekera",
-    "displayLocation": "Kibera · Gatwekera, Nairobi"
+    "pathString": "Nairobi > Kibra > Gatwekera",
+    "displayLocation": "Kibra · Gatwekera, Nairobi"
   },
   {
-    "id": "loc-county-nairobi-kibera-soweto",
+    "id": "loc-county-nairobi-kibra-soweto",
     "name": "Soweto",
     "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
+    "parentId": "loc-county-nairobi-kibra",
     "countyId": "loc-county-nairobi",
     "county": "Nairobi",
     "metroGroup": "Nairobi & Environs",
-    "aliases": [],
+    "aliases": [
+      "Soweto Kibra",
+      "Soweto Kibera"
+    ],
     "searchTerms": [
       "soweto",
-      "kibera soweto",
+      "kibra soweto",
+      "soweto kibra",
+      "nairobi soweto",
+      "kibra soweto kibra",
       "soweto kibera",
-      "nairobi soweto"
+      "kibra soweto kibera"
     ],
     "latitude": null,
     "longitude": null,
@@ -5482,31 +5899,37 @@ window.KEJA_MASTER_LOCATIONS = [
     "status": "active",
     "path": [
       "Nairobi",
-      "Kibera",
+      "Kibra",
       "Soweto"
     ],
     "pathIds": [
       "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-soweto"
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-soweto"
     ],
-    "pathString": "Nairobi > Kibera > Soweto",
-    "displayLocation": "Kibera · Soweto, Nairobi"
+    "pathString": "Nairobi > Kibra > Soweto",
+    "displayLocation": "Kibra · Soweto, Nairobi"
   },
   {
-    "id": "loc-county-nairobi-kibera-mashimoni",
+    "id": "loc-county-nairobi-kibra-mashimoni",
     "name": "Mashimoni",
     "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
+    "parentId": "loc-county-nairobi-kibra",
     "countyId": "loc-county-nairobi",
     "county": "Nairobi",
     "metroGroup": "Nairobi & Environs",
-    "aliases": [],
+    "aliases": [
+      "Mashimoni Kibra",
+      "Mashimoni Kibera"
+    ],
     "searchTerms": [
       "mashimoni",
-      "kibera mashimoni",
+      "kibra mashimoni",
+      "mashimoni kibra",
+      "nairobi mashimoni",
+      "kibra mashimoni kibra",
       "mashimoni kibera",
-      "nairobi mashimoni"
+      "kibra mashimoni kibera"
     ],
     "latitude": null,
     "longitude": null,
@@ -5515,31 +5938,38 @@ window.KEJA_MASTER_LOCATIONS = [
     "status": "active",
     "path": [
       "Nairobi",
-      "Kibera",
+      "Kibra",
       "Mashimoni"
     ],
     "pathIds": [
       "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-mashimoni"
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-mashimoni"
     ],
-    "pathString": "Nairobi > Kibera > Mashimoni",
-    "displayLocation": "Kibera · Mashimoni, Nairobi"
+    "pathString": "Nairobi > Kibra > Mashimoni",
+    "displayLocation": "Kibra · Mashimoni, Nairobi"
   },
   {
-    "id": "loc-county-nairobi-kibera-sarangombe",
+    "id": "loc-county-nairobi-kibra-sarangombe",
     "name": "Sarang'ombe",
     "type": "SUB_AREA",
-    "parentId": "loc-county-nairobi-kibera",
+    "parentId": "loc-county-nairobi-kibra",
     "countyId": "loc-county-nairobi",
     "county": "Nairobi",
     "metroGroup": "Nairobi & Environs",
-    "aliases": [],
+    "aliases": [
+      "Sarangombe Kibra",
+      "Sarangombe Kibera"
+    ],
     "searchTerms": [
       "sarang'ombe",
-      "kibera sarang'ombe",
-      "sarang'ombe kibera",
-      "nairobi sarang'ombe"
+      "kibra sarang'ombe",
+      "sarang'ombe kibra",
+      "nairobi sarang'ombe",
+      "sarangombe kibra",
+      "kibra sarangombe kibra",
+      "sarangombe kibera",
+      "kibra sarangombe kibera"
     ],
     "latitude": null,
     "longitude": null,
@@ -5548,31 +5978,40 @@ window.KEJA_MASTER_LOCATIONS = [
     "status": "active",
     "path": [
       "Nairobi",
-      "Kibera",
+      "Kibra",
       "Sarang'ombe"
     ],
     "pathIds": [
       "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-sarangombe"
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-sarangombe"
     ],
-    "pathString": "Nairobi > Kibera > Sarang'ombe",
-    "displayLocation": "Kibera · Sarang'ombe, Nairobi"
+    "pathString": "Nairobi > Kibra > Sarang'ombe",
+    "displayLocation": "Kibra · Sarang'ombe, Nairobi"
   },
   {
-    "id": "loc-county-nairobi-kibera-woodley",
+    "id": "loc-county-nairobi-kibra-woodley",
     "name": "Woodley",
     "type": "ESTATE",
-    "parentId": "loc-county-nairobi-kibera",
+    "parentId": "loc-county-nairobi-kibra",
     "countyId": "loc-county-nairobi",
     "county": "Nairobi",
     "metroGroup": "Nairobi & Environs",
-    "aliases": [],
+    "aliases": [
+      "Woodley Estate",
+      "Woodley Kibra",
+      "Woodley Kibera"
+    ],
     "searchTerms": [
       "woodley",
-      "kibera woodley",
+      "kibra woodley",
+      "woodley kibra",
+      "nairobi woodley",
+      "woodley estate",
+      "kibra woodley estate",
+      "kibra woodley kibra",
       "woodley kibera",
-      "nairobi woodley"
+      "kibra woodley kibera"
     ],
     "latitude": null,
     "longitude": null,
@@ -5581,16 +6020,59 @@ window.KEJA_MASTER_LOCATIONS = [
     "status": "active",
     "path": [
       "Nairobi",
-      "Kibera",
+      "Kibra",
       "Woodley"
     ],
     "pathIds": [
       "loc-county-nairobi",
-      "loc-county-nairobi-kibera",
-      "loc-county-nairobi-kibera-woodley"
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-woodley"
     ],
-    "pathString": "Nairobi > Kibera > Woodley",
-    "displayLocation": "Kibera · Woodley, Nairobi"
+    "pathString": "Nairobi > Kibra > Woodley",
+    "displayLocation": "Kibra · Woodley, Nairobi"
+  },
+  {
+    "id": "loc-county-nairobi-kibra-kenyatta-golf-course",
+    "name": "Kenyatta Golf Course",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nairobi-kibra",
+    "countyId": "loc-county-nairobi",
+    "county": "Nairobi",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Golf Course Kibra",
+      "Golf Course Kibera",
+      "Golf Course"
+    ],
+    "searchTerms": [
+      "kenyatta golf course",
+      "kibra kenyatta golf course",
+      "kenyatta golf course kibra",
+      "nairobi kenyatta golf course",
+      "golf course kibra",
+      "kibra golf course kibra",
+      "golf course kibera",
+      "kibra golf course kibera",
+      "golf course",
+      "kibra golf course"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nairobi",
+      "Kibra",
+      "Kenyatta Golf Course"
+    ],
+    "pathIds": [
+      "loc-county-nairobi",
+      "loc-county-nairobi-kibra",
+      "loc-county-nairobi-kibra-kenyatta-golf-course"
+    ],
+    "pathString": "Nairobi > Kibra > Kenyatta Golf Course",
+    "displayLocation": "Kibra · Kenyatta Golf Course, Nairobi"
   },
   {
     "id": "loc-county-nairobi-central-nairobi",
@@ -14678,344 +15160,4402 @@ window.KEJA_MASTER_LOCATIONS = [
     "displayLocation": "Limuru · Kentmere, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-phase-1",
-    "name": "Mlolongo Phase 1",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo",
-    "county": "Machakos",
+    "id": "loc-county-kiambu-thika",
+    "name": "Thika",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "phase 1 mlolongo",
-      "mlolongo phase 1",
-      "mlolongo 1",
-      "phase 1"
+      "Thika Town",
+      "Thika City"
     ],
     "searchTerms": [
-      "mlolongo",
-      "phase 1",
-      "mlolongo phase 1",
-      "machakos mlolongo phase 1",
-      "phase 1 mlolongo"
+      "thika",
+      "kiambu thika",
+      "thika kiambu",
+      "thika town",
+      "kiambu thika town",
+      "thika city",
+      "kiambu thika city"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 1,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Mlolongo Phase 1"
+      "Kiambu",
+      "Thika"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-phase-1"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika"
     ],
-    "pathString": "Machakos > Mlolongo > Mlolongo Phase 1",
-    "displayLocation": "Mlolongo Phase 1, Machakos",
-    "latitude": -1.382,
-    "longitude": 36.958,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika",
+    "displayLocation": "Thika, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-phase-2",
-    "name": "Mlolongo Phase 2",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo",
-    "county": "Machakos",
+    "id": "loc-county-kiambu-thika-thika-cbd",
+    "name": "Thika CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "phase 2 mlolongo",
-      "mlolongo phase 2",
-      "mlolongo 2",
-      "phase 2"
+      "Thika Town Centre"
     ],
     "searchTerms": [
-      "mlolongo",
-      "phase 2",
-      "mlolongo phase 2",
-      "machakos mlolongo phase 2",
-      "phase 2 mlolongo"
+      "thika cbd",
+      "thika thika cbd",
+      "thika cbd thika",
+      "kiambu thika cbd",
+      "thika town centre",
+      "thika thika town centre"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 2,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Mlolongo Phase 2"
+      "Kiambu",
+      "Thika",
+      "Thika CBD"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-phase-2"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-thika-cbd"
     ],
-    "pathString": "Machakos > Mlolongo > Mlolongo Phase 2",
-    "displayLocation": "Mlolongo Phase 2, Machakos",
-    "latitude": -1.3835,
-    "longitude": 36.9605,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika > Thika CBD",
+    "displayLocation": "Thika · Thika CBD, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-phase-3",
-    "name": "Mlolongo Phase 3",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo",
-    "county": "Machakos",
+    "id": "loc-county-kiambu-thika-makongeni",
+    "name": "Makongeni",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "phase 3 mlolongo",
-      "mlolongo phase 3",
-      "mlolongo 3",
-      "phase 3",
-      "weighbridge",
-      "expressway end"
+      "Makongeni Thika"
     ],
     "searchTerms": [
-      "mlolongo",
-      "phase 3",
-      "mlolongo phase 3",
-      "machakos mlolongo phase 3",
-      "weighbridge",
-      "expressway end"
+      "makongeni",
+      "thika makongeni",
+      "makongeni thika",
+      "kiambu makongeni",
+      "thika makongeni thika"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 3,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Mlolongo Phase 3"
+      "Kiambu",
+      "Thika",
+      "Makongeni"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-phase-3"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-makongeni"
     ],
-    "pathString": "Machakos > Mlolongo > Mlolongo Phase 3",
-    "displayLocation": "Mlolongo Phase 3, Machakos",
-    "latitude": -1.385,
-    "longitude": 36.962,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika > Makongeni",
+    "displayLocation": "Thika · Makongeni, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-phase-4",
-    "name": "Mlolongo Phase 4",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo",
-    "county": "Machakos",
-    "aliases": [
-      "phase 4 mlolongo",
-      "mlolongo phase 4",
-      "mlolongo 4",
-      "phase 4"
-    ],
+    "id": "loc-county-kiambu-thika-ngoingwa",
+    "name": "Ngoingwa",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
     "searchTerms": [
-      "mlolongo",
-      "phase 4",
-      "mlolongo phase 4",
-      "machakos mlolongo phase 4",
-      "phase 4 mlolongo"
+      "ngoingwa",
+      "thika ngoingwa",
+      "ngoingwa thika",
+      "kiambu ngoingwa"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 4,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Mlolongo Phase 4"
+      "Kiambu",
+      "Thika",
+      "Ngoingwa"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-phase-4"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-ngoingwa"
     ],
-    "pathString": "Machakos > Mlolongo > Mlolongo Phase 4",
-    "displayLocation": "Mlolongo Phase 4, Machakos",
-    "latitude": -1.387,
-    "longitude": 36.964,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika > Ngoingwa",
+    "displayLocation": "Thika · Ngoingwa, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-greatwall-phase-1",
-    "name": "Greatwall Gardens Phase 1",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo-great-wall",
-    "county": "Machakos",
+    "id": "loc-county-kiambu-thika-landless",
+    "name": "Landless",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "greatwall phase 1",
-      "gwg 1",
-      "great wall phase 1"
+      "Landless Thika"
     ],
     "searchTerms": [
-      "greatwall",
-      "great wall",
-      "mlolongo",
-      "phase 1",
-      "greatwall phase 1"
+      "landless",
+      "thika landless",
+      "landless thika",
+      "kiambu landless",
+      "thika landless thika"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 1,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Great Wall",
-      "Greatwall Gardens Phase 1"
+      "Kiambu",
+      "Thika",
+      "Landless"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-great-wall",
-      "loc-county-machakos-mlolongo-greatwall-phase-1"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-landless"
     ],
-    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 1",
-    "displayLocation": "Greatwall Gardens Phase 1, Mlolongo",
-    "latitude": -1.388,
-    "longitude": 36.97,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika > Landless",
+    "displayLocation": "Thika · Landless, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-greatwall-phase-2",
-    "name": "Greatwall Gardens Phase 2",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo-great-wall",
-    "county": "Machakos",
+    "id": "loc-county-kiambu-thika-blue-post",
+    "name": "Blue Post",
+    "type": "LANDMARK",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "greatwall phase 2",
-      "gwg 2",
-      "great wall phase 2"
+      "Blue Post Hotel",
+      "Chania Falls"
     ],
     "searchTerms": [
-      "greatwall",
-      "great wall",
-      "mlolongo",
-      "phase 2",
-      "greatwall phase 2"
+      "blue post",
+      "thika blue post",
+      "blue post thika",
+      "kiambu blue post",
+      "blue post hotel",
+      "thika blue post hotel",
+      "chania falls",
+      "thika chania falls"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 2,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Great Wall",
-      "Greatwall Gardens Phase 2"
+      "Kiambu",
+      "Thika",
+      "Blue Post"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-great-wall",
-      "loc-county-machakos-mlolongo-greatwall-phase-2"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-blue-post"
     ],
-    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 2",
-    "displayLocation": "Greatwall Gardens Phase 2, Mlolongo",
-    "latitude": -1.3885,
-    "longitude": 36.971,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika > Blue Post",
+    "displayLocation": "Thika · Blue Post, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-greatwall-phase-3",
-    "name": "Greatwall Gardens Phase 3",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo-great-wall",
-    "county": "Machakos",
+    "id": "loc-county-kiambu-thika-stadium",
+    "name": "Stadium",
+    "type": "AREA",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "greatwall phase 3",
-      "gwg 3",
-      "great wall phase 3"
+      "Thika Stadium"
     ],
     "searchTerms": [
-      "greatwall",
-      "great wall",
-      "mlolongo",
-      "phase 3",
-      "greatwall phase 3"
+      "stadium",
+      "thika stadium",
+      "stadium thika",
+      "kiambu stadium",
+      "thika thika stadium"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 3,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Great Wall",
-      "Greatwall Gardens Phase 3"
+      "Kiambu",
+      "Thika",
+      "Stadium"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-great-wall",
-      "loc-county-machakos-mlolongo-greatwall-phase-3"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-stadium"
     ],
-    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 3",
-    "displayLocation": "Greatwall Gardens Phase 3, Mlolongo",
-    "latitude": -1.389,
-    "longitude": 36.972,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika > Stadium",
+    "displayLocation": "Thika · Stadium, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-greatwall-phase-4",
-    "name": "Greatwall Gardens Phase 4",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo-great-wall",
-    "county": "Machakos",
+    "id": "loc-county-kiambu-thika-thika-road-mall",
+    "name": "Thika Road Mall",
+    "type": "LANDMARK",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "greatwall phase 4",
-      "gwg 4",
-      "great wall phase 4"
+      "TRM",
+      "Thika Road"
     ],
     "searchTerms": [
-      "greatwall",
-      "great wall",
-      "mlolongo",
-      "phase 4",
-      "greatwall phase 4"
+      "thika road mall",
+      "thika thika road mall",
+      "thika road mall thika",
+      "kiambu thika road mall",
+      "trm",
+      "thika trm",
+      "thika road",
+      "thika thika road"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 4,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Great Wall",
-      "Greatwall Gardens Phase 4"
+      "Kiambu",
+      "Thika",
+      "Thika Road Mall"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-great-wall",
-      "loc-county-machakos-mlolongo-greatwall-phase-4"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-thika-road-mall"
     ],
-    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 4",
-    "displayLocation": "Greatwall Gardens Phase 4, Mlolongo",
-    "latitude": -1.3895,
-    "longitude": 36.973,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika > Thika Road Mall",
+    "displayLocation": "Thika · Thika Road Mall, Kiambu"
   },
   {
-    "id": "loc-county-machakos-mlolongo-greatwall-phase-5",
-    "name": "Greatwall Gardens Phase 5",
-    "type": "PHASE",
-    "parentId": "loc-county-machakos-mlolongo-great-wall",
-    "county": "Machakos",
+    "id": "loc-county-kiambu-thika-mangu",
+    "name": "Mangu",
+    "type": "AREA",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
     "aliases": [
-      "greatwall phase 5",
-      "gwg 5",
-      "great wall phase 5"
+      "Mangu Thika"
     ],
     "searchTerms": [
-      "greatwall",
-      "great wall",
-      "mlolongo",
-      "phase 5",
-      "greatwall phase 5"
+      "mangu",
+      "thika mangu",
+      "mangu thika",
+      "kiambu mangu",
+      "thika mangu thika"
     ],
+    "latitude": null,
+    "longitude": null,
     "verified": true,
-    "sortOrder": 5,
+    "sortOrder": 0,
+    "status": "active",
     "path": [
-      "Machakos",
-      "Mlolongo",
-      "Great Wall",
-      "Greatwall Gardens Phase 5"
+      "Kiambu",
+      "Thika",
+      "Mangu"
     ],
     "pathIds": [
-      "loc-county-machakos",
-      "loc-county-machakos-mlolongo",
-      "loc-county-machakos-mlolongo-great-wall",
-      "loc-county-machakos-mlolongo-greatwall-phase-5"
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-mangu"
     ],
-    "pathString": "Machakos > Mlolongo > Great Wall > Greatwall Gardens Phase 5",
-    "displayLocation": "Greatwall Gardens Phase 5, Mlolongo",
-    "latitude": -1.39,
-    "longitude": 36.974,
-    "corridorId": "mombasa_road_satellite"
+    "pathString": "Kiambu > Thika > Mangu",
+    "displayLocation": "Thika · Mangu, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-thika-gatuanyaga",
+    "name": "Gatuanyaga",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "gatuanyaga",
+      "thika gatuanyaga",
+      "gatuanyaga thika",
+      "kiambu gatuanyaga"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Thika",
+      "Gatuanyaga"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-gatuanyaga"
+    ],
+    "pathString": "Kiambu > Thika > Gatuanyaga",
+    "displayLocation": "Thika · Gatuanyaga, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-thika-juja-farm",
+    "name": "Juja Farm",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-thika",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Juja Farm Thika"
+    ],
+    "searchTerms": [
+      "juja farm",
+      "thika juja farm",
+      "juja farm thika",
+      "kiambu juja farm",
+      "thika juja farm thika"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Thika",
+      "Juja Farm"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-thika",
+      "loc-county-kiambu-thika-juja-farm"
+    ],
+    "pathString": "Kiambu > Thika > Juja Farm",
+    "displayLocation": "Thika · Juja Farm, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-juja",
+    "name": "Juja",
+    "type": "TOWN",
+    "parentId": "loc-county-kiambu",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Juja Town",
+      "JKUAT Area"
+    ],
+    "searchTerms": [
+      "juja",
+      "kiambu juja",
+      "juja kiambu",
+      "juja town",
+      "kiambu juja town",
+      "jkuat area",
+      "kiambu jkuat area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Juja"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-juja"
+    ],
+    "pathString": "Kiambu > Juja",
+    "displayLocation": "Juja, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-juja-jkuat",
+    "name": "JKUAT",
+    "type": "LANDMARK",
+    "parentId": "loc-county-kiambu-juja",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Juja University",
+      "JKUAT Campus"
+    ],
+    "searchTerms": [
+      "jkuat",
+      "juja jkuat",
+      "jkuat juja",
+      "kiambu jkuat",
+      "juja university",
+      "juja juja university",
+      "jkuat campus",
+      "juja jkuat campus"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Juja",
+      "JKUAT"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-juja",
+      "loc-county-kiambu-juja-jkuat"
+    ],
+    "pathString": "Kiambu > Juja > JKUAT",
+    "displayLocation": "Juja · JKUAT, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-juja-juja-city",
+    "name": "Juja City",
+    "type": "AREA",
+    "parentId": "loc-county-kiambu-juja",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "juja city",
+      "juja juja city",
+      "juja city juja",
+      "kiambu juja city"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Juja",
+      "Juja City"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-juja",
+      "loc-county-kiambu-juja-juja-city"
+    ],
+    "pathString": "Kiambu > Juja > Juja City",
+    "displayLocation": "Juja · Juja City, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-juja-suswa",
+    "name": "Suswa",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-juja",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "suswa",
+      "juja suswa",
+      "suswa juja",
+      "kiambu suswa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Juja",
+      "Suswa"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-juja",
+      "loc-county-kiambu-juja-suswa"
+    ],
+    "pathString": "Kiambu > Juja > Suswa",
+    "displayLocation": "Juja · Suswa, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-juja-eastern-bypass-juja",
+    "name": "Eastern Bypass Juja",
+    "type": "AREA",
+    "parentId": "loc-county-kiambu-juja",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [
+      "Eastern Bypass"
+    ],
+    "searchTerms": [
+      "eastern bypass juja",
+      "juja eastern bypass juja",
+      "eastern bypass juja juja",
+      "kiambu eastern bypass juja",
+      "eastern bypass",
+      "juja eastern bypass"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Juja",
+      "Eastern Bypass Juja"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-juja",
+      "loc-county-kiambu-juja-eastern-bypass-juja"
+    ],
+    "pathString": "Kiambu > Juja > Eastern Bypass Juja",
+    "displayLocation": "Juja · Eastern Bypass Juja, Kiambu"
+  },
+  {
+    "id": "loc-county-kiambu-juja-mugutha",
+    "name": "Mugutha",
+    "type": "ESTATE",
+    "parentId": "loc-county-kiambu-juja",
+    "countyId": "loc-county-kiambu",
+    "county": "Kiambu",
+    "metroGroup": "Nairobi & Environs",
+    "aliases": [],
+    "searchTerms": [
+      "mugutha",
+      "juja mugutha",
+      "mugutha juja",
+      "kiambu mugutha"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kiambu",
+      "Juja",
+      "Mugutha"
+    ],
+    "pathIds": [
+      "loc-county-kiambu",
+      "loc-county-kiambu-juja",
+      "loc-county-kiambu-juja-mugutha"
+    ],
+    "pathString": "Kiambu > Juja > Mugutha",
+    "displayLocation": "Juja · Mugutha, Kiambu"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-island",
+    "name": "Mombasa Island",
+    "type": "AREA",
+    "parentId": "loc-county-mombasa",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Mombasa CBD",
+      "Old Town Mombasa"
+    ],
+    "searchTerms": [
+      "mombasa island",
+      "mombasa mombasa island",
+      "mombasa island mombasa",
+      "mombasa cbd",
+      "mombasa mombasa cbd",
+      "old town mombasa",
+      "mombasa old town mombasa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa Island"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-island"
+    ],
+    "pathString": "Mombasa > Mombasa Island",
+    "displayLocation": "Mombasa Island, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-island-old-town",
+    "name": "Old Town",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-mombasa-mombasa-island",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Mombasa Old Town"
+    ],
+    "searchTerms": [
+      "old town",
+      "mombasa island old town",
+      "old town mombasa island",
+      "mombasa old town",
+      "mombasa island mombasa old town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa Island",
+      "Old Town"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-island",
+      "loc-county-mombasa-mombasa-island-old-town"
+    ],
+    "pathString": "Mombasa > Mombasa Island > Old Town",
+    "displayLocation": "Mombasa Island · Old Town, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-island-mvita",
+    "name": "Mvita",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-mombasa-mombasa-island",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Mvita Mombasa"
+    ],
+    "searchTerms": [
+      "mvita",
+      "mombasa island mvita",
+      "mvita mombasa island",
+      "mombasa mvita",
+      "mvita mombasa",
+      "mombasa island mvita mombasa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa Island",
+      "Mvita"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-island",
+      "loc-county-mombasa-mombasa-island-mvita"
+    ],
+    "pathString": "Mombasa > Mombasa Island > Mvita",
+    "displayLocation": "Mombasa Island · Mvita, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-island-mombasa-cbd",
+    "name": "Mombasa CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-mombasa-mombasa-island",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Mombasa Town Centre",
+      "City Centre Mombasa"
+    ],
+    "searchTerms": [
+      "mombasa cbd",
+      "mombasa island mombasa cbd",
+      "mombasa cbd mombasa island",
+      "mombasa mombasa cbd",
+      "mombasa town centre",
+      "mombasa island mombasa town centre",
+      "city centre mombasa",
+      "mombasa island city centre mombasa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa Island",
+      "Mombasa CBD"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-island",
+      "loc-county-mombasa-mombasa-island-mombasa-cbd"
+    ],
+    "pathString": "Mombasa > Mombasa Island > Mombasa CBD",
+    "displayLocation": "Mombasa Island · Mombasa CBD, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-island-fort-jesus-area",
+    "name": "Fort Jesus Area",
+    "type": "LANDMARK",
+    "parentId": "loc-county-mombasa-mombasa-island",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "fort jesus area",
+      "mombasa island fort jesus area",
+      "fort jesus area mombasa island",
+      "mombasa fort jesus area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa Island",
+      "Fort Jesus Area"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-island",
+      "loc-county-mombasa-mombasa-island-fort-jesus-area"
+    ],
+    "pathString": "Mombasa > Mombasa Island > Fort Jesus Area",
+    "displayLocation": "Mombasa Island · Fort Jesus Area, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-nyali",
+    "name": "Nyali",
+    "type": "AREA",
+    "parentId": "loc-county-mombasa",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Nyali Mombasa",
+      "North Mombasa"
+    ],
+    "searchTerms": [
+      "nyali",
+      "mombasa nyali",
+      "nyali mombasa",
+      "mombasa nyali mombasa",
+      "north mombasa",
+      "mombasa north mombasa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Nyali"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-nyali"
+    ],
+    "pathString": "Mombasa > Nyali",
+    "displayLocation": "Nyali, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-nyali-nyali-beach",
+    "name": "Nyali Beach",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-mombasa-nyali",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Nyali Beach Road"
+    ],
+    "searchTerms": [
+      "nyali beach",
+      "nyali nyali beach",
+      "nyali beach nyali",
+      "mombasa nyali beach",
+      "nyali beach road",
+      "nyali nyali beach road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Nyali",
+      "Nyali Beach"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-nyali",
+      "loc-county-mombasa-nyali-nyali-beach"
+    ],
+    "pathString": "Mombasa > Nyali > Nyali Beach",
+    "displayLocation": "Nyali · Nyali Beach, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-nyali-links-road",
+    "name": "Links Road",
+    "type": "ROAD",
+    "parentId": "loc-county-mombasa-nyali",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Links Nyali"
+    ],
+    "searchTerms": [
+      "links road",
+      "nyali links road",
+      "links road nyali",
+      "mombasa links road",
+      "links nyali",
+      "nyali links nyali"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Nyali",
+      "Links Road"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-nyali",
+      "loc-county-mombasa-nyali-links-road"
+    ],
+    "pathString": "Mombasa > Nyali > Links Road",
+    "displayLocation": "Nyali · Links Road, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-nyali-bombolulu",
+    "name": "Bombolulu",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-nyali",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Bombolulu Nyali"
+    ],
+    "searchTerms": [
+      "bombolulu",
+      "nyali bombolulu",
+      "bombolulu nyali",
+      "mombasa bombolulu",
+      "nyali bombolulu nyali"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Nyali",
+      "Bombolulu"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-nyali",
+      "loc-county-mombasa-nyali-bombolulu"
+    ],
+    "pathString": "Mombasa > Nyali > Bombolulu",
+    "displayLocation": "Nyali · Bombolulu, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-nyali-mkomani",
+    "name": "Mkomani",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-nyali",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "mkomani",
+      "nyali mkomani",
+      "mkomani nyali",
+      "mombasa mkomani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Nyali",
+      "Mkomani"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-nyali",
+      "loc-county-mombasa-nyali-mkomani"
+    ],
+    "pathString": "Mombasa > Nyali > Mkomani",
+    "displayLocation": "Nyali · Mkomani, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-nyali-kongowea",
+    "name": "Kongowea",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-nyali",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "kongowea",
+      "nyali kongowea",
+      "kongowea nyali",
+      "mombasa kongowea"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Nyali",
+      "Kongowea"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-nyali",
+      "loc-county-mombasa-nyali-kongowea"
+    ],
+    "pathString": "Mombasa > Nyali > Kongowea",
+    "displayLocation": "Nyali · Kongowea, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-likoni",
+    "name": "Likoni",
+    "type": "AREA",
+    "parentId": "loc-county-mombasa",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Likoni Ferry",
+      "South Mombasa"
+    ],
+    "searchTerms": [
+      "likoni",
+      "mombasa likoni",
+      "likoni mombasa",
+      "likoni ferry",
+      "mombasa likoni ferry",
+      "south mombasa",
+      "mombasa south mombasa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Likoni"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-likoni"
+    ],
+    "pathString": "Mombasa > Likoni",
+    "displayLocation": "Likoni, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-likoni-likoni-ferry",
+    "name": "Likoni Ferry",
+    "type": "LANDMARK",
+    "parentId": "loc-county-mombasa-likoni",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "likoni ferry",
+      "likoni likoni ferry",
+      "likoni ferry likoni",
+      "mombasa likoni ferry"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Likoni",
+      "Likoni Ferry"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-likoni",
+      "loc-county-mombasa-likoni-likoni-ferry"
+    ],
+    "pathString": "Mombasa > Likoni > Likoni Ferry",
+    "displayLocation": "Likoni · Likoni Ferry, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-likoni-shika-adabu",
+    "name": "Shika Adabu",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-likoni",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "shika adabu",
+      "likoni shika adabu",
+      "shika adabu likoni",
+      "mombasa shika adabu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Likoni",
+      "Shika Adabu"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-likoni",
+      "loc-county-mombasa-likoni-shika-adabu"
+    ],
+    "pathString": "Mombasa > Likoni > Shika Adabu",
+    "displayLocation": "Likoni · Shika Adabu, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-likoni-mtongwe",
+    "name": "Mtongwe",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-likoni",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "mtongwe",
+      "likoni mtongwe",
+      "mtongwe likoni",
+      "mombasa mtongwe"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Likoni",
+      "Mtongwe"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-likoni",
+      "loc-county-mombasa-likoni-mtongwe"
+    ],
+    "pathString": "Mombasa > Likoni > Mtongwe",
+    "displayLocation": "Likoni · Mtongwe, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-west",
+    "name": "Mombasa West",
+    "type": "AREA",
+    "parentId": "loc-county-mombasa",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Changamwe",
+      "Port Reitz"
+    ],
+    "searchTerms": [
+      "mombasa west",
+      "mombasa mombasa west",
+      "mombasa west mombasa",
+      "changamwe",
+      "mombasa changamwe",
+      "port reitz",
+      "mombasa port reitz"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa West"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-west"
+    ],
+    "pathString": "Mombasa > Mombasa West",
+    "displayLocation": "Mombasa West, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-west-changamwe",
+    "name": "Changamwe",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-mombasa-west",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Changamwe Mombasa"
+    ],
+    "searchTerms": [
+      "changamwe",
+      "mombasa west changamwe",
+      "changamwe mombasa west",
+      "mombasa changamwe",
+      "changamwe mombasa",
+      "mombasa west changamwe mombasa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa West",
+      "Changamwe"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-west",
+      "loc-county-mombasa-mombasa-west-changamwe"
+    ],
+    "pathString": "Mombasa > Mombasa West > Changamwe",
+    "displayLocation": "Mombasa West · Changamwe, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-west-port-reitz",
+    "name": "Port Reitz",
+    "type": "AREA",
+    "parentId": "loc-county-mombasa-mombasa-west",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "port reitz",
+      "mombasa west port reitz",
+      "port reitz mombasa west",
+      "mombasa port reitz"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa West",
+      "Port Reitz"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-west",
+      "loc-county-mombasa-mombasa-west-port-reitz"
+    ],
+    "pathString": "Mombasa > Mombasa West > Port Reitz",
+    "displayLocation": "Mombasa West · Port Reitz, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-west-jomvu",
+    "name": "Jomvu",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-mombasa-west",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "jomvu",
+      "mombasa west jomvu",
+      "jomvu mombasa west",
+      "mombasa jomvu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa West",
+      "Jomvu"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-west",
+      "loc-county-mombasa-mombasa-west-jomvu"
+    ],
+    "pathString": "Mombasa > Mombasa West > Jomvu",
+    "displayLocation": "Mombasa West · Jomvu, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-mombasa-west-mikindani",
+    "name": "Mikindani",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-mombasa-west",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "mikindani",
+      "mombasa west mikindani",
+      "mikindani mombasa west",
+      "mombasa mikindani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Mombasa West",
+      "Mikindani"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-mombasa-west",
+      "loc-county-mombasa-mombasa-west-mikindani"
+    ],
+    "pathString": "Mombasa > Mombasa West > Mikindani",
+    "displayLocation": "Mombasa West · Mikindani, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi",
+    "name": "Bamburi",
+    "type": "AREA",
+    "parentId": "loc-county-mombasa",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Bamburi Beach",
+      "Mombasa North Coast"
+    ],
+    "searchTerms": [
+      "bamburi",
+      "mombasa bamburi",
+      "bamburi mombasa",
+      "bamburi beach",
+      "mombasa bamburi beach",
+      "mombasa north coast",
+      "mombasa mombasa north coast"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi"
+    ],
+    "pathString": "Mombasa > Bamburi",
+    "displayLocation": "Bamburi, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi-bamburi-beach",
+    "name": "Bamburi Beach",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-mombasa-bamburi",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Bamburi Hotel Area"
+    ],
+    "searchTerms": [
+      "bamburi beach",
+      "bamburi bamburi beach",
+      "bamburi beach bamburi",
+      "mombasa bamburi beach",
+      "bamburi hotel area",
+      "bamburi bamburi hotel area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi",
+      "Bamburi Beach"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi",
+      "loc-county-mombasa-bamburi-bamburi-beach"
+    ],
+    "pathString": "Mombasa > Bamburi > Bamburi Beach",
+    "displayLocation": "Bamburi · Bamburi Beach, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi-shanzu",
+    "name": "Shanzu",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-bamburi",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Shanzu Beach"
+    ],
+    "searchTerms": [
+      "shanzu",
+      "bamburi shanzu",
+      "shanzu bamburi",
+      "mombasa shanzu",
+      "shanzu beach",
+      "bamburi shanzu beach"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi",
+      "Shanzu"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi",
+      "loc-county-mombasa-bamburi-shanzu"
+    ],
+    "pathString": "Mombasa > Bamburi > Shanzu",
+    "displayLocation": "Bamburi · Shanzu, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi-kanamai",
+    "name": "Kanamai",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-bamburi",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "kanamai",
+      "bamburi kanamai",
+      "kanamai bamburi",
+      "mombasa kanamai"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi",
+      "Kanamai"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi",
+      "loc-county-mombasa-bamburi-kanamai"
+    ],
+    "pathString": "Mombasa > Bamburi > Kanamai",
+    "displayLocation": "Bamburi · Kanamai, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi-mtwapa",
+    "name": "Mtwapa",
+    "type": "TOWN",
+    "parentId": "loc-county-mombasa-bamburi",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Mtwapa Creek"
+    ],
+    "searchTerms": [
+      "mtwapa",
+      "bamburi mtwapa",
+      "mtwapa bamburi",
+      "mombasa mtwapa",
+      "mtwapa creek",
+      "bamburi mtwapa creek"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi",
+      "Mtwapa"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi",
+      "loc-county-mombasa-bamburi-mtwapa"
+    ],
+    "pathString": "Mombasa > Bamburi > Mtwapa",
+    "displayLocation": "Bamburi · Mtwapa, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi-kisauni",
+    "name": "Kisauni",
+    "type": "AREA",
+    "parentId": "loc-county-mombasa-bamburi",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Kisauni Mombasa"
+    ],
+    "searchTerms": [
+      "kisauni",
+      "bamburi kisauni",
+      "kisauni bamburi",
+      "mombasa kisauni",
+      "kisauni mombasa",
+      "bamburi kisauni mombasa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi",
+      "Kisauni"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi",
+      "loc-county-mombasa-bamburi-kisauni"
+    ],
+    "pathString": "Mombasa > Bamburi > Kisauni",
+    "displayLocation": "Bamburi · Kisauni, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi-mishomoroni",
+    "name": "Mishomoroni",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-bamburi",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "mishomoroni",
+      "bamburi mishomoroni",
+      "mishomoroni bamburi",
+      "mombasa mishomoroni"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi",
+      "Mishomoroni"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi",
+      "loc-county-mombasa-bamburi-mishomoroni"
+    ],
+    "pathString": "Mombasa > Bamburi > Mishomoroni",
+    "displayLocation": "Bamburi · Mishomoroni, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi-majengo",
+    "name": "Majengo",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-bamburi",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Majengo Mombasa"
+    ],
+    "searchTerms": [
+      "majengo",
+      "bamburi majengo",
+      "majengo bamburi",
+      "mombasa majengo",
+      "majengo mombasa",
+      "bamburi majengo mombasa"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi",
+      "Majengo"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi",
+      "loc-county-mombasa-bamburi-majengo"
+    ],
+    "pathString": "Mombasa > Bamburi > Majengo",
+    "displayLocation": "Bamburi · Majengo, Mombasa"
+  },
+  {
+    "id": "loc-county-mombasa-bamburi-magongo",
+    "name": "Magongo",
+    "type": "ESTATE",
+    "parentId": "loc-county-mombasa-bamburi",
+    "countyId": "loc-county-mombasa",
+    "county": "Mombasa",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Magongo Road"
+    ],
+    "searchTerms": [
+      "magongo",
+      "bamburi magongo",
+      "magongo bamburi",
+      "mombasa magongo",
+      "magongo road",
+      "bamburi magongo road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Mombasa",
+      "Bamburi",
+      "Magongo"
+    ],
+    "pathIds": [
+      "loc-county-mombasa",
+      "loc-county-mombasa-bamburi",
+      "loc-county-mombasa-bamburi-magongo"
+    ],
+    "pathString": "Mombasa > Bamburi > Magongo",
+    "displayLocation": "Bamburi · Magongo, Mombasa"
+  },
+  {
+    "id": "loc-county-kilifi-kilifi-town",
+    "name": "Kilifi Town",
+    "type": "TOWN",
+    "parentId": "loc-county-kilifi",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Kilifi"
+    ],
+    "searchTerms": [
+      "kilifi town",
+      "kilifi kilifi town",
+      "kilifi town kilifi",
+      "kilifi",
+      "kilifi kilifi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Kilifi Town"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-kilifi-town"
+    ],
+    "pathString": "Kilifi > Kilifi Town",
+    "displayLocation": "Kilifi Town, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-kilifi-town-kilifi-creek",
+    "name": "Kilifi Creek",
+    "type": "AREA",
+    "parentId": "loc-county-kilifi-kilifi-town",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "kilifi creek",
+      "kilifi town kilifi creek",
+      "kilifi creek kilifi town",
+      "kilifi kilifi creek"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Kilifi Town",
+      "Kilifi Creek"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-kilifi-town",
+      "loc-county-kilifi-kilifi-town-kilifi-creek"
+    ],
+    "pathString": "Kilifi > Kilifi Town > Kilifi Creek",
+    "displayLocation": "Kilifi Town · Kilifi Creek, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-kilifi-town-bofa",
+    "name": "Bofa",
+    "type": "ESTATE",
+    "parentId": "loc-county-kilifi-kilifi-town",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Bofa Road Kilifi"
+    ],
+    "searchTerms": [
+      "bofa",
+      "kilifi town bofa",
+      "bofa kilifi town",
+      "kilifi bofa",
+      "bofa road kilifi",
+      "kilifi town bofa road kilifi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Kilifi Town",
+      "Bofa"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-kilifi-town",
+      "loc-county-kilifi-kilifi-town-bofa"
+    ],
+    "pathString": "Kilifi > Kilifi Town > Bofa",
+    "displayLocation": "Kilifi Town · Bofa, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-kilifi-town-mnarani",
+    "name": "Mnarani",
+    "type": "ESTATE",
+    "parentId": "loc-county-kilifi-kilifi-town",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "mnarani",
+      "kilifi town mnarani",
+      "mnarani kilifi town",
+      "kilifi mnarani"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Kilifi Town",
+      "Mnarani"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-kilifi-town",
+      "loc-county-kilifi-kilifi-town-mnarani"
+    ],
+    "pathString": "Kilifi > Kilifi Town > Mnarani",
+    "displayLocation": "Kilifi Town · Mnarani, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-malindi",
+    "name": "Malindi",
+    "type": "TOWN",
+    "parentId": "loc-county-kilifi",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Malindi Town",
+      "Malindi Coast"
+    ],
+    "searchTerms": [
+      "malindi",
+      "kilifi malindi",
+      "malindi kilifi",
+      "malindi town",
+      "kilifi malindi town",
+      "malindi coast",
+      "kilifi malindi coast"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Malindi"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-malindi"
+    ],
+    "pathString": "Kilifi > Malindi",
+    "displayLocation": "Malindi, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-malindi-malindi-cbd",
+    "name": "Malindi CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-kilifi-malindi",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Malindi Town Centre"
+    ],
+    "searchTerms": [
+      "malindi cbd",
+      "malindi malindi cbd",
+      "malindi cbd malindi",
+      "kilifi malindi cbd",
+      "malindi town centre",
+      "malindi malindi town centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Malindi",
+      "Malindi CBD"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-malindi",
+      "loc-county-kilifi-malindi-malindi-cbd"
+    ],
+    "pathString": "Kilifi > Malindi > Malindi CBD",
+    "displayLocation": "Malindi · Malindi CBD, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-malindi-silversands",
+    "name": "Silversands",
+    "type": "ESTATE",
+    "parentId": "loc-county-kilifi-malindi",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Silversands Malindi"
+    ],
+    "searchTerms": [
+      "silversands",
+      "malindi silversands",
+      "silversands malindi",
+      "kilifi silversands",
+      "malindi silversands malindi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Malindi",
+      "Silversands"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-malindi",
+      "loc-county-kilifi-malindi-silversands"
+    ],
+    "pathString": "Kilifi > Malindi > Silversands",
+    "displayLocation": "Malindi · Silversands, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-malindi-casuarina",
+    "name": "Casuarina",
+    "type": "ESTATE",
+    "parentId": "loc-county-kilifi-malindi",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Casuarina Road"
+    ],
+    "searchTerms": [
+      "casuarina",
+      "malindi casuarina",
+      "casuarina malindi",
+      "kilifi casuarina",
+      "casuarina road",
+      "malindi casuarina road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Malindi",
+      "Casuarina"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-malindi",
+      "loc-county-kilifi-malindi-casuarina"
+    ],
+    "pathString": "Kilifi > Malindi > Casuarina",
+    "displayLocation": "Malindi · Casuarina, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-malindi-shella",
+    "name": "Shella",
+    "type": "ESTATE",
+    "parentId": "loc-county-kilifi-malindi",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "shella",
+      "malindi shella",
+      "shella malindi",
+      "kilifi shella"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Malindi",
+      "Shella"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-malindi",
+      "loc-county-kilifi-malindi-shella"
+    ],
+    "pathString": "Kilifi > Malindi > Shella",
+    "displayLocation": "Malindi · Shella, Kilifi"
+  },
+  {
+    "id": "loc-county-kilifi-malindi-watamu",
+    "name": "Watamu",
+    "type": "TOWN",
+    "parentId": "loc-county-kilifi-malindi",
+    "countyId": "loc-county-kilifi",
+    "county": "Kilifi",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Watamu Beach",
+      "Watamu Village"
+    ],
+    "searchTerms": [
+      "watamu",
+      "malindi watamu",
+      "watamu malindi",
+      "kilifi watamu",
+      "watamu beach",
+      "malindi watamu beach",
+      "watamu village",
+      "malindi watamu village"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kilifi",
+      "Malindi",
+      "Watamu"
+    ],
+    "pathIds": [
+      "loc-county-kilifi",
+      "loc-county-kilifi-malindi",
+      "loc-county-kilifi-malindi-watamu"
+    ],
+    "pathString": "Kilifi > Malindi > Watamu",
+    "displayLocation": "Malindi · Watamu, Kilifi"
+  },
+  {
+    "id": "loc-county-kwale-diani",
+    "name": "Diani",
+    "type": "TOWN",
+    "parentId": "loc-county-kwale",
+    "countyId": "loc-county-kwale",
+    "county": "Kwale",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Diani Beach",
+      "South Coast Kenya",
+      "Ukunda"
+    ],
+    "searchTerms": [
+      "diani",
+      "kwale diani",
+      "diani kwale",
+      "diani beach",
+      "kwale diani beach",
+      "south coast kenya",
+      "kwale south coast kenya",
+      "ukunda",
+      "kwale ukunda"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kwale",
+      "Diani"
+    ],
+    "pathIds": [
+      "loc-county-kwale",
+      "loc-county-kwale-diani"
+    ],
+    "pathString": "Kwale > Diani",
+    "displayLocation": "Diani, Kwale"
+  },
+  {
+    "id": "loc-county-kwale-diani-diani-beach-road",
+    "name": "Diani Beach Road",
+    "type": "ROAD",
+    "parentId": "loc-county-kwale-diani",
+    "countyId": "loc-county-kwale",
+    "county": "Kwale",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Diani Beach"
+    ],
+    "searchTerms": [
+      "diani beach road",
+      "diani diani beach road",
+      "diani beach road diani",
+      "kwale diani beach road",
+      "diani beach",
+      "diani diani beach"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kwale",
+      "Diani",
+      "Diani Beach Road"
+    ],
+    "pathIds": [
+      "loc-county-kwale",
+      "loc-county-kwale-diani",
+      "loc-county-kwale-diani-diani-beach-road"
+    ],
+    "pathString": "Kwale > Diani > Diani Beach Road",
+    "displayLocation": "Diani · Diani Beach Road, Kwale"
+  },
+  {
+    "id": "loc-county-kwale-diani-ukunda",
+    "name": "Ukunda",
+    "type": "ESTATE",
+    "parentId": "loc-county-kwale-diani",
+    "countyId": "loc-county-kwale",
+    "county": "Kwale",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Ukunda Town"
+    ],
+    "searchTerms": [
+      "ukunda",
+      "diani ukunda",
+      "ukunda diani",
+      "kwale ukunda",
+      "ukunda town",
+      "diani ukunda town"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kwale",
+      "Diani",
+      "Ukunda"
+    ],
+    "pathIds": [
+      "loc-county-kwale",
+      "loc-county-kwale-diani",
+      "loc-county-kwale-diani-ukunda"
+    ],
+    "pathString": "Kwale > Diani > Ukunda",
+    "displayLocation": "Diani · Ukunda, Kwale"
+  },
+  {
+    "id": "loc-county-kwale-diani-galu-beach",
+    "name": "Galu Beach",
+    "type": "ESTATE",
+    "parentId": "loc-county-kwale-diani",
+    "countyId": "loc-county-kwale",
+    "county": "Kwale",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Galu Kinondo"
+    ],
+    "searchTerms": [
+      "galu beach",
+      "diani galu beach",
+      "galu beach diani",
+      "kwale galu beach",
+      "galu kinondo",
+      "diani galu kinondo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kwale",
+      "Diani",
+      "Galu Beach"
+    ],
+    "pathIds": [
+      "loc-county-kwale",
+      "loc-county-kwale-diani",
+      "loc-county-kwale-diani-galu-beach"
+    ],
+    "pathString": "Kwale > Diani > Galu Beach",
+    "displayLocation": "Diani · Galu Beach, Kwale"
+  },
+  {
+    "id": "loc-county-kwale-diani-tiwi",
+    "name": "Tiwi",
+    "type": "ESTATE",
+    "parentId": "loc-county-kwale-diani",
+    "countyId": "loc-county-kwale",
+    "county": "Kwale",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [
+      "Tiwi Beach"
+    ],
+    "searchTerms": [
+      "tiwi",
+      "diani tiwi",
+      "tiwi diani",
+      "kwale tiwi",
+      "tiwi beach",
+      "diani tiwi beach"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kwale",
+      "Diani",
+      "Tiwi"
+    ],
+    "pathIds": [
+      "loc-county-kwale",
+      "loc-county-kwale-diani",
+      "loc-county-kwale-diani-tiwi"
+    ],
+    "pathString": "Kwale > Diani > Tiwi",
+    "displayLocation": "Diani · Tiwi, Kwale"
+  },
+  {
+    "id": "loc-county-kwale-diani-mvindeni",
+    "name": "Mvindeni",
+    "type": "ESTATE",
+    "parentId": "loc-county-kwale-diani",
+    "countyId": "loc-county-kwale",
+    "county": "Kwale",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "mvindeni",
+      "diani mvindeni",
+      "mvindeni diani",
+      "kwale mvindeni"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kwale",
+      "Diani",
+      "Mvindeni"
+    ],
+    "pathIds": [
+      "loc-county-kwale",
+      "loc-county-kwale-diani",
+      "loc-county-kwale-diani-mvindeni"
+    ],
+    "pathString": "Kwale > Diani > Mvindeni",
+    "displayLocation": "Diani · Mvindeni, Kwale"
+  },
+  {
+    "id": "loc-county-kwale-diani-msambweni",
+    "name": "Msambweni",
+    "type": "AREA",
+    "parentId": "loc-county-kwale-diani",
+    "countyId": "loc-county-kwale",
+    "county": "Kwale",
+    "metroGroup": "Mombasa & Coast",
+    "aliases": [],
+    "searchTerms": [
+      "msambweni",
+      "diani msambweni",
+      "msambweni diani",
+      "kwale msambweni"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kwale",
+      "Diani",
+      "Msambweni"
+    ],
+    "pathIds": [
+      "loc-county-kwale",
+      "loc-county-kwale-diani",
+      "loc-county-kwale-diani-msambweni"
+    ],
+    "pathString": "Kwale > Diani > Msambweni",
+    "displayLocation": "Diani · Msambweni, Kwale"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town",
+    "name": "Nakuru Town",
+    "type": "TOWN",
+    "parentId": "loc-county-nakuru",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Nakuru",
+      "Nakuru City"
+    ],
+    "searchTerms": [
+      "nakuru town",
+      "nakuru nakuru town",
+      "nakuru town nakuru",
+      "nakuru",
+      "nakuru nakuru",
+      "nakuru city",
+      "nakuru nakuru city"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town"
+    ],
+    "pathString": "Nakuru > Nakuru Town",
+    "displayLocation": "Nakuru Town, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-nakuru-cbd",
+    "name": "Nakuru CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Nakuru Town Centre",
+      "Oginga Odinga"
+    ],
+    "searchTerms": [
+      "nakuru cbd",
+      "nakuru town nakuru cbd",
+      "nakuru cbd nakuru town",
+      "nakuru nakuru cbd",
+      "nakuru town centre",
+      "nakuru town nakuru town centre",
+      "oginga odinga",
+      "nakuru town oginga odinga"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Nakuru CBD"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-nakuru-cbd"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Nakuru CBD",
+    "displayLocation": "Nakuru Town · Nakuru CBD, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-section-58",
+    "name": "Section 58",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Section 58 Nakuru"
+    ],
+    "searchTerms": [
+      "section 58",
+      "nakuru town section 58",
+      "section 58 nakuru town",
+      "nakuru section 58",
+      "section 58 nakuru",
+      "nakuru town section 58 nakuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Section 58"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-section-58"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Section 58",
+    "displayLocation": "Nakuru Town · Section 58, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-milimani",
+    "name": "Milimani",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Milimani Nakuru"
+    ],
+    "searchTerms": [
+      "milimani",
+      "nakuru town milimani",
+      "milimani nakuru town",
+      "nakuru milimani",
+      "milimani nakuru",
+      "nakuru town milimani nakuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Milimani"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-milimani"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Milimani",
+    "displayLocation": "Nakuru Town · Milimani, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-freehold",
+    "name": "Freehold",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Freehold Estate Nakuru"
+    ],
+    "searchTerms": [
+      "freehold",
+      "nakuru town freehold",
+      "freehold nakuru town",
+      "nakuru freehold",
+      "freehold estate nakuru",
+      "nakuru town freehold estate nakuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Freehold"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-freehold"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Freehold",
+    "displayLocation": "Nakuru Town · Freehold, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-pangani",
+    "name": "Pangani",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Pangani Nakuru"
+    ],
+    "searchTerms": [
+      "pangani",
+      "nakuru town pangani",
+      "pangani nakuru town",
+      "nakuru pangani",
+      "pangani nakuru",
+      "nakuru town pangani nakuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Pangani"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-pangani"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Pangani",
+    "displayLocation": "Nakuru Town · Pangani, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-lanet",
+    "name": "Lanet",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Lanet Nakuru"
+    ],
+    "searchTerms": [
+      "lanet",
+      "nakuru town lanet",
+      "lanet nakuru town",
+      "nakuru lanet",
+      "lanet nakuru",
+      "nakuru town lanet nakuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Lanet"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-lanet"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Lanet",
+    "displayLocation": "Nakuru Town · Lanet, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-kabarak",
+    "name": "Kabarak",
+    "type": "AREA",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Kabarak University Area"
+    ],
+    "searchTerms": [
+      "kabarak",
+      "nakuru town kabarak",
+      "kabarak nakuru town",
+      "nakuru kabarak",
+      "kabarak university area",
+      "nakuru town kabarak university area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Kabarak"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-kabarak"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Kabarak",
+    "displayLocation": "Nakuru Town · Kabarak, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-london",
+    "name": "London",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "London Estate Nakuru"
+    ],
+    "searchTerms": [
+      "london",
+      "nakuru town london",
+      "london nakuru town",
+      "nakuru london",
+      "london estate nakuru",
+      "nakuru town london estate nakuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "London"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-london"
+    ],
+    "pathString": "Nakuru > Nakuru Town > London",
+    "displayLocation": "Nakuru Town · London, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-kivumbini",
+    "name": "Kivumbini",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [],
+    "searchTerms": [
+      "kivumbini",
+      "nakuru town kivumbini",
+      "kivumbini nakuru town",
+      "nakuru kivumbini"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Kivumbini"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-kivumbini"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Kivumbini",
+    "displayLocation": "Nakuru Town · Kivumbini, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-flamingo",
+    "name": "Flamingo",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [],
+    "searchTerms": [
+      "flamingo",
+      "nakuru town flamingo",
+      "flamingo nakuru town",
+      "nakuru flamingo"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Flamingo"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-flamingo"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Flamingo",
+    "displayLocation": "Nakuru Town · Flamingo, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-nakuru-town-pipeline",
+    "name": "Pipeline",
+    "type": "ESTATE",
+    "parentId": "loc-county-nakuru-nakuru-town",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Pipeline Nakuru"
+    ],
+    "searchTerms": [
+      "pipeline",
+      "nakuru town pipeline",
+      "pipeline nakuru town",
+      "nakuru pipeline",
+      "pipeline nakuru",
+      "nakuru town pipeline nakuru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Nakuru Town",
+      "Pipeline"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-nakuru-town",
+      "loc-county-nakuru-nakuru-town-pipeline"
+    ],
+    "pathString": "Nakuru > Nakuru Town > Pipeline",
+    "displayLocation": "Nakuru Town · Pipeline, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-naivasha-naivasha-town-centre",
+    "name": "Naivasha Town Centre",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nakuru-naivasha",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Naivasha CBD"
+    ],
+    "searchTerms": [
+      "naivasha town centre",
+      "naivasha naivasha town centre",
+      "naivasha town centre naivasha",
+      "nakuru naivasha town centre",
+      "naivasha cbd",
+      "naivasha naivasha cbd"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Naivasha",
+      "Naivasha Town Centre"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-naivasha",
+      "loc-county-nakuru-naivasha-naivasha-town-centre"
+    ],
+    "pathString": "Nakuru > Naivasha > Naivasha Town Centre",
+    "displayLocation": "Naivasha · Naivasha Town Centre, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-naivasha-hells-gate",
+    "name": "Hell's Gate",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nakuru-naivasha",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Hells Gate National Park"
+    ],
+    "searchTerms": [
+      "hell's gate",
+      "naivasha hell's gate",
+      "hell's gate naivasha",
+      "nakuru hell's gate",
+      "hells gate national park",
+      "naivasha hells gate national park"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Naivasha",
+      "Hell's Gate"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-naivasha",
+      "loc-county-nakuru-naivasha-hells-gate"
+    ],
+    "pathString": "Nakuru > Naivasha > Hell's Gate",
+    "displayLocation": "Naivasha · Hell's Gate, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-naivasha-lake-naivasha",
+    "name": "Lake Naivasha",
+    "type": "LANDMARK",
+    "parentId": "loc-county-nakuru-naivasha",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Naivasha Lake"
+    ],
+    "searchTerms": [
+      "lake naivasha",
+      "naivasha lake naivasha",
+      "lake naivasha naivasha",
+      "nakuru lake naivasha",
+      "naivasha lake",
+      "naivasha naivasha lake"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Naivasha",
+      "Lake Naivasha"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-naivasha",
+      "loc-county-nakuru-naivasha-lake-naivasha"
+    ],
+    "pathString": "Nakuru > Naivasha > Lake Naivasha",
+    "displayLocation": "Naivasha · Lake Naivasha, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-naivasha-mai-mahiu",
+    "name": "Mai Mahiu",
+    "type": "TOWN",
+    "parentId": "loc-county-nakuru-naivasha",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Maai Mahiu"
+    ],
+    "searchTerms": [
+      "mai mahiu",
+      "naivasha mai mahiu",
+      "mai mahiu naivasha",
+      "nakuru mai mahiu",
+      "maai mahiu",
+      "naivasha maai mahiu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Naivasha",
+      "Mai Mahiu"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-naivasha",
+      "loc-county-nakuru-naivasha-mai-mahiu"
+    ],
+    "pathString": "Nakuru > Naivasha > Mai Mahiu",
+    "displayLocation": "Naivasha · Mai Mahiu, Nakuru"
+  },
+  {
+    "id": "loc-county-nakuru-naivasha-south-lake-road",
+    "name": "South Lake Road",
+    "type": "ROAD",
+    "parentId": "loc-county-nakuru-naivasha",
+    "countyId": "loc-county-nakuru",
+    "county": "Nakuru",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "South Lake Naivasha"
+    ],
+    "searchTerms": [
+      "south lake road",
+      "naivasha south lake road",
+      "south lake road naivasha",
+      "nakuru south lake road",
+      "south lake naivasha",
+      "naivasha south lake naivasha"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nakuru",
+      "Naivasha",
+      "South Lake Road"
+    ],
+    "pathIds": [
+      "loc-county-nakuru",
+      "loc-county-nakuru-naivasha",
+      "loc-county-nakuru-naivasha-south-lake-road"
+    ],
+    "pathString": "Nakuru > Naivasha > South Lake Road",
+    "displayLocation": "Naivasha · South Lake Road, Nakuru"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town",
+    "name": "Kisumu Town",
+    "type": "TOWN",
+    "parentId": "loc-county-kisumu",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Kisumu",
+      "Kisumu City"
+    ],
+    "searchTerms": [
+      "kisumu town",
+      "kisumu kisumu town",
+      "kisumu town kisumu",
+      "kisumu",
+      "kisumu kisumu",
+      "kisumu city",
+      "kisumu kisumu city"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town"
+    ],
+    "pathString": "Kisumu > Kisumu Town",
+    "displayLocation": "Kisumu Town, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-kisumu-cbd",
+    "name": "Kisumu CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Kisumu Town Centre",
+      "City Centre Kisumu"
+    ],
+    "searchTerms": [
+      "kisumu cbd",
+      "kisumu town kisumu cbd",
+      "kisumu cbd kisumu town",
+      "kisumu kisumu cbd",
+      "kisumu town centre",
+      "kisumu town kisumu town centre",
+      "city centre kisumu",
+      "kisumu town city centre kisumu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Kisumu CBD"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-kisumu-cbd"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Kisumu CBD",
+    "displayLocation": "Kisumu Town · Kisumu CBD, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-milimani",
+    "name": "Milimani",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Milimani Kisumu"
+    ],
+    "searchTerms": [
+      "milimani",
+      "kisumu town milimani",
+      "milimani kisumu town",
+      "kisumu milimani",
+      "milimani kisumu",
+      "kisumu town milimani kisumu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Milimani"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-milimani"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Milimani",
+    "displayLocation": "Kisumu Town · Milimani, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-nyalenda",
+    "name": "Nyalenda",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Nyalenda Kisumu"
+    ],
+    "searchTerms": [
+      "nyalenda",
+      "kisumu town nyalenda",
+      "nyalenda kisumu town",
+      "kisumu nyalenda",
+      "nyalenda kisumu",
+      "kisumu town nyalenda kisumu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Nyalenda"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-nyalenda"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Nyalenda",
+    "displayLocation": "Kisumu Town · Nyalenda, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-kondele",
+    "name": "Kondele",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Kondele Kisumu"
+    ],
+    "searchTerms": [
+      "kondele",
+      "kisumu town kondele",
+      "kondele kisumu town",
+      "kisumu kondele",
+      "kondele kisumu",
+      "kisumu town kondele kisumu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Kondele"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-kondele"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Kondele",
+    "displayLocation": "Kisumu Town · Kondele, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-mamboleo",
+    "name": "Mamboleo",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Mamboleo Kisumu"
+    ],
+    "searchTerms": [
+      "mamboleo",
+      "kisumu town mamboleo",
+      "mamboleo kisumu town",
+      "kisumu mamboleo",
+      "mamboleo kisumu",
+      "kisumu town mamboleo kisumu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Mamboleo"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-mamboleo"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Mamboleo",
+    "displayLocation": "Kisumu Town · Mamboleo, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-riat-hills",
+    "name": "Riat Hills",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Riat Kisumu"
+    ],
+    "searchTerms": [
+      "riat hills",
+      "kisumu town riat hills",
+      "riat hills kisumu town",
+      "kisumu riat hills",
+      "riat kisumu",
+      "kisumu town riat kisumu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Riat Hills"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-riat-hills"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Riat Hills",
+    "displayLocation": "Kisumu Town · Riat Hills, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-tom-mboya-estate",
+    "name": "Tom Mboya Estate",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Tom Mboya"
+    ],
+    "searchTerms": [
+      "tom mboya estate",
+      "kisumu town tom mboya estate",
+      "tom mboya estate kisumu town",
+      "kisumu tom mboya estate",
+      "tom mboya",
+      "kisumu town tom mboya"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Tom Mboya Estate"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-tom-mboya-estate"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Tom Mboya Estate",
+    "displayLocation": "Kisumu Town · Tom Mboya Estate, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-lolwe",
+    "name": "Lolwe",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [],
+    "searchTerms": [
+      "lolwe",
+      "kisumu town lolwe",
+      "lolwe kisumu town",
+      "kisumu lolwe"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Lolwe"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-lolwe"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Lolwe",
+    "displayLocation": "Kisumu Town · Lolwe, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-manyatta",
+    "name": "Manyatta",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Manyatta Kisumu"
+    ],
+    "searchTerms": [
+      "manyatta",
+      "kisumu town manyatta",
+      "manyatta kisumu town",
+      "kisumu manyatta",
+      "manyatta kisumu",
+      "kisumu town manyatta kisumu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Manyatta"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-manyatta"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Manyatta",
+    "displayLocation": "Kisumu Town · Manyatta, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-migosi",
+    "name": "Migosi",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [],
+    "searchTerms": [
+      "migosi",
+      "kisumu town migosi",
+      "migosi kisumu town",
+      "kisumu migosi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Migosi"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-migosi"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Migosi",
+    "displayLocation": "Kisumu Town · Migosi, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-dunga",
+    "name": "Dunga",
+    "type": "AREA",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [
+      "Dunga Beach"
+    ],
+    "searchTerms": [
+      "dunga",
+      "kisumu town dunga",
+      "dunga kisumu town",
+      "kisumu dunga",
+      "dunga beach",
+      "kisumu town dunga beach"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Dunga"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-dunga"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Dunga",
+    "displayLocation": "Kisumu Town · Dunga, Kisumu"
+  },
+  {
+    "id": "loc-county-kisumu-kisumu-town-nyawita",
+    "name": "Nyawita",
+    "type": "ESTATE",
+    "parentId": "loc-county-kisumu-kisumu-town",
+    "countyId": "loc-county-kisumu",
+    "county": "Kisumu",
+    "metroGroup": "Western Kenya",
+    "aliases": [],
+    "searchTerms": [
+      "nyawita",
+      "kisumu town nyawita",
+      "nyawita kisumu town",
+      "kisumu nyawita"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Kisumu",
+      "Kisumu Town",
+      "Nyawita"
+    ],
+    "pathIds": [
+      "loc-county-kisumu",
+      "loc-county-kisumu-kisumu-town",
+      "loc-county-kisumu-kisumu-town-nyawita"
+    ],
+    "pathString": "Kisumu > Kisumu Town > Nyawita",
+    "displayLocation": "Kisumu Town · Nyawita, Kisumu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret",
+    "name": "Eldoret",
+    "type": "TOWN",
+    "parentId": "loc-county-uasin-gishu",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Eldoret Town",
+      "Eldoret City",
+      "Athletics Capital"
+    ],
+    "searchTerms": [
+      "eldoret",
+      "uasin gishu eldoret",
+      "eldoret uasin gishu",
+      "eldoret town",
+      "uasin gishu eldoret town",
+      "eldoret city",
+      "uasin gishu eldoret city",
+      "athletics capital",
+      "uasin gishu athletics capital"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret"
+    ],
+    "pathString": "Uasin Gishu > Eldoret",
+    "displayLocation": "Eldoret, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-eldoret-cbd",
+    "name": "Eldoret CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Eldoret Town Centre"
+    ],
+    "searchTerms": [
+      "eldoret cbd",
+      "eldoret eldoret cbd",
+      "eldoret cbd eldoret",
+      "uasin gishu eldoret cbd",
+      "eldoret town centre",
+      "eldoret eldoret town centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Eldoret CBD"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-eldoret-cbd"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Eldoret CBD",
+    "displayLocation": "Eldoret · Eldoret CBD, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-kimumu",
+    "name": "Kimumu",
+    "type": "ESTATE",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Kimumu Eldoret"
+    ],
+    "searchTerms": [
+      "kimumu",
+      "eldoret kimumu",
+      "kimumu eldoret",
+      "uasin gishu kimumu",
+      "eldoret kimumu eldoret"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Kimumu"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-kimumu"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Kimumu",
+    "displayLocation": "Eldoret · Kimumu, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-langas",
+    "name": "Langas",
+    "type": "ESTATE",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Langas Eldoret"
+    ],
+    "searchTerms": [
+      "langas",
+      "eldoret langas",
+      "langas eldoret",
+      "uasin gishu langas",
+      "eldoret langas eldoret"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Langas"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-langas"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Langas",
+    "displayLocation": "Eldoret · Langas, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-huruma",
+    "name": "Huruma",
+    "type": "ESTATE",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Huruma Eldoret"
+    ],
+    "searchTerms": [
+      "huruma",
+      "eldoret huruma",
+      "huruma eldoret",
+      "uasin gishu huruma",
+      "eldoret huruma eldoret"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Huruma"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-huruma"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Huruma",
+    "displayLocation": "Eldoret · Huruma, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-kapsabet-road",
+    "name": "Kapsabet Road",
+    "type": "ROAD",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [],
+    "searchTerms": [
+      "kapsabet road",
+      "eldoret kapsabet road",
+      "kapsabet road eldoret",
+      "uasin gishu kapsabet road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Kapsabet Road"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-kapsabet-road"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Kapsabet Road",
+    "displayLocation": "Eldoret · Kapsabet Road, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-moi-university-area",
+    "name": "Moi University Area",
+    "type": "AREA",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Moi University",
+      "Eldoret Moi"
+    ],
+    "searchTerms": [
+      "moi university area",
+      "eldoret moi university area",
+      "moi university area eldoret",
+      "uasin gishu moi university area",
+      "moi university",
+      "eldoret moi university",
+      "eldoret moi",
+      "eldoret eldoret moi"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Moi University Area"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-moi-university-area"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Moi University Area",
+    "displayLocation": "Eldoret · Moi University Area, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-elgon-view",
+    "name": "Elgon View",
+    "type": "ESTATE",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Elgon View Estate"
+    ],
+    "searchTerms": [
+      "elgon view",
+      "eldoret elgon view",
+      "elgon view eldoret",
+      "uasin gishu elgon view",
+      "elgon view estate",
+      "eldoret elgon view estate"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Elgon View"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-elgon-view"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Elgon View",
+    "displayLocation": "Eldoret · Elgon View, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-west-indies",
+    "name": "West Indies",
+    "type": "ESTATE",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "West Indies Eldoret"
+    ],
+    "searchTerms": [
+      "west indies",
+      "eldoret west indies",
+      "west indies eldoret",
+      "uasin gishu west indies",
+      "eldoret west indies eldoret"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "West Indies"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-west-indies"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > West Indies",
+    "displayLocation": "Eldoret · West Indies, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-kesses",
+    "name": "Kesses",
+    "type": "AREA",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [],
+    "searchTerms": [
+      "kesses",
+      "eldoret kesses",
+      "kesses eldoret",
+      "uasin gishu kesses"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Kesses"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-kesses"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Kesses",
+    "displayLocation": "Eldoret · Kesses, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-uasin-gishu-eldoret-annex",
+    "name": "Annex",
+    "type": "ESTATE",
+    "parentId": "loc-county-uasin-gishu-eldoret",
+    "countyId": "loc-county-uasin-gishu",
+    "county": "Uasin Gishu",
+    "metroGroup": "Rift Valley",
+    "aliases": [
+      "Eldoret Annex"
+    ],
+    "searchTerms": [
+      "annex",
+      "eldoret annex",
+      "annex eldoret",
+      "uasin gishu annex",
+      "eldoret eldoret annex"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Uasin Gishu",
+      "Eldoret",
+      "Annex"
+    ],
+    "pathIds": [
+      "loc-county-uasin-gishu",
+      "loc-county-uasin-gishu-eldoret",
+      "loc-county-uasin-gishu-eldoret-annex"
+    ],
+    "pathString": "Uasin Gishu > Eldoret > Annex",
+    "displayLocation": "Eldoret · Annex, Uasin Gishu"
+  },
+  {
+    "id": "loc-county-meru-meru-town",
+    "name": "Meru Town",
+    "type": "TOWN",
+    "parentId": "loc-county-meru",
+    "countyId": "loc-county-meru",
+    "county": "Meru",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Meru",
+      "Meru City"
+    ],
+    "searchTerms": [
+      "meru town",
+      "meru meru town",
+      "meru town meru",
+      "meru",
+      "meru meru",
+      "meru city",
+      "meru meru city"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Meru",
+      "Meru Town"
+    ],
+    "pathIds": [
+      "loc-county-meru",
+      "loc-county-meru-meru-town"
+    ],
+    "pathString": "Meru > Meru Town",
+    "displayLocation": "Meru Town, Meru"
+  },
+  {
+    "id": "loc-county-meru-meru-town-meru-cbd",
+    "name": "Meru CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-meru-meru-town",
+    "countyId": "loc-county-meru",
+    "county": "Meru",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Meru Town Centre"
+    ],
+    "searchTerms": [
+      "meru cbd",
+      "meru town meru cbd",
+      "meru cbd meru town",
+      "meru meru cbd",
+      "meru town centre",
+      "meru town meru town centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Meru",
+      "Meru Town",
+      "Meru CBD"
+    ],
+    "pathIds": [
+      "loc-county-meru",
+      "loc-county-meru-meru-town",
+      "loc-county-meru-meru-town-meru-cbd"
+    ],
+    "pathString": "Meru > Meru Town > Meru CBD",
+    "displayLocation": "Meru Town · Meru CBD, Meru"
+  },
+  {
+    "id": "loc-county-meru-meru-town-makutano",
+    "name": "Makutano",
+    "type": "ESTATE",
+    "parentId": "loc-county-meru-meru-town",
+    "countyId": "loc-county-meru",
+    "county": "Meru",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Makutano Meru"
+    ],
+    "searchTerms": [
+      "makutano",
+      "meru town makutano",
+      "makutano meru town",
+      "meru makutano",
+      "makutano meru",
+      "meru town makutano meru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Meru",
+      "Meru Town",
+      "Makutano"
+    ],
+    "pathIds": [
+      "loc-county-meru",
+      "loc-county-meru-meru-town",
+      "loc-county-meru-meru-town-makutano"
+    ],
+    "pathString": "Meru > Meru Town > Makutano",
+    "displayLocation": "Meru Town · Makutano, Meru"
+  },
+  {
+    "id": "loc-county-meru-meru-town-kaaga",
+    "name": "Kaaga",
+    "type": "AREA",
+    "parentId": "loc-county-meru-meru-town",
+    "countyId": "loc-county-meru",
+    "county": "Meru",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Kaaga Meru"
+    ],
+    "searchTerms": [
+      "kaaga",
+      "meru town kaaga",
+      "kaaga meru town",
+      "meru kaaga",
+      "kaaga meru",
+      "meru town kaaga meru"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Meru",
+      "Meru Town",
+      "Kaaga"
+    ],
+    "pathIds": [
+      "loc-county-meru",
+      "loc-county-meru-meru-town",
+      "loc-county-meru-meru-town-kaaga"
+    ],
+    "pathString": "Meru > Meru Town > Kaaga",
+    "displayLocation": "Meru Town · Kaaga, Meru"
+  },
+  {
+    "id": "loc-county-meru-meru-town-gakoromone",
+    "name": "Gakoromone",
+    "type": "ESTATE",
+    "parentId": "loc-county-meru-meru-town",
+    "countyId": "loc-county-meru",
+    "county": "Meru",
+    "metroGroup": "Central Kenya",
+    "aliases": [],
+    "searchTerms": [
+      "gakoromone",
+      "meru town gakoromone",
+      "gakoromone meru town",
+      "meru gakoromone"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Meru",
+      "Meru Town",
+      "Gakoromone"
+    ],
+    "pathIds": [
+      "loc-county-meru",
+      "loc-county-meru-meru-town",
+      "loc-county-meru-meru-town-gakoromone"
+    ],
+    "pathString": "Meru > Meru Town > Gakoromone",
+    "displayLocation": "Meru Town · Gakoromone, Meru"
+  },
+  {
+    "id": "loc-county-meru-meru-town-timau",
+    "name": "Timau",
+    "type": "TOWN",
+    "parentId": "loc-county-meru-meru-town",
+    "countyId": "loc-county-meru",
+    "county": "Meru",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Timau Road"
+    ],
+    "searchTerms": [
+      "timau",
+      "meru town timau",
+      "timau meru town",
+      "meru timau",
+      "timau road",
+      "meru town timau road"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Meru",
+      "Meru Town",
+      "Timau"
+    ],
+    "pathIds": [
+      "loc-county-meru",
+      "loc-county-meru-meru-town",
+      "loc-county-meru-meru-town-timau"
+    ],
+    "pathString": "Meru > Meru Town > Timau",
+    "displayLocation": "Meru Town · Timau, Meru"
+  },
+  {
+    "id": "loc-county-nyeri-nyeri-town",
+    "name": "Nyeri Town",
+    "type": "TOWN",
+    "parentId": "loc-county-nyeri",
+    "countyId": "loc-county-nyeri",
+    "county": "Nyeri",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Nyeri"
+    ],
+    "searchTerms": [
+      "nyeri town",
+      "nyeri nyeri town",
+      "nyeri town nyeri",
+      "nyeri",
+      "nyeri nyeri"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nyeri",
+      "Nyeri Town"
+    ],
+    "pathIds": [
+      "loc-county-nyeri",
+      "loc-county-nyeri-nyeri-town"
+    ],
+    "pathString": "Nyeri > Nyeri Town",
+    "displayLocation": "Nyeri Town, Nyeri"
+  },
+  {
+    "id": "loc-county-nyeri-nyeri-town-nyeri-cbd",
+    "name": "Nyeri CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-nyeri-nyeri-town",
+    "countyId": "loc-county-nyeri",
+    "county": "Nyeri",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Nyeri Town Centre"
+    ],
+    "searchTerms": [
+      "nyeri cbd",
+      "nyeri town nyeri cbd",
+      "nyeri cbd nyeri town",
+      "nyeri nyeri cbd",
+      "nyeri town centre",
+      "nyeri town nyeri town centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nyeri",
+      "Nyeri Town",
+      "Nyeri CBD"
+    ],
+    "pathIds": [
+      "loc-county-nyeri",
+      "loc-county-nyeri-nyeri-town",
+      "loc-county-nyeri-nyeri-town-nyeri-cbd"
+    ],
+    "pathString": "Nyeri > Nyeri Town > Nyeri CBD",
+    "displayLocation": "Nyeri Town · Nyeri CBD, Nyeri"
+  },
+  {
+    "id": "loc-county-nyeri-nyeri-town-karatina",
+    "name": "Karatina",
+    "type": "TOWN",
+    "parentId": "loc-county-nyeri-nyeri-town",
+    "countyId": "loc-county-nyeri",
+    "county": "Nyeri",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Karatina Market"
+    ],
+    "searchTerms": [
+      "karatina",
+      "nyeri town karatina",
+      "karatina nyeri town",
+      "nyeri karatina",
+      "karatina market",
+      "nyeri town karatina market"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nyeri",
+      "Nyeri Town",
+      "Karatina"
+    ],
+    "pathIds": [
+      "loc-county-nyeri",
+      "loc-county-nyeri-nyeri-town",
+      "loc-county-nyeri-nyeri-town-karatina"
+    ],
+    "pathString": "Nyeri > Nyeri Town > Karatina",
+    "displayLocation": "Nyeri Town · Karatina, Nyeri"
+  },
+  {
+    "id": "loc-county-nyeri-nyeri-town-othaya",
+    "name": "Othaya",
+    "type": "TOWN",
+    "parentId": "loc-county-nyeri-nyeri-town",
+    "countyId": "loc-county-nyeri",
+    "county": "Nyeri",
+    "metroGroup": "Central Kenya",
+    "aliases": [],
+    "searchTerms": [
+      "othaya",
+      "nyeri town othaya",
+      "othaya nyeri town",
+      "nyeri othaya"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nyeri",
+      "Nyeri Town",
+      "Othaya"
+    ],
+    "pathIds": [
+      "loc-county-nyeri",
+      "loc-county-nyeri-nyeri-town",
+      "loc-county-nyeri-nyeri-town-othaya"
+    ],
+    "pathString": "Nyeri > Nyeri Town > Othaya",
+    "displayLocation": "Nyeri Town · Othaya, Nyeri"
+  },
+  {
+    "id": "loc-county-nyeri-nyeri-town-mukurweini",
+    "name": "Mukurweini",
+    "type": "AREA",
+    "parentId": "loc-county-nyeri-nyeri-town",
+    "countyId": "loc-county-nyeri",
+    "county": "Nyeri",
+    "metroGroup": "Central Kenya",
+    "aliases": [],
+    "searchTerms": [
+      "mukurweini",
+      "nyeri town mukurweini",
+      "mukurweini nyeri town",
+      "nyeri mukurweini"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nyeri",
+      "Nyeri Town",
+      "Mukurweini"
+    ],
+    "pathIds": [
+      "loc-county-nyeri",
+      "loc-county-nyeri-nyeri-town",
+      "loc-county-nyeri-nyeri-town-mukurweini"
+    ],
+    "pathString": "Nyeri > Nyeri Town > Mukurweini",
+    "displayLocation": "Nyeri Town · Mukurweini, Nyeri"
+  },
+  {
+    "id": "loc-county-nyeri-nyeri-town-tetu",
+    "name": "Tetu",
+    "type": "AREA",
+    "parentId": "loc-county-nyeri-nyeri-town",
+    "countyId": "loc-county-nyeri",
+    "county": "Nyeri",
+    "metroGroup": "Central Kenya",
+    "aliases": [],
+    "searchTerms": [
+      "tetu",
+      "nyeri town tetu",
+      "tetu nyeri town",
+      "nyeri tetu"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Nyeri",
+      "Nyeri Town",
+      "Tetu"
+    ],
+    "pathIds": [
+      "loc-county-nyeri",
+      "loc-county-nyeri-nyeri-town",
+      "loc-county-nyeri-nyeri-town-tetu"
+    ],
+    "pathString": "Nyeri > Nyeri Town > Tetu",
+    "displayLocation": "Nyeri Town · Tetu, Nyeri"
+  },
+  {
+    "id": "loc-county-laikipia-nanyuki",
+    "name": "Nanyuki",
+    "type": "TOWN",
+    "parentId": "loc-county-laikipia",
+    "countyId": "loc-county-laikipia",
+    "county": "Laikipia",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Nanyuki Town",
+      "Mt Kenya Area"
+    ],
+    "searchTerms": [
+      "nanyuki",
+      "laikipia nanyuki",
+      "nanyuki laikipia",
+      "nanyuki town",
+      "laikipia nanyuki town",
+      "mt kenya area",
+      "laikipia mt kenya area"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Laikipia",
+      "Nanyuki"
+    ],
+    "pathIds": [
+      "loc-county-laikipia",
+      "loc-county-laikipia-nanyuki"
+    ],
+    "pathString": "Laikipia > Nanyuki",
+    "displayLocation": "Nanyuki, Laikipia"
+  },
+  {
+    "id": "loc-county-laikipia-nanyuki-nanyuki-cbd",
+    "name": "Nanyuki CBD",
+    "type": "NEIGHBOURHOOD",
+    "parentId": "loc-county-laikipia-nanyuki",
+    "countyId": "loc-county-laikipia",
+    "county": "Laikipia",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Nanyuki Town Centre"
+    ],
+    "searchTerms": [
+      "nanyuki cbd",
+      "nanyuki nanyuki cbd",
+      "nanyuki cbd nanyuki",
+      "laikipia nanyuki cbd",
+      "nanyuki town centre",
+      "nanyuki nanyuki town centre"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Laikipia",
+      "Nanyuki",
+      "Nanyuki CBD"
+    ],
+    "pathIds": [
+      "loc-county-laikipia",
+      "loc-county-laikipia-nanyuki",
+      "loc-county-laikipia-nanyuki-nanyuki-cbd"
+    ],
+    "pathString": "Laikipia > Nanyuki > Nanyuki CBD",
+    "displayLocation": "Nanyuki · Nanyuki CBD, Laikipia"
+  },
+  {
+    "id": "loc-county-laikipia-nanyuki-equator-area",
+    "name": "Equator Area",
+    "type": "LANDMARK",
+    "parentId": "loc-county-laikipia-nanyuki",
+    "countyId": "loc-county-laikipia",
+    "county": "Laikipia",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Equator Nanyuki"
+    ],
+    "searchTerms": [
+      "equator area",
+      "nanyuki equator area",
+      "equator area nanyuki",
+      "laikipia equator area",
+      "equator nanyuki",
+      "nanyuki equator nanyuki"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Laikipia",
+      "Nanyuki",
+      "Equator Area"
+    ],
+    "pathIds": [
+      "loc-county-laikipia",
+      "loc-county-laikipia-nanyuki",
+      "loc-county-laikipia-nanyuki-equator-area"
+    ],
+    "pathString": "Laikipia > Nanyuki > Equator Area",
+    "displayLocation": "Nanyuki · Equator Area, Laikipia"
+  },
+  {
+    "id": "loc-county-laikipia-nanyuki-laikipia-air-base",
+    "name": "Laikipia Air Base",
+    "type": "LANDMARK",
+    "parentId": "loc-county-laikipia-nanyuki",
+    "countyId": "loc-county-laikipia",
+    "county": "Laikipia",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Nanyuki Air Base"
+    ],
+    "searchTerms": [
+      "laikipia air base",
+      "nanyuki laikipia air base",
+      "laikipia air base nanyuki",
+      "laikipia laikipia air base",
+      "nanyuki air base",
+      "nanyuki nanyuki air base"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Laikipia",
+      "Nanyuki",
+      "Laikipia Air Base"
+    ],
+    "pathIds": [
+      "loc-county-laikipia",
+      "loc-county-laikipia-nanyuki",
+      "loc-county-laikipia-nanyuki-laikipia-air-base"
+    ],
+    "pathString": "Laikipia > Nanyuki > Laikipia Air Base",
+    "displayLocation": "Nanyuki · Laikipia Air Base, Laikipia"
+  },
+  {
+    "id": "loc-county-laikipia-nanyuki-sweetwaters",
+    "name": "Sweetwaters",
+    "type": "AREA",
+    "parentId": "loc-county-laikipia-nanyuki",
+    "countyId": "loc-county-laikipia",
+    "county": "Laikipia",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Sweetwaters Game Reserve"
+    ],
+    "searchTerms": [
+      "sweetwaters",
+      "nanyuki sweetwaters",
+      "sweetwaters nanyuki",
+      "laikipia sweetwaters",
+      "sweetwaters game reserve",
+      "nanyuki sweetwaters game reserve"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Laikipia",
+      "Nanyuki",
+      "Sweetwaters"
+    ],
+    "pathIds": [
+      "loc-county-laikipia",
+      "loc-county-laikipia-nanyuki",
+      "loc-county-laikipia-nanyuki-sweetwaters"
+    ],
+    "pathString": "Laikipia > Nanyuki > Sweetwaters",
+    "displayLocation": "Nanyuki · Sweetwaters, Laikipia"
+  },
+  {
+    "id": "loc-county-laikipia-nanyuki-lewa",
+    "name": "Lewa",
+    "type": "AREA",
+    "parentId": "loc-county-laikipia-nanyuki",
+    "countyId": "loc-county-laikipia",
+    "county": "Laikipia",
+    "metroGroup": "Central Kenya",
+    "aliases": [
+      "Lewa Downs",
+      "Lewa Wildlife Conservancy"
+    ],
+    "searchTerms": [
+      "lewa",
+      "nanyuki lewa",
+      "lewa nanyuki",
+      "laikipia lewa",
+      "lewa downs",
+      "nanyuki lewa downs",
+      "lewa wildlife conservancy",
+      "nanyuki lewa wildlife conservancy"
+    ],
+    "latitude": null,
+    "longitude": null,
+    "verified": true,
+    "sortOrder": 0,
+    "status": "active",
+    "path": [
+      "Laikipia",
+      "Nanyuki",
+      "Lewa"
+    ],
+    "pathIds": [
+      "loc-county-laikipia",
+      "loc-county-laikipia-nanyuki",
+      "loc-county-laikipia-nanyuki-lewa"
+    ],
+    "pathString": "Laikipia > Nanyuki > Lewa",
+    "displayLocation": "Nanyuki · Lewa, Laikipia"
   }
 ];
