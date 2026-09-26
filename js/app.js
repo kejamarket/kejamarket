@@ -56,6 +56,7 @@ class NairobiRentalsApp {
     
     // Fetch live database listings from backend
     await this.fetchLiveProperties();
+    await this.populateSidebarChecklists();
 
     this.applyFilters();
 
@@ -330,37 +331,40 @@ class NairobiRentalsApp {
     if (el) el.classList.toggle('collapsed');
   }
 
-  populateSidebarChecklists() {
+  async populateSidebarChecklists() {
     const suburbContainer = document.getElementById('suburb-checklist-container');
     if (suburbContainer) {
-      const topSuburbs = [
-        { name: 'Ngara', count: 12 },
-        { name: 'Kilimani', count: 18 },
-        { name: 'Parklands', count: 9 },
-        { name: 'Ruaraka', count: 6 },
-        { name: 'Kasarani', count: 14 },
-        { name: 'Lavington', count: 10 },
-        { name: 'Westlands', count: 22 },
-        { name: 'Donholm', count: 8 },
-        { name: 'Eastleigh', count: 11 },
-        { name: 'Rongai', count: 7 },
-        { name: 'South B', count: 15 },
-        { name: 'South C', count: 9 },
-        { name: 'Ruaka', count: 19 },
-        { name: 'Roysambu', count: 16 },
-        { name: 'Umoja', count: 13 },
-        { name: 'Pangani', count: 8 },
-        { name: 'Embakasi', count: 12 },
-        { name: 'Kikuyu', count: 7 },
-        { name: 'Karen', count: 5 },
-        { name: 'Juja', count: 11 }
-      ];
+      if (!this.selectedSuburbs) this.selectedSuburbs = new Set();
 
-      this.sidebarSuburbsList = topSuburbs;
-      if (!this.selectedSuburbs) {
-        this.selectedSuburbs = new Set();
+      // Show loading state
+      suburbContainer.innerHTML = `<div style="padding:8px;color:#64748b;font-size:12px;text-align:center"><i class="fas fa-spinner fa-spin"></i> Loading areas...</div>`;
+
+      try {
+        // Fetch real area stats from properties DB
+        const resp = await fetch('/api/properties/area-stats');
+        if (resp.ok) {
+          const data = await resp.json();
+          this.sidebarSuburbsList = data.areas || [];
+        }
+      } catch (e) { /* fall through to fallback */ }
+
+      // Fallback: use all properties currently loaded to compute counts
+      if (!this.sidebarSuburbsList || this.sidebarSuburbsList.length === 0) {
+        const counts = {};
+        const props = this.properties || this.allProperties || [];
+        props.forEach(p => {
+          const area = p.estateSuburb || p.exactLocation || p.location || '';
+          if (area) {
+            const key = area.split(',')[0].trim();
+            if (key) counts[key] = (counts[key] || 0) + 1;
+          }
+        });
+        this.sidebarSuburbsList = Object.entries(counts)
+          .sort((a, b) => b[1] - a[1])
+          .map(([name, count]) => ({ name, count }));
       }
-      this.renderSuburbChecklist(topSuburbs.slice(0, 10));
+
+      this.renderSuburbChecklist(this.sidebarSuburbsList.slice(0, 12));
     }
 
     const typeContainer = document.getElementById('property-type-checklist-container');
@@ -423,14 +427,52 @@ class NairobiRentalsApp {
   }
 
   filterSuburbChecklist(query) {
-    if (!this.sidebarSuburbsList) return;
     const q = (query || '').toLowerCase().trim();
     if (!q) {
-      this.renderSuburbChecklist(this.showingAllSuburbs ? this.sidebarSuburbsList : this.sidebarSuburbsList.slice(0, 10));
+      const list = this.sidebarSuburbsList || [];
+      this.renderSuburbChecklist(this.showingAllSuburbs ? list : list.slice(0, 12));
       return;
     }
-    const filtered = this.sidebarSuburbsList.filter(s => s.name.toLowerCase().includes(q));
-    this.renderSuburbChecklist(filtered);
+    // First show local matches immediately
+    const localMatch = (this.sidebarSuburbsList || []).filter(s => s.name.toLowerCase().includes(q));
+    if (localMatch.length > 0) {
+      this.renderSuburbChecklist(localMatch);
+    } else {
+      const container = document.getElementById('suburb-checklist-container');
+      if (container) container.innerHTML = `<div style="padding:8px;color:#64748b;font-size:12px;text-align:center"><i class="fas fa-spinner fa-spin"></i> Searching...</div>`;
+    }
+    // Debounced full-API search
+    clearTimeout(this._suburbSearchTimer);
+    this._suburbSearchTimer = setTimeout(async () => {
+      try {
+        const resp = await fetch(`/api/locations/search?q=${encodeURIComponent(q)}&limit=20`);
+        if (resp.ok) {
+          const data = await resp.json();
+          const results = (data.results || data || []).map(loc => ({
+            name: loc.name,
+            count: loc.childCount || '',
+            displayLocation: loc.displayLocation || loc.pathString || ''
+          }));
+          if (results.length > 0) { this.renderSuburbChecklistWithDisplay(results); return; }
+        }
+      } catch (e) { /* ignore */ }
+      const fallback = (this.sidebarSuburbsList || []).filter(s => s.name.toLowerCase().includes(q));
+      this.renderSuburbChecklist(fallback);
+    }, 220);
+  }
+
+  renderSuburbChecklistWithDisplay(suburbs) {
+    const container = document.getElementById('suburb-checklist-container');
+    if (!container) return;
+    if (!suburbs.length) {
+      container.innerHTML = `<div style="padding:8px;color:#94a3b8;font-size:12px;text-align:center">No areas found</div>`;
+      return;
+    }
+    container.innerHTML = suburbs.map(s => {
+      const isChecked = this.selectedSuburbs?.has(s.name) || false;
+      const sub = s.displayLocation ? `<span style="display:block;font-size:10px;color:#94a3b8;line-height:1.3">${s.displayLocation}</span>` : '';
+      return `<label class="filter-check-item"><input type="checkbox" class="suburb-checkbox" value="${s.name}" ${isChecked ? 'checked' : ''} onchange="app.onSuburbCheckboxChange(this)"><span class="item-label">${s.name}${sub}</span>${s.count ? `<span class="item-count">${s.count}</span>` : ''}</label>`;
+    }).join('');
   }
 
   toggleMoreSuburbs() {

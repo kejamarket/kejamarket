@@ -1,4 +1,4 @@
-/**
+﻿/**
  * KejaMarket â€“ Production Backend API & M-Pesa Daraja Integration
  * ===============================================================
  * Provides:
@@ -1856,6 +1856,26 @@ app.post('/api/admin/locations/merge', requireAuth, async (req, res) => {
 });
 
 // â”€â”€â”€ PROPERTIES & LISTINGS ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+// GET /api/properties/area-stats -- real listing counts per estate/area
+app.get('/api/properties/area-stats', cache.middleware(120, 'area-stats'), async (req, res) => {
+  try {
+    const allProps = await store.getAll({ is_verified: true });
+    const counts = {};
+    (allProps || []).forEach(p => {
+      const raw = p.raw_data || p;
+      const area = raw.estateSuburb || raw.estate_suburb || raw.exactLocation || raw.exact_location || raw.location || '';
+      if (area) {
+        const key = area.split(',')[0].trim();
+        if (key && key.length > 1) counts[key] = (counts[key] || 0) + 1;
+      }
+    });
+    const areas = Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([name, count]) => ({ name, count }));
+    res.json({ success: true, areas, total: areas.length });
+  } catch (err) {
+    res.status(500).json({ success: false, areas: [], message: err.message });
+  }
+});
 
 // GET /api/properties â€” server-side search, filtering, pagination
 app.get('/api/properties', cache.middleware(15, 'properties'), async (req, res) => {
