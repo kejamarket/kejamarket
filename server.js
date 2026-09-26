@@ -158,7 +158,12 @@ app.use(express.static(__dirname, {
   }
 }));
 
-// â”€â”€ SEO PUBLIC CRAWLABLE PAGES & DYNAMIC SITEMAPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Admin dashboard route aliases
+app.get(['/admin', '/admin.html', '/admin-dashboard'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
+});
+
+// ── SEO PUBLIC CRAWLABLE PAGES & DYNAMIC SITEMAPS ──────────────────────
 const { createSeoRouter } = require('./seo/routes');
 app.use(createSeoRouter(() => store));
 
