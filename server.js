@@ -1,4 +1,4 @@
-﻿/**
+/**
  * KejaMarket â€“ Production Backend API & M-Pesa Daraja Integration
  * ===============================================================
  * Provides:
@@ -1860,7 +1860,8 @@ app.post('/api/admin/locations/merge', requireAuth, async (req, res) => {
 // GET /api/properties/area-stats -- real listing counts per estate/area
 app.get('/api/properties/area-stats', cache.middleware(120, 'area-stats'), async (req, res) => {
   try {
-    const allProps = await store.getAll({ is_verified: true });
+    const rawProps = (await store.getAllProperties()) || [];
+    const allProps = rawProps.filter(p => (p.is_verified === true || p.isVerified === true) && p.status !== 'pending' && p.status !== 'rejected');
     const counts = {};
     (allProps || []).forEach(p => {
       const raw = p.raw_data || p;
