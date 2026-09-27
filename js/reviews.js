@@ -4,6 +4,17 @@
  * Connected to live backend database API.
  */
 
+// Sanitize strings before inserting into innerHTML to prevent XSS
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 class ReviewManager {
   constructor() {
     this.reviews = typeof SEED_REVIEWS !== 'undefined' ? { ...SEED_REVIEWS } : {};
@@ -83,10 +94,10 @@ class ReviewManager {
       <div style="border-bottom: 1px solid #e2e8f0; padding: 12px 0;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
           <div style="font-weight: 700; font-size: 0.9rem; color: #1e293b; display: flex; align-items: center; gap: 6px;">
-            ${r.author}
+            ${escapeHtml(r.author)}
             ${r.verified ? '<span style="background: #e6f8ec; color: #00b53f; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;"><i class="fas fa-check-circle"></i> Verified Resident</span>' : ''}
           </div>
-          <div style="font-size: 0.78rem; color: #94a3b8;">${r.date}</div>
+          <div style="font-size: 0.78rem; color: #94a3b8;">${escapeHtml(r.date)}</div>
         </div>
 
         <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; font-size: 0.75rem;">
@@ -102,7 +113,7 @@ class ReviewManager {
         </div>
 
         <p style="font-size: 0.85rem; color: #334155; line-height: 1.4;">
-          ${r.text}
+          ${escapeHtml(r.text)}
         </p>
       </div>
     `).join('');

@@ -105,8 +105,8 @@ app.use(compression({
     return compression.filter(req, res);
   }
 }));
-app.use(express.json({ limit: '100mb' }));
-app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Strip accidental trailing dots or punctuation from URLs (e.g. copied from markdown sentences)
 app.use((req, res, next) => {
@@ -526,11 +526,25 @@ app.post('/api/auth/send-otp', otpLimiter, async (req, res) => {
 
     // Check if phone or email already registered
     const cleanEmail = email ? email.trim().toLowerCase() : null;
-    const existingUser = store.data.users.find(u => 
-      u.phone === cleanPhone || 
-      (u.phone && u.phone.replace(/^254/, '0') === cleanPhone.replace(/^254/, '0')) ||
-      (cleanEmail && u.email && u.email.toLowerCase() === cleanEmail)
-    );
+    // Use findUserByIdentifier for direct indexed lookup instead of loading all users
+    let existingUser = null;
+    try {
+      if (store.findUserByIdentifier) {
+        existingUser = await store.findUserByIdentifier(cleanPhone);
+        if (!existingUser && cleanEmail) {
+          existingUser = await store.findUserByIdentifier(cleanEmail);
+        }
+      } else {
+        const allUsers = await store.getAllUsers();
+        existingUser = (allUsers || []).find(u =>
+          u.phone === cleanPhone ||
+          (u.phone && u.phone.replace(/^254/, '0') === cleanPhone.replace(/^254/, '0')) ||
+          (cleanEmail && u.email && u.email.toLowerCase() === cleanEmail)
+        );
+      }
+    } catch (lookupErr) {
+      console.warn('[send-otp] User lookup warning:', lookupErr.message);
+    }
 
     if (existingUser) {
       return res.status(400).json({ 
@@ -1107,17 +1121,36 @@ app.get('/api/user/dashboard', requireAuth, async (req, res) => {
 
     // Listings count (landlord, agency, service, marketplace sellers)
     try {
-      const allProps = await store.getAllProperties();
-      const myProps = allProps.filter(p =>
-        p.landlordId === userId ||
-        p.postedBy === userId ||
-        (p.landlord && (p.landlord.id === userId || p.landlord.phone === userPhone)) ||
-        p.landlordPhone === userPhone
-      );
-      stats.listings = myProps.length;
-      stats.activeListings = myProps.filter(p => p.isApproved || p.status === 'approved').length;
-      stats.pendingListings = myProps.filter(p => !p.isApproved && p.status !== 'approved').length;
-      stats.totalViews = myProps.reduce((sum, p) => sum + (p.views || p.viewCount || 0), 0);
+      if (store.isConnected && store.query) {
+        const pRes = await store.query(
+          `SELECT COUNT(*) as total,
+                  COUNT(*) FILTER (WHERE is_verified = true OR (raw_data->>'status') = 'approved') as active,
+                  COUNT(*) FILTER (WHERE (is_verified IS NOT TRUE) AND (raw_data->>'status') != 'approved') as pending,
+                  COALESCE(SUM((raw_data->>'views')::int), 0) as views
+           FROM properties
+           WHERE landlord_id = $1 OR posted_by = $1 OR landlord_phone = $2`,
+          [userId, userPhone || '']
+        );
+        const row = pRes.rows[0];
+        if (row) {
+          stats.listings = parseInt(row.total) || 0;
+          stats.activeListings = parseInt(row.active) || 0;
+          stats.pendingListings = parseInt(row.pending) || 0;
+          stats.totalViews = parseInt(row.views) || 0;
+        }
+      } else {
+        const allProps = await store.getAllProperties();
+        const myProps = allProps.filter(p =>
+          p.landlordId === userId ||
+          p.postedBy === userId ||
+          (p.landlord && (p.landlord.id === userId || p.landlord.phone === userPhone)) ||
+          p.landlordPhone === userPhone
+        );
+        stats.listings = myProps.length;
+        stats.activeListings = myProps.filter(p => p.isApproved || p.status === 'approved').length;
+        stats.pendingListings = myProps.filter(p => !p.isApproved && p.status !== 'approved').length;
+        stats.totalViews = myProps.reduce((sum, p) => sum + (p.views || p.viewCount || 0), 0);
+      }
     } catch (e) { /* non-fatal */ }
 
     // Services count for service providers
@@ -1860,6 +1893,22 @@ app.post('/api/admin/locations/merge', requireAuth, async (req, res) => {
 // GET /api/properties/area-stats -- real listing counts per estate/area
 app.get('/api/properties/area-stats', cache.middleware(120, 'area-stats'), async (req, res) => {
   try {
+    if (store.isConnected && store.query) {
+      const qRes = await store.query(`
+        SELECT TRIM(SPLIT_PART(COALESCE(estate_suburb, raw_data->>'exactLocation', raw_data->>'location', ''), ',', 1)) as name,
+               COUNT(*) as count
+        FROM properties
+        WHERE (is_verified = true OR (raw_data->>'status') = 'approved')
+          AND COALESCE(raw_data->>'status', '') NOT IN ('pending', 'rejected')
+          AND COALESCE(estate_suburb, raw_data->>'exactLocation', raw_data->>'location', '') != ''
+        GROUP BY name
+        HAVING LENGTH(TRIM(SPLIT_PART(COALESCE(estate_suburb, raw_data->>'exactLocation', raw_data->>'location', ''), ',', 1))) > 1
+        ORDER BY count DESC
+      `);
+      const areas = qRes.rows.map(r => ({ name: r.name, count: parseInt(r.count) || 0 }));
+      return res.json({ success: true, areas, total: areas.length });
+    }
+
     const rawProps = (await store.getAllProperties()) || [];
     const allProps = rawProps.filter(p => (p.is_verified === true || p.isVerified === true) && p.status !== 'pending' && p.status !== 'rejected');
     const counts = {};
@@ -2136,11 +2185,11 @@ app.put('/api/properties/:id/boost', optionalAuth, (req, res) => {
 });
 
 // PATCH /api/properties/:id/status (Toggle taken / occupied / available status)
-app.patch('/api/properties/:id/status', optionalAuth, (req, res) => {
+app.patch('/api/properties/:id/status', optionalAuth, async (req, res) => {
   const { id } = req.params;
   const { isTaken, status } = req.body;
 
-  const existing = store.getPropertyById(id);
+  const existing = await store.getPropertyById(id);
   if (!existing) {
     return res.status(404).json({ success: false, message: 'Property listing not found.' });
   }
@@ -2186,7 +2235,7 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
     return res.status(403).json({ success: false, message: 'Admin access required.' });
   }
 
-  const property = store.getPropertyById(id);
+  const property = await store.getPropertyById(id);
   if (!property) {
     return res.status(404).json({ success: false, message: 'Property not found.' });
   }
@@ -2268,13 +2317,13 @@ app.put('/api/properties/:id/reject', requireAuth, async (req, res) => {
     return res.status(403).json({ success: false, message: 'Admin access required.' });
   }
 
-  const property = store.getPropertyById(id);
+  const property = await store.getPropertyById(id);
   if (!property) {
     return res.status(404).json({ success: false, message: 'Property not found.' });
   }
 
   // Update property status to rejected
-  const updated = store.updateProperty(id, { 
+  const updated = await store.updateProperty(id, { 
     status: 'rejected', 
     isApproved: false,
     rejectedAt: new Date().toISOString(),
@@ -2838,6 +2887,25 @@ app.post('/api/admin/migrate', async (req, res) => {
 
 app.get('/api/stats', cache.middleware(60, 'public:stats'), async (req, res) => {
   try {
+    if (store.isConnected && store.query) {
+      const pStats = await store.query(`
+        SELECT 
+          (SELECT COUNT(*) FROM properties) as total_properties,
+          (SELECT COUNT(*) FROM properties WHERE is_verified = true) as active_listings,
+          (SELECT COUNT(*) FROM properties WHERE is_top_ad = true OR is_featured = true) as boosted_listings,
+          (SELECT COUNT(*) FROM transactions) as total_transactions,
+          (SELECT COUNT(*) FROM transactions WHERE status = 'SUCCESS') as confirmed_transactions
+      `);
+      const r = pStats.rows[0];
+      return res.json({
+        totalProperties: parseInt(r.total_properties) || 0,
+        activeListings: parseInt(r.active_listings) || 0,
+        boostedListings: parseInt(r.boosted_listings) || 0,
+        totalTransactions: parseInt(r.total_transactions) || 0,
+        confirmedTransactions: parseInt(r.confirmed_transactions) || 0
+      });
+    }
+
     const properties = await store.getAllProperties();
     const transactions = await store.getAllTransactions();
     res.json({
@@ -3134,20 +3202,51 @@ app.get('/api/admin/users', requireAuth, async (req, res) => {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
-    const users = await store.getAllUsers();
-    const allProps = (await store.getAllProperties?.()) || store.data?.properties || [];
-    
-    // Add property count to each user
-    const usersWithCounts = users.map(user => {
-      const userProperties = allProps.filter(p => p.userId === user.id || p.landlordId === user.id || p.landlord_id === user.id);
-      return {
-        ...user,
-        propertyCount: userProperties.length,
-        activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified || p.is_verified).length
-      };
-    });
-    
-    res.json({ success: true, count: usersWithCounts.length, users: usersWithCounts });
+
+    // Use paginated query to avoid loading all users + all properties into RAM
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, parseInt(req.query.limit) || 50);
+    const offset = (page - 1) * limit;
+
+    let users, total;
+    if (store.isConnected && store.query) {
+      // Efficient join: count properties per user in the DB, no JS map needed
+      const countRes = await store.query('SELECT COUNT(*) FROM users');
+      total = parseInt(countRes.rows[0].count);
+
+      const res2 = await store.query(`
+        SELECT u.*,
+               COUNT(p.id) FILTER (WHERE p.id IS NOT NULL) AS property_count,
+               COUNT(p.id) FILTER (WHERE p.status IN ('approved','verified') AND p.is_verified = true) AS active_listings
+        FROM users u
+        LEFT JOIN properties p ON p.user_id = u.id OR p.landlord_id = u.id
+        GROUP BY u.id
+        ORDER BY u.created_at DESC
+        LIMIT $1 OFFSET $2
+      `, [limit, offset]);
+      users = res2.rows.map(u => {
+        const { password, ...safe } = u;
+        safe.isAdmin = !!(safe.is_admin || safe.role === 'admin');
+        safe.propertyCount = parseInt(u.property_count) || 0;
+        safe.activeListings = parseInt(u.active_listings) || 0;
+        return safe;
+      });
+    } else {
+      // Fallback: JSON store (small dataset, safe to load all)
+      const allUsers = await store.getAllUsers();
+      const allProps = store.data?.properties || [];
+      total = allUsers.length;
+      users = allUsers.slice(offset, offset + limit).map(user => {
+        const userProperties = allProps.filter(p => p.userId === user.id || p.landlordId === user.id);
+        return {
+          ...user,
+          propertyCount: userProperties.length,
+          activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified).length
+        };
+      });
+    }
+
+    res.json({ success: true, count: users.length, total, page, limit, users });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -3168,16 +3267,34 @@ app.get('/api/admin/users/:id', requireAuth, async (req, res) => {
     }
     
     // Add additional stats
-    const allProps = (await store.getAllProperties?.()) || store.data?.properties || [];
-    const userProperties = allProps.filter(p => p.userId === id || p.landlordId === id || p.landlord_id === id);
+    let propertyCount = 0;
+    let activeListings = 0;
+    if (store.isConnected && store.query) {
+      const pRes = await store.query(
+        `SELECT COUNT(*) as total,
+                COUNT(*) FILTER (WHERE is_verified = true OR (raw_data->>'status') IN ('approved', 'verified')) as active
+         FROM properties
+         WHERE user_id = $1 OR landlord_id = $1 OR posted_by = $1`,
+        [id]
+      );
+      if (pRes.rows[0]) {
+        propertyCount = parseInt(pRes.rows[0].total) || 0;
+        activeListings = parseInt(pRes.rows[0].active) || 0;
+      }
+    } else {
+      const allProps = (await store.getAllProperties?.()) || store.data?.properties || [];
+      const userProperties = allProps.filter(p => p.userId === id || p.landlordId === id || p.landlord_id === id);
+      propertyCount = userProperties.length;
+      activeListings = userProperties.filter(p => p.status === 'verified' || p.isVerified || p.is_verified).length;
+    }
     const inquiries = (store.data?.inquiries || store.fallbackStore?.data?.inquiries || []).filter(i => i.userId === id || i.sender_id === id);
     const reviews = (store.data?.reviews || store.fallbackStore?.data?.reviews || []).filter(r => r.userId === id);
     const reports = (store.data?.reports || store.fallbackStore?.data?.reports || []).filter(r => r.reportedBy === id);
     
     const userWithStats = {
       ...user,
-      propertyCount: userProperties.length,
-      activeListings: userProperties.filter(p => p.status === 'verified' || p.isVerified || p.is_verified).length,
+      propertyCount,
+      activeListings,
       inquiriesSent: inquiries.length,
       reviewsGiven: reviews.length,
       reportsCount: reports.length
@@ -3772,10 +3889,22 @@ app.get('/api/admin/admins', requireAuth, async (req, res) => {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
-    const allUsers = await store.getAllUsers();
-    const admins = allUsers.filter(u =>
-      u.role === 'admin' || u.isAdmin === true || u.is_admin === true || u.id === 'usr-admin-01'
-    );
+    let admins;
+    if (store.isConnected && store.query) {
+      // Query only admin users directly — no need to fetch the whole users table
+      const result = await store.query(
+        `SELECT id, name, phone, email, role, is_admin, is_verified, created_at, raw_data
+         FROM users WHERE is_admin = true OR role = 'admin' ORDER BY created_at ASC`
+      );
+      admins = result.rows.map(u => {
+        const { password, ...safe } = u;
+        safe.isAdmin = true;
+        return safe;
+      });
+    } else {
+      const allUsers = await store.getAllUsers();
+      admins = allUsers.filter(u => u.role === 'admin' || u.isAdmin === true || u.id === 'usr-admin-01');
+    }
     res.json({ success: true, count: admins.length, admins });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -3999,7 +4128,7 @@ app.put('/api/properties/:id/boost', async (req, res) => {
     const { id } = req.params;
     const { boostType = 'top_ad' } = req.body;
 
-    const property = store.getPropertyById(id);
+    const property = await store.getPropertyById(id);
     if (!property) {
       return res.status(404).json({ success: false, message: 'Property not found.' });
     }
@@ -4009,7 +4138,7 @@ app.put('/api/properties/:id/boost', async (req, res) => {
     property.boosted = true;
     property.boostType = boostType;
     property.boostedAt = new Date().toISOString();
-    store.updateProperty(id, property);
+    await store.updateProperty(id, property);
 
     res.json({ 
       success: true, 
@@ -4026,7 +4155,7 @@ app.put('/api/properties/:id/unboost', async (req, res) => {
   try {
     const { id } = req.params;
 
-    const property = store.getPropertyById(id);
+    const property = await store.getPropertyById(id);
     if (!property) {
       return res.status(404).json({ success: false, message: 'Property not found.' });
     }
@@ -4036,7 +4165,7 @@ app.put('/api/properties/:id/unboost', async (req, res) => {
     property.boosted = false;
     property.boostType = null;
     property.boostedAt = null;
-    store.updateProperty(id, property);
+    await store.updateProperty(id, property);
 
     res.json({ 
       success: true, 
@@ -4054,16 +4183,51 @@ app.put('/api/properties/:id/unboost', async (req, res) => {
 app.get('/api/landlord/my-listings', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
-    const userPhone = req.user.phone;
+    const userPhone = req.user.phone || '';
 
-    const allProperties = await store.getAllProperties();
-    const myListings = allProperties.filter(p =>
-      (p.landlord && p.landlord.id === userId) ||
-      (p.landlord && p.landlord.phone === userPhone) ||
-      p.landlordPhone === userPhone ||
-      p.landlordId === userId ||
-      p.postedBy === userId
-    );
+    let myListings;
+    if (store.isConnected && store.query) {
+      const qRes = await store.query(`
+        SELECT p.*,
+               COALESCE(array_agg(pm.image_url) FILTER (WHERE pm.image_url IS NOT NULL), '{}') as photos
+        FROM properties p
+        LEFT JOIN property_media pm ON p.id = pm.property_id
+        WHERE p.landlord_id = $1 OR p.posted_by = $1 OR p.landlord_phone = $2
+        GROUP BY p.id
+        ORDER BY p.created_at DESC
+      `, [userId, userPhone]);
+      myListings = qRes.rows.map(row => {
+        const rentNum = parseFloat(row.rent_kes) || 0;
+        const depNum = parseFloat(row.deposit_kes) || 0;
+        const isVer = row.is_verified === true;
+        const photosArr = (row.photos && row.photos.length > 0) ? row.photos : (row.raw_data?.photos || []);
+        return {
+          ...row.raw_data,
+          id: row.id,
+          title: row.title,
+          rent: rentNum,
+          rentKes: rentNum,
+          deposit: depNum,
+          depositKes: depNum,
+          category: row.category,
+          estateSuburb: row.estate_suburb,
+          isVerified: isVer,
+          is_verified: isVer,
+          status: row.raw_data?.status || (isVer ? 'approved' : 'pending'),
+          photos: photosArr,
+          media: photosArr.map((url, idx) => ({ url, caption: `Photo ${idx + 1}` }))
+        };
+      });
+    } else {
+      const allProperties = await store.getAllProperties();
+      myListings = allProperties.filter(p =>
+        (p.landlord && p.landlord.id === userId) ||
+        (p.landlord && p.landlord.phone === userPhone) ||
+        p.landlordPhone === userPhone ||
+        p.landlordId === userId ||
+        p.postedBy === userId
+      );
+    }
 
     res.json({ 
       success: true, 
@@ -4188,10 +4352,31 @@ app.put('/api/landlord/availability/:id', requireAuth, async (req, res) => {
 app.get('/api/service/my-services', requireAuth, async (req, res) => {
   try {
     const userId = req.user.id;
-    const allListings = await store.getAllProperties();
-    const myServices = allListings.filter(listing =>
-      (listing.postedBy === userId || listing.landlordId === userId) && listing.listingType === 'service'
-    );
+    let myServices;
+    if (store.isConnected && store.query) {
+      const qRes = await store.query(`
+        SELECT p.*,
+               COALESCE(array_agg(pm.image_url) FILTER (WHERE pm.image_url IS NOT NULL), '{}') as photos
+        FROM properties p
+        LEFT JOIN property_media pm ON p.id = pm.property_id
+        WHERE (p.posted_by = $1 OR p.landlord_id = $1)
+          AND (p.raw_data->>'listingType' = 'service' OR p.category ILIKE '%service%')
+        GROUP BY p.id
+        ORDER BY p.created_at DESC
+      `, [userId]);
+      myServices = qRes.rows.map(row => ({
+        ...row.raw_data,
+        id: row.id,
+        title: row.title,
+        isVerified: row.is_verified === true,
+        photos: row.photos || []
+      }));
+    } else {
+      const allListings = await store.getAllProperties();
+      myServices = allListings.filter(listing =>
+        (listing.postedBy === userId || listing.landlordId === userId) && listing.listingType === 'service'
+      );
+    }
     res.json({ success: true, services: myServices, total: myServices.length });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -4302,7 +4487,7 @@ app.post('/api/service/boost-payment', requireAuth, async (req, res) => {
     }
 
     // Verify service exists and belongs to user
-    const service = store.getPropertyById(serviceId);
+    const service = await store.getPropertyById(serviceId);
     if (!service || service.postedBy !== user.id) {
       return res.status(404).json({ 
         success: false, 
@@ -4384,7 +4569,7 @@ app.get('/api/service/payment-status/:checkoutRequestId', requireAuth, async (re
 
     if (mpesaStatus.success && mpesaStatus.ResultCode === '0') {
       // Payment successful - boost the service
-      const service = store.getPropertyById(payment.serviceId);
+      const service = await store.getPropertyById(payment.serviceId);
       if (service) {
         service.isTopAd = true;
         service.boosted = true;
@@ -4392,7 +4577,7 @@ app.get('/api/service/payment-status/:checkoutRequestId', requireAuth, async (re
         service.boostedAt = new Date().toISOString();
         service.boostExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
         service.boostAnalytics = { views: 0, clicks: 0, inquiries: 0 }; // Initialize analytics
-        store.updateProperty(payment.serviceId, service);
+        await store.updateProperty(payment.serviceId, service);
 
         // Update payment status
         payment.status = 'completed';
@@ -4470,21 +4655,21 @@ app.post('/api/properties/:id/track-click', (req, res) => {
 });
 
 // PUT /api/service/availability/:id (Toggle service availability)
-app.put('/api/service/availability/:id', requireAuth, (req, res) => {
+app.put('/api/service/availability/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { isAvailable } = req.body;
     const userId = req.user.id;
 
     // Get service
-    const service = store.getPropertyById(id);
+    const service = await store.getPropertyById(id);
     if (!service || service.postedBy !== userId) {
       return res.status(404).json({ success: false, message: 'Service not found or unauthorized.' });
     }
 
     // Update availability
     service.isAvailable = isAvailable;
-    store.updateProperty(id, service);
+    await store.updateProperty(id, service);
 
     res.json({ 
       success: true, 
@@ -5408,10 +5593,33 @@ app.use((req, res) => {
 setInterval(async () => {
   try {
     console.log('[CRON] Checking for expired boosts...');
+    if (store.isConnected && store.query) {
+      const result = await store.query(`
+        UPDATE properties
+        SET is_top_ad = false,
+            raw_data = jsonb_set(
+              jsonb_set(
+                jsonb_set(raw_data, '{boosted}', 'false'),
+                '{isTopAd}', 'false'
+              ),
+              '{boostType}', 'null'
+            )
+        WHERE (raw_data->>'boosted')::boolean = true
+          AND raw_data->>'boostExpiresAt' IS NOT NULL
+          AND (raw_data->>'boostExpiresAt')::timestamptz < NOW()
+        RETURNING id
+      `);
+      if (result.rowCount > 0) {
+        console.log(`[CRON] Removed ${result.rowCount} expired boost(s) via DB query`);
+      }
+      return;
+    }
+
     const properties = await store.getAllProperties();
     let expiredCount = 0;
 
-    properties.forEach(property => {
+    if (!Array.isArray(properties)) return;
+    for (const property of properties) {
       if (property.boosted && property.boostExpiresAt) {
         const expiryDate = new Date(property.boostExpiresAt);
         const now = new Date();
@@ -5423,13 +5631,13 @@ setInterval(async () => {
           property.boostType = null;
           property.boostedAt = null;
           property.boostExpiresAt = null;
-          store.updateProperty(property.id, property);
+          await store.updateProperty(property.id, property);
           expiredCount++;
 
           console.log(`[CRON] Expired boost removed: ${property.id}`);
         }
       }
-    });
+    }
 
     if (expiredCount > 0) {
       console.log(`[CRON] Removed ${expiredCount} expired boost(s)`);
@@ -5443,35 +5651,47 @@ setInterval(async () => {
 setInterval(async () => {
   try {
     console.log('[CRON] Checking for boost renewal reminders...');
-    const properties = await store.getAllProperties();
-    const users = await store.getAllUsers();
     const now = new Date();
     const threeDaysFromNow = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
 
-    for (const property of properties) {
-      if (property.boosted && property.boostExpiresAt) {
-        const expiryDate = new Date(property.boostExpiresAt);
+    let boostedList = [];
+    if (store.isConnected && store.query) {
+      const qRes = await store.query(`
+        SELECT id, title, posted_by, raw_data
+        FROM properties
+        WHERE (raw_data->>'boosted')::boolean = true
+          AND raw_data->>'boostExpiresAt' IS NOT NULL
+          AND (raw_data->>'boostExpiresAt')::timestamptz > NOW()
+          AND (raw_data->>'boostExpiresAt')::timestamptz <= NOW() + INTERVAL '3 days'
+      `);
+      boostedList = qRes.rows.map(r => ({
+        ...r.raw_data,
+        id: r.id,
+        title: r.title,
+        postedBy: r.posted_by || r.raw_data?.postedBy
+      }));
+    } else {
+      const all = await store.getAllProperties();
+      boostedList = (all || []).filter(p => p.boosted && p.boostExpiresAt);
+    }
 
-        // Check if expiry is within 3 days
+    for (const property of boostedList) {
+      if (property.boostExpiresAt) {
+        const expiryDate = new Date(property.boostExpiresAt);
         if (expiryDate > now && expiryDate <= threeDaysFromNow) {
-          // Check if we already sent reminder
           const reminderKey = `reminder_sent_${property.id}`;
           if (!property[reminderKey]) {
-            // Find owner
-            const owner = users.find(u => u.id === property.postedBy);
+            const ownerId = property.postedBy || property.landlordId || property.userId;
+            const owner = ownerId ? await store.getUserById(ownerId) : null;
             if (owner && owner.phone) {
               const daysLeft = Math.ceil((expiryDate - now) / (24 * 60 * 60 * 1000));
-              
               try {
                 await sendSMS(
                   owner.phone,
                   `KejaMarket: Your boost for "${property.title || property.businessName}" expires in ${daysLeft} days. Renew now to maintain top visibility! Reply YES to renew.`
                 );
-
-                // Mark reminder as sent
                 property[reminderKey] = true;
-                store.updateProperty(property.id, property);
-
+                await store.updateProperty(property.id, property);
                 console.log(`[CRON] Renewal reminder sent to ${owner.phone}`);
               } catch (err) {
                 console.error(`[CRON] Failed to send renewal reminder:`, err);
@@ -5487,30 +5707,30 @@ setInterval(async () => {
 }, 12 * 60 * 60 * 1000); // Run every 12 hours
 
 // Track boost analytics (views/clicks) - Increment on property view
-function trackBoostView(propertyId) {
+async function trackBoostView(propertyId) {
   try {
-    const property = store.getPropertyById(propertyId);
+    const property = await store.getPropertyById(propertyId);
     if (property && property.boosted) {
       if (!property.boostAnalytics) {
         property.boostAnalytics = { views: 0, clicks: 0, inquiries: 0 };
       }
       property.boostAnalytics.views++;
-      store.updateProperty(propertyId, property);
+      await store.updateProperty(propertyId, property);
     }
   } catch (err) {
     console.error('Analytics tracking error:', err);
   }
 }
 
-function trackBoostClick(propertyId) {
+async function trackBoostClick(propertyId) {
   try {
-    const property = store.getPropertyById(propertyId);
+    const property = await store.getPropertyById(propertyId);
     if (property && property.boosted) {
       if (!property.boostAnalytics) {
         property.boostAnalytics = { views: 0, clicks: 0, inquiries: 0 };
       }
       property.boostAnalytics.clicks++;
-      store.updateProperty(propertyId, property);
+      await store.updateProperty(propertyId, property);
     }
   } catch (err) {
     console.error('Analytics tracking error:', err);

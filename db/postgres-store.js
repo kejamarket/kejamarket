@@ -73,9 +73,9 @@ class PostgreSQLStore {
 
       const config = {
         connectionString: dbUrl,
-        ssl: { rejectUnauthorized: false },
-        max: 25, // Optimized for 10,000+ concurrent users with connection pooler
-        idleTimeoutMillis: 30000,
+        max: 5,  // Optimized for Render 512MB RAM tier (each connection uses 5-8MB)
+        min: 1,  // Keep 1 connection warm
+        idleTimeoutMillis: 15000, // Reclaim idle connection memory faster
         connectionTimeoutMillis: 5000,
         statement_timeout: 10000, // Prevent slow queries from hanging connections
       };

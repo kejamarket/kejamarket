@@ -7,11 +7,28 @@
 'use strict';
 
 class FastCache {
-  constructor(maxEntries = 5000) {
+  constructor(maxEntries = 250) {
     this.cache = new Map();
     this.maxEntries = maxEntries;
     this.hits = 0;
     this.misses = 0;
+
+    // Periodic sweep every 60 seconds to evict expired keys and free memory
+    this.cleanupTimer = setInterval(() => {
+      this.purgeExpired();
+    }, 60000);
+    if (this.cleanupTimer.unref) {
+      this.cleanupTimer.unref();
+    }
+  }
+
+  purgeExpired() {
+    const now = Date.now();
+    for (const [key, entry] of this.cache.entries()) {
+      if (now > entry.expiresAt) {
+        this.cache.delete(key);
+      }
+    }
   }
 
   get(key) {
@@ -32,6 +49,14 @@ class FastCache {
   }
 
   set(key, value, ttlSeconds = 15) {
+    // Avoid caching huge objects (> 64KB) that balloon memory
+    try {
+      const approxSize = JSON.stringify(value).length;
+      if (approxSize > 65536) return;
+    } catch (_) {
+      return;
+    }
+
     // Keep memory bounded with LRU-style eviction if maxEntries is reached
     if (this.cache.size >= this.maxEntries) {
       const oldestKey = this.cache.keys().next().value;
