@@ -2,12 +2,13 @@
  * CRITICAL DESKTOP LAYOUT ENFORCER
  * Aggressively forces desktop layout exactly like reference image
  * Overrides any mobile CSS or JS that tries to change layout
+ * VERSION: 3.1 - CACHE BUSTER - Updated 2026-09-08
  */
 
 (function() {
   'use strict';
 
-  console.log('🚀 CRITICAL Desktop Layout Enforcer Loading...');
+  console.log('🚀 CRITICAL Desktop Layout Enforcer v3.1 Loading...');
 
   // Critical CSS injection for maximum specificity
   function injectCriticalCSS() {

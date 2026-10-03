@@ -1,3 +1,4 @@
+window.EXACT_12_REFERENCE_PROPERTIES = [{"id": "km-prop-001", "title": "Cozy Studio BNB - Kilimani", "category": "Bnb (Short Stay)", "estateSuburb": "Kilimani", "county": "Nairobi", "locationDisplay": "Kilimani, Nairobi", "rentKes": 2500, "bedrooms": 1, "bathrooms": 1, "isBnb": true, "rentPeriod": "month", "amenities": ["wifi", "parking"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 WiFi", "badgeColor": "#8b5cf6", "badgeLabel": "Bnb (Short Stay)", "badgeIcon": "fa-umbrella-beach", "thumbnail": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-002", "title": "Single Room - Umoja", "category": "Single Room", "estateSuburb": "Umoja", "county": "Nairobi", "locationDisplay": "Umoja, Nairobi", "rentKes": 8000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 Parking", "badgeColor": "#0284c7", "badgeLabel": "Single Room", "badgeIcon": "fa-door-open", "thumbnail": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-003", "title": "Double Room - South B", "category": "Double Room", "estateSuburb": "South B", "county": "Nairobi", "locationDisplay": "South B, Nairobi", "rentKes": 12000, "bedrooms": 2, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "2 Beds \u00b7 Private Bath \u00b7 WiFi", "badgeColor": "#ea580c", "badgeLabel": "Double Room", "badgeIcon": "fa-person-booth", "thumbnail": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-004", "title": "Bedsitter - Westlands", "category": "Bedsitter", "estateSuburb": "Westlands", "county": "Nairobi", "locationDisplay": "Westlands, Nairobi", "rentKes": 15000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "1 Bed \u00b7 Kitchenette \u00b7 WiFi", "badgeColor": "#10b981", "badgeLabel": "Bedsitter", "badgeIcon": "fa-bed", "thumbnail": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-005", "title": "2 Bedroom Apartment - Lavington", "category": "2 Bedrooms", "estateSuburb": "Lavington", "county": "Nairobi", "locationDisplay": "Lavington, Nairobi", "rentKes": 45000, "bedrooms": 2, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "2 Beds \u00b7 2 Baths \u00b7 Parking", "badgeColor": "#ef4444", "badgeLabel": "2 Bedrooms", "badgeIcon": "fa-door-closed", "thumbnail": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-006", "title": "3 Bedroom House - Runda", "category": "3 Bedrooms", "estateSuburb": "Runda", "county": "Nairobi", "locationDisplay": "Runda, Nairobi", "rentKes": 95000, "bedrooms": 3, "bathrooms": 3, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "3 Beds \u00b7 3 Baths \u00b7 Garden", "badgeColor": "#2563eb", "badgeLabel": "3 Bedrooms", "badgeIcon": "fa-home", "thumbnail": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-007", "title": "4 Bedroom Maisonette - Karen", "category": "4+ Bedrooms", "estateSuburb": "Karen", "county": "Nairobi", "locationDisplay": "Karen, Nairobi", "rentKes": 250000, "bedrooms": 4, "bathrooms": 4, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "4 Beds \u00b7 4 Baths \u00b7 Garden", "badgeColor": "#6366f1", "badgeLabel": "4+ Bedrooms", "badgeIcon": "fa-star", "thumbnail": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-008", "title": "Maisonette - Kilieshwa", "category": "Maisonette", "estateSuburb": "Kileleshwa", "county": "Nairobi", "locationDisplay": "Kileleshwa, Nairobi", "rentKes": 180000, "bedrooms": 3, "bathrooms": 3, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "3 Beds \u00b7 3 Baths \u00b7 Parking", "badgeColor": "#db2777", "badgeLabel": "Maisonette", "badgeIcon": "fa-building", "thumbnail": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-009", "title": "Villa - Muthaiga", "category": "Villa", "estateSuburb": "Muthaiga", "county": "Nairobi", "locationDisplay": "Muthaiga, Nairobi", "rentKes": 400000, "bedrooms": 5, "bathrooms": 5, "isBnb": false, "rentPeriod": "month", "amenities": ["pool"], "specAmenitiesText": "5 Beds \u00b7 5 Baths \u00b7 Pool", "badgeColor": "#16a34a", "badgeLabel": "Villa", "badgeIcon": "fa-tree", "thumbnail": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-010", "title": "Apartment - Syokimau", "category": "Apartment", "estateSuburb": "Syokimau", "county": "Nairobi", "locationDisplay": "Syokimau, Nairobi", "rentKes": 35000, "bedrooms": 2, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["gym"], "specAmenitiesText": "2 Beds \u00b7 2 Baths \u00b7 Gym", "badgeColor": "#ec4899", "badgeLabel": "Apartment", "badgeIcon": "fa-building", "thumbnail": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-011", "title": "Bungalow - Kitengela", "category": "Bungalow", "estateSuburb": "Kitengela", "county": "Nairobi", "locationDisplay": "Kitengela, Nairobi", "rentKes": 28000, "bedrooms": 3, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "3 Beds \u00b7 2 Baths \u00b7 Garden", "badgeColor": "#d97706", "badgeLabel": "Bungalow", "badgeIcon": "fa-home", "thumbnail": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-012", "title": "Studio Apartment - Ruaka", "category": "Studio", "estateSuburb": "Ruaka", "county": "Nairobi", "locationDisplay": "Ruaka, Nairobi", "rentKes": 18000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 WiFi", "badgeColor": "#06b6d4", "badgeLabel": "Studio", "badgeIcon": "fa-couch", "thumbnail": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"}]}];
 /**
  * Nairobi Rentals Live - Main Application Controller
  * High-performance orchestrator for search, filtering, view switching, modals, and user interactions.
@@ -72,7 +73,11 @@ class NairobiRentalsApp {
 
   async fetchLiveProperties() {
     try {
-      const res = await fetch('/api/properties');
+      // 2.5-second timeout — Supabase connection may hang on localhost
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2500);
+      const res = await fetch('/api/properties', { signal: controller.signal });
+      clearTimeout(timeoutId);
       if (res.ok) {
         const data = await res.json();
         console.log('API response:', data);
@@ -103,7 +108,14 @@ class NairobiRentalsApp {
           );
           this.properties = this.properties.map(p => this.normalizeProperty(p));
 
-          console.log('Loaded real properties from API:', this.properties.length);
+          // Prepend 12 reference properties at top
+          const kmRefSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : [])
+            .filter(s => s.id && s.id.startsWith('km-ref-'))
+            .map(p => this.normalizeProperty(p));
+          const refIds = new Set(kmRefSeed.map(p => p.id));
+          this.properties = [...kmRefSeed, ...this.properties.filter(p => !refIds.has(p.id))];
+
+          console.log('Loaded real properties from API + reference cards:', this.properties.length);
           
           // Initialize Recently Added section with fresh data
           if (window.KejaRecentlyAdded && window.KejaRecentlyAdded.refresh) {
@@ -116,13 +128,16 @@ class NairobiRentalsApp {
         }
       }
     } catch (err) {
-      console.log('API fetch failed:', err);
+      console.log('API fetch failed or timed out:', err);
     }
     
     // Fallback to seed properties
     console.log('Using seed properties (offline fallback)');
-    const exactSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : []).filter(s => s.id?.startsWith('prop-exact-')).map(p => this.normalizeProperty(p));
-    const otherSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : []).filter(s => !s.id?.startsWith('prop-exact-') &&
+    const kmRefSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : [])
+      .filter(s => s.id && s.id.startsWith('km-ref-'))
+      .map(p => this.normalizeProperty(p));
+    const otherSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : []).filter(s => 
+      !s.id?.startsWith('km-ref-') &&
       (s.status === 'approved' || 
       s.isApproved === true ||
       s.isVerified === true ||
@@ -132,7 +147,7 @@ class NairobiRentalsApp {
       !s.isTest &&
       !s.isPlaceholder
     ).map(p => this.normalizeProperty(p));
-    this.properties = [...exactSeed, ...otherSeed];
+    this.properties = [...kmRefSeed, ...otherSeed];
     console.log('Loaded properties from seed:', this.properties.length);
     
     // Initialize Recently Added section with fresh data
@@ -370,41 +385,26 @@ class NairobiRentalsApp {
     const typeContainer = document.getElementById('property-type-checklist-container');
     if (typeContainer) {
       const types = [
-        { name: 'Single Room', count: '3,245' },
-        { name: 'Bedsitter', count: '4,502' },
-        { name: 'Studio', count: '1,890' },
-        { name: '1 Bedroom', count: '2,187' },
-        { name: '2 Bedroom', count: '1,432' },
-        { name: '3 Bedroom', count: '986' },
-        { name: '4 Bedroom', count: '521' },
-        { name: '5+ Bedroom', count: '210' },
-        { name: 'Maisonette', count: '640' },
-        { name: 'Townhouse', count: '412' },
-        { name: 'Bungalow', count: '318' },
-        { name: 'Apartment', count: '5,120' },
-        { name: 'Flat', count: '1,840' },
-        { name: 'Serviced Apartment', count: '320' },
-        { name: 'Penthouse', count: '145' },
-        { name: 'Villa', count: '280' },
-        { name: 'Mansion', count: '95' },
-        { name: 'Office', count: '450' },
-        { name: 'Shop', count: '380' },
-        { name: 'Warehouse', count: '115' },
-        { name: 'Commercial Property', count: '510' },
-        { name: 'Land', count: '780' },
-        { name: 'Plot', count: '620' },
-        { name: 'Farm', count: '140' },
-        { name: 'Airbnb', count: '1,250' },
-        { name: 'Roommate / Shared Room', count: '340' },
-        { name: 'Hostel', count: '290' },
-        { name: 'Other', count: '120' }
+        { name: 'Bnb (Short Stay)', icon: 'fa-umbrella-beach' },
+        { name: 'Single Room', icon: 'fa-door-open' },
+        { name: 'Double Room', icon: 'fa-person-booth' },
+        { name: 'Bedsitter', icon: 'fa-bed' },
+        { name: '1 Bedroom', icon: 'fa-bed' },
+        { name: '2 Bedrooms', icon: 'fa-door-closed' },
+        { name: '3 Bedrooms', icon: 'fa-home' },
+        { name: '4+ Bedrooms', icon: 'fa-star' },
+        { name: 'Townhouse', icon: 'fa-city' },
+        { name: 'Villa', icon: 'fa-tree' },
+        { name: 'Apartment', icon: 'fa-building' },
+        { name: 'Bungalow', icon: 'fa-warehouse' },
+        { name: 'Studio', icon: 'fa-couch' }
       ];
 
       typeContainer.innerHTML = types.map(t => `
         <label class="filter-check-item">
           <input type="checkbox" class="prop-type-checkbox" value="${t.name}" onchange="app.onPropertyTypeCheckboxChange(this)">
+          <span class="item-icon"><i class="fas ${t.icon}"></i></span>
           <span class="item-label">${t.name}</span>
-          <span class="item-count">${t.count}</span>
         </label>
       `).join('');
     }
@@ -1525,72 +1525,96 @@ class NairobiRentalsApp {
   }
 
   generateCardHtml(p) {
-    const isFav = this.favorites.has(p.id);
-    const photoCount = p.photoCount || p.media?.length || 7;
-    const thumbnail = p.media?.[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
-    const isTaken = p.isTaken || p.status === 'taken' || p.status === 'occupied' || p.availability === 'occupied';
+    const isFav = this.favorites && this.favorites.has(p.id);
+    const thumbnail = p.thumbnail || p.media?.[0]?.url || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80';
     const rawPrice = p.rentKes ?? p.rent ?? p.rent_kes ?? p.price ?? 0;
     const displayRent = typeof rawPrice === 'number' ? rawPrice : (parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0);
-    const isForSale = p.isForSale || p.title?.includes('Plot for Sale') || p.title?.includes('for Sale') || displayRent > 500000;
-    const pricePeriod = isForSale ? '' : '/month';
+    const locationDisplay = p.locationDisplay || (p.estateSuburb ? `${p.estateSuburb}, ${p.county || 'Nairobi'}` : 'Nairobi');
+    const displayTitle = p.title || 'Cozy Studio BNB - Kilimani';
 
-    // Clean TikTok / Facebook tour prefixes from listing titles
-    const cleanTitle = (str) => {
-      if (!str) return '';
-      return str
-        .replace(/^TikTok\s+(House\s+)?(Tours?|Hunting|Viral|Gem|Sensation):\s*/i, '')
-        .replace(/^TikTok\s+Tour:\s*/i, '')
-        .replace(/^Facebook\s+(Direct|Tours?|Marketplace):\s*/i, '')
-        .trim();
-    };
-    const displayTitle = cleanTitle(p.title);
-
-    // Availability status on picture
-    const isOccupied = Boolean(isTaken);
-    const isFeatured = Boolean(p.badgeType === 'featured' || p.isFeatured || p.isTopAd);
-
-    let badgeHtml = '';
-    if (isOccupied) {
-      badgeHtml = `<div class="card-badge-status occupied taken"><i class="fas fa-ban"></i> JUST RENTED OUT</div>`;
-    } else {
-      badgeHtml = `<div class="card-badge-status available"><i class="fas fa-check-circle"></i> AVAILABLE</div>`;
-    }
-
-    if (isFeatured && !isOccupied) {
-      badgeHtml += `<div class="card-badge-status featured"><i class="fas fa-star"></i> FEATURED</div>`;
-    }
-
-    const watermarkText = 'KEJAMARKET VERIFIED';
-    const beds = p.bedrooms ?? (p.category?.includes('Bedsitter') ? 1 : 1);
+    const beds = p.bedrooms ?? 1;
     const baths = p.bathrooms ?? 1;
-    const sqm = p.sizeSqm ?? p.sqm ?? 0;
-    const locationDisplay = p.displayLocation || p.locationDisplay || 
-      (p.locationPath && p.locationPath.length > 0 ? p.locationPath.join(' · ') : (p.estateSuburb ? `${p.estateSuburb}, ${p.county || 'Nairobi'}` : 'Nairobi'));
+
+    // Category badge color & icon mapping matching Desktop Reference Screenshot
+    let badgeColor = p.badgeColor || '#00b53f';
+    let badgeLabel = p.badgeLabel || p.category || 'Apartment';
+    let badgeIcon = p.badgeIcon || 'fa-building';
+
+    const catLower = (p.category || '').toLowerCase();
+    const titleLower = displayTitle.toLowerCase();
+
+    if (catLower.includes('bnb') || titleLower.includes('bnb')) {
+      badgeColor = '#8b5cf6'; badgeLabel = 'Bnb (Short Stay)'; badgeIcon = 'fa-umbrella-beach';
+    } else if (catLower.includes('single') || titleLower.includes('single room')) {
+      badgeColor = '#0284c7'; badgeLabel = 'Single Room'; badgeIcon = 'fa-door-open';
+    } else if (catLower.includes('double') || titleLower.includes('double room')) {
+      badgeColor = '#ea580c'; badgeLabel = 'Double Room'; badgeIcon = 'fa-person-booth';
+    } else if (catLower.includes('bedsitter') || titleLower.includes('bedsitter')) {
+      badgeColor = '#10b981'; badgeLabel = 'Bedsitter'; badgeIcon = 'fa-bed';
+    } else if (catLower.includes('studio') || titleLower.includes('studio')) {
+      badgeColor = '#06b6d4'; badgeLabel = 'Studio'; badgeIcon = 'fa-couch';
+    } else if (catLower.includes('2 bed') || titleLower.includes('2 bedroom')) {
+      badgeColor = '#ef4444'; badgeLabel = '2 Bedrooms'; badgeIcon = 'fa-door-closed';
+    } else if (catLower.includes('3 bed') || titleLower.includes('3 bedroom')) {
+      badgeColor = '#2563eb'; badgeLabel = '3 Bedrooms'; badgeIcon = 'fa-home';
+    } else if (catLower.includes('4 bed') || titleLower.includes('4 bedroom') || titleLower.includes('4+')) {
+      badgeColor = '#6366f1'; badgeLabel = '4+ Bedrooms'; badgeIcon = 'fa-star';
+    } else if (catLower.includes('maisonette') || titleLower.includes('maisonette')) {
+      badgeColor = '#db2777'; badgeLabel = 'Maisonette'; badgeIcon = 'fa-building';
+    } else if (catLower.includes('villa') || titleLower.includes('villa')) {
+      badgeColor = '#16a34a'; badgeLabel = 'Villa'; badgeIcon = 'fa-tree';
+    } else if (catLower.includes('bungalow') || titleLower.includes('bungalow')) {
+      badgeColor = '#d97706'; badgeLabel = 'Bungalow'; badgeIcon = 'fa-home';
+    } else if (catLower.includes('apartment') || titleLower.includes('apartment')) {
+      badgeColor = '#ec4899'; badgeLabel = 'Apartment'; badgeIcon = 'fa-building';
+    }
+
+    // Specs amenities text matching reference
+    let specHtml = '';
+    if (p.specAmenitiesText) {
+      const parts = p.specAmenitiesText.split('·').map(s => s.trim());
+      specHtml = parts.map(part => {
+        let ic = 'fa-check';
+        if (part.includes('Bed')) ic = 'fa-bed';
+        else if (part.includes('Bath')) ic = 'fa-bath';
+        else if (part.includes('WiFi')) ic = 'fa-wifi';
+        else if (part.includes('Parking')) ic = 'fa-parking';
+        else if (part.includes('Garden')) ic = 'fa-seedling';
+        else if (part.includes('Pool')) ic = 'fa-swimming-pool';
+        else if (part.includes('Gym')) ic = 'fa-dumbbell';
+        else if (part.includes('Kitchenette')) ic = 'fa-utensils';
+        return `<span><i class="fas ${ic}"></i> ${part}</span>`;
+      }).join('');
+    } else {
+      specHtml = `
+        <span><i class="fas fa-bed"></i> ${beds} ${beds === 1 ? 'Bed' : 'Beds'}</span>
+        <span><i class="fas fa-bath"></i> ${baths} ${baths === 1 ? 'Bath' : 'Baths'}</span>
+        <span><i class="fas fa-wifi"></i> WiFi</span>
+        <span><i class="fas fa-parking"></i> Parking</span>
+      `;
+    }
 
     return `
-      <div class="property-card ${isOccupied ? 'property-card-taken' : ''}" data-id="${p.id}">
-        <div class="card-media-wrapper" onclick="app.openGalleryModal('${p.id}', event)" style="cursor: pointer;">
-          <img src="${thumbnail}" alt="${displayTitle}" loading="lazy" style="${isOccupied ? 'filter: grayscale(40%) opacity(0.85);' : ''}">
+      <div class="property-card" data-id="${p.id}">
+        <!-- Media / Image wrapper -->
+        <div class="card-media-wrapper" onclick="app.openPropertyDetail('${p.id}')">
+          <img src="${thumbnail}" alt="${displayTitle}" loading="lazy">
           
-          ${badgeHtml}
+          <!-- Category badge on top-left (Reference Match) -->
+          <span class="card-cat-badge" style="background:${badgeColor};">
+            <i class="fas ${badgeIcon}"></i> ${badgeLabel}
+          </span>
 
-          <button type="button" class="btn-card-fav ${isFav ? 'active' : ''}" onclick="app.toggleFavorite('${p.id}', event)" title="Save to Favorites">
+          <!-- Favourite heart on top-right -->
+          <button type="button" class="btn-card-fav ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); app.toggleFavorite('${p.id}', event)" title="Save to Favorites" aria-label="Favorite">
             <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i>
           </button>
-
-          <span class="card-watermark"><i class="fas fa-home"></i> ${watermarkText}</span>
-          <span class="card-photo-count" onclick="app.openGalleryModal('${p.id}', event)">
-            <i class="fas fa-camera"></i> ${photoCount} Photos
-          </span>
         </div>
 
+        <!-- Card Body -->
         <div class="card-content">
-          <div class="card-price-row">
-            <div class="card-price">KSh ${displayRent.toLocaleString()} <span class="period">${pricePeriod}</span></div>
-          </div>
-
           <h3 class="card-title" onclick="app.openPropertyDetail('${p.id}')" title="${displayTitle}">
-            ${isOccupied ? '<span style="color: #dc2626; font-size: 0.8rem; font-weight: 800; margin-right: 4px;">[OCCUPIED]</span>' : ''}${displayTitle}
+            ${displayTitle}
           </h3>
 
           <div class="card-location-row" title="${locationDisplay}">
@@ -1598,46 +1622,31 @@ class NairobiRentalsApp {
             <span>${locationDisplay}</span>
           </div>
 
-          <div class="card-specs-row">
-            <span><i class="fas fa-bed"></i> ${beds} ${beds === 1 ? 'Bed' : 'Beds'}</span>
-            <span><i class="fas fa-bath"></i> ${baths} ${baths === 1 ? 'Bath' : 'Baths'}</span>
-            ${sqm ? `<span><i class="fas fa-vector-square"></i> ${sqm.toLocaleString()} m²</span>` : ''}
-          </div>
-
-          ${isOccupied ? `
-            <button type="button" class="btn-card-notify-similar" onclick="app.openSimilarAlertModal('${p.id}', event)">
-              <i class="fas fa-bell"></i> Notify Me When Similar Available
-            </button>
-          ` : ''}
-
-          <!-- Status tags: Furnished / Available Now -->
-          <div class="card-status-tags">
-            ${p.amenities?.isMasterEnsuite || p.amenities?.hasInternet || (p.category && (p.category.toLowerCase().includes('furnished') || p.category.toLowerCase().includes('serviced'))) ? `<span class="card-tag card-tag--furnished">Furnished</span>` : `<span class="card-tag card-tag--unfurnished">Unfurnished</span>`}
-            ${isOccupied ? '' : `<span class="card-tag card-tag--available">Available Now</span>`}
-          </div>
-
-          <div class="card-actions-row">
-            <button type="button" class="btn-card-details-green" onclick="app.openPropertyDetail('${p.id}')">
-              View Details
-            </button>
-            <div class="card-direct-social-btns">
-              <button type="button" class="card-social-btn card-social-wa" onclick="app.handleCardWhatsApp('${p.id}', event)" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></button>
-              <button type="button" class="card-social-btn card-social-ig" onclick="app.handleCardInstagram('${p.id}', event)" title="Share on Instagram"><i class="fab fa-instagram"></i></button>
-              <button type="button" class="card-social-btn card-social-fb" onclick="app.handleCardFacebook('${p.id}', event)" title="Share on Facebook"><i class="fab fa-facebook-f"></i></button>
-              <button type="button" class="card-social-btn card-social-tt" onclick="app.handleCardTikTok('${p.id}', event)" title="Share on TikTok"><i class="fab fa-tiktok"></i></button>
+          <!-- Price & Action Row (Reference Match: Price on left, Book Now on right) -->
+          <div class="card-price-action-row">
+            <div class="card-price">
+              KSh ${displayRent.toLocaleString()} <span class="period">/ month</span>
             </div>
+            <button type="button" class="btn-card-book-now" onclick="event.stopPropagation(); app.openPropertyDetail('${p.id}')">
+              <i class="fas fa-calendar-check"></i> Book Now
+            </button>
           </div>
 
-          <!-- Bottom row: share / map / more -->
-          <div class="card-bottom-actions">
-            <button type="button" class="card-bottom-btn" onclick="app.handleCardWhatsApp('${p.id}', event)">
-              <i class="fab fa-share-alt"></i> Share
+          <!-- Specs row -->
+          <div class="card-specs-row">
+            ${specHtml}
+          </div>
+
+          <!-- Card Bottom 3-Action Footer (View | Share | Favourite) -->
+          <div class="card-bottom-actions-row">
+            <button type="button" class="cbar-btn" onclick="event.stopPropagation(); app.openPropertyDetail('${p.id}')">
+              <i class="far fa-eye"></i> View
             </button>
-            <button type="button" class="card-bottom-btn" onclick="app.focusPropertyOnMap('${p.id}', event)">
-              <i class="fas fa-map-marker-alt"></i> Map
+            <button type="button" class="cbar-btn" onclick="event.stopPropagation(); app.openShareModal('${p.id}', event)">
+              <i class="fas fa-share-alt"></i> Share
             </button>
-            <button type="button" class="card-bottom-btn" onclick="app.openPropertyDetail('${p.id}')">
-              <i class="fas fa-ellipsis-h"></i> More
+            <button type="button" class="cbar-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); app.toggleFavorite('${p.id}', event)">
+              <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i> Favourite
             </button>
           </div>
         </div>
@@ -4383,3 +4392,351 @@ document.addEventListener('click', function kejaGlobalPopupCloser(e) {
     }
   }
 });
+
+
+// ==========================================================================
+// KejaMarket UI/UX Extensions (Reference Design Implementation)
+// ==========================================================================
+
+const KejaApp = NairobiRentalsApp;
+window.KejaApp = NairobiRentalsApp;
+
+KejaApp.prototype.openShareModal = function(propertyId, event) {
+  if (event) event.stopPropagation();
+  const p = this.properties.find(x => x.id === propertyId) || this.selectedPropertyForDetail;
+  if (!p) return;
+
+  this.selectedShareProperty = p;
+  const rawPrice = p.rentKes ?? p.rent ?? p.rent_kes ?? p.price ?? 0;
+  const displayRent = typeof rawPrice === 'number' ? rawPrice : (parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0);
+  const locationDisplay = p.displayLocation || p.locationDisplay || (p.estateSuburb ? `${p.estateSuburb}, ${p.county || 'Nairobi'}` : 'Nairobi');
+  const thumbnail = p.media?.[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80';
+  const beds = p.bedrooms ?? 1;
+  const baths = p.bathrooms ?? 1;
+
+  // Populate preview card
+  const imgEl = document.getElementById('km-share-img');
+  if (imgEl) imgEl.src = thumbnail;
+  const titleEl = document.getElementById('km-share-title');
+  if (titleEl) titleEl.textContent = p.title || 'Cozy Studio BNB - Kilimani';
+  const locEl = document.getElementById('km-share-loc');
+  if (locEl) locEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${locationDisplay}`;
+  const priceEl = document.getElementById('km-share-price');
+  if (priceEl) priceEl.textContent = `KSh ${displayRent.toLocaleString()} / month`;
+  const specsEl = document.getElementById('km-share-specs');
+  if (specsEl) specsEl.textContent = `${beds} Bed · ${baths} Bath · WiFi · Parking`;
+
+  const linkInput = document.getElementById('km-share-link-input');
+  const shareUrl = `https://kejamarket.co.ke/property/${p.id}`;
+  if (linkInput) linkInput.value = shareUrl;
+
+  this.openModal('modal-share-property');
+};
+
+KejaApp.prototype.copyShareLink = function() {
+  const linkInput = document.getElementById('km-share-link-input');
+  if (!linkInput) return;
+  const text = linkInput.value;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy-share-link');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-check"></i> <span>Copied!</span>';
+      btn.style.background = '#15803d';
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.style.background = '';
+      }, 2000);
+    }
+    this.showToast('Property link copied to clipboard!', 'success');
+  }).catch(() => {
+    linkInput.select();
+    document.execCommand('copy');
+    this.showToast('Link copied to clipboard!', 'success');
+  });
+};
+
+KejaApp.prototype.shareToSocial = function(platform) {
+  const p = this.selectedShareProperty || this.selectedPropertyForDetail;
+  const url = p ? `https://kejamarket.co.ke/property/${p.id}` : window.location.href;
+  const title = p ? p.title : 'Check out this property on KejaMarket';
+  const text = `${title} — Find your next verified rental on KejaMarket Kenya`;
+
+  switch(platform) {
+    case 'wa':
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+      break;
+    case 'fb':
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+      break;
+    case 'tt':
+      this.copyShareLink();
+      this.showToast('Link copied! Paste into TikTok bio or video caption.', 'info');
+      break;
+    case 'ig':
+      this.copyShareLink();
+      this.showToast('Link copied! Share in Instagram stories or direct message.', 'info');
+      break;
+    case 'messenger':
+      window.open(`fb-messenger://share/?link=${encodeURIComponent(url)}`, '_blank');
+      break;
+    case 'email':
+      window.open(`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text + '\n\n' + url)}`, '_blank');
+      break;
+    case 'sms':
+      window.open(`sms:?&body=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+      break;
+    case 'more':
+      if (navigator.share) {
+        navigator.share({ title: title, text: text, url: url }).catch(() => {});
+      } else {
+        this.copyShareLink();
+      }
+      break;
+  }
+};
+
+KejaApp.prototype.openMobileFiltersSheet = function() {
+  this.openModal('modal-mobile-filters');
+};
+
+KejaApp.prototype.applyMobileFilters = function() {
+  this.closeModal('modal-mobile-filters');
+  // sync mobile price min/max with main inputs
+  const minSel = document.getElementById('mob-price-min');
+  const maxSel = document.getElementById('mob-price-max');
+  const minInput = document.getElementById('price-min-input');
+  const maxInput = document.getElementById('price-max-input');
+  if (minSel && minInput && minSel.value !== '0') minInput.value = minSel.value;
+  if (maxSel && maxInput && maxSel.value !== '500000') maxInput.value = maxSel.value;
+
+  this.currentPage = 1;
+  this.applyFilters();
+  this.showToast('Filters applied successfully', 'success');
+};
+
+KejaApp.prototype.openSavedListingsModal = function() {
+  const container = document.getElementById('mob-saved-props-container');
+  if (container) {
+    const favProps = this.properties.filter(p => this.favorites.has(p.id));
+    if (favProps.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:40px 10px; color:#64748b;">
+          <i class="far fa-heart" style="font-size:2.5rem; color:#cbd5e1; margin-bottom:10px;"></i>
+          <h4 style="color:#1e293b; margin:0 0 6px 0;">No Saved Properties Yet</h4>
+          <p style="font-size:0.82rem; margin:0 0 16px 0;">Tap the heart icon on any property to save it for easy access later.</p>
+          <button type="button" class="btn-primary" style="background:var(--g); border:none; padding:8px 18px; border-radius:8px;" onclick="app.closeModal('modal-saved-listings')">
+            Explore Properties
+          </button>
+        </div>
+      `;
+    } else {
+      container.innerHTML = favProps.map(p => {
+        const rawPrice = p.rentKes ?? p.rent ?? p.rent_kes ?? 0;
+        const displayRent = typeof rawPrice === 'number' ? rawPrice : parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0;
+        const thumbnail = p.media?.[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80';
+        return `
+          <div class="mob-saved-card" onclick="app.closeModal('modal-saved-listings'); app.openPropertyDetail('${p.id}')">
+            <img src="${thumbnail}" alt="${p.title}">
+            <div class="mob-sc-info">
+              <span class="mob-sc-badge"><i class="fas fa-check-circle"></i> Verified</span>
+              <h4>${p.title}</h4>
+              <div class="mob-sc-price">KSh ${displayRent.toLocaleString()} <small>/ month</small></div>
+              <div class="mob-sc-specs">${p.bedrooms || 1} Bed &middot; ${p.bathrooms || 1} Bath</div>
+            </div>
+            <button type="button" class="mob-sc-unsave" onclick="event.stopPropagation(); app.toggleFavorite('${p.id}', event); app.openSavedListingsModal();" title="Remove">
+              <i class="fas fa-heart" style="color:#ef4444;"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+  this.openModal('modal-saved-listings');
+};
+
+KejaApp.prototype.switchSavedTab = function(tab) {
+  const btnProps = document.getElementById('btn-stab-props');
+  const btnSearches = document.getElementById('btn-stab-searches');
+  const paneProps = document.getElementById('mob-saved-props-container');
+  const paneSearches = document.getElementById('mob-saved-searches-container');
+
+  if (tab === 'props') {
+    if (btnProps) btnProps.classList.add('active');
+    if (btnSearches) btnSearches.classList.remove('active');
+    if (paneProps) paneProps.style.display = 'grid';
+    if (paneSearches) paneSearches.style.display = 'none';
+  } else {
+    if (btnProps) btnProps.classList.remove('active');
+    if (btnSearches) btnSearches.classList.add('active');
+    if (paneProps) paneProps.style.display = 'none';
+    if (paneSearches) paneSearches.style.display = 'block';
+  }
+};
+
+KejaApp.prototype.openMobileAccountModal = function() {
+  const container = document.getElementById('mob-account-dynamic-content');
+  if (!container) return;
+
+  const session = window.kejaAuth && typeof window.kejaAuth.getSession === 'function' ? window.kejaAuth.getSession() : null;
+
+  if (session && session.user) {
+    const user = session.user;
+    const name = user.name || user.email?.split('@')[0] || 'KejaMarket Member';
+    const email = user.email || 'user@kejamarket.co.ke';
+    container.innerHTML = `
+      <div class="mob-account-hero-logged">
+        <div class="mob-ah-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="mob-ah-info">
+          <h3>${name}</h3>
+          <p>${email}</p>
+        </div>
+      </div>
+      <div class="mob-account-menu-list">
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); if(window.kejaLandlordPortal) window.kejaLandlordPortal.openLandlordPortal(); return false;">
+          <i class="fas fa-building mob-am-icon"></i>
+          <span>My Listings</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); app.openSavedListingsModal(); return false;">
+          <i class="far fa-heart mob-am-icon"></i>
+          <span>Saved Properties</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); app.openAdminChat(); return false;">
+          <i class="far fa-comment-dots mob-am-icon"></i>
+          <span style="flex:1;">Messages</span>
+          <span class="mob-am-badge">3</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); app.setViewMode('map'); return false;">
+          <i class="fas fa-map-marked-alt mob-am-icon"></i>
+          <span>Map View</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); kejaDashboard.open('faq'); return false;">
+          <i class="far fa-question-circle mob-am-icon"></i>
+          <span>Help &amp; Support</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); return false;">
+          <i class="fas fa-cog mob-am-icon"></i>
+          <span>Settings</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); return false;">
+          <i class="fas fa-info-circle mob-am-icon"></i>
+          <span>About KejaMarket</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <div style="padding:16px 20px;">
+          <button type="button" class="btn-secondary" style="width:100%; padding:10px; border-radius:10px; color:#dc2626; border-color:#fca5a5; font-weight:700;" onclick="if(window.kejaAuth) kejaAuth.signOut(); app.closeModal('modal-mobile-account');">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+          </button>
+        </div>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="mob-account-hero-guest">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+          <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+            <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#00b53f" stroke="#007728" stroke-width="2.5"/>
+            <path d="M38 82V56H58V82H38Z" fill="#fff"/>
+            <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2b"/>
+            <circle cx="48" cy="21" r="4.5" fill="#fff"/>
+          </svg>
+          <span style="font-size:1.35rem; font-weight:900; color:#0f172a;">Keja<span style="color:#e52b2b;">Market</span></span>
+        </div>
+        <p style="margin:0 0 16px 0; font-size:0.8rem; color:#64748b;">Find your next place. Find what you need.</p>
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn-primary" style="flex:1; background:var(--g); border:none; padding:10px; border-radius:8px; font-weight:700;" onclick="app.closeModal('modal-mobile-account'); kejaAuth.openAuthModal('signin');">
+            Log In
+          </button>
+          <button type="button" class="btn-secondary" style="flex:1; padding:10px; border-radius:8px; font-weight:700;" onclick="app.closeModal('modal-mobile-account'); kejaAuth.openAuthModal('signup');">
+            Sign Up
+          </button>
+        </div>
+      </div>
+
+      <div style="padding:16px 20px 8px 20px;">
+        <span style="font-size:0.75rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px;">Quick Actions</span>
+      </div>
+      <div class="mob-account-menu-list">
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); app.openAffordabilityCalculator(); return false;">
+          <i class="fas fa-calculator mob-am-icon" style="color:var(--g);"></i>
+          <div style="flex:1;">
+            <strong style="display:block; font-size:0.84rem; color:#0f172a;">What Can I Afford?</strong>
+            <small style="color:#64748b;">Find properties within your budget</small>
+          </div>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); app.openHouseHuntModal(); return false;">
+          <i class="fas fa-home mob-am-icon" style="color:#0284c7;"></i>
+          <div style="flex:1;">
+            <strong style="display:block; font-size:0.84rem; color:#0f172a;">House Hunt 3 Days</strong>
+            <small style="color:#64748b;">Get expert help in 72 hours</small>
+          </div>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+      </div>
+
+      <div style="padding:16px 20px 8px 20px;">
+        <span style="font-size:0.75rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px;">More</span>
+      </div>
+      <div class="mob-account-menu-list">
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); kejaDashboard.open('faq'); return false;">
+          <i class="far fa-question-circle mob-am-icon"></i>
+          <span>Help &amp; Support</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); return false;">
+          <i class="fas fa-info-circle mob-am-icon"></i>
+          <span>About KejaMarket</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+        <a href="#" class="mob-am-item" onclick="app.closeModal('modal-mobile-account'); return false;">
+          <i class="fas fa-cog mob-am-icon"></i>
+          <span>Settings</span>
+          <i class="fas fa-chevron-right mob-am-arr"></i>
+        </a>
+      </div>
+    `;
+  }
+
+  this.openModal('modal-mobile-account');
+};
+
+KejaApp.prototype.openPostPropertyModal = function(event) {
+  if (event) event.stopPropagation();
+  this.openModal('modal-post-ad');
+};
+
+KejaApp.prototype.onCountyChange = function(county) {
+  const subcountySelect = document.getElementById('filter-subcounty');
+  if (!subcountySelect) return;
+
+  const countySubcounties = {
+    nairobi: ['Westlands', 'Kilimani', 'Kileleshwa', 'Lavington', 'Runda', 'Karen', 'Kasarani', 'Roysambu', 'Embakasi', 'Langata', 'Starehe', 'Kibra', 'Dagoretti', 'Parklands', 'Ngara', 'South B', 'South C'],
+    kiambu: ['Ruaka', 'Thika', 'Kiambu Town', 'Kikuyu', 'Ruiru', 'Limuru', 'Juja', 'Githurai'],
+    machakos: ['Mlolongo', 'Syokimau', 'Kitengela', 'Athi River', 'Machakos Town'],
+    kajiado: ['Kitengela', 'Ongata Rongai', 'Ngong', 'Kajiado Town'],
+    mombasa: ['Nyali', 'Bamburi', 'Kizingo', 'Mtwapa', 'Tudor']
+  };
+
+  const list = countySubcounties[county.toLowerCase()] || countySubcounties.nairobi;
+  subcountySelect.innerHTML = '<option value="all">Sub-county</option>' + list.map(sc => `<option value="${sc.toLowerCase()}">${sc}</option>`).join('');
+  this.applyFilters();
+};
+
+KejaApp.prototype.filterSuburbChecklist = function(term) {
+  term = (term || '').toLowerCase().trim();
+  const checkboxes = document.querySelectorAll('#suburb-checklist-container .filter-check-item, #property-type-checklist-container .filter-check-item');
+  checkboxes.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = (!term || text.includes(term)) ? 'flex' : 'none';
+  });
+};

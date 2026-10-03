@@ -1,0 +1,904 @@
+/* ==========================================================================
+   EXACT KEJAMARKET DESKTOP DESIGN MATCH
+   Pixel-accurate recreation of the reference image
+   ========================================================================== */
+
+/* Reset and force clean layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #ffffff;
+  color: #1f2937;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   1. TOP HEADER - Exact match
+   ========================================================================== */
+.site-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Logo section */
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.brand-logo svg {
+  width: 36px;
+  height: 36px;
+}
+
+.brand-text-group {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-text-group span:first-child {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.brand-text-group .keja-green { color: #00b53f; }
+.brand-text-group .keja-red { color: #e52b2d; }
+
+.brand-text-group span:last-child {
+  font-size: 0.6rem;
+  color: #64748b;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+}
+
+/* Search section */
+.header-search-wrapper {
+  flex: 1;
+  max-width: 600px;
+  position: relative;
+}
+
+.header-search-bar {
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 0;
+  height: 44px;
+}
+
+.header-search-input-box {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.search-input-field {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: #1f2937;
+  outline: none;
+}
+
+.search-input-field::placeholder {
+  color: #9ca3af;
+}
+
+.header-location-picker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  border-left: 1px solid #e2e8f0;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.search-submit-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background: #00b53f;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px;
+}
+
+/* Header actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn-header-post-property {
+  background: #00b53f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-header-circle-action {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #f8fafc;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.header-notif-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-header-account-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.header-account-avatar {
+  width: 24px;
+  height: 24px;
+  background: #00b53f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   2. SECONDARY NAVIGATION - Exact match
+   ========================================================================== */
+.secondary-nav {
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.secondary-nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.secondary-nav-item {
+  padding: 12px 0;
+  text-decoration: none;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.secondary-nav-item:hover {
+  color: #00b53f;
+}
+
+.secondary-nav-item--active {
+  color: #00b53f;
+  border-bottom-color: #00b53f;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   3. HERO SECTION - Exact match
+   ========================================================================== */
+.hero-section {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  padding: 40px 0;
+}
+
+.hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.hero-content h1 .text-green {
+  color: #00b53f;
+}
+
+.hero-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.hero-feature-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hero-feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hero-feature-card .icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.hero-feature-card.calculator .icon { background: #3b82f6; }
+.hero-feature-card.afford .icon { background: #10b981; }
+.hero-feature-card.alerts .icon { background: #f59e0b; }
+.hero-feature-card.hunt .icon { background: #8b5cf6; }
+
+.hero-feature-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.hero-feature-card p {
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   4. MAIN LAYOUT - Exact match
+   ========================================================================== */
+.main-content {
+  background: #ffffff;
+  padding: 32px 0;
+}
+
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ==========================================================================
+   5. FILTER SIDEBAR - Exact match
+   ========================================================================== */
+.filter-sidebar {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  position: sticky;
+  top: 120px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-clear {
+  color: #00b53f;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.filter-section {
+  margin-bottom: 24px;
+}
+
+.filter-section-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.property-type-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.property-type-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.property-type-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #00b53f;
+}
+
+.property-type-icon {
+  color: #6b7280;
+  font-size: 0.9rem;
+  width: 16px;
+}
+
+.property-type-label {
+  font-size: 0.85rem;
+  color: #374151;
+  cursor: pointer;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.filter-input:focus {
+  border-color: #00b53f;
+  box-shadow: 0 0 0 3px rgba(0, 181, 63, 0.1);
+}
+
+.filter-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  background: white;
+  cursor: pointer;
+}
+
+.price-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.apply-filters-btn {
+  width: 100%;
+  background: #00b53f;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* ==========================================================================
+   6. RESULTS AREA - Exact match
+   ========================================================================== */
+.results-area {
+  background: #ffffff;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.results-count {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.results-number {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #00b53f;
+}
+
+.results-text {
+  font-size: 1.5rem;
+  color: #1f2937;
+  font-weight: 400;
+}
+
+.results-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.view-toggles {
+  display: flex;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.view-toggle {
+  padding: 8px 12px;
+  border: none;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.view-toggle:last-child {
+  border-right: none;
+}
+
+.view-toggle.active {
+  background: #00b53f;
+  color: white;
+}
+
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.sort-select {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  background: white;
+}
+
+/* ==========================================================================
+   7. PROPERTY GRID - Exact 4-column match
+   ========================================================================== */
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.property-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.property-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 181, 63, 0.3);
+}
+
+.property-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  position: relative;
+}
+
+.property-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-bnb { background: #a855f7; color: white; }
+.badge-single { background: #3b82f6; color: white; }
+.badge-double { background: #f97316; color: white; }
+.badge-bedsitter { background: #00b53f; color: white; }
+.badge-2bed { background: #ef4444; color: white; }
+.badge-3bed { background: #8b5cf6; color: white; }
+.badge-4bed { background: #ec4899; color: white; }
+.badge-maisonette { background: #06b6d4; color: white; }
+.badge-villa { background: #84cc16; color: white; }
+.badge-apartment { background: #f59e0b; color: white; }
+.badge-bungalow { background: #10b981; color: white; }
+.badge-studio { background: #6366f1; color: white; }
+
+.favorite-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+}
+
+.favorite-btn:hover {
+  color: #ef4444;
+}
+
+.property-content {
+  padding: 16px;
+}
+
+.property-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.property-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.property-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #00b53f;
+  margin-bottom: 12px;
+}
+
+.property-features {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.book-now-btn {
+  width: 100%;
+  background: #00b53f;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.property-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-btn:hover {
+  color: #00b53f;
+}
+
+/* ==========================================================================
+   8. PAGINATION - Exact match
+   ========================================================================== */
+.pagination-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 40px 0;
+}
+
+.pagination-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #6b7280;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.pagination-btn:hover {
+  border-color: #00b53f;
+  color: #00b53f;
+}
+
+.pagination-btn.active {
+  background: #00b53f;
+  color: white;
+  border-color: #00b53f;
+}
+
+.pagination-info {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* ==========================================================================
+   9. FOOTER - Exact dark green match
+   ========================================================================== */
+.main-footer {
+  background: #064e3b;
+  color: #ffffff;
+  padding: 48px 0 24px;
+  margin-top: 80px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.footer-brand {
+  grid-column: 1 / 3;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.footer-logo svg {
+  width: 32px;
+  height: 32px;
+}
+
+.footer-tagline {
+  font-size: 0.85rem;
+  color: #a7f3d0;
+  margin-bottom: 16px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.social-btn {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-section h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #a7f3d0;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #a7f3d0;
+}
+
+.app-download {
+  display: flex;
+  gap: 8px;
+}
+
+.app-btn {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .property-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .main-container {
+    grid-template-columns: 240px 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .property-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .main-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .filter-sidebar {
+    position: static;
+  }
+}

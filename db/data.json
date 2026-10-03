@@ -5,7 +5,7 @@
       "name": "KejaMarket Administrator",
       "phone": "0792409540",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$Og4Ew6k8lSIAo2kZ0eRYt.gz6IzPRouYyhz/bfQk.9YD/dqOjWvdy",
+      "password": "$2b$10$zVmEOBCO0KLd9r5/9IhUyODWlo.TYE6geUsJgxUD2uOTofjt8ufWS",
       "role": "admin",
       "isAdmin": true,
       "isVerified": true,
@@ -15,6 +15,319 @@
     }
   ],
   "properties": [
+    {
+      "id": "km-prop-001",
+      "title": "Cozy Studio BNB - Kilimani",
+      "category": "Bnb (Short Stay)",
+      "estateSuburb": "Kilimani",
+      "county": "Nairobi",
+      "locationDisplay": "Kilimani, Nairobi",
+      "rentKes": 2500,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "isBnb": true,
+      "rentPeriod": "month",
+      "amenities": [
+        "wifi",
+        "parking"
+      ],
+      "specAmenitiesText": "1 Bed · 1 Bath · WiFi",
+      "badgeColor": "#8b5cf6",
+      "badgeLabel": "Bnb (Short Stay)",
+      "badgeIcon": "fa-umbrella-beach",
+      "thumbnail": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-002",
+      "title": "Single Room - Umoja",
+      "category": "Single Room",
+      "estateSuburb": "Umoja",
+      "county": "Nairobi",
+      "locationDisplay": "Umoja, Nairobi",
+      "rentKes": 8000,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "parking"
+      ],
+      "specAmenitiesText": "1 Bed · 1 Bath · Parking",
+      "badgeColor": "#0284c7",
+      "badgeLabel": "Single Room",
+      "badgeIcon": "fa-door-open",
+      "thumbnail": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-003",
+      "title": "Double Room - South B",
+      "category": "Double Room",
+      "estateSuburb": "South B",
+      "county": "Nairobi",
+      "locationDisplay": "South B, Nairobi",
+      "rentKes": 12000,
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "wifi"
+      ],
+      "specAmenitiesText": "2 Beds · Private Bath · WiFi",
+      "badgeColor": "#ea580c",
+      "badgeLabel": "Double Room",
+      "badgeIcon": "fa-person-booth",
+      "thumbnail": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-004",
+      "title": "Bedsitter - Westlands",
+      "category": "Bedsitter",
+      "estateSuburb": "Westlands",
+      "county": "Nairobi",
+      "locationDisplay": "Westlands, Nairobi",
+      "rentKes": 15000,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "wifi"
+      ],
+      "specAmenitiesText": "1 Bed · Kitchenette · WiFi",
+      "badgeColor": "#10b981",
+      "badgeLabel": "Bedsitter",
+      "badgeIcon": "fa-bed",
+      "thumbnail": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-005",
+      "title": "2 Bedroom Apartment - Lavington",
+      "category": "2 Bedrooms",
+      "estateSuburb": "Lavington",
+      "county": "Nairobi",
+      "locationDisplay": "Lavington, Nairobi",
+      "rentKes": 45000,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "parking"
+      ],
+      "specAmenitiesText": "2 Beds · 2 Baths · Parking",
+      "badgeColor": "#ef4444",
+      "badgeLabel": "2 Bedrooms",
+      "badgeIcon": "fa-door-closed",
+      "thumbnail": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-006",
+      "title": "3 Bedroom House - Runda",
+      "category": "3 Bedrooms",
+      "estateSuburb": "Runda",
+      "county": "Nairobi",
+      "locationDisplay": "Runda, Nairobi",
+      "rentKes": 95000,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "garden"
+      ],
+      "specAmenitiesText": "3 Beds · 3 Baths · Garden",
+      "badgeColor": "#2563eb",
+      "badgeLabel": "3 Bedrooms",
+      "badgeIcon": "fa-home",
+      "thumbnail": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-007",
+      "title": "4 Bedroom Maisonette - Karen",
+      "category": "4+ Bedrooms",
+      "estateSuburb": "Karen",
+      "county": "Nairobi",
+      "locationDisplay": "Karen, Nairobi",
+      "rentKes": 250000,
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "garden"
+      ],
+      "specAmenitiesText": "4 Beds · 4 Baths · Garden",
+      "badgeColor": "#6366f1",
+      "badgeLabel": "4+ Bedrooms",
+      "badgeIcon": "fa-star",
+      "thumbnail": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-008",
+      "title": "Maisonette - Kilieshwa",
+      "category": "Maisonette",
+      "estateSuburb": "Kileleshwa",
+      "county": "Nairobi",
+      "locationDisplay": "Kileleshwa, Nairobi",
+      "rentKes": 180000,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "parking"
+      ],
+      "specAmenitiesText": "3 Beds · 3 Baths · Parking",
+      "badgeColor": "#db2777",
+      "badgeLabel": "Maisonette",
+      "badgeIcon": "fa-building",
+      "thumbnail": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-009",
+      "title": "Villa - Muthaiga",
+      "category": "Villa",
+      "estateSuburb": "Muthaiga",
+      "county": "Nairobi",
+      "locationDisplay": "Muthaiga, Nairobi",
+      "rentKes": 400000,
+      "bedrooms": 5,
+      "bathrooms": 5,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "pool"
+      ],
+      "specAmenitiesText": "5 Beds · 5 Baths · Pool",
+      "badgeColor": "#16a34a",
+      "badgeLabel": "Villa",
+      "badgeIcon": "fa-tree",
+      "thumbnail": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-010",
+      "title": "Apartment - Syokimau",
+      "category": "Apartment",
+      "estateSuburb": "Syokimau",
+      "county": "Nairobi",
+      "locationDisplay": "Syokimau, Nairobi",
+      "rentKes": 35000,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "gym"
+      ],
+      "specAmenitiesText": "2 Beds · 2 Baths · Gym",
+      "badgeColor": "#ec4899",
+      "badgeLabel": "Apartment",
+      "badgeIcon": "fa-building",
+      "thumbnail": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-011",
+      "title": "Bungalow - Kitengela",
+      "category": "Bungalow",
+      "estateSuburb": "Kitengela",
+      "county": "Nairobi",
+      "locationDisplay": "Kitengela, Nairobi",
+      "rentKes": 28000,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "garden"
+      ],
+      "specAmenitiesText": "3 Beds · 2 Baths · Garden",
+      "badgeColor": "#d97706",
+      "badgeLabel": "Bungalow",
+      "badgeIcon": "fa-home",
+      "thumbnail": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "km-prop-012",
+      "title": "Studio Apartment - Ruaka",
+      "category": "Studio",
+      "estateSuburb": "Ruaka",
+      "county": "Nairobi",
+      "locationDisplay": "Ruaka, Nairobi",
+      "rentKes": 18000,
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "isBnb": false,
+      "rentPeriod": "month",
+      "amenities": [
+        "wifi"
+      ],
+      "specAmenitiesText": "1 Bed · 1 Bath · WiFi",
+      "badgeColor": "#06b6d4",
+      "badgeLabel": "Studio",
+      "badgeIcon": "fa-couch",
+      "thumbnail": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
     {
       "id": "prop-nyayo-001",
       "title": "Spacious 2 Bedroom Apartment in Nyayo Estate Gate A (Phase 2)",

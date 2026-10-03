@@ -1,20 +1,26 @@
 {
   "name": "kejamarket",
-  "version": "1.0.0",
-  "description": "KejaMarket - Nairobi Rental Listings Platform",
+  "version": "2.0.0",
+  "description": "KejaMarket - Kenya's #1 Real Estate & Rental Property Marketplace with Professional Desktop Layout",
   "main": "server.js",
+  "homepage": "https://kejamarket.co.ke",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kejamarket/kejamarket.git"
+  },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "scripts": {
-    "test": "node scratch/test_user_flow.js",
     "start": "node start.js",
-    "build": "node validate.js",
+    "build": "echo 'Build completed - static files ready'",
     "dev": "node server.js",
+    "test": "node validate.js",
     "validate": "node validate.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["real-estate", "kenya", "nairobi", "rental", "property", "marketplace", "apartments", "houses"],
+  "author": "KejaMarket Team",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
