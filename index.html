@@ -300,6 +300,69 @@
 </head>
 <body>
 
+  <!-- CRITICAL: Inline style to force desktop layout immediately -->
+  <style>
+    /* ULTRA HIGH PRIORITY - INLINE OVERRIDE */
+    #main-app-layout,
+    .main-app-layout {
+      display: grid !important;
+      grid-template-columns: 250px minmax(0, 1fr) !important;
+      gap: 20px !important;
+      max-width: 1480px !important;
+      margin: 0 auto !important;
+      padding: 20px 16px !important;
+    }
+    
+    #property-grid,
+    .property-grid,
+    .property-listings-grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 16px !important;
+    }
+    
+    .sidebar-filters,
+    #sidebar-filters {
+      display: block !important;
+      visibility: visible !important;
+      width: 250px !important;
+    }
+    
+    .mobile-hero-promo,
+    .mobile-quick-actions-row,
+    .mobile-filter-card-container,
+    .smart-tools-hero-hub {
+      display: none !important;
+    }
+  </style>
+
+  <!-- CRITICAL: Close any auto-opening modals immediately -->
+  <script>
+    (function() {
+      // Close all modals on page load
+      window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          // Close auth modal if it auto-opened
+          const authModal = document.getElementById('modal-auth');
+          if (authModal) {
+            authModal.style.display = 'none';
+          }
+          
+          // Close any backdrop
+          const backdrops = document.querySelectorAll('.modal-backdrop');
+          backdrops.forEach(function(backdrop) {
+            if (backdrop.id !== 'modal-property-detail' && 
+                backdrop.id !== 'modal-post-property') {
+              backdrop.style.display = 'none';
+            }
+          });
+          
+          console.log('✅ Auto-close modals executed');
+        }, 100);
+      });
+    })();
+  </script>
+
   <!-- Page content will be recreated to match reference exactly -->
 
 
