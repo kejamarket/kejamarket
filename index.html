@@ -2,12 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <!--  PRIMARY SEO META TAGS                                  -->
-  <!-- ═══════════════════════════════════════════════════════ -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KejaMarket | Kenya's #1 Real Estate & Rental Property Marketplace</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Exact Desktop Match CSS -->
+  <link rel="stylesheet" href="css/exact-desktop-match.css?v=1.0">
+  
+  <!-- CRITICAL: Force Desktop Layout CSS (Highest Priority) -->
+  <link rel="stylesheet" href="css/force-desktop-exact.css?v=2.0">
+  
+</head>
+<body>
+
+  <!-- 1. TOP HEADER - Exact match -->
+  <header class="site-header">
+    <div class="header-container">
+      
+      <!-- Logo -->
+      <div class="brand-wrapper">
+        <a href="/" class="brand-logo">
+          <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#008744" stroke="#005a2b" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M38 82V56H58V82H38Z" fill="#ffffff"/>
+            <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2d"/>
+            <circle cx="48" cy="21" r="4.5" fill="#ffffff"/>
+          </svg>
+        </a>
+        <div class="brand-text-group">
+          <span><span class="keja-green">Keja</span><span class="keja-red">Market</span></span>
+          <span>Find your next place. Find what you need.</span>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="header-search-wrapper">
+        <form class="header-search-bar">
+          <div class="header-search-input-box">
+            <input type="text" class="search-input-field" placeholder="Search for estates, neighbourhoods, or areas...">
+          </div>
+          <div class="header-location-picker">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Nairobi & Environs</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <button type="submit" class="search-submit-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="btn-header-post-property">
+          <i class="fas fa-plus"></i>
+          <span>Post Property</span>
+        </button>
+        
+        <button class="btn-header-circle-action">
+          <i class="far fa-heart"></i>
+        </button>
+        
+        <button class="btn-header-circle-action">
+          <i class="far fa-bell"></i>
+          <span class="header-notif-badge">3</span>
+        </button>
+        
+        <button class="btn-header-account-pill">
+          <div class="header-account-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <span>KejaMarket</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
+    </div>
+  </header>
   <meta name="description" content="KejaMarket is Kenya's #1 online marketplace for rental houses, bedsitters, 1-bedroom, 2-bedroom apartments, maisonettes and commercial spaces. Find verified properties in Nairobi, Ruaka, Kilimani, Westlands, Roysambu, Parklands & more. Direct landlord contact — no agents.">
   <meta name="keywords" content="KejaMarket, kejamarket.co.ke, kejamarket kenya, houses for rent Nairobi, bedsitter Ruaka, apartments Kilimani, rental property Kenya, Roysambu flats, Westlands apartment, Nairobi rentals, Kenya real estate, landlord Kenya, tenant Kenya, rent house Nairobi, cheap houses Nairobi, property marketplace Kenya, keja market, keja market nairobi, property listing Kenya, airbnb Kenya, short stay Kenya, BNB Kenya, service providers Kenya, house hunting Kenya, property search Kenya">
   <meta name="author" content="KejaMarket Kenya">
@@ -214,71 +286,21 @@
   <!-- Local Plus Jakarta Sans Typography -->
   <link rel="stylesheet" href="vendor/fonts/plus-jakarta-sans.css">
 
-  <!-- Local Font Awesome 6.5.1 (Zero CDN reliance) -->
-  <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
-
-  <!-- Local Leaflet 1.9.4 CSS -->
-  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
   <!-- App Styles -->
-  <link rel="stylesheet" href="css/style.css?v=5.2&t=202609240030">
-  <link rel="stylesheet" href="css/map.css?v=4.4&t=202609171315">
-  <link rel="stylesheet" href="css/monetization.css?v=4.4&t=202609171315">
-  <link rel="stylesheet" href="css/verification.css?v=4.4&t=202609171315">
-  <link rel="stylesheet" href="css/recently-added.css?v=4.4&t=202609171315">
-  <link rel="stylesheet" href="css/simplified-management.css?v=4.4&t=202609171315">
-  <link rel="stylesheet" href="css/communication-system.css?v=4.4&t=202609171315">
-  <link rel="stylesheet" href="css/enhanced-portal.css?v=4.4&t=202609171315">
-  <link rel="stylesheet" href="css/location-picker.css?v=1.0">
-
-  <style>
-    .header-search-wrapper {
-      position: relative;
-      flex: 1;
-      max-width: 680px;
-    }
-    .search-suggestions-dropdown {
-      position: absolute;
-      top: calc(100% + 6px);
-      left: 0;
-      right: 0;
-      background: #ffffff;
-      border: 1.5px solid #00b53f;
-      border-radius: 12px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.08);
-      z-index: 9999;
-      max-height: 380px;
-      overflow-y: auto;
-      display: none;
-    }
-    .search-suggestion-item {
-      padding: 11px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      border-bottom: 1px solid #f1f5f9;
-      transition: all 0.15s ease;
-    }
-    .search-suggestion-item:last-child {
-      border-bottom: none;
-    }
-    .search-suggestion-item:hover {
-      background: #f0fdf4;
-      padding-left: 20px;
-    }
-    .photo-dropzone {
-      transition: all 0.2s ease;
-    }
-    .photo-dropzone:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-  </style>
-  <link rel="stylesheet" href="css/mobile-pixel-perfect.css?v=2.0">
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=3.0">
+  <link rel="stylesheet" href="css/exact-desktop-match.css?v=1.0">
+  
+  <!-- Force desktop layout script -->
+  <script src="js/force-desktop-layout.js?v=1.0"></script>
+  
+  <!-- CRITICAL: Aggressive Desktop Layout Enforcer -->
+  <script src="js/critical-desktop-enforcer.js?v=2.0"></script>
 </head>
 <body>
+
+  <!-- Page content will be recreated to match reference exactly -->
 
 
   <!-- Main Site Header -->
@@ -338,130 +360,42 @@
       </div>
 
       <!-- Header Action Buttons (Hierarchy: Post ▼ | Favorites | Messages | Notifications | Profile) -->
-      <div class="header-actions" style="display: flex; align-items: center; gap: 8px; flex-shrink: 0; overflow: visible;">
-        
-        <!-- Post Dropdown Button (+ Post ▼) -->
-        <div class="header-post-dropdown-wrapper" style="position: relative;">
-          <button type="button" class="btn-post-dropdown" id="btn-header-post-dropdown" onclick="app.togglePostDropdown(event)">
-            <i class="fas fa-plus"></i> <span>Post</span> <i class="fas fa-chevron-down btn-post-chevron"></i>
-          </button>
-          <div class="post-dropdown-menu" id="post-dropdown-menu" style="display: none;">
-            <a href="#" class="post-dropdown-item" onclick="app.handlePostAction('rental', event)">
-              <div class="post-icon-box" style="color: #008744; background: #e8f5e9;"><i class="fas fa-home"></i></div>
-              <div class="post-text-box">
-                <strong>Post Rental</strong>
-                <span>Apartments, bedsitters, houses to rent</span>
-              </div>
-            </a>
-            <a href="#" class="post-dropdown-item" onclick="app.handlePostAction('service', event)">
-              <div class="post-icon-box" style="color: #7c3aed; background: #f3e8ff;"><i class="fas fa-tools"></i></div>
-              <div class="post-text-box">
-                <strong>Post Service</strong>
-                <span>Movers, plumbing, repairs & cleaning</span>
-              </div>
-            </a>
-            <a href="#" class="post-dropdown-item" onclick="app.handlePostAction('marketplace', event)">
-              <div class="post-icon-box" style="color: #dc2626; background: #fee2e2;"><i class="fas fa-shopping-bag"></i></div>
-              <div class="post-text-box">
-                <strong>Sell Item</strong>
-                <span>Furniture, appliances & marketplace</span>
-              </div>
-            </a>
-            <a href="#" class="post-dropdown-item" onclick="app.handlePostAction('land', event)">
-              <div class="post-icon-box" style="color: #d97706; background: #fef3c7;"><i class="fas fa-mountain"></i></div>
-              <div class="post-text-box">
-                <strong>Post Land</strong>
-                <span>Plots, commercial & agricultural land</span>
-              </div>
-            </a>
-            <a href="#" class="post-dropdown-item" onclick="app.handlePostAction('sale', event)">
-              <div class="post-icon-box" style="color: #2563eb; background: #dbeafe;"><i class="fas fa-building"></i></div>
-              <div class="post-text-box">
-                <strong>Post Property for Sale</strong>
-                <span>Houses, villas & commercial real estate</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <!-- Rent Affordability Calculator CTA -->
-        <button type="button" class="btn-header-tool" id="btn-header-calculator" onclick="app.openAffordabilityCalculator()" title="What Can I Afford? Rent Calculator" style="display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; cursor: pointer; white-space: nowrap; height: 36px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.2s;">
-          <i class="fas fa-calculator" style="color: #059669; font-size: 0.9rem;"></i>
-          <span class="header-tool-label">Calculator</span>
-        </button>
-
-        <!-- 3-Day House Hunt Concierge CTA -->
-        <button type="button" class="btn-header-tool btn-header-hunt" id="btn-header-hunt" onclick="app.openHouseHuntModal()" title="Hire a Dedicated House Hunter (72-Hour Search)" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #059669, #10b981); border: none; color: #ffffff; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; cursor: pointer; white-space: nowrap; height: 36px; box-shadow: 0 2px 8px rgba(16,185,129,0.35); transition: all 0.2s;">
-          <i class="fas fa-search-location" style="font-size: 0.9rem;"></i>
-          <span class="header-tool-label">Smart Hunt</span>
-          <span class="hunt-pill-badge" style="background: #fef08a; color: #854d0e; font-size: 0.65rem; padding: 1px 6px; border-radius: 10px; font-weight: 800;">3 Days</span>
+      <!-- Header Action Buttons (Reference Match: + Post Property | Heart | Bell(3) | KejaMarket Profile) -->
+      <div class="header-actions" style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+        <!-- + Post Property green pill button -->
+        <button type="button" class="btn-header-post-property" onclick="app.openPostPropertyModal && app.openPostPropertyModal(event)" title="Post Property">
+          <i class="fas fa-plus"></i> <span>Post Property</span>
         </button>
 
         <!-- Favorites (Heart) -->
-        <button class="btn-header-action" id="btn-header-favs" onclick="app.toggleFavoritesView()" title="Saved Favorites">
-          <i class="far fa-heart" style="color: #ef4444; font-size: 1.15rem;"></i>
-          <span class="badge-count" id="fav-count-badge" style="display: none;">0</span>
+        <button class="btn-header-circle-action" id="btn-header-favs" onclick="app.toggleFavoritesView()" title="Saved Favorites">
+          <i class="far fa-heart" style="color:#00b53f; font-size:1.1rem;"></i>
         </button>
 
-        <!-- Reach out to Admin (Auth-Gated Messages) -->
-        <button class="btn-header-action" id="btn-header-messages" onclick="app.openAdminChat()" title="Messages">
-          <i class="far fa-comment-dots" style="color: #008744; font-size: 1.15rem;"></i>
-          <span class="badge-count" id="msg-count-badge" style="display: none;">0</span>
+        <!-- Notifications Bell with red badge 3 -->
+        <button class="btn-header-circle-action" id="btn-header-notifications" onclick="if(window.KejaCommunication && window.KejaCommunication.NotificationSystem){ window.KejaCommunication.NotificationSystem.showNotificationsCenter(); } else { app.openAdminChat(); }" title="Notifications" style="position:relative;">
+          <i class="far fa-bell" style="font-size:1.15rem; color:#1e293b;"></i>
+          <span class="header-notif-badge">3</span>
         </button>
 
-        <!-- Notification Bell -->
-        <button class="btn-header-action" id="btn-header-notifications" onclick="if(window.KejaCommunication && window.KejaCommunication.NotificationSystem){ window.KejaCommunication.NotificationSystem.showNotificationsCenter(); } else { app.openAdminChat(); }" title="Notifications" style="position: relative; background: none; border: none; padding: 6px 8px; cursor: pointer;">
-          <i class="far fa-bell" style="font-size: 1.25rem; color: #334155;"></i>
-          <span class="badge-count" id="header-notif-count" style="display: none; background: #e52b2b; color: white; border-radius: 50%; font-size: 0.68rem; font-weight: 800; width: 17px; height: 17px; align-items: center; justify-content: center; position: absolute; top: -1px; right: 2px;"></span>
-        </button>
-
-        <!-- Sign In / User Profile Dropdown Trigger -->
-        <div style="position: relative; flex-shrink: 0;">
-          <button class="btn-auth-trigger" id="btn-auth-header" onclick="kejaAuth.toggleProfileDropdown()" style="display: flex; align-items: center; gap: 6px; background: #f1f5f9; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 4px 10px 4px 4px; cursor: pointer; height: 38px;">
-            <div class="header-user-avatar" id="header-user-avatar" style="width: 30px; height: 30px; border-radius: 50%; background: #064e22; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
-              <i class="fas fa-user" style="font-size: 0.8rem;"></i>
-            </div>
-            <span id="auth-header-label" style="font-weight: 700; font-size: 0.88rem; color: #0f172a; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Sign In</span>
-            <i class="fas fa-chevron-down" style="font-size: 0.65rem; color: #64748b;"></i>
-          </button>
-
-          <!-- Compact Profile Dropdown -->
-          <div id="profile-dropdown" style="display: none;">
-            <div id="profile-dropdown-content"></div>
-          </div>
-        </div>
-
-        <!-- Mobile Header Icons (Search, Messages, Notifications, User) — Mobile Only -->
-        <div class="mobile-header-actions" id="mobile-header-actions">
-          <button class="mobile-hdr-btn" onclick="app.focusMobileSearch()" title="Search" aria-label="Search">
-            <i class="fas fa-search"></i>
-          </button>
-          <button class="mobile-hdr-btn" onclick="app.openAdminChat()" title="Messages" aria-label="Messages">
-            <i class="far fa-comment-dots"></i>
-          </button>
-          <button class="mobile-hdr-btn" onclick="if(window.KejaCommunication&&window.KejaCommunication.NotificationSystem){window.KejaCommunication.NotificationSystem.showNotificationsCenter();}else{app.openAdminChat();}" title="Notifications" aria-label="Notifications">
-            <i class="far fa-bell"></i>
-          </button>
-          <div class="mobile-hdr-user-btn" onclick="kejaAuth.toggleProfileDropdown()">
-            <div class="mobile-hdr-avatar" id="mobile-hdr-avatar">
+        <!-- User account pill: KejaMarket ▾ -->
+        <div style="position:relative; flex-shrink:0;">
+          <button class="btn-header-account-pill" id="btn-auth-header" onclick="kejaAuth.toggleProfileDropdown()">
+            <div class="header-account-avatar">
               <i class="fas fa-user"></i>
             </div>
-            <i class="fas fa-chevron-down" style="font-size:0.6rem; color:#64748b;"></i>
-          </div>
+            <span class="header-account-name">KejaMarket</span>
+            <i class="fas fa-chevron-down" style="font-size:0.65rem; color:#64748b;"></i>
+          </button>
+          <div id="profile-dropdown" style="display:none;"><div id="profile-dropdown-content"></div></div>
         </div>
 
-        <!-- Hidden compatibility stubs for JS dependencies -->
-        <button id="btn-header-post-ad" style="display:none;"></button>
-        <button id="btn-header-post-service" style="display:none;"></button>
-        <button id="btn-header-post-marketplace" style="display:none;"></button>
-        <button id="btn-header-pricing" style="display:none;"></button>
-        <button id="btn-admin-header" style="display:none;"></button>
-        <button id="btn-landlord-header" style="display:none;"></button>
-        <button id="btn-my-dashboard" style="display:none;"></button>
-        <button id="btn-service-header" style="display:none;"></button>
-        <button id="btn-messages" style="display:none;"></button>
-        <button id="btn-notifications" style="display:none;"></button>
-
+        <!-- Hidden compatibility stubs -->
+        <button id="btn-header-post-dropdown" style="display:none;"></button>
+        <button id="btn-header-calculator" style="display:none;"></button>
+        <button id="btn-header-hunt" style="display:none;"></button>
+        <button id="btn-header-messages" style="display:none;"></button>
+        <div id="header-notif-count" style="display:none;"></div>
       </div>
     </div>
   </header>
@@ -475,7 +409,7 @@
       </a>
       <a href="#" class="secondary-nav-item" id="sec-nav-rentals"
          onclick="app.switchFilterTab('properties'); app.setCategory('Rentals'); kejaUI.setSecondaryNav(this); return false;">
-        <i class="fas fa-key"></i> Rentals
+        <i class="fas fa-building"></i> Rentals
       </a>
       <a href="#" class="secondary-nav-item" id="sec-nav-apartments"
          onclick="app.switchFilterTab('properties'); app.setCategory('Apartments'); kejaUI.setSecondaryNav(this); return false;">
@@ -483,15 +417,15 @@
       </a>
       <a href="#" class="secondary-nav-item" id="sec-nav-land"
          onclick="app.switchFilterTab('properties'); app.setCategory('Land'); kejaUI.setSecondaryNav(this); return false;">
-        <i class="fas fa-map"></i> Land
+        <i class="fas fa-tree"></i> Land
       </a>
       <a href="#" class="secondary-nav-item" id="sec-nav-selling"
          onclick="app.switchFilterTab('properties'); app.setCategory('Selling'); kejaUI.setSecondaryNav(this); return false;">
-        <i class="fas fa-tag"></i> Selling Homes
+        <i class="fas fa-home"></i> Selling Homes
       </a>
       <a href="#" class="secondary-nav-item" id="sec-nav-airbnbs"
          onclick="app.switchFilterTab('properties'); app.setCategory('Airbnbs'); kejaUI.setSecondaryNav(this); return false;">
-        <i class="fas fa-bed"></i> Airbnb
+        <i class="fas fa-umbrella-beach"></i> Airbnb
       </a>
       <a href="#" class="secondary-nav-item" id="sec-nav-services"
          onclick="app.switchFilterTab('services'); kejaUI.setSecondaryNav(this); return false;">
@@ -503,7 +437,7 @@
       </a>
       <a href="#" class="secondary-nav-item" id="sec-nav-more"
          onclick="return false;">
-        <i class="fas fa-ellipsis-h"></i> More
+        <span>More</span> <i class="fas fa-chevron-down" style="font-size:0.65rem; margin-left:2px;"></i>
       </a>
     </div>
   </nav>
@@ -515,194 +449,239 @@
   <!-- ====================================================================
        HERO BANNER
        ==================================================================== -->
-  <section class="keja-hero" id="keja-hero-banner">
-    <img class="keja-hero-img"
-      src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
-      alt="Modern Nairobi Kenya Property"
-      loading="eager"
-      onerror="this.style.opacity='0'">
-    <div class="keja-hero-overlay"></div>
-    <div class="keja-hero-content">
-      <div class="keja-hero-left">
-        <h1 class="keja-hero-heading">
-          Find the perfect home or property<br>
-          in <span class="hero-green">Kenya</span>
-        </h1>
-        <button class="keja-hero-alert-pill" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()">
-          <i class="fab fa-whatsapp"></i>
-          Get instant alerts on WhatsApp with Sh100
-        </button>
+  <section class="keja-desktop-hero-strip" id="keja-desktop-hero">
+    <div class="keja-hero-strip-container">
+      <div class="keja-hero-title-box">
+        <h1 class="keja-hero-heading">Find the perfect home or property<br>in Kenya</h1>
       </div>
-      <div class="keja-hero-right">
-        <div class="keja-hero-tagline">
-          Better Homes<br>Bigger Dreams
+      <div class="keja-feature-strip">
+        <!-- Card 1: Calculator -->
+        <div class="km-feature-card" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
+          <div class="km-fc-icon"><i class="fas fa-calculator"></i></div>
+          <div class="km-fc-text">
+            <h4 class="km-fc-title">Calculator</h4>
+            <p class="km-fc-desc">Estimate your monthly budget and see what you can afford.</p>
+          </div>
+          <i class="fas fa-chevron-right km-fc-arrow"></i>
+        </div>
+
+        <!-- Card 2: What Can I Afford? -->
+        <div class="km-feature-card" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
+          <div class="km-fc-icon"><i class="fas fa-wallet"></i></div>
+          <div class="km-fc-text">
+            <h4 class="km-fc-title">What Can I Afford?</h4>
+            <p class="km-fc-desc">Find properties within your price range.</p>
+          </div>
+          <i class="fas fa-chevron-right km-fc-arrow"></i>
+        </div>
+
+        <!-- Card 3: Instant Alerts -->
+        <div class="km-feature-card" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()" role="button" tabindex="0">
+          <div class="km-fc-icon"><i class="fas fa-bell"></i></div>
+          <div class="km-fc-text">
+            <h4 class="km-fc-title">Instant Alerts</h4>
+            <p class="km-fc-desc">Get new listings on WhatsApp, email or SMS.</p>
+          </div>
+          <i class="fas fa-chevron-right km-fc-arrow"></i>
+        </div>
+
+        <!-- Card 4: 3-Day Smart House Hunt -->
+        <div class="km-feature-card km-fc--hunt" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
+          <div class="km-fc-icon"><i class="fas fa-home"></i></div>
+          <div class="km-fc-text">
+            <h4 class="km-fc-title">3-Day Smart House Hunt</h4>
+            <p class="km-fc-desc">Can't find a house? Let our verified ground team inspect &amp; match rentals in 72 hours.</p>
+          </div>
+          <button class="km-fc-cta-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">
+            Start Hunt &rarr;
+          </button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ====================================================================
-       SEARCH PANEL
-       ==================================================================== -->
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <div class="keja-search-panel">
-      <div class="ksp-field" onclick="document.getElementById('header-search-input').focus()">
-        <div class="ksp-label"><i class="fas fa-search"></i> Search Area</div>
-        <div class="ksp-value placeholder">Search area, estate or neighbourhood...<br><small style="font-size:0.72rem; color:#94a3b8;">e.g. Kilimani, Westlands, Ruaka...</small></div>
-      </div>
-      <div class="ksp-field" onclick="app && app.populateSidebarFilters && app.populateSidebarFilters()">
-        <div class="ksp-label"><i class="fas fa-home"></i> Property Type</div>
-        <div class="ksp-value" id="ksp-type-display">Any</div>
-      </div>
-      <div class="ksp-field" onclick="document.getElementById('price-min-input') && document.getElementById('price-min-input').focus()">
-        <div class="ksp-label"><i class="fas fa-bed"></i> Bedrooms</div>
-        <div class="ksp-value" id="ksp-beds-display">Any</div>
-      </div>
-      <div class="ksp-field" onclick="document.getElementById('price-min-input') && document.getElementById('price-min-input').focus()">
-        <div class="ksp-label"><i class="fas fa-money-bill-wave"></i> Price Range</div>
-        <div class="ksp-value" id="ksp-price-display">Any</div>
-      </div>
-      <div class="ksp-field" style="border-right:none;">
-        <div class="ksp-label"><i class="fas fa-sliders-h"></i> More Filters</div>
-        <div class="ksp-value placeholder">Bathrooms, Amenities...</div>
-      </div>
-      <button class="ksp-mapview-btn" onclick="app.setViewMode('map')">
-        <i class="fas fa-map-marked-alt"></i> Map View
-      </button>
-      <button class="ksp-search-btn" onclick="app.applyFilters()">
-        <i class="fas fa-search"></i> Search
-      </button>
-    </div>
-  </div>
-
-  <!-- ====================================================================
-       FEATURE CARDS (3-Day Hunt, Calculator, SMS Alerts)
-       ==================================================================== -->
-  <div class="keja-feature-cards">
-    <!-- Card 1: Green - House Hunt -->
-    <div class="kfc kfc--green">
-      <div class="kfc-text">
-        <div class="kfc-title">3-Day Smart House Hunt</div>
-        <div class="kfc-desc">Can't find a house? Let our verified ground team inspect &amp; match rentals in 72 hours.</div>
-        <button class="kfc-btn" onclick="app.openHouseHuntModal && app.openHouseHuntModal()">
-          Start Hunt <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-      <div class="kfc-icon"><i class="fas fa-search-location"></i></div>
-    </div>
-
-    <!-- Card 2: Purple - Affordability Calculator -->
-    <div class="kfc kfc--purple">
-      <div class="kfc-text">
-        <div class="kfc-title">What Can I Afford?</div>
-        <div class="kfc-desc">Avoid rent stress. Calculate your safe rent income instantly.</div>
-        <button class="kfc-btn" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()">
-          Calculate <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-      <div class="kfc-icon"><i class="fas fa-calculator"></i></div>
-    </div>
-
-    <!-- Card 3: Pink - Instant Alerts -->
-    <div class="kfc kfc--pink">
-      <div class="kfc-text">
-        <div class="kfc-title">Instant Vacancy Alerts</div>
-        <div class="kfc-desc">Hot rentals in Ruaka, Roysambu &amp; Kilimani get taken fast. Get an instant SMS or WhatsApp alert.</div>
-        <button class="kfc-btn" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()">
-          Get Alerts <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-      <div class="kfc-icon"><i class="fab fa-whatsapp"></i></div>
-    </div>
-  </div>
-
-  <!-- Main Application Layout (Always visible for seamless browsing) -->
   <main class="main-app-layout" id="main-app-layout">
 
     <!-- Left Sidebar: Accordion Filter Panel (Matches reference image) -->
     <aside class="sidebar-filters" id="sidebar-filters" aria-label="Rental Filters">
       <div class="filter-header-main">
-        <div class="filter-header-title"><i class="fas fa-sliders-h"></i> Filters</div>
+        <div class="filter-header-title"><i class="fas fa-home" style="color:#00b53f; margin-right:4px;"></i> Filters</div>
         <button type="button" class="filter-clear-link" onclick="app.resetFilters()">Clear All</button>
       </div>
 
-      <!-- Section 1: Location -->
-      <div class="filter-accordion-section" id="filter-sec-location">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-location')">
-          <span class="acc-title"><i class="fas fa-map-marker-alt"></i> Location</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body">
-          <select class="filter-select" id="filter-corridor">
-            <option value="all">Nairobi & Environs</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Section 2: Estate / Suburb -->
-      <div class="filter-accordion-section" id="filter-sec-suburb">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-suburb')">
-          <span class="acc-title"><i class="fas fa-city"></i> Estate / Suburb</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body">
-          <div class="suburb-search-wrapper">
-            <i class="fas fa-search"></i>
-            <input type="text" id="suburb-search-input" class="suburb-search-input" placeholder="Search estate or suburb..." oninput="app.filterSuburbChecklist(this.value)">
-          </div>
-          <div class="filter-checklist-box" id="suburb-checklist-container">
-            <!-- Populated dynamically with checkboxes and counts -->
-          </div>
-          <button type="button" class="btn-show-more-suburbs" id="btn-toggle-more-suburbs" onclick="app.toggleMoreSuburbs()">
-            <span>Show more (15)</span> <i class="fas fa-chevron-down"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Section 3: Property Type -->
-      <div class="filter-accordion-section" id="filter-sec-type">
+      <!-- Section 1: Property Type (13 exact items with icons) -->
+      <div class="filter-accordion-section open" id="filter-sec-type">
         <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-type')">
           <span class="acc-title"><i class="fas fa-home"></i> Property Type</span>
           <i class="fas fa-chevron-up acc-icon"></i>
         </div>
-        <div class="filter-accordion-body">
+        <div class="filter-accordion-body" style="display:block;">
           <div class="filter-checklist-box" id="property-type-checklist-container">
-            <!-- Populated dynamically with checkboxes and counts -->
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Bnb (Short Stay)" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-umbrella-beach"></i></span><span class="item-label">Bnb (Short Stay)</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">Single Room</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">Apartment</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
+            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
           </div>
         </div>
       </div>
 
-      <!-- Section 4: Price Range (KSh) -->
-      <div class="filter-accordion-section" id="filter-sec-price">
+      <!-- Section 2: Location (Search field + County + Sub-county) -->
+      <div class="filter-accordion-section open" id="filter-sec-location">
+        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-location')">
+          <span class="acc-title"><i class="fas fa-map-marker-alt" style="color:#e52b2b;"></i> Location</span>
+          <i class="fas fa-chevron-up acc-icon"></i>
+        </div>
+        <div class="filter-accordion-body" style="display:block;">
+          <div class="suburb-search-wrapper" style="margin-bottom:8px;">
+            <i class="fas fa-search"></i>
+            <input type="text" id="location-search-input" class="suburb-search-input" placeholder="Search area, estate or neighbourhood" oninput="app.filterSuburbChecklist && app.filterSuburbChecklist(this.value)">
+          </div>
+          <div style="display:flex; gap:6px; margin-bottom:8px;">
+            <select class="filter-select" id="filter-county" style="flex:1;" onchange="app.onCountyChange && app.onCountyChange(this.value)">
+              <option value="all">County</option>
+              <option value="nairobi" selected>Nairobi</option>
+              <option value="kiambu">Kiambu</option>
+              <option value="machakos">Machakos</option>
+              <option value="kajiado">Kajiado</option>
+              <option value="mombasa">Mombasa</option>
+            </select>
+            <select class="filter-select" id="filter-subcounty" style="flex:1;" onchange="app.applyFilters && app.applyFilters()">
+              <option value="all">Sub-county</option>
+              <option value="westlands">Westlands</option>
+              <option value="kilimani">Kilimani</option>
+              <option value="kileleshwa">Kileleshwa</option>
+              <option value="lavington">Lavington</option>
+              <option value="runda">Runda</option>
+              <option value="karen">Karen</option>
+              <option value="kasarani">Kasarani</option>
+              <option value="roysambu">Roysambu</option>
+              <option value="ruaka">Ruaka</option>
+              <option value="kitengela">Kitengela</option>
+              <option value="mlolongo">Mlolongo</option>
+              <option value="syokimau">Syokimau</option>
+              <option value="nyayo">Nyayo Estate</option>
+              <option value="embakasi">Embakasi</option>
+              <option value="langata">Langata</option>
+              <option value="starehe">Starehe</option>
+              <option value="kibra">Kibra</option>
+              <option value="dagoretti">Dagoretti</option>
+            </select>
+          </div>
+          <select class="filter-select" id="filter-corridor" style="display:none;"><option value="all">Nairobi &amp; Environs</option></select>
+          <div class="suburb-checklist-box" id="suburb-checklist-container" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- Section 3: Price Range (KSh) -->
+      <div class="filter-accordion-section open" id="filter-sec-price">
         <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-price')">
-          <span class="acc-title"><i class="fas fa-money-bill-wave"></i> Price Range (KSh)</span>
+          <span class="acc-title"><i class="fas fa-tag" style="color:#00b53f;"></i> Price Range (KSh)</span>
           <i class="fas fa-chevron-up acc-icon"></i>
         </div>
-        <div class="filter-accordion-body">
-          <div class="price-range-row">
-            <input type="number" id="price-min-input" class="price-box-input" placeholder="Min" value="0" min="0" step="1000">
-            <span style="color: #94a3b8; font-weight: 700;">-</span>
-            <input type="number" id="price-max-input" class="price-box-input" placeholder="Max" value="200000" min="5000" step="5000">
+        <div class="filter-accordion-body" style="display:block;">
+          <div style="display:flex; gap:6px; align-items:center;">
+            <select class="filter-select" id="price-min-select" style="flex:1;" onchange="if(document.getElementById('price-min-input')) document.getElementById('price-min-input').value=this.value; app.applyFilters && app.applyFilters()">
+              <option value="0">Min</option>
+              <option value="5000">KSh 5,000</option>
+              <option value="10000">KSh 10,000</option>
+              <option value="15000">KSh 15,000</option>
+              <option value="25000">KSh 25,000</option>
+              <option value="40000">KSh 40,000</option>
+              <option value="60000">KSh 60,000</option>
+              <option value="100000">KSh 100,000</option>
+            </select>
+            <select class="filter-select" id="price-max-select" style="flex:1;" onchange="if(document.getElementById('price-max-input')) document.getElementById('price-max-input').value=this.value; app.applyFilters && app.applyFilters()">
+              <option value="500000">Max</option>
+              <option value="15000">KSh 15,000</option>
+              <option value="25000">KSh 25,000</option>
+              <option value="40000">KSh 40,000</option>
+              <option value="60000">KSh 60,000</option>
+              <option value="100000">KSh 100,000</option>
+              <option value="200000">KSh 200,000</option>
+              <option value="500000">KSh 500,000+</option>
+            </select>
           </div>
+          <input type="hidden" id="price-min-input" value="0">
+          <input type="hidden" id="price-max-input" value="500000">
         </div>
       </div>
 
-      <!-- Section 5: Amenities -->
-      <div class="filter-accordion-section" id="filter-sec-amenities">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-amenities')">
-          <span class="acc-title"><i class="fas fa-couch"></i> Amenities</span>
+      <!-- Section 4: Bedrooms -->
+      <div class="filter-accordion-section open" id="filter-sec-beds">
+        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-beds')">
+          <span class="acc-title"><i class="fas fa-bed"></i> Bedrooms</span>
           <i class="fas fa-chevron-up acc-icon"></i>
         </div>
-        <div class="filter-accordion-body">
+        <div class="filter-accordion-body" style="display:block;">
+          <select class="filter-select" id="filter-bedrooms" onchange="app.applyFilters && app.applyFilters()">
+            <option value="any">Any</option>
+            <option value="0">Studio / Bedsitter</option>
+            <option value="1">1 Bedroom</option>
+            <option value="2">2 Bedrooms</option>
+            <option value="3">3 Bedrooms</option>
+            <option value="4">4+ Bedrooms</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Section 5: Bathrooms -->
+      <div class="filter-accordion-section open" id="filter-sec-baths">
+        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-baths')">
+          <span class="acc-title"><i class="fas fa-bath"></i> Bathrooms</span>
+          <i class="fas fa-chevron-up acc-icon"></i>
+        </div>
+        <div class="filter-accordion-body" style="display:block;">
+          <select class="filter-select" id="filter-bathrooms" onchange="app.applyFilters && app.applyFilters()">
+            <option value="any">Any</option>
+            <option value="1">1 Bathroom</option>
+            <option value="2">2 Bathrooms</option>
+            <option value="3">3+ Bathrooms</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Section 6: Furnishing -->
+      <div class="filter-accordion-section open" id="filter-sec-furnishing">
+        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-furnishing')">
+          <span class="acc-title"><i class="fas fa-couch"></i> Furnishing</span>
+          <i class="fas fa-chevron-up acc-icon"></i>
+        </div>
+        <div class="filter-accordion-body" style="display:block;">
+          <select class="filter-select" id="filter-furnishing" onchange="app.applyFilters && app.applyFilters()">
+            <option value="any">Any</option>
+            <option value="furnished">Furnished</option>
+            <option value="unfurnished">Unfurnished</option>
+            <option value="semi-furnished">Semi-Furnished</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Section 7: Amenities -->
+      <div class="filter-accordion-section open" id="filter-sec-amenities">
+        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-amenities')">
+          <span class="acc-title"><i class="fas fa-star" style="color:#f59e0b;"></i> Amenities</span>
+          <i class="fas fa-chevron-up acc-icon"></i>
+        </div>
+        <div class="filter-accordion-body" style="display:block;">
+          <div style="font-size:0.75rem; color:#64748b; margin-bottom:6px;">AC, Parking, WiFi, Gym...</div>
           <div class="amenities-grid-2col">
-            <label class="filter-check-item"><input type="checkbox" id="filter-wifi"><span>Wi-Fi</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-tokens"><span>Electricity</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-borehole"><span>Water Supply</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-cctv"><span>Security</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-furnished"><span>Furnished</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-pool"><span>Swimming Pool</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="filter-wifi"><span>WiFi</span></label>
             <label class="filter-check-item"><input type="checkbox" id="filter-parking"><span>Parking</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="filter-pool"><span>Swimming Pool</span></label>
             <label class="filter-check-item"><input type="checkbox" id="filter-gym"><span>Gym</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="filter-cctv"><span>Security</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="filter-borehole"><span>Water Supply</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="filter-tokens"><span>Electricity</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="filter-furnished-chk"><span>Furnished</span></label>
           </div>
         </div>
       </div>
@@ -744,11 +723,10 @@
       <div class="mobile-hero-promo" id="mobile-hero-promo" onclick="openWhatsAppAlertsWithAuth()">
         <div class="m-hero-content">
           <h2 class="m-hero-heading">Find the perfect home or<br>property in Kenya</h2>
-          <div class="m-hero-alert-pill">
+          <div class="m-hero-alert-pill" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()">
             <i class="fab fa-whatsapp"></i>
             <div class="m-hero-alert-text">
-              <span>Get instant alerts on WhatsApp</span>
-              <strong>with sh100</strong>
+              <span>Get instant property alerts on WhatsApp</span>
             </div>
           </div>
         </div>
@@ -906,9 +884,8 @@
             <div>
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                 <span style="background: #fef08a; color: #854d0e; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
-                  🔔 Instant SMS Alerts
+                  🔔 Instant Alerts
                 </span>
-                <span style="font-size: 0.8rem; font-weight: 800; color: #f5d0fe;">KSh 100</span>
               </div>
               <h3 style="margin: 0 0 6px; font-size: 1.15rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
                 <i class="fas fa-bolt" style="color: #f0abfc;"></i> Instant Vacancy Alerts
@@ -928,49 +905,53 @@
       </div>
 
       <!-- SMS Alert banner above results -->
-      <div class="keja-sms-results-banner" id="keja-sms-results-banner">
-        <div class="keja-sms-banner-left">
-          <div class="keja-sms-icon-wrap"><i class="fas fa-sms"></i></div>
-          <div>
-            <div class="keja-sms-banner-title">Looking for a house? Get Instant SMS Alerts!</div>
-            <div class="keja-sms-banner-sub">Be the first to receive verified rentals directly on your phone via SMS.</div>
-          </div>
+      <!-- SMS banner removed to match reference design -->
         </div>
         <button class="keja-sms-banner-btn" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()">
-          <i class="fas fa-sms"></i> Set SMS Alert (KSh 100)
+          <i class="fas fa-bell"></i> Get Instant Alerts
         </button>
       </div>
 
-      <!-- View Controls & View Mode Switcher -->
-      <div class="view-controls-bar">
-        <div class="results-count-text">
-          <span id="results-count-display">312</span> Properties in <span>Nairobi &amp; Environs</span>
+      <!-- Results Header & View Controls (Matches reference image exactly) -->
+      <div class="results-header">
+        <div class="results-count-section">
+          <span class="results-count-text" id="results-count-num">312</span>
+          <span class="results-location-text">Properties in <span id="results-count-loc">Nairobi & Environs</span></span>
         </div>
+        <span id="results-count-display" style="display:none;">312</span>
         <div class="listings-count-summary" id="listings-count-summary" style="display: none !important;"></div>
 
-        <div class="right-controls">
-          <!-- View Mode Toggle (Grid | Split | Map) -->
-          <div class="view-mode-toggle">
-            <button class="btn-view-mode active" data-view="grid" onclick="app.setViewMode('grid')">
-              <i class="fas fa-th-large"></i> Grid View
+        <div class="results-controls">
+          <!-- View Mode Toggle (Grid | List | Map View) -->
+          <div class="view-toggle-buttons">
+            <button class="view-toggle-btn active" data-view="grid" onclick="app.setViewMode('grid')" title="Grid View">
+              <i class="fas fa-th-large"></i> Grid
             </button>
-            <button class="btn-view-mode" data-view="split" onclick="app.setViewMode('split')">
-              <i class="fas fa-columns"></i> Split View
+            <button class="view-toggle-btn" data-view="list" onclick="app.setViewMode('list')" title="List View">
+              <i class="fas fa-list"></i> List
             </button>
-            <button class="btn-view-mode" data-view="map" onclick="app.setViewMode('map')">
+            <button class="view-toggle-btn" data-view="map" onclick="app.setViewMode('map')" title="Map View">
               <i class="fas fa-map-marker-alt"></i> Map View
             </button>
           </div>
 
           <!-- Sort dropdown -->
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 0.82rem; color: #64748b; font-weight: 600; white-space: nowrap;">Sort by</span>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 0.875rem; color: #6b7280; font-weight: 500; white-space: nowrap;">Sort by:</span>
             <select class="sort-select" id="sort-by-select" onchange="app.onSortChange(this.value)">
-              <option value="newest">Newest First</option>
-              <option value="category_asc">Arrange: Single Room & Upwards</option>
+              <option value="newest" selected>Newest First</option>
               <option value="price_asc">Price: Low to High</option>
               <option value="price_desc">Price: High to Low</option>
-              <option value="featured">Featured / Top Ads</option>
+              <option value="featured">Featured First</option>
+            </select>
+          </div>
+
+          <!-- Per Page dropdown -->
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <select class="sort-select" id="per-page-select" onchange="app.itemsPerPage = parseInt(this.value); app.currentPage = 1; app.renderProperties();">
+              <option value="12" selected>12 per page</option>
+              <option value="24">24 per page</option>
+              <option value="48">48 per page</option>
             </select>
           </div>
         </div>
@@ -985,9 +966,14 @@
           <!-- Generated via JS -->
         </div>
 
-        <!-- Pagination -->
+        <!-- Pagination with results summary -->
         <div class="pagination-wrapper" id="pagination-container">
           <!-- Generated via JS -->
+        </div>
+        
+        <!-- Results summary footer -->
+        <div class="footer-branding-text">
+          Showing <strong id="results-range-display">1 - 12</strong> of <strong id="total-results-display">312</strong> properties
         </div>
 
         <!-- View More Listings button -->
@@ -1108,34 +1094,34 @@
 
       <!-- Brand -->
       <div class="footer-col-brand">
-        <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+        <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
           <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#00b53f" stroke="#007728" stroke-width="2.5" stroke-linejoin="round"/>
             <path d="M38 82V56H58V82H38Z" fill="#fff"/>
             <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2b"/>
             <circle cx="48" cy="21" r="4.5" fill="#fff"/>
           </svg>
-          <span style="font-size:1.15rem; font-weight:900; color:#fff; letter-spacing:-0.5px; font-family:var(--font);">Keja<span style="color:#e52b2b;">Market</span></span>
+          <span style="font-size:1.25rem; font-weight:900; color:#fff; letter-spacing:-0.5px; font-family:'Poppins',sans-serif;">Keja<span style="color:#e52b2b;">Market</span></span>
         </div>
-        <p style="margin:0; font-size:0.68rem; color:#94a3b8; line-height:1.3;">Find your next place. Find what you need.</p>
-        <div class="footer-social-icons" style="margin-top: 5px;">
+        <p style="margin:0 0 10px 0; font-size:0.75rem; color:#d1fae5; line-height:1.4;">Find your next place. Find what you need.</p>
+        <div class="footer-social-icons">
           <a href="https://facebook.com/kejamarket" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
           <a href="https://twitter.com/kejamarket" target="_blank" title="X / Twitter"><i class="fab fa-x-twitter"></i></a>
-          <a href="https://instagram.com/kejamarket" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://youtube.com/@kejamarket" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
           <a href="https://linkedin.com/company/kejamarket" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://youtube.com/@kejamarket" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
         </div>
+        <p style="font-size:0.68rem; color:#a7f3d0; margin-top:12px;">&copy; 2026 KejaMarket. All rights reserved.</p>
       </div>
 
-      <!-- Property -->
+      <!-- Quick Links -->
       <div>
-        <div class="footer-col-title">Property</div>
+        <div class="footer-col-title">Quick Links</div>
         <ul class="footer-links-list">
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('1 Bedroom'); return false;">Rentals</a></li>
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('2 Bedroom'); return false;">Apartments</a></li>
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Airbnbs'); return false;">Airbnb</a></li>
+          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('All'); return false;">Home</a></li>
+          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Rentals'); return false;">Rentals</a></li>
+          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Apartments'); return false;">Apartments</a></li>
+          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Selling'); return false;">Selling Homes</a></li>
           <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Land'); return false;">Land</a></li>
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Bungalow'); return false;">Selling Homes</a></li>
         </ul>
       </div>
 
@@ -1150,9 +1136,20 @@
         </ul>
       </div>
 
-      <!-- Services -->
+      <!-- For Tenants -->
       <div>
-        <div class="footer-col-title">Services</div>
+        <div class="footer-col-title">For Tenants</div>
+        <ul class="footer-links-list">
+          <li><a href="#" onclick="app.switchFilterTab('properties'); return false;">Search Rentals</a></li>
+          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Selling'); return false;">Search Homes</a></li>
+          <li><a href="#" onclick="app.openHouseHuntModal(); return false;">House Hunt</a></li>
+          <li><a href="#" onclick="kejaDashboard.open('faq'); return false;">Tips &amp; Guides</a></li>
+        </ul>
+      </div>
+
+      <!-- For Services -->
+      <div>
+        <div class="footer-col-title">For Services</div>
         <ul class="footer-links-list">
           <li><a href="#" onclick="app.openModal('modal-lead-movers'); return false;">Moving</a></li>
           <li><a href="#" onclick="app.switchFilterTab('services'); return false;">Cleaning</a></li>
@@ -1161,68 +1158,49 @@
         </ul>
       </div>
 
-      <!-- Support -->
-      <div>
-        <div class="footer-col-title">Support</div>
-        <ul class="footer-links-list">
-          <li><a href="#" onclick="kejaDashboard.open('faq'); return false;">Help &amp; FAQs</a></li>
-          <li><a href="#" onclick="app.openAdminChat(); return false;">Contact Us</a></li>
-          <li><a href="/terms">Terms &amp; Conditions</a></li>
-          <li><a href="/privacy-policy">Privacy Policy</a></li>
-        </ul>
-      </div>
-
       <!-- Company -->
       <div>
         <div class="footer-col-title">Company</div>
         <ul class="footer-links-list">
           <li><a href="#" onclick="return false;">About KejaMarket</a></li>
-          <li><a href="#" onclick="return false;">How it Works</a></li>
+          <li><a href="#" onclick="return false;">How It Works</a></li>
           <li><a href="/privacy-policy">Privacy</a></li>
           <li><a href="/terms">Terms</a></li>
         </ul>
       </div>
 
-      <!-- Download App -->
+      <!-- Contact Us -->
+      <div>
+        <div class="footer-col-title">Contact Us</div>
+        <ul class="footer-links-list footer-contact-list">
+          <li><a href="tel:+254700123456"><i class="fas fa-phone-alt"></i> +254 700 123 456</a></li>
+          <li><a href="mailto:support@kejamarket.co.ke"><i class="fas fa-envelope"></i> support@kejamarket.co.ke</a></li>
+          <li><span><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</span></li>
+        </ul>
+      </div>
+
+      <!-- Download Our App -->
       <div>
         <div class="footer-col-title">Download Our App</div>
-        <p style="font-size:0.68rem; color:#94a3b8; margin-bottom:5px; font-family:var(--font);">Get the best experience on the go.</p>
         <div class="footer-app-badges">
-          <a href="#" onclick="return false;" style="display:inline-flex; align-items:center; gap:6px; background:#111; color:#fff; padding:4px 8px; border-radius:6px; font-size:0.68rem; border:1px solid rgba(255,255,255,0.2); text-decoration:none; font-family:var(--font);">
-            <i class="fab fa-google-play" style="font-size:0.85rem;"></i>
-            <span style="line-height:1.1;"><small style="display:block; font-size:0.55rem; color:#94a3b8; font-family:var(--font);">GET IT ON</small>Google Play</span>
+          <a href="#" onclick="return false;" class="footer-app-btn">
+            <i class="fab fa-google-play"></i>
+            <span><small>GET IT ON</small>Google Play</span>
           </a>
-          <a href="#" onclick="return false;" style="display:inline-flex; align-items:center; gap:6px; background:#111; color:#fff; padding:4px 8px; border-radius:6px; font-size:0.68rem; border:1px solid rgba(255,255,255,0.2); text-decoration:none; font-family:var(--font);">
-            <i class="fab fa-apple" style="font-size:0.95rem;"></i>
-            <span style="line-height:1.1;"><small style="display:block; font-size:0.55rem; color:#94a3b8; font-family:var(--font);">Download on the</small>App Store</span>
+          <a href="#" onclick="return false;" class="footer-app-btn">
+            <i class="fab fa-apple"></i>
+            <span><small>Download on the</small>App Store</span>
           </a>
+        </div>
+        <div style="margin-top:10px; font-size:0.75rem; color:#bbf7d0; font-weight:600; display:flex; align-items:center; gap:5px;">
+          <span style="color:#ef4444;">❤️</span> Built for a better Kenya
         </div>
       </div>
 
     </div>
-
-    <!-- Bottom bar -->
-    <div class="footer-bottom-bar">
-      <p>&copy; 2026 KejaMarket. All rights reserved.</p>
-      <p style="display:flex; align-items:center; gap:5px;">
-        <i class="fas fa-map-marker-alt" style="color:#e52b2b;"></i> Nairobi, Kenya
-      </p>
-    </div>
   </footer>
 
-  <!-- ====================================================================
-       FLOATING SHARE PANEL
-       ==================================================================== -->
-  <div class="keja-float-share" id="keja-float-share">
-    <span>Share</span>
-    <div class="float-share-btns">
-      <a href="https://facebook.com/kejamarket" target="_blank" class="float-share-btn fsb-fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://wa.me/254792409540" target="_blank" class="float-share-btn fsb-wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-      <a href="https://tiktok.com/@kejamarket" target="_blank" class="float-share-btn fsb-tt" title="TikTok"><i class="fab fa-tiktok"></i></a>
-      <a href="https://instagram.com/kejamarket" target="_blank" class="float-share-btn fsb-ig" title="Instagram"><i class="fab fa-instagram"></i></a>
-      <button class="float-share-btn fsb-copy" title="Copy Link" onclick="app.copyShareLink && app.copyShareLink('page', event)"><i class="fas fa-link"></i></button>
-    </div>
-  </div>
+  <!-- Float Share Panel removed -->
 
   <!-- ====================================================================
        MODAL 1: Landlord "+ Post Free Ad"
@@ -2307,7 +2285,7 @@
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 20px; font-size: 0.82rem; color: #475569;">
           <i class="fas fa-receipt" style="color: #00b53f;"></i>
           M-Pesa Receipt: <strong style="font-family: monospace; font-size: 0.9rem; color: #166534;" id="wa-success-receipt">—</strong>
-           &middot;  <strong>KSh 100</strong> / month
+           
         </div>
 
         <!-- Simulated WhatsApp preview -->
@@ -2359,7 +2337,7 @@
           Receive new verified rental listings directly to your WhatsApp as soon as they're posted. Never miss a good house again!
         </p>
         <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 0.85rem; color: #166534;">
-          <strong>KSh 100/month</strong> — Unlimited alerts for your preferred estate and budget range.
+          <strong>Instant Alerts</strong> — Unlimited alerts for your preferred estate and budget range.
         </div>
 
         <form id="form-whatsapp-alert-sub">
@@ -2434,7 +2412,7 @@
           <div class="modal-footer" style="padding: 14px 0 0 0; background: transparent; display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
             <button type="button" class="btn-secondary" onclick="app.closeModal('modal-whatsapp-alerts')" style="flex: 1; min-width: 90px;">Cancel</button>
             <button type="submit" class="btn-primary" style="flex: 2; min-width: 180px; background: #25d366; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-              <i class="fab fa-whatsapp"></i> Subscribe & Pay KSh 100
+              <i class="fab fa-whatsapp"></i> Get Instant WhatsApp Alerts
             </button>
           </div>
         </form>
@@ -2984,30 +2962,7 @@
   </div>
 
   <!-- Mobile Bottom Navigation Bar (Matches reference screenshot) -->
-  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
-    <a href="#" class="mobile-nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="app.focusMobileSearch(); return false;">
-      <i class="fas fa-search"></i>
-      <span>Search</span>
-    </a>
-    <a href="#" class="mobile-nav-item mobile-nav-post" onclick="kejaAuth.requireLandlordForAction('modal-post-ad'); return false;">
-      <div class="mobile-nav-post-btn">
-        <i class="fas fa-plus"></i>
-      </div>
-      <span>Post</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="app.openAdminChat(); return false;">
-      <i class="far fa-comment-dots"></i>
-      <span>Messages</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="if(window.kejaAuth && window.kejaAuth.getSession()){ kejaDashboard.open(); } else { kejaAuth.openAuthModal(); } return false;">
-      <i class="far fa-user"></i>
-      <span id="mobile-nav-user-label">Account</span>
-    </a>
-  </nav>
+  
 
   <!-- ====================================================================
        MODAL 9.4: Unified User Dashboard (all roles post-login)
@@ -3683,7 +3638,7 @@
   <script src="js/auth.js?v=4.0&t=202609170130"></script>
   <script src="js/reviews.js?v=4.0&t=202609170130"></script>
   <script src="js/data/locations.js?v=6.0&t=202609171345"></script>
-  <script src="js/data/seedListings.js?v=6.0&t=202609171345"></script>
+  <script src="js/data/seedListings.js?v=6.1&t=202610022315"></script>
   <script src="js/comments.js?v=4.0&t=202609170130"></script>
   <script src="js/map.js?v=4.0&t=202609170130"></script>
   <script src="js/watermark.js?v=1.0&t=202609172330"></script>
@@ -3699,7 +3654,7 @@
   <script src="js/recently-added.js?v=4.0&t=202609170130"></script>
   <script src="js/botSimulator.js?v=4.0&t=202609170130"></script>
   <script src="js/monetization.js?v=4.0&t=202609170130"></script>
-  <script src="js/app.js?v=5.2&t=202609240030"></script>
+  <script src="js/app.js?v=5.3&t=202610022315"></script>
   <script src="js/instagram-integration.js?v=6.0&t=202609171355"></script>
   <script src="js/admin.js?v=4.0&t=202609170130"></script>
   <!-- Profile Dropdown Test Script -->
@@ -4356,27 +4311,1300 @@
     <i class="fas fa-home"></i>
     <span>Home</span>
   </a>
-  <a href="#" class="mobile-nav-item" id="mob-nav-search" onclick="app.focusMobileSearch(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Search">
+  <a href="#" class="mobile-nav-item" id="mob-nav-search" onclick="app.openMobileFiltersSheet(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Search">
     <i class="fas fa-search"></i>
     <span>Search</span>
   </a>
-  <a href="#" class="mobile-nav-item mobile-nav-post" id="mob-nav-post" onclick="app.togglePostDropdown(event); return false;" aria-label="Post">
+  <a href="#" class="mobile-nav-item mobile-nav-post" id="mob-nav-post" onclick="app.openPostPropertyModal(event); return false;" aria-label="Post Property">
     <div class="mobile-nav-post-btn">
       <i class="fas fa-plus"></i>
     </div>
     <span>Post</span>
   </a>
-  <a href="#" class="mobile-nav-item" id="mob-nav-messages" onclick="app.openAdminChat(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Messages">
-    <i class="far fa-comment-dots"></i>
-    <span>Messages</span>
+  <a href="#" class="mobile-nav-item" id="mob-nav-saved" onclick="app.openSavedListingsModal(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Saved Listings">
+    <i class="far fa-heart"></i>
+    <span>Saved</span>
   </a>
-  <a href="#" class="mobile-nav-item" id="mob-nav-account" onclick="kejaAuth.toggleProfileDropdown(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Account">
+  <a href="#" class="mobile-nav-item" id="mob-nav-account" onclick="app.openMobileAccountModal(); document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.remove('mobile-nav-item--active')); this.classList.add('mobile-nav-item--active'); return false;" aria-label="Account">
     <i class="far fa-user"></i>
     <span>Account</span>
   </a>
 </nav>
 
+
+  <!-- ====================================================================
+       MODAL: SHARE PROPERTY (Desktop Modal & Mobile Bottom Sheet)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-share-property" style="display:none; z-index:3000;">
+    <div class="modal-dialog km-share-dialog" style="max-width:480px;">
+      <div class="modal-header km-share-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button type="button" class="km-share-back-btn" onclick="app.closeModal('modal-share-property')"><i class="fas fa-arrow-left"></i></button>
+          <h3 style="margin:0; font-size:1.15rem; font-weight:800; color:#0f172a;">Share Property</h3>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-share-property')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:16px 20px;">
+        <!-- Property Preview Card -->
+        <div class="km-share-preview-card" id="km-share-preview">
+          <img id="km-share-img" src="" alt="Property Preview">
+          <div class="km-share-preview-info">
+            <h4 id="km-share-title">Property Title</h4>
+            <div class="km-share-loc" id="km-share-loc"><i class="fas fa-map-marker-alt"></i> Location</div>
+            <div class="km-share-price" id="km-share-price">KSh 0 / month</div>
+            <div class="km-share-specs" id="km-share-specs">1 Bed &middot; 1 Bath &middot; WiFi &middot; Parking</div>
+          </div>
+        </div>
+
+        <p class="km-share-lead-text">Share this property with your friends and family</p>
+
+        <!-- Social Media Buttons Grid -->
+        <div class="km-share-social-grid">
+          <button type="button" class="km-ss-btn km-ss-fb" onclick="app.shareToSocial('fb')" title="Share on Facebook">
+            <div class="km-ss-icon"><i class="fab fa-facebook-f"></i></div>
+            <span>Facebook</span>
+          </button>
+          <button type="button" class="km-ss-btn km-ss-wa" onclick="app.shareToSocial('wa')" title="Share on WhatsApp">
+            <div class="km-ss-icon"><i class="fab fa-whatsapp"></i></div>
+            <span>WhatsApp</span>
+          </button>
+          <button type="button" class="km-ss-btn km-ss-tt" onclick="app.shareToSocial('tt')" title="Share on TikTok">
+            <div class="km-ss-icon"><i class="fab fa-tiktok"></i></div>
+            <span>TikTok</span>
+          </button>
+          <button type="button" class="km-ss-btn km-ss-ig" onclick="app.shareToSocial('ig')" title="Share on Instagram">
+            <div class="km-ss-icon"><i class="fab fa-instagram"></i></div>
+            <span>Instagram</span>
+          </button>
+        </div>
+
+        <!-- Copy Link Row -->
+        <div class="km-share-copy-box">
+          <input type="text" id="km-share-link-input" readonly value="https://kejamarket.co.ke/property/">
+          <button type="button" class="km-share-copy-btn" id="btn-copy-share-link" onclick="app.copyShareLink()">
+            <i class="fas fa-link"></i> <span>Copy Link</span>
+          </button>
+        </div>
+
+        <!-- More Options -->
+        <div class="km-share-more-section">
+          <span class="km-sm-label">More Options</span>
+          <div class="km-share-more-grid">
+            <button type="button" class="km-sm-btn" onclick="app.shareToSocial('messenger')">
+              <i class="fab fa-facebook-messenger" style="color:#0084ff;"></i>
+              <span>Messenger</span>
+            </button>
+            <button type="button" class="km-sm-btn" onclick="app.shareToSocial('email')">
+              <i class="fas fa-envelope" style="color:#ea4335;"></i>
+              <span>Email</span>
+            </button>
+            <button type="button" class="km-sm-btn" onclick="app.shareToSocial('sms')">
+              <i class="fas fa-sms" style="color:#10b981;"></i>
+              <span>SMS</span>
+            </button>
+            <button type="button" class="km-sm-btn" onclick="app.shareToSocial('more')">
+              <i class="fas fa-ellipsis-h" style="color:#64748b;"></i>
+              <span>More</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="btn-secondary" style="width:100%; margin-top:14px; padding:10px; font-weight:700; border-radius:10px;" onclick="app.closeModal('modal-share-property')">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: MOBILE FULL-SCREEN FILTERS (Exact Match to Mobile Reference 3)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-mobile-filters" style="display:none; z-index:3100;">
+    <div class="modal-dialog modal-mobile-fullscreen-dialog">
+      <div class="modal-header mob-filter-header">
+        <button type="button" class="mob-filter-back-btn" onclick="app.closeModal('modal-mobile-filters')">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <h3 style="margin:0; font-size:1.15rem; font-weight:800; color:#0f172a;">Filters</h3>
+        <button type="button" class="mob-filter-clear-btn" onclick="app.resetFilters(); app.renderMobileFilterChips();">Clear All</button>
+      </div>
+      <div class="modal-body mob-filter-body">
+        
+        <!-- Search Areas -->
+        <div class="mob-filter-group">
+          <label class="mob-fg-label"><i class="fas fa-search"></i> Search Areas (Estate / Neighbourhood)</label>
+          <div class="mob-search-input-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="mob-filter-area-input" placeholder="Search estate or neighbourhood..." onkeydown="if(event.key==='Enter'){app.addMobileFilterArea(this.value); this.value='';}">
+          </div>
+          <div class="mob-filter-chips-row" id="mob-filter-selected-chips">
+            <span class="mob-chip active" onclick="this.remove()">Westlands <i class="fas fa-times"></i></span>
+            <span class="mob-chip active" onclick="this.remove()">Kilimani <i class="fas fa-times"></i></span>
+          </div>
+        </div>
+
+        <!-- Property Type Grid -->
+        <div class="mob-filter-group">
+          <label class="mob-fg-label"><i class="fas fa-home"></i> Property Type</label>
+          <div class="mob-types-checkbox-grid">
+            <label class="mob-type-chk"><input type="checkbox" value="House" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-home"></i> House</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Apartment" checked onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-building"></i> Apartment</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Bedsitter" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-bed"></i> Bedsitter</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Single Room" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-door-open"></i> Single Room</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Studio" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-couch"></i> Studio</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Land" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-map"></i> Land</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Commercial" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-store"></i> Commercial</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Office" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-briefcase"></i> Office</span></label>
+          </div>
+        </div>
+
+        <!-- For Rent / For Sale Radio Pills -->
+        <div class="mob-filter-group">
+          <label class="mob-fg-label">For Rent / Sale</label>
+          <div class="mob-rent-sale-toggle">
+            <label class="mob-rs-pill active"><input type="radio" name="mob_rs" value="rent" checked onchange="app.onMobileRentSaleChange('rent')"> <i class="fas fa-check-circle"></i> For Rent</label>
+            <label class="mob-rs-pill"><input type="radio" name="mob_rs" value="sale" onchange="app.onMobileRentSaleChange('sale')"> For Sale</label>
+          </div>
+        </div>
+
+        <!-- Price Range -->
+        <div class="mob-filter-group">
+          <label class="mob-fg-label"><i class="fas fa-tag"></i> Price Range (KSh)</label>
+          <div style="display:flex; gap:8px;">
+            <select class="filter-select" id="mob-price-min" style="flex:1;">
+              <option value="0">Min Price</option>
+              <option value="5000">KSh 5,000</option>
+              <option value="15000">KSh 15,000</option>
+              <option value="25000">KSh 25,000</option>
+              <option value="50000">KSh 50,000</option>
+            </select>
+            <select class="filter-select" id="mob-price-max" style="flex:1;">
+              <option value="500000">Max Price</option>
+              <option value="25000">KSh 25,000</option>
+              <option value="50000">KSh 50,000</option>
+              <option value="100000">KSh 100,000</option>
+              <option value="500000">KSh 500,000+</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- More Filters Accordion -->
+        <div class="mob-filter-group">
+          <label class="mob-fg-label" style="display:flex; justify-content:space-between; cursor:pointer;" onclick="document.getElementById('mob-more-filters-box').classList.toggle('open')">
+            <span><i class="fas fa-sliders-h"></i> More Filters (Bedrooms, Bathrooms, Furnishing)</span>
+            <i class="fas fa-chevron-down"></i>
+          </label>
+          <div id="mob-more-filters-box" style="margin-top:10px; display:grid; gap:10px;">
+            <div>
+              <label style="font-size:0.75rem; color:#64748b; font-weight:700;">Bedrooms</label>
+              <select class="filter-select" id="mob-filter-beds" style="width:100%;">
+                <option value="any">Any Bedrooms</option>
+                <option value="0">Studio / Bedsitter</option>
+                <option value="1">1 Bedroom</option>
+                <option value="2">2 Bedrooms</option>
+                <option value="3">3 Bedrooms</option>
+                <option value="4">4+ Bedrooms</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.75rem; color:#64748b; font-weight:700;">Bathrooms</label>
+              <select class="filter-select" id="mob-filter-baths" style="width:100%;">
+                <option value="any">Any Bathrooms</option>
+                <option value="1">1 Bathroom</option>
+                <option value="2">2 Bathrooms</option>
+                <option value="3">3+ Bathrooms</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.75rem; color:#64748b; font-weight:700;">Furnishing</label>
+              <select class="filter-select" id="mob-filter-furnishing" style="width:100%;">
+                <option value="any">Any</option>
+                <option value="furnished">Furnished</option>
+                <option value="unfurnished">Unfurnished</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amenities -->
+        <div class="mob-filter-group">
+          <label class="mob-fg-label"><i class="fas fa-star"></i> Amenities</label>
+          <div class="amenities-grid-2col">
+            <label class="filter-check-item"><input type="checkbox" id="mob-amenity-wifi" checked><span>WiFi</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="mob-amenity-parking" checked><span>Parking</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="mob-amenity-pool"><span>Swimming Pool</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="mob-amenity-ac"><span>AC</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="mob-amenity-gym"><span>Gym</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="mob-amenity-security" checked><span>Security</span></label>
+            <label class="filter-check-item"><input type="checkbox" id="mob-amenity-pets"><span>Pet Friendly</span></label>
+          </div>
+        </div>
+
+        <!-- Listing Date -->
+        <div class="mob-filter-group">
+          <label class="mob-fg-label">Listing Date</label>
+          <select class="filter-select" style="width:100%;">
+            <option value="any">Any time</option>
+            <option value="24h">Past 24 hours</option>
+            <option value="week">Past week</option>
+            <option value="month">Past month</option>
+          </select>
+        </div>
+
+        <!-- Verified Listings Toggle -->
+        <div class="mob-filter-group" style="display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <div style="font-weight:700; font-size:0.84rem; color:#0f172a;">Verified Listings Only</div>
+            <small style="color:#64748b;">Show only inspected &amp; confirmed units</small>
+          </div>
+          <input type="checkbox" id="mob-verified-only-toggle" checked style="width:20px; height:20px; accent-color:var(--g);">
+        </div>
+
+      </div>
+      <div class="mob-filter-footer">
+        <button type="button" class="btn-primary" style="width:100%; height:46px; border-radius:12px; font-weight:800; font-size:0.95rem; background:var(--g); border:none;" onclick="app.applyMobileFilters()">
+          <i class="fas fa-filter"></i> Apply Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: MOBILE SAVED LISTINGS (Screen 8)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-saved-listings" style="display:none; z-index:3100;">
+    <div class="modal-dialog modal-mobile-fullscreen-dialog">
+      <div class="modal-header mob-saved-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button type="button" class="mob-back-btn" onclick="app.closeModal('modal-saved-listings')"><i class="fas fa-arrow-left"></i></button>
+          <h3 style="margin:0; font-size:1.15rem; font-weight:800; color:#0f172a;">Saved Listings</h3>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-saved-listings')">&times;</button>
+      </div>
+      <div class="modal-body mob-saved-body" style="padding:14px 16px;">
+        <!-- Tabs: Properties | Searches -->
+        <div class="mob-saved-tabs">
+          <button type="button" class="mob-stab active" id="btn-stab-props" onclick="app.switchSavedTab('props')">Properties</button>
+          <button type="button" class="mob-stab" id="btn-stab-searches" onclick="app.switchSavedTab('searches')">Searches</button>
+        </div>
+
+        <div id="mob-saved-props-container" style="display:grid; gap:12px;">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <div id="mob-saved-searches-container" style="display:none; text-align:center; padding:30px 10px;">
+          <i class="fas fa-search-location" style="font-size:2.5rem; color:#cbd5e1; margin-bottom:10px;"></i>
+          <h4 style="color:#1e293b; margin:0 0 6px 0;">No Saved Searches Yet</h4>
+          <p style="font-size:0.82rem; color:#64748b; margin:0 0 16px 0;">Save your common location or filter searches to get instant updates.</p>
+          <button type="button" class="btn-primary" style="background:var(--g); border:none; padding:8px 18px; border-radius:8px;" onclick="app.closeModal('modal-saved-listings'); app.openMobileFiltersSheet();">
+            Create Search Alert
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: MOBILE ACCOUNT SHEET (Screens 9 & 10)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-mobile-account" style="display:none; z-index:3100;">
+    <div class="modal-dialog modal-mobile-fullscreen-dialog">
+      <div class="modal-header mob-account-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button type="button" class="mob-back-btn" onclick="app.closeModal('modal-mobile-account')"><i class="fas fa-arrow-left"></i></button>
+          <h3 style="margin:0; font-size:1.15rem; font-weight:800; color:#0f172a;">Account</h3>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-mobile-account')">&times;</button>
+      </div>
+      <div class="modal-body mob-account-body" style="padding:0;">
+        <div id="mob-account-dynamic-content">
+          <!-- Populated dynamically based on session status -->
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
 
 
+  <!-- 1. TOP HEADER - Exact match -->
+  <header class="site-header">
+    <div class="header-container">
+      
+      <!-- Logo -->
+      <div class="brand-wrapper">
+        <a href="/" class="brand-logo">
+          <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#008744" stroke="#005a2b" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M38 82V56H58V82H38Z" fill="#ffffff"/>
+            <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2d"/>
+            <circle cx="48" cy="21" r="4.5" fill="#ffffff"/>
+          </svg>
+        </a>
+        <div class="brand-text-group">
+          <span><span class="keja-green">Keja</span><span class="keja-red">Market</span></span>
+          <span>Find your next place. Find what you need.</span>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="header-search-wrapper">
+        <form class="header-search-bar">
+          <div class="header-search-input-box">
+            <input type="text" class="search-input-field" placeholder="Search for estates, neighbourhoods, or areas...">
+          </div>
+          <div class="header-location-picker">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Nairobi & Environs</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <button type="submit" class="search-submit-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="btn-header-post-property">
+          <i class="fas fa-plus"></i>
+          <span>Post Property</span>
+        </button>
+        
+        <button class="btn-header-circle-action">
+          <i class="far fa-heart"></i>
+        </button>
+        
+        <button class="btn-header-circle-action">
+          <i class="far fa-bell"></i>
+          <span class="header-notif-badge">3</span>
+        </button>
+        
+        <button class="btn-header-account-pill">
+          <div class="header-account-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <span>KejaMarket</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. SECONDARY NAVIGATION - Exact match -->
+  <nav class="secondary-nav">
+    <div class="secondary-nav-container">
+      <a href="#" class="secondary-nav-item secondary-nav-item--active">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="#" class="secondary-nav-item">
+        <i class="fas fa-building"></i> Rentals
+      </a>
+      <a href="#" class="secondary-nav-item">
+        <i class="fas fa-city"></i> Apartments
+      </a>
+      <a href="#" class="secondary-nav-item">
+        <i class="fas fa-tree"></i> Land
+      </a>
+      <a href="#" class="secondary-nav-item">
+        <i class="fas fa-home"></i> Selling Homes
+      </a>
+      <a href="#" class="secondary-nav-item">
+        <i class="fas fa-umbrella-beach"></i> Airbnb
+      </a>
+      <a href="#" class="secondary-nav-item">
+        <i class="fas fa-tools"></i> Services
+      </a>
+      <a href="#" class="secondary-nav-item">
+        <i class="fas fa-couch"></i> Used Items
+      </a>
+      <a href="#" class="secondary-nav-item">
+        <span>More</span> <i class="fas fa-chevron-down"></i>
+      </a>
+    </div>
+  </nav>
+  <!-- 3. HERO SECTION - Exact match -->
+  <section class="hero-section">
+    <div class="hero-container">
+      
+      <!-- Left: Main Headline -->
+      <div class="hero-content">
+        <h1>Find the perfect home or property<br>in <span class="text-green">Kenya</span></h1>
+      </div>
+      
+      <!-- Right: Feature Cards -->
+      <div class="hero-features">
+        
+        <div class="hero-feature-card calculator">
+          <div class="icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <h3>Calculator</h3>
+          <p>Estimate your monthly budget and see what you can afford.</p>
+        </div>
+        
+        <div class="hero-feature-card afford">
+          <div class="icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <h3>What Can I Afford?</h3>
+          <p>Find properties within your price range.</p>
+        </div>
+        
+        <div class="hero-feature-card alerts">
+          <div class="icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3>Instant Alerts</h3>
+          <p>Get new listings on WhatsApp, email or SMS.</p>
+        </div>
+        
+        <div class="hero-feature-card hunt">
+          <div class="icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <h3>3-Day Smart House Hunt</h3>
+          <p>Can't find a house? Let our verified ground team inspect & match rentals in 72 hours.</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+  <!-- 4. MAIN CONTENT - Exact two-column layout -->
+  <main class="main-content">
+    <div class="main-container">
+      
+      <!-- Left Sidebar: Filters - Exact match -->
+      <aside class="filter-sidebar">
+        
+        <!-- Filter Header -->
+        <div class="filter-header">
+          <div class="filter-title">
+            <i class="fas fa-home"></i> Filters
+          </div>
+          <a href="#" class="filter-clear">Clear All</a>
+        </div>
+        
+        <!-- Property Type Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            <i class="fas fa-home"></i> Property Type
+          </div>
+          <div class="property-type-list">
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="bnb">
+              <i class="fas fa-umbrella-beach property-type-icon"></i>
+              <span class="property-type-label">Bnb (Short Stay)</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="single">
+              <i class="fas fa-door-open property-type-icon"></i>
+              <span class="property-type-label">Single Room</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="double">
+              <i class="fas fa-bed property-type-icon"></i>
+              <span class="property-type-label">Double Room</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="bedsitter">
+              <i class="fas fa-home property-type-icon"></i>
+              <span class="property-type-label">Bedsitter</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="1bedroom">
+              <i class="fas fa-bed property-type-icon"></i>
+              <span class="property-type-label">1 Bedroom</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="2bedrooms">
+              <i class="fas fa-bed property-type-icon"></i>
+              <span class="property-type-label">2 Bedrooms</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="3bedrooms">
+              <i class="fas fa-bed property-type-icon"></i>
+              <span class="property-type-label">3 Bedrooms</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="4bedrooms">
+              <i class="fas fa-bed property-type-icon"></i>
+              <span class="property-type-label">4+ Bedrooms</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="townhouse">
+              <i class="fas fa-building property-type-icon"></i>
+              <span class="property-type-label">Townhouse</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="villa">
+              <i class="fas fa-home property-type-icon"></i>
+              <span class="property-type-label">Villa</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="apartment">
+              <i class="fas fa-building property-type-icon"></i>
+              <span class="property-type-label">Apartment</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="bungalow">
+              <i class="fas fa-home property-type-icon"></i>
+              <span class="property-type-label">Bungalow</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="propertyType" value="studio">
+              <i class="fas fa-home property-type-icon"></i>
+              <span class="property-type-label">Studio</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Location Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            <i class="fas fa-map-marker-alt"></i> Location
+          </div>
+          <input type="text" class="filter-input" placeholder="Search area, estate or neighbourhood">
+        </div>
+        
+        <!-- County Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">County</div>
+          <select class="filter-select">
+            <option>Sub-county</option>
+            <option>Nairobi</option>
+            <option>Kiambu</option>
+            <option>Machakos</option>
+          </select>
+        </div>
+        
+        <!-- Price Range Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            <i class="fas fa-money-bill-wave"></i> Price Range (KSh)
+          </div>
+          <div class="price-inputs">
+            <input type="number" class="filter-input" placeholder="Min">
+            <input type="number" class="filter-input" placeholder="Max">
+          </div>
+        </div>
+        
+        <!-- Bedrooms Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            <i class="fas fa-bed"></i> Bedrooms
+          </div>
+          <select class="filter-select">
+            <option>Any</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4+</option>
+          </select>
+        </div>
+        
+        <!-- Bathrooms Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            <i class="fas fa-bath"></i> Bathrooms
+          </div>
+          <select class="filter-select">
+            <option>Any</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3+</option>
+          </select>
+        </div>
+        
+        <!-- Furnishing Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            <i class="fas fa-couch"></i> Furnishing
+          </div>
+          <select class="filter-select">
+            <option>Any</option>
+            <option>Furnished</option>
+            <option>Unfurnished</option>
+            <option>Semi-furnished</option>
+          </select>
+        </div>
+        
+        <!-- Amenities Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            <i class="fas fa-star"></i> Amenities
+          </div>
+          <div class="property-type-list">
+            <label class="property-type-item">
+              <input type="checkbox" name="amenities" value="parking">
+              <i class="fas fa-car property-type-icon"></i>
+              <span class="property-type-label">Parking</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="amenities" value="gym">
+              <i class="fas fa-dumbbell property-type-icon"></i>
+              <span class="property-type-label">Gym</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="amenities" value="pool">
+              <i class="fas fa-swimmer property-type-icon"></i>
+              <span class="property-type-label">Swimming Pool</span>
+            </label>
+            <label class="property-type-item">
+              <input type="checkbox" name="amenities" value="wifi">
+              <i class="fas fa-wifi property-type-icon"></i>
+              <span class="property-type-label">WiFi</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Apply Filters Button -->
+        <button class="apply-filters-btn">
+          <i class="fas fa-check"></i> Apply Filters
+        </button>
+        
+      </aside>
+      <!-- Right: Results Area - Exact match -->
+      <section class="results-area">
+        
+        <!-- Results Header -->
+        <div class="results-header">
+          <div class="results-count">
+            <span class="results-number">312</span>
+            <span class="results-text">Properties in Nairobi & Environs</span>
+          </div>
+          
+          <div class="results-controls">
+            
+            <!-- View Toggle -->
+            <div class="view-toggles">
+              <button class="view-toggle active">
+                <i class="fas fa-th-large"></i> Grid
+              </button>
+              <button class="view-toggle">
+                <i class="fas fa-list"></i> List
+              </button>
+              <button class="view-toggle">
+                <i class="fas fa-map-marker-alt"></i> Map View
+              </button>
+            </div>
+            
+            <!-- Sort Controls -->
+            <div class="sort-control">
+              <span>Sort by:</span>
+              <select class="sort-select">
+                <option>Newest First</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+              </select>
+            </div>
+            
+            <div class="sort-control">
+              <select class="sort-select">
+                <option>12 per page</option>
+                <option>24 per page</option>
+                <option>48 per page</option>
+              </select>
+            </div>
+            
+          </div>
+        </div>
+        
+        <!-- Property Grid - Exact 4-column match -->
+        <div class="property-grid">
+          
+          <!-- Property Card 1: Cozy Studio BNB - Kilimani -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=160&fit=crop" alt="Cozy Studio BNB" class="property-image">
+              <div class="property-badge badge-bnb">Bnb (Short Stay)</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Cozy Studio BNB - Kilimani</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Kilimani, Nairobi
+              </div>
+              <div class="property-price">KSh 2,500 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 1 Bed</span>
+                <span><i class="fas fa-bath"></i> 1 Bath</span>
+                <span><i class="fas fa-wifi"></i> WiFi</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 2: Single Room - Umoja -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=160&fit=crop" alt="Single Room" class="property-image">
+              <div class="property-badge badge-single">Single Room</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Single Room - Umoja</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Umoja, Nairobi
+              </div>
+              <div class="property-price">KSh 8,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 1 Bed</span>
+                <span><i class="fas fa-bath"></i> 1 Bath</span>
+                <span><i class="fas fa-parking"></i> Parking</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 3: Double Room - South B -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=160&fit=crop" alt="Double Room" class="property-image">
+              <div class="property-badge badge-double">Double Room</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Double Room - South B</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                South B, Nairobi
+              </div>
+              <div class="property-price">KSh 12,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 1 Bed</span>
+                <span><i class="fas fa-bath"></i> 1 Bath</span>
+                <span><i class="fas fa-wifi"></i> WiFi</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 4: Bedsitter - Westlands -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=160&fit=crop" alt="Bedsitter" class="property-image">
+              <div class="property-badge badge-bedsitter">Bedsitter</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Bedsitter - Westlands</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Westlands, Nairobi
+              </div>
+              <div class="property-price">KSh 15,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> Studio</span>
+                <span><i class="fas fa-bath"></i> 1 Bath</span>
+                <span><i class="fas fa-parking"></i> Parking</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 5: 2 Bedroom Apartment - Lavington -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=160&fit=crop" alt="2 Bedroom Apartment" class="property-image">
+              <div class="property-badge badge-2bed">2 Bedrooms</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">2 Bedroom Apartment - Lavington</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Lavington, Nairobi
+              </div>
+              <div class="property-price">KSh 45,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 2 Bed</span>
+                <span><i class="fas fa-bath"></i> 2 Bath</span>
+                <span><i class="fas fa-car"></i> Parking</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 6: 3 Bedroom House - Runda -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1570129477492-45a003537e1b?w=400&h=160&fit=crop" alt="3 Bedroom House" class="property-image">
+              <div class="property-badge badge-3bed">3 Bedrooms</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">3 Bedroom House - Runda</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Runda, Nairobi
+              </div>
+              <div class="property-price">KSh 95,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 3 Bed</span>
+                <span><i class="fas fa-bath"></i> 3 Bath</span>
+                <span><i class="fas fa-dumbbell"></i> Garden</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 7: 4 Bedroom Maisonette - Karen -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=400&h=160&fit=crop" alt="4 Bedroom Maisonette" class="property-image">
+              <div class="property-badge badge-4bed">4+ Bedrooms</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">4 Bedroom Maisonette - Karen</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Karen, Nairobi
+              </div>
+              <div class="property-price">KSh 250,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 4 Bed</span>
+                <span><i class="fas fa-bath"></i> 4 Bath</span>
+                <span><i class="fas fa-swimmer"></i> Pool</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 8: Maisonette - Kileleshwa -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=160&fit=crop" alt="Maisonette" class="property-image">
+              <div class="property-badge badge-maisonette">Maisonette</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Maisonette - Kileleshwa</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Kileleshwa, Nairobi
+              </div>
+              <div class="property-price">KSh 180,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 4 Bed</span>
+                <span><i class="fas fa-bath"></i> 3 Bath</span>
+                <span><i class="fas fa-car"></i> Garage</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 9: Villa - Muthaiga -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=160&fit=crop" alt="Villa" class="property-image">
+              <div class="property-badge badge-villa">Villa</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Villa - Muthaiga</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Muthaiga, Nairobi
+              </div>
+              <div class="property-price">KSh 400,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 5 Bed</i>
+                <span><i class="fas fa-bath"></i> 4 Bath</span>
+                <span><i class="fas fa-swimmer"></i> Pool</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 10: Apartment - Syokimau -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=160&fit=crop" alt="Apartment" class="property-image">
+              <div class="property-badge badge-apartment">Apartment</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Apartment - Syokimau</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Syokimau, Nairobi
+              </div>
+              <div class="property-price">KSh 35,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 2 Bed</span>
+                <span><i class="fas fa-bath"></i> 2 Bath</span>
+                <span><i class="fas fa-dumbbell"></i> Gym</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 11: Bungalow - Kitengela -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=160&fit=crop" alt="Bungalow" class="property-image">
+              <div class="property-badge badge-bungalow">Bungalow</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Bungalow - Kitengela</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Kitengela, Nairobi
+              </div>
+              <div class="property-price">KSh 28,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 3 Bed</span>
+                <span><i class="fas fa-bath"></i> 2 Bath</span>
+                <span><i class="fas fa-tree"></i> Garden</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Property Card 12: Studio Apartment - Ruaka -->
+          <div class="property-card">
+            <div style="position: relative;">
+              <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=160&fit=crop" alt="Studio Apartment" class="property-image">
+              <div class="property-badge badge-studio">Studio</div>
+              <button class="favorite-btn">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+            <div class="property-content">
+              <h3 class="property-title">Studio Apartment - Ruaka</h3>
+              <div class="property-location">
+                <i class="fas fa-map-marker-alt" style="color: #00b53f;"></i>
+                Ruaka, Nairobi
+              </div>
+              <div class="property-price">KSh 18,000 <span style="font-weight: 400; color: #6b7280;">/ month</span></div>
+              <div class="property-features">
+                <span><i class="fas fa-bed"></i> 1 Bed</span>
+                <span><i class="fas fa-bath"></i> 1 Bath</span>
+                <span><i class="fas fa-wifi"></i> WiFi</span>
+              </div>
+              <button class="book-now-btn">Book Now</button>
+              <div class="property-actions">
+                <button class="action-btn">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="action-btn">
+                  <i class="fas fa-share"></i> Share
+                </button>
+                <button class="action-btn">
+                  <i class="far fa-heart"></i> Favourite
+                </button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <!-- Pagination - Exact match -->
+        <div class="pagination-area">
+          <button class="pagination-btn" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="pagination-btn active">1</button>
+          <button class="pagination-btn">2</button>
+          <button class="pagination-btn">3</button>
+          <button class="pagination-btn">4</button>
+          <button class="pagination-btn">5</button>
+          <span style="color: #6b7280; padding: 0 8px;">...</span>
+          <button class="pagination-btn">26</button>
+          <button class="pagination-btn">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        
+        <div class="pagination-info">
+          Showing <strong>1 - 12</strong> of <strong>312</strong> properties
+        </div>
+        
+      </section>
+      
+    </div>
+  </main>
+  
+  <!-- 9. FOOTER - Exact dark green match -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      
+      <div class="footer-content">
+        
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#10b981" stroke="#065f46" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M38 82V56H58V82H38Z" fill="#ffffff"/>
+              <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2d"/>
+              <circle cx="48" cy="21" r="4.5" fill="#ffffff"/>
+            </svg>
+            <span style="font-size: 1.1rem; font-weight: 700; color: white;">
+              <span style="color: #10b981;">Keja</span><span style="color: #e52b2d;">Market</span>
+            </span>
+          </div>
+          <div class="footer-tagline">Find your next place. Find what you need.</div>
+          
+          <div class="footer-social">
+            <button class="social-btn">
+              <i class="fab fa-facebook"></i>
+            </button>
+            <button class="social-btn">
+              <i class="fab fa-twitter"></i>
+            </button>
+            <button class="social-btn">
+              <i class="fab fa-linkedin"></i>
+            </button>
+            <button class="social-btn">
+              <i class="fab fa-youtube"></i>
+            </button>
+            <button class="social-btn">
+              <i class="fab fa-tiktok"></i>
+            </button>
+          </div>
+          
+          <div style="font-size: 0.75rem; color: #a7f3d0;">
+            © 2026 KejaMarket. All rights reserved.
+          </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Rentals</a></li>
+            <li><a href="#">Apartments</a></li>
+            <li><a href="#">Selling Homes</a></li>
+            <li><a href="#">Land</a></li>
+          </ul>
+        </div>
+        
+        <!-- For Landlords -->
+        <div class="footer-section">
+          <h4>For Landlords</h4>
+          <ul class="footer-links">
+            <li><a href="#">Post Property</a></li>
+            <li><a href="#">Landlord Portal</a></li>
+            <li><a href="#">Verified Badge</a></li>
+            <li><a href="#">Pricing</a></li>
+          </ul>
+        </div>
+        
+        <!-- For Tenants -->
+        <div class="footer-section">
+          <h4>For Tenants</h4>
+          <ul class="footer-links">
+            <li><a href="#">Search Rentals</a></li>
+            <li><a href="#">Search Homes</a></li>
+            <li><a href="#">House Hunt</a></li>
+            <li><a href="#">Tips & Guides</a></li>
+          </ul>
+        </div>
+        
+        <!-- For Services -->
+        <div class="footer-section">
+          <h4>For Services</h4>
+          <ul class="footer-links">
+            <li><a href="#">Moving</a></li>
+            <li><a href="#">Cleaning</a></li>
+            <li><a href="#">Repairs</a></li>
+            <li><a href="#">Internet</a></li>
+          </ul>
+        </div>
+        
+        <!-- Company -->
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="#">About KejaMarket</a></li>
+            <li><a href="#">How It Works</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+          </ul>
+        </div>
+        
+      </div>
+      
+      <div class="footer-bottom">
+        <div>
+          <div style="margin-bottom: 8px;">
+            <strong>Contact Us</strong><br>
+            <span style="color: #a7f3d0;">+254 700 123 456</span><br>
+            <span style="color: #a7f3d0;">support@kejamarket.co.ke</span><br>
+            <span style="color: #a7f3d0;">Nairobi, Kenya</span>
+          </div>
+        </div>
+        
+        <div>
+          <div style="margin-bottom: 8px; font-weight: 600;">Download Our App</div>
+          <div class="app-download">
+            <a href="#" class="app-btn">
+              <i class="fab fa-google-play"></i>
+              Google Play
+            </a>
+            <a href="#" class="app-btn">
+              <i class="fab fa-apple"></i>
+              App Store
+            </a>
+          </div>
+          <div style="margin-top: 8px; font-size: 0.75rem; font-style: italic;">
+            "Built for a better Kenya"
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </footer>
+
+</body>
+</html>

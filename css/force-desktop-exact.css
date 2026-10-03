@@ -1,0 +1,465 @@
+/* ==========================================================================
+   FORCE EXACT DESKTOP LAYOUT - CRITICAL CSS WITH HIGHEST SPECIFICITY
+   Overrides all mobile styles and forces desktop layout exactly like reference
+   ========================================================================== */
+
+/* CRITICAL: Reset everything and force desktop behavior */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  line-height: 1.5 !important;
+  overflow-x: auto !important;
+}
+
+/* FORCE: Hide all mobile elements completely */
+.mobile-hero-promo,
+.mobile-quick-actions-row, 
+.mobile-filter-card-container,
+.smart-tools-hero-hub,
+.category-pills-bar,
+.mobile-filter-bar,
+.keja-desktop-hero-strip,
+.keja-feature-strip {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* FORCE: Main layout grid exactly as reference */
+.main-app-layout,
+#main-app-layout {
+  display: grid !important;
+  grid-template-columns: 250px minmax(0, 1fr) !important;
+  gap: 20px !important;
+  max-width: 1480px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 20px 16px 40px 16px !important;
+  background: #ffffff !important;
+  align-items: start !important;
+  box-sizing: border-box !important;
+}
+
+/* FORCE: Sidebar exactly as reference */
+.sidebar-filters,
+#sidebar-filters {
+  display: block !important;
+  visibility: visible !important;
+  width: 250px !important;
+  min-width: 250px !important;
+  max-width: 250px !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  position: sticky !important;
+  top: 120px !important;
+}
+
+/* FORCE: Content area exactly as reference */
+.content-area-wrapper {
+  display: block !important;
+  visibility: visible !important;
+  width: 100% !important;
+  background: #ffffff !important;
+}
+
+/* FORCE: Results header exactly as reference */
+.results-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 24px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  visibility: visible !important;
+}
+
+/* FORCE: Property grid - EXACTLY 4 columns as reference */
+.property-listings-grid,
+.property-grid,
+#property-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  width: 100% !important;
+  visibility: visible !important;
+  background: transparent !important;
+  margin-bottom: 40px !important;
+}
+
+/* FORCE: Property cards exactly as reference */
+.property-card {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  transition: all 0.2s !important;
+  position: relative !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.property-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  border-color: rgba(0, 181, 63, 0.3) !important;
+}
+
+/* FORCE: Header exactly as reference */
+.site-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.header-container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 12px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+}
+
+/* FORCE: Secondary nav exactly as reference */
+.secondary-nav {
+  background: #ffffff !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.secondary-nav-container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 32px !important;
+}
+
+/* FORCE: Brand section exactly as reference */
+.brand-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+/* FORCE: Search section exactly as reference */
+.header-search-wrapper {
+  flex: 1 !important;
+  max-width: 600px !important;
+  position: relative !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.header-search-bar {
+  display: flex !important;
+  align-items: center !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 24px !important;
+  padding: 0 !important;
+  height: 44px !important;
+}
+
+/* FORCE: Header actions exactly as reference */
+.header-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-shrink: 0 !important;
+  visibility: visible !important;
+}
+
+/* FORCE: Filter sidebar styling exactly as reference */
+.filter-header-main {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 20px !important;
+}
+
+.filter-header-title {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  color: #1f2937 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.filter-accordion-section {
+  margin-bottom: 24px !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.filter-accordion-header {
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: #374151 !important;
+  margin-bottom: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  cursor: pointer !important;
+}
+
+.filter-accordion-body {
+  display: block !important;
+  visibility: visible !important;
+}
+
+.filter-checklist-box {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.filter-check-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 6px 0 !important;
+  cursor: pointer !important;
+}
+
+/* FORCE: Results count exactly as reference */
+.results-count {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 6px !important;
+}
+
+.results-number {
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  color: #00b53f !important;
+}
+
+.results-text {
+  font-size: 1.5rem !important;
+  color: #1f2937 !important;
+  font-weight: 400 !important;
+}
+
+/* FORCE: View toggles and controls exactly as reference */
+.results-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+}
+
+.view-toggles {
+  display: flex !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.view-toggle {
+  padding: 8px 12px !important;
+  border: none !important;
+  background: #ffffff !important;
+  color: #6b7280 !important;
+  font-size: 0.8rem !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border-right: 1px solid #e5e7eb !important;
+}
+
+.view-toggle:last-child {
+  border-right: none !important;
+}
+
+.view-toggle.active {
+  background: #00b53f !important;
+  color: white !important;
+}
+
+/* FORCE: Property card content exactly as reference */
+.property-content {
+  padding: 16px !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.property-title {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+  margin-bottom: 4px !important;
+}
+
+.property-location {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 0.8rem !important;
+  color: #6b7280 !important;
+  margin-bottom: 8px !important;
+}
+
+.property-price {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  color: #00b53f !important;
+  margin-bottom: 12px !important;
+}
+
+/* FORCE: Property badges exactly as reference */
+.property-badge {
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Badge colors exactly as reference */
+.badge-bnb { background: #a855f7 !important; color: white !important; }
+.badge-single { background: #3b82f6 !important; color: white !important; }
+.badge-double { background: #f97316 !important; color: white !important; }
+.badge-bedsitter { background: #00b53f !important; color: white !important; }
+.badge-1bed { background: #10b981 !important; color: white !important; }
+.badge-2bed { background: #ef4444 !important; color: white !important; }
+.badge-3bed { background: #8b5cf6 !important; color: white !important; }
+.badge-4bed { background: #ec4899 !important; color: white !important; }
+.badge-maisonette { background: #06b6d4 !important; color: white !important; }
+.badge-villa { background: #84cc16 !important; color: white !important; }
+.badge-apartment { background: #f59e0b !important; color: white !important; }
+.badge-bungalow { background: #10b981 !important; color: white !important; }
+.badge-studio { background: #6366f1 !important; color: white !important; }
+
+/* FORCE: Property image exactly as reference */
+.property-image,
+.property-card img {
+  width: 100% !important;
+  height: 160px !important;
+  object-fit: cover !important;
+  position: relative !important;
+  display: block !important;
+}
+
+/* FORCE: Property actions exactly as reference */
+.property-actions {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.book-now-btn {
+  width: 100% !important;
+  background: #00b53f !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  cursor: pointer !important;
+  margin-bottom: 8px !important;
+}
+
+/* OVERRIDE ANY RESPONSIVE BEHAVIOR FOR DESKTOP */
+@media screen {
+  /* Force desktop layout on all screen sizes */
+  .main-app-layout,
+  #main-app-layout {
+    display: grid !important;
+    grid-template-columns: 250px minmax(0, 1fr) !important;
+    gap: 20px !important;
+  }
+  
+  .property-listings-grid,
+  .property-grid,
+  #property-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+  
+  .sidebar-filters {
+    display: block !important;
+    width: 250px !important;
+  }
+}
+
+/* FORCE on all media queries */
+@media (max-width: 1200px) {
+  .property-listings-grid,
+  .property-grid,
+  #property-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .property-listings-grid,
+  .property-grid,
+  #property-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .property-listings-grid,
+  .property-grid,
+  #property-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .property-listings-grid,
+  .property-grid,
+  #property-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Additional force rules to ensure visibility */
+.content-area-wrapper {
+  display: block !important;
+  visibility: visible !important;
+}
+
+#view-grid-container {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Force footer to match reference */
+.main-footer {
+  background: #064e3b !important;
+  color: #ffffff !important;
+  padding: 48px 0 24px !important;
+  margin-top: 80px !important;
+  display: block !important;
+  visibility: visible !important;
+}
