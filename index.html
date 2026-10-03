@@ -302,7 +302,13 @@
 
   <!-- CRITICAL: Inline style to force desktop layout immediately -->
   <style>
-    /* ULTRA HIGH PRIORITY - INLINE OVERRIDE */
+    /* ULTRA HIGH PRIORITY - INLINE OVERRIDE - EXACT REFERENCE MATCH */
+    
+    /* Force Poppins font everywhere */
+    * {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    }
+    
     #main-app-layout,
     .main-app-layout {
       display: grid !important;
@@ -333,6 +339,48 @@
     .mobile-filter-card-container,
     .smart-tools-hero-hub {
       display: none !important;
+    }
+    
+    /* Ensure property cards display properly */
+    .property-card {
+      background: #fff !important;
+      border: 1px solid #e5e7eb !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+      transition: all 0.2s !important;
+    }
+    
+    .property-card:hover {
+      transform: translateY(-3px) !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Property card images */
+    .property-card img,
+    .property-image {
+      width: 100% !important;
+      height: 160px !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+    
+    /* Property card content */
+    .property-content {
+      padding: 16px !important;
+    }
+    
+    .property-title {
+      font-size: 0.9rem !important;
+      font-weight: 600 !important;
+      color: #1f2937 !important;
+      margin-bottom: 4px !important;
+    }
+    
+    .property-price {
+      font-size: 1.1rem !important;
+      font-weight: 700 !important;
+      color: #00b53f !important;
+      margin-bottom: 12px !important;
     }
   </style>
 
