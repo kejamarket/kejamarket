@@ -50,6 +50,20 @@ button, input, select, textarea,
 .btn-header-tool, #btn-header-calculator, #btn-header-hunt,
 #btn-header-post-service, #btn-header-post-marketplace { display: none !important; }
 
+/* ── HIDE ALL MODALS BY DEFAULT ─────────────────────────────────────────────── */
+.modal-backdrop {
+  display: none !important;
+  position: fixed !important;
+  top: 0 !important; left: 0 !important;
+  width: 100% !important; height: 100% !important;
+  background: rgba(0,0,0,0.6) !important;
+  z-index: 2000 !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* When modal is opened via JS, it will add inline style or class to override display:none */
+
 /* ── BODY ───────────────────────────────────────────────────────────────────── */
 html { font-size: 14px !important; }
 body { background: #f7f9fb !important; }
