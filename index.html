@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=7.0">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=8.0">
   
 </head>
 <body>
@@ -784,7 +784,7 @@
 
           <!-- Per Page dropdown -->
           <div style="display: flex; align-items: center; gap: 6px;">
-            <select class="sort-select" id="per-page-select" onchange="app.itemsPerPage = parseInt(this.value); app.currentPage = 1; app.renderProperties();">
+            <select class="sort-select" id="per-page-select" onchange="app.pageSize = parseInt(this.value); app.currentPage = 1; app.applyFilters();">
               <option value="12" selected>12 per page</option>
               <option value="24">24 per page</option>
               <option value="48">48 per page</option>
@@ -810,13 +810,6 @@
         <!-- Results summary footer -->
         <div class="footer-branding-text">
           Showing <strong id="results-range-display">1 - 12</strong> of <strong id="total-results-display">312</strong> properties
-        </div>
-
-        <!-- View More Listings button -->
-        <div class="view-more-btn-wrapper">
-          <button class="btn-view-more-listings" onclick="app.goToPage(app.currentPage + 1)">
-            View More Listings <i class="fas fa-chevron-down"></i>
-          </button>
         </div>
       </div>
 

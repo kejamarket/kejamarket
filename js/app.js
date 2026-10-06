@@ -12,7 +12,7 @@ class NairobiRentalsApp {
     this.favorites = new Set();
     this.currentViewMode = 'grid'; // 'grid' | 'split' | 'map'
     this.currentPage = 1;
-    this.pageSize = 8;
+    this.pageSize = 12; // 4 columns × 3 rows = 12 cards per page
     this.activeCategory = 'All';
     this.activeCorridor = 'all';
     this.activeSuburb = 'all';
@@ -1750,7 +1750,7 @@ class NairobiRentalsApp {
         </button>
       </div>
       <div class="pagination-showing-text">
-        Showing ${startItem}-${endItem} of ${totalCount} listings
+        Showing ${startItem}-${endItem} of ${totalCount} properties
       </div>
     `;
 
