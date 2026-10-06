@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v34-final-pagination';
+const CACHE_NAME = 'kejamarket-v35-reference-match';
 
 const STATIC_ASSETS = [
   '/',

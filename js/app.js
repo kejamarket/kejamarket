@@ -1732,6 +1732,8 @@ class NairobiRentalsApp {
     const totalCount = this.filteredProperties ? this.filteredProperties.length : 312;
     const totalPages = Math.ceil(totalCount / this.pageSize);
     const maxPage = Math.min(totalPages, 26); // Cap at 26 pages for 312 properties
+    const startItem = (this.currentPage - 1) * this.pageSize + 1;
+    const endItem = Math.min(this.currentPage * this.pageSize, totalCount);
 
     let navHtml = `
       <div class="pagination-controls">
@@ -1748,6 +1750,9 @@ class NairobiRentalsApp {
         <button class="btn-page-nav" onclick="app.goToPage(${Math.min(maxPage, this.currentPage + 1)})" ${this.currentPage >= maxPage ? 'disabled' : ''}>
           <i class="fas fa-chevron-right"></i>
         </button>
+      </div>
+      <div class="pagination-showing-text">
+        Showing ${startItem} - ${endItem} of ${totalCount} properties
       </div>
     `;
 
