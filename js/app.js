@@ -1729,9 +1729,9 @@ class NairobiRentalsApp {
     const paginationEl = document.getElementById('pagination-container');
     if (!paginationEl) return;
 
-    const totalCount = 312;
-    const startItem = (this.currentPage - 1) * this.pageSize + 1;
-    const endItem = Math.min(this.currentPage * this.pageSize, totalCount);
+    const totalCount = this.filteredProperties ? this.filteredProperties.length : 312;
+    const totalPages = Math.ceil(totalCount / this.pageSize);
+    const maxPage = Math.min(totalPages, 26); // Cap at 26 pages for 312 properties
 
     let navHtml = `
       <div class="pagination-controls">
@@ -1744,13 +1744,10 @@ class NairobiRentalsApp {
         <button class="btn-page ${this.currentPage === 4 ? 'active' : ''}" onclick="app.goToPage(4)">4</button>
         <button class="btn-page ${this.currentPage === 5 ? 'active' : ''}" onclick="app.goToPage(5)">5</button>
         <span class="pagination-ellipsis">...</span>
-        <button class="btn-page ${this.currentPage === 20 ? 'active' : ''}" onclick="app.goToPage(20)">20</button>
-        <button class="btn-page-nav" onclick="app.goToPage(${Math.min(20, this.currentPage + 1)})">
+        <button class="btn-page ${this.currentPage === maxPage ? 'active' : ''}" onclick="app.goToPage(${maxPage})">${maxPage}</button>
+        <button class="btn-page-nav" onclick="app.goToPage(${Math.min(maxPage, this.currentPage + 1)})" ${this.currentPage >= maxPage ? 'disabled' : ''}>
           <i class="fas fa-chevron-right"></i>
         </button>
-      </div>
-      <div class="pagination-showing-text">
-        Showing ${startItem}-${endItem} of ${totalCount} properties
       </div>
     `;
 
