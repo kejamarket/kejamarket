@@ -24,9 +24,11 @@ class MapController {
 
     this.fullMap = L.map('leaflet-full-map').setView(this.nairobiCenter, this.defaultZoom);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Use CartoDB Positron tiles (faster and more reliable)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd'
     }).addTo(this.fullMap);
 
     this.fullMarkersGroup = L.layerGroup().addTo(this.fullMap);
@@ -38,9 +40,11 @@ class MapController {
 
     this.splitMap = L.map('leaflet-split-map').setView(this.nairobiCenter, this.defaultZoom);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Use CartoDB Positron tiles (faster and more reliable)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd'
     }).addTo(this.splitMap);
 
     this.splitMarkersGroup = L.layerGroup().addTo(this.splitMap);
