@@ -310,6 +310,18 @@ CREATE INDEX IF NOT EXISTS idx_conversations_participant_2 ON conversations(part
 CREATE INDEX IF NOT EXISTS idx_conversations_related ON conversations(related_id, related_type);
 CREATE INDEX IF NOT EXISTS idx_conversations_type ON conversations(type);
 
+-- Ensure conversations table has all required columns (safe idempotent migrations)
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS type TEXT;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS related_id TEXT;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS related_type TEXT;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active';
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS participant_1 TEXT;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS participant_2 TEXT;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS last_message_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS unread_count_p1 INTEGER DEFAULT 0;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS unread_count_p2 INTEGER DEFAULT 0;
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}';
+
 -- Messages table (for conversations)
 CREATE TABLE IF NOT EXISTS messages (
   id TEXT PRIMARY KEY,
@@ -328,6 +340,16 @@ CREATE TABLE IF NOT EXISTS messages (
 CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(conversation_id);
 CREATE INDEX IF NOT EXISTS idx_messages_sender ON messages(sender_id);
 CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at);
+
+-- Ensure messages table has all communication-system columns (safe idempotent migrations)
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS conversation_id TEXT;
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS message_text TEXT;
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS message_type TEXT DEFAULT 'text';
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachments JSONB DEFAULT '[]';
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS read_at TIMESTAMP NULL;
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS edited_at TIMESTAMP NULL;
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS is_system_message BOOLEAN DEFAULT FALSE;
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}';
 
 -- Support Tickets table (User-to-Platform communication)
 CREATE TABLE IF NOT EXISTS support_tickets (
@@ -518,27 +540,51 @@ CREATE TRIGGER trigger_notify_support_ticket
   AFTER UPDATE ON support_tickets
   FOR EACH ROW EXECUTE FUNCTION notify_support_ticket();
 
--- Insert sample data for testing
-INSERT INTO conversations (id, type, related_id, related_type, participant_1, participant_2, metadata) VALUES
-('conv_sample_001', 'property', 'prop_greenview_a02', 'property', 'usr_tenant_001', 'usr_landlord_001', 
- '{"property_name": "Greenview Apartments - A02", "inquiry_type": ["availability", "viewing"]}'),
-('conv_sample_002', 'bnb', 'bnb_sunset_001', 'bnb', 'usr_guest_001', 'usr_host_001',
- '{"property_name": "Sunset BNB", "checkin": "2024-09-20", "checkout": "2024-09-22", "guests": 2}');
+-- Insert sample data for testing (guarded: silently skips if referenced users don't exist)
+DO $$
+BEGIN
+  INSERT INTO conversations (id, type, related_id, related_type, participant_1, participant_2, metadata) VALUES
+  ('conv_sample_001', 'property', 'prop_greenview_a02', 'property', 'usr_tenant_001', 'usr_landlord_001',
+   '{"property_name": "Greenview Apartments - A02", "inquiry_type": ["availability", "viewing"]}'),
+  ('conv_sample_002', 'bnb', 'bnb_sunset_001', 'bnb', 'usr_guest_001', 'usr_host_001',
+   '{"property_name": "Sunset BNB", "checkin": "2024-09-20", "checkout": "2024-09-22", "guests": 2}')
+  ON CONFLICT (id) DO NOTHING;
+EXCEPTION WHEN foreign_key_violation THEN
+  NULL; -- sample users not in DB yet; skip gracefully
+END $$;
 
-INSERT INTO messages (id, conversation_id, sender_id, message_text, message_type) VALUES
-('msg_sample_001', 'conv_sample_001', 'usr_tenant_001', 'Hi, is this 2-bedroom apartment still available?', 'inquiry'),
-('msg_sample_002', 'conv_sample_001', 'usr_landlord_001', 'Yes, it is available. Would you like to schedule a viewing?', 'response'),
-('msg_sample_003', 'conv_sample_002', 'usr_guest_001', 'Hello, I would like to check availability for Sep 20-22 for 2 guests.', 'inquiry'),
-('msg_sample_004', 'conv_sample_002', 'usr_host_001', 'Those dates are available! Here are the booking details...', 'response');
+DO $$
+BEGIN
+  INSERT INTO messages (id, conversation_id, sender_id, message_text, message_type) VALUES
+  ('msg_sample_001', 'conv_sample_001', 'usr_tenant_001', 'Hi, is this 2-bedroom apartment still available?', 'inquiry'),
+  ('msg_sample_002', 'conv_sample_001', 'usr_landlord_001', 'Yes, it is available. Would you like to schedule a viewing?', 'response'),
+  ('msg_sample_003', 'conv_sample_002', 'usr_guest_001', 'Hello, I would like to check availability for Sep 20-22 for 2 guests.', 'inquiry'),
+  ('msg_sample_004', 'conv_sample_002', 'usr_host_001', 'Those dates are available! Here are the booking details...', 'response')
+  ON CONFLICT (id) DO NOTHING;
+EXCEPTION WHEN foreign_key_violation OR undefined_table THEN
+  NULL;
+END $$;
 
-INSERT INTO support_tickets (id, user_id, category, subject, priority, status) VALUES
-('KM-10001', 'usr_tenant_001', 'account', 'Account verification taking too long', 'normal', 'resolved'),
-('KM-10002', 'usr_landlord_001', 'property', 'Property not showing in search', 'high', 'open');
+DO $$
+BEGIN
+  INSERT INTO support_tickets (id, user_id, category, subject, priority, status) VALUES
+  ('KM-10001', 'usr_tenant_001', 'account', 'Account verification taking too long', 'normal', 'resolved'),
+  ('KM-10002', 'usr_landlord_001', 'property', 'Property not showing in search', 'high', 'open')
+  ON CONFLICT (id) DO NOTHING;
+EXCEPTION WHEN foreign_key_violation THEN
+  NULL;
+END $$;
 
-INSERT INTO support_messages (id, ticket_id, sender_id, message_text, is_internal) VALUES
-('smsg_001', 'KM-10001', 'usr_tenant_001', 'My account verification has been pending for 3 days.', FALSE),
-('smsg_002', 'KM-10001', 'usr_support_001', 'We have reviewed your documents and approved your verification.', FALSE),
-('smsg_003', 'KM-10002', 'usr_landlord_001', 'My property listing disappeared from search results yesterday.', FALSE);
+DO $$
+BEGIN
+  INSERT INTO support_messages (id, ticket_id, sender_id, message_text, is_internal) VALUES
+  ('smsg_001', 'KM-10001', 'usr_tenant_001', 'My account verification has been pending for 3 days.', FALSE),
+  ('smsg_002', 'KM-10001', 'usr_support_001', 'We have reviewed your documents and approved your verification.', FALSE),
+  ('smsg_003', 'KM-10002', 'usr_landlord_001', 'My property listing disappeared from search results yesterday.', FALSE)
+  ON CONFLICT (id) DO NOTHING;
+EXCEPTION WHEN foreign_key_violation OR undefined_table THEN
+  NULL;
+END $$;
 
 -- Communication System Health Check
 CREATE OR REPLACE FUNCTION communication_system_health_check()
