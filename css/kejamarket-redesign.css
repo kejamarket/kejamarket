@@ -12,8 +12,7 @@ button, input, select, textarea,
 .secondary-nav-item,
 .filter-header-title, .acc-title, .filter-check-item,
 .btn-apply-filters-main,
-.keja-section-title, .area-chip,
-.keja-why-title, .keja-why-desc,
+.keja-section-title,
 .footer-col-title, .footer-links-list a, .footer-bottom-bar p {
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
@@ -614,35 +613,7 @@ body { background: #f7f9fb !important; }
 .btn-view-more-listings i { font-size:0.8rem; }
 
 /* ════════════════════════════════════════════════════════════════
-   11. POPULAR AREAS
-   ════════════════════════════════════════════════════════════════ */
-.keja-popular-areas { max-width:1440px; margin:12px auto 0; padding:0 20px 10px; }
-.keja-section-header { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:8px; }
-.keja-section-title { font-size:0.95rem; font-weight:700; color:var(--t7); font-family:'Poppins',sans-serif; }
-.keja-section-title i { color:var(--g); margin-right:6px; font-size:0.85rem; }
-.keja-section-sub   { font-size:0.7rem; color:var(--t4); font-weight:400; margin-top:1px; font-family:'Poppins',sans-serif; }
-.keja-view-all-link { font-size:0.72rem; color:var(--g); font-weight:700; text-decoration:none; display:flex; align-items:center; gap:4px; white-space:nowrap; font-family:'Poppins',sans-serif; }
-.keja-view-all-link:hover { text-decoration:underline; }
-.popular-areas-chips { display:flex; flex-wrap:wrap; gap:6px; }
-.area-chip { display:flex; align-items:center; gap:4px; background:#fff; border:1.5px solid var(--bdr); border-radius:var(--r-p); padding:4px 10px; font-size:0.72rem; font-weight:600; color:var(--t7); cursor:pointer; transition:all 0.2s; box-shadow:0 1px 2px rgba(0,0,0,0.04); font-family:'Poppins',sans-serif; }
-.area-chip i { color:var(--g); font-size:0.65rem; }
-.area-chip:hover { background:var(--g); color:#fff; border-color:var(--g); }
-.area-chip:hover i { color:#fff !important; }
-
-/* ════════════════════════════════════════════════════════════════
-   12. WHY KEJAMARKET
-   ════════════════════════════════════════════════════════════════ */
-.keja-why-section { background:#f0fdf4; border-top:1px solid #d1fae5; border-bottom:1px solid #d1fae5; padding:12px 20px; margin-top:8px; }
-.keja-why-inner { max-width:1440px; margin:0 auto; }
-.keja-why-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:8px; }
-.keja-why-item { display:flex; flex-direction:column; align-items:center; text-align:center; gap:4px; }
-.keja-why-icon { width:36px; height:36px; border-radius:50%; background:#fff; border:1.5px solid #a7f3d0; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,181,63,0.08); flex-shrink:0; }
-.keja-why-icon i { color:var(--g) !important; font-size:0.88rem !important; display:inline-block !important; font-weight:900 !important; line-height:1 !important; }
-.keja-why-title { font-size:0.78rem; font-weight:700; color:var(--t7); font-family:'Poppins',sans-serif; }
-.keja-why-desc  { font-size:0.68rem; color:var(--t4); line-height:1.3; font-family:'Poppins',sans-serif; }
-
-/* ════════════════════════════════════════════════════════════════
-   13. FOOTER — dark teal, 7 columns
+   11. FOOTER — dark teal, 7 columns
    ════════════════════════════════════════════════════════════════ */
 .keja-site-footer { background:#0d2f2f !important; color:#e2e8f0 !important; padding:18px 0 0 !important; margin-top:10px !important; }
 .keja-footer-container {
