@@ -385,7 +385,7 @@ body { background: #f7f9fb !important; }
 }
 .header-container {
   max-width: 1440px !important; margin: 0 auto !important;
-  padding: 0 20px !important; height: 62px !important;
+  padding: 0 20px !important; height: 54px !important;
   display: flex !important; align-items: center !important; gap: 12px !important;
 }
 
@@ -2064,10 +2064,10 @@ body { background: #f7f9fb !important; }
   padding: 16px 0 !important;
 }
 .keja-hero-heading {
-  font-size: 1.75rem !important;
-  font-weight: 800 !important;
+  font-size: 2.2rem !important;
+  font-weight: 900 !important;
   color: #0b3d22 !important;
-  line-height: 1.18 !important;
+  line-height: 1.15 !important;
   font-family: 'Poppins', sans-serif !important;
 }
 .km-feature-card {
