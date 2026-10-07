@@ -922,12 +922,12 @@ body { background: #f7f9fb !important; }
 /* ════════════════════════════════════════════════════════════════
    11. FOOTER — dark teal, 7 columns
    ════════════════════════════════════════════════════════════════ */
-.keja-site-footer { background:#0d2f2f !important; color:#e2e8f0 !important; padding:18px 0 0 !important; margin-top:10px !important; }
+.keja-site-footer { background:#0d2f2f !important; color:#e2e8f0 !important; padding:12px 0 0 !important; margin-top:10px !important; }
 .keja-footer-container {
   max-width:1440px !important; margin:0 auto !important;
-  padding:0 20px 10px !important;
+  padding:0 20px 6px !important;
   display:grid !important;
-  grid-template-columns: 1.3fr 0.78fr 0.78fr 0.78fr 0.78fr 0.78fr 0.95fr !important;
+  grid-template-columns: 1.5fr 0.9fr 0.9fr 0.9fr 1fr !important;
   gap:14px !important; border-bottom:1px solid rgba(255,255,255,0.08) !important; align-items:start !important;
 }
 .footer-col-brand > div:first-child { margin-bottom:4px !important; }
