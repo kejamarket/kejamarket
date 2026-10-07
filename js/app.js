@@ -2094,28 +2094,12 @@ class NairobiRentalsApp {
 
     const thumbsContainer = document.getElementById('detail-thumbs-container');
     if (thumbsContainer) {
-      if (isLoggedIn) {
-        // All thumbs visible for signed-in users
-        thumbsContainer.innerHTML = p.media.map((m, idx) => `
-          <div class="detail-thumb ${idx === (this.currentPhotoIndex || 0) ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this, ${idx})">
-            <img src="${m.url}" alt="${m.caption || 'Photo'}">
-          </div>
-        `).join('');
-      } else {
-        // Guest: first thumb free, remaining locked behind sign-in
-        const firstThumb = p.media[0];
-        const lockedCount = p.media.length - 1;
-        thumbsContainer.innerHTML = (firstThumb ? `
-          <div class="detail-thumb active" onclick="kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}'))">
-            <img src="${firstThumb.url}" alt="${firstThumb.caption || 'Photo'}">
-          </div>
-        ` : '') + (lockedCount > 0 ? `
-          <div onclick="kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}'))" style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:10px;padding:10px 16px;cursor:pointer;min-width:120px;flex:1;border:2px dashed rgba(99,102,241,0.5);">
-            <i class="fas fa-lock" style="color:#a5b4fc;font-size:1.1rem;"></i>
-            <span style="color:#c7d2fe;font-weight:700;font-size:0.8rem;">${lockedCount} more photo${lockedCount > 1 ? 's' : ''}<br><span style="font-size:0.7rem;font-weight:500;color:#a5b4fc;">Sign in to view</span></span>
-          </div>
-        ` : '');
-      }
+      // All property photos visible and clickable for every user
+      thumbsContainer.innerHTML = p.media.map((m, idx) => `
+        <div class="detail-thumb ${idx === (this.currentPhotoIndex || 0) ? 'active' : ''}" onclick="app.selectDetailPhoto('${m.url}', this, ${idx})">
+          <img src="${m.url}" alt="${m.caption || 'Photo'}">
+        </div>
+      `).join('');
     }
 
     // Video Tours Walkthrough
@@ -2387,14 +2371,6 @@ class NairobiRentalsApp {
 
   prevDetailPhoto(event) {
     if (event) event.stopPropagation();
-    // Gate: require sign-in to navigate photos
-    if (!(window.kejaAuth && window.kejaAuth.getSession())) {
-      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
-        const _p = this.selectedPropertyForDetail;
-        window.kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(_p && _p.id));
-      }
-      return;
-    }
     const p = this.selectedPropertyForDetail;
     if (!p || !p.media || p.media.length <= 1) return;
 
@@ -2404,14 +2380,6 @@ class NairobiRentalsApp {
 
   nextDetailPhoto(event) {
     if (event) event.stopPropagation();
-    // Gate: require sign-in to navigate photos
-    if (!(window.kejaAuth && window.kejaAuth.getSession())) {
-      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
-        const _p = this.selectedPropertyForDetail;
-        window.kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(_p && _p.id));
-      }
-      return;
-    }
     const p = this.selectedPropertyForDetail;
     if (!p || !p.media || p.media.length <= 1) return;
 
@@ -2596,6 +2564,9 @@ class NairobiRentalsApp {
     if (modal) {
       modal.classList.add('open');
       modal.style.setProperty('display', 'flex', 'important');
+      modal.scrollTop = 0;
+      const body = modal.querySelector('.modal-body');
+      if (body) body.scrollTop = 0;
       if (modalId === 'modal-post-ad' && window.landlordManager && typeof window.landlordManager.initPostMap === 'function') {
         window.landlordManager.initPostMap();
       }
