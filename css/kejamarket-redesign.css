@@ -48,7 +48,20 @@ button, input, select, textarea,
 .btn-header-tool, #btn-header-calculator, #btn-header-hunt,
 #btn-header-post-service, #btn-header-post-marketplace { display: none !important; }
 
-/* ── HIDE ALL MODALS BY DEFAULT ─────────────────────────────────────────────── */
+/* ── HIDE ALL MODALS & HIDDEN VIEW CONTAINERS BY DEFAULT ──────────────────── */
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.view-container.hidden,
+#view-split-container.hidden,
+#view-map-container.hidden,
+#services-section.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 .modal-backdrop {
   display: none !important;
   position: fixed !important;
@@ -683,7 +696,7 @@ body { background: #f7f9fb !important; }
 @media (max-width:1100px) {
   .main-app-layout { grid-template-columns: 210px minmax(0,1fr) !important; }
   .sidebar-filters { width:210px !important; min-width:210px !important; max-width:210px !important; }
-  .property-listings-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+  .property-listings-grid { grid-template-columns:repeat(4,minmax(0,1fr)) !important; }
   .keja-footer-container { grid-template-columns:1fr 1fr 1fr 1fr !important; }
 }
 @media (max-width:860px) {

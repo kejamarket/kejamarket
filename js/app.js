@@ -12,7 +12,7 @@ class NairobiRentalsApp {
     this.favorites = new Set();
     this.currentViewMode = 'grid'; // 'grid' | 'split' | 'map'
     this.currentPage = 1;
-    this.pageSize = 12; // 4 columns × 3 rows = 12 cards per page
+    this.pageSize = 24; // 4 columns × 6 rows = 24 cards per page
     this.activeCategory = 'All';
     this.activeCorridor = 'all';
     this.activeSuburb = 'all';
@@ -877,9 +877,22 @@ class NairobiRentalsApp {
     const splitContainer = document.getElementById('view-split-container');
     const mapContainer = document.getElementById('view-map-container');
 
-    if (gridContainer) gridContainer.classList.toggle('hidden', mode !== 'grid');
-    if (splitContainer) splitContainer.classList.toggle('hidden', mode !== 'split');
-    if (mapContainer) mapContainer.classList.toggle('hidden', mode !== 'map');
+    if (gridContainer) {
+      gridContainer.classList.toggle('hidden', mode !== 'grid');
+      gridContainer.style.setProperty('display', mode === 'grid' ? 'block' : 'none', 'important');
+    }
+    if (splitContainer) {
+      splitContainer.classList.toggle('hidden', mode !== 'split');
+      splitContainer.style.setProperty('display', mode === 'split' ? 'block' : 'none', 'important');
+    }
+    if (mapContainer) {
+      mapContainer.classList.toggle('hidden', mode !== 'map');
+      mapContainer.style.setProperty('display', mode === 'map' ? 'block' : 'none', 'important');
+    }
+
+    if (mode === 'split') {
+      this.renderSplitView();
+    }
 
     if (mode === 'map' || mode === 'split') {
       if (window.mapController) {
@@ -891,6 +904,16 @@ class NairobiRentalsApp {
         }, 300);
       }
     }
+  }
+
+  setPageSize(val) {
+    if (val === 'all') {
+      this.pageSize = 9999;
+    } else {
+      this.pageSize = parseInt(val, 10) || 24;
+    }
+    this.currentPage = 1;
+    this.applyFilters();
   }
 
   // Set active suburb (used by Popular Areas chips)
@@ -1717,6 +1740,12 @@ class NairobiRentalsApp {
     const splitListEl = document.getElementById('split-property-list');
     if (!splitListEl) return;
 
+    // Do NOT populate or show split view cards unless user has explicitly switched to split view mode
+    if (this.currentViewMode !== 'split') {
+      splitListEl.innerHTML = '';
+      return;
+    }
+
     if (this.filteredProperties.length === 0) {
       splitListEl.innerHTML = `<div class="empty-state-box"><p>No rentals or BnBs match your criteria.</p></div>`;
       return;
@@ -1729,25 +1758,37 @@ class NairobiRentalsApp {
     const paginationEl = document.getElementById('pagination-container');
     if (!paginationEl) return;
 
-    const totalCount = this.filteredProperties ? this.filteredProperties.length : 312;
+    const totalCount = this.filteredProperties ? this.filteredProperties.length : 0;
     const totalPages = Math.ceil(totalCount / this.pageSize);
-    const maxPage = Math.min(totalPages, 26); // Cap at 26 pages for 312 properties
-    const startItem = (this.currentPage - 1) * this.pageSize + 1;
+    const startItem = totalCount === 0 ? 0 : (this.currentPage - 1) * this.pageSize + 1;
     const endItem = Math.min(this.currentPage * this.pageSize, totalCount);
+
+    if (totalPages <= 1) {
+      paginationEl.innerHTML = `
+        <div class="pagination-showing-text" style="text-align: center; margin: 16px 0; font-weight: 600; color: #64748b;">
+          Showing all ${totalCount} properties
+        </div>
+      `;
+      return;
+    }
+
+    let buttonsHtml = '';
+    const maxButtons = Math.min(totalPages, 5);
+    for (let p = 1; p <= maxButtons; p++) {
+      buttonsHtml += `<button class="btn-page ${this.currentPage === p ? 'active' : ''}" onclick="app.goToPage(${p})">${p}</button>`;
+    }
+    if (totalPages > maxButtons) {
+      buttonsHtml += `<span class="pagination-ellipsis">...</span>`;
+      buttonsHtml += `<button class="btn-page ${this.currentPage === totalPages ? 'active' : ''}" onclick="app.goToPage(${totalPages})">${totalPages}</button>`;
+    }
 
     let navHtml = `
       <div class="pagination-controls">
         <button class="btn-page-nav" onclick="app.goToPage(${Math.max(1, this.currentPage - 1)})" ${this.currentPage === 1 ? 'disabled' : ''}>
           <i class="fas fa-chevron-left"></i>
         </button>
-        <button class="btn-page ${this.currentPage === 1 ? 'active' : ''}" onclick="app.goToPage(1)">1</button>
-        <button class="btn-page ${this.currentPage === 2 ? 'active' : ''}" onclick="app.goToPage(2)">2</button>
-        <button class="btn-page ${this.currentPage === 3 ? 'active' : ''}" onclick="app.goToPage(3)">3</button>
-        <button class="btn-page ${this.currentPage === 4 ? 'active' : ''}" onclick="app.goToPage(4)">4</button>
-        <button class="btn-page ${this.currentPage === 5 ? 'active' : ''}" onclick="app.goToPage(5)">5</button>
-        <span class="pagination-ellipsis">...</span>
-        <button class="btn-page ${this.currentPage === maxPage ? 'active' : ''}" onclick="app.goToPage(${maxPage})">${maxPage}</button>
-        <button class="btn-page-nav" onclick="app.goToPage(${Math.min(maxPage, this.currentPage + 1)})" ${this.currentPage >= maxPage ? 'disabled' : ''}>
+        ${buttonsHtml}
+        <button class="btn-page-nav" onclick="app.goToPage(${Math.min(totalPages, this.currentPage + 1)})" ${this.currentPage >= totalPages ? 'disabled' : ''}>
           <i class="fas fa-chevron-right"></i>
         </button>
       </div>

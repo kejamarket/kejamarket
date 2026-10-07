@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=9.0&t=202610080015">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=10.0&t=202610080330">
   
 </head>
 <body>
@@ -784,10 +784,12 @@
 
           <!-- Per Page dropdown -->
           <div style="display: flex; align-items: center; gap: 6px;">
-            <select class="sort-select" id="per-page-select" onchange="app.pageSize = parseInt(this.value); app.currentPage = 1; app.applyFilters();">
-              <option value="12" selected>12 per page</option>
-              <option value="24">24 per page</option>
+            <select class="sort-select" id="per-page-select" onchange="app.setPageSize(this.value)">
+              <option value="12">12 per page</option>
+              <option value="24" selected>24 per page</option>
               <option value="48">48 per page</option>
+              <option value="96">96 per page</option>
+              <option value="all">All properties</option>
             </select>
           </div>
         </div>
@@ -808,8 +810,8 @@
         </div>
       </div>
 
-      <!-- VIEW 2: Split View (Listings Left + Live Map Right) -->
-      <div class="view-container hidden" id="view-split-container">
+      <!-- VIEW 2: Split View (Listings Left + Live Map Right) - Strictly Hidden on Grid View -->
+      <div class="view-container hidden" id="view-split-container" style="display: none !important;">
         <div class="split-view-container">
           <div class="split-listings-col" id="split-property-list">
             <!-- Populated via JS -->
@@ -820,8 +822,8 @@
         </div>
       </div>
 
-      <!-- VIEW 3: Full Screen Interactive Live Map View -->
-      <div class="view-container hidden" id="view-map-container">
+      <!-- VIEW 3: Full Screen Interactive Live Map View - Strictly Hidden on Grid View -->
+      <div class="view-container hidden" id="view-map-container" style="display: none !important;">
         <div class="full-map-view-container">
           <div id="leaflet-full-map"></div>
         </div>
@@ -3395,7 +3397,7 @@
   <script src="js/recently-added.js?v=4.0&t=202609170130"></script>
   <script src="js/botSimulator.js?v=4.0&t=202609170130"></script>
   <script src="js/monetization.js?v=4.0&t=202609170130"></script>
-  <script src="js/app.js?v=11.0&t=202610080045"></script>
+  <script src="js/app.js?v=12.0&t=202610080330"></script>
   <script src="js/instagram-integration.js?v=6.0&t=202609171355"></script>
   <script src="js/admin.js?v=4.0&t=202609170130"></script>
   <!-- Profile Dropdown Test Script -->
