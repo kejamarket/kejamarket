@@ -922,25 +922,25 @@ body { background: #f7f9fb !important; }
 /* ════════════════════════════════════════════════════════════════
    11. FOOTER — dark teal, 7 columns
    ════════════════════════════════════════════════════════════════ */
-.keja-site-footer { background:#0d2f2f !important; color:#e2e8f0 !important; padding:12px 0 0 !important; margin-top:10px !important; }
+.keja-site-footer { background:#0d2f2f !important; color:#e2e8f0 !important; padding:4px 0 0 !important; margin-top:8px !important; }
 .keja-footer-container {
   max-width:1440px !important; margin:0 auto !important;
-  padding:0 20px 6px !important;
+  padding:0 20px 2px !important;
   display:grid !important;
   grid-template-columns: 1.5fr 0.9fr 0.9fr 0.9fr 1fr !important;
-  gap:14px !important; border-bottom:1px solid rgba(255,255,255,0.08) !important; align-items:start !important;
+  gap:10px !important; border-bottom:1px solid rgba(255,255,255,0.08) !important; align-items:start !important;
 }
 .footer-col-brand > div:first-child { margin-bottom:4px !important; }
 .footer-col-brand > div:first-child span { font-size:1.1rem !important; font-weight:900 !important; color:#fff !important; font-family:'Poppins',sans-serif !important; }
-.footer-col-brand p { color:#94a3b8 !important; font-size:0.68rem !important; margin-bottom:6px !important; line-height:1.3 !important; font-family:'Poppins',sans-serif !important; }
-.footer-col-title { font-size:0.68rem !important; font-weight:700 !important; color:#f1f5f9 !important; margin-bottom:5px !important; text-transform:uppercase !important; letter-spacing:0.06em !important; font-family:'Poppins',sans-serif !important; }
-.footer-links-list { list-style:none !important; display:flex !important; flex-direction:column !important; gap:3px !important; }
-.footer-links-list a { font-size:0.68rem !important; color:#94a3b8 !important; text-decoration:none !important; transition:color 0.15s !important; font-family:'Poppins',sans-serif !important; }
+.footer-col-brand p { color:#94a3b8 !important; font-size:0.58rem !important; margin-bottom:2px !important; line-height:1.2 !important; font-family:'Poppins',sans-serif !important; }
+.footer-col-title { font-size:0.6rem !important; font-weight:700 !important; color:#f1f5f9 !important; margin-bottom:2px !important; text-transform:uppercase !important; letter-spacing:0.06em !important; font-family:'Poppins',sans-serif !important; }
+.footer-links-list { list-style:none !important; display:flex !important; flex-direction:column !important; gap:1px !important; }
+.footer-links-list a { font-size:0.6rem !important; color:#94a3b8 !important; text-decoration:none !important; transition:color 0.15s !important; font-family:'Poppins',sans-serif !important; }
 .footer-links-list a:hover { color:#4ade80 !important; }
 .footer-links-grid-cols { display:grid !important; grid-template-columns:1fr 1fr 1fr !important; gap:0 6px !important; }
 
 /* Footer social icons — circles with icons showing */
-.footer-social-icons { display:flex !important; flex-wrap:wrap !important; gap:4px !important; margin-top:4px !important; margin-bottom:6px !important; }
+.footer-social-icons { display:flex !important; flex-wrap:wrap !important; gap:3px !important; margin-top:3px !important; margin-bottom:3px !important; }
 .footer-social-icons a {
   width:24px !important; height:24px !important; border-radius:50% !important;
   background:rgba(255,255,255,0.12) !important; border:1px solid rgba(255,255,255,0.2) !important;
@@ -957,8 +957,8 @@ body { background: #f7f9fb !important; }
 .footer-location-pin i { color:var(--r) !important; font-size:0.66rem !important; }
 
 /* Footer bottom */
-.footer-bottom-bar { max-width:1440px; margin:0 auto; padding:6px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px; }
-.footer-bottom-bar p { font-size:0.66rem; color:#64748b; font-family:'Poppins',sans-serif; margin:0; }
+.footer-bottom-bar { max-width:1440px; margin:0 auto; padding:3px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:3px; }
+.footer-bottom-bar p { font-size:0.58rem; color:#64748b; font-family:'Poppins',sans-serif; margin:0; }
 
 /* ════════════════════════════════════════════════════════════════
    14. FLOATING SHARE PANEL
