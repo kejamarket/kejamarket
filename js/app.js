@@ -12,7 +12,7 @@ class NairobiRentalsApp {
     this.favorites = new Set();
     this.currentViewMode = 'grid'; // 'grid' | 'split' | 'map'
     this.currentPage = 1;
-    this.pageSize = 24; // 4 columns × 6 rows = 24 cards per page
+    this.pageSize = 12; // 4 columns × 3 rows = 12 cards per page (REFERENCE MATCH)
     this.activeCategory = 'All';
     this.activeCorridor = 'all';
     this.activeSuburb = 'all';
@@ -910,7 +910,7 @@ class NairobiRentalsApp {
     if (val === 'all') {
       this.pageSize = 9999;
     } else {
-      this.pageSize = parseInt(val, 10) || 24;
+      this.pageSize = parseInt(val, 10) || 12; // Default 12 cards per page (REFERENCE MATCH)
     }
     this.currentPage = 1;
     this.applyFilters();

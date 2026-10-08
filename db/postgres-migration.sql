@@ -740,3 +740,19 @@ CREATE INDEX IF NOT EXISTS idx_hhp_property ON house_hunt_properties(property_id
 -- Messages specific to a House Hunt (reuses messages table but with house_hunt_id)
 ALTER TABLE messages ADD COLUMN IF NOT EXISTS house_hunt_id TEXT;
 CREATE INDEX IF NOT EXISTS idx_messages_hunt ON messages(house_hunt_id);
+
+-- ════════════════════════════════════════
+-- LISTING APPROVAL WORKFLOW ENHANCEMENTS
+-- ════════════════════════════════════════
+
+-- Add rejection_reason to services
+ALTER TABLE services ADD COLUMN IF NOT EXISTS rejection_reason TEXT;
+
+-- Add rejection_reason to marketplace_items  
+ALTER TABLE marketplace_items ADD COLUMN IF NOT EXISTS rejection_reason TEXT;
+
+-- Index for pending services
+CREATE INDEX IF NOT EXISTS idx_services_pending ON services(status, is_verified);
+
+-- Index for pending marketplace items
+CREATE INDEX IF NOT EXISTS idx_marketplace_pending ON marketplace_items(status);
