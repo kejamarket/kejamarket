@@ -451,7 +451,13 @@ body { background: #f7f9fb !important; }
 .search-submit-btn span { display: none !important; }
 
 /* Header actions */
-.header-actions { display: flex !important; align-items: center !important; gap: 7px !important; flex-shrink: 0 !important; }
+.header-actions { 
+  display: flex !important; 
+  align-items: center !important; 
+  gap: 12px !important;  /* Increased from 7px to 12px for better spacing */
+  flex-shrink: 0 !important; 
+  padding-right: 8px !important;
+}
 
 /* Post Property button — green pill matching reference */
 .header-post-dropdown-wrapper { position: relative !important; }
@@ -1966,8 +1972,8 @@ body { background: #f7f9fb !important; }
 .btn-header-circle-action {
   background: #ffffff !important;
   border: 1.5px solid #e2e8f0 !important;
-  width: 32px !important;
-  height: 32px !important;
+  width: 36px !important;  /* Increased from 32px to 36px */
+  height: 36px !important; /* Increased from 32px to 36px */
   border-radius: 50% !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -1975,6 +1981,7 @@ body { background: #f7f9fb !important; }
   cursor: pointer !important;
   transition: all 0.15s ease !important;
   padding: 0 !important;
+  flex-shrink: 0 !important; /* Prevent shrinking */
 }
 .btn-header-circle-action:hover {
   background: #e8f8ee !important;
@@ -2476,4 +2483,57 @@ body { background: #f7f9fb !important; }
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
+}
+
+/* ── PROFILE DROPDOWN FIX - Prevent Overlap ────────────────────────────────── */
+#profile-dropdown {
+  position: absolute !important;
+  top: calc(100% + 8px) !important; /* Position below the button with spacing */
+  right: 0 !important;  /* Align to right edge of parent */
+  min-width: 280px !important;
+  max-width: 320px !important;
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+  z-index: 10000 !important; /* Ensure it's above everything */
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Ensure parent wrapper has proper positioning context */
+.btn-header-account-pill {
+  position: relative !important;
+}
+
+/* Fix header to prevent content from flowing under dropdown */
+.site-header {
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+/* Increase header actions spacing on larger screens */
+@media (min-width: 1024px) {
+  .header-actions {
+    gap: 16px !important;  /* More spacious on desktop */
+  }
+  
+  .btn-header-circle-action {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .btn-header-account-pill {
+    height: 36px !important;
+    padding: 6px 12px 6px 6px !important;
+  }
+}
+
+/* Prevent dropdown from being cut off on smaller screens */
+@media (max-width: 768px) {
+  #profile-dropdown {
+    right: -8px !important;
+    min-width: 260px !important;
+  }
 }

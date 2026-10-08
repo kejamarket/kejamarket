@@ -1,0 +1,474 @@
+/**
+ * KejaMarket Mobile App CSS - 100% Phone Optimized
+ * Native app experience for mobile devices
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MOBILE-FIRST RESET - Force mobile layout on all screens */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
+  background: #f8f9fa !important;
+  overflow-x: hidden !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MOBILE HEADER - Top bar with logo and menu */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.site-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 56px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 16px !important;
+  z-index: 1000 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+.site-header .logo-container {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.site-header .logo-img {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.site-header .logo-text {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+}
+
+.site-header .logo-text .market {
+  color: #ef4444 !important;
+}
+
+/* Mobile header actions - right side */
+.mobile-header-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.mobile-header-btn {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  position: relative !important;
+  transition: background 0.2s !important;
+}
+
+.mobile-header-btn:active {
+  background: #f3f4f6 !important;
+}
+
+.mobile-header-btn i {
+  font-size: 20px !important;
+  color: #1f2937 !important;
+}
+
+.mobile-notif-badge {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 50% !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 2px solid #ffffff !important;
+}
+
+/* Hide desktop header elements */
+.header-search-wrapper,
+.header-actions,
+.btn-header-post-property,
+.btn-header-circle-action,
+.btn-header-account-pill,
+.secondary-nav {
+  display: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MOBILE SEARCH BAR - Below header */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.mobile-search-bar {
+  position: fixed !important;
+  top: 56px !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: #ffffff !important;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  z-index: 999 !important;
+}
+
+.mobile-search-input {
+  width: 100% !important;
+  height: 44px !important;
+  background: #f3f4f6 !important;
+  border: none !important;
+  border-radius: 22px !important;
+  padding: 0 16px 0 44px !important;
+  font-size: 15px !important;
+  color: #1f2937 !important;
+}
+
+.mobile-search-input::placeholder {
+  color: #9ca3af !important;
+}
+
+.mobile-search-icon {
+  position: absolute !important;
+  left: 32px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #6b7280 !important;
+  font-size: 16px !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MAIN CONTENT AREA - Adjust for fixed header and bottom nav */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.main-content {
+  margin-top: 120px !important; /* Header (56px) + Search (64px) */
+  margin-bottom: 80px !important; /* Bottom nav space */
+  padding: 0 !important;
+  min-height: calc(100vh - 200px) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MOBILE PROPERTY CARDS - Full width, touch optimized */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.property-card {
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  margin: 0 16px 16px 16px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  transition: transform 0.2s !important;
+}
+
+.property-card:active {
+  transform: scale(0.98) !important;
+}
+
+.property-card-image {
+  width: 100% !important;
+  height: 220px !important;
+  object-fit: cover !important;
+  position: relative !important;
+}
+
+.property-card-badge {
+  position: absolute !important;
+  top: 12px !important;
+  left: 12px !important;
+  background: #00b53f !important;
+  color: #ffffff !important;
+  padding: 4px 12px !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.property-card-favorite {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  width: 36px !important;
+  height: 36px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.property-card-favorite i {
+  color: #ef4444 !important;
+  font-size: 18px !important;
+}
+
+.property-card-content {
+  padding: 16px !important;
+}
+
+.property-card-price {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #00b53f !important;
+  margin-bottom: 6px !important;
+}
+
+.property-card-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+  margin-bottom: 6px !important;
+  line-height: 1.4 !important;
+}
+
+.property-card-location {
+  font-size: 14px !important;
+  color: #6b7280 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin-bottom: 12px !important;
+}
+
+.property-card-features {
+  display: flex !important;
+  gap: 16px !important;
+  font-size: 13px !important;
+  color: #6b7280 !important;
+}
+
+.property-card-feature {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* BOTTOM NAVIGATION BAR - Fixed at bottom */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.mobile-bottom-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 64px !important;
+  background: #ffffff !important;
+  border-top: 1px solid #e5e7eb !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  padding: 0 !important;
+  z-index: 1000 !important;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05) !important;
+}
+
+.mobile-nav-item {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  padding: 8px 0 !important;
+  text-decoration: none !important;
+  color: #6b7280 !important;
+  transition: color 0.2s !important;
+  cursor: pointer !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.mobile-nav-item i {
+  font-size: 22px !important;
+  color: #6b7280 !important;
+  transition: color 0.2s !important;
+}
+
+.mobile-nav-item span {
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+
+.mobile-nav-item.active {
+  color: #00b53f !important;
+}
+
+.mobile-nav-item.active i {
+  color: #00b53f !important;
+}
+
+.mobile-nav-item:active {
+  background: #f9fafb !important;
+}
+
+/* Center "Post" button - Special styling */
+.mobile-nav-item.center-action {
+  position: relative !important;
+}
+
+.mobile-nav-post-btn {
+  width: 56px !important;
+  height: 56px !important;
+  background: #00b53f !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  top: -20px !important;
+  box-shadow: 0 4px 12px rgba(0, 181, 63, 0.4) !important;
+  border: 4px solid #ffffff !important;
+}
+
+.mobile-nav-post-btn i {
+  color: #ffffff !important;
+  font-size: 24px !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MOBILE FILTERS BAR - Horizontal scroll chips */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.mobile-filters-bar {
+  display: flex !important;
+  gap: 8px !important;
+  padding: 12px 16px !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.mobile-filters-bar::-webkit-scrollbar {
+  display: none !important;
+}
+
+.mobile-filter-chip {
+  padding: 8px 16px !important;
+  background: #f3f4f6 !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 20px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #374151 !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+}
+
+.mobile-filter-chip.active {
+  background: #00b53f !important;
+  color: #ffffff !important;
+  border-color: #00b53f !important;
+}
+
+.mobile-filter-chip:active {
+  transform: scale(0.95) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MOBILE FLOATING ACTION BUTTON (FAB) */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.mobile-fab {
+  position: fixed !important;
+  bottom: 80px !important;
+  right: 16px !important;
+  width: 56px !important;
+  height: 56px !important;
+  background: #00b53f !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(0, 181, 63, 0.4) !important;
+  border: none !important;
+  cursor: pointer !important;
+  z-index: 900 !important;
+  transition: transform 0.2s !important;
+}
+
+.mobile-fab:active {
+  transform: scale(0.95) !important;
+}
+
+.mobile-fab i {
+  color: #ffffff !important;
+  font-size: 24px !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MOBILE SAFE AREAS - iPhone notch support */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+@supports (padding-top: env(safe-area-inset-top)) {
+  .site-header {
+    padding-top: env(safe-area-inset-top) !important;
+    height: calc(56px + env(safe-area-inset-top)) !important;
+  }
+  
+  .mobile-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    height: calc(64px + env(safe-area-inset-bottom)) !important;
+  }
+  
+  .main-content {
+    margin-top: calc(120px + env(safe-area-inset-top)) !important;
+    margin-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* MOBILE TOUCH FEEDBACK - Native feel */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+.touch-feedback {
+  transition: all 0.1s ease !important;
+}
+
+.touch-feedback:active {
+  transform: scale(0.97) !important;
+  opacity: 0.8 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* HIDE DESKTOP ELEMENTS ON MOBILE */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .desktop-only,
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Force mobile layout even on tablets */
+@media (max-width: 1200px) {
+  body {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+}

@@ -171,7 +171,8 @@ const AdminVerification = (() => {
           const label = typeLabel[type] || type;
           const ownerName = item.landlordName || item.providerName || item.sellerName || 'Unknown';
           const ownerPhone = item.landlordPhone || item.providerPhone || item.sellerPhone || '-';
-          const thumb = (Array.isArray(item.images) ? item.images[0] : null) || '';
+          const rawFirst = (Array.isArray(item.images) ? item.images[0] : (Array.isArray(item.media) ? item.media[0] : item.image)) || '';
+          const thumb = extractImageUrl(rawFirst);
           const thumbStyle = thumb ? `background-image:url('${thumb}');background-size:cover;background-position:center;` : 'background:#f1f5f9;display:flex;align-items:center;justify-content:center;';
           return `
           <div class="verification-card">
@@ -342,7 +343,7 @@ const AdminVerification = (() => {
               <tr>
                 <td>
                   <div class="property-info-cell">
-                    <div class="property-thumbnail" style="background-image: url('${property.images?.[0] || '/icons/placeholder.png'}')"></div>
+                    <div class="property-thumbnail" style="background-image: url('${extractImageUrl(property.images?.[0] || property.media?.[0] || property.image) || '/icons/placeholder.png'}')"></div>
                     <div>
                       <div class="property-title">${escapeHtml(property.title || 'Untitled')}</div>
                       <div class="property-id">#${property.id.slice(0, 8)}</div>
@@ -407,7 +408,7 @@ const AdminVerification = (() => {
               <tr>
                 <td>
                   <div class="property-info-cell">
-                    <div class="property-thumbnail" style="background-image: url('${property.images?.[0] || '/icons/placeholder.png'}')"></div>
+                    <div class="property-thumbnail" style="background-image: url('${extractImageUrl(property.images?.[0] || property.media?.[0] || property.image) || '/icons/placeholder.png'}')"></div>
                     <div>
                       <div class="property-title">${escapeHtml(property.title || 'Untitled')}</div>
                       <div class="property-id">#${property.id.slice(0, 8)}</div>
@@ -480,19 +481,21 @@ const AdminVerification = (() => {
       if (!item) throw new Error('Listing data not found');
 
       // Normalize images
-      let images = [];
+      let rawImages = [];
       if (Array.isArray(item.images)) {
-        images = item.images;
+        rawImages = item.images;
       } else if (typeof item.images === 'string') {
-        try { images = JSON.parse(item.images); } catch (_) { images = [item.images]; }
+        try { rawImages = JSON.parse(item.images); } catch (_) { rawImages = [item.images]; }
       } else if (Array.isArray(item.media)) {
-        images = item.media;
+        rawImages = item.media;
       } else if (typeof item.image_url === 'string') {
-        images = [item.image_url];
+        rawImages = [item.image_url];
       } else if (typeof item.image === 'string') {
-        images = [item.image];
+        rawImages = [item.image];
       }
-      images = (Array.isArray(images) ? images : []).filter(img => typeof img === 'string' && img.trim().length > 0);
+      const images = (Array.isArray(rawImages) ? rawImages : [])
+        .map(extractImageUrl)
+        .filter(img => typeof img === 'string' && img.trim().length > 0);
 
       // Normalization of fields
       const title = item.title || item.business_name || 'Untitled Listing';
@@ -795,6 +798,13 @@ const AdminVerification = (() => {
   }
 
   // Utility functions
+  function extractImageUrl(img) {
+    if (!img) return '';
+    if (typeof img === 'string') return img;
+    if (typeof img === 'object') return img.url || img.src || img.link || img.image || '';
+    return '';
+  }
+
   function getDaysOld(dateString) {
     const created = new Date(dateString);
     const now = new Date();

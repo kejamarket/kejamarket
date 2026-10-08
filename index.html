@@ -12,7 +12,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=11.0&t=202610080345">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=12.0&t=202610090125">
+  
+  <!-- Mobile App CSS - 100% Phone Optimized -->
+  <link rel="stylesheet" href="css/mobile-app.css?v=1.0">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
@@ -236,6 +239,64 @@
 </head>
 <body>
 
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MOBILE APP HEADER - Fixed top -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="mobile-header" style="display:none;">
+    <div class="mobile-header-logo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+        <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#008744"/>
+        <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2b"/>
+      </svg>
+      <span><span style="color:#008744;">Keja</span><span style="color:#e52b2b;">Market</span></span>
+    </div>
+    <div class="mobile-header-actions">
+      <button class="mobile-header-btn" onclick="app.toggleFavoritesView()" title="Favorites">
+        <i class="far fa-heart"></i>
+      </button>
+      <button class="mobile-header-btn" onclick="app.openAdminChat()" title="Notifications">
+        <i class="far fa-bell"></i>
+        <span class="mobile-notif-badge">3</span>
+      </button>
+      <button class="mobile-header-btn" onclick="kejaAuth.toggleProfileDropdown()" title="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Search Bar -->
+  <div class="mobile-search-bar" style="display:none; position:relative;">
+    <i class="fas fa-search mobile-search-icon"></i>
+    <input type="text" class="mobile-search-input" placeholder="Search estate or neighbourhood..." id="mobile-search-input">
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MOBILE BOTTOM NAVIGATION - Fixed bottom -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <nav class="mobile-bottom-nav" style="display:none;">
+    <button class="mobile-nav-item active" onclick="app.switchFilterTab('properties'); kejaUI.setMobileNav(this)">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </button>
+    <button class="mobile-nav-item" onclick="app.toggleSearchView(); kejaUI.setMobileNav(this)">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </button>
+    <button class="mobile-nav-item center-action" onclick="app.openPostPropertyModal()">
+      <div class="mobile-nav-post-btn">
+        <i class="fas fa-plus"></i>
+      </div>
+    </button>
+    <button class="mobile-nav-item" onclick="app.toggleFavoritesView(); kejaUI.setMobileNav(this)">
+      <i class="far fa-heart"></i>
+      <span>Saved</span>
+    </button>
+    <button class="mobile-nav-item" onclick="kejaAuth.toggleProfileDropdown(); kejaUI.setMobileNav(this)">
+      <i class="far fa-user"></i>
+      <span>Account</span>
+    </button>
+  </nav>
+
   <!-- Page content will be recreated to match reference exactly -->
 
 
@@ -297,7 +358,7 @@
 
       <!-- Header Action Buttons (Hierarchy: Post ▼ | Favorites | Messages | Notifications | Profile) -->
       <!-- Header Action Buttons (Reference Match: + Post Property | Heart | Bell(3) | KejaMarket Profile) -->
-      <div class="header-actions" style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+      <div class="header-actions" style="display:flex; align-items:center; gap:14px; flex-shrink:0;">
         <!-- + Post Property green pill button -->
         <button type="button" class="btn-header-post-property" onclick="app.openPostPropertyModal && app.openPostPropertyModal(event)" title="Post Property">
           <i class="fas fa-plus"></i> <span>Post Property</span>
@@ -305,23 +366,23 @@
 
         <!-- Favorites (Heart) -->
         <button class="btn-header-circle-action" id="btn-header-favs" onclick="app.toggleFavoritesView()" title="Saved Favorites">
-          <i class="far fa-heart" style="color:#00b53f; font-size:1.1rem;"></i>
+          <i class="far fa-heart" style="color:#00b53f; font-size:1.15rem;"></i>
         </button>
 
         <!-- Notifications Bell with red badge 3 -->
         <button class="btn-header-circle-action" id="btn-header-notifications" onclick="if(window.KejaCommunication && window.KejaCommunication.NotificationSystem){ window.KejaCommunication.NotificationSystem.showNotificationsCenter(); } else { app.openAdminChat(); }" title="Notifications" style="position:relative;">
-          <i class="far fa-bell" style="font-size:1.15rem; color:#1e293b;"></i>
+          <i class="far fa-bell" style="font-size:1.2rem; color:#1e293b;"></i>
           <span class="header-notif-badge">3</span>
         </button>
 
         <!-- User account pill: KejaMarket ▾ -->
-        <div style="position:relative; flex-shrink:0;">
+        <div style="position:relative; flex-shrink:0; z-index:10000;">
           <button class="btn-header-account-pill" id="btn-auth-header" onclick="kejaAuth.toggleProfileDropdown()">
             <div class="header-account-avatar">
               <i class="fas fa-user"></i>
             </div>
             <span class="header-account-name" id="auth-header-label">Sign In</span>
-            <i class="fas fa-chevron-down" style="font-size:0.65rem; color:#64748b;"></i>
+            <i class="fas fa-chevron-down" style="font-size:0.7rem; color:#64748b; margin-left:2px;"></i>
           </button>
           <div id="profile-dropdown" style="display:none;"><div id="profile-dropdown-content"></div></div>
         </div>
@@ -3386,7 +3447,7 @@
   <script src="js/recently-added.js?v=4.0&t=202609170130"></script>
   <script src="js/botSimulator.js?v=4.0&t=202609170130"></script>
   <script src="js/monetization.js?v=4.0&t=202609170130"></script>
-  <script src="js/app.js?v=14.0&t=202610090115"></script>
+  <script src="js/app.js?v=15.0&t=202610090120"></script>
   <script src="js/instagram-integration.js?v=6.0&t=202609171355"></script>
   <script src="js/admin.js?v=4.0&t=202609170130"></script>
   <!-- Profile Dropdown Test Script -->
