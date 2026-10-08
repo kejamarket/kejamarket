@@ -602,18 +602,43 @@ const kejaAuth = (() => {
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
-        if (window.app) {
-          window.app.closeModal('modal-auth');
+
+        // Close modal — use whichever closeModal is available
+        const closeFn = (typeof window.app?.closeModal === 'function')
+          ? (id) => window.app.closeModal(id)
+          : (typeof window.closeModal === 'function')
+            ? window.closeModal
+            : (id) => { const el = document.getElementById(id); if (el) { el.classList.remove('open'); el.style.display = 'none'; } };
+        closeFn('modal-auth');
+
+        // Admin redirect: go straight to admin dashboard
+        if (data.user.role === 'admin' || data.user.isAdmin || data.user.id === 'usr-admin-01') {
+          if (window.app && typeof window.app.showToast === 'function') {
+            window.app.showToast(`Welcome, ${data.user.name}! Redirecting to Admin Dashboard...`, 'success');
+          }
+          setTimeout(() => { window.location.href = '/admin-dashboard.html'; }, 600);
+          return;
+        }
+
+        if (window.app && typeof window.app.showToast === 'function') {
           window.app.showToast(`Welcome back, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`${data.message || 'Incorrect credentials'}`, 'error');
+        const errMsg = data.message || 'Incorrect credentials. Please try again.';
+        if (window.app && typeof window.app.showToast === 'function') {
+          window.app.showToast(errMsg, 'error');
+        } else {
+          alert(errMsg);
+        }
       }
     } catch (err) {
       console.error('Sign in error:', err);
-      if (window.app) {
-        window.app.showToast('Unable to connect to server. Please check your connection and try again.', 'error');
+      const netMsg = 'Unable to connect to server. Please check your connection and try again.';
+      if (window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast(netMsg, 'error');
+      } else {
+        alert(netMsg);
       }
     } finally {
       if (submitBtn) {
@@ -937,11 +962,9 @@ const kejaAuth = (() => {
 
     // AUTO-OPEN PORTAL / DASHBOARD after login
     setTimeout(() => {
-      // Admin → Admin Portal (unchanged)
+      // Admin → redirect to Admin Dashboard page
       if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
-        if (window.kejaAdmin && typeof window.kejaAdmin.openAdminModal === 'function') {
-          window.kejaAdmin.openAdminModal();
-        }
+        window.location.href = '/admin-dashboard.html';
         return;
       }
 
