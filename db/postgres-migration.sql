@@ -745,14 +745,22 @@ CREATE INDEX IF NOT EXISTS idx_messages_hunt ON messages(house_hunt_id);
 -- LISTING APPROVAL WORKFLOW ENHANCEMENTS
 -- ════════════════════════════════════════
 
+-- Add status and rejection_reason to properties
+ALTER TABLE properties ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active';
+ALTER TABLE properties ADD COLUMN IF NOT EXISTS rejection_reason TEXT;
+
 -- Add rejection_reason to services
 ALTER TABLE services ADD COLUMN IF NOT EXISTS rejection_reason TEXT;
 
 -- Add rejection_reason to marketplace_items  
 ALTER TABLE marketplace_items ADD COLUMN IF NOT EXISTS rejection_reason TEXT;
 
+-- Index for pending properties
+CREATE INDEX IF NOT EXISTS idx_properties_status ON properties(status);
+
 -- Index for pending services
 CREATE INDEX IF NOT EXISTS idx_services_pending ON services(status, is_verified);
 
 -- Index for pending marketplace items
 CREATE INDEX IF NOT EXISTS idx_marketplace_pending ON marketplace_items(status);
+

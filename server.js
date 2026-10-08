@@ -5393,9 +5393,9 @@ app.get('/api/admin/pending', requireAuth, async (req, res) => {
       // Properties: pending = not verified and not rejected
       const propRes = await store.query(
         `SELECT id, title, description, rent_kes AS price, estate_suburb AS location, created_at,
-                landlord_id, raw_data, media, status
+                landlord_id, raw_data, COALESCE(raw_data->'media', '[]'::jsonb) AS media, status
          FROM properties
-         WHERE (is_verified = false OR is_verified IS NULL) AND status NOT IN ('approved','verified','rejected')
+         WHERE (is_verified = false OR is_verified IS NULL) AND (status IS NULL OR status NOT IN ('approved','verified','rejected'))
          ORDER BY created_at ASC`
       );
       properties = propRes.rows.map(p => ({
