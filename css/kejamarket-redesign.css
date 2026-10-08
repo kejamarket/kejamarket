@@ -394,7 +394,7 @@ body { background: #f7f9fb !important; }
   display: flex !important; align-items: center !important;
   gap: 8px !important; text-decoration: none !important; flex-shrink: 0 !important;
 }
-.brand-logo svg { width: 38px !important; height: 38px !important; flex-shrink: 0 !important; }
+.brand-logo svg { width: 32px !important; height: 32px !important; flex-shrink: 0 !important; }
 .brand-text-group { display: flex !important; flex-direction: column !important; line-height: 1.1 !important; }
 .brand-text-group > span:first-child {
   font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.3px !important;
@@ -409,7 +409,7 @@ body { background: #f7f9fb !important; }
 .header-search-bar {
   display: flex !important; align-items: center !important;
   background: #f1f5f9 !important; border: 1.5px solid var(--bdr) !important;
-  border-radius: 8px !important; height: 38px !important; overflow: hidden !important;
+  border-radius: 8px !important; height: 34px !important; overflow: hidden !important;
 }
 .header-search-bar:focus-within {
   border-color: var(--g) !important; background: #fff !important;
@@ -1943,12 +1943,12 @@ body { background: #f7f9fb !important; }
   color: #ffffff !important;
   border: none !important;
   border-radius: 24px !important;
-  padding: 8px 18px !important;
-  font-size: 0.82rem !important;
+  padding: 6px 14px !important;
+  font-size: 0.78rem !important;
   font-weight: 700 !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 5px !important;
   cursor: pointer !important;
   box-shadow: 0 2px 6px rgba(0, 181, 63, 0.3) !important;
   transition: all 0.15s ease !important;
@@ -1966,8 +1966,8 @@ body { background: #f7f9fb !important; }
 .btn-header-circle-action {
   background: #ffffff !important;
   border: 1.5px solid #e2e8f0 !important;
-  width: 38px !important;
-  height: 38px !important;
+  width: 32px !important;
+  height: 32px !important;
   border-radius: 50% !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -2003,34 +2003,34 @@ body { background: #f7f9fb !important; }
   background: #ffffff !important;
   border: 1.5px solid #e2e8f0 !important;
   border-radius: 24px !important;
-  padding: 4px 14px 4px 4px !important;
+  padding: 4px 10px 4px 4px !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: 6px !important;
   cursor: pointer !important;
-  height: 38px !important;
+  height: 32px !important;
   transition: all 0.15s ease !important;
 }
 .btn-header-account-pill:hover {
   border-color: #00b53f !important;
 }
 .header-account-avatar {
-  width: 30px !important;
-  height: 30px !important;
+  width: 26px !important;
+  height: 26px !important;
   border-radius: 50% !important;
   background: #073815 !important;
   color: #ffffff !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 0.8rem !important;
+  font-size: 0.7rem !important;
 }
 .header-account-avatar i {
   color: #ffffff !important;
-  font-size: 0.8rem !important;
+  font-size: 0.7rem !important;
 }
 .header-account-name {
-  font-size: 0.84rem !important;
+  font-size: 0.78rem !important;
   font-weight: 700 !important;
   color: #0f172a !important;
   font-family: 'Poppins', sans-serif !important;
