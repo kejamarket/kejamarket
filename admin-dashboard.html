@@ -30,158 +30,151 @@
       </h2>
     </div>
     
-    <nav>
-      <!-- Core Management -->
+    <nav id="admin-nav-menu">
+      <!-- 1. Dashboard Home -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title">Core Management</div>
-        <button class="admin-nav-btn active" data-module="dashboard">
+        <button class="admin-nav-btn active" data-module="dashboard" data-rbac="any">
           <i class="fas fa-chart-line nav-icon"></i>
           <span>Dashboard</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="users">
-          <i class="fas fa-users nav-icon"></i>
-          <span>Users</span>
-        </button>
       </div>
-      
-      <!-- Property Management -->
+
+      <!-- 2. Listings (Gatekeeper & Moderation) -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title">Property Management</div>
-        <button class="admin-nav-btn" data-module="properties">
+        <div class="sidebar-section-title">Listings Moderation</div>
+        <button class="admin-nav-btn" data-module="verification" data-view="pending" data-rbac="listings,super">
+          <i class="fas fa-clock nav-icon" style="color:#f59e0b;"></i>
+          <span>Pending Approval</span>
+          <span class="admin-badge" id="badge-pending-listings" style="display:none; margin-left:auto; background:#f59e0b; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:700;">0</span>
+        </button>
+        <button class="admin-nav-btn" data-module="properties" data-rbac="listings,super">
           <i class="fas fa-home nav-icon"></i>
           <span>Properties</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="buildings">
-          <i class="fas fa-building nav-icon"></i>
-          <span>Buildings</span>
-        </button>
-        
-        <button class="admin-nav-btn" data-module="units">
-          <i class="fas fa-door-open nav-icon"></i>
-          <span>Units</span>
-        </button>
-        
-        <button class="admin-nav-btn" data-module="verification">
-          <i class="fas fa-shield-check nav-icon"></i>
-          <span>Verification</span>
-        </button>
-      </div>
-      
-      <!-- Business Operations -->
-      <div class="sidebar-section">
-        <div class="sidebar-section-title">Business Operations</div>
-        <button class="admin-nav-btn" data-module="rentals">
-          <i class="fas fa-key nav-icon"></i>
-          <span>Rentals</span>
-        </button>
-        
-        <button class="admin-nav-btn" data-module="bnb">
-          <i class="fas fa-bed nav-icon"></i>
-          <span>Short-Stays / BNB</span>
-        </button>
-        
-        <button class="admin-nav-btn" data-module="services">
+        <button class="admin-nav-btn" data-module="services" data-rbac="listings,super">
           <i class="fas fa-tools nav-icon"></i>
           <span>Services</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="marketplace">
-          <i class="fas fa-shopping-cart nav-icon"></i>
+        <button class="admin-nav-btn" data-module="marketplace" data-rbac="listings,super">
+          <i class="fas fa-shopping-bag nav-icon"></i>
           <span>Marketplace</span>
         </button>
+        <button class="admin-nav-btn" data-module="listings-reported" data-rbac="listings,super">
+          <i class="fas fa-flag nav-icon" style="color:#ef4444;"></i>
+          <span>Reported / Flagged</span>
+          <span class="admin-badge" id="badge-reported-listings" style="display:none; margin-left:auto; background:#ef4444; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:700;">0</span>
+        </button>
       </div>
-      
-      <!-- Customer Management -->
+
+      <!-- 3. User & Identity Management -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title">Customer Management</div>
-        <button class="admin-nav-btn" data-module="inquiries">
-          <i class="fas fa-envelope nav-icon"></i>
-          <span>Inquiries</span>
+        <div class="sidebar-section-title">Users & Identity</div>
+        <button class="admin-nav-btn" data-module="users" data-rbac="users,super">
+          <i class="fas fa-users nav-icon"></i>
+          <span>All Users</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="reviews">
-          <i class="fas fa-star nav-icon"></i>
-          <span>Reviews</span>
+        <button class="admin-nav-btn" data-module="users-verified" data-rbac="users,verification,super">
+          <i class="fas fa-user-check nav-icon" style="color:#10b981;"></i>
+          <span>Verified Users</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="support">
-          <i class="fas fa-ticket-alt nav-icon"></i>
-          <span>Support</span>
+        <button class="admin-nav-btn" data-module="users-suspended" data-rbac="users,super">
+          <i class="fas fa-user-slash nav-icon" style="color:#dc2626;"></i>
+          <span>Suspended / Banned</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="house-hunts">
+      </div>
+
+      <!-- 4. House Hunt Concierge -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Concierge</div>
+        <button class="admin-nav-btn" data-module="house-hunts" data-rbac="support,super">
           <i class="fas fa-search-location nav-icon"></i>
           <span>House Hunts</span>
           <span class="admin-badge" id="admin-hunts-count" style="display:none; margin-left:auto; background:#10b981; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px;">0</span>
         </button>
       </div>
-      
-      <!-- Risk & Security -->
+
+      <!-- 5. Buildings & Unit Portfolios -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title">Risk & Security</div>
-        <button class="admin-nav-btn" data-module="reports">
-          <i class="fas fa-exclamation-triangle nav-icon"></i>
-          <span>Reports & Complaints</span>
+        <div class="sidebar-section-title">Portfolios</div>
+        <button class="admin-nav-btn" data-module="buildings" data-rbac="listings,super">
+          <i class="fas fa-building nav-icon"></i>
+          <span>Buildings</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="risk">
-          <i class="fas fa-shield-alt nav-icon"></i>
-          <span>Risk & Fraud</span>
+        <button class="admin-nav-btn" data-module="units" data-rbac="listings,super">
+          <i class="fas fa-door-open nav-icon"></i>
+          <span>Units</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="audit">
+      </div>
+
+      <!-- 6. Communications & Broadcasts -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Communications</div>
+        <button class="admin-nav-btn" data-module="messages-broadcast" data-rbac="support,super">
+          <i class="fas fa-bullhorn nav-icon"></i>
+          <span>Broadcasts & SMS</span>
+        </button>
+        <button class="admin-nav-btn" data-module="inquiries" data-rbac="support,super">
+          <i class="fas fa-envelope nav-icon"></i>
+          <span>Inquiries</span>
+        </button>
+        <button class="admin-nav-btn" data-module="support" data-rbac="support,super">
+          <i class="fas fa-ticket-alt nav-icon"></i>
+          <span>Support Tickets</span>
+        </button>
+      </div>
+
+      <!-- 7. Finance & M-Pesa / Daraja -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Finance & M-Pesa</div>
+        <button class="admin-nav-btn" data-module="finance" data-rbac="finance,super">
+          <i class="fas fa-wallet nav-icon"></i>
+          <span>Transactions & Fees</span>
+        </button>
+        <button class="admin-nav-btn" data-module="mpesa-config" data-rbac="finance,super">
+          <i class="fas fa-mobile-alt nav-icon"></i>
+          <span>M-Pesa / Daraja Config</span>
+        </button>
+      </div>
+
+      <!-- 8. Geography, Categories & Promotions -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Marketplace Config</div>
+        <button class="admin-nav-btn" data-module="locations" data-rbac="content,super">
+          <i class="fas fa-map-marker-alt nav-icon"></i>
+          <span>Locations & Hierarchy</span>
+        </button>
+        <button class="admin-nav-btn" data-module="categories" data-rbac="content,super">
+          <i class="fas fa-tags nav-icon"></i>
+          <span>Categories</span>
+        </button>
+        <button class="admin-nav-btn" data-module="promotions" data-rbac="content,finance,super">
+          <i class="fas fa-star nav-icon"></i>
+          <span>Promotions & Featured</span>
+        </button>
+      </div>
+
+      <!-- 9. Analytics, Administration & Audit -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">System & Security</div>
+        <button class="admin-nav-btn" data-module="analytics" data-rbac="super,finance,listings">
+          <i class="fas fa-chart-pie nav-icon"></i>
+          <span>Analytics & Reports</span>
+        </button>
+        <button class="admin-nav-btn" data-module="adminUsers" data-rbac="super">
+          <i class="fas fa-user-shield nav-icon"></i>
+          <span>Admin RBAC</span>
+        </button>
+        <button class="admin-nav-btn" data-module="audit" data-rbac="super">
           <i class="fas fa-clipboard-list nav-icon"></i>
           <span>Audit Logs</span>
         </button>
-      </div>
-      
-      <!-- Analytics & Tools -->
-      <div class="sidebar-section">
-        <div class="sidebar-section-title">Analytics & Tools</div>
-        <button class="admin-nav-btn" data-module="analytics">
-          <i class="fas fa-chart-bar nav-icon"></i>
-          <span>Analytics</span>
+        <button class="admin-nav-btn" data-module="system-settings" data-rbac="super">
+          <i class="fas fa-cogs nav-icon"></i>
+          <span>System Settings</span>
         </button>
-        
-        <button class="admin-nav-btn" data-module="finance">
-          <i class="fas fa-dollar-sign nav-icon"></i>
-          <span>Finance</span>
-        </button>
-        
-        <button class="admin-nav-btn" data-module="adminUsers">
-          <i class="fas fa-user-shield nav-icon"></i>
-          <span>Admin Users</span>
-        </button>
-        
-        <button class="admin-nav-btn" data-module="locations">
-          <i class="fas fa-map-marker-alt nav-icon"></i>
-          <span>Locations</span>
-        </button>
-      </div>
-
-      <!-- Global Settings -->
-      <div class="sidebar-section">
-        <div class="sidebar-section-title">Global Settings</div>
-        <button class="admin-nav-btn" data-module="global">
-          <i class="fas fa-globe nav-icon"></i>
-          <span>Site Config</span>
-        </button>
-
-        <button class="admin-nav-btn" data-module="featured">
-          <i class="fas fa-star nav-icon"></i>
-          <span>Featured Listings</span>
-        </button>
-
-        <button class="admin-nav-btn" data-module="notifications">
-          <i class="fas fa-bell nav-icon"></i>
-          <span>Notifications</span>
-        </button>
-
-        <button class="admin-nav-btn" data-module="appsettings">
-          <i class="fas fa-cog nav-icon"></i>
-          <span>App Settings</span>
+        <button class="admin-nav-btn" data-module="backups" data-rbac="super">
+          <i class="fas fa-database nav-icon"></i>
+          <span>Database & Backups</span>
         </button>
       </div>
     </nav>

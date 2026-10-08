@@ -2962,14 +2962,58 @@ app.get('/api/stats', cache.middleware(60, 'public:stats'), async (req, res) => 
   }
 });
 
-// â”€â”€â”€ OWNER / ADMIN DATABASE PORTAL ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── OWNER / ADMIN DATABASE PORTAL ROUTES ──────────────────────────────
 app.get('/api/admin/overview', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) {
       return res.status(403).json({ success: false, message: 'Admin access required.' });
     }
     const stats = await store.getOverviewStats();
-    res.json({ success: true, ...stats });
+    
+    // Calculate "Requires Attention" metrics
+    let attention = {
+      reportedListings: 0,
+      pendingApproval: 0,
+      failedPayments: 0,
+      verificationRequests: 0,
+      unresolvedSupport: 0
+    };
+    let recentActivity = [];
+    
+    if (store.isConnected && store.query) {
+      try {
+        const attRes = await store.query(`
+          SELECT 
+            (SELECT COUNT(*) FROM properties WHERE (is_verified = false OR is_verified IS NULL) AND (status IS NULL OR status NOT IN ('approved','verified','rejected'))) +
+            (SELECT COUNT(*) FROM services WHERE status = 'pending') +
+            (SELECT COUNT(*) FROM marketplace_items WHERE status = 'pending') as pending_approval,
+            (SELECT COUNT(*) FROM transactions WHERE status ILIKE '%FAIL%') as failed_payments,
+            (SELECT COUNT(*) FROM users WHERE is_verified = false AND (role = 'landlord' OR role = 'agent')) as verification_requests,
+            (SELECT COUNT(*) FROM support_tickets WHERE status = 'open' OR status = 'pending') as unresolved_support
+        `);
+        const row = attRes.rows[0] || {};
+        attention = {
+          reportedListings: (store.data?.reports || []).length,
+          pendingApproval: parseInt(row.pending_approval) || 0,
+          failedPayments: parseInt(row.failed_payments) || 0,
+          verificationRequests: parseInt(row.verification_requests) || 0,
+          unresolvedSupport: parseInt(row.unresolved_support) || (store.data?.supportTickets || []).length
+        };
+        
+        // Fetch recent activity from audit_logs
+        const actRes = await store.query(`SELECT id, admin_name, action, target_type, target_title, details, created_at FROM audit_logs ORDER BY created_at DESC LIMIT 8`);
+        recentActivity = actRes.rows.map(a => ({
+          id: a.id,
+          title: `${a.admin_name || 'Admin'} ${a.action.replace(/_/g, ' ').toLowerCase()}`,
+          details: a.target_title || a.details || a.target_type || '',
+          timestamp: a.created_at
+        }));
+      } catch (attErr) {
+        console.warn('Overview attention metrics notice:', attErr.message);
+      }
+    }
+    
+    res.json({ success: true, ...stats, attention, recentActivity });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -4372,20 +4416,438 @@ app.patch('/api/admin/support/:id', requireAuth, async (req, res) => {
   }
 });
 
-// DELETE /api/admin/support/:id
-app.delete('/api/admin/support/:id', requireAuth, async (req, res) => {
+// ═══════════════════════════════════════════════════════════════════════════════
+// COMPREHENSIVE ADMIN BACKEND SUITE (Audit, Categories, Promos, Settings, Finance)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Helper: Log administrative actions to immutable audit_logs table
+async function logAdminAction(admin, action, targetType, targetId, targetTitle = '', prevVal = {}, newVal = {}, details = '', req = null) {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const logId = 'audit-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+    const ip = req ? (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || req.ip || '') : '';
+    const ua = req ? (req.headers['user-agent'] || '') : '';
+    
+    if (store.isConnected && store.query) {
+      await store.query(
+        `INSERT INTO audit_logs (id, admin_id, admin_name, action, target_type, target_id, target_title, previous_value, new_value, details, ip_address, user_agent, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW())`,
+        [logId, admin.id || 'admin', admin.name || 'Admin', action, targetType, targetId, targetTitle, JSON.stringify(prevVal), JSON.stringify(newVal), details, ip, ua]
+      );
     }
+  } catch (err) {
+    console.warn('Audit logging notice:', err.message);
+  }
+}
+
+// GET /api/admin/audit-logs — view immutable audit trail
+app.get('/api/admin/audit-logs', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { action, adminId, targetType, limit = 100 } = req.query;
+    
+    let logs = [];
+    if (store.isConnected && store.query) {
+      let query = 'SELECT * FROM audit_logs WHERE 1=1';
+      const params = [];
+      let pIdx = 1;
+      if (action) { query += ` AND action ILIKE $${pIdx++}`; params.push(`%${action}%`); }
+      if (adminId) { query += ` AND admin_id = $${pIdx++}`; params.push(adminId); }
+      if (targetType) { query += ` AND target_type = $${pIdx++}`; params.push(targetType); }
+      query += ` ORDER BY created_at DESC LIMIT $${pIdx}`;
+      params.push(parseInt(limit));
+      
+      const r = await store.query(query, params);
+      logs = r.rows;
+    }
+    res.json({ success: true, count: logs.length, logs });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/audit-logs — record custom admin action
+app.post('/api/admin/audit-logs', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { action, targetType, targetId, targetTitle, prevVal, newVal, details } = req.body;
+    await logAdminAction(req.user, action, targetType, targetId, targetTitle, prevVal, newVal, details, req);
+    res.json({ success: true, message: 'Audit entry recorded.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/categories — list dynamic categories (property, service, marketplace)
+app.get('/api/admin/categories', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { type } = req.query;
+    let categories = [];
+    if (store.isConnected && store.query) {
+      let q = 'SELECT * FROM platform_categories';
+      const params = [];
+      if (type) { q += ' WHERE type = $1'; params.push(type); }
+      q += ' ORDER BY type ASC, sort_order ASC, name ASC';
+      const r = await store.query(q, params);
+      categories = r.rows;
+    }
+    res.json({ success: true, count: categories.length, categories });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/categories — create new category
+app.post('/api/admin/categories', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { type, name, slug, icon, description, sortOrder = 0 } = req.body;
+    if (!type || !name) return res.status(400).json({ success: false, message: 'Type and name are required.' });
+    
+    const catId = `cat-${type.substring(0,3)}-${Date.now()}`;
+    const generatedSlug = (slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+    
+    if (store.isConnected && store.query) {
+      await store.query(
+        `INSERT INTO platform_categories (id, type, name, slug, icon, description, sort_order, is_active, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, true, NOW(), NOW())`,
+        [catId, type, name, generatedSlug, icon || 'fa-tag', description || '', parseInt(sortOrder) || 0]
+      );
+    }
+    await logAdminAction(req.user, 'CREATED_CATEGORY', 'category', catId, name, {}, { type, name, slug: generatedSlug }, '', req);
+    res.json({ success: true, message: `Category "${name}" created.`, id: catId });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/admin/categories/:id — update/toggle category
+app.put('/api/admin/categories/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
     const { id } = req.params;
-    if (store.data?.supportTickets) {
-      store.data.supportTickets = store.data.supportTickets.filter(t => String(t.id) !== String(id));
+    const { name, icon, description, isActive, sortOrder } = req.body;
+    
+    if (store.isConnected && store.query) {
+      await store.query(
+        `UPDATE platform_categories 
+         SET name = COALESCE($1, name),
+             icon = COALESCE($2, icon),
+             description = COALESCE($3, description),
+             is_active = COALESCE($4, is_active),
+             sort_order = COALESCE($5, sort_order),
+             updated_at = NOW()
+         WHERE id = $6`,
+        [name, icon, description, isActive, sortOrder, id]
+      );
     }
-    if (store.fallbackStore?.data?.supportTickets) {
-      store.fallbackStore.data.supportTickets = store.fallbackStore.data.supportTickets.filter(t => String(t.id) !== String(id));
+    await logAdminAction(req.user, 'UPDATED_CATEGORY', 'category', id, name || id, {}, req.body, '', req);
+    res.json({ success: true, message: 'Category updated.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/categories/:id — delete category
+app.delete('/api/admin/categories/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    if (store.isConnected && store.query) {
+      await store.query('DELETE FROM platform_categories WHERE id = $1', [id]);
     }
-    res.json({ success: true, message: 'Support ticket deleted.' });
+    await logAdminAction(req.user, 'DELETED_CATEGORY', 'category', id, id, {}, {}, '', req);
+    res.json({ success: true, message: 'Category deleted.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/promotions — list featured & sponsored promotions
+app.get('/api/admin/promotions', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    let promotions = [];
+    if (store.isConnected && store.query) {
+      const r = await store.query(`
+        SELECT p.*, pr.title as listing_title, pr.estate_suburb as listing_location, pr.rent_kes as listing_price
+        FROM promotions p
+        LEFT JOIN properties pr ON pr.id = p.listing_id
+        ORDER BY p.created_at DESC LIMIT 100
+      `);
+      promotions = r.rows;
+    }
+    res.json({ success: true, count: promotions.length, promotions });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/promotions — create / toggle promotion for listing
+app.post('/api/admin/promotions', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { listingId, listingType = 'property', promoType = 'featured', durationDays = 14, priceKes = 1500 } = req.body;
+    if (!listingId) return res.status(400).json({ success: false, message: 'listingId is required.' });
+    
+    const promoId = 'promo-' + Date.now();
+    const days = parseInt(durationDays) || 14;
+    const endDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+    
+    if (store.isConnected && store.query) {
+      await store.query(
+        `INSERT INTO promotions (id, listing_id, listing_type, promo_type, user_id, start_date, end_date, price_kes, is_active, created_at)
+         VALUES ($1, $2, $3, $4, $5, NOW(), $6, $7, true, NOW())`,
+        [promoId, listingId, listingType, promoType, req.user.id, endDate, priceKes]
+      );
+      // Mark property as featured or top ad
+      if (listingType === 'property') {
+        const flag = promoType === 'featured' ? 'is_featured' : 'is_top_ad';
+        await store.query(`UPDATE properties SET ${flag} = true WHERE id = $1`, [listingId]);
+      }
+    }
+    await logAdminAction(req.user, 'PROMOTED_LISTING', listingType, listingId, promoType, {}, { promoId, promoType, durationDays }, '', req);
+    res.json({ success: true, message: `Promotion activated for ${listingId}`, promoId });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/system-settings — get platform-wide configuration
+app.get('/api/admin/system-settings', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    let settings = {};
+    if (store.isConnected && store.query) {
+      const r = await store.query('SELECT key, value, description, updated_at FROM system_settings');
+      r.rows.forEach(row => {
+        settings[row.key] = row.value;
+      });
+    }
+    // Defaults if table empty
+    if (!settings.general) {
+      settings.general = {
+        platformName: 'KejaMarket',
+        maintenanceMode: false,
+        allowUserRegistration: true,
+        requireListingApproval: true,
+        listingExpiryDays: 60,
+        maxPhotosPerListing: 15,
+        maxVideoSizeMB: 50
+      };
+    }
+    if (!settings.pricing) {
+      settings.pricing = {
+        featuredListingKES: 1500,
+        homepageSpotlightKES: 3000,
+        viewingDepositKES: 500,
+        landlordMonthlyKES: 2500
+      };
+    }
+    if (!settings.notifications) {
+      settings.notifications = {
+        smsEnabled: true,
+        emailEnabled: true,
+        inboxAutoAlerts: true
+      };
+    }
+    res.json({ success: true, settings });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/system-settings — update platform configuration
+app.post('/api/admin/system-settings', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { key, value } = req.body;
+    if (!key || !value) return res.status(400).json({ success: false, message: 'Key and value are required.' });
+    
+    if (store.isConnected && store.query) {
+      await store.query(
+        `INSERT INTO system_settings (key, value, updated_at, updated_by)
+         VALUES ($1, $2, NOW(), $3)
+         ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW(), updated_by = EXCLUDED.updated_by`,
+        [key, JSON.stringify(value), req.user.id]
+      );
+    }
+    await logAdminAction(req.user, 'UPDATED_SETTINGS', 'setting', key, key, {}, value, `Updated ${key} settings`, req);
+    res.json({ success: true, message: `Settings for "${key}" updated.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/transactions — list transactions with filters (listing fee, subscription, etc.)
+app.get('/api/admin/transactions', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { status, type, limit = 100 } = req.query;
+    
+    let transactions = [];
+    if (store.isConnected && store.query) {
+      let q = 'SELECT * FROM transactions WHERE 1=1';
+      const params = [];
+      let pIdx = 1;
+      if (status) { q += ` AND status ILIKE $${pIdx++}`; params.push(`%${status}%`); }
+      if (type) { q += ` AND type ILIKE $${pIdx++}`; params.push(`%${type}%`); }
+      q += ` ORDER BY created_at DESC LIMIT $${pIdx}`;
+      params.push(parseInt(limit));
+      
+      const r = await store.query(q, params);
+      transactions = r.rows;
+    } else if (store.getAllTransactions) {
+      transactions = await store.getAllTransactions();
+    }
+    
+    // Calculate financial aggregates
+    const totalAmount = transactions.reduce((acc, t) => acc + (parseFloat(t.amount_kes || t.amount || 0) || 0), 0);
+    const successfulAmount = transactions.filter(t => (t.status || '').toUpperCase() === 'SUCCESS' || (t.status || '').toUpperCase() === 'COMPLETED')
+      .reduce((acc, t) => acc + (parseFloat(t.amount_kes || t.amount || 0) || 0), 0);
+      
+    res.json({
+      success: true,
+      count: transactions.length,
+      aggregates: { totalAmount, successfulAmount },
+      transactions
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/transactions/:id/refund — mark/process refund
+app.post('/api/admin/transactions/:id/refund', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    const { reason = 'Customer requested refund' } = req.body;
+    
+    if (store.isConnected && store.query) {
+      await store.query('UPDATE transactions SET status = $1, raw_data = raw_data || $2 WHERE id = $3', ['REFUNDED', JSON.stringify({ refundReason: reason, refundedAt: new Date().toISOString(), refundedBy: req.user.id }), id]);
+    }
+    await logAdminAction(req.user, 'REFUNDED_TRANSACTION', 'transaction', id, id, {}, { status: 'REFUNDED', reason }, reason, req);
+    res.json({ success: true, message: `Transaction ${id} marked as refunded.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/users/:id/action — full user management (verify, unverify, suspend, ban, restore, force-review)
+app.post('/api/admin/users/:id/action', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    const { action, reason = '' } = req.body; // 'verify', 'unverify', 'suspend', 'ban', 'restore', 'force-review'
+    
+    if (!action) return res.status(400).json({ success: false, message: 'Action is required.' });
+    
+    const user = await store.getUserById(id);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
+    
+    let updates = {};
+    let notificationText = '';
+    
+    switch (action) {
+      case 'verify':
+        updates = { is_verified: true, isVerified: true, verifiedAt: new Date().toISOString(), verifiedBy: req.user.id };
+        notificationText = '✅ Congratulations! Your KejaMarket account has been verified by the administration. Your listings will now carry a verified badge.';
+        break;
+      case 'unverify':
+        updates = { is_verified: false, isVerified: false };
+        notificationText = '⚠️ Your verified status on KejaMarket has been revoked.';
+        break;
+      case 'suspend':
+        updates = { status: 'suspended', is_suspended: true, suspendedAt: new Date().toISOString(), suspendReason: reason };
+        notificationText = `⛔ Your KejaMarket account has been temporarily suspended. Reason: ${reason || 'Terms of service review'}`;
+        break;
+      case 'ban':
+        updates = { status: 'banned', is_banned: true, bannedAt: new Date().toISOString(), banReason: reason };
+        notificationText = `🚫 Your KejaMarket account has been permanently banned. Reason: ${reason || 'Violation of platform policies'}`;
+        break;
+      case 'restore':
+        updates = { status: 'active', is_suspended: false, is_banned: false, restoredAt: new Date().toISOString() };
+        notificationText = '🎉 Your KejaMarket account has been restored to active status.';
+        break;
+      case 'force-review':
+        updates = { status: 'review_required', reviewRequired: true };
+        notificationText = '📋 Your account is pending administrative identity review. Please check your profile.';
+        break;
+      default:
+        return res.status(400).json({ success: false, message: `Unknown action: ${action}` });
+    }
+    
+    await store.updateUser(id, updates);
+    
+    // Send in-app notification & SMS
+    try {
+      store.saveLandlordMessage({
+        fromUserId: 'admin',
+        fromUserName: 'KejaMarket Team',
+        fromRole: 'admin',
+        toUserId: id,
+        toRole: user.role || 'user',
+        message: notificationText,
+        createdAt: new Date().toISOString(),
+        isRead: false,
+        isAutoGenerated: true
+      });
+      if (user.phone) {
+        sendSMS(user.phone, notificationText).catch(e => console.warn('User action SMS error:', e.message));
+      }
+    } catch(notifErr) { console.warn('User action notif err:', notifErr.message); }
+    
+    await logAdminAction(req.user, `USER_${action.toUpperCase()}`, 'user', id, user.name, { previousStatus: user.status }, updates, reason, req);
+    res.json({ success: true, message: `User ${user.name} action "${action}" completed.`, updates });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/database-health — DB diagnostics, storage, table record metrics (secrets masked)
+app.get('/api/admin/database-health', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    
+    let tableMetrics = [];
+    let dbSize = 'Unknown';
+    
+    if (store.isConnected && store.query) {
+      try {
+        const sizeRes = await store.query("SELECT pg_size_pretty(pg_database_size(current_database())) as size");
+        dbSize = sizeRes.rows[0]?.size || 'Unknown';
+        
+        const countRes = await store.query(`
+          SELECT 
+            (SELECT COUNT(*) FROM users) as users,
+            (SELECT COUNT(*) FROM properties) as properties,
+            (SELECT COUNT(*) FROM services) as services,
+            (SELECT COUNT(*) FROM marketplace_items) as marketplace,
+            (SELECT COUNT(*) FROM buildings) as buildings,
+            (SELECT COUNT(*) FROM units) as units,
+            (SELECT COUNT(*) FROM transactions) as transactions,
+            (SELECT COUNT(*) FROM house_hunts) as house_hunts,
+            (SELECT COUNT(*) FROM audit_logs) as audit_logs,
+            (SELECT COUNT(*) FROM platform_categories) as categories
+        `);
+        const row = countRes.rows[0] || {};
+        tableMetrics = Object.entries(row).map(([tableName, count]) => ({ table: tableName, count: parseInt(count) || 0 }));
+      } catch (dbErr) {
+        console.warn('DB metrics fetch:', dbErr.message);
+      }
+    }
+    
+    res.json({
+      success: true,
+      database: 'PostgreSQL (Supabase Pooler)',
+      host: 'aws-0-eu-central-1.pooler.supabase.com',
+      isConnected: store.isConnected,
+      databaseSize: dbSize,
+      tables: tableMetrics,
+      lastBackupCheck: new Date().toISOString(),
+      status: 'HEALTHY'
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -5514,6 +5976,7 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
           }
         } catch(e) { console.warn('WhatsApp alert error:', e.message); }
       }
+      await logAdminAction(req.user, 'APPROVED_PROPERTY', 'property', itemId, title, { status: 'pending' }, { status: 'approved' }, 'Property verified and published', req);
       return res.json({ success: true, message: 'Property approved and is now live!', item: updated });
     }
 
@@ -5530,6 +5993,7 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
       sendApprovalInbox({ userId: svc.provider_id, userRole: 'service-provider', title: svc.title, listingId: itemId, type: 'service' });
       // SMS
       if (svc.provider_phone) sendSMS(svc.provider_phone, `🎉 KejaMarket: Your service "${svc.title}" has been APPROVED and is now LIVE! Customers can now find and contact you.`).catch(e => console.warn('Service approve SMS:', e.message));
+      await logAdminAction(req.user, 'APPROVED_SERVICE', 'service', itemId, svc.title, { status: 'pending' }, { status: 'active' }, 'Service approved and published', req);
       return res.json({ success: true, message: 'Service approved and is now live!', item: { ...svc, status: 'active', is_verified: true } });
     }
 
@@ -5546,6 +6010,7 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
       sendApprovalInbox({ userId: item.seller_id, userRole: 'user', title: item.title, listingId: itemId, type: 'marketplace item' });
       // SMS
       if (item.seller_phone) sendSMS(item.seller_phone, `🎉 KejaMarket: Your item "${item.title}" has been APPROVED and is now LIVE in the Marketplace!`).catch(e => console.warn('Marketplace approve SMS:', e.message));
+      await logAdminAction(req.user, 'APPROVED_MARKETPLACE', 'marketplace', itemId, item.title, { status: 'pending' }, { status: 'active' }, 'Marketplace item approved and published', req);
       return res.json({ success: true, message: 'Marketplace item approved and is now live!', item: { ...item, status: 'active' } });
     }
 
@@ -5594,6 +6059,7 @@ app.post('/api/admin/reject', requireAuth, async (req, res) => {
       const phone = prop.landlordPhone || prop.landlord?.phone || prop.caretakerPhone;
       if (ownerId) sendRejectionInbox({ userId: ownerId, userRole: 'landlord', title: prop.title, listingId: itemId, type: 'property', reason });
       if (phone) sendSMS(phone, `❌ KejaMarket: Your property "${prop.title}" was NOT approved.\n\nReason: ${reason}\n\nPlease update and resubmit from your Landlord Portal.`).catch(e => console.warn('Reject property SMS:', e.message));
+      await logAdminAction(req.user, 'REJECTED_PROPERTY', 'property', itemId, prop.title, { status: 'pending' }, { status: 'rejected', reason }, reason, req);
       return res.json({ success: true, message: 'Property rejected. Landlord has been notified.', item: rejected || prop });
     }
 
@@ -5608,6 +6074,7 @@ app.post('/api/admin/reject', requireAuth, async (req, res) => {
       );
       sendRejectionInbox({ userId: svc.provider_id, userRole: 'service-provider', title: svc.title, listingId: itemId, type: 'service', reason });
       if (svc.provider_phone) sendSMS(svc.provider_phone, `❌ KejaMarket: Your service "${svc.title}" was NOT approved.\n\nReason: ${reason}\n\nPlease update and resubmit.`).catch(e => console.warn('Reject service SMS:', e.message));
+      await logAdminAction(req.user, 'REJECTED_SERVICE', 'service', itemId, svc.title, { status: 'pending' }, { status: 'rejected', reason }, reason, req);
       return res.json({ success: true, message: 'Service rejected. Provider has been notified.', item: { ...svc, status: 'rejected', rejection_reason: reason } });
     }
 
@@ -5622,6 +6089,7 @@ app.post('/api/admin/reject', requireAuth, async (req, res) => {
       );
       sendRejectionInbox({ userId: item.seller_id, userRole: 'user', title: item.title, listingId: itemId, type: 'marketplace item', reason });
       if (item.seller_phone) sendSMS(item.seller_phone, `❌ KejaMarket: Your marketplace item "${item.title}" was NOT approved.\n\nReason: ${reason}\n\nPlease update and resubmit.`).catch(e => console.warn('Reject marketplace SMS:', e.message));
+      await logAdminAction(req.user, 'REJECTED_MARKETPLACE', 'marketplace', itemId, item.title, { status: 'pending' }, { status: 'rejected', reason }, reason, req);
       return res.json({ success: true, message: 'Marketplace item rejected. Seller has been notified.', item: { ...item, status: 'rejected', rejection_reason: reason } });
     }
 

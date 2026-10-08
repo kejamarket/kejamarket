@@ -19,6 +19,7 @@ class LandlordManager {
     this.setupFormSubmit();
     this.setupVerificationModal();
     this.setupSuburbAutocomplete();
+    this.setupLocationSearch(); // NEW: Initialize hierarchical location search
     this.autoFillUserDetails();
   }
 
@@ -154,6 +155,49 @@ class LandlordManager {
     // Update hidden select for form submission
     if (hiddenSelect) {
       hiddenSelect.innerHTML = `<option value="${name}" selected>${name}</option>`;
+    }
+  }
+
+  /**
+   * NEW: Setup Hierarchical Location Search Component
+   */
+  setupLocationSearch() {
+    // Check if LocationSearch class is available
+    if (typeof LocationSearch === 'undefined') {
+      console.warn('LocationSearch not loaded, using fallback autocomplete');
+      return;
+    }
+
+    try {
+      // Initialize the LocationSearch component
+      this.locationSearch = new LocationSearch({
+        inputId: 'post-suburb-search',
+        containerId: 'location-search-container',
+        onSelect: (location) => {
+          // Store location data in hidden fields
+          document.getElementById('post-location-hierarchy-id').value = location.id || '';
+          document.getElementById('post-location-path-ids').value = JSON.stringify(location.pathIds || []);
+          document.getElementById('post-location-full-path').value = location.fullPath || location.name;
+
+          // Update suburb selection for backward compatibility
+          this.selectedSuburb = {
+            name: location.name,
+            lat: location.latitude || -1.286389,
+            lng: location.longitude || 36.817223,
+            county: location.county || 'Nairobi',
+            corridorId: location.id
+          };
+
+          // Update map if available
+          this.updatePostMapLocation(this.selectedSuburb.lat, this.selectedSuburb.lng);
+
+          console.log('Location selected:', location.fullPath);
+        }
+      });
+
+      console.log('✅ Hierarchical LocationSearch initialized');
+    } catch (error) {
+      console.error('Error initializing LocationSearch:', error);
     }
   }
 
@@ -569,6 +613,18 @@ class LandlordManager {
 
       const suburbObj = this.selectedSuburb || (typeof ALL_SUBURBS !== 'undefined' && ALL_SUBURBS.find(s => s.name === suburb)) || { county: 'Nairobi', corridorId: 'nairobi_central' };
 
+      // NEW: Get hierarchical location data
+      const locationHierarchyId = document.getElementById('post-location-hierarchy-id')?.value || null;
+      const locationPathIds = document.getElementById('post-location-path-ids')?.value || null;
+      const locationFullPath = document.getElementById('post-location-full-path')?.value || null;
+      
+      let parsedPathIds = null;
+      try {
+        if (locationPathIds) parsedPathIds = JSON.parse(locationPathIds);
+      } catch(e) {
+        console.warn('Could not parse locationPathIds');
+      }
+
       const defaultPhotos = [
         { url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80', caption: 'Living Area' },
         { url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80', caption: 'Bedroom' }
@@ -601,6 +657,19 @@ class LandlordManager {
         exactLocation: suburb + ', Nairobi Metro Area',
         latitude: this.selectedCoords.lat,
         longitude: this.selectedCoords.lng,
+        
+        // NEW: Hierarchical location fields
+        locationHierarchyId: locationHierarchyId,
+        locationName: suburb,
+        locationFullPath: locationFullPath || suburb,
+        locationPathIds: parsedPathIds,
+        locationCounty: suburbObj.county,
+        locationVerified: false,
+        
+        // Legacy fields (preserved for backward compatibility)
+        legacyEstateSuburb: suburb,
+        legacyCounty: suburbObj.county,
+        
         waterSupplyType: waterType,
         electricityMeterType: electricityType,
         garbageFeeKes: isBnb ? 0 : 500,

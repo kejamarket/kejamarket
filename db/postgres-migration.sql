@@ -758,9 +758,75 @@ ALTER TABLE marketplace_items ADD COLUMN IF NOT EXISTS rejection_reason TEXT;
 -- Index for pending properties
 CREATE INDEX IF NOT EXISTS idx_properties_status ON properties(status);
 
--- Index for pending services
-CREATE INDEX IF NOT EXISTS idx_services_pending ON services(status, is_verified);
+-- ════════════════════════════════════════
+-- AUDIT LOGS & ADMINISTRATIVE SECURITY
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS audit_logs (
+  id TEXT PRIMARY KEY,
+  admin_id TEXT NOT NULL,
+  admin_name TEXT,
+  action TEXT NOT NULL,
+  target_type TEXT,
+  target_id TEXT,
+  target_title TEXT,
+  previous_value JSONB DEFAULT '{}'::jsonb,
+  new_value JSONB DEFAULT '{}'::jsonb,
+  details TEXT,
+  ip_address TEXT,
+  user_agent TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_audit_admin ON audit_logs(admin_id);
+CREATE INDEX IF NOT EXISTS idx_audit_action ON audit_logs(action);
+CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_logs(created_at DESC);
 
--- Index for pending marketplace items
-CREATE INDEX IF NOT EXISTS idx_marketplace_pending ON marketplace_items(status);
+-- ════════════════════════════════════════
+-- SYSTEM SETTINGS & PLATFORM CONTROLS
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS system_settings (
+  key TEXT PRIMARY KEY,
+  value JSONB NOT NULL,
+  description TEXT,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_by TEXT
+);
+
+-- ════════════════════════════════════════
+-- PLATFORM CATEGORIES
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS platform_categories (
+  id TEXT PRIMARY KEY,
+  type TEXT NOT NULL, -- 'property', 'service', 'marketplace'
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  icon TEXT,
+  description TEXT,
+  is_active BOOLEAN DEFAULT TRUE,
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_categories_type ON platform_categories(type);
+CREATE INDEX IF NOT EXISTS idx_categories_active ON platform_categories(is_active);
+
+-- ════════════════════════════════════════
+-- FEATURED LISTINGS & PROMOTIONS
+-- ════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS promotions (
+  id TEXT PRIMARY KEY,
+  listing_id TEXT NOT NULL,
+  listing_type TEXT NOT NULL DEFAULT 'property', -- 'property', 'service', 'marketplace'
+  promo_type TEXT NOT NULL DEFAULT 'featured', -- 'featured', 'sponsored', 'homepage', 'location'
+  user_id TEXT,
+  start_date TIMESTAMPTZ DEFAULT NOW(),
+  end_date TIMESTAMPTZ,
+  price_kes NUMERIC(12,2) DEFAULT 0,
+  views_count INTEGER DEFAULT 0,
+  clicks_count INTEGER DEFAULT 0,
+  inquiries_count INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_promotions_active ON promotions(is_active);
+CREATE INDEX IF NOT EXISTS idx_promotions_listing ON promotions(listing_id);
 
