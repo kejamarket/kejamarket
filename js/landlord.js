@@ -169,15 +169,28 @@ class LandlordManager {
     }
 
     try {
+      // Get DOM elements
+      const inputElement = document.getElementById('post-suburb-search');
+      const containerElement = document.getElementById('location-search-container');
+      
+      if (!inputElement) {
+        console.error('Location search input not found');
+        return;
+      }
+
       // Initialize the LocationSearch component
       this.locationSearch = new LocationSearch({
-        inputId: 'post-suburb-search',
-        containerId: 'location-search-container',
+        inputElement: inputElement,
+        resultsContainer: containerElement,
         onSelect: (location) => {
           // Store location data in hidden fields
-          document.getElementById('post-location-hierarchy-id').value = location.id || '';
-          document.getElementById('post-location-path-ids').value = JSON.stringify(location.pathIds || []);
-          document.getElementById('post-location-full-path').value = location.fullPath || location.name;
+          const hierarchyIdField = document.getElementById('post-location-hierarchy-id');
+          const pathIdsField = document.getElementById('post-location-path-ids');
+          const fullPathField = document.getElementById('post-location-full-path');
+          
+          if (hierarchyIdField) hierarchyIdField.value = location.id || '';
+          if (pathIdsField) pathIdsField.value = JSON.stringify(location.pathIds || [location.id]);
+          if (fullPathField) fullPathField.value = location.fullPath || location.name;
 
           // Update suburb selection for backward compatibility
           this.selectedSuburb = {
@@ -189,9 +202,11 @@ class LandlordManager {
           };
 
           // Update map if available
-          this.updatePostMapLocation(this.selectedSuburb.lat, this.selectedSuburb.lng);
+          if (this.updatePostMapLocation) {
+            this.updatePostMapLocation(this.selectedSuburb.lat, this.selectedSuburb.lng);
+          }
 
-          console.log('Location selected:', location.fullPath);
+          console.log('✅ Location selected:', location.fullPath);
         }
       });
 
@@ -464,9 +479,12 @@ class LandlordManager {
       if (!mapEl) return;
 
       if (!this.postMap && typeof L !== 'undefined') {
-        this.postMap = L.map('post-pin-map').setView([this.selectedCoords.lat, this.selectedCoords.lng], 13);
+        this.postMap = L.map('post-pin-map', {
+          attributionControl: false  // Remove Leaflet attribution
+        }).setView([this.selectedCoords.lat, this.selectedCoords.lng], 13);
+        
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors'
+          attribution: ''  // No attribution text
         }).addTo(this.postMap);
 
         this.postMarker = L.marker([this.selectedCoords.lat, this.selectedCoords.lng], {

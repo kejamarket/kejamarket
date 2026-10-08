@@ -29,8 +29,17 @@ class LocationSearch {
     try {
       const response = await fetch('/api/locations/hierarchy');
       if (response.ok) {
-        this.locations = await response.json();
-        console.log(`✅ Loaded ${this.locations.length} hierarchical locations`);
+        const data = await response.json();
+        // API returns array directly
+        this.locations = Array.isArray(data) ? data : [];
+        
+        // Initialize LocationsHierarchy with the data
+        if (typeof LocationsHierarchy !== 'undefined') {
+          this.locationsDb = new LocationsHierarchy(this.locations);
+          console.log(`✅ Loaded ${this.locations.length} hierarchical locations`);
+        } else {
+          console.error('LocationsHierarchy class not found');
+        }
       }
     } catch (err) {
       console.error('Error loading locations:', err);

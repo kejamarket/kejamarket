@@ -5,7 +5,7 @@
       "name": "KejaMarket Administrator",
       "phone": "0792409540",
       "email": "admin@kejamarket.co.ke",
-      "password": "$2b$10$z13lQnXdifS3sZVrSNkpI.NUqxlr/n9VvcVTHTlyXjT8KGUKO0ZNi",
+      "password": "$2b$10$ioHHnz1RFbx6pPvCG5RfFOz42kBDZRErkmfzbeCc/hJMNuQhVl7b6",
       "role": "admin",
       "isAdmin": true,
       "isVerified": true,
@@ -21,7 +21,7 @@
       "category": "Bnb (Short Stay)",
       "estateSuburb": "Kilimani",
       "county": "Nairobi",
-      "locationDisplay": "Kilimani, Nairobi",
+      "locationDisplay": "Nairobi → Kilimani",
       "rentKes": 2500,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -40,7 +40,20 @@
         {
           "url": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Kilimani",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745057-on9rno5s7",
+      "locationName": "Kilimani",
+      "locationFullPath": "Nairobi → Kilimani",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745057-on9rno5s7"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Dagoretti",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "km-prop-002",
@@ -48,7 +61,7 @@
       "category": "Single Room",
       "estateSuburb": "Umoja",
       "county": "Nairobi",
-      "locationDisplay": "Umoja, Nairobi",
+      "locationDisplay": "Nairobi → Umoja",
       "rentKes": 8000,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -66,7 +79,20 @@
         {
           "url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Umoja",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485744947-aaiuxhyfk",
+      "locationName": "Umoja",
+      "locationFullPath": "Nairobi → Umoja",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485744947-aaiuxhyfk"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Embakasi",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "km-prop-003",
@@ -74,7 +100,7 @@
       "category": "Double Room",
       "estateSuburb": "South B",
       "county": "Nairobi",
-      "locationDisplay": "South B, Nairobi",
+      "locationDisplay": "Nairobi → South B",
       "rentKes": 12000,
       "bedrooms": 2,
       "bathrooms": 1,
@@ -92,7 +118,20 @@
         {
           "url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "South B",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745086-xykxq90fy",
+      "locationName": "South B",
+      "locationFullPath": "Nairobi → South B",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745086-xykxq90fy"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Lang'ata",
+      "locationType": "estate",
+      "locationVerified": true
     },
     {
       "id": "km-prop-004",
@@ -100,7 +139,7 @@
       "category": "Bedsitter",
       "estateSuburb": "Westlands",
       "county": "Nairobi",
-      "locationDisplay": "Westlands, Nairobi",
+      "locationDisplay": "Nairobi → Westlands",
       "rentKes": 15000,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -118,7 +157,20 @@
         {
           "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Westlands",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745072-rqstshwlc",
+      "locationName": "Westlands",
+      "locationFullPath": "Nairobi → Westlands",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745072-rqstshwlc"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Westlands",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "km-prop-005",
@@ -126,7 +178,7 @@
       "category": "2 Bedrooms",
       "estateSuburb": "Lavington",
       "county": "Nairobi",
-      "locationDisplay": "Lavington, Nairobi",
+      "locationDisplay": "Nairobi → Lavington",
       "rentKes": 45000,
       "bedrooms": 2,
       "bathrooms": 2,
@@ -144,7 +196,20 @@
         {
           "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Lavington",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745070-voknz0bx0",
+      "locationName": "Lavington",
+      "locationFullPath": "Nairobi → Lavington",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745070-voknz0bx0"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Dagoretti",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "km-prop-006",
@@ -152,7 +217,7 @@
       "category": "3 Bedrooms",
       "estateSuburb": "Runda",
       "county": "Nairobi",
-      "locationDisplay": "Runda, Nairobi",
+      "locationDisplay": "Nairobi → Runda",
       "rentKes": 95000,
       "bedrooms": 3,
       "bathrooms": 3,
@@ -170,7 +235,20 @@
         {
           "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Runda",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745080-cpqobjzqk",
+      "locationName": "Runda",
+      "locationFullPath": "Nairobi → Runda",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745080-cpqobjzqk"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Westlands",
+      "locationType": "estate",
+      "locationVerified": true
     },
     {
       "id": "km-prop-007",
@@ -178,7 +256,7 @@
       "category": "4+ Bedrooms",
       "estateSuburb": "Karen",
       "county": "Nairobi",
-      "locationDisplay": "Karen, Nairobi",
+      "locationDisplay": "Nairobi → Karen",
       "rentKes": 250000,
       "bedrooms": 4,
       "bathrooms": 4,
@@ -196,7 +274,20 @@
         {
           "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Karen",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745083-olmsb3f4q",
+      "locationName": "Karen",
+      "locationFullPath": "Nairobi → Karen",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745083-olmsb3f4q"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Lang'ata",
+      "locationType": "estate",
+      "locationVerified": true
     },
     {
       "id": "km-prop-008",
@@ -204,7 +295,7 @@
       "category": "Maisonette",
       "estateSuburb": "Kileleshwa",
       "county": "Nairobi",
-      "locationDisplay": "Kileleshwa, Nairobi",
+      "locationDisplay": "Nairobi → Kileleshwa",
       "rentKes": 180000,
       "bedrooms": 3,
       "bathrooms": 3,
@@ -222,7 +313,20 @@
         {
           "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Kileleshwa",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745064-gou6i33up",
+      "locationName": "Kileleshwa",
+      "locationFullPath": "Nairobi → Kileleshwa",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745064-gou6i33up"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Dagoretti",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "km-prop-009",
@@ -255,8 +359,8 @@
       "title": "Apartment - Syokimau",
       "category": "Apartment",
       "estateSuburb": "Syokimau",
-      "county": "Nairobi",
-      "locationDisplay": "Syokimau, Nairobi",
+      "county": "Machakos",
+      "locationDisplay": "Machakos → Syokimau",
       "rentKes": 35000,
       "bedrooms": 2,
       "bathrooms": 2,
@@ -274,15 +378,28 @@
         {
           "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Syokimau",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745144-u7un4tb66",
+      "locationName": "Syokimau",
+      "locationFullPath": "Machakos → Syokimau",
+      "locationPathIds": [
+        "loc-1791485744944-46vct3c6q",
+        "loc-1791485745144-u7un4tb66"
+      ],
+      "locationCounty": "Machakos",
+      "locationSubCounty": "Athi River",
+      "locationType": "town",
+      "locationVerified": true
     },
     {
       "id": "km-prop-011",
       "title": "Bungalow - Kitengela",
       "category": "Bungalow",
       "estateSuburb": "Kitengela",
-      "county": "Nairobi",
-      "locationDisplay": "Kitengela, Nairobi",
+      "county": "Kajiado",
+      "locationDisplay": "Kajiado → Kitengela",
       "rentKes": 28000,
       "bedrooms": 3,
       "bathrooms": 2,
@@ -300,15 +417,28 @@
         {
           "url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Kitengela",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745163-27opshwye",
+      "locationName": "Kitengela",
+      "locationFullPath": "Kajiado → Kitengela",
+      "locationPathIds": [
+        "loc-1791485744945-p8yu0q4gz",
+        "loc-1791485745163-27opshwye"
+      ],
+      "locationCounty": "Kajiado",
+      "locationSubCounty": "Kajiado East",
+      "locationType": "town",
+      "locationVerified": true
     },
     {
       "id": "km-prop-012",
       "title": "Studio Apartment - Ruaka",
       "category": "Studio",
       "estateSuburb": "Ruaka",
-      "county": "Nairobi",
-      "locationDisplay": "Ruaka, Nairobi",
+      "county": "Kiambu",
+      "locationDisplay": "Kiambu → Ruaka",
       "rentKes": 18000,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -326,7 +456,20 @@
         {
           "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Ruaka",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745112-h0ge3fuyt",
+      "locationName": "Ruaka",
+      "locationFullPath": "Kiambu → Ruaka",
+      "locationPathIds": [
+        "loc-1791485744942-eekdnpt40",
+        "loc-1791485745112-h0ge3fuyt"
+      ],
+      "locationCounty": "Kiambu",
+      "locationSubCounty": "Kiambaa",
+      "locationType": "town",
+      "locationVerified": true
     },
     {
       "id": "prop-nyayo-001",
@@ -358,14 +501,12 @@
         "Phase 2"
       ],
       "locationPathIds": [
-        "loc-county-nairobi",
-        "loc-county-nairobi-embakasi",
-        "loc-county-nairobi-embakasi-nyayo-estate",
-        "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
-        "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-2"
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485744995-e9pfv481k",
+        "loc-1791485745002-rb9ms6sz3"
       ],
       "displayLocation": "Nyayo Estate · Gate A · Phase 2 · Embakasi, Nairobi",
-      "locationDisplay": "Nyayo Estate · Gate A · Phase 2 · Embakasi, Nairobi",
+      "locationDisplay": "Nairobi → Embakasi → Nyayo Estate",
       "exactLocation": "Gate A, Court 4, Nyayo Estate, Embakasi",
       "latitude": -1.3175,
       "longitude": 36.897,
@@ -422,7 +563,16 @@
         "phone": "+254792409540",
         "whatsapp": "+254792409540",
         "isVerified": true
-      }
+      },
+      "legacyEstateSuburb": "Nyayo Estate",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745002-rb9ms6sz3",
+      "locationName": "Nyayo Estate",
+      "locationFullPath": "Nairobi → Embakasi → Nyayo Estate",
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true
     },
     {
       "id": "prop-nyayo-002",
@@ -454,14 +604,12 @@
         "Phase 1"
       ],
       "locationPathIds": [
-        "loc-county-nairobi",
-        "loc-county-nairobi-embakasi",
-        "loc-county-nairobi-embakasi-nyayo-estate",
-        "loc-county-nairobi-embakasi-nyayo-estate-gate-a",
-        "loc-county-nairobi-embakasi-nyayo-estate-gate-a-phase-1"
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485744995-e9pfv481k",
+        "loc-1791485745002-rb9ms6sz3"
       ],
       "displayLocation": "Nyayo Estate · Gate A · Phase 1 · Embakasi, Nairobi",
-      "locationDisplay": "Nyayo Estate · Gate A · Phase 1 · Embakasi, Nairobi",
+      "locationDisplay": "Nairobi → Embakasi → Nyayo Estate",
       "exactLocation": "Gate A, Phase 1, Nyayo Estate, Embakasi",
       "latitude": -1.316,
       "longitude": 36.8965,
@@ -518,7 +666,16 @@
         "phone": "+254792409540",
         "whatsapp": "+254792409540",
         "isVerified": true
-      }
+      },
+      "legacyEstateSuburb": "Nyayo Estate",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745002-rb9ms6sz3",
+      "locationName": "Nyayo Estate",
+      "locationFullPath": "Nairobi → Embakasi → Nyayo Estate",
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true
     },
     {
       "id": "prop-buru-003",
@@ -547,13 +704,11 @@
         "Phase 3"
       ],
       "locationPathIds": [
-        "loc-county-nairobi",
-        "loc-county-nairobi-eastlands",
-        "loc-county-nairobi-eastlands-buruburu",
-        "loc-county-nairobi-eastlands-buruburu-phase-3"
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485744983-xrvu1vlre"
       ],
       "displayLocation": "Buruburu · Phase 3 · Eastlands, Nairobi",
-      "locationDisplay": "Buruburu · Phase 3 · Eastlands, Nairobi",
+      "locationDisplay": "Nairobi → Buruburu",
       "exactLocation": "Buruburu Phase 3, near Mesora Centre",
       "latitude": -1.2905,
       "longitude": 36.8785,
@@ -610,7 +765,16 @@
         "phone": "+254792409540",
         "whatsapp": "+254792409540",
         "isVerified": true
-      }
+      },
+      "legacyEstateSuburb": "Buruburu",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485744983-xrvu1vlre",
+      "locationName": "Buruburu",
+      "locationFullPath": "Nairobi → Buruburu",
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Makadara",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "prop-eastleigh-007",
@@ -639,13 +803,11 @@
         "Section 7"
       ],
       "locationPathIds": [
-        "loc-county-nairobi",
-        "loc-county-nairobi-eastlands",
-        "loc-county-nairobi-eastlands-eastleigh",
-        "loc-county-nairobi-eastlands-eastleigh-section-7"
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485744952-gftevtu69"
       ],
       "displayLocation": "Eastleigh · Section 7 · Nairobi",
-      "locationDisplay": "Eastleigh · Section 7 · Nairobi",
+      "locationDisplay": "Nairobi → Eastleigh",
       "exactLocation": "11th Street, Section 7, Eastleigh, Nairobi",
       "latitude": -1.278,
       "longitude": 36.8525,
@@ -702,7 +864,16 @@
         "phone": "+254792409540",
         "whatsapp": "+254792409540",
         "isVerified": true
-      }
+      },
+      "legacyEstateSuburb": "Eastleigh",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485744952-gftevtu69",
+      "locationName": "Eastleigh",
+      "locationFullPath": "Nairobi → Eastleigh",
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Kamukunji",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "prop-runda-mimosa-001",
@@ -731,13 +902,11 @@
         "Mimosa"
       ],
       "locationPathIds": [
-        "loc-county-nairobi",
-        "loc-county-nairobi-westlands",
-        "loc-county-nairobi-westlands-runda",
-        "loc-county-nairobi-westlands-runda-mimosa"
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745080-cpqobjzqk"
       ],
       "displayLocation": "Runda · Mimosa · Westlands, Nairobi",
-      "locationDisplay": "Runda · Mimosa · Westlands, Nairobi",
+      "locationDisplay": "Nairobi → Runda",
       "exactLocation": "Mimosa Drive, Runda Estate, Nairobi",
       "latitude": -1.2185,
       "longitude": 36.8202,
@@ -795,7 +964,16 @@
         "phone": "+254792409540",
         "whatsapp": "+254792409540",
         "isVerified": true
-      }
+      },
+      "legacyEstateSuburb": "Runda",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745080-cpqobjzqk",
+      "locationName": "Runda",
+      "locationFullPath": "Nairobi → Runda",
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Westlands",
+      "locationType": "estate",
+      "locationVerified": true
     },
     {
       "id": "prop-sheshe-001",
@@ -983,11 +1161,11 @@
         "Ruaka"
       ],
       "locationPathIds": [
-        "loc-county-kiambu",
-        "loc-county-kiambu-ruaka"
+        "loc-1791485744942-eekdnpt40",
+        "loc-1791485745112-h0ge3fuyt"
       ],
       "displayLocation": "Ruaka · Joyland · Kiambu",
-      "locationDisplay": "Ruaka · Joyland · Kiambu",
+      "locationDisplay": "Kiambu → Ruaka",
       "exactLocation": "Joyland, off Limuru Road, Ruaka",
       "latitude": -1.2064,
       "longitude": 36.7786,
@@ -1020,7 +1198,16 @@
         "phone": "+254792409540",
         "whatsapp": "+254792409540",
         "isVerified": true
-      }
+      },
+      "legacyEstateSuburb": "Ruaka",
+      "legacyCounty": "Kiambu",
+      "locationHierarchyId": "loc-1791485745112-h0ge3fuyt",
+      "locationName": "Ruaka",
+      "locationFullPath": "Kiambu → Ruaka",
+      "locationCounty": "Kiambu",
+      "locationSubCounty": "Kiambaa",
+      "locationType": "town",
+      "locationVerified": true
     },
     {
       "id": "prop-exact-001",
@@ -1097,7 +1284,7 @@
       "county": "Kajiado",
       "corridorId": "mombasa_rd",
       "estateSuburb": "Kitengela",
-      "locationDisplay": "Kitengela, Kajiado",
+      "locationDisplay": "Kajiado → Kitengela",
       "exactLocation": "Kitengela, Kajiado",
       "latitude": -1.478,
       "longitude": 36.958,
@@ -1113,7 +1300,20 @@
           "url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
           "caption": "Scenic residential plot view"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Kitengela",
+      "legacyCounty": "Kajiado",
+      "locationHierarchyId": "loc-1791485745163-27opshwye",
+      "locationName": "Kitengela",
+      "locationFullPath": "Kajiado → Kitengela",
+      "locationPathIds": [
+        "loc-1791485744945-p8yu0q4gz",
+        "loc-1791485745163-27opshwye"
+      ],
+      "locationCounty": "Kajiado",
+      "locationSubCounty": "Kajiado East",
+      "locationType": "town",
+      "locationVerified": true
     },
     {
       "id": "prop-exact-004",
@@ -1128,7 +1328,7 @@
       "county": "Nairobi",
       "corridorId": "kilimani_ngong",
       "estateSuburb": "Kilimani",
-      "locationDisplay": "Kilimani, Nairobi",
+      "locationDisplay": "Nairobi → Kilimani",
       "exactLocation": "Argwings Kodhek Rd, Kilimani",
       "latitude": -1.2921,
       "longitude": 36.7856,
@@ -1144,7 +1344,20 @@
           "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
           "caption": "Contemporary apartment building"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Kilimani",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745057-on9rno5s7",
+      "locationName": "Kilimani",
+      "locationFullPath": "Nairobi → Kilimani",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745057-on9rno5s7"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Dagoretti",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "prop-exact-005",
@@ -1159,7 +1372,7 @@
       "county": "Kiambu",
       "corridorId": "thika_rd",
       "estateSuburb": "Ruiru",
-      "locationDisplay": "Ruiru, Kiambu",
+      "locationDisplay": "Kiambu → Ruiru",
       "exactLocation": "Ruiru bypass, Kiambu",
       "latitude": -1.1444,
       "longitude": 36.9589,
@@ -1175,7 +1388,20 @@
           "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
           "caption": "Modern architecture villa"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Ruiru",
+      "legacyCounty": "Kiambu",
+      "locationHierarchyId": "loc-1791485745090-i3ounqn5n",
+      "locationName": "Ruiru",
+      "locationFullPath": "Kiambu → Ruiru",
+      "locationPathIds": [
+        "loc-1791485744942-eekdnpt40",
+        "loc-1791485745090-i3ounqn5n"
+      ],
+      "locationCounty": "Kiambu",
+      "locationSubCounty": "Ruiru",
+      "locationType": "town",
+      "locationVerified": true
     },
     {
       "id": "prop-exact-006",
@@ -1190,7 +1416,7 @@
       "county": "Kiambu",
       "corridorId": "waiyaki_way",
       "estateSuburb": "Kikuyu",
-      "locationDisplay": "Kikuyu, Kiambu",
+      "locationDisplay": "Kiambu → Kikuyu",
       "exactLocation": "Kikuyu Town, near Alliance",
       "latitude": -1.2464,
       "longitude": 36.6631,
@@ -1206,7 +1432,20 @@
           "url": "https://images.unsplash.com/photo-1500076656116-558758c991c1?auto=format&fit=crop&w=1200&q=80",
           "caption": "Fenced land plot with red soil"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Kikuyu",
+      "legacyCounty": "Kiambu",
+      "locationHierarchyId": "loc-1791485745120-442iizole",
+      "locationName": "Kikuyu",
+      "locationFullPath": "Kiambu → Kikuyu",
+      "locationPathIds": [
+        "loc-1791485744942-eekdnpt40",
+        "loc-1791485745120-442iizole"
+      ],
+      "locationCounty": "Kiambu",
+      "locationSubCounty": "Kikuyu",
+      "locationType": "town",
+      "locationVerified": true
     },
     {
       "id": "prop-exact-007",
@@ -1221,7 +1460,7 @@
       "county": "Nairobi",
       "corridorId": "westlands_parklands",
       "estateSuburb": "Westlands",
-      "locationDisplay": "Westlands, Nairobi",
+      "locationDisplay": "Nairobi → Westlands",
       "exactLocation": "Mpaka Road, Westlands",
       "latitude": -1.2655,
       "longitude": 36.8044,
@@ -1237,7 +1476,20 @@
           "url": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
           "caption": "Cozy bedroom with wooden floor"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Westlands",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745072-rqstshwlc",
+      "locationName": "Westlands",
+      "locationFullPath": "Nairobi → Westlands",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745072-rqstshwlc"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Westlands",
+      "locationType": "major_area",
+      "locationVerified": true
     },
     {
       "id": "prop-exact-008",
@@ -1252,7 +1504,7 @@
       "county": "Nairobi",
       "corridorId": "karen_langata",
       "estateSuburb": "Karen",
-      "locationDisplay": "Karen, Nairobi",
+      "locationDisplay": "Nairobi → Karen",
       "exactLocation": "Karen Road, near The Hub",
       "latitude": -1.3197,
       "longitude": 36.7062,
@@ -1268,7 +1520,20 @@
           "url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80",
           "caption": "Bungalow with red tiled roof"
         }
-      ]
+      ],
+      "legacyEstateSuburb": "Karen",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745083-olmsb3f4q",
+      "locationName": "Karen",
+      "locationFullPath": "Nairobi → Karen",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745083-olmsb3f4q"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Lang'ata",
+      "locationType": "estate",
+      "locationVerified": true
     },
     {
       "id": "prop-nrb-001",
@@ -3955,7 +4220,22 @@
         "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 6
+      "photoCount": 6,
+      "legacyEstateSuburb": "Spring Valley",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745075-8y31ogk40",
+      "locationName": "Spring Valley",
+      "locationFullPath": "Nairobi → Westlands → Spring Valley",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745072-rqstshwlc",
+        "loc-1791485745075-8y31ogk40"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Westlands → Spring Valley"
     },
     {
       "id": "prop-nrb-034",
@@ -4352,7 +4632,7 @@
       "floorLevel": 1,
       "rentKes": 25000,
       "depositKes": 25000,
-      "county": "Kiambu",
+      "county": "Nairobi",
       "corridorId": "northern_thika_road",
       "estateSuburb": "Kahawa Sukari",
       "exactLocation": "Kahawa Sukari, 1st South Avenue",
@@ -4437,7 +4717,22 @@
         "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 6
+      "photoCount": 6,
+      "legacyEstateSuburb": "Kahawa Sukari",
+      "legacyCounty": "Kiambu",
+      "locationHierarchyId": "loc-1791485745028-n1emyxfok",
+      "locationName": "Kahawa Sukari",
+      "locationFullPath": "Nairobi → Kahawa → Kahawa Sukari",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745025-sotyfbb45",
+        "loc-1791485745028-n1emyxfok"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Kahawa → Kahawa Sukari"
     },
     {
       "id": "prop-nrb-039",
@@ -4534,7 +4829,22 @@
         "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 6
+      "photoCount": 6,
+      "legacyEstateSuburb": "Garden Estate",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745019-vud6nkouy",
+      "locationName": "Garden Estate",
+      "locationFullPath": "Nairobi → Roysambu → Garden Estate",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745013-2be9tgevs",
+        "loc-1791485745019-vud6nkouy"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Roysambu → Garden Estate"
     },
     {
       "id": "prop-nrb-040",
@@ -5668,7 +5978,21 @@
         "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 6
+      "photoCount": 6,
+      "legacyEstateSuburb": "Nairobi West",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745088-4vqp82t5r",
+      "locationName": "Nairobi West",
+      "locationFullPath": "Nairobi → Nairobi West",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745088-4vqp82t5r"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Dagoretti",
+      "locationType": "estate",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Nairobi West"
     },
     {
       "id": "prop-nrb-052",
@@ -6046,7 +6370,22 @@
         "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 4
+      "photoCount": 4,
+      "legacyEstateSuburb": "Pipeline",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485744999-jkcnnvzl4",
+      "locationName": "Pipeline",
+      "locationFullPath": "Nairobi → Embakasi → Pipeline",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485744995-e9pfv481k",
+        "loc-1791485744999-jkcnnvzl4"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Embakasi → Pipeline"
     },
     {
       "id": "prop-nrb-056",
@@ -7195,7 +7534,21 @@
         "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 6
+      "photoCount": 6,
+      "legacyEstateSuburb": "Kiserian",
+      "legacyCounty": "Kajiado",
+      "locationHierarchyId": "loc-1791485745187-n8jjcuz3h",
+      "locationName": "Kiserian",
+      "locationFullPath": "Kajiado → Kiserian",
+      "locationPathIds": [
+        "loc-1791485744945-p8yu0q4gz",
+        "loc-1791485745187-n8jjcuz3h"
+      ],
+      "locationCounty": "Kajiado",
+      "locationSubCounty": "Kajiado North",
+      "locationType": "town",
+      "locationVerified": true,
+      "locationDisplay": "Kajiado → Kiserian"
     },
     {
       "id": "prop-nrb-068",
@@ -7488,7 +7841,22 @@
         "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 6
+      "photoCount": 6,
+      "legacyEstateSuburb": "Hurlingham",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745059-r5299okeh",
+      "locationName": "Hurlingham",
+      "locationFullPath": "Nairobi → Kilimani → Hurlingham",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745057-on9rno5s7",
+        "loc-1791485745059-r5299okeh"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Kilimani → Hurlingham"
     },
     {
       "id": "prop-nrb-071",
@@ -7587,7 +7955,7 @@
       "floorLevel": 2,
       "rentKes": 7800,
       "depositKes": 7800,
-      "county": "Kiambu",
+      "county": "Nairobi",
       "corridorId": "northern_thika_road",
       "estateSuburb": "Kahawa Wendani",
       "exactLocation": "Kahawa Wendani, near Magunas Supermarket",
@@ -7667,7 +8035,22 @@
         "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 5
+      "photoCount": 5,
+      "legacyEstateSuburb": "Kahawa Wendani",
+      "legacyCounty": "Kiambu",
+      "locationHierarchyId": "loc-1791485745030-dy2m88pcl",
+      "locationName": "Kahawa Wendani",
+      "locationFullPath": "Nairobi → Kahawa → Kahawa Wendani",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745025-sotyfbb45",
+        "loc-1791485745030-dy2m88pcl"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Kahawa → Kahawa Wendani"
     },
     {
       "id": "prop-nrb-073",
@@ -9410,7 +9793,7 @@
       "floorLevel": 1,
       "rentKes": 7000,
       "depositKes": 7000,
-      "county": "Kiambu",
+      "county": "Nairobi",
       "corridorId": "northern_thika_road",
       "estateSuburb": "Kahawa Wendani",
       "exactLocation": "Kahawa Wendani, Matatu stage route",
@@ -9490,7 +9873,22 @@
         "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 5
+      "photoCount": 5,
+      "legacyEstateSuburb": "Kahawa Wendani",
+      "legacyCounty": "Kiambu",
+      "locationHierarchyId": "loc-1791485745030-dy2m88pcl",
+      "locationName": "Kahawa Wendani",
+      "locationFullPath": "Nairobi → Kahawa → Kahawa Wendani",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745025-sotyfbb45",
+        "loc-1791485745030-dy2m88pcl"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Kahawa → Kahawa Wendani"
     },
     {
       "id": "prop-soc-109",
@@ -9502,7 +9900,7 @@
       "floorLevel": 2,
       "rentKes": 26000,
       "depositKes": 26000,
-      "county": "Kiambu",
+      "county": "Nairobi",
       "corridorId": "northern_thika_road",
       "estateSuburb": "Kahawa Sukari",
       "exactLocation": "Kahawa Sukari, 2nd South Avenue",
@@ -9587,7 +9985,22 @@
         "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 6
+      "photoCount": 6,
+      "legacyEstateSuburb": "Kahawa Sukari",
+      "legacyCounty": "Kiambu",
+      "locationHierarchyId": "loc-1791485745028-n1emyxfok",
+      "locationName": "Kahawa Sukari",
+      "locationFullPath": "Nairobi → Kahawa → Kahawa Sukari",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745025-sotyfbb45",
+        "loc-1791485745028-n1emyxfok"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Kahawa → Kahawa Sukari"
     },
     {
       "id": "prop-soc-110",
@@ -10746,7 +11159,21 @@
         "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 6
+      "photoCount": 6,
+      "legacyEstateSuburb": "Nairobi West",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485745088-4vqp82t5r",
+      "locationName": "Nairobi West",
+      "locationFullPath": "Nairobi → Nairobi West",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745088-4vqp82t5r"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Dagoretti",
+      "locationType": "estate",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Nairobi West"
     },
     {
       "id": "prop-soc-122",
@@ -11395,7 +11822,22 @@
         "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80"
       ],
-      "photoCount": 4
+      "photoCount": 4,
+      "legacyEstateSuburb": "Pipeline",
+      "legacyCounty": "Nairobi",
+      "locationHierarchyId": "loc-1791485744999-jkcnnvzl4",
+      "locationName": "Pipeline",
+      "locationFullPath": "Nairobi → Embakasi → Pipeline",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485744995-e9pfv481k",
+        "loc-1791485744999-jkcnnvzl4"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "locationDisplay": "Nairobi → Embakasi → Pipeline"
     },
     {
       "id": "prop-soc-129",
@@ -12587,7 +13029,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Kilimani",
+      "locationHierarchyId": "loc-1791485745057-on9rno5s7",
+      "locationName": "Kilimani",
+      "locationFullPath": "Nairobi → Kilimani",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745057-on9rno5s7"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Dagoretti",
+      "locationType": "major_area",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Kilimani"
     },
     {
       "id": "prop-002",
@@ -12641,7 +13097,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Westlands",
+      "locationHierarchyId": "loc-1791485745072-rqstshwlc",
+      "locationName": "Westlands",
+      "locationFullPath": "Nairobi → Westlands",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745072-rqstshwlc"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Westlands",
+      "locationType": "major_area",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Westlands"
     },
     {
       "id": "prop-003",
@@ -12689,7 +13159,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Karen",
+      "locationHierarchyId": "loc-1791485745083-olmsb3f4q",
+      "locationName": "Karen",
+      "locationFullPath": "Nairobi → Karen",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745083-olmsb3f4q"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Lang'ata",
+      "locationType": "estate",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Karen"
     },
     {
       "id": "prop-004",
@@ -12731,7 +13215,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Runda",
+      "locationHierarchyId": "loc-1791485745080-cpqobjzqk",
+      "locationName": "Runda",
+      "locationFullPath": "Nairobi → Runda",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745080-cpqobjzqk"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Westlands",
+      "locationType": "estate",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Runda"
     },
     {
       "id": "prop-005",
@@ -12780,7 +13278,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Kilimani",
+      "locationHierarchyId": "loc-1791485745057-on9rno5s7",
+      "locationName": "Kilimani",
+      "locationFullPath": "Nairobi → Kilimani",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745057-on9rno5s7"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Dagoretti",
+      "locationType": "major_area",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Kilimani"
     },
     {
       "id": "prop-006",
@@ -12822,7 +13334,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Runda",
+      "locationHierarchyId": "loc-1791485745080-cpqobjzqk",
+      "locationName": "Runda",
+      "locationFullPath": "Nairobi → Runda",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745080-cpqobjzqk"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Westlands",
+      "locationType": "estate",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Runda"
     },
     {
       "id": "prop-007",
@@ -12869,7 +13395,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Karen",
+      "locationHierarchyId": "loc-1791485745083-olmsb3f4q",
+      "locationName": "Karen",
+      "locationFullPath": "Nairobi → Karen",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745083-olmsb3f4q"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Lang'ata",
+      "locationType": "estate",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Karen"
     },
     {
       "id": "prop-008",
@@ -12965,7 +13505,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Roysambu",
+      "locationHierarchyId": "loc-1791485745013-2be9tgevs",
+      "locationName": "Roysambu",
+      "locationFullPath": "Nairobi → Roysambu",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745013-2be9tgevs"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Kasarani",
+      "locationType": "major_area",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Roysambu"
     },
     {
       "id": "prop-010",
@@ -13013,7 +13567,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Westlands",
+      "locationHierarchyId": "loc-1791485745072-rqstshwlc",
+      "locationName": "Westlands",
+      "locationFullPath": "Nairobi → Westlands",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745072-rqstshwlc"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": "Westlands",
+      "locationType": "major_area",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Westlands"
     },
     {
       "id": "prop-011",
@@ -13055,7 +13623,22 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Kahawa Sukari",
+      "locationHierarchyId": "loc-1791485745028-n1emyxfok",
+      "locationName": "Kahawa Sukari",
+      "locationFullPath": "Nairobi → Kahawa → Kahawa Sukari",
+      "locationPathIds": [
+        "loc-1791485744940-3u4wl3q17",
+        "loc-1791485745025-sotyfbb45",
+        "loc-1791485745028-n1emyxfok"
+      ],
+      "locationCounty": "Nairobi",
+      "locationSubCounty": null,
+      "locationType": "neighbourhood",
+      "locationVerified": true,
+      "county": "Nairobi",
+      "locationDisplay": "Nairobi → Kahawa → Kahawa Sukari"
     },
     {
       "id": "prop-012",
@@ -13102,7 +13685,21 @@
       ],
       "isVerified": false,
       "isApproved": false,
-      "status": "pending"
+      "status": "pending",
+      "legacyEstateSuburb": "Ruiru",
+      "locationHierarchyId": "loc-1791485745090-i3ounqn5n",
+      "locationName": "Ruiru",
+      "locationFullPath": "Kiambu → Ruiru",
+      "locationPathIds": [
+        "loc-1791485744942-eekdnpt40",
+        "loc-1791485745090-i3ounqn5n"
+      ],
+      "locationCounty": "Kiambu",
+      "locationSubCounty": "Ruiru",
+      "locationType": "town",
+      "locationVerified": true,
+      "county": "Kiambu",
+      "locationDisplay": "Kiambu → Ruiru"
     }
   ],
   "services": [

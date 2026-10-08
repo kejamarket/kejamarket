@@ -22,12 +22,14 @@ class MapController {
     const el = document.getElementById('leaflet-full-map');
     if (!el || this.fullMap) return;
 
-    this.fullMap = L.map('leaflet-full-map').setView(this.nairobiCenter, this.defaultZoom);
+    this.fullMap = L.map('leaflet-full-map', {
+      attributionControl: false  // Remove Leaflet attribution
+    }).setView(this.nairobiCenter, this.defaultZoom);
 
     // Use CartoDB Positron tiles (faster and more reliable)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      attribution: '',  // No attribution text
       subdomains: 'abcd'
     }).addTo(this.fullMap);
 
@@ -38,12 +40,14 @@ class MapController {
     const el = document.getElementById('leaflet-split-map');
     if (!el || this.splitMap) return;
 
-    this.splitMap = L.map('leaflet-split-map').setView(this.nairobiCenter, this.defaultZoom);
+    this.splitMap = L.map('leaflet-split-map', {
+      attributionControl: false  // Remove Leaflet attribution
+    }).setView(this.nairobiCenter, this.defaultZoom);
 
     // Use CartoDB Positron tiles (faster and more reliable)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      attribution: '',  // No attribution text
       subdomains: 'abcd'
     }).addTo(this.splitMap);
 

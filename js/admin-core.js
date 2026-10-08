@@ -211,9 +211,22 @@ const AdminCore = (() => {
           break;
         case 'verification':
           if (window.AdminVerification) {
+            // Inject scaffold first so AdminVerification.init() can find #verification-content
+            contentArea.innerHTML = `
+              <div class="module-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <h1><i class="fas fa-shield-check"></i> Listing Moderation &amp; Verification</h1>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="tab-btn ${true ? 'active' : ''}" onclick="AdminVerification.init('pending-properties')" style="font-size:0.82rem;">Pending Approval</button>
+                  <button class="tab-btn" onclick="AdminVerification.init('recently-approved')" style="font-size:0.82rem;">Recently Approved</button>
+                  <button class="tab-btn" onclick="AdminVerification.init('recently-rejected')" style="font-size:0.82rem;">Rejected</button>
+                  <button class="tab-btn" onclick="AdminVerification.init('pending-users')" style="font-size:0.82rem;">User Verification</button>
+                </div>
+              </div>
+              <div id="verification-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading verification queue...</div></div>
+            `;
             await window.AdminVerification.init();
           } else {
-            contentArea.innerHTML = '<div class="loading-state">Loading verification module...</div>';
+            contentArea.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>AdminVerification module not loaded</p></div>';
           }
           break;
         case 'properties':
@@ -233,7 +246,14 @@ const AdminCore = (() => {
         case 'users-suspended':
           if (window.AdminUsers) {
             const filter = moduleName === 'users-verified' ? 'verified' : moduleName === 'users-suspended' ? 'suspended' : 'all';
+            // Inject scaffold first so AdminUsers.init() can find #users-content
+            contentArea.innerHTML = `
+              <div class="module-header"><h1><i class="fas fa-users"></i> User Management</h1></div>
+              <div id="users-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading users...</div></div>
+            `;
             await window.AdminUsers.init(filter);
+          } else {
+            contentArea.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>AdminUsers module not loaded</p></div>';
           }
           break;
         case 'house-hunts':
@@ -242,13 +262,25 @@ const AdminCore = (() => {
           }
           break;
         case 'buildings':
-          if (window.AdminBuildings && typeof window.AdminBuildings.loadBuildings === 'function') {
-            await window.AdminBuildings.loadBuildings(viewData);
+          if (window.AdminBuildings) {
+            contentArea.innerHTML = `
+              <div class="module-header"><h1><i class="fas fa-building"></i> Buildings Management</h1></div>
+              <div id="buildings-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading buildings...</div></div>
+            `;
+            await window.AdminBuildings.init('buildings');
+          } else {
+            contentArea.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>AdminBuildings module not loaded</p></div>';
           }
           break;
         case 'units':
-          if (window.AdminBuildings && typeof window.AdminBuildings.loadUnits === 'function') {
-            await window.AdminBuildings.loadUnits(viewData);
+          if (window.AdminBuildings) {
+            contentArea.innerHTML = `
+              <div class="module-header"><h1><i class="fas fa-door-open"></i> Units Management</h1></div>
+              <div id="buildings-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading units...</div></div>
+            `;
+            await window.AdminBuildings.init('units');
+          } else {
+            contentArea.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>AdminBuildings module not loaded</p></div>';
           }
           break;
         case 'messages-broadcast':

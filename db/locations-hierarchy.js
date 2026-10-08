@@ -1,12 +1,15 @@
 /**
  * KejaMarket - Hierarchical Location System (JSON Implementation)
  * Supports parent-child relationships, descendant search, and comprehensive Nairobi + environs coverage
+ * Browser + Node.js compatible
  */
 
-const fs = require('fs');
-const path = require('path');
+// Node.js dependencies (only used server-side)
+const isNode = typeof module !== 'undefined' && module.exports;
+const fs = isNode ? require('fs') : null;
+const path = isNode ? require('path') : null;
 
-const LOCATIONS_FILE = path.join(__dirname, 'locations-data.json');
+const LOCATIONS_FILE = isNode ? path.join(__dirname, 'locations-data.json') : null;
 
 /**
  * Location Types
@@ -27,16 +30,25 @@ const LocationType = {
 };
 
 class LocationsHierarchy {
-  constructor() {
+  constructor(locationsData = null) {
     this.locations = [];
     this.locationsById = new Map();
     this.locationsBySlug = new Map();
-    this.init();
+    
+    // Browser environment - data must be passed in
+    if (locationsData) {
+      this.locations = locationsData;
+      this.buildIndexes();
+    }
+    // Node.js environment - load from file
+    else if (isNode) {
+      this.init();
+    }
   }
 
   init() {
     try {
-      if (fs.existsSync(LOCATIONS_FILE)) {
+      if (fs && fs.existsSync(LOCATIONS_FILE)) {
         const raw = fs.readFileSync(LOCATIONS_FILE, 'utf-8');
         this.locations = JSON.parse(raw);
         this.buildIndexes();
@@ -56,11 +68,17 @@ class LocationsHierarchy {
     
     for (const loc of this.locations) {
       this.locationsById.set(loc.id, loc);
-      this.locationsBySlug.set(loc.slug, loc);
+      if (loc.slug) {
+        this.locationsBySlug.set(loc.slug, loc);
+      }
     }
   }
 
   save() {
+    if (!isNode || !fs) {
+      console.warn('save() only works in Node.js environment');
+      return;
+    }
     try {
       fs.writeFileSync(LOCATIONS_FILE, JSON.stringify(this.locations, null, 2), 'utf-8');
     } catch (err) {
@@ -337,7 +355,16 @@ class LocationsHierarchy {
   }
 }
 
-module.exports = {
-  LocationsHierarchy,
-  LocationType
-};
+// Export for Node.js
+if (isNode) {
+  module.exports = {
+    LocationsHierarchy,
+    LocationType
+  };
+}
+
+// Export for browser (global window object)
+if (typeof window !== 'undefined') {
+  window.LocationsHierarchy = LocationsHierarchy;
+  window.LocationType = LocationType;
+}

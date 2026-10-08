@@ -354,7 +354,7 @@ const AdminVerification = (() => {
                 <td style="font-weight: 700; color: #7c3aed;">KSh ${formatNumber(property.price || 0)}</td>
                 <td>${formatDate(property.verifiedAt || property.updatedAt)}</td>
                 <td>
-                  <button class="btn-icon" onclick="AdminProperties.viewPropertyDetail('${property.id}')" title="View">
+                  <button class="btn-icon" onclick="AdminVerification.viewDetails('property', '${property.id}')" title="View Details & Photos">
                     <i class="fas fa-eye"></i>
                   </button>
                 </td>
@@ -419,7 +419,7 @@ const AdminVerification = (() => {
                 <td>${formatDate(property.rejectedAt || property.updatedAt)}</td>
                 <td>
                   <div class="action-buttons-group">
-                    <button class="btn-icon" onclick="AdminProperties.viewPropertyDetail('${property.id}')" title="View">
+                    <button class="btn-icon" onclick="AdminVerification.viewDetails('property', '${property.id}')" title="View Details & Photos">
                       <i class="fas fa-eye"></i>
                     </button>
                     <button class="btn-icon btn-success" onclick="AdminVerification.quickApprove('property', '${property.id}')" title="Approve Now">
@@ -435,68 +435,234 @@ const AdminVerification = (() => {
     `;
   }
 
-  // View details modal - works for all types
-  function viewDetails(type, id) {
-    if (type === 'property') {
-      if (typeof AdminProperties !== 'undefined' && AdminProperties.viewPropertyDetail) {
-        AdminProperties.viewPropertyDetail(id);
-      }
-      return;
-    }
+  // View details modal with full photos gallery, quality checks & inline approve/reject - works for all types
+  async function viewDetails(type, id) {
+    const existing = document.getElementById('verification-detail-modal');
+    if (existing) existing.remove();
 
-    // For service and marketplace: show a quick preview modal
-    const allItems = [];
-    document.querySelectorAll('.verification-card').forEach(card => {
-      // We rely on the data embedded in the card buttons
+    const token = localStorage.getItem('keja_token');
+    const modal = document.createElement('div');
+    modal.id = 'verification-detail-modal';
+    modal.className = 'modal-overlay';
+    modal.style.zIndex = '10000';
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width:820px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;border-radius:14px;box-shadow:0 20px 40px rgba(0,0,0,0.25);">
+        <div class="modal-header" style="background:#0f172a;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;">
+          <h2 style="font-size:1.15rem;font-weight:700;margin:0;display:flex;align-items:center;gap:10px;color:#fff;">
+            <i class="fas ${type === 'property' ? 'fa-home' : type === 'service' ? 'fa-tools' : 'fa-shopping-bag'}" style="color:#10b981;"></i>
+            Moderation Review: <span style="font-weight:400;text-transform:capitalize;">${type} #${String(id).slice(0, 8)}</span>
+          </h2>
+          <button class="modal-close" style="color:#94a3b8;background:transparent;border:none;font-size:1.4rem;cursor:pointer;" onclick="this.closest('.modal-overlay').remove()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="verif-modal-body" style="padding:22px;overflow-y:auto;flex:1;">
+          <div class="loading-state" style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#059669;"></i><p style="margin-top:12px;color:#64748b;">Loading full listing details &amp; photos...</p></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Close when clicking backdrop
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.remove();
     });
 
-    // Fetch and show details in a modal
-    const token = localStorage.getItem('keja_token');
-    const url = type === 'service' ? `/api/services/${id}` : `/api/marketplace/${id}`;
-    fetch(url, { headers: { 'Authorization': `Bearer ${token}` } })
-      .then(r => r.json())
-      .then(data => {
-        const item = data.service || data.item || data;
-        if (!item) return;
-        const existing = document.getElementById('verification-detail-modal');
-        if (existing) existing.remove();
-        const modal = document.createElement('div');
-        modal.id = 'verification-detail-modal';
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-          <div class="modal-content" style="max-width:600px;">
-            <div class="modal-header">
-              <h2><i class="fas ${type === 'service' ? 'fa-tools' : 'fa-shopping-bag'}"></i> ${type === 'service' ? 'Service' : 'Marketplace Item'} Review</h2>
-              <button class="modal-close" onclick="this.closest('.modal-overlay').remove()"><i class="fas fa-times"></i></button>
+    try {
+      const url = type === 'property' 
+        ? `/api/properties/${id}` 
+        : type === 'service' 
+          ? `/api/services/${id}` 
+          : `/api/marketplace/${id}`;
+
+      const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+      if (!res.ok) throw new Error(`Could not fetch details (${res.status} ${res.statusText})`);
+      const data = await res.json();
+      const item = data.property || data.service || data.item || data;
+      if (!item) throw new Error('Listing data not found');
+
+      // Normalize images
+      let images = [];
+      if (Array.isArray(item.images)) {
+        images = item.images;
+      } else if (typeof item.images === 'string') {
+        try { images = JSON.parse(item.images); } catch (_) { images = [item.images]; }
+      } else if (Array.isArray(item.media)) {
+        images = item.media;
+      } else if (typeof item.image_url === 'string') {
+        images = [item.image_url];
+      } else if (typeof item.image === 'string') {
+        images = [item.image];
+      }
+      images = (Array.isArray(images) ? images : []).filter(img => typeof img === 'string' && img.trim().length > 0);
+
+      // Normalization of fields
+      const title = item.title || item.business_name || 'Untitled Listing';
+      const ownerName = item.landlordName || item.landlord?.name || item.provider_name || item.providerName || item.seller_name || item.sellerName || 'Unknown Owner';
+      const ownerPhone = item.landlordPhone || item.landlord?.phone || item.provider_phone || item.providerPhone || item.seller_phone || item.sellerPhone || 'Not provided';
+      const ownerEmail = item.landlordEmail || item.landlord?.email || item.provider_email || item.seller_email || '';
+      const location = [item.estate, item.area, item.county, item.coverage_area, item.coverageArea, item.location_suburb, item.location_corridor, item.location].filter(Boolean).join(', ') || item.address || 'Location not specified';
+      
+      let priceDisplay = 'Not specified';
+      let rawPrice = 0;
+      if (item.price != null) {
+        rawPrice = Number(item.price);
+        priceDisplay = `KSh ${formatNumber(rawPrice)} / month`;
+      } else if (item.rent_kes != null || item.rentKes != null) {
+        rawPrice = Number(item.rent_kes || item.rentKes);
+        priceDisplay = `KSh ${formatNumber(rawPrice)} / month`;
+      } else if (item.price_min != null) {
+        priceDisplay = `KSh ${formatNumber(item.price_min)}${item.price_max ? ' - ' + formatNumber(item.price_max) : ''}`;
+      } else if (item.price_kes != null) {
+        priceDisplay = `KSh ${formatNumber(item.price_kes)}`;
+      }
+
+      const description = item.description || '';
+      const status = item.status || (item.is_verified ? 'approved' : 'pending');
+      const category = item.propertyType || item.property_type || item.service_type || item.serviceType || item.category || '-';
+      const createdAt = item.created_at || item.createdAt || null;
+
+      // Quality check flags
+      const flags = [];
+      if (images.length === 0) flags.push({ type: 'danger', text: 'No Photos Uploaded' });
+      if (rawPrice > 0 && rawPrice < 2500) flags.push({ type: 'warning', text: 'Suspiciously Low Price (< KSh 2,500)' });
+      if (!description || description.length < 25) flags.push({ type: 'warning', text: 'Short / Incomplete Description' });
+      if (!ownerPhone || ownerPhone === 'Not provided') flags.push({ type: 'danger', text: 'Missing Phone Number' });
+
+      const bodyEl = document.getElementById('verif-modal-body');
+      if (!bodyEl) return;
+
+      bodyEl.innerHTML = `
+        <!-- Quality Alerts -->
+        ${flags.length > 0 ? `
+          <div style="margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px;">
+            ${flags.map(f => `
+              <span style="background:${f.type === 'danger' ? '#fef2f2' : '#fffbeb'};color:${f.type === 'danger' ? '#991b1b' : '#92400e'};border:1px solid ${f.type === 'danger' ? '#fecaca' : '#fde68a'};padding:4px 10px;border-radius:20px;font-size:0.78rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
+                <i class="fas fa-exclamation-triangle"></i> ${f.text}
+              </span>
+            `).join('')}
+          </div>
+        ` : `
+          <div style="margin-bottom:16px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:6px 12px;border-radius:8px;font-size:0.8rem;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
+            <i class="fas fa-check-circle"></i> Basic Quality Checks Passed
+          </div>
+        `}
+
+        <!-- Media Gallery Section -->
+        <div style="margin-bottom:20px;background:#f8fafc;padding:12px;border-radius:12px;border:1px solid #e2e8f0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <strong style="color:#0f172a;font-size:0.92rem;"><i class="fas fa-images" style="color:#059669;"></i> Photos Gallery</strong>
+            <span style="font-size:0.8rem;font-weight:700;color:${images.length ? '#059669' : '#dc2626'};background:${images.length ? '#ecfdf5' : '#fee2e2'};padding:2px 8px;border-radius:10px;">
+              ${images.length} ${images.length === 1 ? 'Photo' : 'Photos'}
+            </span>
+          </div>
+          ${images.length > 0 ? `
+            <div style="text-align:center;background:#000;border-radius:10px;overflow:hidden;">
+              <img id="verif-preview-main-img" src="${escapeHtml(images[0])}" alt="Listing photo preview" style="max-height:360px;width:100%;object-fit:contain;display:block;margin:0 auto;" onerror="this.onerror=null;this.src='/icons/placeholder.png';">
             </div>
-            <div class="modal-body">
-              <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
-                ${[
-                  ['Title', item.title || item.business_name || '-'],
-                  ['Type / Category', item.service_type || item.category || '-'],
-                  ['Owner', (item.provider_name || item.seller_name || '-') + ' • ' + (item.provider_phone || item.seller_phone || '-')],
-                  ['Price', item.price_min != null ? `KSh ${formatNumber(item.price_min)} - ${formatNumber(item.price_max || item.price_min)}` : item.price_kes != null ? `KSh ${formatNumber(item.price_kes)}` : '-'],
-                  ['Coverage / Location', item.coverage_area || item.location_suburb || '-'],
-                  ['Description', item.description || '-'],
-                  ['Status', item.status || '-'],
-                  ['Submitted', new Date(item.created_at).toLocaleString('en-GB')]
-                ].map(([label, val]) => `<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:8px;font-weight:600;color:#475569;width:35%;">${label}</td><td style="padding:8px;color:#1e293b;">${escapeHtml(String(val))}</td></tr>`).join('')}
-              </table>
+            ${images.length > 1 ? `
+              <div style="display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:6px;">
+                ${images.map((img, idx) => `
+                  <img src="${escapeHtml(img)}" 
+                       alt="Thumbnail ${idx+1}" 
+                       style="width:72px;height:54px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid ${idx===0?'#059669':'#cbd5e1'};opacity:${idx===0?'1':'0.75'};transition:all 0.2s;flex-shrink:0;" 
+                       onclick="document.getElementById('verif-preview-main-img').src='${escapeHtml(img)}';this.parentElement.querySelectorAll('img').forEach(el=>{el.style.borderColor='#cbd5e1';el.style.opacity='0.75'});this.style.borderColor='#059669';this.style.opacity='1';"
+                       onerror="this.onerror=null;this.src='/icons/placeholder.png';" />
+                `).join('')}
+              </div>
+            ` : ''}
+          ` : `
+            <div style="background:#fff1f2;border:1px dashed #f43f5e;border-radius:10px;padding:24px;text-align:center;color:#9f1239;">
+              <i class="fas fa-image" style="font-size:2.2rem;margin-bottom:8px;color:#e11d48;display:block;"></i>
+              <strong style="font-size:0.95rem;">No Photos Uploaded</strong>
+              <p style="margin:4px 0 0 0;font-size:0.83rem;color:#be123c;">The user did not provide any images with this submission.</p>
             </div>
-            <div class="modal-footer">
-              <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Close</button>
-              <button class="btn-danger" onclick="this.closest('.modal-overlay').remove(); AdminVerification.quickReject('${type}', '${id}', '${item.title}')">
-                <i class="fas fa-times-circle"></i> Reject
-              </button>
-              <button class="btn-primary" onclick="this.closest('.modal-overlay').remove(); AdminVerification.quickApprove('${type}', '${id}', '${item.title}')">
-                <i class="fas fa-check-circle"></i> Approve
-              </button>
+          `}
+        </div>
+
+        <!-- Listing Core Details Grid -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:16px;margin-bottom:18px;">
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:14px;">
+            <div style="font-size:0.75rem;text-transform:uppercase;color:#64748b;font-weight:800;margin-bottom:6px;">Listing Information</div>
+            <div style="font-size:1.05rem;font-weight:800;color:#0f172a;margin-bottom:6px;">${escapeHtml(title)}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.88rem;color:#475569;">
+              <i class="fas fa-tag" style="color:#059669;width:16px;"></i> <strong style="color:#059669;font-size:1rem;">${priceDisplay}</strong>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.88rem;color:#475569;">
+              <i class="fas fa-layer-group" style="color:#64748b;width:16px;"></i> Type: <span style="font-weight:600;">${escapeHtml(String(category))}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.88rem;color:#475569;">
+              <i class="fas fa-map-marker-alt" style="color:#ef4444;width:16px;"></i> <span>${escapeHtml(location)}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#64748b;">
+              <i class="fas fa-calendar" style="color:#64748b;width:16px;"></i> Submitted: ${createdAt ? new Date(createdAt).toLocaleString('en-KE', { dateStyle:'medium', timeStyle:'short' }) : 'Unknown date'}
             </div>
           </div>
+
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:14px;">
+            <div style="font-size:0.75rem;text-transform:uppercase;color:#64748b;font-weight:800;margin-bottom:6px;">Owner &amp; Contact Details</div>
+            <div style="font-size:1.05rem;font-weight:800;color:#0f172a;margin-bottom:6px;">${escapeHtml(ownerName)}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.88rem;color:#475569;">
+              <i class="fas fa-phone-alt" style="color:#059669;width:16px;"></i>
+              ${ownerPhone && ownerPhone !== 'Not provided' ? `<a href="tel:${escapeHtml(ownerPhone)}" style="color:#059669;font-weight:700;text-decoration:none;">${escapeHtml(ownerPhone)}</a>` : '<span style="color:#ef4444;">No Phone Provided</span>'}
+            </div>
+            ${ownerEmail ? `
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.88rem;color:#475569;">
+                <i class="fas fa-envelope" style="color:#64748b;width:16px;"></i> <a href="mailto:${escapeHtml(ownerEmail)}" style="color:#3b82f6;text-decoration:none;">${escapeHtml(ownerEmail)}</a>
+              </div>
+            ` : ''}
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.85rem;color:#64748b;">
+              <i class="fas fa-info-circle" style="color:#64748b;width:16px;"></i> Current Status: <span style="font-weight:700;text-transform:uppercase;color:${status === 'approved' ? '#059669' : status === 'rejected' ? '#dc2626' : '#d97706'}">${escapeHtml(status)}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#64748b;">
+              <i class="fas fa-id-badge" style="color:#64748b;width:16px;"></i> ID: <code>${escapeHtml(String(id))}</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description Section -->
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:18px;">
+          <div style="font-size:0.75rem;text-transform:uppercase;color:#64748b;font-weight:800;margin-bottom:8px;">Description</div>
+          <div style="font-size:0.92rem;color:#334155;line-height:1.6;white-space:pre-wrap;">${escapeHtml(description || 'No description provided by poster.')}</div>
+        </div>
+
+        <!-- Amenities / Extra Specs if available -->
+        ${Array.isArray(item.amenities) && item.amenities.length > 0 ? `
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:18px;">
+            <div style="font-size:0.75rem;text-transform:uppercase;color:#64748b;font-weight:800;margin-bottom:8px;">Amenities &amp; Features</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${item.amenities.map(a => `
+                <span style="background:#f1f5f9;color:#334155;padding:4px 10px;border-radius:6px;font-size:0.82rem;font-weight:600;"><i class="fas fa-check" style="color:#059669;margin-right:4px;"></i>${escapeHtml(String(a))}</span>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Inline Actions Footer -->
+        <div class="modal-footer" style="padding:14px 0 0 0;margin-top:14px;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;gap:10px;">
+          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()" style="padding:9px 18px;border-radius:8px;font-weight:700;">
+            Close Preview
+          </button>
+          <button class="btn-danger" style="background:#dc2626;color:white;border:none;padding:9px 18px;border-radius:8px;font-weight:700;cursor:pointer;" onclick="this.closest('.modal-overlay').remove(); AdminVerification.quickReject('${type}', '${id}', '${escapeHtml(title).replace(/'/g, "\\'")}')">
+            <i class="fas fa-times-circle"></i> Reject Listing
+          </button>
+          <button class="btn-primary" style="background:#059669;color:white;border:none;padding:9px 20px;border-radius:8px;font-weight:700;cursor:pointer;" onclick="this.closest('.modal-overlay').remove(); AdminVerification.quickApprove('${type}', '${id}', '${escapeHtml(title).replace(/'/g, "\\'")}')">
+            <i class="fas fa-check-circle"></i> Approve &amp; Publish
+          </button>
+        </div>
+      `;
+    } catch (err) {
+      console.error('Error in viewDetails:', err);
+      const bodyEl = document.getElementById('verif-modal-body');
+      if (bodyEl) {
+        bodyEl.innerHTML = `
+          <div class="error-state" style="padding:30px;text-align:center;">
+            <i class="fas fa-exclamation-triangle" style="font-size:2rem;color:#ef4444;margin-bottom:10px;"></i>
+            <p style="color:#b91c1c;font-weight:700;">Could not load listing details</p>
+            <p style="color:#64748b;font-size:0.88rem;">${escapeHtml(err.message)}</p>
+            <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()" style="margin-top:14px;">Close</button>
+          </div>
         `;
-        document.body.appendChild(modal);
-      })
-      .catch(err => showToast('Could not load details: ' + err.message, 'error'));
+      }
+    }
   }
 
   // Quick approve — handles property, service, marketplace

@@ -2324,9 +2324,12 @@ class NairobiRentalsApp {
     if (!mapEl) return;
 
     if (!this.detailMap) {
-      this.detailMap = L.map('detail-property-map').setView([property.latitude, property.longitude], 15);
+      this.detailMap = L.map('detail-property-map', {
+        attributionControl: false  // Remove Leaflet attribution
+      }).setView([property.latitude, property.longitude], 15);
+      
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
+        attribution: ''  // No attribution text
       }).addTo(this.detailMap);
 
       this.detailMarker = L.marker([property.latitude, property.longitude]).addTo(this.detailMap)

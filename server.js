@@ -5524,6 +5524,32 @@ app.get('/api/marketplace/my-items', requireAuth, async (req, res) => {
   }
 });
 
+// GET /api/marketplace/:id (Get single marketplace item)
+app.get('/api/marketplace/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    let item = null;
+    if (store && store.query) {
+      const result = await store.query('SELECT * FROM marketplace_items WHERE id = $1', [id]);
+      if (result.rows && result.rows.length > 0) {
+        item = result.rows[0];
+      }
+    } else if (store && store.data && store.data.marketplace_items) {
+      item = store.data.marketplace_items.find(i => i.id === id);
+    }
+    if (!item) {
+      return res.status(404).json({ success: false, message: 'Marketplace item not found' });
+    }
+    if (typeof item.images === 'string') {
+      try { item.images = JSON.parse(item.images); } catch (_) {}
+    }
+    res.json({ success: true, item });
+  } catch (err) {
+    console.error('Fetch marketplace item error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // PUT /api/marketplace/:id (Update marketplace item)
 app.put('/api/marketplace/:id', requireAuth, async (req, res) => {
   try {
