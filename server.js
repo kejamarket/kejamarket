@@ -1142,7 +1142,7 @@ app.get('/api/user/dashboard', requireAuth, async (req, res) => {
                   COUNT(*) FILTER (WHERE (is_verified IS NOT TRUE) AND (raw_data->>'status') != 'approved') as pending,
                   COALESCE(SUM((raw_data->>'views')::int), 0) as views
            FROM properties
-           WHERE landlord_id = $1 OR posted_by = $1 OR landlord_phone = $2`,
+           WHERE landlord_id = $1 OR raw_data->>'postedBy' = $1 OR caretaker_phone = $2 OR raw_data->>'landlordPhone' = $2`,
           [userId, userPhone || '']
         );
         const row = pRes.rows[0];
@@ -3306,7 +3306,7 @@ app.get('/api/admin/users', requireAuth, async (req, res) => {
                COUNT(p.id) FILTER (WHERE p.id IS NOT NULL) AS property_count,
                COUNT(p.id) FILTER (WHERE p.status IN ('approved','verified') AND p.is_verified = true) AS active_listings
         FROM users u
-        LEFT JOIN properties p ON p.user_id = u.id OR p.landlord_id = u.id
+        LEFT JOIN properties p ON p.landlord_id = u.id OR p.raw_data->>'userId' = u.id
         GROUP BY u.id
         ORDER BY u.created_at DESC
         LIMIT $1 OFFSET $2
@@ -3361,7 +3361,7 @@ app.get('/api/admin/users/:id', requireAuth, async (req, res) => {
         `SELECT COUNT(*) as total,
                 COUNT(*) FILTER (WHERE is_verified = true OR (raw_data->>'status') IN ('approved', 'verified')) as active
          FROM properties
-         WHERE user_id = $1 OR landlord_id = $1 OR posted_by = $1`,
+         WHERE landlord_id = $1 OR raw_data->>'userId' = $1`,
         [id]
       );
       if (pRes.rows[0]) {
@@ -4924,7 +4924,7 @@ app.get('/api/landlord/my-listings', requireAuth, async (req, res) => {
                COALESCE(array_agg(pm.image_url) FILTER (WHERE pm.image_url IS NOT NULL), '{}') as photos
         FROM properties p
         LEFT JOIN property_media pm ON p.id = pm.property_id
-        WHERE p.landlord_id = $1 OR p.posted_by = $1 OR p.landlord_phone = $2
+        WHERE p.landlord_id = $1 OR p.raw_data->>'postedBy' = $1 OR p.caretaker_phone = $2 OR p.raw_data->>'landlordPhone' = $2
         GROUP BY p.id
         ORDER BY p.created_at DESC
       `, [userId, userPhone]);
@@ -5091,7 +5091,7 @@ app.get('/api/service/my-services', requireAuth, async (req, res) => {
                COALESCE(array_agg(pm.image_url) FILTER (WHERE pm.image_url IS NOT NULL), '{}') as photos
         FROM properties p
         LEFT JOIN property_media pm ON p.id = pm.property_id
-        WHERE (p.posted_by = $1 OR p.landlord_id = $1)
+        WHERE (p.raw_data->>'postedBy' = $1 OR p.landlord_id = $1)
           AND (p.raw_data->>'listingType' = 'service' OR p.category ILIKE '%service%')
         GROUP BY p.id
         ORDER BY p.created_at DESC
@@ -6674,7 +6674,7 @@ setInterval(async () => {
     let boostedList = [];
     if (store.isConnected && store.query) {
       const qRes = await store.query(`
-        SELECT id, title, posted_by, raw_data
+        SELECT id, title, landlord_id, raw_data
         FROM properties
         WHERE (raw_data->>'boosted')::boolean = true
           AND raw_data->>'boostExpiresAt' IS NOT NULL
