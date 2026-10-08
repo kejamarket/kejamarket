@@ -637,14 +637,112 @@ const AdminProperties = (() => {
     renderPropertiesTable(filtered);
   }
 
-  // Edit property (placeholder)
+  // Edit property - opens inline edit modal
   function editProperty(propertyId) {
-    alert('Edit property functionality coming soon');
+    const property = currentProperties.find(p => p.id === propertyId);
+    if (!property) {
+      // Try fetching from API if not in local list
+      viewPropertyDetail(propertyId);
+      return;
+    }
+    const existing = document.getElementById('admin-edit-property-modal');
+    if (existing) existing.remove();
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'admin-edit-property-modal';
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width:520px;">
+        <div class="modal-header">
+          <h2><i class="fas fa-edit"></i> Edit Property</h2>
+          <button class="modal-close" onclick="this.closest('.modal-overlay').remove()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Title *</label>
+            <input type="text" id="edit-prop-title" class="form-control" value="${escapeHtml(property.title || '')}" required>
+          </div>
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label>Price (KSh) *</label>
+              <input type="number" id="edit-prop-price" class="form-control" value="${property.price || ''}" min="0" required>
+            </div>
+            <div class="form-group">
+              <label>Bedrooms</label>
+              <input type="number" id="edit-prop-bedrooms" class="form-control" value="${property.bedrooms || ''}" min="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Location *</label>
+            <input type="text" id="edit-prop-location" class="form-control" value="${escapeHtml(property.location || '')}" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="edit-prop-description" class="form-control" rows="4">${escapeHtml(property.description || '')}</textarea>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="edit-prop-status" class="form-control">
+              <option value="available" ${property.status==='available'?'selected':''}>Available</option>
+              <option value="taken" ${property.status==='taken'?'selected':''}>Taken / Occupied</option>
+              <option value="pending" ${property.status==='pending'?'selected':''}>Pending Review</option>
+              <option value="approved" ${property.status==='approved'?'selected':''}>Approved / Verified</option>
+              <option value="rejected" ${property.status==='rejected'?'selected':''}>Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+          <button class="btn-primary" onclick="AdminProperties.savePropertyEdit('${propertyId}')">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
   }
 
-  // Export properties (placeholder)
+  // Save edited property
+  async function savePropertyEdit(propertyId) {
+    const title = document.getElementById('edit-prop-title').value.trim();
+    const price = document.getElementById('edit-prop-price').value;
+    const bedrooms = document.getElementById('edit-prop-bedrooms').value;
+    const location = document.getElementById('edit-prop-location').value.trim();
+    const description = document.getElementById('edit-prop-description').value.trim();
+    const status = document.getElementById('edit-prop-status').value;
+    if (!title || !price || !location) { alert('Title, price and location are required.'); return; }
+    try {
+      const res = await fetch(`${API_BASE}/api/properties/${propertyId}`, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, price: parseInt(price), bedrooms: bedrooms ? parseInt(bedrooms) : undefined, location, description, status })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to update property');
+      document.getElementById('admin-edit-property-modal').remove();
+      showToast('Property updated successfully', 'success');
+      await loadProperties();
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  // Export properties as CSV
   function exportProperties() {
-    alert('Export functionality coming soon');
+    if (!currentProperties.length) { alert('No properties to export'); return; }
+    const headers = ['ID','Title','Location','Type','Price','Bedrooms','Status','Landlord','Phone','Posted'];
+    const rows = currentProperties.map(p => [
+      p.id, p.title || '', p.location || '', formatPropertyType(p.propertyType),
+      p.price || 0, p.bedrooms || '',
+      p.status || '', p.landlordName || '', p.landlordPhone || '',
+      p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-GB') : ''
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `kejamarket-properties-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+    showToast('Properties exported as CSV', 'success');
   }
 
   // Utility functions
@@ -696,6 +794,7 @@ const AdminProperties = (() => {
     searchProperties,
     viewPropertyDetail,
     editProperty,
+    savePropertyEdit,
     approveProperty,
     showRejectModal,
     confirmReject,

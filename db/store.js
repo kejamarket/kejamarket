@@ -195,20 +195,31 @@ class Store {
 
   // ─── USER METHODS ──────────────────────────────────────────────────────────
   async createUser({ name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea }) {
-    const cleanPhone = phone.replace(/\s+/g, '');
+    const cleanDigits = phone ? phone.toString().replace(/\D/g, '') : '';
+    const last9 = cleanDigits.slice(-9);
+    const canonicalPhone = last9.length === 9 ? '254' + last9 : (cleanDigits || phone);
     const cleanEmail = email ? email.trim().toLowerCase() : null;
 
+    const phoneVariants = [canonicalPhone, phone];
+    if (last9.length === 9) {
+      phoneVariants.push(last9, '0' + last9, '+254' + last9);
+    }
+
     // Check duplicate phone
-    const existingPhone = this.data.users.find(u => u.phone === cleanPhone || (u.phone && u.phone.replace(/^254/, '0') === cleanPhone.replace(/^254/, '0')));
+    const existingPhone = this.data.users.find(u => {
+      if (!u || !u.phone) return false;
+      const uDigits = u.phone.toString().replace(/\D/g, '');
+      return phoneVariants.includes(u.phone) || phoneVariants.includes(uDigits);
+    });
     if (existingPhone) {
-      throw new Error('An account with this phone number already exists.');
+      throw new Error('An account with this phone number or email already exists. Please sign in instead.');
     }
 
     // Check duplicate email
     if (cleanEmail) {
-      const existingEmail = this.data.users.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+      const existingEmail = this.data.users.find(u => u && u.email && u.email.toLowerCase() === cleanEmail);
       if (existingEmail) {
-        throw new Error('An account with this email address already exists.');
+        throw new Error('An account with this email address already exists. Please sign in instead.');
       }
     }
 
@@ -217,7 +228,7 @@ class Store {
     const user = {
       id: 'usr-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
       name: name.trim(),
-      phone: cleanPhone,
+      phone: canonicalPhone,
       email: cleanEmail,
       password: hashedPassword,
       role: userRole,
@@ -242,17 +253,46 @@ class Store {
 
   findUserByIdentifier(identifier) {
     if (!identifier) return null;
-    const clean = identifier.trim().toLowerCase();
+    const clean = identifier.toString().trim().toLowerCase();
     const cleanNumeric = clean.replace(/[\s+-]/g, '');
 
+    if (clean === 'admin' || clean === 'admin@kejamarket.co.ke') {
+      return this.data.users.find(u => u.id === 'usr-admin-01' || u.role === 'admin') || null;
+    }
+
+    const phoneVariants = [];
+    if (/^\d+$/.test(cleanNumeric)) {
+      phoneVariants.push(cleanNumeric, '+' + cleanNumeric);
+      if (cleanNumeric.length >= 9) {
+        const last9 = cleanNumeric.slice(-9);
+        phoneVariants.push(last9, '0' + last9, '254' + last9, '+254' + last9);
+      }
+    }
+
     return this.data.users.find(u => {
-      if (u.phone === cleanNumeric) return true;
-      if (cleanNumeric.startsWith('0') && u.phone === '254' + cleanNumeric.slice(1)) return true;
-      if (cleanNumeric.startsWith('254') && u.phone === '0' + cleanNumeric.slice(3)) return true;
+      if (!u) return false;
       if (u.email && u.email.toLowerCase() === clean) return true;
-      if (clean === 'admin' && (u.id === 'usr-admin-01' || u.role === 'admin')) return true;
+      if (u.phone) {
+        const uDigits = u.phone.toString().replace(/[\s+-]/g, '');
+        if (phoneVariants.includes(u.phone) || phoneVariants.includes(uDigits)) return true;
+      }
       return false;
     }) || null;
+  }
+
+  getUser(idOrIdentifier) {
+    if (!idOrIdentifier) return null;
+    return this.getUserById(idOrIdentifier) || this.sanitizeUser(this.findUserByIdentifier(idOrIdentifier));
+  }
+
+  getUserByPhone(phone) {
+    const u = this.findUserByIdentifier(phone);
+    return u ? this.sanitizeUser(u) : null;
+  }
+
+  getUserByEmail(email) {
+    const u = this.findUserByIdentifier(email);
+    return u ? this.sanitizeUser(u) : null;
   }
 
   async authenticateUser(identifier, password, role = null) {

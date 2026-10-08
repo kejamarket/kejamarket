@@ -323,20 +323,23 @@ const KejaSimplifiedManagement = {
   
   viewInquiries(id) {
     console.log('Viewing inquiries for:', id);
-    alert(`Guest Inquiry Example:\n\n` +
-          `From: Sarah K.\n` +
-          `Property: Sunset BNB\n` +
-          `Check-in: 20 September\n` +
-          `Check-out: 22 September\n` +
-          `Guests: 2\n\n` +
-          `Your response options:\n` +
-          `✅ Available - provide booking details\n` +
-          `❌ Sorry, those dates are taken`);
+    if (window.KejaMessages && typeof window.KejaMessages.showMessagesCenter === 'function') {
+      window.KejaMessages.showMessagesCenter();
+      window.KejaMessages.showCategory('bnb');
+    } else if (window.app && typeof window.app.showToast === 'function') {
+      window.app.showToast('Opening inquiries...', 'info');
+    }
   },
   
   editRental(rentalId) {
     console.log('Editing rental:', rentalId);
-    alert('Edit Property Details:\n\n• Update photos\n• Change rent amount\n• Modify description\n• Update amenities\n\nProperty stays in your account permanently!');
+    if (window.KejaEnhancedPortal && typeof window.KejaEnhancedPortal.editProperty === 'function') {
+      window.KejaEnhancedPortal.editProperty(rentalId);
+    } else if (window.app && typeof window.app.openEditPropertyModal === 'function') {
+      window.app.openEditPropertyModal(rentalId);
+    } else if (window.app && typeof window.app.showToast === 'function') {
+      window.app.showToast('Opening property editor...', 'info');
+    }
   }
 };
 

@@ -3131,7 +3131,37 @@ class NairobiRentalsApp {
     this.filteredProperties = filteredServices;
     this.renderListingsSummary();
     const gridEl = document.getElementById('property-grid');
-    if (gridEl) gridEl.innerHTML = `<div class="empty-state-box"><p>Service rendering is coming soon.</p></div>`;
+    if (!gridEl) return;
+    if (filteredServices.length === 0) {
+      gridEl.innerHTML = `<div class="empty-state-box"><i class="fas fa-tools"></i><h3>No Services Found</h3><p>No service providers match your criteria. Try a different category or location.</p></div>`;
+      return;
+    }
+    gridEl.innerHTML = filteredServices.slice((this.currentPage-1)*this.pageSize, this.currentPage*this.pageSize).map(s => {
+      const phone = s.phone || '+254792409540';
+      const wa = `https://wa.me/${phone.replace(/\D/g,'')}`;
+      const img = (s.images && s.images[0]) ? s.images[0] : '/icons/placeholder.png';
+      const catNames = { plumbing:'Plumbing',electrical:'Electrical',cleaning:'Cleaning',painting:'Painting',pest_control:'Pest Control',carpentry:'Carpentry',security:'Security',caretaking:'Caretaking',moving:'Moving Services',laundry:'Laundry',garbage:'Garbage Collection',gas:'Gas Refills',water:'Water Delivery' };
+      const catLabel = catNames[s.category] || s.category || 'Service';
+      return `<div class="property-card" style="position:relative;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.08);transition:transform 0.2s;" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform='translateY(0)'">
+        <div style="height:160px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+          ${ s.images && s.images[0] ? `<img src="${s.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-tools" style="color:rgba(255,255,255,0.6);"></i>' }
+        </div>
+        <div style="padding:14px 14px 10px;">
+          <div style="font-weight:700;font-size:1rem;color:#1e1b4b;margin-bottom:4px;">${s.businessName || s.providerName || 'Service Provider'}</div>
+          <div style="font-size:0.8rem;color:#7c3aed;font-weight:600;margin-bottom:6px;"><i class="fas fa-tools"></i> ${catLabel}</div>
+          ${s.description ? `<div style="font-size:0.82rem;color:#64748b;margin-bottom:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${s.description}</div>` : ''}
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+            ${s.serviceAreas || s.location ? `<span style="font-size:0.78rem;color:#64748b;"><i class="fas fa-map-marker-alt"></i> ${s.serviceAreas || s.location}</span>` : ''}
+            ${s.price ? `<span style="font-size:0.88rem;font-weight:700;color:#10b981;">KSh ${Number(s.price).toLocaleString()}</span>` : ''}
+          </div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <a href="tel:${phone}" style="flex:1;text-align:center;padding:7px;background:#f0fdf4;color:#166534;border-radius:8px;font-size:0.78rem;font-weight:600;text-decoration:none;"><i class="fas fa-phone"></i> Call</a>
+            <a href="${wa}" target="_blank" style="flex:1;text-align:center;padding:7px;background:#dcfce7;color:#15803d;border-radius:8px;font-size:0.78rem;font-weight:600;text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <button onclick="PropertyCommunication && PropertyCommunication.requestService('${s.id}','${(s.businessName||'').replace(/'/g,'')}')" style="flex:1;padding:7px;background:#ede9fe;color:#7c3aed;border:none;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;"><i class="fas fa-paper-plane"></i> Request</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
   }
 
   async loadMarketplaceData() {
@@ -3158,7 +3188,37 @@ class NairobiRentalsApp {
     this.filteredProperties = this.marketplaceItems;
     this.renderListingsSummary();
     const gridEl = document.getElementById('property-grid');
-    if (gridEl) gridEl.innerHTML = `<div class="empty-state-box"><p>Marketplace rendering is coming soon.</p></div>`;
+    if (!gridEl) return;
+    if (!this.marketplaceItems.length) {
+      gridEl.innerHTML = `<div class="empty-state-box"><i class="fas fa-shopping-bag"></i><h3>No Items Found</h3><p>No marketplace items match your criteria. Try a different category or price range.</p></div>`;
+      return;
+    }
+    gridEl.innerHTML = this.marketplaceItems.slice((this.currentPage-1)*this.pageSize, this.currentPage*this.pageSize).map(item => {
+      const phone = item.sellerPhone || item.phone || '+254792409540';
+      const wa = `https://wa.me/${phone.replace(/\D/g,'')}`;
+      const conditionColor = item.condition === 'new' ? '#16a34a' : item.condition === 'like_new' ? '#15803d' : item.condition === 'good' ? '#b45309' : '#6b7280';
+      const conditionLabel = { new:'New', like_new:'Like New', good:'Good', fair:'Fair', poor:'Poor' }[item.condition] || item.condition || '-';
+      return `<div class="property-card" style="position:relative;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.08);transition:transform 0.2s;" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform='translateY(0)'">
+        <div style="height:160px;background:#f8fafc;display:flex;align-items:center;justify-content:center;position:relative;">
+          ${ item.images && item.images[0] ? `<img src="${item.images[0].url || item.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-box-open" style="font-size:3rem;color:#cbd5e1;"></i>' }
+          ${item.isNegotiable ? '<span style="position:absolute;top:8px;right:8px;background:#fef3c7;color:#b45309;font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:20px;">Negotiable</span>' : ''}
+        </div>
+        <div style="padding:14px 14px 10px;">
+          <div style="font-weight:700;font-size:1rem;color:#1e1b4b;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${item.title || 'Item for Sale'}</div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.75rem;font-weight:600;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:20px;">${item.category || ''}</span>
+            <span style="font-size:0.75rem;font-weight:700;color:${conditionColor};">${conditionLabel}</span>
+          </div>
+          ${item.description ? `<div style="font-size:0.8rem;color:#64748b;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${item.description}</div>` : ''}
+          <div style="font-size:1.1rem;font-weight:800;color:#7c3aed;margin-bottom:8px;">KSh ${Number(item.priceKes || item.price_kes || 0).toLocaleString()}</div>
+          <div style="display:flex;gap:6px;">
+            <a href="tel:${phone}" style="flex:1;text-align:center;padding:7px;background:#f0fdf4;color:#166534;border-radius:8px;font-size:0.78rem;font-weight:600;text-decoration:none;"><i class="fas fa-phone"></i> Call</a>
+            <a href="${wa}" target="_blank" style="flex:1;text-align:center;padding:7px;background:#dcfce7;color:#15803d;border-radius:8px;font-size:0.78rem;font-weight:600;text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <button onclick="PropertyCommunication && PropertyCommunication.askSeller('${item.id}','${(item.title||'').replace(/'/g,'')}')" style="flex:1;padding:7px;background:#ede9fe;color:#7c3aed;border:none;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;"><i class="fas fa-comment"></i> Ask</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
   }
 
   showToast(message, type = 'success') {
@@ -3342,9 +3402,23 @@ class NairobiRentalsApp {
     }
   }
 
-  showServiceProviders(category) {
-    // Show modal with all providers in this category
-    alert(`Showing all ${category} service providers. Modal implementation coming...`);
+  async showServiceProviders(category) {
+    this.activeCategory = 'services';
+    this.activeServiceCategory = category;
+
+    // Switch navigation/tabs if needed
+    const servicesTab = document.querySelector('[data-category="services"]');
+    if (servicesTab) {
+      document.querySelectorAll('.nav-item, .category-tab').forEach(t => t.classList.remove('active'));
+      servicesTab.classList.add('active');
+    }
+
+    await this.loadServicesData();
+    const gridEl = document.getElementById('property-grid');
+    if (gridEl) {
+      gridEl.scrollIntoView({ behavior: 'smooth' });
+    }
+    this.showToast(`Showing ${category} services`, 'info');
   }
 
   // 

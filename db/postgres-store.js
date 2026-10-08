@@ -186,17 +186,24 @@ class PostgreSQLStore {
 
     const { name, phone, email, password, role, numProperties, area, agencyName, contactPerson, officeLocation, registrationNo, coverageArea, isAdmin, adminPermissions } = userData;
     
-    const cleanPhone = phone.replace(/\s+/g, '');
+    const cleanDigits = phone ? phone.toString().replace(/\D/g, '') : '';
+    const last9 = cleanDigits.slice(-9);
+    const canonicalPhone = last9.length === 9 ? '254' + last9 : (cleanDigits || phone);
     const cleanEmail = email ? email.trim().toLowerCase() : null;
+
+    const phoneVariants = [canonicalPhone, phone];
+    if (last9.length === 9) {
+      phoneVariants.push(last9, '0' + last9, '+254' + last9);
+    }
 
     // Check for duplicates
     const dupCheck = await this.query(
-      'SELECT id FROM users WHERE phone = $1 OR email = $2',
-      [cleanPhone, cleanEmail]
+      'SELECT id FROM users WHERE phone = ANY($1) OR (email IS NOT NULL AND LOWER(email) = $2)',
+      [phoneVariants, cleanEmail]
     );
     
     if (dupCheck.rows.length > 0) {
-      throw new Error('An account with this phone number or email already exists.');
+      throw new Error('An account with this phone number or email already exists. Please sign in instead.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -214,7 +221,7 @@ class PostgreSQLStore {
     `;
 
     const values = [
-      userId, name.trim(), cleanPhone, cleanEmail, hashedPassword, userRole, true,
+      userId, name.trim(), canonicalPhone, cleanEmail, hashedPassword, userRole, true,
       userRole === 'tenant' || userRole === 'agency',
       userRole === 'landlord' ? (numProperties || '1') : null,
       userRole === 'landlord' ? (area || '') : null,
@@ -238,29 +245,65 @@ class PostgreSQLStore {
     }
 
     if (!identifier) return null;
-    const clean = identifier.trim().toLowerCase();
+    const clean = identifier.toString().trim().toLowerCase();
     const cleanNumeric = clean.replace(/[\s+-]/g, '');
 
-    const query = `
-      SELECT * FROM users 
-      WHERE phone = $1 
-         OR email = $2 
-         OR (phone = $3 AND $4 LIKE '0%')
-         OR (phone = $5 AND $6 LIKE '254%')
-         OR ($7 = 'admin' AND (id = 'usr-admin-01' OR role = 'admin'))
-      LIMIT 1
-    `;
+    // Direct system admin bypass / match
+    if (clean === 'admin' || clean === 'admin@kejamarket.co.ke') {
+      const adminRes = await this.query("SELECT * FROM users WHERE id = 'usr-admin-01' OR role = 'admin' LIMIT 1");
+      if (adminRes.rows.length > 0) return adminRes.rows[0];
+    }
 
-    const values = [
-      cleanNumeric,
-      clean,
-      '254' + cleanNumeric.slice(1), cleanNumeric,
-      '0' + cleanNumeric.slice(3), cleanNumeric,
-      clean
-    ];
+    const phoneVariants = [];
+    if (/^\d+$/.test(cleanNumeric)) {
+      phoneVariants.push(cleanNumeric, '+' + cleanNumeric);
+      if (cleanNumeric.length >= 9) {
+        const last9 = cleanNumeric.slice(-9);
+        phoneVariants.push(last9, '0' + last9, '254' + last9, '+254' + last9);
+      }
+    }
+
+    let query;
+    let values;
+
+    if (phoneVariants.length > 0) {
+      query = `
+        SELECT * FROM users 
+        WHERE phone = ANY($1) 
+           OR LOWER(email) = $2
+        LIMIT 1
+      `;
+      values = [phoneVariants, clean];
+    } else {
+      query = `
+        SELECT * FROM users 
+        WHERE LOWER(email) = $1
+           OR phone = $1
+        LIMIT 1
+      `;
+      values = [clean];
+    }
 
     const result = await this.query(query, values);
     return result.rows.length > 0 ? result.rows[0] : null;
+  }
+
+  async getUser(idOrIdentifier) {
+    if (!idOrIdentifier) return null;
+    const byId = await this.getUserById(idOrIdentifier);
+    if (byId) return byId;
+    const byIdent = await this.findUserByIdentifier(idOrIdentifier);
+    return byIdent ? this.sanitizeUser(byIdent) : null;
+  }
+
+  async getUserByPhone(phone) {
+    const u = await this.findUserByIdentifier(phone);
+    return u ? this.sanitizeUser(u) : null;
+  }
+
+  async getUserByEmail(email) {
+    const u = await this.findUserByIdentifier(email);
+    return u ? this.sanitizeUser(u) : null;
   }
 
   async authenticateUser(identifier, password, role = null) {

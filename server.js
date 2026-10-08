@@ -465,13 +465,14 @@ function generatePassword(timestamp) {
 
 function formatPhone(phone) {
   // Cleans Kenyan phone numbers to format 254XXXXXXXXX
+  if (!phone) return '';
   let clean = phone.toString().replace(/[\s+-]/g, '');
-  if (clean.startsWith('0')) {
-    clean = '254' + clean.slice(1);
-  } else if (clean.startsWith('254')) {
-    clean = clean;
-  } else if (clean.length === 9) {
-    clean = '254' + clean;
+  if (clean.startsWith('2540')) {
+    clean = '254' + clean.slice(4);
+  }
+  if (clean.length >= 9) {
+    const last9 = clean.slice(-9);
+    return '254' + last9;
   }
   return clean;
 }
@@ -680,7 +681,7 @@ app.post('/api/auth/login-send-otp', otpLimiter, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Please enter your registered phone number or email.' });
     }
 
-    const user = store.findUserByIdentifier(identifier);
+    const user = await store.findUserByIdentifier(identifier);
     if (!user) {
       return res.status(404).json({ 
         success: false, 
@@ -802,7 +803,7 @@ app.post('/api/auth/resend-otp', async (req, res) => {
         entry.expiresAt = expiresAt;
         entry.attempts = 0;
       } else {
-        const user = store.findUserByIdentifier(cleanPhone);
+        const user = await store.findUserByIdentifier(cleanPhone);
         if (!user) {
           return res.status(404).json({ success: false, message: 'No user found for this number.' });
         }
@@ -870,14 +871,18 @@ app.post('/api/auth/register', async (req, res) => {
     console.log('?? [REGISTER] Clean phone:', cleanPhone);
 
     // Check if user already exists
+    const cleanEmail = email ? email.trim().toLowerCase() : null;
+    let existingUser = null;
     try {
-      const existingUser = await store.getUser(cleanPhone);
-      if (existingUser) {
-        console.log('? [REGISTER] User already exists');
-        return res.status(400).json({ success: false, message: 'Phone number already registered. Please sign in instead.' });
+      existingUser = await store.findUserByIdentifier(cleanPhone);
+      if (!existingUser && cleanEmail) {
+        existingUser = await store.findUserByIdentifier(cleanEmail);
       }
     } catch (err) {
-      console.log('?? [REGISTER] Error checking existing user:', err.message);
+      console.log('[REGISTER] Error checking existing user:', err.message);
+    }
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'An account with this phone number or email already exists. Please sign in instead.' });
     }
 
     const user = await store.createUser({
@@ -950,11 +955,20 @@ app.post('/api/auth/register-enhanced', async (req, res) => {
     const cleanPhone = formatPhone(phone);
     
     // Check if user already exists
-    const existingUser = await store.getUser(cleanPhone);
+    const cleanEmail = email ? email.trim().toLowerCase() : null;
+    let existingUser = null;
+    try {
+      existingUser = await store.findUserByIdentifier(cleanPhone);
+      if (!existingUser && cleanEmail) {
+        existingUser = await store.findUserByIdentifier(cleanEmail);
+      }
+    } catch (err) {
+      console.log('[REGISTER-ENHANCED] Error checking existing user:', err.message);
+    }
     if (existingUser) {
       return res.status(400).json({ 
         success: false, 
-        message: 'Phone number already registered.' 
+        message: 'Phone number or email already registered.' 
       });
     }
 
@@ -3721,6 +3735,100 @@ app.post('/api/admin/users/:id/ban', requireAuth, async (req, res) => {
   }
 });
 
+// PATCH /api/admin/users/:id - Edit user details (admin only)
+app.patch('/api/admin/users/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    const user = await store.getUserById(id);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
+    const allowedFields = ['name', 'email', 'phone', 'role'];
+    const updates = {};
+    allowedFields.forEach(f => { if (req.body[f] !== undefined) updates[f] = req.body[f]; });
+    updates.updatedAt = new Date().toISOString();
+    const updated = await store.updateUser(id, updates);
+    res.json({ success: true, message: 'User updated successfully.', user: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/users - Create new user (admin only)
+app.post('/api/admin/users', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { name, phone, email, role, password } = req.body;
+    if (!name || !phone || !password) {
+      return res.status(400).json({ success: false, message: 'Name, phone and password are required.' });
+    }
+    const cleanPhone = formatPhone(phone);
+    const existing = await store.findUserByIdentifier(cleanPhone) || (email ? await store.findUserByIdentifier(email) : null);
+    if (existing) return res.status(409).json({ success: false, message: 'A user with this phone or email already exists.' });
+    const newUser = await store.createUser({ 
+      name: name.trim(), 
+      phone: cleanPhone, 
+      email: email ? email.trim() : null, 
+      role: role || 'tenant', 
+      password, 
+      isPhoneVerified: true, 
+      createdAt: new Date().toISOString() 
+    });
+    res.json({ success: true, message: 'User created successfully.', user: newUser });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PATCH /api/properties/:id - Edit property (admin or owner)
+app.patch('/api/properties/:id', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'admin' || req.user.isAdmin;
+    const property = await store.getPropertyById(id);
+    if (!property) return res.status(404).json({ success: false, message: 'Property not found.' });
+    const isOwner = property.postedBy === userId || property.landlordId === userId;
+    if (!isOwner && !isAdmin) return res.status(403).json({ success: false, message: 'Unauthorized.' });
+    const allowedFields = ['title', 'price', 'bedrooms', 'bathrooms', 'location', 'description', 'status', 'category'];
+    const updates = { updatedAt: new Date().toISOString() };
+    allowedFields.forEach(f => { if (req.body[f] !== undefined) updates[f] = req.body[f]; });
+    const updated = await store.updateProperty(id, updates);
+    res.json({ success: true, message: 'Property updated.', property: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/broadcast - Send broadcast SMS (admin only)
+app.post('/api/admin/broadcast', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { message, audience } = req.body;
+    if (!message || !message.trim()) {
+      return res.status(400).json({ success: false, message: 'Message is required.' });
+    }
+    const allUsers = (await store.getAllUsers()) || [];
+    let targets = allUsers;
+    if (audience === 'tenants') targets = allUsers.filter(u => u.role === 'tenant');
+    else if (audience === 'landlords') targets = allUsers.filter(u => ['landlord', 'agent'].includes(u.role));
+    let sent = 0;
+    for (const user of targets) {
+      if (user.phone) {
+        try { await sendSMS(user.phone, message.trim()); sent++; } catch (e) {}
+      }
+    }
+    res.json({ success: true, message: `Broadcast sent to ${sent} users.`, sent });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // DELETE /api/properties/:id (Delete listing)
 app.delete('/api/properties/:id', optionalAuth, (req, res) => {
   try {
@@ -4121,6 +4229,139 @@ app.get('/api/admin/support', requireAuth, async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+// DELETE /api/admin/reviews/:id
+app.delete('/api/admin/reviews/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    if (store.isConnected && store.query) {
+      try {
+        await store.query('DELETE FROM property_reviews WHERE id = $1', [id]);
+      } catch (e) {
+        console.warn('DB delete review fallback:', e.message);
+      }
+    }
+    if (store.data && store.data.reviews) {
+      store.data.reviews = store.data.reviews.filter(r => String(r.id) !== String(id));
+    }
+    if (store.fallbackStore?.data?.reviews) {
+      store.fallbackStore.data.reviews = store.fallbackStore.data.reviews.filter(r => String(r.id) !== String(id));
+    }
+    res.json({ success: true, message: 'Review deleted successfully.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/inquiries/:id
+app.delete('/api/admin/inquiries/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    if (store.isConnected && store.query) {
+      try {
+        await store.query('DELETE FROM messages WHERE id = $1', [id]);
+      } catch (e) {
+        console.warn('DB delete message fallback:', e.message);
+      }
+    }
+    if (store.data && store.data.inquiries) {
+      store.data.inquiries = store.data.inquiries.filter(i => String(i.id) !== String(id));
+    }
+    if (store.fallbackStore?.data?.inquiries) {
+      store.fallbackStore.data.inquiries = store.fallbackStore.data.inquiries.filter(i => String(i.id) !== String(id));
+    }
+    res.json({ success: true, message: 'Inquiry deleted successfully.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PATCH /api/admin/reports/:id
+app.patch('/api/admin/reports/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    const { status = 'resolved' } = req.body;
+    const updateInList = (list) => {
+      if (!Array.isArray(list)) return;
+      const rep = list.find(r => String(r.id) === String(id));
+      if (rep) { rep.status = status; rep.resolvedAt = new Date().toISOString(); }
+    };
+    updateInList(store.data?.reports);
+    updateInList(store.fallbackStore?.data?.reports);
+    res.json({ success: true, message: `Report marked as ${status}.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/reports/:id
+app.delete('/api/admin/reports/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    if (store.data?.reports) {
+      store.data.reports = store.data.reports.filter(r => String(r.id) !== String(id));
+    }
+    if (store.fallbackStore?.data?.reports) {
+      store.fallbackStore.data.reports = store.fallbackStore.data.reports.filter(r => String(r.id) !== String(id));
+    }
+    res.json({ success: true, message: 'Report deleted successfully.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PATCH /api/admin/support/:id
+app.patch('/api/admin/support/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    const { status = 'closed' } = req.body;
+    const updateInList = (list) => {
+      if (!Array.isArray(list)) return;
+      const t = list.find(x => String(x.id) === String(id));
+      if (t) { t.status = status; t.updatedAt = new Date().toISOString(); }
+    };
+    updateInList(store.data?.supportTickets);
+    updateInList(store.fallbackStore?.data?.supportTickets);
+    res.json({ success: true, message: `Support ticket marked as ${status}.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/support/:id
+app.delete('/api/admin/support/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    const { id } = req.params;
+    if (store.data?.supportTickets) {
+      store.data.supportTickets = store.data.supportTickets.filter(t => String(t.id) !== String(id));
+    }
+    if (store.fallbackStore?.data?.supportTickets) {
+      store.fallbackStore.data.supportTickets = store.fallbackStore.data.supportTickets.filter(t => String(t.id) !== String(id));
+    }
+    res.json({ success: true, message: 'Support ticket deleted.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 
 
 app.put('/api/properties/:id/boost', async (req, res) => {
@@ -5005,6 +5246,50 @@ app.post('/api/services', requireAuth, async (req, res) => {
       [serviceId, title, description, serviceType, req.user.id, req.user.name, req.user.phone, priceMin, priceMax, coverageArea, serviceHours, JSON.stringify(images || [])]
     );
     res.status(201).json({ success: true, serviceId, message: 'Service created successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/services/:id
+app.get('/api/services/:id', async (req, res) => {
+  try {
+    const result = await store.query('SELECT * FROM services WHERE id = $1', [req.params.id]);
+    if (!result.rows || result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Service not found' });
+    }
+    res.json({ success: true, service: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// PUT /api/services/:id
+app.put('/api/services/:id', requireAuth, async (req, res) => {
+  try {
+    const { title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours, images } = req.body;
+    const existing = await store.query('SELECT * FROM services WHERE id = $1', [req.params.id]);
+    if (!existing.rows || existing.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Service not found' });
+    }
+    const service = existing.rows[0];
+    if (service.provider_id !== req.user.id && !req.user.isAdmin && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Unauthorized to edit this service' });
+    }
+    await store.query(
+      `UPDATE services SET 
+        title = COALESCE($1, title),
+        description = COALESCE($2, description),
+        service_type = COALESCE($3, service_type),
+        price_min = COALESCE($4, price_min),
+        price_max = COALESCE($5, price_max),
+        coverage_area = COALESCE($6, coverage_area),
+        service_hours = COALESCE($7, service_hours),
+        images = COALESCE($8, images)
+      WHERE id = $9`,
+      [title, description, serviceType, priceMin, priceMax, coverageArea, serviceHours, images ? JSON.stringify(images) : null, req.params.id]
+    );
+    res.json({ success: true, message: 'Service updated successfully' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

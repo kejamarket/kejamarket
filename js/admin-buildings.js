@@ -827,11 +827,35 @@ const AdminBuildings = (() => {
 
   // Export functions
   function exportBuildings() {
-    alert('Export functionality coming soon');
+    if (!currentBuildings.length) { alert('No buildings to export'); return; }
+    const headers = ['ID','Name','Location','Landlord','Total Units','Available Units','Status','Created'];
+    const rows = currentBuildings.map(b => [
+      b.id, b.name || b.buildingName || '', b.location || '',
+      b.landlordName || '', b.totalUnits || 0, b.availableUnits || 0,
+      b.status || '', b.createdAt ? new Date(b.createdAt).toLocaleDateString('en-GB') : ''
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `kejamarket-buildings-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
   }
 
   function exportUnits() {
-    alert('Export functionality coming soon');
+    if (!currentUnits.length) { alert('No units to export'); return; }
+    const headers = ['ID','Unit Number','Building','Type','Rent','Status','Tenant','Created'];
+    const rows = currentUnits.map(u => [
+      u.id, u.unitNumber || '', u.buildingName || '', u.category || u.type || '',
+      u.price || u.rentAmount || 0, u.status || '', u.tenantName || '',
+      u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-GB') : ''
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `kejamarket-units-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
   }
 
   // Utility functions

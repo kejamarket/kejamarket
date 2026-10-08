@@ -650,19 +650,170 @@ const AdminUsers = (() => {
     renderUsersTable(filtered);
   }
 
-  // Edit user (placeholder)
+  // Edit user - opens inline edit modal
   function editUser(userId) {
-    alert('Edit user functionality coming soon');
+    const user = currentUsers.find(u => u.id === userId);
+    if (!user) return;
+    const existing = document.getElementById('admin-edit-user-modal');
+    if (existing) existing.remove();
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'admin-edit-user-modal';
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width:480px;">
+        <div class="modal-header">
+          <h2><i class="fas fa-user-edit"></i> Edit User</h2>
+          <button class="modal-close" onclick="this.closest('.modal-overlay').remove()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="edit-user-name" class="form-control" value="${escapeHtml(user.name || '')}" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="edit-user-email" class="form-control" value="${escapeHtml(user.email || '')}" placeholder="Email address">
+          </div>
+          <div class="form-group">
+            <label>Phone *</label>
+            <input type="text" id="edit-user-phone" class="form-control" value="${escapeHtml(user.phone || '')}" placeholder="+254..." required>
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <select id="edit-user-role" class="form-control">
+              <option value="tenant" ${user.role==='tenant'?'selected':''}>Tenant</option>
+              <option value="landlord" ${user.role==='landlord'?'selected':''}>Landlord</option>
+              <option value="agent" ${user.role==='agent'?'selected':''}>Agent</option>
+              <option value="service-provider" ${user.role==='service-provider'?'selected':''}>Service Provider</option>
+              <option value="admin" ${user.role==='admin'?'selected':''}>Admin</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+          <button class="btn-primary" onclick="AdminUsers.saveUserEdit('${userId}')">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
   }
 
-  // Export users (placeholder)
+  // Save edited user
+  async function saveUserEdit(userId) {
+    const name = document.getElementById('edit-user-name').value.trim();
+    const email = document.getElementById('edit-user-email').value.trim();
+    const phone = document.getElementById('edit-user-phone').value.trim();
+    const role = document.getElementById('edit-user-role').value;
+    if (!name || !phone) { alert('Name and phone are required.'); return; }
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, role })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to update user');
+      document.getElementById('admin-edit-user-modal').remove();
+      showToast('User updated successfully', 'success');
+      await loadUsers();
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  // Export users as CSV
   function exportUsers() {
-    alert('Export functionality coming soon');
+    if (!currentUsers.length) { alert('No users to export'); return; }
+    const headers = ['ID','Name','Phone','Email','Role','Verified','Joined'];
+    const rows = currentUsers.map(u => [
+      u.id, u.name || '', u.phone || '', u.email || '', u.role || '',
+      u.isPhoneVerified ? 'Yes' : 'No',
+      u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-GB') : ''
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `kejamarket-users-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+    showToast('Users exported as CSV', 'success');
   }
 
-  // Show add user modal (placeholder)
+  // Show add user modal
   function showAddUserModal() {
-    alert('Add user functionality coming soon');
+    const existing = document.getElementById('admin-add-user-modal');
+    if (existing) existing.remove();
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'admin-add-user-modal';
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width:480px;">
+        <div class="modal-header">
+          <h2><i class="fas fa-user-plus"></i> Add New User</h2>
+          <button class="modal-close" onclick="this.closest('.modal-overlay').remove()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="new-user-name" class="form-control" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label>Phone *</label>
+            <input type="text" id="new-user-phone" class="form-control" placeholder="+254712345678" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="new-user-email" class="form-control" placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label>Role *</label>
+            <select id="new-user-role" class="form-control">
+              <option value="tenant">Tenant</option>
+              <option value="landlord">Landlord</option>
+              <option value="agent">Agent</option>
+              <option value="service-provider">Service Provider</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Temporary Password *</label>
+            <input type="password" id="new-user-password" class="form-control" placeholder="Temporary password" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+          <button class="btn-primary" onclick="AdminUsers.submitNewUser()">
+            <i class="fas fa-plus"></i> Create User
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  // Submit new user
+  async function submitNewUser() {
+    const name = document.getElementById('new-user-name').value.trim();
+    const phone = document.getElementById('new-user-phone').value.trim();
+    const email = document.getElementById('new-user-email').value.trim();
+    const role = document.getElementById('new-user-role').value;
+    const password = document.getElementById('new-user-password').value;
+    if (!name || !phone || !password) { alert('Name, phone and password are required.'); return; }
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/users`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, email, role, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to create user');
+      document.getElementById('admin-add-user-modal').remove();
+      showToast('User created successfully', 'success');
+      await loadUsers();
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
   }
 
   // Utility functions
@@ -716,6 +867,8 @@ const AdminUsers = (() => {
     searchUsers,
     viewUserDetail,
     editUser,
+    saveUserEdit,
+    submitNewUser,
     showSuspendModal,
     showBanModal,
     confirmSuspend,

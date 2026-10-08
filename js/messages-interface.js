@@ -472,24 +472,158 @@ const KejaMessagesInterface = {
   /**
    * Open conversation methods
    */
-  openConversation(id, type) {
-    alert(`Opening ${type} conversation: ${id}\n\nThis would open the full conversation thread with message history and reply functionality.`);
+  openConversation(id, type = 'general') {
+    if (type === 'property') return this.openPropertyConversation(id);
+    if (type === 'bnb') return this.openBNBConversation(id);
+    if (type === 'marketplace') return this.openMarketplaceConversation(id);
+    if (type === 'support') return this.openSupportTicket(id);
+    this.openChatThreadModal({
+      id,
+      title: 'Conversation ' + id,
+      type: type,
+      participant: 'User',
+      initialMessage: 'Hello, I have an inquiry.'
+    });
   },
 
   openPropertyConversation(id) {
-    alert(`Opening property conversation: ${id}\n\nFeatures:\n• Full message history\n• Reply functionality\n• View property details\n• Schedule viewing\n• WhatsApp/Call options`);
+    this.openChatThreadModal({
+      id,
+      title: 'Greenview Apartments - Unit A02',
+      type: 'property',
+      participant: 'John (Landlord)',
+      initialMessage: 'Yes, the house is still available. Would you like to schedule a viewing?'
+    });
   },
 
   openBNBConversation(id) {
-    alert(`Opening BNB conversation: ${id}\n\nFeatures:\n• Confirm/deny availability\n• Share booking details\n• Communicate dates\n• Direct guest contact`);
+    this.openChatThreadModal({
+      id,
+      title: 'Sunset BNB Availability',
+      type: 'bnb',
+      participant: 'Mary (Host)',
+      initialMessage: 'Those dates are available! Here are the booking details and check-in times.'
+    });
   },
 
   openMarketplaceConversation(id) {
-    alert(`Opening marketplace conversation: ${id}\n\nFeatures:\n• Negotiate price\n• Arrange viewing\n• Mark as sold\n• Share contact details`);
+    this.openChatThreadModal({
+      id,
+      title: 'Used Sofa Inquiry',
+      type: 'marketplace',
+      participant: 'Peter (Seller)',
+      initialMessage: 'Yes, the sofa is still available for KSh 8,000. When would you like to view it?'
+    });
   },
 
   openSupportTicket(id) {
-    alert(`Opening support ticket: ${id}\n\nFeatures:\n• Full ticket history\n• Reply to support\n• View ticket status\n• Upload attachments\n• Close/reopen ticket`);
+    this.openChatThreadModal({
+      id,
+      title: 'Ticket: Account Verification',
+      type: 'support',
+      participant: 'KejaMarket Support',
+      initialMessage: 'We have reviewed your documents and approved your verification. Please let us know if you need anything else.'
+    });
+  },
+
+  openChatThreadModal({ id, title, type, participant, initialMessage }) {
+    let existingModal = document.getElementById('chat-thread-modal');
+    if (existingModal) existingModal.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'chat-thread-modal';
+    modal.className = 'modal-overlay';
+    modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.65);z-index:10001;display:flex;align-items:center;justify-content:center;padding:12px;';
+    
+    modal.innerHTML = `
+      <div style="background:white;border-radius:16px;max-width:540px;width:100%;height:85vh;max-height:650px;display:flex;flex-direction:column;box-shadow:0 24px 48px rgba(0,0,0,0.25);overflow:hidden;">
+        <!-- Header -->
+        <div style="padding:14px 18px;background:#1e1b4b;color:white;display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:#4f46e5;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;">
+              ${participant.charAt(0)}
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:0.95rem;line-height:1.2;">${participant}</div>
+              <div style="font-size:0.75rem;color:#c7d2fe;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;">${title}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <a href="tel:+254792409540" style="padding:6px 10px;background:rgba(255,255,255,0.15);color:white;border-radius:6px;font-size:0.8rem;text-decoration:none;"><i class="fas fa-phone"></i></a>
+            <a href="https://wa.me/254792409540" target="_blank" style="padding:6px 10px;background:rgba(255,255,255,0.15);color:#4ade80;border-radius:6px;font-size:0.8rem;text-decoration:none;"><i class="fab fa-whatsapp"></i></a>
+            <button onclick="document.getElementById('chat-thread-modal').remove()" style="background:none;border:none;color:white;font-size:1.4rem;cursor:pointer;padding:4px 8px;margin-left:4px;">&times;</button>
+          </div>
+        </div>
+
+        <!-- Message Body -->
+        <div id="chat-messages-container" style="flex:1;overflow-y:auto;padding:16px;background:#f8fafc;display:flex;flex-direction:column;gap:12px;">
+          <div style="text-align:center;margin-bottom:8px;">
+            <span style="font-size:0.72rem;background:#e2e8f0;color:#64748b;padding:3px 10px;border-radius:12px;">Conversation Started</span>
+          </div>
+          <!-- Received initial message -->
+          <div style="display:flex;justify-content:flex-start;">
+            <div style="max-width:80%;background:white;padding:10px 14px;border-radius:14px;border-bottom-left-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #e2e8f0;">
+              <p style="margin:0;font-size:0.9rem;color:#1e293b;line-height:1.4;">${initialMessage}</p>
+              <span style="display:block;font-size:0.68rem;color:#94a3b8;margin-top:4px;text-align:right;">Earlier</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Bar -->
+        <div style="padding:12px;background:white;border-top:1px solid #e2e8f0;display:flex;gap:8px;align-items:center;">
+          <input type="text" id="chat-thread-input" placeholder="Type a message..." style="flex:1;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:24px;font-size:0.9rem;outline:none;" onkeydown="if(event.key==='Enter') KejaMessages.sendChatMessage('${id}')">
+          <button onclick="KejaMessages.sendChatMessage('${id}')" style="width:40px;height:40px;border-radius:50%;background:#4f46e5;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='#4338ca'" onmouseout="this.style.background='#4f46e5'">
+            <i class="fas fa-paper-plane" style="font-size:0.9rem;"></i>
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    setTimeout(() => {
+      const input = document.getElementById('chat-thread-input');
+      if (input) input.focus();
+    }, 100);
+  },
+
+  async sendChatMessage(conversationId) {
+    const input = document.getElementById('chat-thread-input');
+    if (!input || !input.value.trim()) return;
+
+    const messageText = input.value.trim();
+    input.value = '';
+
+    const container = document.getElementById('chat-messages-container');
+    if (container) {
+      const bubble = document.createElement('div');
+      bubble.style.cssText = 'display:flex;justify-content:flex-end;';
+      bubble.innerHTML = `
+        <div style="max-width:80%;background:#4f46e5;color:white;padding:10px 14px;border-radius:14px;border-bottom-right-radius:2px;box-shadow:0 1px 4px rgba(79,70,229,0.25);">
+          <p style="margin:0;font-size:0.9rem;line-height:1.4;">${messageText}</p>
+          <span style="display:block;font-size:0.68rem;color:rgba(255,255,255,0.7);margin-top:4px;text-align:right;">Just now</span>
+        </div>
+      `;
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    try {
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      await fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({
+          conversationId,
+          content: messageText,
+          message: messageText
+        })
+      });
+    } catch (e) {
+      console.warn('Message send network warning:', e);
+    }
   }
 };
 

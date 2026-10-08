@@ -890,38 +890,69 @@ const KejaEnhancedPortal = {
    * BNB Marketplace Actions (no booking management)
    */
   showAddBnbModal() {
-    console.log('Showing add BNB listing modal');
-    alert('Add BNB Listing - Set up your listing with photos, description, nightly rate, and contact preferences');
+    // Open the real property post modal with BnB pre-selected
+    this.closeAllModals();
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-post-ad');
+      setTimeout(() => {
+        const catSelect = document.getElementById('ad-category');
+        if (catSelect) { catSelect.value = 'Airbnb / BnB'; catSelect.dispatchEvent(new Event('change')); }
+      }, 200);
+    }
   },
 
   editBnbListing(propertyId) {
-    console.log('Editing BNB listing:', propertyId);
-    alert('Edit BNB Listing - Update photos, description, nightly rate, and availability status');
+    // Open property detail to allow editing
+    if (window.app && typeof window.app.openPropertyDetail === 'function') {
+      this.closeAllModals();
+      window.app.openPropertyDetail(propertyId);
+    } else {
+      const prop = this.properties.find(p => p.id === propertyId);
+      if (prop) window.open(`/?prop=${propertyId}`, '_blank');
+    }
   },
 
   viewBnbInquiries(propertyId) {
-    console.log('Viewing BNB inquiries for:', propertyId);
-    alert('View Guest Inquiries - See all guests who have contacted you about this listing');
+    // Open messages modal filtered for this property
+    if (window.app && typeof window.app.openModal === 'function') {
+      this.closeAllModals();
+      window.app.openModal('modal-messages');
+      setTimeout(() => {
+        if (window.app.openPropertyConversation) window.app.openPropertyConversation(propertyId);
+      }, 300);
+    }
   },
 
   manageBnbListing(propertyId) {
-    console.log('Managing BNB listing:', propertyId);
-    alert('Manage BNB - Update listing details, respond to inquiries, manage photos');
+    // Open the property in app detail view for full management
+    this.closeAllModals();
+    if (window.app && typeof window.app.openPropertyDetail === 'function') {
+      window.app.openPropertyDetail(propertyId);
+    }
   },
 
   respondToInquiry(inquiryId) {
-    console.log('Responding to inquiry:', inquiryId);
-    alert('Respond to Guest - Call, WhatsApp, or message the guest directly to confirm availability and arrange booking');
+    // Open the messages modal to respond
+    if (window.app && typeof window.app.openModal === 'function') {
+      this.closeAllModals();
+      window.app.openModal('modal-messages');
+    }
   },
 
   viewInquiry(inquiryId) {
-    console.log('Viewing inquiry details:', inquiryId);
-    alert('Inquiry Details - View full guest message, dates requested, and contact information');
+    // Open messages modal so landlord can see and reply
+    if (window.app && typeof window.app.openModal === 'function') {
+      this.closeAllModals();
+      window.app.openModal('modal-messages');
+    }
   },
 
   manageProperty(propertyId) {
-    console.log('Managing property:', propertyId);
-    alert('Property management - coming soon!');
+    // Open the property detail in the main app
+    this.closeAllModals();
+    if (window.app && typeof window.app.openPropertyDetail === 'function') {
+      window.app.openPropertyDetail(propertyId);
+    }
   },
 
   /**
@@ -1334,29 +1365,48 @@ const KejaEnhancedPortal = {
    * Modal methods for different property types
    */
   showAddServicedApartmentModal() {
-    alert('Serviced apartment setup - coming soon!');
+    this.closeAllModals();
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-post-ad');
+      setTimeout(() => {
+        const catSelect = document.getElementById('ad-category');
+        if (catSelect) { catSelect.value = 'Serviced Apartment'; catSelect.dispatchEvent(new Event('change')); }
+      }, 200);
+    }
   },
 
   showRoomManagementModal() {
-    alert('Room management - coming soon!');
+    this.closeAllModals();
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-post-ad');
+    }
   },
 
   showAddCommercialModal() {
-    alert('Commercial space setup - coming soon!');
+    this.closeAllModals();
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-post-ad');
+      setTimeout(() => {
+        const catSelect = document.getElementById('ad-category');
+        if (catSelect) { catSelect.value = 'Commercial Space / Shop'; catSelect.dispatchEvent(new Event('change')); }
+      }, 200);
+    }
   },
 
   showAddClientPropertyModal() {
-    alert('Client property listing - coming soon!');
+    this.closeAllModals();
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-post-ad');
+    }
   },
 
   showAddManagedPropertyModal() {
-    alert('Managed property setup - coming soon!');
+    this.closeAllModals();
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-post-ad');
+    }
   },
 
-  addUnit(propertyId) {
-    console.log('Adding unit to property:', propertyId);
-    alert('Add unit functionality - coming soon!');
-  },
   getTotalUnits() {
     return this.properties.reduce((sum, prop) => sum + (prop.totalUnits || 1), 0);
   },
@@ -1582,9 +1632,13 @@ const KejaEnhancedPortal = {
   },
 
   manageBuilding(propertyId) {
-    console.log('Managing building:', propertyId);
-    // This would open a detailed building management interface
-    alert(`Managing building ${propertyId} - Full interface coming soon!`);
+    // Navigate to detailed property view in main app
+    this.closeAllModals();
+    if (window.app && typeof window.app.openPropertyDetail === 'function') {
+      window.app.openPropertyDetail(propertyId);
+    } else {
+      window.open(`/?prop=${propertyId}`, '_blank');
+    }
   },
 
   addUnit(propertyId) {
@@ -1740,6 +1794,22 @@ const KejaEnhancedPortal = {
     if (modal) {
       modal.remove();
     }
+  },
+
+  closeAllModals() {
+    // Close landlord portal modal first
+    const portalModal = document.getElementById('modal-landlord-portal');
+    if (portalModal) {
+      portalModal.style.display = 'none';
+      if (window.app && typeof window.app.closeModal === 'function') {
+        window.app.closeModal('modal-landlord-portal');
+      }
+    }
+    // Also remove any dynamically created modals
+    ['add-property-modal','add-unit-modal'].forEach(id => {
+      const m = document.getElementById(id);
+      if (m) m.remove();
+    });
   },
 
   /**

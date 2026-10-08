@@ -317,7 +317,7 @@
             <div class="header-account-avatar">
               <i class="fas fa-user"></i>
             </div>
-            <span class="header-account-name">KejaMarket</span>
+            <span class="header-account-name" id="auth-header-label">Sign In</span>
             <i class="fas fa-chevron-down" style="font-size:0.65rem; color:#64748b;"></i>
           </button>
           <div id="profile-dropdown" style="display:none;"><div id="profile-dropdown-content"></div></div>
@@ -2378,6 +2378,11 @@
         <button class="modal-close-btn auth-close-btn" onclick="app.closeModal('modal-auth')">&times;</button>
       </div>
 
+      <div class="auth-modal-tabs" id="auth-modal-tabs">
+        <button type="button" id="auth-tab-signin" class="auth-tab auth-tab--active" onclick="kejaAuth.switchTab('signin')">Sign In</button>
+        <button type="button" id="auth-tab-signup" class="auth-tab" onclick="kejaAuth.switchTab('signup')">Sign Up</button>
+      </div>
+
       <div class="modal-body auth-modal-body">
 
         <!-- SIGN IN PANEL -->
@@ -2603,7 +2608,11 @@
     .auth-header-name { font-size:0.92rem; font-weight:800; color:#0F172A; }
     .auth-close-btn { position:relative !important; right:auto !important; top:auto !important; transform:none !important; color:#94a3b8 !important; font-size:1.35rem !important; background:none; border:none; cursor:pointer; padding:2px; line-height:1; }
     .auth-close-btn:hover { color:#0f172a !important; }
-    .auth-modal-body { padding:16px 18px; background:#f8fafc; max-height:82vh; overflow-y:auto; }
+    .auth-modal-tabs { display:flex; background:#e2e8f0; padding:3px; border-radius:8px; margin:12px 18px 0; gap:3px; }
+    .auth-tab { flex:1; padding:7px 0; border:none; background:transparent; font-size:0.86rem; font-weight:700; color:#64748b; border-radius:6px; cursor:pointer; transition:all 0.15s; text-align:center; }
+    .auth-tab:hover { color:#1e293b; }
+    .auth-tab.auth-tab--active { background:#ffffff; color:#4f46e5; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+    .auth-modal-body { padding:14px 18px 18px; background:#f8fafc; max-height:82vh; overflow-y:auto; }
     .auth-subtitle { font-size:0.82rem; color:#64748b; margin-bottom:10px; text-align:center; }
     .auth-role-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:14px; }
     .auth-role-grid--4 { grid-template-columns:repeat(2,1fr); }

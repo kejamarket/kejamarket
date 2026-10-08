@@ -5,6 +5,7 @@
 
 const kejaServicePortal = (() => {
   let currentTab = 'my-services';
+  let cachedServices = [];
 
   function openServicePortal() {
     const session = (window.kejaAuth ? window.kejaAuth.getSession() : null);
@@ -67,6 +68,7 @@ const kejaServicePortal = (() => {
       const data = await res.json();
 
       if (data.success && data.services) {
+        cachedServices = data.services || [];
         if (data.services.length === 0) {
           container.innerHTML = `
             <div style="text-align:center;padding:40px 20px;">
@@ -163,14 +165,143 @@ const kejaServicePortal = (() => {
   }
 
   function viewService(id) {
-    // Close portal and show full service listing
-    closeServicePortal();
-    // Implement service detail view
-    if (window.app) window.app.showToast('Service detail view coming soon!', 'info');
+    const service = cachedServices.find(s => s.id === id);
+    if (!service) {
+      if (window.app) window.app.showToast('Service details not found', 'error');
+      return;
+    }
+
+    let modal = document.getElementById('modal-service-view-detail');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'modal-service-view-detail';
+      modal.className = 'modal';
+      modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
+      document.body.appendChild(modal);
+    }
+
+    const catNames = {
+      wifi: 'WiFi / Internet',
+      movers: 'Moving Services',
+      laundry: 'Laundry Services',
+      garbage: 'Garbage Collection',
+      gas: 'Gas Refills',
+      water: 'Water Delivery'
+    };
+
+    modal.innerHTML = `
+      <div style="background:white;border-radius:16px;max-width:550px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.25);position:relative;">
+        <div style="padding:20px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <h3 style="margin:0;font-size:1.2rem;font-weight:700;color:#0f172a;">${service.businessName || service.providerName || service.title || 'Service Details'}</h3>
+          <button onclick="document.getElementById('modal-service-view-detail').style.display='none'" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;color:#64748b;"><i class="fas fa-times"></i></button>
+        </div>
+        <div style="padding:20px;">
+          <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <span style="background:#e0e7ff;color:#4338ca;padding:4px 10px;border-radius:20px;font-size:0.8rem;font-weight:600;"><i class="fas fa-tools"></i> ${catNames[service.category] || service.category || 'Service'}</span>
+            <span style="background:${service.isVerified ? '#dcfce7' : '#fef3c7'};color:${service.isVerified ? '#15803d' : '#b45309'};padding:4px 10px;border-radius:20px;font-size:0.8rem;font-weight:600;">${service.isVerified ? '✓ Verified' : '⏳ Pending Approval'}</span>
+          </div>
+          ${service.description ? `<p style="color:#334155;line-height:1.5;margin-bottom:16px;font-size:0.95rem;">${service.description}</p>` : ''}
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:16px;">
+            ${service.price ? `<div style="margin-bottom:8px;"><strong style="color:#64748b;font-size:0.85rem;">Price:</strong> <span style="color:#0f172a;font-weight:700;font-size:1rem;">KSh ${Number(service.price).toLocaleString()}</span></div>` : ''}
+            ${service.serviceAreas ? `<div style="margin-bottom:8px;"><strong style="color:#64748b;font-size:0.85rem;">Coverage Area:</strong> <span style="color:#0f172a;">${service.serviceAreas}</span></div>` : ''}
+            ${service.phone ? `<div><strong style="color:#64748b;font-size:0.85rem;">Contact:</strong> <span style="color:#0f172a;">${service.phone}</span></div>` : ''}
+          </div>
+          <div style="display:flex;gap:10px;justify-content:flex-end;">
+            <button onclick="document.getElementById('modal-service-view-detail').style.display='none'; kejaServicePortal.editService('${service.id}')" style="padding:10px 18px;background:#4f46e5;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;"><i class="fas fa-edit"></i> Edit Service</button>
+            <button onclick="document.getElementById('modal-service-view-detail').style.display='none'" style="padding:10px 18px;background:#f1f5f9;color:#475569;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+    modal.style.display = 'flex';
   }
 
   function editService(id) {
-    if (window.app) window.app.showToast('Edit service feature coming soon!', 'info');
+    const service = cachedServices.find(s => s.id === id);
+    if (!service) {
+      if (window.app) window.app.showToast('Service not found', 'error');
+      return;
+    }
+
+    let modal = document.getElementById('modal-service-edit-detail');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'modal-service-edit-detail';
+      modal.className = 'modal';
+      modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
+      document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+      <div style="background:white;border-radius:16px;max-width:550px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.25);">
+        <div style="padding:20px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <h3 style="margin:0;font-size:1.2rem;font-weight:700;color:#0f172a;"><i class="fas fa-edit" style="color:#4f46e5;"></i> Edit Service</h3>
+          <button onclick="document.getElementById('modal-service-edit-detail').style.display='none'" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;color:#64748b;"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="edit-service-form" onsubmit="event.preventDefault(); kejaServicePortal.saveServiceEdit('${service.id}')" style="padding:20px;">
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:0.85rem;font-weight:600;color:#334155;margin-bottom:6px;">Business / Service Name</label>
+            <input type="text" id="edit-svc-name" value="${service.businessName || service.providerName || service.title || ''}" required style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.95rem;box-sizing:border-box;">
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:0.85rem;font-weight:600;color:#334155;margin-bottom:6px;">Description</label>
+            <textarea id="edit-svc-desc" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.95rem;box-sizing:border-box;">${service.description || ''}</textarea>
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:0.85rem;font-weight:600;color:#334155;margin-bottom:6px;">Price (KSh)</label>
+            <input type="number" id="edit-svc-price" value="${service.price || ''}" style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.95rem;box-sizing:border-box;">
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:0.85rem;font-weight:600;color:#334155;margin-bottom:6px;">Coverage Area(s)</label>
+            <input type="text" id="edit-svc-area" value="${service.serviceAreas || ''}" placeholder="e.g. Roysambu, Kasarani, Zimmerman" style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.95rem;box-sizing:border-box;">
+          </div>
+          <div style="margin-bottom:20px;">
+            <label style="display:block;font-size:0.85rem;font-weight:600;color:#334155;margin-bottom:6px;">Phone Contact</label>
+            <input type="text" id="edit-svc-phone" value="${service.phone || ''}" style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.95rem;box-sizing:border-box;">
+          </div>
+          <div style="display:flex;gap:10px;justify-content:flex-end;">
+            <button type="button" onclick="document.getElementById('modal-service-edit-detail').style.display='none'" style="padding:10px 18px;background:#f1f5f9;color:#475569;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Cancel</button>
+            <button type="submit" style="padding:10px 18px;background:#4f46e5;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;"><i class="fas fa-save"></i> Save Changes</button>
+          </div>
+        </form>
+      </div>
+    `;
+    modal.style.display = 'flex';
+  }
+
+  async function saveServiceEdit(id) {
+    try {
+      const name = document.getElementById('edit-svc-name').value;
+      const desc = document.getElementById('edit-svc-desc').value;
+      const price = parseFloat(document.getElementById('edit-svc-price').value) || 0;
+      const area = document.getElementById('edit-svc-area').value;
+      const phone = document.getElementById('edit-svc-phone').value;
+
+      const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+      const res = await fetch(`/api/services/${encodeURIComponent(id)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: name,
+          description: desc,
+          priceMin: price,
+          priceMax: price,
+          coverageArea: area,
+          phone: phone
+        })
+      });
+
+      const modal = document.getElementById('modal-service-edit-detail');
+      if (modal) modal.style.display = 'none';
+
+      if (window.app) window.app.showToast('Service updated successfully!', 'success');
+      loadMyServices();
+    } catch (err) {
+      if (window.app) window.app.showToast('Failed to update service', 'error');
+    }
   }
 
   async function loadMessages() {
@@ -546,6 +677,7 @@ const kejaServicePortal = (() => {
     showPostForm,
     viewService,
     editService,
+    saveServiceEdit,
     loadMyServices,
     loadMessages,
     loadPaymentHistory,

@@ -920,7 +920,7 @@ const AdminCore = (() => {
             <option value="tenants">Tenants Only</option>
             <option value="landlords">Landlords & Agencies</option>
           </select>
-          <button onclick="alert('Notifications feature coming soon!')" style="padding:12px 24px;background:#7c3aed;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
+          <button onclick="AdminCore.sendBroadcastNotification()" style="padding:12px 24px;background:#7c3aed;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
             <i class="fas fa-paper-plane"></i> Send Notification
           </button>
         </div>
@@ -1300,12 +1300,40 @@ const AdminCore = (() => {
       .replace(/'/g, '&#039;');
   }
 
+  // Broadcast notification to users
+  async function sendBroadcastNotification() {
+    const msg = (document.getElementById('notif-msg') || {}).value;
+    const audience = (document.getElementById('notif-audience') || {}).value || 'all';
+    if (!msg || !msg.trim()) { alert('Please enter a notification message.'); return; }
+    const btn = document.querySelector('button[onclick="AdminCore.sendBroadcastNotification()"]');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'; }
+    try {
+      const res = await fetch('/api/admin/broadcast', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg.trim(), audience })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert(`✅ Notification sent to ${audience} users successfully!`);
+        if (document.getElementById('notif-msg')) document.getElementById('notif-msg').value = '';
+      } else {
+        alert('Failed to send notification: ' + (data.message || 'Server error'));
+      }
+    } catch (err) {
+      alert('Error sending notification: ' + err.message);
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Notification'; }
+    }
+  }
+
   // Public API
   return {
     init,
     navigate,
     navigateToModule: (module, filter) => navigate(module, filter),
     closeGlobalSearch,
+    sendBroadcastNotification,
     state
   };
 })();

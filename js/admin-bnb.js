@@ -164,9 +164,25 @@ const AdminBNB = (() => {
     renderBNBsGrid(filtered);
   }
 
-  // Export BNBs
+  // Export BNBs as CSV
   function exportBNBs() {
-    alert('Export functionality coming soon');
+    if (!currentBNBs.length) { alert('No BNBs to export'); return; }
+    const headers = ['ID','Title','Location','Price Per Night','Bedrooms','Status','Host','Phone','Posted'];
+    const rows = currentBNBs.map(b => [
+      b.id, b.title || '', b.location || '',
+      b.pricePerNight || b.price || 0, b.bedrooms || '',
+      b.status || '', b.landlordName || b.hostName || '', b.landlordPhone || b.hostPhone || '',
+      b.createdAt ? new Date(b.createdAt).toLocaleDateString('en-GB') : ''
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `kejamarket-bnbs-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+    if (window.AdminCore && typeof window.AdminCore.showToast === 'function') {
+      window.AdminCore.showToast('BNBs exported as CSV', 'success');
+    }
   }
 
   // Utility functions

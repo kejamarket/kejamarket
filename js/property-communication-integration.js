@@ -246,7 +246,17 @@ const PropertyCommunication = {
   },
 
   requestViewing(propertyId, propertyName) {
-    alert(`🏠 Viewing Request\n\nProperty: ${propertyName}\n\nThis would show a viewing request form with:\n• Preferred date/time\n• Contact details\n• Special requirements\n\nFeature coming soon!`);
+    // Open inquiry modal with viewing pre-selected
+    if (window.KejaCommunication && window.KejaCommunication.MarketplaceCommunication) {
+      KejaCommunication.MarketplaceCommunication.showPropertyInquiry(propertyId, propertyName, 'rental');
+      // After modal loads, tick the 'viewing' checkbox
+      setTimeout(() => {
+        const viewingCb = document.querySelector('input[name="inquiry_type"][value="viewing"]');
+        if (viewingCb) viewingCb.checked = true;
+      }, 200);
+    } else if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-messages');
+    }
   },
 
   requestService(serviceId, serviceName) {
@@ -262,11 +272,21 @@ const PropertyCommunication = {
   },
 
   chatWithProvider(serviceId) {
-    alert('💬 Chat with Service Provider\n\nOpening direct chat...\n\nThis would open the KejaMarket messaging system with the service provider.');
+    // Open messages modal
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-messages');
+    } else if (window.KejaCommunication && window.KejaCommunication.MarketplaceCommunication) {
+      KejaCommunication.MarketplaceCommunication.showServiceRequest(serviceId, 'Service Provider');
+    }
   },
 
   chatWithSeller(itemId) {
-    alert('💬 Chat with Seller\n\nOpening direct chat...\n\nThis would open the KejaMarket messaging system with the item seller.');
+    // Open messages modal
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-messages');
+    } else if (window.KejaCommunication && window.KejaCommunication.MarketplaceCommunication) {
+      KejaCommunication.MarketplaceCommunication.showMarketplaceInquiry(itemId, 'Item');
+    }
   },
 
   initiateWhatsApp(id) {

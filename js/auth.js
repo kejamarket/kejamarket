@@ -116,7 +116,12 @@ const kejaAuth = (() => {
     const target = document.getElementById(`auth-panel-${tab}`);
     if (target) target.style.display = 'block';
 
-    // Update tab button active states — new CSS class-based approach
+    const tabsWrapper = document.getElementById('auth-modal-tabs');
+    if (tabsWrapper) {
+      tabsWrapper.style.display = (tab === 'signin' || tab === 'signup' || tab === 'otp') ? 'flex' : 'none';
+    }
+
+    // Update tab button active states
     const tabSignIn = document.getElementById('auth-tab-signin');
     const tabSignUp = document.getElementById('auth-tab-signup');
     if (tabSignIn) {
@@ -219,15 +224,13 @@ const kejaAuth = (() => {
 
     // Normalize phone number to Kenyan E.164 (+254...)
     let cleanDigits = rawPhone.replace(/\D/g, '');
+    if (cleanDigits.startsWith('2540')) {
+      cleanDigits = '254' + cleanDigits.substring(4);
+    }
     let phone = '';
-    if (cleanDigits.startsWith('254')) {
-      phone = '+' + cleanDigits;
-    } else if (cleanDigits.startsWith('0')) {
-      phone = '+254' + cleanDigits.substring(1);
-    } else if (cleanDigits.length === 9) {
-      phone = '+254' + cleanDigits;
-    } else if (cleanDigits.length > 0) {
-      phone = '+' + cleanDigits;
+    if (cleanDigits.length >= 9) {
+      const last9 = cleanDigits.slice(-9);
+      phone = '+254' + last9;
     } else {
       phone = rawPhone;
     }
@@ -600,6 +603,7 @@ const kejaAuth = (() => {
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
         if (window.app) {
+          window.app.closeModal('modal-auth');
           window.app.showToast(`Welcome back, ${data.user.name}!`, 'success');
         }
         handleAuthSuccess(data.user);
@@ -713,7 +717,7 @@ const kejaAuth = (() => {
   ───────────────────────────────────────── */
   function updateHeaderUI(session) {
     applyAuthWall(session);
-    const label = document.getElementById('auth-header-label');
+    const label = document.getElementById('auth-header-label') || document.querySelector('.header-account-name');
     const btn = document.getElementById('btn-auth-header');
     const mobileLabel = document.getElementById('mobile-nav-user-label');
     const adminHeaderBtn = document.getElementById('btn-admin-header');
@@ -1015,7 +1019,7 @@ const kejaAuth = (() => {
    */
   function ensureAuthButtonVisible() {
     const authBtn = document.getElementById('btn-auth-header');
-    const authLabel = document.getElementById('auth-header-label');
+    const authLabel = document.getElementById('auth-header-label') || document.querySelector('.header-account-name');
     
     if (authBtn) {
       // Force button to be visible
