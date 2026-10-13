@@ -371,7 +371,7 @@ button, input, select, textarea,
 }
 
 /* ── BODY ───────────────────────────────────────────────────────────────────── */
-html { font-size: 14px !important; }
+html { font-size: 13px !important; }
 body { background: #f7f9fb !important; }
 
 /* ════════════════════════════════════════════════════════════════
@@ -385,7 +385,7 @@ body { background: #f7f9fb !important; }
 }
 .header-container {
   max-width: 1440px !important; margin: 0 auto !important;
-  padding: 0 20px !important; height: 54px !important;
+  padding: 0 20px !important; height: 50px !important;
   display: flex !important; align-items: center !important; gap: 12px !important;
 }
 
@@ -394,14 +394,14 @@ body { background: #f7f9fb !important; }
   display: flex !important; align-items: center !important;
   gap: 8px !important; text-decoration: none !important; flex-shrink: 0 !important;
 }
-.brand-logo svg { width: 32px !important; height: 32px !important; flex-shrink: 0 !important; }
+.brand-logo svg { width: 28px !important; height: 28px !important; flex-shrink: 0 !important; }
 .brand-text-group { display: flex !important; flex-direction: column !important; line-height: 1.1 !important; }
 .brand-text-group > span:first-child {
-  font-size: 1.35rem !important; font-weight: 800 !important; letter-spacing: -0.3px !important;
+  font-size: 1.2rem !important; font-weight: 800 !important; letter-spacing: -0.3px !important;
   font-family: 'Poppins', sans-serif !important;
 }
 .brand-text-group > span:last-child {
-  font-size: 0.6rem !important; color: var(--t4) !important; font-weight: 400 !important;
+  font-size: 0.55rem !important; color: var(--t4) !important; font-weight: 400 !important;
 }
 
 /* Search */
@@ -409,7 +409,7 @@ body { background: #f7f9fb !important; }
 .header-search-bar {
   display: flex !important; align-items: center !important;
   background: #f1f5f9 !important; border: 1.5px solid var(--bdr) !important;
-  border-radius: 8px !important; height: 34px !important; overflow: hidden !important;
+  border-radius: 8px !important; height: 32px !important; overflow: hidden !important;
 }
 .header-search-bar:focus-within {
   border-color: var(--g) !important; background: #fff !important;
@@ -463,8 +463,8 @@ body { background: #f7f9fb !important; }
 .header-post-dropdown-wrapper { position: relative !important; }
 .btn-post-dropdown {
   background: var(--g) !important; color: #fff !important; border: none !important;
-  padding: 0 16px !important; height: 36px !important; border-radius: var(--r-p) !important;
-  font-size: 0.8rem !important; font-weight: 700 !important;
+  padding: 0 14px !important; height: 34px !important; border-radius: var(--r-p) !important;
+  font-size: 0.78rem !important; font-weight: 700 !important;
   display: flex !important; align-items: center !important; gap: 6px !important;
   white-space: nowrap !important; cursor: pointer !important;
   box-shadow: 0 2px 6px rgba(0,181,63,0.3) !important;
@@ -490,9 +490,9 @@ body { background: #f7f9fb !important; }
 /* Heart / Message / Bell icon buttons */
 .btn-header-action {
   background: none !important; border: 1px solid var(--bdr) !important;
-  width: 34px !important; height: 34px !important; border-radius: 50% !important;
+  width: 32px !important; height: 32px !important; border-radius: 50% !important;
   display: flex !important; align-items: center !important; justify-content: center !important;
-  font-size: 0.95rem !important; position: relative !important; cursor: pointer !important;
+  font-size: 0.9rem !important; position: relative !important; cursor: pointer !important;
   color: var(--t5) !important; transition: all 0.15s !important; padding: 0 !important;
   flex-shrink: 0 !important;
 }
@@ -503,7 +503,7 @@ body { background: #f7f9fb !important; }
 
 #btn-header-notifications {
   background: none !important; border: 1px solid var(--bdr) !important;
-  width: 34px !important; height: 34px !important; border-radius: 50% !important;
+  width: 32px !important; height: 32px !important; border-radius: 50% !important;
   display: flex !important; align-items: center !important; justify-content: center !important;
   position: relative !important; cursor: pointer !important; flex-shrink: 0 !important; padding: 0 !important;
 }
@@ -530,7 +530,7 @@ body { background: #f7f9fb !important; }
   display: flex !important; align-items: center !important; gap: 6px !important;
   background: #f1f5f9 !important; border: 1.5px solid var(--bdr) !important;
   border-radius: var(--r-p) !important; padding: 3px 10px 3px 3px !important;
-  height: 36px !important; cursor: pointer !important; flex-shrink: 0 !important;
+  height: 34px !important; cursor: pointer !important; flex-shrink: 0 !important;
   font-family: 'Poppins', sans-serif !important;
 }
 #btn-auth-header:hover { border-color: var(--g) !important; }
@@ -573,7 +573,7 @@ body { background: #f7f9fb !important; }
    3. HERO BANNER
    ════════════════════════════════════════════════════════════════ */
 .keja-hero {
-  position: relative; width: 100%; height: 195px; overflow: hidden; z-index: 1;
+  position: relative; width: 100%; height: 175px; overflow: hidden; z-index: 1;
   background: linear-gradient(120deg, #0a3d20 0%, #0f5c31 50%, #1a6b3a 100%);
 }
 .keja-hero-img {
@@ -591,7 +591,7 @@ body { background: #f7f9fb !important; }
 }
 .keja-hero-left { max-width: 430px; }
 .keja-hero-heading {
-  font-size: 1.45rem; font-weight: 800; color: #fff; line-height: 1.18; margin-bottom: 8px;
+  font-size: 1.3rem; font-weight: 800; color: #fff; line-height: 1.18; margin-bottom: 8px;
   font-family: 'Poppins', sans-serif !important;
 }
 .keja-hero-heading .hero-green { color: #4ade80; }
@@ -820,7 +820,7 @@ body { background: #f7f9fb !important; }
 }
 .property-card:hover { transform:translateY(-2px) !important; box-shadow:0 6px 18px rgba(0,0,0,0.1) !important; border-color:rgba(0,181,63,0.3) !important; }
 
-.card-media-wrapper { position:relative !important; height:152px !important; overflow:hidden !important; background:#e2e8f0 !important; flex-shrink:0 !important; cursor:pointer !important; }
+.card-media-wrapper { position:relative !important; height:140px !important; overflow:hidden !important; background:#e2e8f0 !important; flex-shrink:0 !important; cursor:pointer !important; }
 .card-media-wrapper img { width:100% !important; height:100% !important; object-fit:cover !important; transition:transform 0.3s !important; pointer-events:none !important; }
 .property-card:hover .card-media-wrapper img { transform:scale(1.04) !important; }
 
