@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#00b53f">
+  <title>KejaMarket - Mobile</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Mobile App CSS ONLY -->
+  <link rel="stylesheet" href="css/mobile-app.css?v=1.0">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MOBILE HEADER - Fixed top -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <header class="mobile-header">
+    <div class="mobile-header-logo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+        <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#008744"/>
+        <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2b"/>
+        <circle cx="48" cy="21" r="4.5" fill="#ffffff"/>
+      </svg>
+      <span><span style="color:#008744;">Keja</span><span style="color:#e52b2b;">Market</span></span>
+    </div>
+    <div class="mobile-header-actions">
+      <button class="mobile-header-btn" onclick="app.toggleFavoritesView()" title="Favorites">
+        <i class="far fa-heart"></i>
+      </button>
+      <button class="mobile-header-btn" onclick="app.openAdminChat()" title="Notifications">
+        <i class="far fa-bell"></i>
+        <span class="mobile-notif-badge">3</span>
+      </button>
+      <button class="mobile-header-btn" onclick="toggleMobileMenu()" title="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MOBILE SEARCH BAR -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="mobile-search-bar">
+    <i class="fas fa-search mobile-search-icon"></i>
+    <input type="text" class="mobile-search-input" placeholder="Search estate or neighbourhood..." id="mobile-search-input">
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MOBILE FILTERS - Horizontal scroll chips -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="mobile-filters-bar">
+    <button class="mobile-filter-chip active" onclick="setFilter(this, 'all')">All</button>
+    <button class="mobile-filter-chip" onclick="setFilter(this, 'bedsitter')">Bedsitter</button>
+    <button class="mobile-filter-chip" onclick="setFilter(this, '1bed')">1 Bedroom</button>
+    <button class="mobile-filter-chip" onclick="setFilter(this, '2bed')">2 Bedroom</button>
+    <button class="mobile-filter-chip" onclick="setFilter(this, '3bed')">3 Bedroom</button>
+    <button class="mobile-filter-chip" onclick="setFilter(this, 'verified')">
+      <i class="fas fa-check-circle" style="margin-right:4px;"></i>Verified
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MAIN CONTENT - Property listings -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <main class="main-content" id="property-list">
+    <!-- Property cards will be inserted here by JavaScript -->
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading properties...</p>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- BOTTOM NAVIGATION BAR -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-item active" onclick="setActiveNav(this, 'home')">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </button>
+    <button class="mobile-nav-item" onclick="setActiveNav(this, 'search')">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </button>
+    <button class="mobile-nav-item center-action" onclick="openPostModal()">
+      <div class="mobile-nav-post-btn">
+        <i class="fas fa-plus"></i>
+      </div>
+    </button>
+    <button class="mobile-nav-item" onclick="setActiveNav(this, 'saved')">
+      <i class="far fa-heart"></i>
+      <span>Saved</span>
+    </button>
+    <button class="mobile-nav-item" onclick="setActiveNav(this, 'account')">
+      <i class="far fa-user"></i>
+      <span>Account</span>
+    </button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- PROPERTY DETAIL MODAL (shown when card is tapped) -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="property-modal" class="mobile-modal" style="display:none;">
+    <div class="mobile-modal-header">
+      <button class="mobile-back-btn" onclick="closePropertyModal()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <span>Property Details</span>
+      <button class="mobile-header-btn" onclick="toggleFavorite()">
+        <i class="far fa-heart"></i>
+      </button>
+    </div>
+    <div class="mobile-modal-content" id="property-detail-content">
+      <!-- Property details will be inserted here -->
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/auth.js?v=4.0"></script>
+  <script src="db/locations-hierarchy.js?v=2.0"></script>
+  <script src="js/mobile-app.js?v=1.0"></script>
+  
+  <script>
+    // Mobile-specific functions
+    let currentProperties = [];
+    let selectedProperty = null;
+
+    // Load properties from API
+    async function loadProperties() {
+      try {
+        const response = await fetch('/api/properties');
+        const data = await response.json();
+        currentProperties = data.properties || [];
+        renderProperties(currentProperties);
+      } catch (error) {
+        console.error('Error loading properties:', error);
+        document.getElementById('property-list').innerHTML = `
+          <div style="text-align:center; padding:40px 20px;">
+            <i class="fas fa-exclamation-triangle" style="font-size:48px; color:#ef4444; margin-bottom:16px;"></i>
+            <p style="color:#6b7280; font-size:16px;">Failed to load properties</p>
+            <button onclick="loadProperties()" style="margin-top:16px; padding:12px 24px; background:#00b53f; color:white; border:none; border-radius:8px; font-weight:600;">
+              Retry
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    // Render property cards
+    function renderProperties(properties) {
+      const container = document.getElementById('property-list');
+      
+      if (!properties || properties.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:40px 20px;">
+            <i class="fas fa-home" style="font-size:48px; color:#9ca3af; margin-bottom:16px;"></i>
+            <p style="color:#6b7280; font-size:16px;">No properties found</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = properties.map(prop => `
+        <div class="property-card touch-feedback" onclick="openPropertyDetail(${prop.id})">
+          <div style="position:relative;">
+            <img src="${prop.media && prop.media[0] ? prop.media[0].url : 'https://via.placeholder.com/400x220'}" 
+                 alt="${prop.title}" 
+                 class="property-card-image">
+            ${prop.isVerified ? '<span class="property-card-badge"><i class="fas fa-check-circle"></i> Verified</span>' : ''}
+            <button class="property-card-favorite" onclick="event.stopPropagation(); toggleFavorite(${prop.id})">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+          <div class="property-card-content">
+            <div class="property-card-price">KSh ${Number(prop.rentKes || 0).toLocaleString()} / ${prop.rentPeriod || 'month'}</div>
+            <div class="property-card-title">${prop.title || 'Property'}</div>
+            <div class="property-card-location">
+              <i class="fas fa-map-marker-alt" style="color:#00b53f;"></i>
+              ${prop.locationFullPath || prop.estateSuburb || 'Nairobi'}
+            </div>
+            <div class="property-card-features">
+              ${prop.bedrooms ? `<div class="property-card-feature"><i class="fas fa-bed"></i> ${prop.bedrooms} Bed</div>` : ''}
+              ${prop.bathrooms ? `<div class="property-card-feature"><i class="fas fa-bath"></i> ${prop.bathrooms} Bath</div>` : ''}
+              ${prop.amenities && prop.amenities.hasParking ? '<div class="property-card-feature"><i class="fas fa-car"></i> Parking</div>' : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Filter properties
+    function setFilter(button, type) {
+      // Update active state
+      document.querySelectorAll('.mobile-filter-chip').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      // Filter logic
+      let filtered = currentProperties;
+      if (type !== 'all') {
+        filtered = currentProperties.filter(prop => {
+          if (type === 'verified') return prop.isVerified;
+          if (type === 'bedsitter') return prop.category && prop.category.toLowerCase().includes('bedsitter');
+          if (type === '1bed') return prop.bedrooms === 1;
+          if (type === '2bed') return prop.bedrooms === 2;
+          if (type === '3bed') return prop.bedrooms === 3;
+          return true;
+        });
+      }
+      
+      renderProperties(filtered);
+    }
+
+    // Open property detail
+    function openPropertyDetail(propertyId) {
+      const property = currentProperties.find(p => p.id === propertyId);
+      if (!property) return;
+
+      selectedProperty = property;
+      document.getElementById('property-detail-content').innerHTML = `
+        <div style="padding-bottom:80px;">
+          <img src="${property.media && property.media[0] ? property.media[0].url : ''}" 
+               style="width:100%; height:280px; object-fit:cover;">
+          
+          <div style="padding:20px;">
+            <div style="font-size:28px; font-weight:700; color:#00b53f; margin-bottom:8px;">
+              KSh ${Number(property.rentKes || 0).toLocaleString()} / ${property.rentPeriod || 'month'}
+            </div>
+            <h1 style="font-size:22px; font-weight:700; margin-bottom:12px;">${property.title}</h1>
+            <div style="display:flex; align-items:center; gap:6px; color:#6b7280; margin-bottom:20px;">
+              <i class="fas fa-map-marker-alt" style="color:#00b53f;"></i>
+              ${property.locationFullPath || property.estateSuburb}
+            </div>
+
+            <div style="display:flex; gap:16px; margin-bottom:24px;">
+              ${property.bedrooms ? `<div style="display:flex; align-items:center; gap:6px;"><i class="fas fa-bed"></i> ${property.bedrooms} Bed</div>` : ''}
+              ${property.bathrooms ? `<div style="display:flex; align-items:center; gap:6px;"><i class="fas fa-bath"></i> ${property.bathrooms} Bath</div>` : ''}
+            </div>
+
+            <h3 style="font-size:18px; font-weight:700; margin-bottom:12px;">Description</h3>
+            <p style="color:#4b5563; line-height:1.6; margin-bottom:24px;">
+              ${property.description || 'A beautiful property in a prime location.'}
+            </p>
+
+            <div style="position:fixed; bottom:0; left:0; right:0; background:white; padding:16px; border-top:1px solid #e5e7eb; display:flex; gap:12px;">
+              <button onclick="callLandlord()" style="flex:1; padding:14px; background:#00b53f; color:white; border:none; border-radius:12px; font-weight:600; font-size:16px;">
+                <i class="fas fa-phone"></i> Call
+              </button>
+              <button onclick="messageLandlord()" style="flex:1; padding:14px; background:#1f2937; color:white; border:none; border-radius:12px; font-weight:600; font-size:16px;">
+                <i class="fas fa-comment"></i> Message
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('property-modal').style.display = 'flex';
+    }
+
+    // Close property detail
+    function closePropertyModal() {
+      document.getElementById('property-modal').style.display = 'none';
+    }
+
+    // Toggle favorite
+    function toggleFavorite(id) {
+      console.log('Toggle favorite:', id);
+      // Implement favorite logic
+    }
+
+    // Bottom nav functions
+    function setActiveNav(button, section) {
+      document.querySelectorAll('.mobile-nav-item').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      
+      if (section === 'home') {
+        loadProperties();
+      }
+      // Add other section logic
+    }
+
+    // Open post modal
+    function openPostModal() {
+      window.location.href = '/index.html#post-property';
+    }
+
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+      // Implement menu logic
+      alert('Menu clicked');
+    }
+
+    // Call landlord
+    function callLandlord() {
+      if (selectedProperty && selectedProperty.landlord) {
+        window.location.href = `tel:${selectedProperty.landlord.phone}`;
+      }
+    }
+
+    // Message landlord
+    function messageLandlord() {
+      console.log('Message landlord');
+      // Implement messaging
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadProperties();
+      console.log('📱 Mobile app loaded');
+    });
+
+    // Search functionality
+    document.getElementById('mobile-search-input').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = currentProperties.filter(prop => 
+        prop.title.toLowerCase().includes(query) ||
+        (prop.estateSuburb && prop.estateSuburb.toLowerCase().includes(query)) ||
+        (prop.locationFullPath && prop.locationFullPath.toLowerCase().includes(query))
+      );
+      renderProperties(filtered);
+    });
+  </script>
+
+</body>
+</html>

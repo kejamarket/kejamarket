@@ -27,7 +27,14 @@ class MobileApp {
       this.enableMobileMode();
       this.setupMobileListeners();
       this.optimizeForTouch();
-      console.log('📱 Mobile mode enabled');
+      console.log('📱 Mobile mode enabled (screen ≤768px)');
+    } else {
+      console.log('🖥️ Desktop mode - mobile features disabled');
+      // Hide mobile elements on desktop
+      const mobileElements = document.querySelectorAll('.mobile-header, .mobile-search-bar, .mobile-bottom-nav');
+      mobileElements.forEach(el => {
+        if (el) el.style.display = 'none';
+      });
     }
 
     // Listen for resize to toggle mobile mode
@@ -54,23 +61,9 @@ class MobileApp {
       if (el) el.style.display = '';
     });
 
-    // Hide desktop elements
-    const desktopElements = document.querySelectorAll('.site-header .header-container, .secondary-nav');
-    desktopElements.forEach(el => {
-      if (el) el.style.display = 'none';
-    });
-
-    // Add mobile class to body
+    // Add mobile class to body for any additional styling
     document.body.classList.add('mobile-mode');
     
-    // Adjust main content
-    const mainContent = document.querySelector('.main-content, main, #app-main');
-    if (mainContent) {
-      mainContent.style.marginTop = '120px';
-      mainContent.style.marginBottom = '80px';
-      mainContent.style.padding = '0';
-    }
-
     // Make property cards mobile-optimized
     this.optimizePropertyCards();
   }
