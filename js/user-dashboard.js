@@ -987,10 +987,15 @@ const kejaDashboard = (() => {
           const rent = prop.rentKes ?? prop.rent ?? prop.rent_kes ?? 0;
           const photos = Array.isArray(prop.photos) ? prop.photos : (Array.isArray(prop.media) ? prop.media.map(m => m.url || m) : []);
           const thumb = photos.length > 0 ? photos[0] : '/favicon.ico';
+          const isTaken = prop.isTaken || prop.status === 'taken' || prop.status === 'occupied';
+          const statusBadge = isTaken 
+            ? '<span class="ud-status-badge ud-status-taken"><i class="fas fa-times-circle"></i> Taken / Occupied</span>'
+            : '<span class="ud-status-badge ud-status-available"><i class="fas fa-check-circle"></i> Active / Available</span>';
 
           return `
             <div class="ud-prop-card">
               <img src="${thumb}" alt="${prop.title}" class="ud-prop-thumb" onerror="this.src='/favicon.ico';">
+              ${statusBadge}
               <div class="ud-prop-details">
                 <span class="ud-item-category">${prop.category || 'Rental'}</span>
                 <h4 class="ud-prop-title">${prop.title}</h4>

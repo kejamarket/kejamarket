@@ -2537,3 +2537,41 @@ body { background: #f7f9fb !important; }
     min-width: 260px !important;
   }
 }
+
+
+/* ════════════════════════════════════════════════════════════════
+   TENANT DASHBOARD - Property Status Badges
+   ════════════════════════════════════════════════════════════════ */
+.ud-prop-card { position: relative !important; }
+
+.ud-status-badge {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  padding: 4px 10px !important;
+  border-radius: 20px !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  z-index: 5 !important;
+  font-family: 'Poppins', sans-serif !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+
+.ud-status-available {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+  border: 1px solid #86efac !important;
+}
+
+.ud-status-taken {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+  border: 1px solid #fca5a5 !important;
+}
+
+.ud-status-badge i {
+  font-size: 0.7rem !important;
+}

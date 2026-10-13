@@ -2135,10 +2135,11 @@ class NairobiRentalsApp {
       }
     }
 
-    // Amenities List
+    // Amenities List - Only show available amenities (hide unavailable ones)
     const amenitiesContainer = document.getElementById('detail-amenities-list');
     if (amenitiesContainer) {
       const items = [];
+      // Only add BnB amenities if it's actually a BnB property
       if (isBnb) {
         items.push('<span><i class="fas fa-wifi" style="color:#00b53f;"></i> High-Speed Fiber WiFi (100Mbps)</span>');
         items.push('<span><i class="fas fa-tv" style="color:#00b53f;"></i> Smart 4K TV with Netflix & YouTube</span>');
@@ -2147,6 +2148,7 @@ class NairobiRentalsApp {
         items.push('<span><i class="fas fa-coffee" style="color:#00b53f;"></i> Coffee Maker & Electric Kettle</span>');
         items.push('<span><i class="fas fa-broom" style="color:#00b53f;"></i> Housekeeping & Fresh Linens</span>');
       }
+      // Only show amenities that are actually available (value is true)
       if (p.amenities.hasBalcony) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Private Balcony with View</span>');
       if (p.amenities.hasParking) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Free Dedicated Parking</span>');
       if (p.amenities.hasElectricFence) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Electric Perimeter Fence</span>');
@@ -2157,9 +2159,10 @@ class NairobiRentalsApp {
       if (p.amenities.hasGym) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Equipped Gym</span>');
       if (p.amenities.hasSwimmingPool) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Heated Swimming Pool</span>');
 
+      // Only show available amenities, hide the section if nothing is available
       amenitiesContainer.innerHTML = items.length > 0 
         ? items.join('') 
-        : '<span style="color:#64748b;">Standard amenities available</span>';
+        : '<span style="color:#94a3b8;font-style:italic;">No additional amenities listed for this property</span>';
     }
 
     // Management Badge
