@@ -454,6 +454,9 @@ body { background: #f7f9fb !important; }
 .header-actions { 
   display: flex !important; 
   align-items: center !important; 
+  gap: 12px !important; /* Consistent spacing between all icons */
+  flex-shrink: 0 !important;
+} 
   gap: 12px !important;  /* Increased from 7px to 12px for better spacing */
   flex-shrink: 0 !important; 
   padding-right: 8px !important;
@@ -1949,31 +1952,34 @@ body { background: #f7f9fb !important; }
   color: #ffffff !important;
   border: none !important;
   border-radius: 24px !important;
-  padding: 6px 14px !important;
-  font-size: 0.78rem !important;
+  padding: 7px 16px !important;
+  font-size: 0.8rem !important;
   font-weight: 700 !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  gap: 6px !important;
   cursor: pointer !important;
+  height: 38px !important;
   box-shadow: 0 2px 6px rgba(0, 181, 63, 0.3) !important;
   transition: all 0.15s ease !important;
   font-family: 'Poppins', sans-serif !important;
+  flex-shrink: 0 !important;
 }
 .btn-header-post-property:hover {
   background: #009634 !important;
   transform: translateY(-1px) !important;
+  box-shadow: 0 4px 10px rgba(0, 181, 63, 0.4) !important;
 }
 .btn-header-post-property i {
   color: #ffffff !important;
-  font-size: 0.82rem !important;
+  font-size: 0.85rem !important;
 }
 
 .btn-header-circle-action {
   background: #ffffff !important;
   border: 1.5px solid #e2e8f0 !important;
-  width: 36px !important;  /* Increased from 32px to 36px */
-  height: 36px !important; /* Increased from 32px to 36px */
+  width: 38px !important;
+  height: 38px !important;
   border-radius: 50% !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -1986,6 +1992,11 @@ body { background: #f7f9fb !important; }
 .btn-header-circle-action:hover {
   background: #e8f8ee !important;
   border-color: #00b53f !important;
+}
+
+.btn-header-circle-action i {
+  font-size: 1.1rem !important;
+  color: #334155 !important;
 }
 
 .header-notif-badge {
@@ -2010,37 +2021,44 @@ body { background: #f7f9fb !important; }
   background: #ffffff !important;
   border: 1.5px solid #e2e8f0 !important;
   border-radius: 24px !important;
-  padding: 4px 10px 4px 4px !important;
+  padding: 5px 12px 5px 5px !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 8px !important;
   cursor: pointer !important;
-  height: 32px !important;
+  height: 38px !important;
   transition: all 0.15s ease !important;
+  flex-shrink: 0 !important;
 }
 .btn-header-account-pill:hover {
   border-color: #00b53f !important;
+  background: #f8fafb !important;
 }
 .header-account-avatar {
-  width: 26px !important;
-  height: 26px !important;
+  width: 28px !important;
+  height: 28px !important;
   border-radius: 50% !important;
   background: #073815 !important;
   color: #ffffff !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 0.7rem !important;
+  font-size: 0.75rem !important;
+  flex-shrink: 0 !important;
 }
 .header-account-avatar i {
   color: #ffffff !important;
-  font-size: 0.7rem !important;
+  font-size: 0.75rem !important;
 }
 .header-account-name {
-  font-size: 0.78rem !important;
+  font-size: 0.8rem !important;
   font-weight: 700 !important;
   color: #0f172a !important;
   font-family: 'Poppins', sans-serif !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 120px !important;
 }
 
 /* ── SECONDARY NAV ACTIVE PILL ─────────────────────────────────────────────── */

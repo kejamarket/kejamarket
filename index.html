@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=13.0&t=202610090135">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=14.0&t=202610090145">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
@@ -295,9 +295,8 @@
         <div id="header-search-suggestions" class="search-suggestions-dropdown"></div>
       </div>
 
-      <!-- Header Action Buttons (Hierarchy: Post ▼ | Favorites | Messages | Notifications | Profile) -->
       <!-- Header Action Buttons (Reference Match: + Post Property | Heart | Bell(3) | KejaMarket Profile) -->
-      <div class="header-actions" style="display:flex; align-items:center; gap:14px; flex-shrink:0;">
+      <div class="header-actions">
         <!-- + Post Property green pill button -->
         <button type="button" class="btn-header-post-property" onclick="app.openPostPropertyModal && app.openPostPropertyModal(event)" title="Post Property">
           <i class="fas fa-plus"></i> <span>Post Property</span>
@@ -305,12 +304,12 @@
 
         <!-- Favorites (Heart) -->
         <button class="btn-header-circle-action" id="btn-header-favs" onclick="app.toggleFavoritesView()" title="Saved Favorites">
-          <i class="far fa-heart" style="color:#00b53f; font-size:1.15rem;"></i>
+          <i class="far fa-heart"></i>
         </button>
 
-        <!-- Notifications Bell with red badge 3 -->
+        <!-- Notifications Bell with red badge -->
         <button class="btn-header-circle-action" id="btn-header-notifications" onclick="if(window.KejaCommunication && window.KejaCommunication.NotificationSystem){ window.KejaCommunication.NotificationSystem.showNotificationsCenter(); } else { app.openAdminChat(); }" title="Notifications" style="position:relative;">
-          <i class="far fa-bell" style="font-size:1.2rem; color:#1e293b;"></i>
+          <i class="far fa-bell"></i>
           <span class="header-notif-badge">3</span>
         </button>
 
