@@ -55,6 +55,9 @@ class NairobiRentalsApp {
     this.setupEventListeners();
     this.loadChatMessages();
     
+    // Load hierarchical locations for search
+    await this.loadHierarchicalLocations();
+    
     // Fetch live database listings from backend
     await this.fetchLiveProperties();
     await this.populateSidebarChecklists();
@@ -69,6 +72,21 @@ class NairobiRentalsApp {
     setTimeout(() => {
       window.mapController.renderPins(this.filteredProperties);
     }, 300);
+  }
+
+  async loadHierarchicalLocations() {
+    try {
+      const response = await fetch('/api/locations/hierarchy');
+      if (response.ok) {
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+          window.KEJA_MASTER_LOCATIONS = data;
+          console.log(`✅ Loaded ${data.length} hierarchical locations for search`);
+        }
+      }
+    } catch (err) {
+      console.log('Could not load hierarchical locations:', err);
+    }
   }
 
   async fetchLiveProperties() {
@@ -1010,64 +1028,62 @@ class NairobiRentalsApp {
     const q = query.toLowerCase().trim();
     const suggestions = [];
 
-    // 1. Check Master Hierarchical Locations (All 418+ Kenyan Estates, Phases, Gates, Sections)
+    // 1. Check Master Hierarchical Locations (All 166 locations with full hierarchy)
     if (window.kejaLocationPicker && typeof window.kejaLocationPicker.searchLocations === 'function') {
-      const locMatches = window.kejaLocationPicker.searchLocations(q, 6);
+      const locMatches = window.kejaLocationPicker.searchLocations(q, 8);
       locMatches.forEach(loc => {
         const typeLabel = window.kejaLocationPicker.formatTypeBadge(loc.type) || 'Location';
         suggestions.push({
           type: 'location',
           id: loc.id,
           text: loc.name,
-          fullPath: loc.pathString || loc.name,
+          fullPath: loc.fullPath || loc.pathString || loc.name,
           icon: window.kejaLocationPicker.getTypeIcon(loc.type),
           category: typeLabel
         });
       });
     } else if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
+      // Fallback to flat locations if hierarchical system not loaded
       const locMatches = window.KEJA_MASTER_LOCATIONS.filter(l => 
         (l.name && l.name.toLowerCase().includes(q)) || 
-        (l.pathString && l.pathString.toLowerCase().includes(q))
-      ).slice(0, 6);
+        (l.fullPath && l.fullPath.toLowerCase().includes(q)) ||
+        (l.pathString && l.pathString.toLowerCase().includes(q)) ||
+        (l.aliases && Array.isArray(l.aliases) && l.aliases.some(a => a.toLowerCase().includes(q)))
+      ).slice(0, 8);
       locMatches.forEach(loc => {
         suggestions.push({
           type: 'location',
           id: loc.id,
           text: loc.name,
-          fullPath: loc.pathString || loc.name,
+          fullPath: loc.fullPath || loc.pathString || loc.name,
           icon: 'fas fa-map-marker-alt',
           category: loc.type || 'Location'
         });
       });
     }
 
-    // 2. House Types & Categories (Handling room count as Property Type without separate bedrooms filter)
-    const houseTypes = [
-      'Single Room', 'Bedsitter', 'Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom', '5+ Bedroom',
-      'Maisonette', 'Townhouse', 'Bungalow', 'Apartment', 'Penthouse', 'Villa', 'Airbnb'
-    ];
-    houseTypes.forEach(ht => {
-      if (ht.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === ht.toLowerCase())) {
-        suggestions.push({ type: 'category', text: ht, icon: 'fas fa-home', category: 'Property Type' });
-      }
-    });
+    // 2. House Types & Categories (only if no location matches or few matches)
+    if (suggestions.length < 3) {
+      const houseTypes = [
+        'Single Room', 'Bedsitter', 'Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom', '5+ Bedroom',
+        'Maisonette', 'Townhouse', 'Bungalow', 'Apartment', 'Penthouse', 'Villa', 'Airbnb'
+      ];
+      houseTypes.forEach(ht => {
+        if (ht.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === ht.toLowerCase())) {
+          suggestions.push({ type: 'category', text: ht, icon: 'fas fa-home', category: 'Property Type' });
+        }
+      });
+    }
 
-    // 3. Marketplace Categories
-    const mktCategories = [
-      'Furniture & Sofas', 'Beds & Mattresses', 'Kitchen Appliances', 'Electronics & TV', 
-      'Fridges & Freezers', 'Washing Machines', 'Dining Tables & Chairs', 'Wardrobes & Cabinets'
-    ];
-    mktCategories.forEach(mc => {
-      if (mc.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === mc.toLowerCase())) {
-        suggestions.push({ type: 'marketplace', text: mc, icon: 'fas fa-shopping-bag', category: 'Used Item' });
-      }
-    });
-
-    // 4. Listing Titles
-    if (this.properties && Array.isArray(this.properties)) {
-      this.properties.forEach(p => {
-        if (p.title && p.title.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === p.title.toLowerCase())) {
-          suggestions.push({ type: 'property', text: p.title, icon: 'fas fa-building', category: 'Rental Listing' });
+    // 3. Marketplace Categories (only if searching for items)
+    if (suggestions.length < 2 && (q.includes('furniture') || q.includes('bed') || q.includes('kitchen') || q.includes('appliance'))) {
+      const mktCategories = [
+        'Furniture & Sofas', 'Beds & Mattresses', 'Kitchen Appliances', 'Electronics & TV', 
+        'Fridges & Freezers', 'Washing Machines', 'Dining Tables & Chairs', 'Wardrobes & Cabinets'
+      ];
+      mktCategories.forEach(mc => {
+        if (mc.toLowerCase().includes(q) && !suggestions.some(s => s.text.toLowerCase() === mc.toLowerCase())) {
+          suggestions.push({ type: 'marketplace', text: mc, icon: 'fas fa-shopping-bag', category: 'Used Item' });
         }
       });
     }
@@ -1082,14 +1098,15 @@ class NairobiRentalsApp {
     } else {
       dropdown.innerHTML = topSuggestions.map(item => `
         <div class="search-suggestion-item" onclick="app.selectSearchSuggestion('${this.escapeHtml(item.text).replace(/'/g, "\\'")}', '${item.id || ''}')">
-          <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+          <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
             <i class="${item.icon}" style="color: #00b53f; font-size: 0.95rem; flex-shrink: 0;"></i>
-            <div style="min-width: 0;">
+            <div style="min-width: 0; flex: 1;">
               <div style="font-weight: 700; font-size: 0.88rem; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 ${this.highlightMatch(item.text, query)}
               </div>
               ${item.fullPath && item.fullPath !== item.text ? `
-                <div style="font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">
+                  <i class="fas fa-arrow-right" style="font-size: 0.65rem; margin-right: 4px;"></i>
                   ${this.highlightMatch(item.fullPath, query)}
                 </div>
               ` : ''}
