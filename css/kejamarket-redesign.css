@@ -1042,7 +1042,7 @@ body { background: #f7f9fb !important; }
 .keja-desktop-hero-strip {
   background: #f8fafc;
   border-bottom: 1px solid var(--bdr);
-  padding: 18px 0;
+  padding: 12px 0;
   width: 100%;
 }
 .keja-hero-strip-container {
@@ -1051,27 +1051,21 @@ body { background: #f7f9fb !important; }
   padding: 0 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
 }
 .keja-hero-title-box {
-  flex-shrink: 0;
-  max-width: 380px;
+  display: none !important; /* Hide the title text */
 }
 .keja-hero-heading {
-  font-size: 1.65rem !important;
-  font-weight: 800 !important;
-  color: #0b3d22 !important;
-  line-height: 1.22 !important;
-  margin: 0 !important;
-  letter-spacing: -0.4px !important;
-  font-family: 'Poppins', sans-serif !important;
+  display: none !important;
 }
 .keja-feature-strip {
   display: flex;
   align-items: stretch;
   gap: 12px;
   flex: 1;
+  max-width: 100%;
 }
 .km-feature-card {
   background: #ffffff;
@@ -1085,7 +1079,7 @@ body { background: #f7f9fb !important; }
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-  min-height: 68px;
+  min-height: 60px;
 }
 .km-feature-card:hover {
   transform: translateY(-2px);
