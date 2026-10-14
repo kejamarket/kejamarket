@@ -1692,9 +1692,152 @@ const AdminCore = (() => {
   }
 
   function promptCreateAdmin() {
-    const email = prompt('Enter user email or ID to promote to administrator:');
-    if (!email) return;
-    const role = prompt('Assign RBAC Role:\n1. super (Super Admin)\n2. listings (Listing Moderator)\n3. support (Support Admin)\n4. finance (Finance Admin)\n5. verification (Verification Admin)\n6. content (Content/Location Admin)', 'listings');
+    // Remove any existing modal
+    const existing = document.getElementById('add-admin-modal');
+    if (existing) existing.remove();
+
+    // Create modal with role selection checkboxes
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'add-admin-modal';
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width:560px;">
+        <div class="modal-header">
+          <h2><i class="fas fa-user-shield"></i> Add New Administrator</h2>
+          <button class="modal-close" onclick="this.closest('.modal-overlay').remove()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>User Email or ID <span style="color:#dc2626;">*</span></label>
+            <input type="text" id="admin-user-id" class="form-control" placeholder="email@example.com or user ID">
+            <small style="color:#64748b;">Enter the email address or user ID of the person you want to promote to administrator.</small>
+          </div>
+
+          <div class="form-group" style="margin-top:20px;">
+            <label><strong>Assign Permissions (RBAC Roles)</strong> <span style="color:#dc2626;">*</span></label>
+            <small style="display:block; color:#64748b; margin-bottom:12px;">Select one or more roles. Super Admin has access to everything.</small>
+            
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <label style="display:flex; align-items:start; padding:10px; background:#f8fafc; border-radius:8px; cursor:pointer; border:2px solid transparent;" onmouseover="this.style.borderColor='#e0e7ff'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='transparent'">
+                <input type="checkbox" id="role-super" value="super" style="margin-top:2px; margin-right:10px; width:18px; height:18px; cursor:pointer;" onchange="AdminCore._handleRoleChange(this)">
+                <div>
+                  <strong style="color:#7c3aed;">🔑 Super Admin</strong>
+                  <div style="font-size:0.82rem; color:#64748b;">Full system access - can manage everything including other admins</div>
+                </div>
+              </label>
+
+              <label style="display:flex; align-items:start; padding:10px; background:#f8fafc; border-radius:8px; cursor:pointer; border:2px solid transparent;" onmouseover="this.style.borderColor='#e0e7ff'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='transparent'">
+                <input type="checkbox" id="role-listings" value="listings" style="margin-top:2px; margin-right:10px; width:18px; height:18px; cursor:pointer;" onchange="AdminCore._handleRoleChange(this)">
+                <div>
+                  <strong style="color:#10b981;">🏠 Listing Moderator</strong>
+                  <div style="font-size:0.82rem; color:#64748b;">Approve/reject properties, services, marketplace items</div>
+                </div>
+              </label>
+
+              <label style="display:flex; align-items:start; padding:10px; background:#f8fafc; border-radius:8px; cursor:pointer; border:2px solid transparent;" onmouseover="this.style.borderColor='#e0e7ff'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='transparent'">
+                <input type="checkbox" id="role-support" value="support" style="margin-top:2px; margin-right:10px; width:18px; height:18px; cursor:pointer;" onchange="AdminCore._handleRoleChange(this)">
+                <div>
+                  <strong style="color:#0ea5e9;">💬 Support Admin</strong>
+                  <div style="font-size:0.82rem; color:#64748b;">Handle inquiries, support tickets, communications</div>
+                </div>
+              </label>
+
+              <label style="display:flex; align-items:start; padding:10px; background:#f8fafc; border-radius:8px; cursor:pointer; border:2px solid transparent;" onmouseover="this.style.borderColor='#e0e7ff'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='transparent'">
+                <input type="checkbox" id="role-finance" value="finance" style="margin-top:2px; margin-right:10px; width:18px; height:18px; cursor:pointer;" onchange="AdminCore._handleRoleChange(this)">
+                <div>
+                  <strong style="color:#f59e0b;">💰 Finance Admin</strong>
+                  <div style="font-size:0.82rem; color:#64748b;">Manage transactions, payments, M-Pesa, promotions</div>
+                </div>
+              </label>
+
+              <label style="display:flex; align-items:start; padding:10px; background:#f8fafc; border-radius:8px; cursor:pointer; border:2px solid transparent;" onmouseover="this.style.borderColor='#e0e7ff'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='transparent'">
+                <input type="checkbox" id="role-verification" value="verification" style="margin-top:2px; margin-right:10px; width:18px; height:18px; cursor:pointer;" onchange="AdminCore._handleRoleChange(this)">
+                <div>
+                  <strong style="color:#ec4899;">✓ Verification Admin</strong>
+                  <div style="font-size:0.82rem; color:#64748b;">Verify users, documents, landlord identities</div>
+                </div>
+              </label>
+
+              <label style="display:flex; align-items:start; padding:10px; background:#f8fafc; border-radius:8px; cursor:pointer; border:2px solid transparent;" onmouseover="this.style.borderColor='#e0e7ff'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='transparent'">
+                <input type="checkbox" id="role-content" value="content" style="margin-top:2px; margin-right:10px; width:18px; height:18px; cursor:pointer;" onchange="AdminCore._handleRoleChange(this)">
+                <div>
+                  <strong style="color:#8b5cf6;">📍 Content/Location Admin</strong>
+                  <div style="font-size:0.82rem; color:#64748b;">Manage locations, categories, featured content</div>
+                </div>
+              </label>
+
+              <label style="display:flex; align-items:start; padding:10px; background:#f8fafc; border-radius:8px; cursor:pointer; border:2px solid transparent;" onmouseover="this.style.borderColor='#e0e7ff'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='transparent'">
+                <input type="checkbox" id="role-users" value="users" style="margin-top:2px; margin-right:10px; width:18px; height:18px; cursor:pointer;" onchange="AdminCore._handleRoleChange(this)">
+                <div>
+                  <strong style="color:#06b6d4;">👥 User Management</strong>
+                  <div style="font-size:0.82rem; color:#64748b;">Manage users, suspend accounts, handle reports</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="alert alert-info" style="margin-top:16px; font-size:0.85rem;">
+            <i class="fas fa-info-circle"></i>
+            <strong>Note:</strong> You can select multiple roles. The user will have access to all selected areas.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+          <button class="btn-primary" onclick="AdminCore._confirmCreateAdmin()">
+            <i class="fas fa-user-shield"></i> Grant Admin Access
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  function _handleRoleChange(checkbox) {
+    const parent = checkbox.closest('label');
+    if (checkbox.checked) {
+      parent.style.borderColor = '#818cf8';
+      parent.style.background = '#eef2ff';
+    } else {
+      parent.style.borderColor = 'transparent';
+      parent.style.background = '#f8fafc';
+    }
+    
+    // If Super Admin is checked, disable other checkboxes (super has all permissions)
+    if (checkbox.value === 'super' && checkbox.checked) {
+      document.querySelectorAll('#add-admin-modal input[type="checkbox"]').forEach(cb => {
+        if (cb.value !== 'super') {
+          cb.disabled = true;
+          cb.closest('label').style.opacity = '0.5';
+        }
+      });
+    } else if (checkbox.value === 'super' && !checkbox.checked) {
+      document.querySelectorAll('#add-admin-modal input[type="checkbox"]').forEach(cb => {
+        cb.disabled = false;
+        cb.closest('label').style.opacity = '1';
+      });
+    }
+  }
+
+  function _confirmCreateAdmin() {
+    const userId = document.getElementById('admin-user-id')?.value.trim();
+    if (!userId) {
+      showToast('Please enter a user email or ID', 'error');
+      return;
+    }
+
+    // Collect selected roles
+    const selectedRoles = [];
+    document.querySelectorAll('#add-admin-modal input[type="checkbox"]:checked').forEach(cb => {
+      selectedRoles.push(cb.value);
+    });
+
+    if (selectedRoles.length === 0) {
+      showToast('Please select at least one role', 'error');
+      return;
+    }
+
+    // If super is selected, use 'super' as the primary role
+    const primaryRole = selectedRoles.includes('super') ? 'super' : selectedRoles[0];
 
     fetch(`${API_BASE}/api/admin/admins`, {
       method: 'POST',
@@ -1702,14 +1845,20 @@ const AdminCore = (() => {
         'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ userId: email, role: 'admin', adminRole: role || 'listings' })
+      body: JSON.stringify({ 
+        userId: userId, 
+        role: 'admin', 
+        adminRole: primaryRole,
+        adminPermissions: selectedRoles
+      })
     })
     .then(r => r.json())
     .then(d => {
-      showToast(d.message || 'Admin role assigned', 'success');
+      document.getElementById('add-admin-modal')?.remove();
+      showToast(d.message || 'Admin role assigned successfully!', 'success');
       loadAdminUsersModule();
     })
-    .catch(e => showToast(e.message, 'error'));
+    .catch(e => showToast('Error: ' + e.message, 'error'));
   }
 
   function revokeAdmin(adminId) {
@@ -1917,6 +2066,8 @@ const AdminCore = (() => {
     deleteCategory,
     saveSystemSettings,
     promptCreateAdmin,
+    _handleRoleChange,
+    _confirmCreateAdmin,
     revokeAdmin,
     state
   };

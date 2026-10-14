@@ -209,6 +209,9 @@ const AdminVerification = (() => {
               <button class="btn-reject" onclick="AdminVerification.quickReject('${type}', '${item.id}', '${escapeHtml(item.title || '')}')">
                 <i class="fas fa-times"></i> Reject
               </button>
+              <button class="btn-delete" onclick="AdminVerification.deleteListing('${type}', '${item.id}', '${escapeHtml(item.title || '')}')">
+                <i class="fas fa-trash"></i> Delete
+              </button>
             </div>
           </div>
         `}).join('')}
@@ -773,6 +776,49 @@ const AdminVerification = (() => {
     }
   }
 
+  // Delete listing permanently
+  async function deleteListing(type, id, title) {
+    if (!confirm(`⚠️ PERMANENTLY DELETE this ${type} listing${title ? ': "' + title + '"' : ''}?\n\n❌ This action CANNOT be undone!\n✓ The listing will be removed from the database.\n✓ The owner will NOT be notified.\n\nAre you absolutely sure?`)) return;
+    
+    // Double confirmation for safety
+    if (!confirm('⚠️ FINAL CONFIRMATION\n\nThis will PERMANENTLY delete the listing from the database.\nThere is NO way to recover it.\n\nClick OK to DELETE FOREVER.')) return;
+
+    try {
+      let endpoint = '';
+      switch(type) {
+        case 'property':
+          endpoint = `/api/properties/${id}`;
+          break;
+        case 'service':
+          endpoint = `/api/services/${id}`;
+          break;
+        case 'marketplace':
+          endpoint = `/api/marketplace/${id}`;
+          break;
+        default:
+          throw new Error('Unknown listing type');
+      }
+
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`
+        }
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Failed to delete');
+      }
+
+      showToast(`🗑️ ${type.charAt(0).toUpperCase() + type.slice(1)} deleted permanently.`, 'success');
+      await loadVerificationItems();
+    } catch (error) {
+      console.error('Error deleting:', error);
+      showToast('Failed to delete: ' + error.message, 'error');
+    }
+  }
+
   // Verify user
   async function verifyUser(userId) {
     if (!confirm('Mark this user as verified?')) return;
@@ -870,6 +916,7 @@ const AdminVerification = (() => {
     quickApprove,
     quickReject,
     _confirmReject,
+    deleteListing,
     verifyUser
   };
 })();
