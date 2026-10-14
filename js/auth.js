@@ -346,13 +346,15 @@ const kejaAuth = (() => {
       if (data.success && data.user && data.token) {
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
-        showLoggedInPanel(data.user);
+        
+        // Close modal immediately on successful registration
         if (window.app && typeof window.app.closeModal === 'function') {
           window.app.closeModal('modal-auth');
         } else {
           const modal = document.getElementById('modal-auth');
           if (modal) { modal.classList.remove('open'); modal.style.setProperty('display', 'none', 'important'); }
         }
+        
         notify(`Welcome to KejaMarket, ${data.user.name}!`, 'success');
         handleAuthSuccess(data.user);
       } else {
@@ -657,9 +659,8 @@ const kejaAuth = (() => {
         }
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
-        showLoggedInPanel(data.user);
 
-        // Close modal — use whichever closeModal is available
+        // Close modal immediately on successful login
         const closeFn = (typeof window.app?.closeModal === 'function')
           ? (id) => window.app.closeModal(id)
           : (typeof window.closeModal === 'function')

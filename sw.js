@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v36-auth-fix';
+const CACHE_NAME = 'kejamarket-v37-modal-autoclose';
 
 const STATIC_ASSETS = [
   '/',
