@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=23.0&t=202610090235">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=24.0&t=202610090240">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
@@ -395,11 +395,14 @@
   <main class="main-app-layout" id="main-app-layout">
 
     <!-- Left Sidebar: Accordion Filter Panel (Matches reference image) -->
-    <aside class="sidebar-filters" id="sidebar-filters" aria-label="Rental Filters">
+    <aside class="sidebar-filters" id="sidebar-filters" aria-label="Filters">
       <div class="filter-header-main">
-        <div class="filter-header-title"><i class="fas fa-home" style="color:#00b53f; margin-right:4px;"></i> Filters</div>
+        <div class="filter-header-title"><i class="fas fa-home" style="color:#00b53f; margin-right:4px;"></i> <span id="filter-header-category">Property</span> Filters</div>
         <button type="button" class="filter-clear-link" onclick="app.resetFilters()">Clear All</button>
       </div>
+
+      <!-- PROPERTIES FILTERS (Default View) -->
+      <div id="filters-properties-container" class="filters-tab-container">
 
       <!-- Section 1: Property Type (13 exact items with icons) -->
       <div class="filter-accordion-section open" id="filter-sec-type">
@@ -592,6 +595,104 @@
       <button type="button" class="btn-apply-filters-main" onclick="app.applyFilters()">
         <i class="fas fa-filter"></i> Apply Filters
       </button>
+
+      </div>
+      <!-- END PROPERTIES FILTERS -->
+
+      <!-- SERVICES FILTERS -->
+      <div id="filters-services-container" class="filters-tab-container" style="display:none;">
+        
+        <!-- Service Category -->
+        <div class="filter-accordion-section open">
+          <div class="filter-accordion-header" onclick="app.toggleFilterSection(this.parentElement)">
+            <span class="acc-title"><i class="fas fa-tools" style="color:#7c3aed;"></i> Service Type</span>
+            <i class="fas fa-chevron-up acc-icon"></i>
+          </div>
+          <div class="filter-accordion-body" style="display:block;">
+            <div class="filter-checklist-box">
+              <label class="filter-check-item"><input type="checkbox" value="Plumbing"><span class="item-icon"><i class="fas fa-wrench"></i></span><span class="item-label">Plumbing</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Electrical"><span class="item-icon"><i class="fas fa-bolt"></i></span><span class="item-label">Electrical</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Cleaning"><span class="item-icon"><i class="fas fa-broom"></i></span><span class="item-label">Cleaning</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Moving"><span class="item-icon"><i class="fas fa-truck"></i></span><span class="item-label">Moving & Relocation</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Painting"><span class="item-icon"><i class="fas fa-paint-roller"></i></span><span class="item-label">Painting</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Carpentry"><span class="item-icon"><i class="fas fa-hammer"></i></span><span class="item-label">Carpentry</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="filter-accordion-section open">
+          <div class="filter-accordion-header" onclick="app.toggleFilterSection(this.parentElement)">
+            <span class="acc-title"><i class="fas fa-map-marker-alt" style="color:#e52b2b;"></i> Location</span>
+            <i class="fas fa-chevron-up acc-icon"></i>
+          </div>
+          <div class="filter-accordion-body" style="display:block;">
+            <select class="filter-select">
+              <option value="all">All Nairobi & Environs</option>
+              <option value="nairobi">Nairobi</option>
+              <option value="kiambu">Kiambu</option>
+              <option value="machakos">Machakos</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="button" class="btn-apply-filters-main" onclick="app.applyFilters()">
+          <i class="fas fa-filter"></i> Apply Filters
+        </button>
+
+      </div>
+      <!-- END SERVICES FILTERS -->
+
+      <!-- MARKETPLACE (USED ITEMS) FILTERS -->
+      <div id="filters-marketplace-container" class="filters-tab-container" style="display:none;">
+        
+        <!-- Item Category -->
+        <div class="filter-accordion-section open">
+          <div class="filter-accordion-header" onclick="app.toggleFilterSection(this.parentElement)">
+            <span class="acc-title"><i class="fas fa-tags" style="color:#f59e0b;"></i> Item Category</span>
+            <i class="fas fa-chevron-up acc-icon"></i>
+          </div>
+          <div class="filter-accordion-body" style="display:block;">
+            <div class="filter-checklist-box">
+              <label class="filter-check-item"><input type="checkbox" value="Furniture"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Furniture</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Electronics"><span class="item-icon"><i class="fas fa-tv"></i></span><span class="item-label">Electronics</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Appliances"><span class="item-icon"><i class="fas fa-blender"></i></span><span class="item-label">Appliances</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Vehicles"><span class="item-icon"><i class="fas fa-car"></i></span><span class="item-label">Vehicles</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Books"><span class="item-icon"><i class="fas fa-book"></i></span><span class="item-label">Books</span></label>
+              <label class="filter-check-item"><input type="checkbox" value="Clothing"><span class="item-icon"><i class="fas fa-tshirt"></i></span><span class="item-label">Clothing</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price Range -->
+        <div class="filter-accordion-section collapsed">
+          <div class="filter-accordion-header" onclick="app.toggleFilterSection(this.parentElement)">
+            <span class="acc-title"><i class="fas fa-tag" style="color:#00b53f;"></i> Price Range</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </div>
+          <div class="filter-accordion-body" style="display:none;">
+            <div style="display:flex; gap:6px;">
+              <select class="filter-select" style="flex:1;">
+                <option value="0">Min</option>
+                <option value="1000">KSh 1,000</option>
+                <option value="5000">KSh 5,000</option>
+                <option value="10000">KSh 10,000</option>
+              </select>
+              <select class="filter-select" style="flex:1;">
+                <option value="1000000">Max</option>
+                <option value="50000">KSh 50,000</option>
+                <option value="100000">KSh 100,000</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn-apply-filters-main" onclick="app.applyFilters()">
+          <i class="fas fa-filter"></i> Apply Filters
+        </button>
+
+      </div>
+      <!-- END MARKETPLACE FILTERS -->
 
       <!-- Compatibility fallback inputs for JS dependencies -->
       <div style="display: none;">
@@ -3397,7 +3498,7 @@
   <script src="js/recently-added.js?v=4.0&t=202609170130"></script>
   <script src="js/botSimulator.js?v=4.0&t=202609170130"></script>
   <script src="js/monetization.js?v=4.0&t=202609170130"></script>
-  <script src="js/app.js?v=16.0&t=202610090210"></script>
+  <script src="js/app.js?v=17.0&t=202610090240"></script>
   <script src="js/instagram-integration.js?v=6.0&t=202609171355"></script>
   <script src="js/admin.js?v=4.0&t=202609170130"></script>
   <!-- Profile Dropdown Test Script -->

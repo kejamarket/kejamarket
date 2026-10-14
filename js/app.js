@@ -607,12 +607,29 @@ class NairobiRentalsApp {
   switchFilterTab(tab) {
     console.log('Switching filter tab to:', tab);
     
-    // Toggle Accordion Bodies
+    // Show/hide filter containers based on tab
+    const propsContainer = document.getElementById('filters-properties-container');
+    const servicesContainer = document.getElementById('filters-services-container');
+    const marketplaceContainer = document.getElementById('filters-marketplace-container');
+    const filterHeaderCategory = document.getElementById('filter-header-category');
+
+    if (propsContainer) propsContainer.style.display = tab === 'properties' ? 'block' : 'none';
+    if (servicesContainer) servicesContainer.style.display = tab === 'services' ? 'block' : 'none';
+    if (marketplaceContainer) marketplaceContainer.style.display = tab === 'marketplace' ? 'block' : 'none';
+
+    // Update header text
+    if (filterHeaderCategory) {
+      if (tab === 'properties') filterHeaderCategory.textContent = 'Property';
+      else if (tab === 'services') filterHeaderCategory.textContent = 'Service';
+      else if (tab === 'marketplace') filterHeaderCategory.textContent = 'Marketplace';
+    }
+    
+    // Toggle Accordion Bodies (legacy compatibility)
     const accBodyProps = document.getElementById('acc-body-properties');
     const accBodyServ = document.getElementById('acc-body-services');
     const accBodyMkt = document.getElementById('acc-body-marketplace');
 
-    // Toggle extra filters
+    // Toggle extra filters (legacy compatibility)
     const propFilters = document.getElementById('sidebar-properties-filters');
     const servFilters = document.getElementById('sidebar-services-filters');
     const mktFilters = document.getElementById('sidebar-marketplace-filters');
