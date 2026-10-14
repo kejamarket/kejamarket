@@ -60,6 +60,12 @@ const AdminProperties = (() => {
         return properties.filter(p => !p.is_bnb && !p.isBnb && !(p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb'))));
       case 'bnb':
         return properties.filter(p => p.propertyType === 'bnb' || p.propertyType === 'short-stay' || p.is_bnb || p.isBnb || (p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb'))));
+      case 'apartments':
+        return properties.filter(p => p.category && (p.category.toLowerCase().includes('apartment') || p.propertyType === 'apartment'));
+      case 'land':
+        return properties.filter(p => p.category && (p.category.toLowerCase().includes('land') || p.propertyType === 'land'));
+      case 'selling':
+        return properties.filter(p => p.category && (p.category.toLowerCase().includes('selling') || p.category.toLowerCase().includes('sale') || p.listingType === 'sale'));
       default:
         return properties;
     }

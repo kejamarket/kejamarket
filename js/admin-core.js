@@ -589,6 +589,10 @@ const AdminCore = (() => {
         <button class="tab-btn ${filter === 'pending' ? 'active' : ''}" onclick="AdminCore.loadPropertiesModule('pending')">Pending Verification</button>
         <button class="tab-btn ${filter === 'rejected' ? 'active' : ''}" onclick="AdminCore.loadPropertiesModule('rejected')">Rejected</button>
         <button class="tab-btn ${filter === 'flagged' ? 'active' : ''}" onclick="AdminCore.loadPropertiesModule('flagged')">Quality Flagged</button>
+        <button class="tab-btn ${filter === 'rental' ? 'active' : ''}" onclick="AdminCore.loadPropertiesModule('rental')">Rentals</button>
+        <button class="tab-btn ${filter === 'bnb' ? 'active' : ''}" onclick="AdminCore.loadPropertiesModule('bnb')">BNBs</button>
+        <button class="tab-btn ${filter === 'apartments' ? 'active' : ''}" onclick="AdminCore.loadPropertiesModule('apartments')">Apartments</button>
+        <button class="tab-btn ${filter === 'land' ? 'active' : ''}" onclick="AdminCore.loadPropertiesModule('land')">Land</button>
       </div>
 
       <div id="properties-content">
@@ -613,10 +617,24 @@ const AdminCore = (() => {
         return { ...p, qualityFlags: flags };
       });
 
-      if (filter === 'approved') properties = properties.filter(p => p.is_verified || p.isVerified || p.status === 'approved');
-      if (filter === 'pending') properties = properties.filter(p => !p.is_verified && !p.isVerified && p.status !== 'rejected');
-      if (filter === 'rejected') properties = properties.filter(p => p.status === 'rejected');
-      if (filter === 'flagged') properties = properties.filter(p => p.qualityFlags.length > 0);
+      // Apply filters
+      if (filter === 'approved') {
+        properties = properties.filter(p => p.is_verified || p.isVerified || p.status === 'approved');
+      } else if (filter === 'pending') {
+        properties = properties.filter(p => !p.is_verified && !p.isVerified && p.status !== 'rejected');
+      } else if (filter === 'rejected') {
+        properties = properties.filter(p => p.status === 'rejected');
+      } else if (filter === 'flagged') {
+        properties = properties.filter(p => p.qualityFlags.length > 0);
+      } else if (filter === 'rental') {
+        properties = properties.filter(p => !p.is_bnb && !p.isBnb && !(p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb'))));
+      } else if (filter === 'bnb') {
+        properties = properties.filter(p => p.propertyType === 'bnb' || p.propertyType === 'short-stay' || p.is_bnb || p.isBnb || (p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb'))));
+      } else if (filter === 'apartments') {
+        properties = properties.filter(p => p.category && (p.category.toLowerCase().includes('apartment') || p.propertyType === 'apartment'));
+      } else if (filter === 'land') {
+        properties = properties.filter(p => p.category && (p.category.toLowerCase().includes('land') || p.propertyType === 'land'));
+      }
 
       renderPropertiesTable(properties);
     } catch (err) {
@@ -1310,7 +1328,7 @@ const AdminCore = (() => {
             <div>
               <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;">
                 <span>Approved Rentals</span>
-                <a href="#" onclick="window.AdminNavigation.switchModule('properties'); return false;" style="color:#10b981; text-decoration:none; cursor:pointer;">
+                <a href="#" onclick="window.AdminNavigation.switchModule('properties', 'rental'); return false;" style="color:#10b981; text-decoration:none; cursor:pointer;">
                   <span style="transition:all 0.2s;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${data.activeListings || data.active_listings || 132}</span>
                   <i class="fas fa-arrow-right" style="font-size:0.7rem; margin-left:4px;"></i>
                 </a>
@@ -1320,7 +1338,7 @@ const AdminCore = (() => {
             <div>
               <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;">
                 <span>Short-Stays / BNBs</span>
-                <a href="#" onclick="window.AdminNavigation.switchModule('properties'); return false;" style="color:#ec4899; text-decoration:none; cursor:pointer;">
+                <a href="#" onclick="window.AdminNavigation.switchModule('properties', 'bnb'); return false;" style="color:#ec4899; text-decoration:none; cursor:pointer;">
                   <span style="transition:all 0.2s;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${data.totalBNBs || data.total_bnbs || 24}</span>
                   <i class="fas fa-arrow-right" style="font-size:0.7rem; margin-left:4px;"></i>
                 </a>
