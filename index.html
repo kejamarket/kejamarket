@@ -721,7 +721,7 @@
           <button class="service-banner-btn">Start Hunt →</button>
         </div>
         <div class="service-banner-image">
-          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=150&fit=crop" alt="Professional woman" />
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=180&h=120&fit=crop&crop=faces" alt="Professional woman" />
         </div>
       </div>
 
@@ -739,7 +739,7 @@
           <button class="service-banner-btn">Calculate →</button>
         </div>
         <div class="service-banner-image">
-          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200&h=150&fit=crop" alt="Houses illustration" />
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=180&h=120&fit=crop" alt="Houses with calculator" />
         </div>
       </div>
 
@@ -757,7 +757,7 @@
           <button class="service-banner-btn">Get Alerts →</button>
         </div>
         <div class="service-banner-image">
-          <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=200&h=150&fit=crop" alt="WhatsApp phone" />
+          <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=180&h=120&fit=crop" alt="WhatsApp on phone" />
         </div>
       </div>
 
@@ -768,14 +768,14 @@
   <style>
     .service-cards-section {
       background: #f8f9fa;
-      padding: 32px 20px;
+      padding: 24px 20px;
     }
 
     .service-cards-container {
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
@@ -784,9 +784,9 @@
       min-width: 320px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 20px 16px;
-      border-radius: 12px;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
       position: relative;
       overflow: hidden;
       transition: transform 0.3s, box-shadow 0.3s;
@@ -794,8 +794,8 @@
     }
 
     .service-banner:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     }
 
     .service-banner-green {
@@ -811,9 +811,9 @@
     }
 
     .service-banner-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -832,31 +832,36 @@
       background: #ec4899;
     }
 
+    .service-banner-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
     .service-banner-content {
       flex: 1;
       min-width: 0;
     }
 
     .service-banner-title {
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: #1f2937;
-      margin: 0 0 6px 0;
-      line-height: 1.3;
+      margin: 0 0 4px 0;
+      line-height: 1.2;
     }
 
     .service-banner-text {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       color: #4b5563;
-      margin: 0 0 10px 0;
-      line-height: 1.4;
+      margin: 0 0 8px 0;
+      line-height: 1.3;
     }
 
     .service-banner-btn {
-      padding: 7px 16px;
+      padding: 5px 12px;
       border: none;
-      border-radius: 6px;
-      font-size: 0.8rem;
+      border-radius: 5px;
+      font-size: 0.7rem;
       font-weight: 600;
       color: #ffffff;
       cursor: pointer;
@@ -888,10 +893,10 @@
     }
 
     .service-banner-image {
-      width: 120px;
-      height: 90px;
+      width: 90px;
+      height: 70px;
       flex-shrink: 0;
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
     }
 
@@ -914,59 +919,60 @@
 
     @media (max-width: 768px) {
       .service-cards-section {
-        padding: 24px 16px;
+        padding: 20px 16px;
       }
 
       .service-banner {
-        padding: 16px 12px;
-        gap: 12px;
+        padding: 10px 12px;
+        gap: 10px;
       }
 
       .service-banner-icon {
-        width: 44px;
-        height: 44px;
+        width: 36px;
+        height: 36px;
       }
 
       .service-banner-icon svg {
-        width: 22px;
-        height: 22px;
+        width: 18px;
+        height: 18px;
       }
 
       .service-banner-title {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
       }
 
       .service-banner-text {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
       }
 
       .service-banner-btn {
-        padding: 6px 14px;
-        font-size: 0.75rem;
+        padding: 4px 10px;
+        font-size: 0.65rem;
       }
 
       .service-banner-image {
-        width: 100px;
-        height: 75px;
+        width: 75px;
+        height: 60px;
       }
     }
 
     @media (max-width: 480px) {
       .service-banner-image {
-        display: none;
+        width: 65px;
+        height: 50px;
       }
 
       .service-banner {
-        padding: 14px 12px;
+        padding: 8px 10px;
       }
 
       .service-banner-icon {
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
       }
 
       .service-banner-title {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
       }
     }
   </style>
