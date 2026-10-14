@@ -364,6 +364,35 @@ class NairobiRentalsApp {
     if (el) el.classList.toggle('collapsed');
   }
 
+  togglePropertyTypeExpansion() {
+    const moreItems = document.getElementById('property-type-more-items');
+    const toggleBtn = document.getElementById('btn-toggle-property-types');
+    const toggleText = document.getElementById('property-type-toggle-text');
+    const toggleIcon = document.getElementById('property-type-toggle-icon');
+    
+    if (!moreItems || !toggleBtn || !toggleText || !toggleIcon) return;
+    
+    const isCollapsed = moreItems.classList.contains('property-type-collapsed');
+    
+    if (isCollapsed) {
+      // Expand
+      moreItems.classList.remove('property-type-collapsed');
+      moreItems.classList.add('property-type-expanded');
+      toggleBtn.classList.add('expanded');
+      toggleText.textContent = 'Show Less';
+      toggleIcon.classList.remove('fa-chevron-down');
+      toggleIcon.classList.add('fa-chevron-up');
+    } else {
+      // Collapse
+      moreItems.classList.remove('property-type-expanded');
+      moreItems.classList.add('property-type-collapsed');
+      toggleBtn.classList.remove('expanded');
+      toggleText.textContent = 'Show More';
+      toggleIcon.classList.remove('fa-chevron-up');
+      toggleIcon.classList.add('fa-chevron-down');
+    }
+  }
+
   async populateSidebarChecklists() {
     const suburbContainer = document.getElementById('suburb-checklist-container');
     if (suburbContainer) {

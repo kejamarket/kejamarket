@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=18.0&t=202610090205">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=19.0&t=202610090210">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
@@ -458,14 +458,20 @@
             <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
             <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
             <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
-            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
-            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
-            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
-            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa</span></label>
-            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">Apartment</span></label>
-            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
-            <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
+            <div id="property-type-more-items" class="property-type-collapsed">
+              <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
+              <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
+              <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
+              <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa</span></label>
+              <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">Apartment</span></label>
+              <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
+              <label class="filter-check-item"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
+            </div>
           </div>
+          <button type="button" class="btn-toggle-property-types" id="btn-toggle-property-types" onclick="app.togglePropertyTypeExpansion && app.togglePropertyTypeExpansion()">
+            <span id="property-type-toggle-text">Show More</span>
+            <i id="property-type-toggle-icon" class="fas fa-chevron-down"></i>
+          </button>
         </div>
       </div>
 
@@ -3389,7 +3395,7 @@
   <script src="js/recently-added.js?v=4.0&t=202609170130"></script>
   <script src="js/botSimulator.js?v=4.0&t=202609170130"></script>
   <script src="js/monetization.js?v=4.0&t=202609170130"></script>
-  <script src="js/app.js?v=15.0&t=202610090120"></script>
+  <script src="js/app.js?v=16.0&t=202610090210"></script>
   <script src="js/instagram-integration.js?v=6.0&t=202609171355"></script>
   <script src="js/admin.js?v=4.0&t=202609170130"></script>
   <!-- Profile Dropdown Test Script -->
