@@ -810,6 +810,13 @@ class NairobiRentalsApp {
         if (clearSearchBtn) {
           clearSearchBtn.style.display = this.searchQuery ? 'flex' : 'none';
         }
+        // When user starts searching, clear location filter to search globally
+        if (this.searchQuery && this.searchQuery.length >= 2) {
+          this.selectedLocation = null;
+          // Reset location dropdown to default
+          const locationDropdown = document.getElementById('header-location-select');
+          if (locationDropdown) locationDropdown.value = '';
+        }
         this.showSearchSuggestions(this.searchQuery);
         this.currentPage = 1;
         this.applyFilters();
@@ -1630,25 +1637,32 @@ class NairobiRentalsApp {
 
       // Enhanced Multi-Attribute Real-time Search query filter
       if (this.searchQuery) {
-        const q = this.searchQuery.toLowerCase();
+        // Normalize function to remove accents/diacritics for better matching
+        const normalize = (str) => {
+          return (str || '').toLowerCase()
+            .normalize('NFD')  // Decompose accented characters
+            .replace(/[\u0300-\u036f]/g, '');  // Remove diacritical marks
+        };
         
-        const matchTitle = p.title.toLowerCase().includes(q);
-        const matchDesc = p.description.toLowerCase().includes(q);
-        const matchEstate = p.estateSuburb.toLowerCase().includes(q);
-        const matchCounty = p.county.toLowerCase().includes(q);
-        const matchCategory = p.category.toLowerCase().includes(q);
-        const matchCorridor = p.corridorId ? p.corridorId.toLowerCase().includes(q) : false;
-        const matchAgency = (p.agencyName && p.agencyName.toLowerCase().includes(q)) || (p.landlord?.name && p.landlord.name.toLowerCase().includes(q));
+        const q = normalize(this.searchQuery);
+        
+        const matchTitle = normalize(p.title).includes(q);
+        const matchDesc = normalize(p.description).includes(q);
+        const matchEstate = normalize(p.estateSuburb).includes(q);
+        const matchCounty = normalize(p.county).includes(q);
+        const matchCategory = normalize(p.category).includes(q);
+        const matchCorridor = p.corridorId ? normalize(p.corridorId).includes(q) : false;
+        const matchAgency = (p.agencyName && normalize(p.agencyName).includes(q)) || (p.landlord?.name && normalize(p.landlord.name).includes(q));
 
         // Hierarchical Location matching
-        const locPathStr = (p.locationPath || []).join(' ').toLowerCase();
+        const locPathStr = (p.locationPath || []).map(loc => normalize(loc)).join(' ');
         const matchLocPath = locPathStr.includes(q);
-        const matchExactLoc = p.exactLocation ? p.exactLocation.toLowerCase().includes(q) : false;
-        const matchDisplayLoc = p.displayLocation ? p.displayLocation.toLowerCase().includes(q) : (p.locationDisplay ? p.locationDisplay.toLowerCase().includes(q) : false);
-        const matchArea = p.area ? p.area.toLowerCase().includes(q) : false;
-        const matchSubArea = p.subArea ? p.subArea.toLowerCase().includes(q) : false;
-        const matchPhase = p.phase ? p.phase.toLowerCase().includes(q) : false;
-        const matchSection = p.section ? p.section.toLowerCase().includes(q) : false;
+        const matchExactLoc = p.exactLocation ? normalize(p.exactLocation).includes(q) : false;
+        const matchDisplayLoc = p.displayLocation ? normalize(p.displayLocation).includes(q) : (p.locationDisplay ? normalize(p.locationDisplay).includes(q) : false);
+        const matchArea = p.area ? normalize(p.area).includes(q) : false;
+        const matchSubArea = p.subArea ? normalize(p.subArea).includes(q) : false;
+        const matchPhase = p.phase ? normalize(p.phase).includes(q) : false;
+        const matchSection = p.section ? normalize(p.section).includes(q) : false;
 
         // Keywords for bedrooms
         const matchBedsitter = (q.includes('bedsitter') || q.includes('studio')) && (p.category.includes('Bedsitter') || p.bedrooms === 0);
@@ -2015,7 +2029,16 @@ class NairobiRentalsApp {
   goToPage(pageNumber) {
     this.currentPage = pageNumber;
     this.renderCardsGrid();
-    window.scrollTo({ top: 200, behavior: 'smooth' });
+    // Scroll to the property listings grid (not all the way to top)
+    const listingsGrid = document.getElementById('property-grid');
+    if (listingsGrid) {
+      const offset = 100; // Leave some space from the top
+      const elementPosition = listingsGrid.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+    } else {
+      // Fallback if grid not found
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
   }
 
   revealLandlordPhone(propertyId, btnEl) {
@@ -2540,11 +2563,20 @@ class NairobiRentalsApp {
 
     if (!this.detailMap) {
       this.detailMap = L.map('detail-property-map', {
-        attributionControl: false  // Remove Leaflet attribution
+        attributionControl: true,  // Enable attribution (required by OpenStreetMap)
+        preferCanvas: false,       // Use SVG for better quality
+        zoomControl: true,         // Show zoom controls
+        scrollWheelZoom: true     // Allow mouse wheel zoom
       }).setView([property.latitude, property.longitude], 15);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: ''  // No attribution text
+        maxZoom: 19,
+        minZoom: 10,
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
+        subdomains: ['a', 'b', 'c'],
+        tileSize: 256,
+        detectRetina: true,
+        updateWhenZooming: false
       }).addTo(this.detailMap);
 
       this.detailMarker = L.marker([property.latitude, property.longitude]).addTo(this.detailMap)
@@ -2792,11 +2824,26 @@ class NairobiRentalsApp {
   }
 
   closeModal(modalId) {
+    console.log(`[APP] closeModal called for: ${modalId}`);
     const modal = document.getElementById(modalId);
     if (modal) {
+      console.log(`[APP] Modal found: ${modalId}, removing open class`);
       modal.classList.remove('open');
       modal.style.setProperty('display', 'none', 'important');
+      
+      // Also handle any backdrop wrapper
+      const backdrop = modal.closest('.modal-backdrop');
+      if (backdrop && backdrop !== modal) {
+        console.log(`[APP] Also removing open class from backdrop`);
+        backdrop.classList.remove('open');
+        backdrop.style.setProperty('display', 'none', 'important');
+      }
+      
+      console.log(`[APP] Modal ${modalId} closed successfully`);
+    } else {
+      console.log(`[APP] Modal not found: ${modalId}`);
     }
+    
     // Stop chat polling when messages modal closes
     if (modalId === 'modal-messages') {
       this.stopChatPolling();

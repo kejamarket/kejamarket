@@ -23,14 +23,22 @@ class MapController {
     if (!el || this.fullMap) return;
 
     this.fullMap = L.map('leaflet-full-map', {
-      attributionControl: false  // Remove Leaflet attribution
+      attributionControl: true,  // Enable attribution (required by OpenStreetMap)
+      preferCanvas: false,       // Use SVG for better quality
+      worldCopyJump: false       // Disable world wrap for better performance
     }).setView(this.nairobiCenter, this.defaultZoom);
 
-    // Use CartoDB Positron tiles (faster and more reliable)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    // Use OpenStreetMap tiles with proper attribution and rate limiting
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      attribution: '',  // No attribution text
-      subdomains: 'abcd'
+      minZoom: 8,  // Minimum zoom to reduce server load
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
+      subdomains: ['a', 'b', 'c'],
+      tileSize: 256,
+      zoomOffset: 0,
+      detectRetina: true,        // Use retina tiles on high-DPI displays
+      updateWhenZooming: false,  // Reduce tile requests during zoom
+      keepBuffer: 2              // Keep tiles in memory for smoother panning
     }).addTo(this.fullMap);
 
     this.fullMarkersGroup = L.layerGroup().addTo(this.fullMap);
@@ -41,14 +49,22 @@ class MapController {
     if (!el || this.splitMap) return;
 
     this.splitMap = L.map('leaflet-split-map', {
-      attributionControl: false  // Remove Leaflet attribution
+      attributionControl: true,  // Enable attribution (required by OpenStreetMap)
+      preferCanvas: false,       // Use SVG for better quality
+      worldCopyJump: false       // Disable world wrap for better performance
     }).setView(this.nairobiCenter, this.defaultZoom);
 
-    // Use CartoDB Positron tiles (faster and more reliable)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    // Use OpenStreetMap tiles with proper attribution and rate limiting
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      attribution: '',  // No attribution text
-      subdomains: 'abcd'
+      minZoom: 8,  // Minimum zoom to reduce server load
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
+      subdomains: ['a', 'b', 'c'],
+      tileSize: 256,
+      zoomOffset: 0,
+      detectRetina: true,        // Use retina tiles on high-DPI displays
+      updateWhenZooming: false,  // Reduce tile requests during zoom
+      keepBuffer: 2              // Keep tiles in memory for smoother panning
     }).addTo(this.splitMap);
 
     this.splitMarkersGroup = L.layerGroup().addTo(this.splitMap);

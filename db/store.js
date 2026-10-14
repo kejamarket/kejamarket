@@ -303,13 +303,7 @@ class Store {
       this.ensureAdminUser();
     }
 
-    const user = this.data.users.find(u => 
-      u.phone === cleanId || 
-      (u.email && u.email.toLowerCase() === cleanId) ||
-      u.phone.replace(/^254/, '0') === cleanId ||
-      u.phone === '254' + cleanId.replace(/^0/, '') ||
-      (cleanId === 'admin' && u.id === 'usr-admin-01')
-    );
+    const user = this.findUserByIdentifier(cleanId);
 
     if (!user) {
       throw new Error('No user found with this phone number or email.');
@@ -330,6 +324,19 @@ class Store {
     }
 
     return this.sanitizeUser(user);
+  }
+
+  async storeOTP(phone, otp, purpose = 'verification') {
+    if (!this.data.otps) this.data.otps = {};
+    const cleanDigits = phone ? phone.toString().replace(/\D/g, '') : '';
+    this.data.otps[cleanDigits] = {
+      otp: otp.toString(),
+      purpose,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 10 * 60 * 1000
+    };
+    this.save();
+    return true;
   }
 
   getUserById(id) {

@@ -995,12 +995,12 @@ app.post('/api/auth/register-enhanced', async (req, res) => {
       phone: cleanPhone,
       email,
       password,
-      isPhoneVerified: false, // Needs verification
+      isPhoneVerified: true, // Auto-verified - no pending status needed
       registrationData: {
         userType,
         role,
         registrationDate: new Date(),
-        verificationStatus: 'pending'
+        verificationStatus: 'verified' // Users are automatically verified
       }
     };
 
@@ -3888,6 +3888,96 @@ app.post('/api/admin/users', requireAuth, async (req, res) => {
     });
     res.json({ success: true, message: 'User created successfully.', user: newUser });
   } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/users/:id - Permanently delete user account (admin only)
+app.delete('/api/admin/users/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Admin access required.' });
+    }
+    
+    const { id } = req.params;
+    const { reason, deletedBy } = req.body;
+    
+    // Prevent admin from deleting themselves
+    if (id === req.user.id) {
+      return res.status(400).json({ success: false, message: 'You cannot delete your own account.' });
+    }
+    
+    const user = await store.getUserById(id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+    
+    // Log the deletion for audit trail
+    console.log(`[USER DELETION] Admin ${req.user.id} (${req.user.name}) deleting user ${id} (${user.name})`);
+    console.log(`[USER DELETION] Reason: ${reason || 'No reason provided'}`);
+    
+    // Delete user's properties, services, marketplace items
+    if (store.isConnected && store.query) {
+      // PostgreSQL - cascade delete related data
+      await store.query('DELETE FROM properties WHERE landlord_id = $1 OR raw_data->>\'userId\' = $1', [id]);
+      await store.query('DELETE FROM services WHERE provider_id = $1', [id]);
+      await store.query('DELETE FROM marketplace_items WHERE seller_id = $1', [id]);
+      await store.query('DELETE FROM inquiries WHERE from_user_id = $1 OR to_user_id = $1', [id]);
+      await store.query('DELETE FROM reviews WHERE reviewer_id = $1 OR target_user_id = $1', [id]);
+      await store.query('DELETE FROM messages WHERE from_user_id = $1 OR to_user_id = $1', [id]);
+      await store.query('DELETE FROM house_hunts WHERE user_id = $1', [id]);
+      await store.query('DELETE FROM transactions WHERE user_id = $1', [id]);
+      await store.query('DELETE FROM support_tickets WHERE user_id = $1', [id]);
+      
+      // Finally delete the user
+      await store.query('DELETE FROM users WHERE id = $1', [id]);
+    } else {
+      // JSON store - remove user and related data
+      if (store.data) {
+        store.data.properties = (store.data.properties || []).filter(p => p.userId !== id && p.landlordId !== id && p.postedBy !== id);
+        store.data.services = (store.data.services || []).filter(s => s.providerId !== id);
+        store.data.marketplace = (store.data.marketplace || []).filter(m => m.sellerId !== id);
+        store.data.inquiries = (store.data.inquiries || []).filter(i => i.fromUserId !== id && i.toUserId !== id);
+        store.data.reviews = (store.data.reviews || []).filter(r => r.reviewerId !== id && r.targetUserId !== id);
+        store.data.messages = (store.data.messages || []).filter(m => m.fromUserId !== id && m.toUserId !== id);
+        store.data.users = (store.data.users || []).filter(u => u.id !== id);
+        await store.saveData();
+      }
+    }
+    
+    // Log admin action
+    await logAdminAction(
+      req.user, 
+      'DELETED_USER', 
+      'user', 
+      id, 
+      user.name, 
+      { status: 'active' }, 
+      { status: 'deleted' }, 
+      reason || 'User account permanently deleted', 
+      req
+    );
+    
+    // Send notification to user's phone (if they have one)
+    if (user.phone) {
+      try {
+        await sendSMS(
+          user.phone, 
+          `KejaMarket: Your account has been permanently deleted by an administrator. If you believe this was done in error, please contact support.`
+        );
+      } catch (e) {
+        console.warn('Failed to send deletion SMS:', e.message);
+      }
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'User account and all associated data have been permanently deleted.',
+      deletedUserId: id
+    });
+    
+  } catch (err) {
+    console.error('[USER DELETION ERROR]', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });

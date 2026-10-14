@@ -1823,7 +1823,8 @@ body {
 
 .btn-view,
 .btn-approve,
-.btn-reject {
+.btn-reject,
+.btn-delete {
   flex: 1;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
@@ -1864,6 +1865,18 @@ body {
 
 .btn-reject:hover {
   background: #b91c1c;
+}
+
+.btn-delete {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
 }
 
 /* ================================

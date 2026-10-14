@@ -480,11 +480,20 @@ class LandlordManager {
 
       if (!this.postMap && typeof L !== 'undefined') {
         this.postMap = L.map('post-pin-map', {
-          attributionControl: false  // Remove Leaflet attribution
+          attributionControl: true,  // Enable attribution (required by OpenStreetMap)
+          preferCanvas: false,       // Use SVG for better quality
+          zoomControl: true,         // Show zoom controls
+          scrollWheelZoom: true     // Allow mouse wheel zoom
         }).setView([this.selectedCoords.lat, this.selectedCoords.lng], 13);
         
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: ''  // No attribution text
+          maxZoom: 19,
+          minZoom: 10,
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
+          subdomains: ['a', 'b', 'c'],
+          tileSize: 256,
+          detectRetina: true,
+          updateWhenZooming: false
         }).addTo(this.postMap);
 
         this.postMarker = L.marker([this.selectedCoords.lat, this.selectedCoords.lng], {

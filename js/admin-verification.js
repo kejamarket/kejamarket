@@ -29,10 +29,6 @@ const AdminVerification = (() => {
           data = await loadPendingProperties();
           renderPendingProperties(data);
           break;
-        case 'pending-users':
-          data = await loadPendingUsers();
-          renderPendingUsers(data);
-          break;
         case 'documents':
           data = await loadPendingDocuments();
           renderPendingDocuments(data);
@@ -67,21 +63,55 @@ const AdminVerification = (() => {
     return data.items || [];
   }
 
-  // Load pending users
-  async function loadPendingUsers() {
-    const res = await fetch(`${API_BASE}/api/admin/users?filter=pending`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
-    });
-
-    if (!res.ok) throw new Error('Failed to load pending users');
-    const data = await res.json();
-    return data.users || [];
-  }
-
   // Load pending documents
   async function loadPendingDocuments() {
     // Placeholder - will be implemented when document verification is added
     return [];
+  }
+
+  // Detect duplicate listings (same landlord, title, location, price)
+  function detectDuplicates(items) {
+    const duplicateGroups = [];
+    const processed = new Set();
+    
+    items.forEach((item, index) => {
+      if (processed.has(item.id)) return;
+      
+      const duplicates = [item.id];
+      const itemLocation = (item.location || item.estateSuburb || item.coverageArea || '').toLowerCase().trim();
+      const itemPrice = item.price || item.rentKes || item.priceKes || 0;
+      const itemLandlord = item.landlordId || item.providerId || item.sellerId || '';
+      const itemTitle = (item.title || '').toLowerCase().trim();
+      
+      // Find other items with same landlord, title, location, and similar price
+      for (let i = index + 1; i < items.length; i++) {
+        const other = items[i];
+        if (processed.has(other.id)) continue;
+        
+        const otherLocation = (other.location || other.estateSuburb || other.coverageArea || '').toLowerCase().trim();
+        const otherPrice = other.price || other.rentKes || other.priceKes || 0;
+        const otherLandlord = other.landlordId || other.providerId || other.sellerId || '';
+        const otherTitle = (other.title || '').toLowerCase().trim();
+        
+        // Check if it's a duplicate
+        const sameLandlord = itemLandlord && itemLandlord === otherLandlord;
+        const sameTitle = itemTitle === otherTitle;
+        const sameLocation = itemLocation && itemLocation === otherLocation;
+        const similarPrice = Math.abs(itemPrice - otherPrice) < 500; // Within KSh 500
+        
+        if (sameLandlord && sameTitle && sameLocation && similarPrice) {
+          duplicates.push(other.id);
+          processed.add(other.id);
+        }
+      }
+      
+      if (duplicates.length > 1) {
+        duplicateGroups.push(duplicates);
+        duplicates.forEach(id => processed.add(id));
+      }
+    });
+    
+    return duplicateGroups;
   }
 
   // Load recently approved
@@ -215,78 +245,6 @@ const AdminVerification = (() => {
             </div>
           </div>
         `}).join('')}
-      </div>
-    `;
-  }
-
-  // Render pending users
-  function renderPendingUsers(users) {
-    const verificationContent = document.getElementById('verification-content');
-    
-    if (!users.length) {
-      verificationContent.innerHTML = `
-        <div class="empty-state">
-          <i class="fas fa-user-check"></i>
-          <p>No pending user verifications</p>
-          <small>All users have been verified</small>
-        </div>
-      `;
-      return;
-    }
-
-    verificationContent.innerHTML = `
-      <div class="verification-stats">
-        <div class="stat-box">
-          <i class="fas fa-user-clock"></i>
-          <div>
-            <div class="stat-number">${users.length}</div>
-            <div class="stat-label">Unverified Users</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="table-container">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Phone</th>
-              <th>Role</th>
-              <th>Registered</th>
-              <th>Properties</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${users.map(user => `
-              <tr>
-                <td>
-                  <div class="user-info">
-                    <div class="user-avatar" style="background: ${getRoleColor(user.role)}">${getInitials(user.name)}</div>
-                    <div>
-                      <div class="user-name">${escapeHtml(user.name)}</div>
-                      <div class="user-id">#${user.id.slice(0, 8)}</div>
-                    </div>
-                  </div>
-                </td>
-                <td>${user.phone}</td>
-                <td><span class="badge badge-${user.role}">${formatRole(user.role)}</span></td>
-                <td>${formatDate(user.createdAt)}</td>
-                <td>${user.propertyCount || 0}</td>
-                <td>
-                  <div class="action-buttons-group">
-                    <button class="btn-icon" onclick="AdminUsers.viewUserDetail('${user.id}')" title="View">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn-icon btn-success" onclick="AdminVerification.verifyUser('${user.id}')" title="Verify">
-                      <i class="fas fa-check"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
       </div>
     `;
   }
@@ -819,30 +777,6 @@ const AdminVerification = (() => {
     }
   }
 
-  // Verify user
-  async function verifyUser(userId) {
-    if (!confirm('Mark this user as verified?')) return;
-
-    try {
-      const res = await fetch(`${API_BASE}/api/admin/users/${userId}/toggle-verify`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!res.ok) throw new Error('Failed to verify user');
-      
-      showToast('User verified successfully', 'success');
-      await loadVerificationItems();
-      
-    } catch (error) {
-      console.error('Error verifying user:', error);
-      alert('Failed to verify user: ' + error.message);
-    }
-  }
-
   // Utility functions
   function extractImageUrl(img) {
     if (!img) return '';
@@ -916,8 +850,7 @@ const AdminVerification = (() => {
     quickApprove,
     quickReject,
     _confirmReject,
-    deleteListing,
-    verifyUser
+    deleteListing
   };
 })();
 

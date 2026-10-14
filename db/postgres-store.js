@@ -339,6 +339,13 @@ class PostgreSQLStore {
     return this.sanitizeUser(user);
   }
 
+  async storeOTP(phone, otp, purpose = 'verification') {
+    if (!this.isConnected) {
+      return this.fallbackStore.storeOTP(phone, otp, purpose);
+    }
+    return this.fallbackStore.storeOTP(phone, otp, purpose);
+  }
+
   async getUserById(id) {
     if (!this.isConnected) {
       return this.fallbackStore.getUserById(id);

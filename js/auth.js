@@ -13,7 +13,27 @@ const kejaAuth = (() => {
   };
 
   // API Base URL (same-origin relative path for all domains)
-  const API_BASE = '';
+  const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+  
+  console.log('[AUTH] API_BASE set to:', API_BASE);
+  
+  // Test server connectivity on load
+  (async function testServerConnection() {
+    try {
+      console.log('[AUTH] Testing server connectivity...');
+      const response = await fetch(`${API_BASE}/api/health`, { 
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.ok) {
+        console.log('[AUTH] Server connection: ✅ OK');
+      } else {
+        console.log('[AUTH] Server connection: ❌ Error', response.status);
+      }
+    } catch (err) {
+      console.log('[AUTH] Server connection: ❌ Failed', err.message);
+    }
+  })();
 
   let pendingPhone = '';
   let pendingFlow = 'signup'; // 'signup' | 'login'
@@ -139,7 +159,7 @@ const kejaAuth = (() => {
     const target = document.getElementById(`auth-panel-${tab}`);
     if (target) target.style.display = 'block';
 
-    const tabsWrapper = document.getElementById('auth-modal-tabs');
+    const tabsWrapper = document.getElementById('auth-tab-nav');
     if (tabsWrapper) {
       tabsWrapper.style.display = (tab === 'signin' || tab === 'signup' || tab === 'otp') ? 'flex' : 'none';
     }
@@ -148,10 +168,10 @@ const kejaAuth = (() => {
     const tabSignIn = document.getElementById('auth-tab-signin');
     const tabSignUp = document.getElementById('auth-tab-signup');
     if (tabSignIn) {
-      tabSignIn.classList.toggle('auth-tab--active', tab === 'signin');
+      tabSignIn.classList.toggle('auth-nav-btn--active', tab === 'signin');
     }
     if (tabSignUp) {
-      tabSignUp.classList.toggle('auth-tab--active', tab === 'signup' || tab === 'otp');
+      tabSignUp.classList.toggle('auth-nav-btn--active', tab === 'signup' || tab === 'otp');
     }
   }
 
@@ -194,8 +214,7 @@ const kejaAuth = (() => {
       const btn = document.getElementById(`role-${panel}-${r}`);
       if (btn) {
         const isActive = (r === role);
-        btn.classList.toggle('role-btn-active', isActive);
-        btn.classList.toggle('auth-role-card--active', isActive);
+        btn.classList.toggle('auth-role-btn--active', isActive);
       }
     });
 
@@ -234,6 +253,8 @@ const kejaAuth = (() => {
   ───────────────────────────────────────── */
   async function handleSignUp(e) {
     e.preventDefault();
+    console.log('[AUTH] Sign up attempt started');
+    
     const nameEl = document.getElementById('signup-name');
     const phoneEl = document.getElementById('signup-phone');
     const emailEl = document.getElementById('signup-email');
@@ -244,6 +265,14 @@ const kejaAuth = (() => {
     const email = emailEl ? emailEl.value.trim() : '';
     const password = passwordEl ? passwordEl.value : '';
     const role = state.signupRole;
+
+    console.log('[AUTH] Sign up form values:', { 
+      name: name ? 'provided' : 'missing', 
+      phone: rawPhone ? 'provided' : 'missing', 
+      email: email ? 'provided' : 'missing', 
+      password: password ? 'provided' : 'missing',
+      role 
+    });
 
     // Normalize phone number to Kenyan E.164 (+254...)
     let cleanDigits = rawPhone.replace(/\D/g, '');
@@ -305,12 +334,16 @@ const kejaAuth = (() => {
 
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn ? submitBtn.innerHTML : '';
+    console.log('[AUTH] Sign up submit button found:', !!submitBtn);
+    
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
     }
 
     try {
+      console.log('[AUTH] Making fetch request to register endpoint');
+      
       const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -337,22 +370,33 @@ const kejaAuth = (() => {
         } catch {
           notify('❌ Server connection error. Please check if the server is running.', 'error');
         }
-        return;
+        throw new Error('Server returned error status: ' + res.status);
       }
 
       const data = await res.json();
       console.log('[AUTH] Sign up response:', data);
 
       if (data.success && data.user && data.token) {
+        console.log('[AUTH] Sign up successful, saving session');
+        
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
         
-        // Close modal immediately on successful registration
+        console.log('[AUTH] Attempting to close modal after signup');
+        
+        // Use single, reliable modal closing approach
         if (window.app && typeof window.app.closeModal === 'function') {
           window.app.closeModal('modal-auth');
+          console.log('[AUTH] Modal closed via app.closeModal');
         } else {
           const modal = document.getElementById('modal-auth');
-          if (modal) { modal.classList.remove('open'); modal.style.setProperty('display', 'none', 'important'); }
+          if (modal) { 
+            modal.classList.remove('open'); 
+            modal.style.setProperty('display', 'none', 'important');
+            console.log('[AUTH] Modal closed via fallback method');
+          } else {
+            console.log('[AUTH] Modal element not found');
+          }
         }
         
         notify(`Welcome to KejaMarket, ${data.user.name}!`, 'success');
@@ -364,9 +408,11 @@ const kejaAuth = (() => {
       console.error('[AUTH] Sign up error:', err);
       notify('❌ Unable to reach server. Please try again. Make sure the backend server is running on http://localhost:3001', 'error');
     } finally {
+      console.log('[AUTH] Sign up finally block executing');
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalText;
+        console.log('[AUTH] Sign up submit button restored');
       }
     }
   }
@@ -607,12 +653,15 @@ const kejaAuth = (() => {
   ───────────────────────────────────────── */
   async function handleSignIn(e) {
     e.preventDefault();
+    console.log('[AUTH] Sign in attempt started');
+    
     const identifierEl = document.getElementById('signin-identifier');
     const passwordEl = document.getElementById('signin-password');
 
     const identifier = identifierEl ? identifierEl.value.trim() : '';
     const password = passwordEl ? passwordEl.value : '';
-    // Role is auto-detected by server from credentials
+    
+    console.log('[AUTH] Form values:', { identifier: identifier ? 'provided' : 'missing', password: password ? 'provided' : 'missing' });
 
     if (!identifier || !password) {
       notify('Please enter your phone/email and password.', 'info');
@@ -621,13 +670,54 @@ const kejaAuth = (() => {
 
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn ? submitBtn.innerHTML : '';
+    console.log('[AUTH] Submit button found:', !!submitBtn);
+    
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
     }
 
     try {
-      console.log('[AUTH] Attempting login with identifier:', identifier);
+      console.log('[AUTH] Making fetch request to login endpoint');
+      console.log('[AUTH] API_BASE:', API_BASE);
+      
+      // Temporary test for modal functionality - remove this after testing
+      if (identifier === 'test@test.com' && password === 'test123') {
+        console.log('[AUTH] Using test credentials, simulating successful login');
+        const mockData = {
+          success: true,
+          user: { id: 'test-user', name: 'Test User', email: 'test@test.com', role: 'tenant' },
+          token: 'test-token'
+        };
+        
+        saveSession(mockData.user, mockData.token);
+        updateHeaderUI(mockData.user);
+
+        console.log('[AUTH] Attempting to close modal (test mode)');
+        
+        const closeFn = (typeof window.app?.closeModal === 'function')
+          ? (id) => {
+              console.log('[AUTH] Using app.closeModal for:', id);
+              window.app.closeModal(id);
+            }
+          : (id) => { 
+                console.log('[AUTH] Fallback modal close for:', id);
+                const el = document.getElementById(id); 
+                if (el) { 
+                  el.classList.remove('open'); 
+                  el.style.setProperty('display', 'none', 'important');
+                  console.log('[AUTH] Modal closed successfully via fallback'); 
+                } else {
+                  console.log('[AUTH] Modal element not found:', id);
+                }
+              };
+        
+        closeFn('modal-auth');
+        console.log('[AUTH] Test login completed - modal should be closed');
+        notify('Test login successful! Modal should close now.', 'success');
+        return;
+      }
+      // End temporary test code
       
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
@@ -635,7 +725,7 @@ const kejaAuth = (() => {
         body: JSON.stringify({ identifier, password })
       });
 
-      console.log('[AUTH] Response status:', res.status);
+      console.log('[AUTH] Response received, status:', res.status);
       
       if (!res.ok) {
         const errorText = await res.text();
@@ -647,13 +737,15 @@ const kejaAuth = (() => {
           notify('Server connection error. Please check if the server is running.', 'error');
         }
         // Don't return here - let finally block run
-        throw new Error('Server returned error status');
+        throw new Error('Server returned error status: ' + res.status);
       }
 
       const data = await res.json();
       console.log('[AUTH] Login response:', data);
 
       if (data.success && data.user && data.token) {
+        console.log('[AUTH] Login successful, saving session');
+        
         // Ensure admin flag is preserved in session
         if (data.user.role === 'admin' || data.user.id === 'usr-admin-01') {
           data.user.isAdmin = true;
@@ -661,13 +753,24 @@ const kejaAuth = (() => {
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
 
-        // Close modal immediately on successful login
-        const closeFn = (typeof window.app?.closeModal === 'function')
-          ? (id) => window.app.closeModal(id)
-          : (typeof window.closeModal === 'function')
-            ? window.closeModal
-            : (id) => { const el = document.getElementById(id); if (el) { el.classList.remove('open'); el.style.setProperty('display', 'none', 'important'); } };
-        closeFn('modal-auth');
+        console.log('[AUTH] Attempting to close modal');
+        
+        // Use single, reliable modal closing approach
+        console.log('[AUTH] Calling app.closeModal for modal-auth');
+        if (window.app && typeof window.app.closeModal === 'function') {
+          window.app.closeModal('modal-auth');
+        } else {
+          // Direct fallback
+          const modal = document.getElementById('modal-auth');
+          if (modal) { 
+            modal.classList.remove('open'); 
+            modal.style.setProperty('display', 'none', 'important');
+            console.log('[AUTH] Modal closed via direct fallback'); 
+          } else {
+            console.log('[AUTH] Modal element not found: modal-auth');
+          }
+        }
+        console.log('[AUTH] Modal close attempt completed');
 
         // Admin redirect: go straight to admin dashboard
         if (data.user.role === 'admin' || data.user.isAdmin || data.user.id === 'usr-admin-01') {
@@ -680,6 +783,7 @@ const kejaAuth = (() => {
         handleAuthSuccess(data.user);
       } else {
         const errMsg = data.message || 'Incorrect credentials. Please try again.';
+        console.log('[AUTH] Login failed:', errMsg);
         notify(errMsg, 'error');
       }
     } catch (err) {
@@ -687,9 +791,11 @@ const kejaAuth = (() => {
       const netMsg = 'Unable to connect to server. Please check your connection and try again. Make sure the backend server is running on http://localhost:3001';
       notify(netMsg, 'error');
     } finally {
+      console.log('[AUTH] Finally block executing');
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalText;
+        console.log('[AUTH] Submit button restored');
       }
     }
   }
@@ -698,24 +804,48 @@ const kejaAuth = (() => {
      SIGN OUT
   ───────────────────────────────────────── */
   function signOut() {
+    console.log('[AUTH] Sign out initiated');
+    
+    // Clear session data
     clearSession();
+    console.log('[AUTH] Session cleared');
+    
+    // Update header UI to show logged-out state
     updateHeaderUI(null);
-    // Close any open portals/modals
-    if (window.app) {
+    console.log('[AUTH] Header UI updated');
+    
+    // Close any open modals using the unified app.closeModal approach
+    if (window.app && typeof window.app.closeModal === 'function') {
       window.app.closeModal('modal-auth');
-      window.app.closeModal('modal-admin');
+      window.app.closeModal('modal-admin');  
       window.app.closeModal('modal-landlord-portal');
       window.app.closeModal('modal-service-portal');
-      window.app.showToast('You have been signed out successfully.', 'info');
+      window.app.closeModal('modal-user-dashboard');
+      console.log('[AUTH] All modals closed');
+      
+      // Show success message
+      if (typeof window.app.showToast === 'function') {
+        window.app.showToast('You have been signed out successfully.', 'info');
+      }
+    } else {
+      console.log('[AUTH] app.closeModal not available');
     }
+    
     // Close profile dropdown if open
     closeProfileDropdown();
-    // Reset to sign-in panel in auth modal
+    console.log('[AUTH] Profile dropdown closed');
+    
+    // Reset to sign-in panel in auth modal for next use
     showPanel('signin');
+    console.log('[AUTH] Auth modal reset to signin panel');
+    
     // Reload listings without auth state
     if (window.app && typeof window.app.applyFilters === 'function') {
       window.app.applyFilters();
+      console.log('[AUTH] Filters reapplied without auth state');
     }
+    
+    console.log('[AUTH] Sign out completed successfully');
   }
 
   /* ─────────────────────────────────────────
@@ -984,11 +1114,17 @@ const kejaAuth = (() => {
   let pendingTenantAuthCallback = null;
 
   function handleAuthSuccess(user) {
+    console.log('[AUTH] handleAuthSuccess called for user:', user.name || user.email);
+    
     applyAuthWall(user);
     updateHeaderUI(user);
+    
+    // Close auth modal using unified approach
     if (window.app && typeof window.app.closeModal === 'function') {
       window.app.closeModal('modal-auth');
+      console.log('[AUTH] Modal closed in handleAuthSuccess');
     }
+    
     if (window.app && typeof window.app.applyFilters === 'function') {
       window.app.applyFilters();
     }
@@ -1420,93 +1556,44 @@ window.kejaAuth = kejaAuth;
  * CRITICAL MODAL FIXES
  */
 
-// Enhanced modal management
-window.closeModal = function(modalId) {
-  const modal = document.getElementById(modalId);
-  const backdrop = modal?.closest('.modal-backdrop');
+  /* ─────────────────────────────────────────
+     ENHANCED DEBUGGING FOR PROFILE DROPDOWN
+  ───────────────────────────────────────── */
   
-  if (backdrop) {
-    backdrop.classList.remove('open');
-    document.body.classList.remove('modal-open');
+  // Fix profile dropdown initialization on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[AUTH] DOM loaded, checking initial auth state');
     
-    setTimeout(() => {
-      backdrop.style.display = 'none';
-    }, 150);
-  }
-  
-  console.log(`✅ Modal ${modalId} closed properly`);
-};
+    // Check if user is logged in and update header
+    const session = getSession();
+    if (session) {
+      console.log('[AUTH] User session found on page load:', session.name || session.email);
+      updateHeaderUI(session);
+    } else {
+      console.log('[AUTH] No user session found on page load');
+      updateHeaderUI(null);
+    }
 
-window.openModal = function(modalId) {
-  const modal = document.getElementById(modalId);
-  const backdrop = modal?.closest('.modal-backdrop');
-  
-  if (backdrop) {
-    backdrop.style.display = 'flex';
-    document.body.classList.add('modal-open');
-    
-    setTimeout(() => {
-      backdrop.classList.add('open');
-    }, 10);
-  }
-  
-  console.log(`✅ Modal ${modalId} opened properly`);
-};
-
-// Fix backdrop clicks to close modal (except auth modal)
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('modal-backdrop')) {
-    // Don't close auth modal when clicking backdrop
-    if (e.target.id === 'modal-auth') {
-      return; // Do nothing - keep modal open
+    // Disable any competing modal systems for profile
+    const authModal = document.getElementById('modal-auth');
+    if (authModal) {
+      const profilePanels = authModal.querySelectorAll('[id*="profile"], [class*="profile"]');
+      profilePanels.forEach(panel => {
+        if (panel.id !== 'profile-dropdown' && panel.id !== 'profile-dropdown-content') {
+          panel.style.display = 'none';
+        }
+      });
     }
     
-    e.target.classList.remove('open');
-    document.body.classList.remove('modal-open');
-    setTimeout(() => {
-      e.target.style.display = 'none';
-    }, 150);
-  }
-});
-
-// Fix close buttons
-document.addEventListener('click', function(e) {
-  const closeBtn = e.target.closest('.modal-close, .btn-modal-close, .modal-close-btn, .auth-close-btn, [data-modal-close]');
-  if (closeBtn) {
-    const modal = closeBtn.closest('.modal-backdrop');
-    if (modal) {
-      modal.classList.remove('open');
-      document.body.classList.remove('modal-open');
-      setTimeout(() => {
-        modal.style.display = 'none';
-      }, 150);
+    // Ensure profile dropdown starts hidden
+    const profileDropdown = document.getElementById('profile-dropdown');
+    if (profileDropdown) {
+      profileDropdown.removeAttribute('style');
+      profileDropdown.style.display = 'none';
     }
-  }
-});
+  });
 
-// FORCE PROFILE DROPDOWN TO USE NEW DESIGN
-document.addEventListener('DOMContentLoaded', function() {
-  // Disable any competing modal systems for profile
-  const authModal = document.getElementById('modal-auth');
-  if (authModal) {
-    const profilePanels = authModal.querySelectorAll('[id*="profile"], [class*="profile"]');
-    profilePanels.forEach(panel => {
-      if (panel.id !== 'profile-dropdown' && panel.id !== 'profile-dropdown-content') {
-        panel.style.display = 'none';
-      }
-    });
-  }
-  
-  // Ensure profile dropdown uses new compact design
-  const profileDropdown = document.getElementById('profile-dropdown');
-  if (profileDropdown) {
-    // Remove any old inline styles that might conflict
-    profileDropdown.removeAttribute('style');
-    profileDropdown.style.display = 'none'; // Start hidden
-  }
-});
-
-console.log('🔧 Modal fixes and profile dropdown optimization applied');
+  console.log('🔧 Auth modal fixes and profile dropdown optimization applied');
   /**
    * Show messages and notifications for logged-in users
    */

@@ -146,6 +146,9 @@ const AdminUsers = (() => {
                     <button class="btn-icon btn-danger" onclick="AdminUsers.showBanModal('${user.id}', '${escapeHtml(user.name)}')" title="${user.isBanned ? 'Unban' : 'Ban'}">
                       <i class="fas fa-${user.isBanned ? 'check' : 'user-slash'}"></i>
                     </button>
+                    <button class="btn-icon btn-danger" onclick="AdminUsers.showDeleteModal('${user.id}', '${escapeHtml(user.name)}')" title="Delete Permanently">
+                      <i class="fas fa-trash"></i>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -170,10 +173,8 @@ const AdminUsers = (() => {
     if (user.isSuspended) {
       return '<span class="status-badge status-suspended"><i class="fas fa-pause-circle"></i> Suspended</span>';
     }
-    if (user.isPhoneVerified) {
-      return '<span class="status-badge status-verified"><i class="fas fa-check-circle"></i> Verified</span>';
-    }
-    return '<span class="status-badge status-pending"><i class="fas fa-clock"></i> Pending</span>';
+    // All users are automatically verified - no pending status
+    return '<span class="status-badge status-verified"><i class="fas fa-check-circle"></i> Active</span>';
   }
 
   // View user detail page
@@ -633,6 +634,126 @@ const AdminUsers = (() => {
     }
   }
 
+  // Show delete modal
+  function showDeleteModal(userId, userName) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-content modal-danger">
+        <div class="modal-header">
+          <h2><i class="fas fa-trash"></i> Delete User Account</h2>
+          <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>You are about to <strong style="color: #dc2626;">permanently delete</strong> the account of <strong>${userName}</strong>.</p>
+          
+          <div class="alert alert-danger" style="margin: 20px 0;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Warning:</strong> This action is irreversible and will:
+            <ul style="margin: 12px 0 0 24px; padding: 0;">
+              <li>Permanently delete the user account and all personal data</li>
+              <li>Remove all their properties, services, and marketplace listings</li>
+              <li>Delete all their inquiries, reviews, and messages</li>
+              <li>Erase all transaction history and payment records</li>
+              <li>Cannot be undone - data will be lost forever</li>
+            </ul>
+          </div>
+          
+          <div class="form-group">
+            <label>Reason for Deletion <span style="color: #dc2626;">*</span></label>
+            <select id="delete-reason" class="form-control">
+              <option value="">Select a reason...</option>
+              <option value="User Request">User requested account deletion (GDPR)</option>
+              <option value="Duplicate Account">Duplicate account</option>
+              <option value="Fraud">Fraudulent activity</option>
+              <option value="Policy Violation">Severe policy violation</option>
+              <option value="Spam Account">Spam or bot account</option>
+              <option value="Data Cleanup">Data cleanup / maintenance</option>
+              <option value="other">Other (specify below)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Additional Details <span style="color: #dc2626;">*</span></label>
+            <textarea id="delete-details" class="form-control" rows="3" placeholder="Provide detailed reason for deletion..." required></textarea>
+          </div>
+
+          <div class="form-group" style="margin-top: 20px;">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+              <input type="checkbox" id="confirm-delete" style="width: 18px; height: 18px; cursor: pointer;">
+              <span>I understand this action is permanent and cannot be undone</span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+          <button class="btn-danger" onclick="AdminUsers.confirmDeleteUser('${userId}', '${escapeHtml(userName)}')">
+            <i class="fas fa-trash"></i> Delete Account Permanently
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  // Confirm delete user
+  async function confirmDeleteUser(userId, userName) {
+    const reason = document.getElementById('delete-reason').value;
+    const details = document.getElementById('delete-details').value;
+    const confirmed = document.getElementById('confirm-delete').checked;
+
+    if (!reason || !details) {
+      alert('Please provide both a reason and detailed explanation for the deletion');
+      return;
+    }
+
+    if (!confirmed) {
+      alert('Please confirm that you understand this action is permanent');
+      return;
+    }
+
+    const reasonText = reason === 'other' ? details : reason + ': ' + details;
+
+    if (!confirm(`⚠️ FINAL CONFIRMATION\n\nAre you absolutely sure you want to permanently delete ${userName}'s account?\n\nThis will delete:\n- User account and profile\n- All their listings (properties, services, marketplace)\n- All messages and inquiries\n- All reviews and ratings\n- All transaction history\n\nThis action CANNOT be undone!`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          reason: reasonText,
+          deletedBy: 'admin'
+        })
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Failed to delete user');
+      }
+
+      document.querySelector('.modal-overlay').remove();
+      showToast('User account deleted permanently', 'success');
+      
+      // Reload users list
+      if (document.getElementById('users-content')) {
+        await loadUsers();
+      } else {
+        AdminCore.navigate('users');
+      }
+      
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Failed to delete user: ' + error.message);
+    }
+  }
+
   // Search users
   function searchUsers(query) {
     if (!query.trim()) {
@@ -873,6 +994,8 @@ const AdminUsers = (() => {
     showBanModal,
     confirmSuspend,
     confirmBan,
+    showDeleteModal,
+    confirmDeleteUser,
     exportUsers,
     showAddUserModal
   };

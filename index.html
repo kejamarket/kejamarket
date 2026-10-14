@@ -17,6 +17,298 @@
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
   
+  <!-- Mobile Optimized Layout -->
+  <link rel="stylesheet" href="css/mobile-app.css?v=2.0&t=aggressive-mobile">
+  
+  <!-- Map Styling (OpenStreetMap Compliant) -->
+  <link rel="stylesheet" href="css/map.css?v=1.0">
+  <script>
+    // Force mobile layout detection
+    (function() {
+      const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        document.documentElement.classList.add('mobile-view');
+        document.body.classList.add('mobile-layout');
+        
+        // Force show mobile elements immediately
+        const mobileElements = document.querySelectorAll('.mobile-header, .mobile-search-bar, .mobile-bottom-nav');
+        mobileElements.forEach(el => {
+          if (el) {
+            el.style.display = 'flex';
+            el.style.visibility = 'visible';
+            el.style.opacity = '1';
+          }
+        });
+        
+        // Force hide desktop header
+        const desktopElements = document.querySelectorAll('.site-header, .header-container, .category-pills-bar');
+        desktopElements.forEach(el => {
+          if (el) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+          }
+        });
+      }
+    })();
+  </script>
+
+  <!-- IMMEDIATE MOBILE CSS OVERRIDE - INLINE FOR INSTANT EFFECT -->
+  <style>
+    /* DEFAULT: Show mobile elements, hide desktop on mobile screens */
+    @media screen and (max-width: 768px) {
+      
+      /* Show mobile elements by default */
+      .mobile-header,
+      .mobile-search-bar,
+      .mobile-bottom-nav {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: fixed !important;
+        z-index: 9999 !important;
+      }
+      
+      /* NUCLEAR OPTION: Hide all desktop header elements */
+      .site-header,
+      header.site-header,
+      .header-container,
+      .brand-wrapper,
+      .brand-logo,
+      .header-search-wrapper,
+      .header-search-bar,
+      .header-actions,
+      .btn-header-action,
+      .btn-post-ad,
+      .category-pills-bar,
+      .pills-scroll-container,
+      .secondary-nav,
+      .top-notice-bar {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        width: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        left: -99999px !important;
+        top: -99999px !important;
+        z-index: -1 !important;
+      }
+      
+      /* Mobile header styling */
+      .mobile-header {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 60px !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #e5e7eb !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 12px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      
+      .mobile-header-logo {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        flex: 1 !important;
+      }
+      
+      .mobile-header-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+      }
+      
+      .mobile-header-btn {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 50% !important;
+        background: transparent !important;
+        border: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+      }
+      
+      .mobile-header-btn i {
+        font-size: 22px !important;
+        color: #1f2937 !important;
+      }
+      
+      /* Mobile search bar */
+      .mobile-search-bar {
+        top: 60px !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: #ffffff !important;
+        padding: 10px 12px !important;
+        border-bottom: 1px solid #e5e7eb !important;
+        z-index: 9998 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      
+      .mobile-search-input {
+        width: 100% !important;
+        height: 48px !important;
+        background: #f3f4f6 !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 24px !important;
+        padding: 0 50px 0 46px !important;
+        font-size: 15px !important;
+        color: #1f2937 !important;
+        outline: none !important;
+        box-sizing: border-box !important;
+      }
+      
+      .mobile-search-icon {
+        position: absolute !important;
+        left: 28px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        color: #6b7280 !important;
+        font-size: 18px !important;
+        pointer-events: none !important;
+      }
+      
+      /* Mobile bottom nav */
+      .mobile-bottom-nav {
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 68px !important;
+        background: #ffffff !important;
+        border-top: 1px solid #e5e7eb !important;
+        align-items: center !important;
+        justify-content: space-around !important;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      
+      .mobile-nav-item {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        padding: 10px 8px !important;
+        min-height: 60px !important;
+        text-decoration: none !important;
+        color: #6b7280 !important;
+        cursor: pointer !important;
+        border: none !important;
+        background: transparent !important;
+        position: relative !important;
+      }
+      
+      .mobile-nav-item i {
+        font-size: 24px !important;
+        color: #6b7280 !important;
+      }
+      
+      .mobile-nav-item span {
+        font-size: 11px !important;
+        font-weight: 600 !important;
+      }
+      
+      .mobile-nav-item.active,
+      .mobile-nav-item.mobile-nav-item--active {
+        color: #00b53f !important;
+      }
+      
+      .mobile-nav-item.active i,
+      .mobile-nav-item.mobile-nav-item--active i {
+        color: #00b53f !important;
+        transform: scale(1.1) !important;
+      }
+      
+      /* Center Post Button */
+      .mobile-nav-post-btn {
+        width: 56px !important;
+        height: 56px !important;
+        background: linear-gradient(135deg, #00b53f, #009634) !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: absolute !important;
+        top: -24px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        box-shadow: 0 6px 16px rgba(0, 181, 63, 0.4) !important;
+        border: 4px solid #ffffff !important;
+      }
+      
+      .mobile-nav-post-btn i {
+        color: #ffffff !important;
+        font-size: 26px !important;
+      }
+      
+      /* Force mobile body spacing */
+      body {
+        padding-top: 120px !important;
+        padding-bottom: 80px !important;
+        overflow-x: hidden !important;
+      }
+      
+      /* Hide sidebar on mobile */
+      .sidebar-filters {
+        display: none !important;
+      }
+      
+      /* Main layout single column */
+      .main-app-layout {
+        display: block !important;
+        grid-template-columns: none !important;
+        padding: 16px 12px !important;
+        width: 100% !important;
+      }
+      
+      /* Property grid 2 columns */
+      .property-listings-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+      }
+      
+      /* Single column on very small phones */
+      @media (max-width: 400px) {
+        .property-listings-grid {
+          grid-template-columns: 1fr !important;
+          gap: 16px !important;
+        }
+      }
+    }
+    
+    /* Show mobile elements by default on mobile screens */
+    @media screen and (max-width: 768px) {
+      .mobile-header { display: flex !important; }
+      .mobile-search-bar { display: flex !important; }  
+      .mobile-bottom-nav { display: flex !important; }
+    }
+    
+    /* Hide mobile elements on desktop */
+    @media screen and (min-width: 769px) {
+      .mobile-header,
+      .mobile-search-bar,
+      .mobile-bottom-nav {
+        display: none !important;
+      }
+    }
+  </style>
+
 </head>
 <body>
 
@@ -238,6 +530,54 @@
 
   <!-- Page content will be recreated to match reference exactly -->
 
+  <!-- ================================================================
+       MOBILE HEADER (Fixed top, shows only on mobile ≤768px)
+       ================================================================ -->
+  <header class="mobile-header" id="mobile-header">
+    <button type="button" class="mobile-header-btn" id="mobile-menu-btn" onclick="app.toggleMobileFilters()" aria-label="Open filters menu">
+      <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="mobile-header-logo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#008744" stroke="#005a2b" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M38 82V56H58V82H38Z" fill="#ffffff"/>
+        <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2b"/>
+        <circle cx="48" cy="21" r="4.5" fill="#ffffff"/>
+      </svg>
+      <span style="font-weight: 800; font-size: 18px;"><span style="color: #008744;">Keja</span><span style="color: #e52b2b;">Market</span></span>
+    </div>
+    
+    <div class="mobile-header-actions">
+      <button type="button" class="mobile-header-btn" id="mobile-notifications-btn" onclick="app.openNotifications()" aria-label="Notifications">
+        <i class="far fa-bell"></i>
+        <span class="mobile-notif-badge" id="mobile-notif-badge" style="display: none;">0</span>
+      </button>
+      <button type="button" class="mobile-header-btn" id="mobile-account-btn" onclick="app.openMobileAccountModal()" aria-label="Account">
+        <i class="far fa-user-circle"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================================================================
+       MOBILE SEARCH BAR (Fixed below mobile header)
+       ================================================================ -->
+  <div class="mobile-search-bar" id="mobile-search-bar">
+    <div style="position: relative; width: 100%;">
+      <i class="mobile-search-icon fas fa-search"></i>
+      <input 
+        type="text" 
+        class="mobile-search-input" 
+        id="mobile-search-input"
+        placeholder="Search estates, areas, properties..." 
+        autocomplete="off"
+        oninput="app.handleMobileSearch(this.value)"
+      >
+      <button type="button" id="mobile-search-filter-btn" class="mobile-search-filter-btn" onclick="app.openLocationPicker('mobile', event)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #00b53f; font-size: 20px; padding: 4px;">
+        <i class="fas fa-map-marker-alt"></i>
+      </button>
+    </div>
+  </div>
 
   <!-- Main Site Header -->
   <!-- Main Site Header (Matches reference image) -->
@@ -315,7 +655,7 @@
 
         <!-- User account pill: KejaMarket ▾ -->
         <div style="position:relative; flex-shrink:0; z-index:10000;">
-          <button class="btn-header-account-pill" id="btn-auth-header" onclick="kejaAuth.toggleProfileDropdown()">
+          <button class="btn-header-account-pill" id="btn-auth-header" onclick="authModal.open()">>
             <div class="header-account-avatar">
               <i class="fas fa-user"></i>
             </div>
@@ -413,19 +753,19 @@
         <div class="filter-accordion-body" style="display:block;">
           <div class="filter-checklist-box" id="property-type-checklist-container">
             <label class="filter-check-item property-type-bnb"><input type="checkbox" class="prop-type-checkbox" value="Bnb (Short Stay)" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-umbrella-beach"></i></span><span class="item-label">Bnb (Short Stay)</span></label>
-            <label class="filter-check-item property-type-single"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">Single Room</span></label>
+            <label class="filter-check-item property-type-single"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #f97316;"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">Single Room</span></label>
             <div id="property-type-more-items" class="property-type-collapsed">
-              <label class="filter-check-item property-type-double"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
-              <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
-              <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
-              <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
-              <label class="filter-check-item property-type-3bed"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
-              <label class="filter-check-item property-type-4bed"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
-              <label class="filter-check-item property-type-townhouse"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
-              <label class="filter-check-item property-type-villa"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa</span></label>
-              <label class="filter-check-item property-type-apartment"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">Apartment</span></label>
-              <label class="filter-check-item property-type-bungalow"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
-              <label class="filter-check-item property-type-studio"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
+              <label class="filter-check-item property-type-double"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #fb923c;"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
+              <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #ef4444;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
+              <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #eab308;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
+              <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00b53f;"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
+              <label class="filter-check-item property-type-3bed"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #14b8a6;"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
+              <label class="filter-check-item property-type-4bed"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #3b82f6;"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
+              <label class="filter-check-item property-type-townhouse"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #8b5cf6;"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
+              <label class="filter-check-item property-type-villa"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #ec4899;"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa</span></label>
+              <label class="filter-check-item property-type-apartment"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #06b6d4;"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">Apartment</span></label>
+              <label class="filter-check-item property-type-bungalow"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #84cc16;"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
+              <label class="filter-check-item property-type-studio"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #f43f5e;"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
             </div>
           </div>
           <button type="button" class="btn-toggle-property-types" id="btn-toggle-property-types" onclick="app.togglePropertyTypeExpansion && app.togglePropertyTypeExpansion()">
@@ -2484,54 +2824,120 @@
 
 
   <!-- ====================================================================
-       AUTH MODAL: Sign In / Sign Up
+       REBUILT AUTH MODAL: Clean Split-Screen Design
        ==================================================================== -->
-  <div class="modal-backdrop" id="modal-auth" style="z-index: 2500;">
-    <div class="modal-dialog auth-modal-dialog">
-
-      <!-- Modal Header with logo + tabs -->
-      <div class="auth-modal-header">
-        <div class="auth-header-brand">
-          <img src="/icons/favicon-32x32.png" alt="KejaMarket" class="auth-header-logo">
-          <span class="auth-header-name">KejaMarket</span>
-        </div>
-        <button class="modal-close-btn auth-close-btn" onclick="app.closeModal('modal-auth')">&times;</button>
-      </div>
-
-      <div class="auth-modal-tabs" id="auth-modal-tabs">
-        <button type="button" id="auth-tab-signin" class="auth-tab auth-tab--active" onclick="kejaAuth.switchTab('signin')">Sign In</button>
-        <button type="button" id="auth-tab-signup" class="auth-tab" onclick="kejaAuth.switchTab('signup')">Sign Up</button>
-      </div>
-
-      <div class="modal-body auth-modal-body">
-
-        <!-- SIGN IN PANEL -->
-        <div id="auth-panel-signin">
-          <p class="auth-subtitle">Sign in to your account to continue</p>
-          <p style="font-size:0.82rem;color:#64748b;margin-bottom:14px;text-align:center;"><i class="fas fa-shield-alt" style="color:#00b53f;margin-right:4px;"></i>We'll automatically detect your account type.</p>
-          <form id="form-signin-password" onsubmit="kejaAuth.handleSignIn(event)">
-            <div class="form-group">
-              <label>Phone Number or Email</label>
-              <div class="input-icon-wrap">
-                <i class="fas fa-phone-alt input-icon"></i>
-                <input type="text" id="signin-identifier" class="form-control form-control--icon" placeholder="e.g. +254 712 345 678 or name@email.com" required autofocus>
+  <div class="modal-backdrop" id="modal-auth">
+    <div class="auth-container">
+      
+      <!-- Left Panel: Property Showcase -->
+      <div class="auth-left">
+        <div class="auth-close" onclick="authModal.close()">&times;</div>
+        
+        <div class="auth-content">
+          <div class="auth-logo">
+            <img src="/icons/favicon-32x32.png" alt="KejaMarket">
+            <h1>KejaMarket</h1>
+          </div>
+          
+          <div class="auth-hero">
+            <h2>Find Your Perfect Home</h2>
+            <p>Join thousands discovering amazing rental properties across Kenya.</p>
+            
+            <div class="auth-features">
+              <div class="feature">
+                <i class="fas fa-search"></i>
+                <span>Advanced Search</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-map"></i>
+                <span>Interactive Maps</span>
+              </div>
+              <div class="feature">
+                <i class="fas fa-shield-check"></i>
+                <span>Verified Listings</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Panel: Authentication Forms -->
+      <div class="auth-right">
+        
+        <!-- Tab Navigation -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="signin">Sign In</button>
+          <button class="auth-tab" data-tab="signup">Sign Up</button>
+        </div>
+        
+        <!-- Sign In Form -->
+        <div id="signin-form" class="auth-form active">
+          <div class="form-header">
+            <h3>Welcome back</h3>
+            <p>Sign in to your KejaMarket account</p>
+          </div>
+          
+          <form id="signin-form-element">
+            <div class="form-group">
+              <label>Email or Phone</label>
+              <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="signin-email" placeholder="Enter your email or phone" required>
+              </div>
+            </div>
+            
             <div class="form-group">
               <label>Password</label>
-              <div class="input-icon-wrap">
-                <i class="fas fa-lock input-icon"></i>
-                <input type="password" id="signin-password" class="form-control form-control--icon" placeholder="Enter your password" required style="padding-right:44px;">
-                <button type="button" onclick="kejaAuth.togglePwd('signin-password',this)" class="input-pwd-toggle"><i class="fas fa-eye"></i></button>
+              <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="signin-password" placeholder="Enter your password" required>
+                <button type="button" class="password-toggle" onclick="authModal.togglePassword('signin-password')">
+                  <i class="fas fa-eye"></i>
+                </button>
               </div>
             </div>
-            <div style="text-align:right;margin-bottom:14px;margin-top:-6px;">
-              <a href="#" onclick="kejaAuth.showForgotPassword();return false;" style="color:#2563EB;font-size:0.82rem;font-weight:600;">Forgot password?</a>
+            
+            <div class="form-actions">
+              <a href="#" onclick="authModal.showForgot()">Forgot password?</a>
             </div>
-            <button type="submit" class="btn-auth-submit"><i class="fas fa-sign-in-alt"></i> Sign In</button>
-            <p class="auth-switch-text">Don't have an account? <a href="#" onclick="kejaAuth.switchTab('signup');return false;">Sign Up free</a></p>
+            
+            <button type="submit" class="auth-btn">
+              <i class="fas fa-sign-in-alt"></i>
+              Sign In
+            </button>
+            
+            <div class="form-divider">
+              <span>or</span>
+            </div>
+            
+            <p class="form-switch">
+              Don't have an account? 
+              <a href="#" onclick="authModal.switchTab('signup')">Sign up for free</a>
+            </p>
           </form>
         </div>
+        
+        <!-- Sign Up Form -->
+        <div id="signup-form" class="auth-form">
+          <div class="form-header">
+            <h3>Join KejaMarket</h3>
+            <p>Create your account and start exploring</p>
+          </div>
+          
+          <!-- Role Selection -->
+          <div class="role-selection">
+            <label>I am a:</label>
+            <div class="role-buttons">
+              <button type="button" class="role-btn active" data-role="tenant">
+                <i class="fas fa-user"></i>
+                <span>Tenant</span>
+              </button>
+              <button type="button" class="role-btn" data-role="landlord">
+                <i class="fas fa-home"></i>
+                <span>Landlord</span>
+              </button>
+            </div>
+          </div>
 
         <!-- FORGOT PASSWORD PANEL -->
         <div id="auth-panel-forgot" style="display:none;">
@@ -2575,204 +2981,1545 @@
           </form>
         </div>
 
-        <!-- SIGN UP PANEL -->
-        <div id="auth-panel-signup" style="display:none;">
-          <p class="auth-subtitle">Join KejaMarket and start exploring amazing opportunities.</p>
-          <div class="auth-role-grid auth-role-grid--4" id="signup-role-grid">
-            <button onclick="kejaAuth.setRole('tenant','signup')" id="role-signup-tenant" class="auth-role-card auth-role-card--active">
-              <i class="fas fa-user"></i><span>Tenant / Buyer</span>
-            </button>
-            <button onclick="kejaAuth.setRole('landlord','signup')" id="role-signup-landlord" class="auth-role-card">
-              <i class="fas fa-home"></i><span>Landlord / Caretaker</span>
-            </button>
-            <button onclick="kejaAuth.setRole('agency','signup')" id="role-signup-agency" class="auth-role-card">
-              <i class="fas fa-building"></i><span>Real Estate Agency</span>
-            </button>
-            <button onclick="kejaAuth.setRole('service','signup')" id="role-signup-service" class="auth-role-card">
-              <i class="fas fa-tools"></i><span>Service Provider</span>
-            </button>
-          </div>
-          <form id="form-signup" onsubmit="kejaAuth.handleSignUp(event)">
-            <div class="form-group" id="signup-name-group">
-              <label id="signup-name-label">Full Name</label>
-              <div class="input-icon-wrap">
-                <i class="fas fa-user input-icon"></i>
-                <input type="text" id="signup-name" class="form-control form-control--icon" placeholder="e.g. John Mwangi" required>
+            <!-- SIGN UP PANEL -->
+            <div id="auth-panel-signup" class="auth-form-panel" style="display:none;">
+              <div class="auth-panel-header">
+                <h3>Join KejaMarket</h3>
+                <p>Create your account and start exploring</p>
               </div>
-            </div>
-            <div id="signup-agency-fields" style="display:none;">
-              <div class="form-group">
-                <label>Building / Estate / Agency Name</label>
-                <div class="input-icon-wrap">
-                  <i class="fas fa-building input-icon"></i>
-                  <input type="text" id="signup-agency-name" class="form-control form-control--icon" placeholder="e.g. Sunrise Apartments or HassConsult">
+              
+              <!-- Role Selection -->
+              <div class="auth-role-selection" id="signup-role-grid">
+                <div class="auth-role-label">I am a:</div>
+                <div class="auth-role-buttons">
+                  <button type="button" onclick="kejaAuth.setRole('tenant','signup')" id="role-signup-tenant" class="auth-role-btn auth-role-btn--active">
+                    <i class="fas fa-user"></i>
+                    <span>Tenant</span>
+                  </button>
+                  <button type="button" onclick="kejaAuth.setRole('landlord','signup')" id="role-signup-landlord" class="auth-role-btn">
+                    <i class="fas fa-home"></i>
+                    <span>Landlord</span>
+                  </button>
+                  <button type="button" onclick="kejaAuth.setRole('agency','signup')" id="role-signup-agency" class="auth-role-btn">
+                    <i class="fas fa-building"></i>
+                    <span>Agency</span>
+                  </button>
+                  <button type="button" onclick="kejaAuth.setRole('service','signup')" id="role-signup-service" class="auth-role-btn">
+                    <i class="fas fa-tools"></i>
+                    <span>Service</span>
+                  </button>
                 </div>
               </div>
-              <div class="form-group">
-                <label>Property Location / Area</label>
-                <div class="input-icon-wrap">
-                  <i class="fas fa-map-marker-alt input-icon"></i>
-                  <input type="text" id="signup-agency-location" class="form-control form-control--icon" placeholder="e.g. Roysambu, Nairobi">
+              
+              <form id="form-signup" onsubmit="kejaAuth.handleSignUp(event)" class="auth-form">
+                <div class="auth-input-group" id="signup-name-group">
+                  <label class="auth-label" id="signup-name-label">Full Name</label>
+                  <div class="auth-input-wrapper">
+                    <i class="fas fa-user auth-input-icon"></i>
+                    <input 
+                      type="text" 
+                      id="signup-name" 
+                      class="auth-input" 
+                      placeholder="Enter your full name"
+                      required
+                    >
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div id="signup-service-fields" style="display:none;">
-              <div class="form-group">
-                <label>Service Category</label>
-                <select id="signup-service-category" class="form-control">
-                  <option value="">Select Service Type</option>
-                  <option value="wifi">WiFi / Internet Provider</option>
-                  <option value="movers">Moving and Relocation Services</option>
-                  <option value="laundry">Laundry and Dry Cleaning</option>
-                  <option value="garbage">Garbage Collection and Waste Management</option>
-                  <option value="gas">Gas Refills and Delivery</option>
-                  <option value="water">Water Delivery Services</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Business Name</label>
-                <div class="input-icon-wrap">
-                  <i class="fas fa-briefcase input-icon"></i>
-                  <input type="text" id="signup-service-business" class="form-control form-control--icon" placeholder="e.g. Swift Movers Ltd">
+                
+                <!-- Agency-specific fields -->
+                <div id="signup-agency-fields" style="display:none;">
+                  <div class="auth-input-group">
+                    <label class="auth-label">Agency Name</label>
+                    <div class="auth-input-wrapper">
+                      <i class="fas fa-building auth-input-icon"></i>
+                      <input 
+                        type="text" 
+                        id="signup-agency-name" 
+                        class="auth-input" 
+                        placeholder="e.g. HassConsult or Sunrise Apartments"
+                      >
+                    </div>
+                  </div>
+                  <div class="auth-input-group">
+                    <label class="auth-label">Location</label>
+                    <div class="auth-input-wrapper">
+                      <i class="fas fa-map-marker-alt auth-input-icon"></i>
+                      <input 
+                        type="text" 
+                        id="signup-agency-location" 
+                        class="auth-input" 
+                        placeholder="e.g. Roysambu, Nairobi"
+                      >
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label>Service Areas</label>
-                <div class="input-icon-wrap">
-                  <i class="fas fa-map-marked-alt input-icon"></i>
-                  <input type="text" id="signup-service-areas" class="form-control form-control--icon" placeholder="e.g. Nairobi, Kiambu, Machakos">
+                
+                <!-- Service provider fields -->
+                <div id="signup-service-fields" style="display:none;">
+                  <div class="auth-input-group">
+                    <label class="auth-label">Service Category</label>
+                    <select id="signup-service-category" class="auth-input">
+                      <option value="">Select Service Type</option>
+                      <option value="wifi">WiFi / Internet Provider</option>
+                      <option value="movers">Moving and Relocation Services</option>
+                      <option value="laundry">Laundry and Dry Cleaning</option>
+                      <option value="garbage">Garbage Collection and Waste Management</option>
+                      <option value="gas">Gas Refills and Delivery</option>
+                      <option value="water">Water Delivery Services</option>
+                    </select>
+                  </div>
+                  <div class="auth-input-group">
+                    <label class="auth-label">Business Name</label>
+                    <div class="auth-input-wrapper">
+                      <i class="fas fa-briefcase auth-input-icon"></i>
+                      <input 
+                        type="text" 
+                        id="signup-service-business" 
+                        class="auth-input" 
+                        placeholder="e.g. Swift Movers Ltd"
+                      >
+                    </div>
+                  </div>
+                  <div class="auth-input-group">
+                    <label class="auth-label">Service Areas</label>
+                    <div class="auth-input-wrapper">
+                      <i class="fas fa-map-marked-alt auth-input-icon"></i>
+                      <input 
+                        type="text" 
+                        id="signup-service-areas" 
+                        class="auth-input" 
+                        placeholder="e.g. Nairobi, Kiambu, Machakos"
+                      >
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Phone Number</label>
-              <div class="input-prefix-wrap">
-                <span class="phone-prefix-tag"><span>🇰🇪</span> <span>+254</span></span>
-                <input type="tel" id="signup-phone" class="form-control form-control--prefix" placeholder="712 345 678" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Email Address</label>
-              <div class="input-icon-wrap">
-                <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="signup-email" class="form-control form-control--icon" placeholder="name@email.com" required>
-              </div>
-            </div>
-            <div id="signup-landlord-fields" style="display:none;">
-              <div class="form-group">
-                <label>Primary Area / Estate</label>
-                <div class="input-icon-wrap">
-                  <i class="fas fa-map-pin input-icon"></i>
-                  <input type="text" id="signup-landlord-area" class="form-control form-control--icon" placeholder="e.g. Kilimani, Ruaka, Roysambu">
+                
+                <!-- Landlord fields -->
+                <div id="signup-landlord-fields" style="display:none;">
+                  <div class="auth-input-group">
+                    <label class="auth-label">Primary Area</label>
+                    <div class="auth-input-wrapper">
+                      <i class="fas fa-map-pin auth-input-icon"></i>
+                      <input 
+                        type="text" 
+                        id="signup-landlord-area" 
+                        class="auth-input" 
+                        placeholder="e.g. Kilimani, Ruaka, Roysambu"
+                      >
+                    </div>
+                  </div>
                 </div>
-              </div>
+                
+                <div class="auth-input-group">
+                  <label class="auth-label">Phone Number</label>
+                  <div class="auth-input-wrapper auth-phone-wrapper">
+                    <span class="auth-phone-prefix">
+                      <span class="flag-icon">🇰🇪</span>
+                      <span>+254</span>
+                    </span>
+                    <input 
+                      type="tel" 
+                      id="signup-phone" 
+                      class="auth-input auth-phone-input" 
+                      placeholder="712 345 678"
+                      required
+                    >
+                  </div>
+                </div>
+                
+                <div class="auth-input-group">
+                  <label class="auth-label">Email Address</label>
+                  <div class="auth-input-wrapper">
+                    <i class="fas fa-envelope auth-input-icon"></i>
+                    <input 
+                      type="email" 
+                      id="signup-email" 
+                      class="auth-input" 
+                      placeholder="Enter your email address"
+                      required
+                    >
+                  </div>
+                </div>
+                
+                <div class="auth-input-group">
+                  <label class="auth-label">Password</label>
+                  <div class="auth-input-wrapper">
+                    <i class="fas fa-lock auth-input-icon"></i>
+                    <input 
+                      type="password" 
+                      id="signup-password" 
+                      class="auth-input" 
+                      placeholder="Create a password (min 6 characters)"
+                      required 
+                      minlength="6"
+                    >
+                    <button type="button" onclick="kejaAuth.togglePwd('signup-password',this)" class="auth-password-toggle">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <button type="submit" class="auth-submit-btn">
+                  <i class="fas fa-user-plus"></i>
+                  Create Account
+                </button>
+                
+                <div class="auth-divider">
+                  <span>or</span>
+                </div>
+                
+                <div class="auth-switch-text">
+                  Already have an account? 
+                  <a href="#" onclick="kejaAuth.switchTab('signin');return false;" class="auth-link">Sign in</a>
+                </div>
+              </form>
             </div>
-            <div class="form-group">
-              <label>Password</label>
-              <div class="input-icon-wrap">
-                <i class="fas fa-lock input-icon"></i>
-                <input type="password" id="signup-password" class="form-control form-control--icon" placeholder="Min 6 characters" required minlength="6" style="padding-right:44px;">
-                <button type="button" onclick="kejaAuth.togglePwd('signup-password',this)" class="input-pwd-toggle"><i class="fas fa-eye"></i></button>
-              </div>
-            </div>
-            <button type="submit" class="btn-auth-submit"><i class="fas fa-user-plus"></i> Sign Up</button>
-            <p class="auth-switch-text">Already have an account? <a href="#" onclick="kejaAuth.switchTab('signin');return false;">Sign In</a></p>
-          </form>
-        </div>
 
-        <!-- OTP VERIFICATION PANEL -->
-        <div id="auth-panel-otp" style="display:none; text-align:center;">
-          <div class="auth-icon-header">
-            <div class="auth-icon-circle" style="background:#e0e7ff;"><i class="fas fa-sms" style="color:#4f46e5;font-size:1.4rem;"></i></div>
-            <h3 id="otp-panel-title">Verify Your Phone</h3>
-            <p>We sent a 4-digit code via SMS to <strong id="otp-display-phone">+254...</strong></p>
-          </div>
-          <form id="form-otp-verify" onsubmit="kejaAuth.handleVerifyOtp(event)">
-            <div class="otp-inputs">
-              <input type="text" maxlength="1" class="otp-digit otp-box" id="otp-1" required autofocus oninput="kejaAuth.onOtpDigitInput(1,this,event)" onkeydown="kejaAuth.onOtpKeyDown(1,this,event)">
-              <input type="text" maxlength="1" class="otp-digit otp-box" id="otp-2" required oninput="kejaAuth.onOtpDigitInput(2,this,event)" onkeydown="kejaAuth.onOtpKeyDown(2,this,event)">
-              <input type="text" maxlength="1" class="otp-digit otp-box" id="otp-3" required oninput="kejaAuth.onOtpDigitInput(3,this,event)" onkeydown="kejaAuth.onOtpKeyDown(3,this,event)">
-              <input type="text" maxlength="1" class="otp-digit otp-box" id="otp-4" required oninput="kejaAuth.onOtpDigitInput(4,this,event)" onkeydown="kejaAuth.onOtpKeyDown(4,this,event)">
+            <!-- FORGOT PASSWORD PANEL -->
+            <div id="auth-panel-forgot" class="auth-form-panel" style="display:none;">
+              <div class="auth-panel-header">
+                <div class="auth-panel-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Reset Password</h3>
+                <p>Enter your email to receive a password reset link</p>
+              </div>
+              
+              <form id="form-forgot-password" onsubmit="kejaAuth.handleForgotPassword(event)" class="auth-form">
+                <div class="auth-input-group">
+                  <label class="auth-label">Email Address</label>
+                  <div class="auth-input-wrapper">
+                    <i class="fas fa-envelope auth-input-icon"></i>
+                    <input 
+                      type="email" 
+                      id="forgot-email" 
+                      class="auth-input" 
+                      placeholder="Enter your email address"
+                      required 
+                      autofocus
+                    >
+                  </div>
+                </div>
+                
+                <button type="submit" class="auth-submit-btn" id="btn-forgot-submit">
+                  <i class="fas fa-paper-plane"></i>
+                  Send Reset Link
+                </button>
+                
+                <div class="auth-back-link">
+                  <a href="#" onclick="kejaAuth.showPanel('signin');return false;">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Sign In
+                  </a>
+                </div>
+              </form>
             </div>
-            <button type="submit" id="btn-submit-otp" class="btn-auth-submit"><i class="fas fa-check-circle"></i> <span id="btn-submit-otp-label">Verify and Continue</span></button>
-          </form>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:0.82rem;">
-            <button type="button" onclick="kejaAuth.handleResendOtp()" id="btn-resend-otp" style="background:none;border:none;color:#4f46e5;font-weight:700;cursor:pointer;padding:0;"><i class="fas fa-redo"></i> Resend Code <span id="otp-countdown">(60s)</span></button>
-            <a href="#" onclick="kejaAuth.switchTab('signin');return false;" style="color:#64748b;">Back to Sign In</a>
+
+            <!-- RESET PASSWORD PANEL -->
+            <div id="auth-panel-reset" class="auth-form-panel" style="display:none;">
+              <div class="auth-panel-header">
+                <div class="auth-panel-icon">
+                  <i class="fas fa-lock"></i>
+                </div>
+                <h3>New Password</h3>
+                <p id="reset-panel-subtitle">Create a strong password for your account</p>
+              </div>
+              
+              <form id="form-reset-password" onsubmit="kejaAuth.handleResetPassword(event)" class="auth-form">
+                <input type="hidden" id="reset-token-val">
+                
+                <div class="auth-input-group">
+                  <label class="auth-label">New Password</label>
+                  <div class="auth-input-wrapper">
+                    <i class="fas fa-lock auth-input-icon"></i>
+                    <input 
+                      type="password" 
+                      id="reset-new-password" 
+                      class="auth-input" 
+                      placeholder="Create new password (min 6 characters)"
+                      required 
+                      minlength="6"
+                    >
+                    <button type="button" onclick="kejaAuth.togglePwd('reset-new-password',this)" class="auth-password-toggle">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="auth-input-group">
+                  <label class="auth-label">Confirm Password</label>
+                  <div class="auth-input-wrapper">
+                    <i class="fas fa-lock auth-input-icon"></i>
+                    <input 
+                      type="password" 
+                      id="reset-confirm-password" 
+                      class="auth-input" 
+                      placeholder="Confirm your new password"
+                      required 
+                      minlength="6"
+                    >
+                  </div>
+                </div>
+                
+                <button type="submit" class="auth-submit-btn" id="btn-reset-submit">
+                  <i class="fas fa-check-circle"></i>
+                  Update Password
+                </button>
+                
+                <div class="auth-back-link">
+                  <a href="#" onclick="kejaAuth.showPanel('signin');return false;">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Sign In
+                  </a>
+                </div>
+              </form>
+            </div>
+
+            <!-- OTP VERIFICATION PANEL -->
+            <div id="auth-panel-otp" class="auth-form-panel" style="display:none;">
+              <div class="auth-panel-header">
+                <div class="auth-panel-icon">
+                  <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 id="otp-panel-title">Verify Phone Number</h3>
+                <p>Enter the 4-digit code sent to <strong id="otp-display-phone">+254...</strong></p>
+              </div>
+              
+              <form id="form-otp-verify" onsubmit="kejaAuth.handleVerifyOtp(event)" class="auth-form">
+                <div class="auth-otp-container">
+                  <input type="text" maxlength="1" class="auth-otp-input" id="otp-1" required autofocus oninput="kejaAuth.onOtpDigitInput(1,this,event)" onkeydown="kejaAuth.onOtpKeyDown(1,this,event)">
+                  <input type="text" maxlength="1" class="auth-otp-input" id="otp-2" required oninput="kejaAuth.onOtpDigitInput(2,this,event)" onkeydown="kejaAuth.onOtpKeyDown(2,this,event)">
+                  <input type="text" maxlength="1" class="auth-otp-input" id="otp-3" required oninput="kejaAuth.onOtpDigitInput(3,this,event)" onkeydown="kejaAuth.onOtpKeyDown(3,this,event)">
+                  <input type="text" maxlength="1" class="auth-otp-input" id="otp-4" required oninput="kejaAuth.onOtpDigitInput(4,this,event)" onkeydown="kejaAuth.onOtpKeyDown(4,this,event)">
+                </div>
+                
+                <button type="submit" id="btn-submit-otp" class="auth-submit-btn">
+                  <i class="fas fa-check-circle"></i>
+                  <span id="btn-submit-otp-label">Verify Code</span>
+                </button>
+                
+                <div class="auth-otp-actions">
+                  <button type="button" onclick="kejaAuth.handleResendOtp()" id="btn-resend-otp" class="auth-resend-btn">
+                    <i class="fas fa-redo"></i>
+                    Resend Code <span id="otp-countdown">(60s)</span>
+                  </button>
+                  <a href="#" onclick="kejaAuth.switchTab('signin');return false;" class="auth-link">Back to Sign In</a>
+                </div>
+              </form>
+            </div>
+
+            <!-- LOGGED IN PANEL -->
+            <div id="auth-panel-loggedin" class="auth-form-panel" style="display:none;">
+              <div class="auth-logged-in-content">
+                <div id="auth-user-avatar" class="auth-user-avatar"></div>
+                <div id="auth-user-greeting" class="auth-user-name"></div>
+                <div id="auth-user-phone-display" class="auth-user-phone"></div>
+                <div id="auth-user-role-badge" class="auth-user-role"></div>
+                
+                <div class="auth-logged-actions">
+                  <button onclick="kejaDashboard.open();app.closeModal('modal-auth');" class="auth-submit-btn">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Open Dashboard
+                  </button>
+                  
+                  <button onclick="kejaAuth.signOut()" class="auth-logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sign Out
+                  </button>
+                  
+                  <button onclick="app.closeModal('modal-auth')" class="auth-close-modal-btn">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-
-        <!-- LOGGED IN PANEL -->
-        <div id="auth-panel-loggedin" style="display:none; text-align:center; padding:10px 0 6px;">
-          <div id="auth-user-avatar" class="auth-avatar-lg"></div>
-          <div id="auth-user-greeting" style="font-size:1.2rem;font-weight:800;color:#0F172A;margin-bottom:4px;"></div>
-          <div id="auth-user-phone-display" style="font-size:0.88rem;color:#64748b;margin-bottom:10px;"></div>
-          <div id="auth-user-role-badge" style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:0.82rem;font-weight:700;margin-bottom:20px;"></div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <button onclick="kejaDashboard.open();app.closeModal('modal-auth');" class="btn-auth-submit" style="background:#4f46e5;"><i class="fas fa-th-large"></i> Open My Dashboard</button>
-            <button onclick="kejaAuth.signOut()" style="width:100%;background:#ef4444;color:white;border:none;padding:11px;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.9rem;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
-            <button onclick="app.closeModal('modal-auth')" style="width:100%;background:none;border:1px solid #e2e8f0;padding:10px;border-radius:8px;cursor:pointer;color:#64748b;font-weight:600;font-size:0.85rem;">Close</button>
-          </div>
-        </div>
-
       </div>
+      
     </div>
   </div>
 
-  <!-- Auth Modal Styles -->
+  <!-- Clean Auth Modal Styles (Rebuilt from Scratch) -->
   <style>
-    .auth-modal-dialog { max-width:420px; width:90%; border-radius:12px; overflow:hidden; padding:0; box-shadow:0 10px 30px rgba(0,0,0,0.18); }
-    .auth-modal-header { background:#ffffff; border-bottom:1px solid #f1f5f9; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; position:relative; }
-    .auth-header-brand { display:flex; align-items:center; gap:8px; }
-    .auth-header-logo { width:26px; height:26px; border-radius:6px; }
-    .auth-header-name { font-size:0.92rem; font-weight:800; color:#0F172A; }
-    .auth-close-btn { position:relative !important; right:auto !important; top:auto !important; transform:none !important; color:#94a3b8 !important; font-size:1.35rem !important; background:none; border:none; cursor:pointer; padding:2px; line-height:1; }
-    .auth-close-btn:hover { color:#0f172a !important; }
-    .auth-modal-tabs { display:flex; background:#e2e8f0; padding:3px; border-radius:8px; margin:12px 18px 0; gap:3px; }
-    .auth-tab { flex:1; padding:7px 0; border:none; background:transparent; font-size:0.86rem; font-weight:700; color:#64748b; border-radius:6px; cursor:pointer; transition:all 0.15s; text-align:center; }
-    .auth-tab:hover { color:#1e293b; }
-    .auth-tab.auth-tab--active { background:#ffffff; color:#4f46e5; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
-    .auth-modal-body { padding:14px 18px 18px; background:#f8fafc; max-height:82vh; overflow-y:auto; }
-    .auth-subtitle { font-size:0.82rem; color:#64748b; margin-bottom:10px; text-align:center; }
-    .auth-role-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:14px; }
-    .auth-role-grid--4 { grid-template-columns:repeat(2,1fr); }
-    .auth-role-card { display:flex; flex-direction:column; align-items:center; gap:4px; padding:10px 6px; border:2px solid #e2e8f0; border-radius:8px; background:#ffffff; cursor:pointer; font-size:0.72rem; font-weight:700; color:#475569; transition:all 0.15s; line-height:1.25; text-align:center; }
-    .auth-role-card i { font-size:1.1rem; color:#94a3b8; }
-    .auth-role-card:hover, .auth-role-card:hover i { border-color:#4f46e5; color:#4f46e5; }
-    .auth-role-card--active, .role-btn-active.auth-role-card { border-color:#4f46e5; background:#eef2ff; color:#4f46e5; }
-    .auth-role-card--active i, .role-btn-active.auth-role-card i { color:#4f46e5; }
-    
-    /* Input Icons and Spacing */
-    .input-icon-wrap, .input-prefix-wrap { position:relative; width:100%; display:flex; align-items:center; }
-    .input-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:0.88rem; pointer-events:none; z-index:2; }
-    .phone-prefix-tag { position:absolute; left:10px; top:50%; transform:translateY(-50%); font-weight:700; color:#1e293b; font-size:0.84rem; z-index:2; pointer-events:none; display:flex; align-items:center; gap:4px; padding-right:6px; border-right:1.5px solid #cbd5e1; height:20px; line-height:20px; }
-    .input-pwd-toggle { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:#6b7280; z-index:2; padding:3px; }
-    
-    .auth-modal-body .form-group { margin-bottom:12px; }
-    .auth-modal-body .form-group label { font-size:0.8rem; font-weight:700; color:#374151; margin-bottom:4px; display:block; }
-    .auth-modal-body .form-control { background:white; border:1.5px solid #e2e8f0; border-radius:7px; padding:9px 12px; font-size:0.88rem; width:100%; transition:border-color 0.15s; }
-    .auth-modal-body .form-control:focus { border-color:#4f46e5; outline:none; box-shadow:0 0 0 3px rgba(79,70,229,0.1); }
-    
-    .auth-modal-body .form-control.form-control--icon,
-    .auth-modal-body input.form-control--icon,
-    .form-control--icon { padding-left:38px !important; }
-    
-    .auth-modal-body .form-control.form-control--prefix,
-    .auth-modal-body input.form-control--prefix,
-    .form-control--prefix { padding-left:84px !important; }
-    
-    .btn-auth-submit { width:100%; background:#4f46e5; color:white; border:none; padding:10px; border-radius:7px; font-size:0.92rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:background 0.15s; margin-bottom:4px; }
-    .btn-auth-submit:hover { background:#4338ca; }
-    .auth-switch-text { text-align:center; font-size:0.82rem; color:#64748b; margin-top:10px; }
-    .auth-switch-text a { color:#4f46e5; font-weight:700; text-decoration:none; }
-    .auth-icon-header { text-align:center; margin-bottom:16px; }
-    .auth-icon-circle { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:1.3rem; }
-    .auth-icon-header h3 { font-size:1.05rem; font-weight:800; color:#0F172A; margin:0 0 4px; }
-    .auth-icon-header p { font-size:0.8rem; color:#64748b; margin:0; }
-    .otp-inputs { display:flex; justify-content:center; gap:10px; margin-bottom:16px; }
-    .otp-box { width:48px !important; height:54px !important; font-size:1.6rem !important; text-align:center; font-weight:800; border:2px solid #e2e8f0 !important; border-radius:8px !important; background:white; }
-    .otp-box:focus { border-color:#4f46e5 !important; outline:none; }
-    .auth-avatar-lg { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#4f46e5,#7c3aed); display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:1.6rem; color:white; font-weight:800; box-shadow:0 4px 12px rgba(79,70,229,0.3); }
+    /* Modal Backdrop */
+    #modal-auth {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2500;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #modal-auth.open {
+      display: flex !important;
+      opacity: 1 !important;
+    }
+
+    /* Main Container */
+    .auth-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      background: white;
+      max-width: 1200px;
+      margin: 0 auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Left Panel */
+    .auth-left {
+      flex: 1;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .auth-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    .auth-content {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .auth-logo img {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+    }
+
+    .auth-logo h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-hero h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+    }
+
+    .auth-hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .auth-features {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 300px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+    }
+
+    .feature i {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      width: 20px;
+    }
+
+    /* Right Panel */
+    .auth-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #f8fafc;
+      min-height: 100vh;
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: #e2e8f0;
+      padding: 4px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 6px;
+    }
+
+    .auth-tab.active {
+      background: white;
+      color: #16a34a;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Forms */
+    .auth-form {
+      display: none;
+      flex: 1;
+      padding: 2rem;
+      background: white;
+      margin: 0;
+      border-radius: 0 0 0 16px;
+    }
+
+    .auth-form.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .form-header p {
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem;
+      padding-left: 2.5rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 0.75rem;
+      color: #9ca3af;
+      font-size: 0.9rem;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      padding: 0.25rem;
+      font-size: 0.9rem;
+      z-index: 2;
+    }
+
+    /* Phone input */
+    .phone-group {
+      position: relative;
+    }
+
+    .phone-prefix {
+      position: absolute;
+      left: 0.75rem;
+      z-index: 2;
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.85rem;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding-right: 0.5rem;
+      border-right: 2px solid #e5e7eb;
+      height: 20px;
+    }
+
+    .phone-group input {
+      padding-left: 4.5rem !important;
+    }
+
+    /* Buttons */
+    .auth-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: white;
+      border: none;
+      padding: 0.875rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .auth-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #15803d, #166534);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+    }
+
+    .auth-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Role Selection */
+    .role-selection {
+      margin-bottom: 1.5rem;
+    }
+
+    .role-selection label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .role-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .role-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.75rem 0.5rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #6b7280;
+      transition: all 0.2s ease;
+    }
+
+    .role-btn:hover,
+    .role-btn.active {
+      border-color: #16a34a;
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+
+    .role-btn i {
+      font-size: 1.1rem;
+    }
+
+    /* Form extras */
+    .form-actions {
+      text-align: right;
+      margin-bottom: 1rem;
+    }
+
+    .form-actions a {
+      color: #16a34a;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .form-actions a:hover {
+      text-decoration: underline;
+    }
+
+    .form-divider {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+
+    .form-divider::before,
+    .form-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .form-divider span {
+      padding: 0 1rem;
+    }
+
+    .form-switch {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin: 1rem 0 0 0;
+    }
+
+    .form-switch a {
+      color: #16a34a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .form-switch a:hover {
+      text-decoration: underline;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .auth-container {
+        flex-direction: column;
+      }
+
+      .auth-left {
+        flex: none;
+        height: 40vh;
+        min-height: 300px;
+      }
+
+      .auth-right {
+        flex: none;
+        height: 60vh;
+        min-height: 400px;
+      }
+
+      .auth-logo h1 {
+        font-size: 2rem;
+      }
+
+      .auth-hero h2 {
+        font-size: 1.5rem;
+      }
+
+      .auth-close {
+        top: 1rem;
+        right: 1rem;
+        width: 36px;
+        height: 36px;
+        font-size: 1.25rem;
+      }
+
+      .auth-form {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .auth-left {
+        height: 35vh;
+      }
+
+      .auth-right {
+        height: 65vh;
+      }
+
+      .role-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .role-btn {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+  <style>
+    /* Split-Screen Container */
+    .auth-split-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    /* Modal Backdrop Integration */
+    #modal-auth {
+      display: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #modal-auth.open {
+      display: flex !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+
+    /* Left Panel: Property Background */
+    .auth-left-panel {
+      flex: 1;
+      position: relative;
+      background: linear-gradient(135deg, 
+        rgba(16, 185, 129, 0.9), 
+        rgba(5, 150, 105, 0.9)), 
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="building" patternUnits="userSpaceOnUse" width="120" height="120" patternTransform="rotate(45)"><rect width="60" height="60" fill="rgba(255,255,255,0.05)"/><rect x="60" y="60" width="60" height="60" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23building)"/></svg>');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .auth-bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .auth-close-btn {
+      position: absolute !important;
+      top: 1.5rem !important;
+      right: 1.5rem !important;
+      width: 40px !important;
+      height: 40px !important;
+      background: rgba(255, 255, 255, 0.2) !important;
+      border: none !important;
+      border-radius: 50% !important;
+      color: white !important;
+      font-size: 1.5rem !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.2s ease !important;
+      backdrop-filter: blur(10px) !important;
+      z-index: 10 !important;
+    }
+
+    .auth-close-btn:hover {
+      background: rgba(255, 255, 255, 0.3) !important;
+      transform: scale(1.1) !important;
+    }
+
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .auth-brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-brand h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-welcome-text {
+      text-align: center;
+      max-width: 500px;
+    }
+
+    .auth-welcome-text h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-welcome-text p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      opacity: 0.95;
+      margin: 0 0 2rem 0;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-features {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .auth-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .auth-feature i {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* Right Panel: Forms */
+    .auth-right-panel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      padding: 2rem;
+      overflow-y: auto;
+      min-height: 100vh;
+    }
+
+    .auth-form-container {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
+
+    /* Tab Navigation */
+    .auth-tab-nav {
+      display: flex;
+      background: #f1f5f9;
+      padding: 4px;
+      margin: 0;
+    }
+
+    .auth-nav-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 8px;
+    }
+
+    .auth-nav-btn:hover {
+      color: #334155;
+    }
+
+    .auth-nav-btn.auth-nav-btn--active {
+      background: white;
+      color: #16a34a;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form Body */
+    .auth-form-body {
+      position: relative;
+      min-height: 500px;
+    }
+
+    .auth-form-panel {
+      padding: 2rem;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-panel-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-panel-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    .auth-panel-icon i {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .auth-panel-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .auth-panel-header p {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Role Selection */
+    .auth-role-selection {
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-role-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.75rem;
+    }
+
+    .auth-role-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+
+    .auth-role-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.75rem 0.5rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #6b7280;
+      transition: all 0.2s ease;
+    }
+
+    .auth-role-btn i {
+      font-size: 1.1rem;
+    }
+
+    .auth-role-btn:hover,
+    .auth-role-btn.auth-role-btn--active {
+      border-color: #16a34a;
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+
+    /* Form Styling */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .auth-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .auth-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .auth-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      background: white;
+    }
+
+    .auth-input:focus {
+      outline: none;
+      border-color: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+    }
+
+    .auth-input-icon {
+      position: absolute;
+      left: 0.75rem;
+      color: #9ca3af;
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    .auth-input:has(.auth-input-icon) {
+      padding-left: 2.5rem;
+    }
+
+    .auth-input-wrapper .auth-input:first-child {
+      padding-left: 2.5rem;
+    }
+
+    .auth-password-toggle {
+      position: absolute;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      padding: 0.25rem;
+      font-size: 0.9rem;
+    }
+
+    /* Phone Input */
+    .auth-phone-wrapper {
+      position: relative;
+    }
+
+    .auth-phone-prefix {
+      position: absolute;
+      left: 0.75rem;
+      z-index: 2;
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding-right: 0.5rem;
+      border-right: 2px solid #e5e7eb;
+      height: 20px;
+    }
+
+    .auth-phone-input {
+      padding-left: 5rem !important;
+    }
+
+    /* Buttons */
+    .auth-submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: white;
+      border: none;
+      padding: 0.875rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      margin-top: 0.5rem;
+    }
+
+    .auth-submit-btn:hover {
+      background: linear-gradient(135deg, #15803d, #166534);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(22, 163, 74, 0.3);
+    }
+
+    .auth-logout-btn {
+      width: 100%;
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      margin-top: 0.5rem;
+    }
+
+    .auth-logout-btn:hover {
+      background: #dc2626;
+    }
+
+    .auth-close-modal-btn {
+      width: 100%;
+      background: #f8fafc;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 0.5rem;
+    }
+
+    .auth-close-modal-btn:hover {
+      background: #f1f5f9;
+    }
+
+    /* Divider */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .auth-divider span {
+      padding: 0 1rem;
+    }
+
+    /* Links */
+    .auth-switch-text {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-top: 1rem;
+    }
+
+    .auth-link {
+      color: #16a34a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .auth-link:hover {
+      text-decoration: underline;
+    }
+
+    .auth-forgot-link {
+      text-align: right;
+      margin-bottom: 1rem;
+    }
+
+    .auth-forgot-link a {
+      font-size: 0.85rem;
+      color: #16a34a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .auth-forgot-link a:hover {
+      text-decoration: underline;
+    }
+
+    .auth-back-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .auth-back-link a {
+      font-size: 0.9rem;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .auth-back-link a:hover {
+      color: #16a34a;
+    }
+
+    /* OTP Input */
+    .auth-otp-container {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+
+    .auth-otp-input {
+      width: 3rem !important;
+      height: 3rem !important;
+      text-align: center !important;
+      font-size: 1.25rem !important;
+      font-weight: 700 !important;
+      border: 2px solid #e5e7eb !important;
+      border-radius: 8px !important;
+      background: white !important;
+    }
+
+    .auth-otp-input:focus {
+      border-color: #16a34a !important;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1) !important;
+    }
+
+    .auth-otp-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .auth-resend-btn {
+      background: none;
+      border: none;
+      color: #16a34a;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .auth-resend-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Logged In User */
+    .auth-logged-in-content {
+      text-align: center;
+    }
+
+    .auth-user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2rem;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 8px 32px rgba(22, 163, 74, 0.3);
+    }
+
+    .auth-user-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.25rem;
+    }
+
+    .auth-user-phone {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-user-role {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: #f0fdf4;
+      color: #16a34a;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-logged-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .auth-split-container {
+        flex-direction: column;
+      }
+
+      .auth-left-panel {
+        flex: none;
+        height: 40vh;
+        min-height: 300px;
+      }
+
+      .auth-right-panel {
+        flex: none;
+        height: 60vh;
+        min-height: 400px;
+        padding: 1rem;
+      }
+
+      .auth-brand h1 {
+        font-size: 2rem;
+      }
+
+      .auth-welcome-text h2 {
+        font-size: 1.5rem;
+      }
+
+      .auth-welcome-text p {
+        font-size: 1rem;
+      }
+
+      .auth-features {
+        margin-top: 1rem;
+        gap: 0.75rem;
+      }
+
+      .auth-feature {
+        font-size: 0.9rem;
+      }
+
+      .auth-form-container {
+        max-width: none;
+        border-radius: 12px;
+        margin: 0;
+      }
+
+      .auth-form-panel {
+        padding: 1.5rem;
+      }
+
+      .auth-close-btn {
+        top: 1rem !important;
+        right: 1rem !important;
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1.25rem !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .auth-left-panel {
+        height: 35vh;
+      }
+
+      .auth-right-panel {
+        height: 65vh;
+        padding: 0.75rem;
+      }
+
+      .auth-role-buttons {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .auth-role-btn {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 0.75rem;
+        gap: 0.5rem;
+      }
+
+      .auth-otp-container {
+        gap: 0.5rem;
+      }
+
+      .auth-otp-input {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+        font-size: 1.1rem !important;
+      }
+    }
+
+    /* Legacy class compatibility for existing JS */
+    .otp-digit { } /* Keep for JS compatibility */
+    .otp-box { } /* Keep for JS compatibility */
+    .btn-auth-submit { } /* Keep for JS compatibility */
+    .auth-avatar-lg { } /* Keep for JS compatibility */
   </style>
   <!-- ====================================================================
        MODAL: Fullscreen Image Lightbox (Jiji Style)
@@ -3475,6 +5222,7 @@
   <script src="vendor/leaflet/leaflet.js"></script>
   <script src="js/offline-manager.js?v=31.0"></script>
   <script src="js/auth.js?v=4.0&t=202609170130"></script>
+  <script src="js/new-auth.js?v=1.0"></script>
   <script src="js/reviews.js?v=4.0&t=202609170130"></script>
   
   <!-- Hierarchical Location System -->
@@ -3499,6 +5247,71 @@
   <script src="js/botSimulator.js?v=4.0&t=202609170130"></script>
   <script src="js/monetization.js?v=4.0&t=202609170130"></script>
   <script src="js/app.js?v=17.0&t=202610090240"></script>
+  
+  <!-- MOBILE LAYOUT ENFORCEMENT - Must run after app.js -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      console.log('Mobile detection:', isMobile, 'Width:', window.innerWidth);
+      
+      if (isMobile) {
+        // Add mobile classes
+        document.documentElement.classList.add('mobile-view');
+        document.body.classList.add('mobile-layout');
+        
+        // Force mobile elements to show
+        setTimeout(() => {
+          const mobileHeader = document.querySelector('.mobile-header');
+          const mobileSearch = document.querySelector('.mobile-search-bar');
+          const mobileNav = document.querySelector('.mobile-bottom-nav');
+          
+          if (mobileHeader) {
+            mobileHeader.style.display = 'flex';
+            mobileHeader.style.visibility = 'visible';
+            mobileHeader.style.opacity = '1';
+            mobileHeader.style.position = 'fixed';
+            mobileHeader.style.zIndex = '9999';
+            mobileHeader.style.top = '0';
+            mobileHeader.style.left = '0';
+            mobileHeader.style.right = '0';
+            console.log('Mobile header forced to show');
+          }
+          
+          if (mobileSearch) {
+            mobileSearch.style.display = 'flex';
+            mobileSearch.style.visibility = 'visible';
+            mobileSearch.style.opacity = '1';
+            mobileSearch.style.position = 'fixed';
+            mobileSearch.style.zIndex = '9998';
+            mobileSearch.style.top = '60px';
+            console.log('Mobile search forced to show');
+          }
+          
+          if (mobileNav) {
+            mobileNav.style.display = 'flex';
+            mobileNav.style.visibility = 'visible';
+            mobileNav.style.opacity = '1';
+            mobileNav.style.position = 'fixed';
+            mobileNav.style.zIndex = '9999';
+            mobileNav.style.bottom = '0';
+            console.log('Mobile nav forced to show');
+          }
+          
+          // Force hide desktop elements
+          const desktopElements = document.querySelectorAll('.site-header, .header-container, .category-pills-bar, .secondary-nav');
+          desktopElements.forEach(el => {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.height = '0';
+            el.style.overflow = 'hidden';
+          });
+          console.log('Desktop elements hidden:', desktopElements.length);
+          
+        }, 100);
+      }
+    });
+  </script>
   <script src="js/instagram-integration.js?v=6.0&t=202609171355"></script>
   <script src="js/admin.js?v=4.0&t=202609170130"></script>
   <!-- Profile Dropdown Test Script -->

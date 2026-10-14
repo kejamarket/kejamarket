@@ -1,0 +1,681 @@
+
+========================================
+KEJAMARKET LOCATION MIGRATION REPORT
+========================================
+Date: 2026-10-08T19:15:15.455Z
+
+SUMMARY
+========================================
+Total Properties:        161
+Successfully Matched:    46 (28.6%)
+Already Migrated:        0
+Unmatched:              115 (71.4%)
+
+MATCH BREAKDOWN
+========================================
+✓ km-prop-001: "Kilimani" → "Kilimani"
+   Path: Nairobi → Kilimani
+   Type: exact, Confidence: 100%
+
+✓ km-prop-002: "Umoja" → "Umoja"
+   Path: Nairobi → Umoja
+   Type: exact, Confidence: 100%
+
+✓ km-prop-003: "South B" → "South B"
+   Path: Nairobi → South B
+   Type: exact, Confidence: 100%
+
+✓ km-prop-004: "Westlands" → "Westlands"
+   Path: Nairobi → Westlands
+   Type: exact, Confidence: 100%
+
+✓ km-prop-005: "Lavington" → "Lavington"
+   Path: Nairobi → Lavington
+   Type: exact, Confidence: 100%
+
+✓ km-prop-006: "Runda" → "Runda"
+   Path: Nairobi → Runda
+   Type: exact, Confidence: 100%
+
+✓ km-prop-007: "Karen" → "Karen"
+   Path: Nairobi → Karen
+   Type: exact, Confidence: 100%
+
+✓ km-prop-008: "Kileleshwa" → "Kileleshwa"
+   Path: Nairobi → Kileleshwa
+   Type: exact, Confidence: 100%
+
+✓ km-prop-010: "Syokimau" → "Syokimau"
+   Path: Machakos → Syokimau
+   Type: exact, Confidence: 100%
+
+✓ km-prop-011: "Kitengela" → "Kitengela"
+   Path: Kajiado → Kitengela
+   Type: exact, Confidence: 100%
+
+✓ km-prop-012: "Ruaka" → "Ruaka"
+   Path: Kiambu → Ruaka
+   Type: exact, Confidence: 100%
+
+✓ prop-nyayo-001: "Nyayo Estate" → "Nyayo Estate"
+   Path: Nairobi → Embakasi → Nyayo Estate
+   Type: exact, Confidence: 100%
+
+✓ prop-nyayo-002: "Nyayo Estate" → "Nyayo Estate"
+   Path: Nairobi → Embakasi → Nyayo Estate
+   Type: exact, Confidence: 100%
+
+✓ prop-buru-003: "Buruburu" → "Buruburu"
+   Path: Nairobi → Buruburu
+   Type: exact, Confidence: 100%
+
+✓ prop-eastleigh-007: "Eastleigh" → "Eastleigh"
+   Path: Nairobi → Eastleigh
+   Type: exact, Confidence: 100%
+
+✓ prop-runda-mimosa-001: "Runda" → "Runda"
+   Path: Nairobi → Runda
+   Type: exact, Confidence: 100%
+
+✓ prop-ruaka-001: "Ruaka" → "Ruaka"
+   Path: Kiambu → Ruaka
+   Type: exact, Confidence: 100%
+
+✓ prop-exact-003: "Kitengela" → "Kitengela"
+   Path: Kajiado → Kitengela
+   Type: exact, Confidence: 100%
+
+✓ prop-exact-004: "Kilimani" → "Kilimani"
+   Path: Nairobi → Kilimani
+   Type: exact, Confidence: 100%
+
+✓ prop-exact-005: "Ruiru" → "Ruiru"
+   Path: Kiambu → Ruiru
+   Type: exact, Confidence: 100%
+
+✓ prop-exact-006: "Kikuyu" → "Kikuyu"
+   Path: Kiambu → Kikuyu
+   Type: exact, Confidence: 100%
+
+✓ prop-exact-007: "Westlands" → "Westlands"
+   Path: Nairobi → Westlands
+   Type: exact, Confidence: 100%
+
+✓ prop-exact-008: "Karen" → "Karen"
+   Path: Nairobi → Karen
+   Type: exact, Confidence: 100%
+
+✓ prop-nrb-033: "Spring Valley" → "Spring Valley"
+   Path: Nairobi → Westlands → Spring Valley
+   Type: exact, Confidence: 100%
+
+✓ prop-nrb-038: "Kahawa Sukari" → "Kahawa Sukari"
+   Path: Nairobi → Kahawa → Kahawa Sukari
+   Type: exact, Confidence: 100%
+
+✓ prop-nrb-039: "Garden Estate" → "Garden Estate"
+   Path: Nairobi → Roysambu → Garden Estate
+   Type: exact, Confidence: 100%
+
+✓ prop-nrb-051: "Nairobi West" → "Nairobi West"
+   Path: Nairobi → Nairobi West
+   Type: exact, Confidence: 100%
+
+✓ prop-nrb-055: "Pipeline" → "Pipeline"
+   Path: Nairobi → Embakasi → Pipeline
+   Type: exact, Confidence: 100%
+
+✓ prop-nrb-067: "Kiserian" → "Kiserian"
+   Path: Kajiado → Kiserian
+   Type: exact, Confidence: 100%
+
+✓ prop-nrb-070: "Hurlingham" → "Hurlingham"
+   Path: Nairobi → Kilimani → Hurlingham
+   Type: exact, Confidence: 100%
+
+✓ prop-nrb-072: "Kahawa Wendani" → "Kahawa Wendani"
+   Path: Nairobi → Kahawa → Kahawa Wendani
+   Type: exact, Confidence: 100%
+
+✓ prop-soc-108: "Kahawa Wendani" → "Kahawa Wendani"
+   Path: Nairobi → Kahawa → Kahawa Wendani
+   Type: exact, Confidence: 100%
+
+✓ prop-soc-109: "Kahawa Sukari" → "Kahawa Sukari"
+   Path: Nairobi → Kahawa → Kahawa Sukari
+   Type: exact, Confidence: 100%
+
+✓ prop-soc-121: "Nairobi West" → "Nairobi West"
+   Path: Nairobi → Nairobi West
+   Type: exact, Confidence: 100%
+
+✓ prop-soc-128: "Pipeline" → "Pipeline"
+   Path: Nairobi → Embakasi → Pipeline
+   Type: exact, Confidence: 100%
+
+✓ prop-001: "Kilimani" → "Kilimani"
+   Path: Nairobi → Kilimani
+   Type: exact, Confidence: 100%
+
+✓ prop-002: "Westlands" → "Westlands"
+   Path: Nairobi → Westlands
+   Type: exact, Confidence: 100%
+
+✓ prop-003: "Karen" → "Karen"
+   Path: Nairobi → Karen
+   Type: exact, Confidence: 100%
+
+✓ prop-004: "Runda" → "Runda"
+   Path: Nairobi → Runda
+   Type: exact, Confidence: 100%
+
+✓ prop-005: "Kilimani" → "Kilimani"
+   Path: Nairobi → Kilimani
+   Type: exact, Confidence: 100%
+
+✓ prop-006: "Runda" → "Runda"
+   Path: Nairobi → Runda
+   Type: exact, Confidence: 100%
+
+✓ prop-007: "Karen" → "Karen"
+   Path: Nairobi → Karen
+   Type: exact, Confidence: 100%
+
+✓ prop-009: "Roysambu" → "Roysambu"
+   Path: Nairobi → Roysambu
+   Type: exact, Confidence: 100%
+
+✓ prop-010: "Westlands" → "Westlands"
+   Path: Nairobi → Westlands
+   Type: exact, Confidence: 100%
+
+✓ prop-011: "Kahawa Sukari" → "Kahawa Sukari"
+   Path: Nairobi → Kahawa → Kahawa Sukari
+   Type: exact, Confidence: 100%
+
+✓ prop-012: "Ruiru" → "Ruiru"
+   Path: Kiambu → Ruiru
+   Type: exact, Confidence: 100%
+
+
+UNMATCHED PROPERTIES (Need Manual Review)
+========================================
+✗ km-prop-009: "Villa - Muthaiga"
+   Location: Muthaiga, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-sheshe-001: "Cozy 2 Bedroom Apartment in Sheshe Gardens Phase 1 (Mlolongo)"
+   Location: Sheshe Gardens, Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-komarock-002: "Bright 2 Bedroom Apartment in Komarock Sector 2 (Phase 1)"
+   Location: Komarock, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-exact-001: "Clean Single Room in Ngara near Fig Tree (Walking to CBD)"
+   Location: Ngara (Fig Tree & Ngara Rd), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-exact-002: "Clean Bedsitter in Umoja Innercore - Student Friendly KES 5,500"
+   Location: Umoja (Innercore & Phase 1), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-001: "Executive 2 Bedroom Master Ensuite with Balcony in Ruaka (Near Two Rivers)"
+   Location: Ruaka (Bypass & Slaughter Rd), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-008: "Modern 1 Bedroom Apartment in Ruaka along Limuru Road"
+   Location: Ruaka (Bypass & Slaughter Rd), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-003: "Luxury 2 Bedroom Master Ensuite with Pool & Gym in Kilimani (Dennis Pritt Rd)"
+   Location: Kilimani (Yaya & Dennis Pritt), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-bnb-001: "Cozy Designer Studio Apartment in Kilimani near Yaya Centre"
+   Location: Kilimani (Yaya & Dennis Pritt), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-009: "Spacious 3 Bedroom Master Ensuite with DSQ in Kileleshwa (Oloitokitok Rd)"
+   Location: Kileleshwa (Gatundu & Oloitokitok), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-002: "Modern Tiled Bedsitter / Studio along Mirema Drive, Roysambu (Near TRM)"
+   Location: Roysambu (TRM & Mirema Drive), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-010: "Spacious 1 Bedroom Apartment in Kasarani ICIPE Road"
+   Location: Kasarani (Sportsview & Seasons), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-007: "Clean Single Room in Ngara near Fig Tree (Walking to CBD)"
+   Location: Ngara (Fig Tree & Ngara Rd), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-011: "4 Bedroom Own Compound Maisonette in Syokimau Katani Road (Gated Estate)"
+   Location: Syokimau (Katani & Gateway), Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-012: "Spacious Bedsitter near Fedha Estate, Embakasi – Walk to City Cabanas"
+   Location: Embakasi (Fedha & Tassia), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-013: "2 Bedroom Apartment in Pipeline Estate – Ksh 18,000 Only"
+   Location: Pipeline (Avenue Park & Utawala), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-014: "Modern 1 Bedroom in South B near Nextgen Mall – Newly Built"
+   Location: South B (Kapiti & Mombasa Rd), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-015: "2 Bedroom Master Ensuite in South C, Mugoya Estate – KES 30,000"
+   Location: South C (Mugoya & Madaraka), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-016: "Spacious 1 Bedroom in Donholm Phase 5 – KES 12,000 All-Inclusive"
+   Location: Donholm (Phase 5 & Savannah), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-017: "Clean Bedsitter in Umoja Innercore – Student Friendly KES 5,500"
+   Location: Umoja (Innercore & Phase 1), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-018: "Modern 2 Bedroom Apartment in Ongata Rongai Town – KES 15,000"
+   Location: Ongata Rongai (Town & Nkoroi), Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-019: "Spacious Bedsitter in Kahawa West – KES 6,000 (Borehole Water)"
+   Location: Kahawa West (KU & Githurai), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-020: "3 Bedroom Bungalow with Garden in Langata – Near T-Mall"
+   Location: Langata (T-Mall & Hardy), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-021: "New 1 Bedroom Apartment in Utawala – KES 10,000 (Newly Built)"
+   Location: Utawala (Eastern Bypass), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-022: "3 Bedroom Apartment in Athi River, Sabaki – KES 20,000"
+   Location: Athi River (Sabaki & EPZ), Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-023: "Furnished Studio / Bedsitter near JKUAT Juja – KES 8,000"
+   Location: Juja (JKUAT & Toll Station), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-024: "Clean Tiled Single Room in Ngara West near Chemelil Rd"
+   Location: Ngara (Fig Tree & Ngara Rd), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-025: "Modern Bedsitter in Pangani near Thika Road Interchange"
+   Location: Pangani, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-026: "Executive 1 Bedroom Apartment in Parklands (3rd Parklands Ave)"
+   Location: Parklands (1st to 6th Parklands), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-027: "Spacious 2 Bedroom Master Ensuite in Highridge Parklands"
+   Location: Highridge (Parklands), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-028: "Luxury 3 Bedroom Master Ensuite Apartment near City Park Environs"
+   Location: City Park Environs, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-029: "Commercial Office / Co-Working Stall in Nairobi CBD (Tom Mboya St)"
+   Location: CBD (City Centre), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-030: "Executive 1 Bedroom Apartment in Westlands (Rhapta Road)"
+   Location: Rhapta Road, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-031: "Modern 2 Bedroom Master Ensuite with Pool in Kileleshwa (Siaya Rd)"
+   Location: Kileleshwa (Oloitokitok, Kandara, Siaya), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-032: "Luxury 3 Bedroom All Ensuite + DSQ in Lavington (Isaac Gathanju)"
+   Location: Lavington (James Gichuru, Isaac Gathanju), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-034: "Penthouse with Panoramic Views in Riverside Drive"
+   Location: Riverside Drive, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-035: "Studio Apartment in Kilimani (Rose Avenue near Yaya Centre)"
+   Location: Kilimani (Dennis Pritt, Argwings Kodhek, Lenana), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-036: "Modern Bedsitter in Roysambu along Lumumba Drive (Near TRM)"
+   Location: Roysambu / Mirema, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-037: "Spacious 1 Bedroom Apartment in Kasarani (Clay City near Season)"
+   Location: Kasarani (Sports View & Clay City), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-040: "Student Friendly Bedsitter in Juja near JKUAT Gate C"
+   Location: Juja (JKUAT & Toll Station), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-041: "Spacious Bedsitter in Ruaka (Joyland near Quickmart)"
+   Location: Ruaka (Bypass & Slaughter Rd), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-042: "Modern 1 Bedroom Apartment in Thindigua, Kiambu Road"
+   Location: Thindigua, Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-043: "Executive 3 Bedroom Townhouse in Fourways Junction Gated Estate"
+   Location: Fourways Junction, Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-044: "4 Bedroom All Ensuite Villa in Edenville Phase 1 (Kiambu Rd)"
+   Location: Edenville (Kiambu Rd), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-045: "Clean Single Room in Kangemi near Waruku (Waiyaki Way)"
+   Location: Kangemi (Waruku & Posta), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-046: "Spacious Bedsitter in Kinoo 87 near Waiyaki Way Interchange"
+   Location: Kinoo (87 & Stage), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-047: "Modern 1 Bedroom Apartment in Uthiru near Junction"
+   Location: Uthiru, Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-048: "Executive 2 Bedroom Master Ensuite in Kikuyu Town (Gitaru Rd)"
+   Location: Kikuyu (Town & Ondiri), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-049: "3 Bedroom Standalone Bungalow in Mountain View Estate"
+   Location: Mountain View, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-050: "Modern Bedsitter in South B (Plainsview near Capital Centre)"
+   Location: South B (Plainsview & Hazina), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-052: "Modern 2 Bedroom Master Ensuite in Madaraka Estate near T-Mall"
+   Location: Madaraka, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-053: "Executive 3 Bedroom Townhouse in Langata (Phenom Estate)"
+   Location: Langata (Phenom, Southlands & Ngei), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-054: "4 Bedroom Luxury Colonial Villa on 0.5 Acre in Karen (Mbagathi Ridge)"
+   Location: Karen (Hardy, Bogani & Mbagathi), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-056: "Spacious Tiled Bedsitter in Donholm Greenfields Estate"
+   Location: Donholm (Phase 5 & Greenfields), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-057: "Modern 1 Bedroom Apartment in Buruburu Phase 4"
+   Location: Buruburu (Phases 1 to 5), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-058: "Modern 2 Bedroom Apartment in Komarock Sector 3A"
+   Location: Komarock (Sectors 1 to 4), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-059: "Executive 3 Bedroom Maisonette in Buruburu Phase 5"
+   Location: Buruburu (Phases 1 to 5), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-060: "Executive Bedsitter in Mlolongo near Nairobi Expressway Toll"
+   Location: Mlolongo Town, Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-061: "Modern 1 Bedroom Apartment in Syokimau (Chady Road near Gateway)"
+   Location: Syokimau (Chady & Airport Rd), Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-062: "Spacious 2 Bedroom Master Ensuite in Athi River (Crystal Rivers)"
+   Location: Athi River (Sabaki & EPZ), Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-063: "4 Bedroom Standalone Maisonette on 50x100 in Kitengela (Milimani)"
+   Location: Kitengela Town, Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-064: "Spacious Bedsitter in Ongata Rongai (Tumaini Supermarket Environs)"
+   Location: Ongata Rongai (Maasai Lodge & Town), Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-065: "Modern 1 Bedroom in Ngong Town near SGR Station"
+   Location: Ngong Town & Hills, Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-066: "Modern 2 Bedroom Apartment in Rongai (Maasai Lodge Rd)"
+   Location: Ongata Rongai (Maasai Lodge & Town), Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-068: "Executive 2 Bedroom Master Ensuite in Brookside Drive, Westlands"
+   Location: Brookside Drive, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-069: "Designer Studio Apartment in Two Rivers Area (Ruaka)"
+   Location: Ruaka (Bypass & Slaughter Rd), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-071: "Affordable Single Room in Kawangware 46 near Naivasha Rd"
+   Location: Kawangware (46 & 56), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-073: "Modern 2 Bedroom Apartment in Ruiru Town near Eastern Bypass"
+   Location: Ruiru Town, Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-074: "Spacious 1 Bedroom Apartment in Roysambu near Mirema Drive"
+   Location: Roysambu / Mirema, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-075: "Executive 2 Bedroom Master Ensuite in South C (Mugoya Estate)"
+   Location: South C (Mugoya & Bellevue), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-076: "Modern 1 Bedroom in South B (Hazina Estate near Mombasa Rd)"
+   Location: South B (Plainsview & Hazina), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-077: "Executive 4 Bedroom Villa on 0.5 Acre in Karen (Bogani Road)"
+   Location: Karen (Hardy, Bogani & Mbagathi), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-078: "Modern Bedsitter in Langata near Carnivore / Southlands"
+   Location: Langata (Phenom, Southlands & Ngei), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-079: "Executive 2 Bedroom Master Ensuite in Fedha Estate near Tassia"
+   Location: Fedha (Embakasi), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-080: "Spacious 1 Bedroom Apartment in Umoja Innercore (Near Market)"
+   Location: Umoja (Innercore & Phase 1), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-081: "Executive 3 Bedroom Master Ensuite in Syokimau (Katani Road)"
+   Location: Syokimau (Katani & Mombasa Rd), Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-nrb-082: "1/4 Acre Residential Fenced Plot for Rent/Lease in Kitengela"
+   Location: Kitengela Town, Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-100: "2 Bedroom Master Ensuite in Ruaka (Near Quickmart)"
+   Location: Ruaka (Bypass & Slaughter Rd), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-101: "Spacious Bedsitter in Ruaka (Slaughter Rd)"
+   Location: Ruaka (Bypass & Slaughter Rd), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-102: "Modern 1 Bedroom in Ruaka near Two Rivers"
+   Location: Ruaka (Bypass & Slaughter Rd), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-103: "Newly Built 1 Bedroom in Thindigua, Kiambu Road"
+   Location: Thindigua, Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-104: "2 Bedroom Master Ensuite in Fourways Junction"
+   Location: Fourways Junction, Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-105: "Spacious Bedsitter in Mirema Drive, Roysambu"
+   Location: Roysambu / Mirema, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-106: "Direct Facebook Marketplace: 1 Bedroom in Roysambu (Lumumba Drive)"
+   Location: Roysambu / Mirema, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-107: "2 Bedroom in Kasarani (Clay City near Season)"
+   Location: Kasarani (Sports View & Clay City), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-110: "Facebook Listing: Student Bedsitter in Juja near JKUAT Main Gate"
+   Location: Juja (JKUAT & Toll Station), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-111: "2 Bedroom in Ruiru Town near Kamakis Bypass"
+   Location: Ruiru Town, Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-112: "2 Bedroom Master Ensuite in Kilimani (Dennis Pritt)"
+   Location: Kilimani (Dennis Pritt, Argwings Kodhek, Lenana), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-113: "Executive 1 Bedroom in Kilimani (Wood Avenue)"
+   Location: Kilimani (Dennis Pritt, Argwings Kodhek, Lenana), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-114: "3 Bedroom Master Ensuite + DSQ in Kileleshwa (Siaya Rd)"
+   Location: Kileleshwa (Oloitokitok, Kandara, Siaya), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-115: "Executive 2 Bedroom in Westlands (Rhapta Road)"
+   Location: Rhapta Road, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-116: "3 Bedroom All Ensuite in Lavington (Isaac Gathanju)"
+   Location: Lavington (James Gichuru, Isaac Gathanju), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-117: "1 Bedroom in Parklands 3rd Avenue"
+   Location: Parklands (1st to 6th Parklands), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-118: "TikTok Vacant House: Modern 1 Bedroom in South B (Plainsview)"
+   Location: South B (Plainsview & Hazina), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-119: "Direct Landlord: 2 Bedroom in South C (Mugoya Estate)"
+   Location: South C (Mugoya & Bellevue), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-120: "3 Bedroom in Langata (Phenom Estate)"
+   Location: Langata (Phenom, Southlands & Ngei), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-122: "2 Bedroom in Madaraka Estate near T-Mall"
+   Location: Madaraka, Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-123: "Single Room in Ngara near Fig Tree"
+   Location: Ngara (Fig Tree & Ngara Rd), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-124: "Spacious Bedsitter in Donholm Greenfields"
+   Location: Donholm (Phase 5 & Greenfields), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-125: "1 Bedroom in Buruburu Phase 4"
+   Location: Buruburu (Phases 1 to 5), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-126: "2 Bedroom in Umoja Innercore near Market"
+   Location: Umoja (Innercore & Phase 1), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-127: "Facebook Listing: Clean Bedsitter in Fedha Estate, Embakasi"
+   Location: Fedha (Embakasi), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-129: "2 Bedroom in Syokimau (Katani Road)"
+   Location: Syokimau (Katani & Mombasa Rd), Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-130: "1 Bedroom in Syokimau (Chady Road near Gateway)"
+   Location: Syokimau (Chady & Airport Rd), Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-131: "2 Bedroom in Athi River (Crystal Rivers Environs)"
+   Location: Athi River (Sabaki & EPZ), Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-132: "4 Bedroom Own Compound Maisonette in Kitengela"
+   Location: Kitengela Town, Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-133: "Bedsitter in Mlolongo near Express Way Entrance"
+   Location: Mlolongo Town, Machakos
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-134: "2 Bedroom in Kikuyu Town (Gitaru Rd near Bypass)"
+   Location: Kikuyu (Town & Ondiri), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-135: "1 Bedroom in Kinoo 87 near Waiyaki Way"
+   Location: Kinoo (87 & Stage), Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-136: "1 Bedroom in Uthiru near Junction Stage"
+   Location: Uthiru, Kiambu
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-137: "Clean Single Room in Kangemi (Waruku)"
+   Location: Kangemi (Waruku & Posta), Nairobi
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-138: "2 Bedroom in Rongai (Maasai Lodge Rd)"
+   Location: Ongata Rongai (Maasai Lodge & Town), Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-139: "Spacious Bedsitter in Rongai near Tumaini"
+   Location: Ongata Rongai (Maasai Lodge & Town), Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-soc-140: "1 Bedroom in Ngong Town near SGR Station"
+   Location: Ngong Town & Hills, Kajiado
+   Reason: No matching location found in hierarchy
+
+✗ prop-008: "4-Bedroom Mansion in Kiambu Road - Gated Estate"
+   Location: Kiambu Road, undefined
+   Reason: No matching location found in hierarchy
+
+RECOMMENDATIONS FOR UNMATCHED
+========================================
+1. Review the locations above and add them to the hierarchy if they are valid
+2. Or manually map these properties to the closest parent location
+3. Some may be typos or outdated names that need correction
+
+
+BACKUP FILE
+========================================
+Original data backed up to: C:\Users\Administrator\Documents\nai\db\data-backup-1791486915386.json
+
+NEXT STEPS
+========================================
+1. Review this report for accuracy
+2. Check unmatched properties and decide on manual mapping
+3. Test the hierarchical search with migrated data
+4. Deploy updated data.json to production
+
+========================================

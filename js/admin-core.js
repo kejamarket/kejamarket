@@ -219,7 +219,6 @@ const AdminCore = (() => {
                   <button class="tab-btn ${true ? 'active' : ''}" onclick="AdminVerification.init('pending-properties')" style="font-size:0.82rem;">Pending Approval</button>
                   <button class="tab-btn" onclick="AdminVerification.init('recently-approved')" style="font-size:0.82rem;">Recently Approved</button>
                   <button class="tab-btn" onclick="AdminVerification.init('recently-rejected')" style="font-size:0.82rem;">Rejected</button>
-                  <button class="tab-btn" onclick="AdminVerification.init('pending-users')" style="font-size:0.82rem;">User Verification</button>
                 </div>
               </div>
               <div id="verification-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading verification queue...</div></div>
@@ -242,13 +241,27 @@ const AdminCore = (() => {
           await loadReportedListingsModule();
           break;
         case 'users':
-        case 'users-verified':
+        case 'users-tenants':
+        case 'users-landlords':
+        case 'users-service-providers':
         case 'users-suspended':
           if (window.AdminUsers) {
-            const filter = moduleName === 'users-verified' ? 'verified' : moduleName === 'users-suspended' ? 'suspended' : 'all';
+            const filter = moduleName === 'users-tenants' ? 'tenants' : 
+                          moduleName === 'users-landlords' ? 'landlords' : 
+                          moduleName === 'users-service-providers' ? 'service-providers' :
+                          moduleName === 'users-suspended' ? 'suspended' : 'all';
             // Inject scaffold first so AdminUsers.init() can find #users-content
             contentArea.innerHTML = `
-              <div class="module-header"><h1><i class="fas fa-users"></i> User Management</h1></div>
+              <div class="module-header">
+                <h1><i class="fas fa-users"></i> User Management</h1>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+                  <button class="tab-btn ${filter === 'all' ? 'active' : ''}" onclick="AdminCore.navigate('users')" style="font-size:0.82rem;">All Users</button>
+                  <button class="tab-btn ${filter === 'tenants' ? 'active' : ''}" onclick="AdminCore.navigate('users-tenants')" style="font-size:0.82rem;">🏠 Tenants</button>
+                  <button class="tab-btn ${filter === 'landlords' ? 'active' : ''}" onclick="AdminCore.navigate('users-landlords')" style="font-size:0.82rem;">🏢 Landlords</button>
+                  <button class="tab-btn ${filter === 'service-providers' ? 'active' : ''}" onclick="AdminCore.navigate('users-service-providers')" style="font-size:0.82rem;">🔧 Service Providers</button>
+                  <button class="tab-btn ${filter === 'suspended' ? 'active' : ''}" onclick="AdminCore.navigate('users-suspended')" style="font-size:0.82rem;">🚫 Suspended</button>
+                </div>
+              </div>
               <div id="users-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading users...</div></div>
             `;
             await window.AdminUsers.init(filter);
@@ -1895,13 +1908,24 @@ const AdminCore = (() => {
       }
       container.innerHTML = `
         <div class="table-container"><table class="admin-table">
-          <thead><tr><th>Seeker</th><th>Subject / Property</th><th>Message</th><th>Date</th></tr></thead>
+          <thead><tr><th>Seeker</th><th>Subject / Property</th><th>Message</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody>${inqs.map(i => `
             <tr>
               <td><strong>${escapeHtml(i.name || 'Tenant')}</strong><br><small style="color:#64748b;">${i.phone || i.email || '-'}</small></td>
               <td>${escapeHtml(i.propertyTitle || i.subject || 'General Inquiry')}</td>
-              <td>${escapeHtml(i.message || '')}</td>
+              <td>${escapeHtml((i.message || '').substring(0, 60))}${(i.message || '').length > 60 ? '...' : ''}</td>
               <td>${formatDate(i.createdAt)}</td>
+              <td><span class="status-badge ${i.status === 'responded' ? 'status-active' : 'status-pending'}">${i.status || 'New'}</span></td>
+              <td>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn-action btn-primary" onclick="AdminCore.viewInquiry('${i.id}')" title="View & Reply">
+                    <i class="fas fa-reply"></i> Reply
+                  </button>
+                  <button class="btn-action btn-delete" onclick="AdminCore.deleteInquiry('${i.id}')" title="Delete">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
             </tr>
           `).join('')}</tbody>
         </table></div>
@@ -2055,6 +2079,98 @@ const AdminCore = (() => {
     setTimeout(() => toast.remove(), 4000);
   }
 
+  // View and reply to inquiry
+  async function viewInquiry(id) {
+    const res = await fetch(`${API_BASE}/api/admin/inquiries`, {
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+    });
+    const data = await res.json();
+    const inquiry = (data.inquiries || []).find(i => i.id === id);
+    
+    if (!inquiry) {
+      alert('Inquiry not found');
+      return;
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width:600px;">
+        <div class="modal-header">
+          <h2><i class="fas fa-envelope"></i> Reply to Inquiry</h2>
+          <button class="modal-close" onclick="this.closest('.modal-overlay').remove()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div style="background:#f8fafc;padding:14px;border-radius:8px;margin-bottom:16px;">
+            <div style="font-weight:700;margin-bottom:8px;">From: ${escapeHtml(inquiry.name || 'Anonymous')}</div>
+            <div style="font-size:0.85rem;color:#64748b;margin-bottom:4px;">Phone: ${inquiry.phone || inquiry.email || '-'}</div>
+            <div style="font-size:0.85rem;color:#64748b;margin-bottom:8px;">Property: ${escapeHtml(inquiry.propertyTitle || 'General')}</div>
+            <div style="font-weight:600;margin-top:12px;">Message:</div>
+            <div style="margin-top:6px;">${escapeHtml(inquiry.message || '')}</div>
+          </div>
+          <div class="form-group">
+            <label>Your Reply *</label>
+            <textarea id="inquiry-reply-text" class="form-control" rows="5" placeholder="Type your reply here..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+          <button class="btn-primary" onclick="AdminCore.sendInquiryReply('${id}')">
+            <i class="fas fa-paper-plane"></i> Send Reply
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  // Send inquiry reply
+  async function sendInquiryReply(id) {
+    const reply = document.getElementById('inquiry-reply-text').value.trim();
+    if (!reply) {
+      alert('Please enter a reply message');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/inquiries/${id}/reply`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ reply })
+      });
+
+      if (!res.ok) throw new Error('Failed to send reply');
+
+      document.querySelector('.modal-overlay').remove();
+      showToast('Reply sent successfully!', 'success');
+      await loadInquiriesModule();
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  // Delete inquiry
+  async function deleteInquiry(id) {
+    if (!confirm('Delete this inquiry? This action cannot be undone.')) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/inquiries/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+
+      if (!res.ok) throw new Error('Failed to delete inquiry');
+
+      showToast('Inquiry deleted', 'success');
+      await loadInquiriesModule();
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
   return {
     init,
     navigate,
@@ -2069,6 +2185,9 @@ const AdminCore = (() => {
     _handleRoleChange,
     _confirmCreateAdmin,
     revokeAdmin,
+    viewInquiry,
+    sendInquiryReply,
+    deleteInquiry,
     state
   };
 })();
