@@ -3309,9 +3309,15 @@
     }
 
     .auth-form {
+      display: none;
       overflow-y: auto;
       flex: 1;
       min-height: 0;
+    }
+
+    .auth-form.active {
+      display: flex;
+      flex-direction: column;
     }
 
     /* Close Button */
