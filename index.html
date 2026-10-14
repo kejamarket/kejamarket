@@ -786,32 +786,33 @@
   <style>
     .service-cards-section {
       background: #f8f9fa;
-      padding: 24px 20px;
+      padding: 20px 16px;
     }
 
     .service-cards-container {
       max-width: 1400px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 10px;
     }
 
     .service-banner {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 10px;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
       position: relative;
       overflow: hidden;
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
+      min-height: 75px;
     }
 
     .service-banner:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .service-banner-green {
@@ -831,9 +832,9 @@
     }
 
     .service-banner-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -857,8 +858,8 @@
     }
 
     .service-banner-icon svg {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
     }
 
     .service-banner-content {
@@ -867,29 +868,34 @@
     }
 
     .service-banner-title {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: #1f2937;
-      margin: 0 0 4px 0;
+      margin: 0 0 3px 0;
       line-height: 1.2;
     }
 
     .service-banner-text {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #4b5563;
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .service-banner-btn {
-      padding: 5px 12px;
+      padding: 4px 10px;
       border: none;
-      border-radius: 5px;
-      font-size: 0.7rem;
+      border-radius: 4px;
+      font-size: 0.65rem;
       font-weight: 600;
       color: #ffffff;
       cursor: pointer;
       transition: all 0.2s;
+      display: inline-block;
     }
 
     .service-banner-green .service-banner-btn {
@@ -925,10 +931,10 @@
     }
 
     .service-banner-image {
-      width: 90px;
-      height: 70px;
+      width: 80px;
+      height: 60px;
       flex-shrink: 0;
-      border-radius: 6px;
+      border-radius: 5px;
       overflow: hidden;
     }
 
@@ -938,80 +944,37 @@
       object-fit: cover;
     }
 
-    /* Responsive - Large Desktop (3 columns) */
-    @media (max-width: 1400px) {
+    /* Responsive - Desktop Large */
+    @media (min-width: 1200px) {
       .service-cards-container {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
       }
     }
 
-    /* Responsive - Tablet (2 columns) */
-    @media (max-width: 1024px) {
-      .service-cards-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
-    }
-
-    /* Responsive - Mobile (1 column) */
+    /* Responsive - Tablet */
     @media (max-width: 768px) {
       .service-cards-section {
-        padding: 20px 16px;
+        padding: 16px 12px;
       }
 
       .service-cards-container {
         grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .service-banner {
-        padding: 10px 12px;
-        gap: 10px;
-      }
-
-      .service-banner-icon {
-        width: 36px;
-        height: 36px;
-      }
-
-      .service-banner-icon svg {
-        width: 18px;
-        height: 18px;
-      }
-
-      .service-banner-title {
-        font-size: 0.85rem;
-      }
-
-      .service-banner-text {
-        font-size: 0.65rem;
-      }
-
-      .service-banner-btn {
-        padding: 4px 10px;
-        font-size: 0.65rem;
-      }
-
-      .service-banner-image {
-        width: 75px;
-        height: 60px;
-      }
-    }
-
-    /* Small Mobile */
-    @media (max-width: 480px) {
-      .service-banner-image {
-        width: 65px;
-        height: 50px;
+        gap: 8px;
       }
 
       .service-banner {
         padding: 8px 10px;
+        gap: 8px;
       }
 
       .service-banner-icon {
         width: 32px;
         height: 32px;
+      }
+
+      .service-banner-icon svg {
+        width: 16px;
+        height: 16px;
       }
 
       .service-banner-title {
@@ -1020,6 +983,41 @@
 
       .service-banner-text {
         font-size: 0.6rem;
+      }
+
+      .service-banner-btn {
+        padding: 3px 8px;
+        font-size: 0.6rem;
+      }
+
+      .service-banner-image {
+        width: 70px;
+        height: 55px;
+      }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 480px) {
+      .service-banner-image {
+        width: 60px;
+        height: 48px;
+      }
+
+      .service-banner {
+        padding: 7px 8px;
+      }
+
+      .service-banner-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .service-banner-title {
+        font-size: 0.75rem;
+      }
+
+      .service-banner-text {
+        font-size: 0.58rem;
       }
     }
   </style>
