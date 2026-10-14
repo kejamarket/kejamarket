@@ -646,7 +646,8 @@ const kejaAuth = (() => {
         } catch {
           notify('Server connection error. Please check if the server is running.', 'error');
         }
-        return;
+        // Don't return here - let finally block run
+        throw new Error('Server returned error status');
       }
 
       const data = await res.json();
