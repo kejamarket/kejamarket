@@ -703,326 +703,6 @@
   <div class="mobile-filter-bar" style="display: none !important;"></div>
 
   <!-- ====================================================================
-       SMART HUNT SERVICE CARDS SECTION (Reference Image Match)
-       ================================================================ -->
-  <section class="service-cards-section">
-    <div class="service-cards-container">
-      
-      <!-- Card 1: 3-Day Smart House Hunt -->
-      <div class="service-banner service-banner-green">
-        <div class="service-banner-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 3L4 9V21H20V9L12 3Z" fill="white"/>
-          </svg>
-        </div>
-        <div class="service-banner-content">
-          <h3 class="service-banner-title">3-Day Smart House Hunt</h3>
-          <p class="service-banner-text">Can't find a house? Let our verified ground team inspect & match results in 72 hours</p>
-          <button class="service-banner-btn">Start Hunt →</button>
-        </div>
-        <div class="service-banner-image">
-          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=180&h=120&fit=crop&crop=faces" alt="Professional woman" />
-        </div>
-      </div>
-
-      <!-- Card 2: What Can I Afford? -->
-      <div class="service-banner service-banner-purple">
-        <div class="service-banner-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="7" width="18" height="11" rx="2" stroke="white" stroke-width="2" fill="none"/>
-            <line x1="3" y1="11" x2="21" y2="11" stroke="white" stroke-width="2"/>
-          </svg>
-        </div>
-        <div class="service-banner-content">
-          <h3 class="service-banner-title">What Can I Afford?</h3>
-          <p class="service-banner-text">Avoid rent stress. Calculate your safe rent income instantly.</p>
-          <button class="service-banner-btn">Calculate →</button>
-        </div>
-        <div class="service-banner-image">
-          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=180&h=120&fit=crop" alt="Houses with calculator" />
-        </div>
-      </div>
-
-      <!-- Card 3: Instant Vacancy Alerts -->
-      <div class="service-banner service-banner-pink">
-        <div class="service-banner-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C10.9 2 10 2.9 10 4V4.29C7.03 5.17 5 7.9 5 11V17L3 19V20H21V19L19 17V11C19 7.9 16.97 5.17 14 4.29V4C14 2.9 13.1 2 12 2Z" fill="white"/>
-            <path d="M12 23C13.1 23 14 22.1 14 21H10C10 22.1 10.9 23 12 23Z" fill="white"/>
-          </svg>
-        </div>
-        <div class="service-banner-content">
-          <h3 class="service-banner-title">Instant Vacancy Alerts</h3>
-          <p class="service-banner-text">Hot rentals in Ruaka, Roysambu & Kilimani get taken fast. Get an instant SMS or WhatsApp alert</p>
-          <button class="service-banner-btn">Get Alerts →</button>
-        </div>
-        <div class="service-banner-image">
-          <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=180&h=120&fit=crop" alt="WhatsApp on phone" />
-        </div>
-      </div>
-
-      <!-- Card 4: 3-Day Smart House Hunt (Right Side) -->
-      <div class="service-banner service-banner-teal">
-        <div class="service-banner-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 11L12 14L22 4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M21 12V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V5C3 3.9 3.9 3 5 3H16" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="service-banner-content">
-          <h3 class="service-banner-title">3-Day Smart House Hunt</h3>
-          <p class="service-banner-text">Can't find a house? Let our verified ground team inspect & match rentals in 72 hours.</p>
-          <button class="service-banner-btn">Start Hunt →</button>
-        </div>
-        <div class="service-banner-image">
-          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=180&h=120&fit=crop" alt="House search" />
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Service Cards Styles -->
-  <style>
-    .service-cards-section {
-      background: #f8f9fa;
-      padding: 20px 16px;
-    }
-
-    .service-cards-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 10px;
-    }
-
-    .service-banner {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer;
-      min-height: 75px;
-    }
-
-    .service-banner:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .service-banner-green {
-      background: linear-gradient(135deg, #d4f4dd 0%, #a7f3d0 100%);
-    }
-
-    .service-banner-purple {
-      background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
-    }
-
-    .service-banner-pink {
-      background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-    }
-
-    .service-banner-teal {
-      background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
-    }
-
-    .service-banner-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .service-banner-green .service-banner-icon {
-      background: #10b981;
-    }
-
-    .service-banner-purple .service-banner-icon {
-      background: #8b5cf6;
-    }
-
-    .service-banner-pink .service-banner-icon {
-      background: #ec4899;
-    }
-
-    .service-banner-teal .service-banner-icon {
-      background: #14b8a6;
-    }
-
-    .service-banner-icon svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .service-banner-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .service-banner-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #1f2937;
-      margin: 0 0 3px 0;
-      line-height: 1.2;
-    }
-
-    .service-banner-text {
-      font-size: 0.65rem;
-      color: #4b5563;
-      margin: 0 0 6px 0;
-      line-height: 1.3;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .service-banner-btn {
-      padding: 4px 10px;
-      border: none;
-      border-radius: 4px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: #ffffff;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: inline-block;
-    }
-
-    .service-banner-green .service-banner-btn {
-      background: #10b981;
-    }
-
-    .service-banner-green .service-banner-btn:hover {
-      background: #059669;
-    }
-
-    .service-banner-purple .service-banner-btn {
-      background: #8b5cf6;
-    }
-
-    .service-banner-purple .service-banner-btn:hover {
-      background: #7c3aed;
-    }
-
-    .service-banner-pink .service-banner-btn {
-      background: #ec4899;
-    }
-
-    .service-banner-pink .service-banner-btn:hover {
-      background: #db2777;
-    }
-
-    .service-banner-teal .service-banner-btn {
-      background: #14b8a6;
-    }
-
-    .service-banner-teal .service-banner-btn:hover {
-      background: #0d9488;
-    }
-
-    .service-banner-image {
-      width: 80px;
-      height: 60px;
-      flex-shrink: 0;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    .service-banner-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* Responsive - Desktop Large */
-    @media (min-width: 1200px) {
-      .service-cards-container {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    /* Responsive - Tablet */
-    @media (max-width: 768px) {
-      .service-cards-section {
-        padding: 16px 12px;
-      }
-
-      .service-cards-container {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-
-      .service-banner {
-        padding: 8px 10px;
-        gap: 8px;
-      }
-
-      .service-banner-icon {
-        width: 32px;
-        height: 32px;
-      }
-
-      .service-banner-icon svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      .service-banner-title {
-        font-size: 0.8rem;
-      }
-
-      .service-banner-text {
-        font-size: 0.6rem;
-      }
-
-      .service-banner-btn {
-        padding: 3px 8px;
-        font-size: 0.6rem;
-      }
-
-      .service-banner-image {
-        width: 70px;
-        height: 55px;
-      }
-    }
-
-    /* Small Mobile */
-    @media (max-width: 480px) {
-      .service-banner-image {
-        width: 60px;
-        height: 48px;
-      }
-
-      .service-banner {
-        padding: 7px 8px;
-      }
-
-      .service-banner-icon {
-        width: 30px;
-        height: 30px;
-      }
-
-      .service-banner-title {
-        font-size: 0.75rem;
-      }
-
-      .service-banner-text {
-        font-size: 0.58rem;
-      }
-    }
-  </style>
-
-  <!-- ====================================================================
        HERO BANNER
        ==================================================================== -->
   <section class="keja-desktop-hero-strip" id="keja-desktop-hero" style="display: none;">
@@ -1459,50 +1139,277 @@
         </button>
       </div>
 
-      <!-- Desktop Feature Cards Strip (Calculator, What Can I Afford, Instant Alerts, House Hunt) -->
+      <!-- Desktop Feature Cards Strip - Service Banners -->
       <div class="keja-feature-strip desktop-only-feature-strip">
-        <!-- Card 1: Calculator -->
-        <div class="km-feature-card" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
-          <div class="km-fc-icon"><i class="fas fa-calculator"></i></div>
-          <div class="km-fc-text">
-            <h4 class="km-fc-title">Calculator</h4>
-            <p class="km-fc-desc">Estimate your monthly budget and see what you can afford.</p>
+        
+        <!-- Banner 1: 3-Day Smart House Hunt -->
+        <div class="service-banner service-banner-green" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
+          <div class="service-banner-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3L4 9V21H20V9L12 3Z" fill="white"/>
+            </svg>
           </div>
-          <i class="fas fa-chevron-right km-fc-arrow"></i>
+          <div class="service-banner-content">
+            <h3 class="service-banner-title">3-Day Smart House Hunt</h3>
+            <p class="service-banner-text">Can't find a house? Let our verified ground team inspect & match results in 72 hours</p>
+            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">Start Hunt →</button>
+          </div>
+          <div class="service-banner-image">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=180&h=120&fit=crop&crop=faces" alt="Professional woman" />
+          </div>
         </div>
 
-        <!-- Card 2: What Can I Afford? -->
-        <div class="km-feature-card" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
-          <div class="km-fc-icon"><i class="fas fa-wallet"></i></div>
-          <div class="km-fc-text">
-            <h4 class="km-fc-title">What Can I Afford?</h4>
-            <p class="km-fc-desc">Find properties within your price range.</p>
+        <!-- Banner 2: What Can I Afford? -->
+        <div class="service-banner service-banner-purple" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
+          <div class="service-banner-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="7" width="18" height="11" rx="2" stroke="white" stroke-width="2" fill="none"/>
+              <line x1="3" y1="11" x2="21" y2="11" stroke="white" stroke-width="2"/>
+            </svg>
           </div>
-          <i class="fas fa-chevron-right km-fc-arrow"></i>
+          <div class="service-banner-content">
+            <h3 class="service-banner-title">What Can I Afford?</h3>
+            <p class="service-banner-text">Avoid rent stress. Calculate your safe rent income instantly.</p>
+            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openAffordabilityCalculator && app.openAffordabilityCalculator()">Calculate →</button>
+          </div>
+          <div class="service-banner-image">
+            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=180&h=120&fit=crop" alt="Houses with calculator" />
+          </div>
         </div>
 
-        <!-- Card 3: Instant Alerts -->
-        <div class="km-feature-card" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()" role="button" tabindex="0">
-          <div class="km-fc-icon"><i class="fas fa-bell"></i></div>
-          <div class="km-fc-text">
-            <h4 class="km-fc-title">Instant Alerts</h4>
-            <p class="km-fc-desc">Get new listings on WhatsApp, email or SMS.</p>
+        <!-- Banner 3: Instant Vacancy Alerts -->
+        <div class="service-banner service-banner-pink" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()" role="button" tabindex="0">
+          <div class="service-banner-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C10.9 2 10 2.9 10 4V4.29C7.03 5.17 5 7.9 5 11V17L3 19V20H21V19L19 17V11C19 7.9 16.97 5.17 14 4.29V4C14 2.9 13.1 2 12 2Z" fill="white"/>
+              <path d="M12 23C13.1 23 14 22.1 14 21H10C10 22.1 10.9 23 12 23Z" fill="white"/>
+            </svg>
           </div>
-          <i class="fas fa-chevron-right km-fc-arrow"></i>
+          <div class="service-banner-content">
+            <h3 class="service-banner-title">Instant Vacancy Alerts</h3>
+            <p class="service-banner-text">Hot rentals in Ruaka, Roysambu & Kilimani get taken fast. Get an instant SMS or WhatsApp alert</p>
+            <button class="service-banner-btn" onclick="event.stopPropagation(); openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()">Get Alerts →</button>
+          </div>
+          <div class="service-banner-image">
+            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=180&h=120&fit=crop" alt="WhatsApp on phone" />
+          </div>
         </div>
 
-        <!-- Card 4: 3-Day Smart House Hunt -->
-        <div class="km-feature-card km-fc--hunt" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
-          <div class="km-fc-icon"><i class="fas fa-home"></i></div>
-          <div class="km-fc-text">
-            <h4 class="km-fc-title">3-Day Smart House Hunt</h4>
-            <p class="km-fc-desc">Can't find a house? Let our verified ground team inspect &amp; match rentals in 72 hours.</p>
+        <!-- Banner 4: 3-Day Smart House Hunt (Teal) -->
+        <div class="service-banner service-banner-teal" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
+          <div class="service-banner-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 11L12 14L22 4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 12V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V5C3 3.9 3.9 3 5 3H16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
-          <button class="km-fc-cta-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">
-            Start Hunt &rarr;
-          </button>
+          <div class="service-banner-content">
+            <h3 class="service-banner-title">3-Day Smart House Hunt</h3>
+            <p class="service-banner-text">Can't find a house? Let our verified ground team inspect & match rentals in 72 hours.</p>
+            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">Start Hunt →</button>
+          </div>
+          <div class="service-banner-image">
+            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=180&h=120&fit=crop" alt="House search" />
+          </div>
         </div>
+
       </div>
+
+      <!-- Service Banners Styles -->
+      <style>
+        .keja-feature-strip {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 10px;
+          margin-bottom: 20px;
+          padding: 0 16px;
+        }
+
+        .service-banner {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 12px;
+          border-radius: 8px;
+          position: relative;
+          overflow: hidden;
+          transition: transform 0.3s, box-shadow 0.3s;
+          cursor: pointer;
+          min-height: 75px;
+        }
+
+        .service-banner:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-banner-green {
+          background: linear-gradient(135deg, #d4f4dd 0%, #a7f3d0 100%);
+        }
+
+        .service-banner-purple {
+          background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+        }
+
+        .service-banner-pink {
+          background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+        }
+
+        .service-banner-teal {
+          background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+        }
+
+        .service-banner-icon {
+          width: 36px;
+          height: 36px;
+          border-radius: 7px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .service-banner-green .service-banner-icon {
+          background: #10b981;
+        }
+
+        .service-banner-purple .service-banner-icon {
+          background: #8b5cf6;
+        }
+
+        .service-banner-pink .service-banner-icon {
+          background: #ec4899;
+        }
+
+        .service-banner-teal .service-banner-icon {
+          background: #14b8a6;
+        }
+
+        .service-banner-icon svg {
+          width: 18px;
+          height: 18px;
+        }
+
+        .service-banner-content {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .service-banner-title {
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: #1f2937;
+          margin: 0 0 3px 0;
+          line-height: 1.2;
+        }
+
+        .service-banner-text {
+          font-size: 0.65rem;
+          color: #4b5563;
+          margin: 0 0 6px 0;
+          line-height: 1.3;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .service-banner-btn {
+          padding: 4px 10px;
+          border: none;
+          border-radius: 4px;
+          font-size: 0.65rem;
+          font-weight: 600;
+          color: #ffffff;
+          cursor: pointer;
+          transition: all 0.2s;
+          display: inline-block;
+        }
+
+        .service-banner-green .service-banner-btn {
+          background: #10b981;
+        }
+
+        .service-banner-green .service-banner-btn:hover {
+          background: #059669;
+        }
+
+        .service-banner-purple .service-banner-btn {
+          background: #8b5cf6;
+        }
+
+        .service-banner-purple .service-banner-btn:hover {
+          background: #7c3aed;
+        }
+
+        .service-banner-pink .service-banner-btn {
+          background: #ec4899;
+        }
+
+        .service-banner-pink .service-banner-btn:hover {
+          background: #db2777;
+        }
+
+        .service-banner-teal .service-banner-btn {
+          background: #14b8a6;
+        }
+
+        .service-banner-teal .service-banner-btn:hover {
+          background: #0d9488;
+        }
+
+        .service-banner-image {
+          width: 80px;
+          height: 60px;
+          flex-shrink: 0;
+          border-radius: 5px;
+          overflow: hidden;
+        }
+
+        .service-banner-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        @media (max-width: 1200px) {
+          .keja-feature-strip {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .keja-feature-strip {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            padding: 0 12px;
+          }
+
+          .service-banner {
+            padding: 8px 10px;
+            gap: 8px;
+          }
+
+          .service-banner-icon {
+            width: 32px;
+            height: 32px;
+          }
+
+          .service-banner-title {
+            font-size: 0.8rem;
+          }
+
+          .service-banner-text {
+            font-size: 0.6rem;
+          }
+
+          .service-banner-image {
+            width: 70px;
+            height: 55px;
+          }
+        }
+      </style>
+
 
       <!-- Results Header & View Controls (Matches reference image exactly) -->
       <div class="results-header">
@@ -3390,10 +3297,21 @@
       border-radius: 16px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       width: 100%;
-      max-height: 92vh;
-      overflow-y: auto;
-      padding: 24px 20px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 20px;
       position: relative;
+    }
+
+    .auth-modal-card > * {
+      flex-shrink: 0;
+    }
+
+    .auth-form {
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
     }
 
     /* Close Button */
@@ -3556,7 +3474,7 @@
 
     /* Form Groups */
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .form-group label {
