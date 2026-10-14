@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v65-terms-agreement';
+const CACHE_NAME = 'kejamarket-v66-fix-duplicate-html';
 
 const STATIC_ASSETS = [
   '/',
