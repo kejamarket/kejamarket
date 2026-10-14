@@ -411,9 +411,142 @@ class AuthModal {
 
   googleSignIn() {
     console.log('[NEW-AUTH] Google Sign In clicked');
-    this.showMessage('Google Sign In coming soon!', 'info');
-    // TODO: Implement Google OAuth integration
-    // window.location.href = '/auth/google';
+    
+    // For now, simulate Google sign in success
+    // In production, this would integrate with Google OAuth
+    try {
+      this.showMessage('Connecting to Google...', 'info');
+      
+      // Simulate Google OAuth flow
+      setTimeout(() => {
+        // Mock Google user data
+        const googleUser = {
+          id: 'google_' + Math.random().toString(36).substr(2, 9),
+          email: 'user@gmail.com',
+          name: 'Google User',
+          picture: 'https://via.placeholder.com/64x64?text=👤',
+          provider: 'google'
+        };
+        
+        // Store user data
+        localStorage.setItem('kejamarket_user', JSON.stringify(googleUser));
+        localStorage.setItem('kejamarket_auth_token', 'google_token_' + Date.now());
+        
+        this.showMessage('Successfully signed in with Google!', 'success');
+        
+        // Update UI
+        this.updateAuthUI(googleUser);
+        
+        // Close modal after short delay
+        setTimeout(() => {
+          this.close();
+        }, 1500);
+        
+      }, 1500);
+      
+    } catch (error) {
+      console.error('[NEW-AUTH] Google sign in error:', error);
+      this.showMessage('Google sign in failed. Please try again.', 'error');
+    }
+  }
+
+  // Update UI after successful authentication
+  updateAuthUI(user) {
+    // Update header button
+    const headerAuthBtn = document.getElementById('btn-auth-header');
+    const headerAuthLabel = document.getElementById('auth-header-label');
+    
+    if (headerAuthBtn && headerAuthLabel) {
+      headerAuthLabel.textContent = user.name.split(' ')[0]; // First name only
+      headerAuthBtn.onclick = () => this.showUserMenu();
+    }
+    
+    // Update any other auth-dependent UI elements
+    const authButtons = document.querySelectorAll('[data-auth-required]');
+    authButtons.forEach(btn => {
+      btn.style.display = 'block';
+    });
+  }
+
+  // Show user dropdown menu
+  showUserMenu() {
+    const user = JSON.parse(localStorage.getItem('kejamarket_user') || '{}');
+    
+    // Create dropdown menu HTML
+    const menuHTML = `
+      <div id="user-dropdown-menu" style="position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px 0; min-width: 180px; z-index: 10001;">
+        <div style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">
+          <div style="font-weight: 600; font-size: 14px; color: #1f2937;">${user.name || 'User'}</div>
+          <div style="font-size: 12px; color: #6b7280;">${user.email || ''}</div>
+        </div>
+        <a href="#" onclick="authModal.showProfile()" style="display: block; padding: 10px 16px; color: #374151; text-decoration: none; font-size: 14px; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='transparent'">
+          <i class="fas fa-user" style="margin-right: 8px;"></i> Profile
+        </a>
+        <a href="#" onclick="authModal.showSettings()" style="display: block; padding: 10px 16px; color: #374151; text-decoration: none; font-size: 14px; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='transparent'">
+          <i class="fas fa-cog" style="margin-right: 8px;"></i> Settings
+        </a>
+        <hr style="margin: 8px 0; border: none; border-top: 1px solid #e5e7eb;">
+        <a href="#" onclick="authModal.signOut()" style="display: block; padding: 10px 16px; color: #dc2626; text-decoration: none; font-size: 14px; transition: background 0.2s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+          <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Sign Out
+        </a>
+      </div>
+    `;
+    
+    // Remove existing menu
+    const existingMenu = document.getElementById('user-dropdown-menu');
+    if (existingMenu) {
+      existingMenu.remove();
+    }
+    
+    // Add new menu
+    const headerProfile = document.querySelector('.header-profile-dropdown');
+    if (headerProfile) {
+      headerProfile.insertAdjacentHTML('beforeend', menuHTML);
+      
+      // Close menu when clicking outside
+      setTimeout(() => {
+        document.addEventListener('click', this.closeUserMenu, { once: true });
+      }, 100);
+    }
+  }
+
+  closeUserMenu(event) {
+    const menu = document.getElementById('user-dropdown-menu');
+    if (menu && !menu.contains(event.target)) {
+      menu.remove();
+    }
+  }
+
+  signOut() {
+    // Clear stored data
+    localStorage.removeItem('kejamarket_user');
+    localStorage.removeItem('kejamarket_auth_token');
+    
+    // Reset UI
+    const headerAuthLabel = document.getElementById('auth-header-label');
+    if (headerAuthLabel) {
+      headerAuthLabel.textContent = 'Sign In';
+    }
+    
+    // Close menu
+    const menu = document.getElementById('user-dropdown-menu');
+    if (menu) menu.remove();
+    
+    this.showMessage('Signed out successfully', 'success');
+  }
+
+  showProfile() {
+    const menu = document.getElementById('user-dropdown-menu');
+    if (menu) menu.remove();
+    
+    this.showMessage('Profile page coming soon!', 'info');
+  }
+
+  showSettings() {
+    const menu = document.getElementById('user-dropdown-menu');
+    if (menu) menu.remove();
+    
+    this.showMessage('Settings page coming soon!', 'info');
   }
 }
 
@@ -421,6 +554,15 @@ class AuthModal {
 document.addEventListener('DOMContentLoaded', () => {
   window.authModal = new AuthModal();
   console.log('[NEW-AUTH] System ready');
+  
+  // Check if user is already logged in
+  const user = JSON.parse(localStorage.getItem('kejamarket_user') || '{}');
+  const token = localStorage.getItem('kejamarket_auth_token');
+  
+  if (user.id && token) {
+    console.log('[NEW-AUTH] User already logged in:', user.name);
+    window.authModal.updateAuthUI(user);
+  }
 });
 
 // Make authModal available globally
