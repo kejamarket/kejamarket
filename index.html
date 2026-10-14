@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=20.0&t=202610090215">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=21.0&t=202610090220">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
@@ -389,49 +389,6 @@
       <div class="keja-hero-title-box">
         <h1 class="keja-hero-heading">Find the perfect home or property<br>in Kenya</h1>
       </div>
-      <div class="keja-feature-strip">
-        <!-- Card 1: Calculator -->
-        <div class="km-feature-card" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
-          <div class="km-fc-icon"><i class="fas fa-calculator"></i></div>
-          <div class="km-fc-text">
-            <h4 class="km-fc-title">Calculator</h4>
-            <p class="km-fc-desc">Estimate your monthly budget and see what you can afford.</p>
-          </div>
-          <i class="fas fa-chevron-right km-fc-arrow"></i>
-        </div>
-
-        <!-- Card 2: What Can I Afford? -->
-        <div class="km-feature-card" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
-          <div class="km-fc-icon"><i class="fas fa-wallet"></i></div>
-          <div class="km-fc-text">
-            <h4 class="km-fc-title">What Can I Afford?</h4>
-            <p class="km-fc-desc">Find properties within your price range.</p>
-          </div>
-          <i class="fas fa-chevron-right km-fc-arrow"></i>
-        </div>
-
-        <!-- Card 3: Instant Alerts -->
-        <div class="km-feature-card" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()" role="button" tabindex="0">
-          <div class="km-fc-icon"><i class="fas fa-bell"></i></div>
-          <div class="km-fc-text">
-            <h4 class="km-fc-title">Instant Alerts</h4>
-            <p class="km-fc-desc">Get new listings on WhatsApp, email or SMS.</p>
-          </div>
-          <i class="fas fa-chevron-right km-fc-arrow"></i>
-        </div>
-
-        <!-- Card 4: 3-Day Smart House Hunt -->
-        <div class="km-feature-card km-fc--hunt" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
-          <div class="km-fc-icon"><i class="fas fa-home"></i></div>
-          <div class="km-fc-text">
-            <h4 class="km-fc-title">3-Day Smart House Hunt</h4>
-            <p class="km-fc-desc">Can't find a house? Let our verified ground team inspect &amp; match rentals in 72 hours.</p>
-          </div>
-          <button class="km-fc-cta-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">
-            Start Hunt &rarr;
-          </button>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -758,6 +715,51 @@
           <span>More Filters</span>
           <i class="fas fa-chevron-right"></i>
         </button>
+      </div>
+
+      <!-- Desktop Feature Cards Strip (Calculator, What Can I Afford, Instant Alerts, House Hunt) -->
+      <div class="keja-feature-strip desktop-only-feature-strip">
+        <!-- Card 1: Calculator -->
+        <div class="km-feature-card" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
+          <div class="km-fc-icon"><i class="fas fa-calculator"></i></div>
+          <div class="km-fc-text">
+            <h4 class="km-fc-title">Calculator</h4>
+            <p class="km-fc-desc">Estimate your monthly budget and see what you can afford.</p>
+          </div>
+          <i class="fas fa-chevron-right km-fc-arrow"></i>
+        </div>
+
+        <!-- Card 2: What Can I Afford? -->
+        <div class="km-feature-card" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
+          <div class="km-fc-icon"><i class="fas fa-wallet"></i></div>
+          <div class="km-fc-text">
+            <h4 class="km-fc-title">What Can I Afford?</h4>
+            <p class="km-fc-desc">Find properties within your price range.</p>
+          </div>
+          <i class="fas fa-chevron-right km-fc-arrow"></i>
+        </div>
+
+        <!-- Card 3: Instant Alerts -->
+        <div class="km-feature-card" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()" role="button" tabindex="0">
+          <div class="km-fc-icon"><i class="fas fa-bell"></i></div>
+          <div class="km-fc-text">
+            <h4 class="km-fc-title">Instant Alerts</h4>
+            <p class="km-fc-desc">Get new listings on WhatsApp, email or SMS.</p>
+          </div>
+          <i class="fas fa-chevron-right km-fc-arrow"></i>
+        </div>
+
+        <!-- Card 4: 3-Day Smart House Hunt -->
+        <div class="km-feature-card km-fc--hunt" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
+          <div class="km-fc-icon"><i class="fas fa-home"></i></div>
+          <div class="km-fc-text">
+            <h4 class="km-fc-title">3-Day Smart House Hunt</h4>
+            <p class="km-fc-desc">Can't find a house? Let our verified ground team inspect &amp; match rentals in 72 hours.</p>
+          </div>
+          <button class="km-fc-cta-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">
+            Start Hunt &rarr;
+          </button>
+        </div>
       </div>
 
       <!-- Results Header & View Controls (Matches reference image exactly) -->

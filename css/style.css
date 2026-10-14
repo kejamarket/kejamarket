@@ -5614,3 +5614,22 @@ body {
 .btn-toggle-property-types.expanded i {
   transform: rotate(180deg);
 }
+
+/* Desktop Feature Cards - Hide on mobile, show above listings on desktop */
+.desktop-only-feature-strip {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .desktop-only-feature-strip {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 0 16px;
+  }
+  
+  .desktop-only-feature-strip .km-feature-card {
+    flex: 1;
+    min-width: 0;
+  }
+}
