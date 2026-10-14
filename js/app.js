@@ -1073,8 +1073,61 @@ class NairobiRentalsApp {
     if (searchInput) searchInput.value = locationName;
     if (resultsDropdown) resultsDropdown.style.display = 'none';
     
+    // Find the location object from KEJA_MASTER_LOCATIONS
+    if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
+      const location = window.KEJA_MASTER_LOCATIONS.find(loc => 
+        loc.name.toLowerCase() === locationName.toLowerCase()
+      );
+      if (location) {
+        this.selectedLocation = location;
+      }
+    }
+    
     // Apply location filter
     this.searchQuery = locationName;
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  onCountyChange(countyValue) {
+    if (!countyValue || countyValue === 'all') {
+      this.selectedLocation = null;
+    } else {
+      // Find county in locations
+      if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
+        const county = window.KEJA_MASTER_LOCATIONS.find(loc =>
+          loc.type === 'county' && loc.slug === countyValue.toLowerCase()
+        );
+        if (county) {
+          this.selectedLocation = county;
+        }
+      }
+    }
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  onSubCountyChange(subCountyValue) {
+    if (!subCountyValue || subCountyValue === 'all') {
+      // Reset to county level if one is selected
+      const countySelect = document.getElementById('filter-county');
+      if (countySelect && countySelect.value !== 'all') {
+        this.onCountyChange(countySelect.value);
+      } else {
+        this.selectedLocation = null;
+      }
+    } else {
+      // Find sub-county/area in locations
+      if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
+        const area = window.KEJA_MASTER_LOCATIONS.find(loc =>
+          loc.slug === subCountyValue.toLowerCase() ||
+          loc.name.toLowerCase() === subCountyValue.toLowerCase()
+        );
+        if (area) {
+          this.selectedLocation = area;
+        }
+      }
+    }
     this.currentPage = 1;
     this.applyFilters();
   }

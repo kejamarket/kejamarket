@@ -493,7 +493,7 @@
               <option value="kajiado">Kajiado</option>
               <option value="mombasa">Mombasa</option>
             </select>
-            <select class="filter-select" id="filter-subcounty" style="flex:1;" onchange="app.applyFilters && app.applyFilters()">
+            <select class="filter-select" id="filter-subcounty" style="flex:1;" onchange="app.onSubCountyChange && app.onSubCountyChange(this.value)">
               <option value="all">Sub-county</option>
               <option value="westlands">Westlands</option>
               <option value="kilimani">Kilimani</option>
