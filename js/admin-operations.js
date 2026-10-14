@@ -104,15 +104,24 @@ const AdminOperations = (() => {
       <div class="stats-row">
         <div class="stat-box"><i class="fas fa-envelope"></i><div><div class="stat-number">${currentData.length}</div><div class="stat-label">Total</div></div></div>
         <div class="stat-box"><i class="fas fa-clock"></i><div><div class="stat-number">${currentData.filter(i => !i.status || i.status === 'new').length}</div><div class="stat-label">New</div></div></div>
+        <div class="stat-box"><i class="fas fa-check-circle"></i><div><div class="stat-number">${currentData.filter(i => i.status === 'responded').length}</div><div class="stat-label">Responded</div></div></div>
       </div>
       ${currentData.length ? `<div class="table-container"><table class="admin-table">
-        <thead><tr><th>From</th><th>Property</th><th>Message</th><th>Date</th><th>Status</th></tr></thead>
+        <thead><tr><th>From</th><th>Property</th><th>Message</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>${currentData.map(inq => `<tr>
           <td>${inq.senderName || inq.name || '-'}<br><small>${inq.phone || inq.email || ''}</small></td>
           <td>${inq.propertyTitle || inq.propertyId || '-'}</td>
-          <td>${(inq.message || '-').substring(0, 60)}</td>
+          <td>${(inq.message || '-').substring(0, 60)}${(inq.message || '').length > 60 ? '...' : ''}</td>
           <td>${inq.createdAt ? new Date(inq.createdAt).toLocaleDateString('en-GB') : '-'}</td>
           <td><span class="status-badge ${inq.status === 'responded' ? 'status-active' : 'status-pending'}">${inq.status || 'New'}</span></td>
+          <td>
+            <button class="btn-action btn-primary" onclick="AdminOperations.viewInquiry('${inq.id}')" title="View & Reply">
+              <i class="fas fa-reply"></i> Reply
+            </button>
+            <button class="btn-action btn-delete" onclick="AdminOperations.deleteInquiry('${inq.id}')" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
         </tr>`).join('')}</tbody></table></div>`
       : '<div class="empty-state"><i class="fas fa-envelope"></i><p>No inquiries found</p></div>'}
     `;
@@ -208,9 +217,63 @@ const AdminOperations = (() => {
     } catch(e) { alert('Error: ' + e.message); }
   }
 
+  async function viewInquiry(id) {
+    const inquiry = currentData.find(i => i.id === id);
+    if (!inquiry) { alert('Inquiry not found'); return; }
+    
+    const replyText = prompt(
+      `From: ${inquiry.senderName || 'Unknown'} (${inquiry.phone || inquiry.email})\n` +
+      `Property: ${inquiry.propertyTitle || inquiry.propertyId}\n\n` +
+      `Message:\n${inquiry.message}\n\n` +
+      `Enter your reply:`,
+      ''
+    );
+    
+    if (!replyText || !replyText.trim()) return;
+    
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/inquiries/${id}/reply`, {
+        method: 'POST',
+        headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reply: replyText.trim() })
+      });
+      
+      if (res.ok) {
+        alert('Reply sent successfully!');
+        await loadInquiries();
+      } else {
+        const data = await res.json();
+        alert('Error: ' + (data.message || 'Failed to send reply'));
+      }
+    } catch(e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  async function deleteInquiry(id) {
+    if (!confirm('Delete this inquiry? This action cannot be undone.')) return;
+    
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/inquiries/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders()
+      });
+      
+      if (res.ok) {
+        alert('Inquiry deleted');
+        await loadInquiries();
+      } else {
+        const data = await res.json();
+        alert('Error: ' + (data.message || 'Failed to delete'));
+      }
+    } catch(e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
   async function resolveReport(id) { alert('Mark resolved: ' + id); }
 
-  return { init, search, viewItem, removeItem, resolveReport };
+  return { init, search, viewItem, removeItem, resolveReport, viewInquiry, deleteInquiry };
 })();
 
 window.AdminOperations = AdminOperations;

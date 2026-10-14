@@ -1308,19 +1308,43 @@ const AdminCore = (() => {
           <h3 style="margin-top:0; color:#1e293b; font-size:1.05rem; font-weight:800;"><i class="fas fa-home" style="color:#7c3aed; margin-right:8px;"></i> Inventory Breakdown</h3>
           <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
             <div>
-              <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;"><span>Approved Rentals</span><span>${data.activeListings || data.active_listings || 132}</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;">
+                <span>Approved Rentals</span>
+                <a href="#" onclick="window.AdminNavigation.switchModule('properties'); return false;" style="color:#10b981; text-decoration:none; cursor:pointer;">
+                  <span style="transition:all 0.2s;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${data.activeListings || data.active_listings || 132}</span>
+                  <i class="fas fa-arrow-right" style="font-size:0.7rem; margin-left:4px;"></i>
+                </a>
+              </div>
               <div style="height:8px; background:#e2e8f0; border-radius:4px; margin-top:4px;"><div style="width:85%; height:100%; background:#10b981; border-radius:4px;"></div></div>
             </div>
             <div>
-              <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;"><span>Short-Stays / BNBs</span><span>${data.totalBNBs || data.total_bnbs || 24}</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;">
+                <span>Short-Stays / BNBs</span>
+                <a href="#" onclick="window.AdminNavigation.switchModule('properties'); return false;" style="color:#ec4899; text-decoration:none; cursor:pointer;">
+                  <span style="transition:all 0.2s;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${data.totalBNBs || data.total_bnbs || 24}</span>
+                  <i class="fas fa-arrow-right" style="font-size:0.7rem; margin-left:4px;"></i>
+                </a>
+              </div>
               <div style="height:8px; background:#e2e8f0; border-radius:4px; margin-top:4px;"><div style="width:40%; height:100%; background:#ec4899; border-radius:4px;"></div></div>
             </div>
             <div>
-              <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;"><span>Artisan Services</span><span>${data.totalServices || data.total_services || 10}</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;">
+                <span>Artisan Services</span>
+                <a href="#" onclick="window.AdminNavigation.switchModule('services'); return false;" style="color:#0ea5e9; text-decoration:none; cursor:pointer;">
+                  <span style="transition:all 0.2s;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${data.totalServices || data.total_services || 10}</span>
+                  <i class="fas fa-arrow-right" style="font-size:0.7rem; margin-left:4px;"></i>
+                </a>
+              </div>
               <div style="height:8px; background:#e2e8f0; border-radius:4px; margin-top:4px;"><div style="width:25%; height:100%; background:#0ea5e9; border-radius:4px;"></div></div>
             </div>
             <div>
-              <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;"><span>Marketplace Products</span><span>${data.totalMarketplace || data.total_marketplace || 20}</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700;">
+                <span>Marketplace Products</span>
+                <a href="#" onclick="window.AdminNavigation.switchModule('marketplace'); return false;" style="color:#b45309; text-decoration:none; cursor:pointer;">
+                  <span style="transition:all 0.2s;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${data.totalMarketplace || data.total_marketplace || 20}</span>
+                  <i class="fas fa-arrow-right" style="font-size:0.7rem; margin-left:4px;"></i>
+                </a>
+              </div>
               <div style="height:8px; background:#e2e8f0; border-radius:4px; margin-top:4px;"><div style="width:30%; height:100%; background:#b45309; border-radius:4px;"></div></div>
             </div>
           </div>
