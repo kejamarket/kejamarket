@@ -2646,3 +2646,54 @@ body { background: #f7f9fb !important; }
 .suburb-search-wrapper {
   position: relative !important;
 }
+
+
+/* ════════════════════════════════════════════════════════════════
+   HEADER SEARCH SUGGESTIONS - Proper Positioning
+   ════════════════════════════════════════════════════════════════ */
+#header-search-suggestions.search-suggestions-dropdown {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14) !important;
+  z-index: 10001 !important;
+  max-height: 420px !important;
+  overflow-y: auto !important;
+  display: none !important;
+}
+
+.search-suggestion-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  padding: 12px 16px !important;
+  cursor: pointer !important;
+  border-bottom: 1px solid #f8fafc !important;
+  transition: background 0.15s ease !important;
+}
+
+.search-suggestion-item:hover {
+  background: #f0fdf4 !important;
+}
+
+.search-suggestion-item:last-child {
+  border-bottom: none !important;
+}
+
+.search-suggestion-item.empty {
+  cursor: default !important;
+  background: #f8fafc !important;
+}
+
+.search-suggestion-item.empty:hover {
+  background: #f8fafc !important;
+}
+
+.header-search-wrapper {
+  position: relative !important;
+}
