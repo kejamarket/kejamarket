@@ -5966,3 +5966,173 @@ body {
     min-width: 0;
   }
 }
+
+/* Property Type Filter Colors - Match Listing Badges */
+.property-type-bnb input[type="checkbox"]:checked + .item-icon,
+.property-type-bnb input[type="checkbox"]:checked ~ .item-label {
+  color: #dc2626 !important;
+  font-weight: 700;
+}
+
+.property-type-bnb input[type="checkbox"]:checked + .item-icon {
+  background: #dc2626;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-single input[type="checkbox"]:checked + .item-icon,
+.property-type-single input[type="checkbox"]:checked ~ .item-label {
+  color: #2563eb !important;
+  font-weight: 700;
+}
+
+.property-type-single input[type="checkbox"]:checked + .item-icon {
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-double input[type="checkbox"]:checked + .item-icon,
+.property-type-double input[type="checkbox"]:checked ~ .item-label {
+  color: #db2777 !important;
+  font-weight: 700;
+}
+
+.property-type-double input[type="checkbox"]:checked + .item-icon {
+  background: #db2777;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-bedsitter input[type="checkbox"]:checked + .item-icon,
+.property-type-bedsitter input[type="checkbox"]:checked ~ .item-label {
+  color: #10b981 !important;
+  font-weight: 700;
+}
+
+.property-type-bedsitter input[type="checkbox"]:checked + .item-icon {
+  background: #10b981;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-1bed input[type="checkbox"]:checked + .item-icon,
+.property-type-1bed input[type="checkbox"]:checked ~ .item-label {
+  color: #7c3aed !important;
+  font-weight: 700;
+}
+
+.property-type-1bed input[type="checkbox"]:checked + .item-icon {
+  background: #7c3aed;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-2bed input[type="checkbox"]:checked + .item-icon,
+.property-type-2bed input[type="checkbox"]:checked ~ .item-label {
+  color: #ea580c !important;
+  font-weight: 700;
+}
+
+.property-type-2bed input[type="checkbox"]:checked + .item-icon {
+  background: #ea580c;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-3bed input[type="checkbox"]:checked + .item-icon,
+.property-type-3bed input[type="checkbox"]:checked ~ .item-label {
+  color: #dc2626 !important;
+  font-weight: 700;
+}
+
+.property-type-3bed input[type="checkbox"]:checked + .item-icon {
+  background: #dc2626;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-4bed input[type="checkbox"]:checked + .item-icon,
+.property-type-4bed input[type="checkbox"]:checked ~ .item-label {
+  color: #2563eb !important;
+  font-weight: 700;
+}
+
+.property-type-4bed input[type="checkbox"]:checked + .item-icon {
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-townhouse input[type="checkbox"]:checked + .item-icon,
+.property-type-townhouse input[type="checkbox"]:checked ~ .item-label {
+  color: #0891b2 !important;
+  font-weight: 700;
+}
+
+.property-type-townhouse input[type="checkbox"]:checked + .item-icon {
+  background: #0891b2;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-villa input[type="checkbox"]:checked + .item-icon,
+.property-type-villa input[type="checkbox"]:checked ~ .item-label {
+  color: #059669 !important;
+  font-weight: 700;
+}
+
+.property-type-villa input[type="checkbox"]:checked + .item-icon {
+  background: #059669;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-apartment input[type="checkbox"]:checked + .item-icon,
+.property-type-apartment input[type="checkbox"]:checked ~ .item-label {
+  color: #db2777 !important;
+  font-weight: 700;
+}
+
+.property-type-apartment input[type="checkbox"]:checked + .item-icon {
+  background: #db2777;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-bungalow input[type="checkbox"]:checked + .item-icon,
+.property-type-bungalow input[type="checkbox"]:checked ~ .item-label {
+  color: #f97316 !important;
+  font-weight: 700;
+}
+
+.property-type-bungalow input[type="checkbox"]:checked + .item-icon {
+  background: #f97316;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.property-type-studio input[type="checkbox"]:checked + .item-icon,
+.property-type-studio input[type="checkbox"]:checked ~ .item-label {
+  color: #0891b2 !important;
+  font-weight: 700;
+}
+
+.property-type-studio input[type="checkbox"]:checked + .item-icon {
+  background: #0891b2;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
