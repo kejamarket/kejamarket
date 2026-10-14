@@ -2824,45 +2824,22 @@
 
 
   <!-- ====================================================================
-       REBUILT AUTH MODAL: Clean Split-Screen Design
+       AUTH MODAL: Simple Centered Design
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-auth">
-    <div class="auth-container">
-      
-      <!-- Left Panel: Property Showcase -->
-      <div class="auth-left">
-        <div class="auth-close" onclick="authModal.close()">&times;</div>
+    <div class="auth-modal-wrapper">
+      <div class="auth-modal-card">
         
-        <div class="auth-content">
-          <div class="auth-logo">
-            <img src="/icons/favicon-32x32.png" alt="KejaMarket">
-            <h1>KejaMarket</h1>
-          </div>
-          
-          <div class="auth-hero">
-            <h2>Find Your Perfect Home</h2>
-            <p>Join thousands discovering amazing rental properties across Kenya.</p>
-            
-            <div class="auth-features">
-              <div class="feature">
-                <i class="fas fa-search"></i>
-                <span>Advanced Search</span>
-              </div>
-              <div class="feature">
-                <i class="fas fa-map"></i>
-                <span>Interactive Maps</span>
-              </div>
-              <div class="feature">
-                <i class="fas fa-shield-check"></i>
-                <span>Verified Listings</span>
-              </div>
-            </div>
-          </div>
+        <!-- Close Button -->
+        <button class="auth-close-btn" onclick="authModal.close()" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+        
+        <!-- Logo & Header -->
+        <div class="auth-header">
+          <img src="/icons/favicon-32x32.png" alt="KejaMarket" class="auth-logo">
+          <h2>KejaMarket</h2>
         </div>
-      </div>
-      
-      <!-- Right Panel: Authentication Forms -->
-      <div class="auth-right">
         
         <!-- Tab Navigation -->
         <div class="auth-tabs">
@@ -2875,6 +2852,21 @@
           <div class="form-header">
             <h3>Welcome back</h3>
             <p>Sign in to your KejaMarket account</p>
+          </div>
+          
+          <!-- Google Sign In Button -->
+          <button type="button" class="google-btn" onclick="authModal.googleSignIn()">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.64 9.20454C17.64 8.56636 17.5827 7.95272 17.4764 7.36363H9V10.845H13.8436C13.635 11.97 13.0009 12.9231 12.0477 13.5613V15.8195H14.9564C16.6582 14.2527 17.64 11.9454 17.64 9.20454Z" fill="#4285F4"/>
+              <path d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5613C11.2418 14.1013 10.2109 14.4204 9 14.4204C6.65591 14.4204 4.67182 12.8372 3.96409 10.71H0.957275V13.0418C2.43818 15.9831 5.48182 18 9 18Z" fill="#34A853"/>
+              <path d="M3.96409 10.71C3.78409 10.17 3.68182 9.59318 3.68182 9C3.68182 8.40682 3.78409 7.83 3.96409 7.29V4.95818H0.957275C0.347727 6.17318 0 7.54773 0 9C0 10.4523 0.347727 11.8268 0.957275 13.0418L3.96409 10.71Z" fill="#FBBC05"/>
+              <path d="M9 3.57954C10.3214 3.57954 11.5077 4.03364 12.4405 4.92545L15.0218 2.34409C13.4632 0.891818 11.4259 0 9 0C5.48182 0 2.43818 2.01682 0.957275 4.95818L3.96409 7.29C4.67182 5.16273 6.65591 3.57954 9 3.57954Z" fill="#EA4335"/>
+            </svg>
+            Continue with Google
+          </button>
+          
+          <div class="form-divider">
+            <span>or</span>
           </div>
           
           <form id="signin-form-element">
@@ -2906,10 +2898,6 @@
               Sign In
             </button>
             
-            <div class="form-divider">
-              <span>or</span>
-            </div>
-            
             <p class="form-switch">
               Don't have an account? 
               <a href="#" onclick="authModal.switchTab('signup')">Sign up for free</a>
@@ -2922,6 +2910,21 @@
           <div class="form-header">
             <h3>Join KejaMarket</h3>
             <p>Create your account and start exploring</p>
+          </div>
+          
+          <!-- Google Sign Up Button -->
+          <button type="button" class="google-btn" onclick="authModal.googleSignIn()">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.64 9.20454C17.64 8.56636 17.5827 7.95272 17.4764 7.36363H9V10.845H13.8436C13.635 11.97 13.0009 12.9231 12.0477 13.5613V15.8195H14.9564C16.6582 14.2527 17.64 11.9454 17.64 9.20454Z" fill="#4285F4"/>
+              <path d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5613C11.2418 14.1013 10.2109 14.4204 9 14.4204C6.65591 14.4204 4.67182 12.8372 3.96409 10.71H0.957275V13.0418C2.43818 15.9831 5.48182 18 9 18Z" fill="#34A853"/>
+              <path d="M3.96409 10.71C3.78409 10.17 3.68182 9.59318 3.68182 9C3.68182 8.40682 3.78409 7.83 3.96409 7.29V4.95818H0.957275C0.347727 6.17318 0 7.54773 0 9C0 10.4523 0.347727 11.8268 0.957275 13.0418L3.96409 10.71Z" fill="#FBBC05"/>
+              <path d="M9 3.57954C10.3214 3.57954 11.5077 4.03364 12.4405 4.92545L15.0218 2.34409C13.4632 0.891818 11.4259 0 9 0C5.48182 0 2.43818 2.01682 0.957275 4.95818L3.96409 7.29C4.67182 5.16273 6.65591 3.57954 9 3.57954Z" fill="#EA4335"/>
+            </svg>
+            Continue with Google
+          </button>
+          
+          <div class="form-divider">
+            <span>or</span>
           </div>
           
           <!-- Role Selection -->
@@ -3050,10 +3053,6 @@
               Create Account
             </button>
             
-            <div class="form-divider">
-              <span>or</span>
-            </div>
-            
             <p class="form-switch">
               Already have an account? 
               <a href="#" onclick="authModal.switchTab('signin')">Sign in</a>
@@ -3065,7 +3064,7 @@
     </div>
   </div>
 
-  <!-- Clean Auth Modal Styles (Rebuilt from Scratch) -->
+  <!-- Responsive Auth Modal Styles -->
           <div class="auth-icon-header">
             <div class="auth-icon-circle" style="background:#e0f2fe;"><i class="fas fa-envelope-open-text" style="color:#0ea5e9;"></i></div>
             <h3>Reset Your Password</h3>
@@ -3466,9 +3465,479 @@
     </div>
   </div>
 
-  <!-- Clean Auth Modal Styles (Rebuilt from Scratch) -->
+  <!-- Responsive Auth Modal Styles -->
   <style>
     /* Modal Backdrop */
+    #modal-auth {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2500;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #modal-auth.open {
+      display: flex !important;
+    }
+
+    /* Modal Wrapper */
+    .auth-modal-wrapper {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Modal Card */
+    .auth-modal-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px 24px;
+      position: relative;
+    }
+
+    /* Close Button */
+    .auth-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .auth-close-btn:hover {
+      background: #e5e7eb;
+      transform: scale(1.1);
+    }
+
+    .auth-close-btn i {
+      font-size: 18px;
+      color: #6b7280;
+    }
+
+    /* Logo & Header */
+    .auth-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .auth-logo {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      border-radius: 12px;
+    }
+
+    .auth-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+    }
+
+    /* Tab Navigation */
+    .auth-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      background: #f3f4f6;
+      padding: 4px;
+      border-radius: 12px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 10px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab.active {
+      background: white;
+      color: #16a34a;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Forms */
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .form-header h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 8px;
+    }
+
+    .form-header p {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    /* Google Button */
+    .google-btn {
+      width: 100%;
+      padding: 12px;
+      background: white;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 20px;
+    }
+
+    .google-btn:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+    }
+
+    .google-btn svg {
+      flex-shrink: 0;
+    }
+
+    /* Divider */
+    .form-divider {
+      position: relative;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .form-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .form-divider span {
+      position: relative;
+      background: white;
+      padding: 0 12px;
+      font-size: 13px;
+      color: #9ca3af;
+      font-weight: 500;
+    }
+
+    /* Form Groups */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 12px;
+      font-size: 16px;
+      color: #9ca3af;
+      pointer-events: none;
+    }
+
+    .input-group input,
+    .input-group select,
+    .form-control {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #111827;
+      transition: all 0.2s ease;
+      background: white;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus,
+    .form-control:focus {
+      outline: none;
+      border-color: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      cursor: pointer;
+      color: #9ca3af;
+      transition: color 0.2s ease;
+    }
+
+    .password-toggle:hover {
+      color: #6b7280;
+    }
+
+    /* Phone Input */
+    .phone-group .input-group input {
+      padding-left: 75px;
+    }
+
+    .phone-prefix {
+      position: absolute;
+      left: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 15px;
+      color: #374151;
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    .flag-icon {
+      font-size: 18px;
+    }
+
+    /* Role Selection */
+    .role-selection {
+      margin-bottom: 20px;
+    }
+
+    .role-selection > label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .role-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .role-btn {
+      padding: 12px;
+      background: white;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .role-btn:hover {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .role-btn.active {
+      border-color: #16a34a;
+      background: #f0fdf4;
+      border-width: 2px;
+    }
+
+    .role-btn i {
+      font-size: 20px;
+      color: #16a34a;
+    }
+
+    .role-btn span {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* Submit Button */
+    .auth-btn {
+      width: 100%;
+      padding: 13px;
+      background: #16a34a;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 8px;
+    }
+
+    .auth-btn:hover {
+      background: #15803d;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+    }
+
+    .auth-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Form Actions & Links */
+    .form-actions {
+      text-align: right;
+      margin-top: -8px;
+      margin-bottom: 16px;
+    }
+
+    .form-actions a {
+      font-size: 13px;
+      color: #16a34a;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .form-actions a:hover {
+      text-decoration: underline;
+    }
+
+    .form-switch {
+      text-align: center;
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 20px;
+    }
+
+    .form-switch a {
+      color: #16a34a;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .form-switch a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 640px) {
+      #modal-auth {
+        padding: 0;
+        align-items: flex-end;
+      }
+
+      .auth-modal-card {
+        max-height: 95vh;
+        border-radius: 16px 16px 0 0;
+        padding: 24px 20px 32px;
+      }
+
+      .auth-header h2 {
+        font-size: 20px;
+      }
+
+      .form-header h3 {
+        font-size: 18px;
+      }
+
+      .role-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+
+      .role-btn {
+        padding: 10px 6px;
+      }
+
+      .role-btn i {
+        font-size: 18px;
+      }
+
+      .role-btn span {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .auth-modal-card {
+        padding: 20px 16px 28px;
+      }
+
+      .google-btn {
+        font-size: 14px;
+        padding: 11px;
+      }
+
+      .input-group input,
+      .form-control {
+        font-size: 14px;
+        padding: 11px 11px 11px 38px;
+      }
+
+      .auth-btn {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+
+    /* Compatibility placeholders */
+    .auth-container { } /* Keep for JS compatibility */
+    .auth-left { } /* Keep for JS compatibility */
+    .auth-right { } /* Keep for JS compatibility */
+    .otp-box { } /* Keep for JS compatibility */
+    .btn-auth-submit { } /* Keep for JS compatibility */
+    .auth-avatar-lg { } /* Keep for JS compatibility */
+  </style>
     #modal-auth {
       position: fixed;
       top: 0;

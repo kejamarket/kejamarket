@@ -91,6 +91,37 @@ class AuthModal {
     document.querySelectorAll('.role-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.role === role);
     });
+
+    // Show/hide role-specific fields
+    const agencyFields = document.getElementById('signup-agency-fields');
+    const serviceFields = document.getElementById('signup-service-fields');
+    const landlordFields = document.getElementById('signup-landlord-fields');
+    const nameLabel = document.getElementById('signup-name-label');
+
+    // Hide all conditional fields first
+    if (agencyFields) agencyFields.style.display = 'none';
+    if (serviceFields) serviceFields.style.display = 'none';
+    if (landlordFields) landlordFields.style.display = 'none';
+
+    // Update name label and show relevant fields based on role
+    if (nameLabel) {
+      switch(role) {
+        case 'agency':
+          nameLabel.textContent = 'Contact Person Name';
+          if (agencyFields) agencyFields.style.display = 'block';
+          break;
+        case 'service':
+          nameLabel.textContent = 'Contact Person / Owner Name';
+          if (serviceFields) serviceFields.style.display = 'block';
+          break;
+        case 'landlord':
+          nameLabel.textContent = 'Full Name / Property Owner';
+          if (landlordFields) landlordFields.style.display = 'block';
+          break;
+        default:
+          nameLabel.textContent = 'Full Name';
+      }
+    }
   }
 
   togglePassword(inputId) {
@@ -176,16 +207,37 @@ class AuthModal {
     this.setButtonLoading(submitBtn, true);
 
     try {
+      // Collect role-specific data
+      const userData = {
+        name,
+        phone: `254${phone}`,
+        email,
+        password,
+        role: this.selectedRole
+      };
+
+      // Add role-specific fields
+      if (this.selectedRole === 'agency') {
+        const agencyName = document.getElementById('signup-agency-name')?.value;
+        const agencyLocation = document.getElementById('signup-agency-location')?.value;
+        if (agencyName) userData.agencyName = agencyName;
+        if (agencyLocation) userData.location = agencyLocation;
+      } else if (this.selectedRole === 'service') {
+        const serviceCategory = document.getElementById('signup-service-category')?.value;
+        const serviceBusiness = document.getElementById('signup-service-business')?.value;
+        const serviceAreas = document.getElementById('signup-service-areas')?.value;
+        if (serviceCategory) userData.serviceCategory = serviceCategory;
+        if (serviceBusiness) userData.businessName = serviceBusiness;
+        if (serviceAreas) userData.serviceAreas = serviceAreas;
+      } else if (this.selectedRole === 'landlord') {
+        const landlordArea = document.getElementById('signup-landlord-area')?.value;
+        if (landlordArea) userData.area = landlordArea;
+      }
+
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          phone: `254${phone}`,
-          email,
-          password,
-          role: this.selectedRole
-        })
+        body: JSON.stringify(userData)
       });
 
       const data = await response.json();
@@ -348,6 +400,13 @@ class AuthModal {
     if (email) {
       this.showMessage('Password reset link sent to ' + email, 'success');
     }
+  }
+
+  googleSignIn() {
+    console.log('[NEW-AUTH] Google Sign In clicked');
+    this.showMessage('Google Sign In coming soon!', 'info');
+    // TODO: Implement Google OAuth integration
+    // window.location.href = '/auth/google';
   }
 }
 
