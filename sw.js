@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v68-header-service-cards';
+const CACHE_NAME = 'kejamarket-v69-remove-card-duplicates';
 
 const STATIC_ASSETS = [
   '/',
