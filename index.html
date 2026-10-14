@@ -3048,6 +3048,16 @@
               </div>
             </div>
             
+            <!-- Terms and Conditions -->
+            <div class="form-group terms-group">
+              <label class="terms-checkbox">
+                <input type="checkbox" id="signup-terms" required>
+                <span class="terms-text">
+                  I agree to the <a href="/terms.html" target="_blank">Terms of Service</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a>
+                </span>
+              </label>
+            </div>
+            
             <button type="submit" class="auth-btn">
               <i class="fas fa-user-plus"></i>
               Create Account
@@ -3866,6 +3876,45 @@
     }
 
     .form-switch a:hover {
+      text-decoration: underline;
+    }
+
+    /* Terms Checkbox */
+    .terms-group {
+      margin-bottom: 20px;
+      margin-top: 4px;
+    }
+
+    .terms-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .terms-checkbox input[type="checkbox"] {
+      margin-top: 2px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+      accent-color: #16a34a;
+    }
+
+    .terms-text {
+      color: #6b7280;
+      flex: 1;
+    }
+
+    .terms-text a {
+      color: #16a34a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .terms-text a:hover {
       text-decoration: underline;
     }
 

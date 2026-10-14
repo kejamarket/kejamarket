@@ -193,6 +193,13 @@ class AuthModal {
     e.preventDefault();
     console.log('[NEW-AUTH] Processing sign up');
 
+    // Check terms agreement
+    const termsCheckbox = document.getElementById('signup-terms');
+    if (termsCheckbox && !termsCheckbox.checked) {
+      this.showMessage('Please agree to the Terms of Service and Privacy Policy', 'error');
+      return;
+    }
+
     const name = document.getElementById('signup-name').value;
     const phone = document.getElementById('signup-phone').value;
     const email = document.getElementById('signup-email').value;
