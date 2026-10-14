@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=24.0&t=202610090240">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=25.0&t=202610090250">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
@@ -3655,126 +3655,186 @@
        MODAL: RENT AFFORDABILITY CALCULATOR ("What Can I Afford?")
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-affordability-calculator" style="display: none; align-items: center; justify-content: center; z-index: 2800;">
-    <div class="modal-dialog afford-modal-dialog">
-      <!-- Modern Header -->
-      <div class="afford-modal-header">
-        <div class="afford-header-content">
-          <div class="afford-header-left">
-            <div class="afford-icon-box">
-              <i class="fas fa-calculator"></i>
-            </div>
-            <div class="afford-header-text">
-              <h3>What Can I Afford?</h3>
-              <p>Smart Rent Affordability Calculator for Kenya</p>
-            </div>
-          </div>
-          <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-affordability-calculator')" style="color: white; font-size: 2rem; background: none; border: none; cursor: pointer; opacity: 0.9; transition: opacity 0.2s;">&times;</button>
+    <div class="modal-dialog afford-modal-dialog-v2">
+      
+      <!-- Header with Logo -->
+      <div class="afford-modal-header-v2">
+        <div class="afford-logo-header">
+          <i class="fas fa-home" style="color: #10b981; font-size: 1.5rem;"></i>
+          <span class="afford-logo-text">Keja<span style="color: #10b981;">Market</span><span style="color: #64748b; font-size: 0.85rem;">.co.ke</span></span>
         </div>
+        <button class="modal-close-btn-v2" type="button" onclick="app.closeModal('modal-affordability-calculator')">&times;</button>
       </div>
 
-      <div class="modal-body" style="padding: 28px; background: #ffffff; max-height: 80vh; overflow-y: auto;">
+      <div class="afford-modal-body-v2">
         
-        <!-- Interactive Inputs Grid -->
-        <div class="afford-grid">
+        <!-- Title -->
+        <h2 class="afford-title-v2">What Can I Afford?</h2>
+        <p class="afford-subtitle-v2">Smart Rent Affordability Calculator for Kenya</p>
+
+        <!-- Input Grid - 2x2 -->
+        <div class="afford-inputs-grid-v2">
           
-          <!-- Net Income -->
-          <div class="afford-input-card">
-            <label for="afford-net-income">
-              <span><i class="fas fa-money-bill-wave" style="color: #10b981;"></i> Monthly Net Income</span>
-              <strong class="afford-input-value-display" id="afford-income-disp" style="color: #059669;">KSh 60,000</strong>
-            </label>
-            <input type="number" id="afford-net-income" class="afford-num-input" value="60000" min="5000" max="1000000" step="1000" oninput="app.syncAffordability()">
-            <input type="range" id="afford-income-slider" class="afford-range-slider" min="10000" max="300000" step="2000" value="60000" oninput="app.syncAffordability(this, 'income')">
+          <!-- Monthly Net Income -->
+          <div class="afford-input-row-v2">
+            <div class="afford-input-icon-v2" style="background: #d1fae5; color: #059669;">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="afford-input-content-v2">
+              <label class="afford-input-label-v2">
+                Monthly Net Income
+                <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.75rem; margin-left: 4px;" title="Your take-home salary after taxes"></i>
+              </label>
+              <div class="afford-value-slider-v2">
+                <span class="afford-value-display-v2" id="afford-income-disp-v2">KSh 60,000</span>
+                <input type="range" class="afford-slider-v2" id="afford-income-slider-v2" min="10000" max="300000" step="2000" value="60000" oninput="app.syncAffordability(this, 'income')">
+              </div>
+            </div>
           </div>
 
-          <!-- Expenses -->
-          <div class="afford-input-card">
-            <label for="afford-expenses">
-              <span><i class="fas fa-shopping-basket" style="color: #ef4444;"></i> Monthly Living Expenses</span>
-              <strong class="afford-input-value-display" id="afford-expenses-disp" style="color: #dc2626;">KSh 25,000</strong>
-            </label>
-            <input type="number" id="afford-expenses" class="afford-num-input" value="25000" min="0" max="500000" step="1000" oninput="app.syncAffordability()">
-            <input type="range" id="afford-expenses-slider" class="afford-range-slider" min="0" max="150000" step="1000" value="25000" oninput="app.syncAffordability(this, 'expenses')">
+          <!-- Monthly Target Savings -->
+          <div class="afford-input-row-v2">
+            <div class="afford-input-icon-v2" style="background: #dbeafe; color: #2563eb;">
+              <i class="fas fa-piggy-bank"></i>
+            </div>
+            <div class="afford-input-content-v2">
+              <label class="afford-input-label-v2">
+                Monthly Target Savings
+                <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.75rem; margin-left: 4px;" title="How much you want to save each month"></i>
+              </label>
+              <div class="afford-value-slider-v2">
+                <span class="afford-value-display-v2" id="afford-savings-disp-v2">KSh 5,000</span>
+                <input type="range" class="afford-slider-v2" id="afford-savings-slider-v2" min="0" max="80000" step="500" value="5000" oninput="app.syncAffordability(this, 'savings')">
+              </div>
+            </div>
           </div>
 
-          <!-- Savings -->
-          <div class="afford-input-card">
-            <label for="afford-savings">
-              <span><i class="fas fa-piggy-bank" style="color: #3b82f6;"></i> Monthly Target Savings</span>
-              <strong class="afford-input-value-display" id="afford-savings-disp" style="color: #2563eb;">KSh 5,000</strong>
-            </label>
-            <input type="number" id="afford-savings" class="afford-num-input" value="5000" min="0" max="300000" step="500" oninput="app.syncAffordability()">
-            <input type="range" id="afford-savings-slider" class="afford-range-slider" min="0" max="80000" step="500" value="5000" oninput="app.syncAffordability(this, 'savings')">
+          <!-- Monthly Living Expenses -->
+          <div class="afford-input-row-v2">
+            <div class="afford-input-icon-v2" style="background: #fee2e2; color: #dc2626;">
+              <i class="fas fa-shopping-basket"></i>
+            </div>
+            <div class="afford-input-content-v2">
+              <label class="afford-input-label-v2">
+                Monthly Living Expenses
+                <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.75rem; margin-left: 4px;" title="Food, transport, utilities, etc."></i>
+              </label>
+              <div class="afford-value-slider-v2">
+                <span class="afford-value-display-v2" id="afford-expenses-disp-v2">KSh 25,000</span>
+                <input type="range" class="afford-slider-v2" id="afford-expenses-slider-v2" min="0" max="150000" step="1000" value="25000" oninput="app.syncAffordability(this, 'expenses')">
+              </div>
+            </div>
           </div>
 
-          <!-- Location Selector -->
-          <div class="afford-input-card">
-            <label for="afford-location">
-              <span><i class="fas fa-map-marker-alt" style="color: #8b5cf6;"></i> Preferred Nairobi Area</span>
-              <span style="font-size: 0.72rem; color: #64748b; font-weight: 600;">(Optional)</span>
-            </label>
-            <select id="afford-location" class="afford-num-input" style="font-size: 0.95rem; font-weight: 600;" onchange="app.syncAffordability()">
-              <option value="">All Nairobi & Environs</option>
-              <option value="Westlands">Westlands / Parklands</option>
-              <option value="Kilimani">Kilimani / Kileleshwa</option>
-              <option value="Roysambu">Roysambu / Kasarani / Thika Rd</option>
-              <option value="South B">South B / South C / Mombasa Rd</option>
-              <option value="Ruaka">Ruaka / Rosslyn</option>
-              <option value="Ngong Road">Ngong Rd / Adams Arcade</option>
-              <option value="Langata">Langata / Karen</option>
-              <option value="Eastlands">Eastlands / Buruburu / Donholm</option>
-              <option value="Syokimau">Syokimau / Mlolongo / Athi River</option>
-              <option value="Kikuyu">Kikuyu / Uthiru / Waiyaki Way</option>
-            </select>
+          <!-- Preferred Nairobi Area -->
+          <div class="afford-input-row-v2">
+            <div class="afford-input-icon-v2" style="background: #dbeafe; color: #0891b2;">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="afford-input-content-v2">
+              <label class="afford-input-label-v2">
+                Preferred Nairobi Area
+                <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.75rem; margin-left: 4px;" title="Optional: Filter by location"></i>
+              </label>
+              <select class="afford-select-v2" id="afford-location-v2" onchange="app.syncAffordability()">
+                <option value="">All Nairobi & Environs</option>
+                <option value="Westlands">Westlands / Parklands</option>
+                <option value="Kilimani">Kilimani / Kileleshwa</option>
+                <option value="Roysambu">Roysambu / Kasarani</option>
+                <option value="South B">South B / South C</option>
+                <option value="Ruaka">Ruaka / Rosslyn</option>
+                <option value="Langata">Langata / Karen</option>
+                <option value="Eastlands">Eastlands / Buruburu</option>
+                <option value="Syokimau">Syokimau / Mlolongo</option>
+              </select>
+            </div>
           </div>
 
         </div>
 
-        <!-- Real-Time Calculation Results Banner -->
-        <div class="afford-results-box" id="afford-results-box">
-          <div class="afford-results-header">
-            <div class="afford-results-title">
-              <i class="fas fa-check-circle"></i> Recommended Monthly Rent Bracket
+        <!-- Result Box -->
+        <div class="afford-result-card-v2">
+          <div class="afford-result-header-v2">
+            <div class="afford-result-icon-v2">
+              <i class="fas fa-home"></i>
             </div>
-            <div id="afford-health-badge" class="afford-health-pill comfort">
-              <i class="fas fa-shield-alt"></i> Comfort Zone
+            <div>
+              <div class="afford-result-label-v2">Recommended Monthly Rent Bracket</div>
+              <div class="afford-comfort-badge-v2" id="afford-comfort-badge-v2">
+                <i class="fas fa-shield-check"></i> Comfort Zone
+              </div>
             </div>
           </div>
-
-          <div class="afford-hero-range" id="afford-range-display">
-            KSh 15,000 — 18,000
+          <div class="afford-result-amount-v2" id="afford-range-display-v2">
+            *KSh 15,000 – 18,000
           </div>
-          <div class="afford-rule-note" id="afford-rule-note">
-            Calculated at 25%–30% of your take-home pay, with room for savings and emergencies.
-          </div>
-
-          <!-- Visual Breakdown Stacked Bar -->
-          <div class="afford-breakdown-bar" title="Monthly Budget Allocation">
-            <div class="afford-bar-rent" id="bar-rent" style="width: 30%;"></div>
-            <div class="afford-bar-expenses" id="bar-expenses" style="width: 42%;"></div>
-            <div class="afford-bar-savings" id="bar-savings" style="width: 8%;"></div>
-            <div class="afford-bar-buffer" id="bar-buffer" style="width: 20%;"></div>
-          </div>
-
-          <div class="afford-breakdown-legend">
-            <div class="afford-legend-item"><span class="afford-legend-dot afford-bar-rent"></span> Rent (<span id="pct-rent">30%</span>)</div>
-            <div class="afford-legend-item"><span class="afford-legend-dot afford-bar-expenses"></span> Living (<span id="pct-expenses">42%</span>)</div>
-            <div class="afford-legend-item"><span class="afford-legend-dot afford-bar-savings"></span> Savings (<span id="pct-savings">8%</span>)</div>
-            <div class="afford-legend-item"><span class="afford-legend-dot afford-bar-buffer"></span> Buffer (<span id="pct-buffer">20%</span>)</div>
+          <div class="afford-result-note-v2" id="afford-result-note-v2">
+            Calculated within 25%–30% of take-home pay, with room for savings and unexpected emergencies.
           </div>
         </div>
 
-        <!-- Action CTAs -->
-        <div class="afford-actions">
-          <button type="button" class="afford-btn-primary" onclick="app.applyAffordabilityFilter()">
-            <i class="fas fa-search"></i> Show Matching Houses
+        <!-- Budget Allocation -->
+        <div class="afford-allocation-section-v2">
+          <div class="afford-allocation-title-v2">
+            <i class="fas fa-chart-pie"></i> Your Budget Allocation
+          </div>
+          
+          <!-- Progress Bar -->
+          <div class="afford-allocation-bar-v2">
+            <div class="afford-bar-segment-v2 afford-bar-rent-v2" id="bar-rent-v2" style="width: 28%;"></div>
+            <div class="afford-bar-segment-v2 afford-bar-expenses-v2" id="bar-expenses-v2" style="width: 42%;"></div>
+            <div class="afford-bar-segment-v2 afford-bar-savings-v2" id="bar-savings-v2" style="width: 8%;"></div>
+            <div class="afford-bar-segment-v2 afford-bar-buffer-v2" id="bar-buffer-v2" style="width: 22%;"></div>
+          </div>
+
+          <!-- Legend with Icons -->
+          <div class="afford-allocation-legend-v2">
+            <div class="afford-legend-item-v2">
+              <i class="fas fa-home afford-legend-icon-v2" style="color: #059669;"></i>
+              <span>Rent</span>
+              <strong id="pct-rent-v2">28%</strong>
+            </div>
+            <div class="afford-legend-item-v2">
+              <i class="fas fa-utensils afford-legend-icon-v2" style="color: #0891b2;"></i>
+              <span>Living</span>
+              <strong id="pct-expenses-v2">42%</strong>
+            </div>
+            <div class="afford-legend-item-v2">
+              <i class="fas fa-piggy-bank afford-legend-icon-v2" style="color: #f59e0b;"></i>
+              <span>Savings</span>
+              <strong id="pct-savings-v2">8%</strong>
+            </div>
+            <div class="afford-legend-item-v2">
+              <i class="fas fa-shield-alt afford-legend-icon-v2" style="color: #8b5cf6;"></i>
+              <span>Buffer</span>
+              <strong id="pct-buffer-v2">22%</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="afford-actions-v2">
+          <button type="button" class="afford-btn-primary-v2" onclick="app.applyAffordabilityFilter()">
+            <i class="fas fa-home"></i> Show Matching Houses <i class="fas fa-arrow-right"></i>
           </button>
-          <button type="button" class="afford-btn-secondary" onclick="app.closeModal('modal-affordability-calculator'); app.openHouseHuntModal();">
-            <i class="fas fa-search-location" style="color: #10b981;"></i> Let Agent Hunt
+          <button type="button" class="afford-btn-secondary-v2" onclick="app.closeModal('modal-affordability-calculator'); app.openHouseHuntModal();">
+            <i class="fas fa-user-tie"></i> Let Agent Hunt
           </button>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="afford-disclaimer-v2">
+          <i class="fas fa-info-circle"></i> This is an estimate. Please account for transport, utilities, deposits and other costs.
         </div>
 
       </div>
+
+      <!-- Hidden inputs for compatibility -->
+      <input type="number" id="afford-net-income" value="60000" style="display:none;" oninput="app.syncAffordability()">
+      <input type="number" id="afford-expenses" value="25000" style="display:none;" oninput="app.syncAffordability()">
+      <input type="number" id="afford-savings" value="5000" style="display:none;" oninput="app.syncAffordability()">
+      <select id="afford-location" style="display:none;"><option value="">All</option></select>
+
     </div>
   </div>
 
