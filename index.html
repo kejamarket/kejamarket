@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=19.0&t=202610090210">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=20.0&t=202610090215">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
@@ -527,12 +527,12 @@
       </div>
 
       <!-- Section 3: Price Range (KSh) -->
-      <div class="filter-accordion-section open" id="filter-sec-price">
+      <div class="filter-accordion-section collapsed" id="filter-sec-price">
         <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-price')">
           <span class="acc-title"><i class="fas fa-tag" style="color:#00b53f;"></i> Price Range (KSh)</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
+          <i class="fas fa-chevron-down acc-icon"></i>
         </div>
-        <div class="filter-accordion-body" style="display:block;">
+        <div class="filter-accordion-body" style="display:none;">
           <div style="display:flex; gap:6px; align-items:center;">
             <select class="filter-select" id="price-min-select" style="flex:1;" onchange="if(document.getElementById('price-min-input')) document.getElementById('price-min-input').value=this.value; app.applyFilters && app.applyFilters()">
               <option value="0">Min</option>
@@ -561,12 +561,12 @@
       </div>
 
       <!-- Section 4: Bedrooms -->
-      <div class="filter-accordion-section open" id="filter-sec-beds">
+      <div class="filter-accordion-section collapsed" id="filter-sec-beds">
         <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-beds')">
           <span class="acc-title"><i class="fas fa-bed"></i> Bedrooms</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
+          <i class="fas fa-chevron-down acc-icon"></i>
         </div>
-        <div class="filter-accordion-body" style="display:block;">
+        <div class="filter-accordion-body" style="display:none;">
           <select class="filter-select" id="filter-bedrooms" onchange="app.applyFilters && app.applyFilters()">
             <option value="any">Any</option>
             <option value="0">Studio / Bedsitter</option>
@@ -579,12 +579,12 @@
       </div>
 
       <!-- Section 5: Bathrooms -->
-      <div class="filter-accordion-section open" id="filter-sec-baths">
+      <div class="filter-accordion-section collapsed" id="filter-sec-baths">
         <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-baths')">
           <span class="acc-title"><i class="fas fa-bath"></i> Bathrooms</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
+          <i class="fas fa-chevron-down acc-icon"></i>
         </div>
-        <div class="filter-accordion-body" style="display:block;">
+        <div class="filter-accordion-body" style="display:none;">
           <select class="filter-select" id="filter-bathrooms" onchange="app.applyFilters && app.applyFilters()">
             <option value="any">Any</option>
             <option value="1">1 Bathroom</option>
@@ -595,12 +595,12 @@
       </div>
 
       <!-- Section 6: Furnishing -->
-      <div class="filter-accordion-section open" id="filter-sec-furnishing">
+      <div class="filter-accordion-section collapsed" id="filter-sec-furnishing">
         <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-furnishing')">
           <span class="acc-title"><i class="fas fa-couch"></i> Furnishing</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
+          <i class="fas fa-chevron-down acc-icon"></i>
         </div>
-        <div class="filter-accordion-body" style="display:block;">
+        <div class="filter-accordion-body" style="display:none;">
           <select class="filter-select" id="filter-furnishing" onchange="app.applyFilters && app.applyFilters()">
             <option value="any">Any</option>
             <option value="furnished">Furnished</option>
@@ -611,12 +611,12 @@
       </div>
 
       <!-- Section 7: Amenities -->
-      <div class="filter-accordion-section open" id="filter-sec-amenities">
+      <div class="filter-accordion-section collapsed" id="filter-sec-amenities">
         <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-amenities')">
           <span class="acc-title"><i class="fas fa-star" style="color:#f59e0b;"></i> Amenities</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
+          <i class="fas fa-chevron-down acc-icon"></i>
         </div>
-        <div class="filter-accordion-body" style="display:block;">
+        <div class="filter-accordion-body" style="display:none;">
           <div style="font-size:0.75rem; color:#64748b; margin-bottom:6px;">AC, Parking, WiFi, Gym...</div>
           <div class="amenities-grid-2col">
             <label class="filter-check-item"><input type="checkbox" id="filter-wifi"><span>WiFi</span></label>
