@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v62-new-auth-complete';
+const CACHE_NAME = 'kejamarket-v63-signup-roles-restored';
 
 const STATIC_ASSETS = [
   '/',
