@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v66-fix-duplicate-html';
+const CACHE_NAME = 'kejamarket-v67-remove-redundant-headers';
 
 const STATIC_ASSETS = [
   '/',
