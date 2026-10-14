@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v35-reference-match';
+const CACHE_NAME = 'kejamarket-v36-auth-fix';
 
 const STATIC_ASSETS = [
   '/',

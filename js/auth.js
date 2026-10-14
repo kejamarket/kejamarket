@@ -20,6 +20,27 @@ const kejaAuth = (() => {
   let otpTimerInterval = null;
 
   /* ─────────────────────────────────────────
+     NOTIFICATION & TOAST HELPER
+  ───────────────────────────────────────── */
+  function notify(message, type = 'info') {
+    if (window.app && typeof window.app.showToast === 'function') {
+      window.app.showToast(message, type);
+    } else {
+      console.log(`[AUTH ${type.toUpperCase()}]`, message);
+      const container = document.getElementById('toast-container');
+      if (container) {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+      } else {
+        alert(message);
+      }
+    }
+  }
+
+  /* ─────────────────────────────────────────
      SESSION & TOKEN HELPERS
   ───────────────────────────────────────── */
   function getToken() {
@@ -78,14 +99,13 @@ const kejaAuth = (() => {
         showPanel(initialTab || 'signin');
       }
     }
+    const modal = document.getElementById('modal-auth');
+    if (modal) {
+      modal.classList.add('open');
+      modal.style.setProperty('display', 'flex', 'important');
+    }
     if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal('modal-auth');
-    } else {
-      const modal = document.getElementById('modal-auth');
-      if (modal) {
-        modal.classList.add('open');
-        modal.style.display = 'flex';
-      }
     }
   }
 
@@ -100,9 +120,12 @@ const kejaAuth = (() => {
     }
     showPanel(tab);
     const modal = document.getElementById('modal-auth');
-    if (modal && !modal.classList.contains('open')) {
+    if (modal) {
       modal.classList.add('open');
-      modal.style.display = 'flex';
+      modal.style.setProperty('display', 'flex', 'important');
+    }
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-auth');
     }
   }
 
@@ -237,25 +260,25 @@ const kejaAuth = (() => {
 
     // STRICT VALIDATION: All fields required
     if (!name || !rawPhone || !email || !password) {
-      if (window.app) window.app.showToast('All fields are required including email.', 'error');
+      notify('All fields are required including email.', 'error');
       return;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      if (window.app) window.app.showToast('Please enter a valid email address.', 'error');
+      notify('Please enter a valid email address.', 'error');
       return;
     }
 
     // Phone validation (+254 followed by 9 digits = 13 characters)
     if (phone.length < 12 || !phone.startsWith('+254')) {
-      if (window.app) window.app.showToast('Please enter a valid Kenyan phone number (e.g. 712345678 or 0712345678).', 'error');
+      notify('Please enter a valid Kenyan phone number (e.g. 712345678 or 0712345678).', 'error');
       return;
     }
 
     if (password.length < 6) {
-      if (window.app) window.app.showToast('❌ Password must be at least 6 characters long.', 'error');
+      notify('❌ Password must be at least 6 characters long.', 'error');
       return;
     }
 
@@ -303,25 +326,41 @@ const kejaAuth = (() => {
         })
       });
 
+      console.log('[AUTH] Sign up response status:', res.status);
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('[AUTH] Sign up error response:', errorText);
+        try {
+          const errorData = JSON.parse(errorText);
+          notify(`❌ ${errorData.message || 'Registration failed.'}`, 'error');
+        } catch {
+          notify('❌ Server connection error. Please check if the server is running.', 'error');
+        }
+        return;
+      }
+
       const data = await res.json();
+      console.log('[AUTH] Sign up response:', data);
 
       if (data.success && data.user && data.token) {
         saveSession(data.user, data.token);
         updateHeaderUI(data.user);
         showLoggedInPanel(data.user);
-        if (window.app) {
+        if (window.app && typeof window.app.closeModal === 'function') {
           window.app.closeModal('modal-auth');
-          window.app.showToast(`Welcome to KejaMarket, ${data.user.name}!`, 'success');
+        } else {
+          const modal = document.getElementById('modal-auth');
+          if (modal) { modal.classList.remove('open'); modal.style.setProperty('display', 'none', 'important'); }
         }
+        notify(`Welcome to KejaMarket, ${data.user.name}!`, 'success');
         handleAuthSuccess(data.user);
       } else {
-        if (window.app) window.app.showToast(`❌ ${data.message || 'Registration failed.'}`, 'error');
+        notify(`❌ ${data.message || 'Registration failed.'}`, 'error');
       }
     } catch (err) {
-      console.error('Sign up error:', err);
-      if (window.app) {
-        window.app.showToast('❌ Unable to reach server. Please try again.', 'error');
-      }
+      console.error('[AUTH] Sign up error:', err);
+      notify('❌ Unable to reach server. Please try again. Make sure the backend server is running on http://localhost:3001', 'error');
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -574,7 +613,7 @@ const kejaAuth = (() => {
     // Role is auto-detected by server from credentials
 
     if (!identifier || !password) {
-      if (window.app) window.app.showToast('Please enter your phone/email and password.', 'info');
+      notify('Please enter your phone/email and password.', 'info');
       return;
     }
 
@@ -586,13 +625,30 @@ const kejaAuth = (() => {
     }
 
     try {
+      console.log('[AUTH] Attempting login with identifier:', identifier);
+      
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier, password })
       });
 
+      console.log('[AUTH] Response status:', res.status);
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('[AUTH] Server error response:', errorText);
+        try {
+          const errorData = JSON.parse(errorText);
+          notify(errorData.message || 'Server error. Please try again.', 'error');
+        } catch {
+          notify('Server connection error. Please check if the server is running.', 'error');
+        }
+        return;
+      }
+
       const data = await res.json();
+      console.log('[AUTH] Login response:', data);
 
       if (data.success && data.user && data.token) {
         // Ensure admin flag is preserved in session
@@ -608,38 +664,26 @@ const kejaAuth = (() => {
           ? (id) => window.app.closeModal(id)
           : (typeof window.closeModal === 'function')
             ? window.closeModal
-            : (id) => { const el = document.getElementById(id); if (el) { el.classList.remove('open'); el.style.display = 'none'; } };
+            : (id) => { const el = document.getElementById(id); if (el) { el.classList.remove('open'); el.style.setProperty('display', 'none', 'important'); } };
         closeFn('modal-auth');
 
         // Admin redirect: go straight to admin dashboard
         if (data.user.role === 'admin' || data.user.isAdmin || data.user.id === 'usr-admin-01') {
-          if (window.app && typeof window.app.showToast === 'function') {
-            window.app.showToast(`Welcome, ${data.user.name}! Redirecting to Admin Dashboard...`, 'success');
-          }
+          notify(`Welcome, ${data.user.name}! Redirecting to Admin Dashboard...`, 'success');
           setTimeout(() => { window.location.href = '/admin-dashboard.html'; }, 600);
           return;
         }
 
-        if (window.app && typeof window.app.showToast === 'function') {
-          window.app.showToast(`Welcome back, ${data.user.name}!`, 'success');
-        }
+        notify(`Welcome back, ${data.user.name}!`, 'success');
         handleAuthSuccess(data.user);
       } else {
         const errMsg = data.message || 'Incorrect credentials. Please try again.';
-        if (window.app && typeof window.app.showToast === 'function') {
-          window.app.showToast(errMsg, 'error');
-        } else {
-          alert(errMsg);
-        }
+        notify(errMsg, 'error');
       }
     } catch (err) {
-      console.error('Sign in error:', err);
-      const netMsg = 'Unable to connect to server. Please check your connection and try again.';
-      if (window.app && typeof window.app.showToast === 'function') {
-        window.app.showToast(netMsg, 'error');
-      } else {
-        alert(netMsg);
-      }
+      console.error('[AUTH] Sign in error:', err);
+      const netMsg = 'Unable to connect to server. Please check your connection and try again. Make sure the backend server is running on http://localhost:3001';
+      notify(netMsg, 'error');
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
