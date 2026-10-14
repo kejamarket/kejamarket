@@ -998,6 +998,102 @@ class NairobiRentalsApp {
     this.applyFilters();
   }
 
+  handleLocationSearchInput(value) {
+    const clearBtn = document.getElementById('btn-clear-location-search');
+    const resultsDropdown = document.getElementById('location-search-results');
+    
+    if (value && value.trim().length > 0) {
+      if (clearBtn) clearBtn.style.display = 'flex';
+      this.showLocationSearchResults(value);
+    } else {
+      if (clearBtn) clearBtn.style.display = 'none';
+      if (resultsDropdown) resultsDropdown.style.display = 'none';
+    }
+  }
+
+  showLocationSearchResults(query) {
+    const resultsDropdown = document.getElementById('location-search-results');
+    if (!resultsDropdown) return;
+
+    const q = query.toLowerCase().trim();
+    const results = [];
+
+    // Search in KEJA_MASTER_LOCATIONS with hierarchy
+    if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
+      const matches = window.KEJA_MASTER_LOCATIONS.filter(loc =>
+        (loc.name && loc.name.toLowerCase().includes(q)) ||
+        (loc.fullPath && loc.fullPath.toLowerCase().includes(q)) ||
+        (loc.aliases && Array.isArray(loc.aliases) && loc.aliases.some(a => a.toLowerCase().includes(q)))
+      ).slice(0, 8);
+
+      matches.forEach(loc => {
+        results.push({
+          id: loc.id,
+          name: loc.name,
+          fullPath: loc.fullPath || loc.name,
+          type: loc.type
+        });
+      });
+    }
+
+    if (results.length === 0) {
+      resultsDropdown.innerHTML = `
+        <div style="padding:10px; text-align:center; color:#64748b; font-size:0.8rem;">
+          No locations found for "${this.escapeHtml(query)}"
+        </div>
+      `;
+    } else {
+      resultsDropdown.innerHTML = results.map(loc => `
+        <div class="location-search-result-item" onclick="app.selectSidebarLocation('${this.escapeHtml(loc.name).replace(/'/g, "\\'")}')">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-map-marker-alt" style="color:#00b53f; font-size:0.85rem;"></i>
+            <div style="flex:1; min-width:0;">
+              <div style="font-weight:700; font-size:0.8rem; color:#0f172a;">
+                ${this.highlightMatch(loc.name, query)}
+              </div>
+              ${loc.fullPath && loc.fullPath !== loc.name ? `
+                <div style="font-size:0.7rem; color:#64748b; margin-top:1px;">
+                  <i class="fas fa-arrow-right" style="font-size:0.6rem; margin-right:3px;"></i>
+                  ${this.highlightMatch(loc.fullPath, query)}
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    resultsDropdown.style.display = 'block';
+  }
+
+  selectSidebarLocation(locationName) {
+    const searchInput = document.getElementById('location-search-input');
+    const resultsDropdown = document.getElementById('location-search-results');
+    
+    if (searchInput) searchInput.value = locationName;
+    if (resultsDropdown) resultsDropdown.style.display = 'none';
+    
+    // Apply location filter
+    this.searchQuery = locationName;
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  clearLocationSearch() {
+    const searchInput = document.getElementById('location-search-input');
+    const clearBtn = document.getElementById('btn-clear-location-search');
+    const resultsDropdown = document.getElementById('location-search-results');
+    
+    if (searchInput) searchInput.value = '';
+    if (clearBtn) clearBtn.style.display = 'none';
+    if (resultsDropdown) resultsDropdown.style.display = 'none';
+    
+    // Reset filters
+    this.searchQuery = '';
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
   escapeHtml(str) {
     if (!str) return '';
     return String(str)

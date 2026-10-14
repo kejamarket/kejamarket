@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=16.0&t=202610090155">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=17.0&t=202610090200">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
@@ -476,10 +476,14 @@
           <i class="fas fa-chevron-up acc-icon"></i>
         </div>
         <div class="filter-accordion-body" style="display:block;">
-          <div class="suburb-search-wrapper" style="margin-bottom:8px;">
+          <div class="suburb-search-wrapper" style="margin-bottom:8px; position:relative;">
             <i class="fas fa-search"></i>
-            <input type="text" id="location-search-input" class="suburb-search-input" placeholder="Search area, estate or neighbourhood" oninput="app.filterSuburbChecklist && app.filterSuburbChecklist(this.value)">
+            <input type="text" id="location-search-input" class="suburb-search-input" placeholder="Search area, estate or neighbourhood" oninput="app.handleLocationSearchInput && app.handleLocationSearchInput(this.value)">
+            <button type="button" id="btn-clear-location-search" class="btn-clear-location-search" style="display:none;" onclick="app.clearLocationSearch && app.clearLocationSearch()" title="Clear and reset">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
+          <div id="location-search-results" class="location-search-results-dropdown" style="display:none;"></div>
           <div style="display:flex; gap:6px; margin-bottom:8px;">
             <select class="filter-select" id="filter-county" style="flex:1;" onchange="app.onCountyChange && app.onCountyChange(this.value)">
               <option value="all">County</option>
