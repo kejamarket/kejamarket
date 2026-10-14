@@ -454,11 +454,8 @@ body { background: #f7f9fb !important; }
 .header-actions { 
   display: flex !important; 
   align-items: center !important; 
-  gap: 10px !important; /* Consistent spacing between all icons */
+  gap: 16px !important; /* Increased spacing between icons for better visual separation */
   flex-shrink: 0 !important;
-} 
-  gap: 12px !important;  /* Increased from 7px to 12px for better spacing */
-  flex-shrink: 0 !important; 
   padding-right: 8px !important;
 }
 
@@ -2023,6 +2020,7 @@ body { background: #f7f9fb !important; }
   height: 34px !important;
   transition: all 0.15s ease !important;
   flex-shrink: 0 !important;
+  margin-left: 4px !important; /* Extra separation from other icons */
 }
 .btn-header-account-pill:hover {
   border-color: #00b53f !important;
@@ -2528,7 +2526,7 @@ body { background: #f7f9fb !important; }
 /* Increase header actions spacing on larger screens */
 @media (min-width: 1024px) {
   .header-actions {
-    gap: 16px !important;  /* More spacious on desktop */
+    gap: 20px !important;  /* Even more spacious on desktop for better visual balance */
   }
   
   .btn-header-circle-action {
