@@ -3022,7 +3022,23 @@ app.get('/api/stats', cache.middleware(60, 'public:stats'), async (req, res) => 
 // ─── OWNER / ADMIN DATABASE PORTAL ROUTES ──────────────────────────────
 app.get('/api/admin/overview', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
   try {
-    const stats = await store.getOverviewStats();
+    // Get basic stats (handle if method is not async)
+    let stats = {};
+    try {
+      const statsResult = store.getOverviewStats();
+      stats = statsResult instanceof Promise ? await statsResult : statsResult;
+    } catch (statsErr) {
+      console.error('Error getting overview stats:', statsErr);
+      // Provide default stats
+      stats = {
+        totalUsers: 0,
+        totalProperties: 0,
+        totalServices: 0,
+        totalMarketplace: 0,
+        totalBuildings: 0,
+        totalUnits: 0
+      };
+    }
     
     // Calculate "Requires Attention" metrics
     let attention = {
