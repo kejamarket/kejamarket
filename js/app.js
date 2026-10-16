@@ -111,20 +111,33 @@ class NairobiRentalsApp {
         }
 
         if (propsArray.length > 0) {
-          // TENANT PORTAL: Show ONLY verified/approved + VACANT listings (hide taken properties)
-          this.properties = propsArray.filter(p => 
-            (p.status === 'approved' || 
-            p.isApproved === true ||
-            p.isVerified === true ||
-            p.is_verified === true) &&
-            p.status !== 'pending' &&
-            p.status !== 'rejected' &&
-            p.availability !== 'taken' &&  // Hide taken properties from tenant view
-            !p.title?.includes('BEYOND SUNDAY') &&  // Exclude test data
-            !p.isTest &&  // Exclude test properties
-            !p.isPlaceholder  // Exclude placeholders
-          );
+          // Show all verified/approved properties
+          this.properties = propsArray.filter(p => {
+            // Must have approved status OR be verified
+            const isApproved = p.status === 'approved' || p.isApproved === true || p.isVerified === true || p.is_verified === true;
+            
+            // Must not be pending or rejected
+            const notPendingOrRejected = p.status !== 'pending' && p.status !== 'rejected';
+            
+            // Hide taken properties (but undefined/null availability is OK)
+            const notTaken = p.availability !== 'taken';
+            
+            // Exclude test data
+            const notTest = !p.title?.includes('BEYOND SUNDAY') && !p.isTest && !p.isPlaceholder;
+            
+            return isApproved && notPendingOrRejected && notTaken && notTest;
+          });
           this.properties = this.properties.map(p => this.normalizeProperty(p));
+
+          console.log('✅ Properties loaded from API:');
+          console.log('  - Raw from API:', propsArray.length);
+          console.log('  - After filters:', this.properties.length);
+          console.log('  - Sample property:', this.properties[0] ? {
+            id: this.properties[0].id,
+            title: this.properties[0].title,
+            status: this.properties[0].status,
+            verified: this.properties[0].isVerified
+          } : 'none');
 
           // Prepend 12 reference properties at top
           const kmRefSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : [])
