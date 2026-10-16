@@ -50,8 +50,8 @@ class Store {
         this.data.comments = this.data.comments || {};
         this.data.verification_logs = this.data.verification_logs || [];
 
-        // Guarantee official Admin account exists with current credentials
-        this.ensureAdminUser();
+        // Admin should be created via migrations, not auto-initialized
+        // this.ensureAdminUser();
         // Ensure seed listings are available
         this.ensureSeedListings();
       } else {
@@ -298,10 +298,10 @@ class Store {
   async authenticateUser(identifier, password, role = null) {
     const cleanId = identifier.trim().toLowerCase();
 
-    // If attempting Admin login, ensure admin user is initialized
-    if (cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin@keja.co.ke' || cleanId === '0792409540' || cleanId === '254792409540' || cleanId === 'admin') {
-      this.ensureAdminUser();
-    }
+    // DON'T reset admin password on login! Admin should be managed via migrations
+    // if (cleanId === 'admin@kejamarket.co.ke' || cleanId === 'admin@keja.co.ke' || cleanId === '0792409540' || cleanId === '254792409540' || cleanId === 'admin') {
+    //   this.ensureAdminUser();
+    // }
 
     const user = this.findUserByIdentifier(cleanId);
 

@@ -107,8 +107,8 @@ class PostgreSQLStore {
         this.isConnected = true;
         console.log('✅ PostgreSQL connected successfully to', isPooler ? 'Supabase Connection Pooler (IPv4)' : 'PostgreSQL Database');
 
-        // Ensure admin user exists
-        await this.ensureAdminUser();
+        // Admin user should be created via migrations, not auto-initialized
+        // await this.ensureAdminUser();
         return true;
       } catch (err) {
         console.warn(`⚠️ PostgreSQL connection attempt ${i + 1} failed:`, err.message);
@@ -220,7 +220,6 @@ class PostgreSQLStore {
         phone = EXCLUDED.phone,
         email = EXCLUDED.email,
         name = EXCLUDED.name,
-        password = EXCLUDED.password,
         role = EXCLUDED.role,
         is_admin = EXCLUDED.is_admin,
         is_verified = EXCLUDED.is_verified
@@ -382,10 +381,8 @@ class PostgreSQLStore {
 
     const cleanId = identifier.trim().toLowerCase();
 
-    // Ensure admin user exists for admin logins
-    if (cleanId.includes('admin') || cleanId === '0792409540' || cleanId === '254792409540') {
-      await this.ensureAdminUser();
-    }
+    // DON'T reset admin password on every login!
+    // Admin should be created via migration scripts, not on-demand
 
     const user = await this.findUserByIdentifier(cleanId);
     if (!user) {
