@@ -2049,7 +2049,12 @@ app.get('/api/properties', cache.middleware(15, 'properties'), async (req, res) 
     }
 
     // Fallback: filter and return only verified properties
-    let properties = (await store.getAllProperties() || []).filter(p => (p.is_verified === true || p.isVerified === true) && p.status !== 'pending' && p.status !== 'rejected');
+    let properties = (await store.getAllProperties() || []).filter(p => {
+      // Show properties that are verified OR have approved/verified/active status
+      const isVerified = p.is_verified === true || p.isVerified === true;
+      const hasGoodStatus = !p.status || p.status === 'approved' || p.status === 'verified' || p.status === 'active';
+      return isVerified && hasGoodStatus;
+    });
 
     // Apply client-side filters
     if (category) {
