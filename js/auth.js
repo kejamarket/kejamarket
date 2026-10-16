@@ -793,7 +793,7 @@ const kejaAuth = (() => {
         // Admin redirect: go straight to admin dashboard
         if (data.user.role === 'admin' || data.user.isAdmin || data.user.id === 'usr-admin-01') {
           notify(`Welcome, ${data.user.name}! Redirecting to Admin Dashboard...`, 'success');
-          setTimeout(() => { window.location.href = '/admin-dashboard.html'; }, 600);
+          setTimeout(() => { window.location.href = '/admin-dashboard'; }, 600);
           return;
         }
 
@@ -857,13 +857,9 @@ const kejaAuth = (() => {
     showPanel('signin');
     console.log('[AUTH] Auth modal reset to signin panel');
     
-    // Reload listings without auth state
-    if (window.app && typeof window.app.applyFilters === 'function') {
-      window.app.applyFilters();
-      console.log('[AUTH] Filters reapplied without auth state');
-    }
-    
-    console.log('[AUTH] Sign out completed successfully');
+    // Redirect to homepage
+    console.log('[AUTH] Redirecting to homepage...');
+    window.location.href = '/';
   }
 
   /* ─────────────────────────────────────────
@@ -1164,7 +1160,7 @@ const kejaAuth = (() => {
     setTimeout(() => {
       // Admin → redirect to Admin Dashboard page
       if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
-        window.location.href = '/admin-dashboard.html';
+        window.location.href = '/admin-dashboard';
         return;
       }
 
@@ -1304,33 +1300,33 @@ const kejaAuth = (() => {
         <!-- Profile Menu -->
         <div class="profile-menu">
           ${(session.role === 'admin' || session.isAdmin || session.id === 'usr-admin-01') ? `
-            <a href="/admin-dashboard.html" class="profile-menu-item profile-menu-admin">
+            <a href="/admin-dashboard" class="profile-menu-item profile-menu-admin">
               <i class="fas fa-shield-alt profile-menu-icon" style="color:#dc2626;"></i>
-              <span>Admin Control Center</span>
+              <span>🔒 Admin Control Center</span>
             </a>
           ` : ''}
 
-          <button class="profile-menu-item" onclick="kejaDashboard.open('overview'); kejaAuth.closeProfileDropdown();">
+          <button class="profile-menu-item" onclick="kejaAuth.openUserDashboard(); kejaAuth.closeProfileDropdown();">
             <i class="fas fa-th-large profile-menu-icon" style="color:#16a34a;"></i>
             <span>My Account / My Dashboard</span>
           </button>
 
-          <button class="profile-menu-item" onclick="kejaDashboard.open('settings'); kejaAuth.closeProfileDropdown();">
+          <button class="profile-menu-item" onclick="kejaAuth.openUserDashboard('settings'); kejaAuth.closeProfileDropdown();">
             <i class="fas fa-user-cog profile-menu-icon" style="color:#4f46e5;"></i>
             <span>My Profile & Settings</span>
           </button>
           
-          <button class="profile-menu-item" onclick="kejaDashboard.open('messages'); kejaAuth.closeProfileDropdown();">
+          <button class="profile-menu-item" onclick="kejaAuth.openUserDashboard('messages'); kejaAuth.closeProfileDropdown();">
             <i class="fas fa-comment-dots profile-menu-icon" style="color:#2563eb;"></i>
             <span>Messages / Inquiries</span>
           </button>
           
-          <button class="profile-menu-item" onclick="kejaDashboard.open('notifications'); kejaAuth.closeProfileDropdown();">
+          <button class="profile-menu-item" onclick="kejaAuth.openUserDashboard('notifications'); kejaAuth.closeProfileDropdown();">
             <i class="fas fa-bell profile-menu-icon" style="color:#f59e0b;"></i>
-            <span>Notifications</span>
+            <span>📬 Notifications</span>
           </button>
           
-          <button class="profile-menu-item" onclick="kejaDashboard.open('faq'); kejaAuth.closeProfileDropdown();">
+          <button class="profile-menu-item" onclick="kejaAuth.openUserDashboard('faq'); kejaAuth.closeProfileDropdown();">
             <i class="fas fa-question-circle profile-menu-icon" style="color:#008744;"></i>
             <span>Help & FAQs</span>
           </button>
@@ -1527,6 +1523,21 @@ const kejaAuth = (() => {
     }
   }
 
+  /* ─────────────────────────────────────────
+     OPEN USER DASHBOARD
+  ───────────────────────────────────────── */
+  function openUserDashboard(section) {
+    console.log('[AUTH] openUserDashboard called with section:', section);
+    
+    if (window.kejaDashboard && typeof window.kejaDashboard.open === 'function') {
+      window.kejaDashboard.open(section || 'overview');
+      console.log('[AUTH] Dashboard opened via kejaDashboard.open');
+    } else {
+      console.log('[AUTH] kejaDashboard not available, falling back to notification');
+      notify('Dashboard is loading...', 'info');
+    }
+  }
+
   return {
     openAuthModal,
     switchTab,
@@ -1558,6 +1569,7 @@ const kejaAuth = (() => {
     applyAuthWall,
     toggleProfileDropdown,
     closeProfileDropdown,
+    openUserDashboard,
     showForgotPassword,
     handleForgotPassword,
     handleResetPassword,
