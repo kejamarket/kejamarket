@@ -23,12 +23,12 @@ CREATE TABLE IF NOT EXISTS audit_events (
 );
 
 -- Indexes for common queries
-CREATE INDEX idx_audit_actor ON audit_events(actor_id, created_at DESC);
-CREATE INDEX idx_audit_resource ON audit_events(resource_type, resource_id, created_at DESC);
-CREATE INDEX idx_audit_action ON audit_events(action, created_at DESC);
-CREATE INDEX idx_audit_created ON audit_events(created_at DESC);
-CREATE INDEX idx_audit_severity ON audit_events(severity, created_at DESC) WHERE severity IN ('error', 'critical');
-CREATE INDEX idx_audit_outcome ON audit_events(outcome, created_at DESC) WHERE outcome = 'failure';
+CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit_events(actor_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_resource ON audit_events(resource_type, resource_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_action ON audit_events(action, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_events(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_severity ON audit_events(severity, created_at DESC) WHERE severity IN ('error', 'critical');
+CREATE INDEX IF NOT EXISTS idx_audit_outcome ON audit_events(outcome, created_at DESC) WHERE outcome = 'failure';
 
 -- Prevent modification/deletion of audit events
 CREATE RULE audit_no_delete AS ON DELETE TO audit_events DO INSTEAD NOTHING;
@@ -80,8 +80,8 @@ CREATE TABLE IF NOT EXISTS auth_failures (
   attempted_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
-CREATE INDEX idx_auth_failures_identifier ON auth_failures(identifier, attempted_at DESC);
-CREATE INDEX idx_auth_failures_ip ON auth_failures(ip_address, attempted_at DESC);
+CREATE INDEX IF NOT EXISTS idx_auth_failures_identifier ON auth_failures(identifier, attempted_at DESC);
+CREATE INDEX IF NOT EXISTS idx_auth_failures_ip ON auth_failures(ip_address, attempted_at DESC);
 
 -- Auto-cleanup old auth failures (keep 90 days)
 CREATE OR REPLACE FUNCTION cleanup_old_auth_failures()

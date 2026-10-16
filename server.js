@@ -28,6 +28,12 @@ const uploadService = require('./db/upload-service');
 const locationService = require('./db/location-service');
 const { sharePropertyToSocialMedia } = require('./utils/social-media-share');
 
+// RBAC & Audit Middleware (Phase 1: Security & Trust)
+const { requirePermission, requireAnyPermission, requireAllPermissions, requireAdmin } = require('./middleware/rbac');
+const { auditRequest, auditAction, logAuthFailure } = require('./middleware/audit');
+const auditService = require('./services/audit-service');
+const rbacService = require('./services/rbac-service');
+
 // â”€â”€â”€ RATE LIMITING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const compression = require('compression');
 const { cache } = require('./db/cache');
@@ -2805,11 +2811,8 @@ app.post('/api/leads/fibre', async (req, res) => {
 });
 
 // POST /api/sms/send (Direct SMS dispatch API - admin only)
-app.post('/api/sms/send', requireAuth, async (req, res) => {
+app.post('/api/sms/send', requireAuth, requirePermission('communication.send'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { to, message } = req.body;
     if (!to || !message) {
       return res.status(400).json({ success: false, message: 'Recipient phone (to) and message are required.' });
@@ -3017,11 +3020,8 @@ app.get('/api/stats', cache.middleware(60, 'public:stats'), async (req, res) => 
 });
 
 // ─── OWNER / ADMIN DATABASE PORTAL ROUTES ──────────────────────────────
-app.get('/api/admin/overview', requireAuth, async (req, res) => {
+app.get('/api/admin/overview', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const stats = await store.getOverviewStats();
     
     // Calculate "Requires Attention" metrics
@@ -3074,11 +3074,8 @@ app.get('/api/admin/overview', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/global-search â€” universal search across all entities (Users, Properties, Services, Marketplace, Buildings)
-app.get('/api/admin/global-search', requireAuth, async (req, res) => {
+app.get('/api/admin/global-search', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
 
     const q = (req.query.q || '').trim();
     if (!q || q.length < 2) {
@@ -3236,11 +3233,8 @@ app.delete('/api/favourites/:propertyId', requireAuth, async (req, res) => {
 // â”€â”€â”€ ADMIN ANALYTICS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/admin/analytics â€” real server-side analytics from PostgreSQL
-app.get('/api/admin/analytics', requireAuth, async (req, res) => {
+app.get('/api/admin/analytics', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     if (store.getAdminAnalytics) {
       const analytics = await store.getAdminAnalytics();
       return res.json({ success: true, ...analytics });
@@ -3337,12 +3331,8 @@ app.post('/api/admin/mpesa-config', requireAuth, (req, res) => {
   }
 });
 
-app.get('/api/admin/users', requireAuth, async (req, res) => {
+app.get('/api/admin/users', requireAuth, requirePermission('user.view'), auditRequest, async (req, res) => {
   try {
-    // Only admin can access user list
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
 
     // Use paginated query to avoid loading all users + all properties into RAM
     const page = Math.max(1, parseInt(req.query.page) || 1);
@@ -3394,11 +3384,8 @@ app.get('/api/admin/users', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/users/:id - Get individual user details
-app.get('/api/admin/users/:id', requireAuth, async (req, res) => {
+app.get('/api/admin/users/:id', requireAuth, requirePermission('user.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     
     const { id } = req.params;
     const user = await store.getUserById(id);
@@ -3448,11 +3435,8 @@ app.get('/api/admin/users/:id', requireAuth, async (req, res) => {
 });
 
 // POST /api/admin/users/:id/suspend - Suspend/unsuspend user
-app.post('/api/admin/users/:id/suspend', requireAuth, async (req, res) => {
+app.post('/api/admin/users/:id/suspend', requireAuth, requirePermission('user.ban'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     
     const { id } = req.params;
     const { reason, duration } = req.body;
@@ -3555,11 +3539,8 @@ async function getUnitsList(buildingId = null) {
 }
 
 // GET /api/admin/buildings - Get all buildings
-app.get('/api/admin/buildings', requireAuth, async (req, res) => {
+app.get('/api/admin/buildings', requireAuth, requirePermission('listing.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const buildings = await getBuildingsList();
     res.json({ success: true, count: buildings.length, buildings });
   } catch (err) {
@@ -3568,11 +3549,8 @@ app.get('/api/admin/buildings', requireAuth, async (req, res) => {
 });
 
 // POST /api/admin/buildings - Create a new building
-app.post('/api/admin/buildings', requireAuth, async (req, res) => {
+app.post('/api/admin/buildings', requireAuth, requirePermission('listing.create'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { name, location, landlordId, totalFloors, description, amenities, status } = req.body;
     if (!name || !location) {
       return res.status(400).json({ success: false, message: 'Building name and location are required.' });
@@ -3624,11 +3602,8 @@ app.post('/api/admin/buildings', requireAuth, async (req, res) => {
 });
 
 // PUT /api/admin/buildings/:id - Update a building
-app.put('/api/admin/buildings/:id', requireAuth, async (req, res) => {
+app.put('/api/admin/buildings/:id', requireAuth, requirePermission('listing.edit'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     const { name, location, totalFloors, description, status } = req.body;
     if (store.isConnected) {
@@ -3651,11 +3626,8 @@ app.put('/api/admin/buildings/:id', requireAuth, async (req, res) => {
 });
 
 // DELETE /api/admin/buildings/:id - Delete a building
-app.delete('/api/admin/buildings/:id', requireAuth, async (req, res) => {
+app.delete('/api/admin/buildings/:id', requireAuth, requirePermission('listing.delete'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     if (store.isConnected) {
       try { await store.query('DELETE FROM buildings WHERE id = $1', [id]); } catch (e) { console.warn('DB delete building error:', e.message); }
@@ -3669,11 +3641,8 @@ app.delete('/api/admin/buildings/:id', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/buildings/:id - Get building details
-app.get('/api/admin/buildings/:id', requireAuth, async (req, res) => {
+app.get('/api/admin/buildings/:id', requireAuth, requirePermission('listing.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     const all = await getBuildingsList();
     const building = all.find(b => b.id === id);
@@ -3685,11 +3654,8 @@ app.get('/api/admin/buildings/:id', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/buildings/:id/units - Get units in a building
-app.get('/api/admin/buildings/:id/units', requireAuth, async (req, res) => {
+app.get('/api/admin/buildings/:id/units', requireAuth, requirePermission('listing.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const units = await getUnitsList(req.params.id);
     res.json({ success: true, count: units.length, units });
   } catch (err) {
@@ -3698,11 +3664,8 @@ app.get('/api/admin/buildings/:id/units', requireAuth, async (req, res) => {
 });
 
 // POST /api/admin/units - Create a new unit inside a building
-app.post('/api/admin/units', requireAuth, async (req, res) => {
+app.post('/api/admin/units', requireAuth, requirePermission('listing.create'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { buildingId, unitNumber, bedrooms, bathrooms, price, status, description } = req.body;
     if (!buildingId || !unitNumber) {
       return res.status(400).json({ success: false, message: 'buildingId and unitNumber are required.' });
@@ -3749,11 +3712,8 @@ app.post('/api/admin/units', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/units - Get all units
-app.get('/api/admin/units', requireAuth, async (req, res) => {
+app.get('/api/admin/units', requireAuth, requirePermission('listing.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const units = await getUnitsList();
     res.json({ success: true, count: units.length, units });
   } catch (err) {
@@ -3762,11 +3722,8 @@ app.get('/api/admin/units', requireAuth, async (req, res) => {
 });
 
 // PUT /api/admin/units/:id - Update a unit
-app.put('/api/admin/units/:id', requireAuth, async (req, res) => {
+app.put('/api/admin/units/:id', requireAuth, requirePermission('listing.edit'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     const { unitNumber, bedrooms, bathrooms, price, status } = req.body;
     if (store.isConnected) {
@@ -3786,11 +3743,8 @@ app.put('/api/admin/units/:id', requireAuth, async (req, res) => {
   }
 });
 
-app.post('/api/admin/users/:id/toggle-verify', requireAuth, async (req, res) => {
+app.post('/api/admin/users/:id/toggle-verify', requireAuth, requirePermission('user.edit'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     const user = await store.getUserById(id);
     if (!user) {
@@ -3863,11 +3817,8 @@ app.post('/api/admin/users/:id/ban', requireAuth, async (req, res) => {
 });
 
 // PATCH /api/admin/users/:id - Edit user details (admin only)
-app.patch('/api/admin/users/:id', requireAuth, async (req, res) => {
+app.patch('/api/admin/users/:id', requireAuth, requirePermission('user.edit'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     const user = await store.getUserById(id);
     if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
@@ -3883,11 +3834,8 @@ app.patch('/api/admin/users/:id', requireAuth, async (req, res) => {
 });
 
 // POST /api/admin/users - Create new user (admin only)
-app.post('/api/admin/users', requireAuth, async (req, res) => {
+app.post('/api/admin/users', requireAuth, requirePermission('user.create'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { name, phone, email, role, password } = req.body;
     if (!name || !phone || !password) {
       return res.status(400).json({ success: false, message: 'Name, phone and password are required.' });
@@ -3911,11 +3859,8 @@ app.post('/api/admin/users', requireAuth, async (req, res) => {
 });
 
 // DELETE /api/admin/users/:id - Permanently delete user account (admin only)
-app.delete('/api/admin/users/:id', requireAuth, async (req, res) => {
+app.delete('/api/admin/users/:id', requireAuth, requirePermission('user.delete'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     
     const { id } = req.params;
     const { reason, deletedBy } = req.body;
@@ -4021,11 +3966,8 @@ app.patch('/api/properties/:id', requireAuth, async (req, res) => {
 });
 
 // POST /api/admin/broadcast - Send broadcast SMS (admin only)
-app.post('/api/admin/broadcast', requireAuth, async (req, res) => {
+app.post('/api/admin/broadcast', requireAuth, requirePermission('communication.send'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { message, audience } = req.body;
     if (!message || !message.trim()) {
       return res.status(400).json({ success: false, message: 'Message is required.' });
@@ -4062,11 +4004,8 @@ app.delete('/api/properties/:id', optionalAuth, (req, res) => {
 
 
 // GET /api/admin/download-db (Backup â€” admin only)
-app.get('/api/admin/download-db', requireAuth, async (req, res) => {
+app.get('/api/admin/download-db', requireAuth, requirePermission('system.backup'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const dbPath = path.join(__dirname, 'db', 'data.json');
     if (!fs.existsSync(dbPath)) {
       return res.status(404).json({ success: false, message: 'Database file not found.' });
@@ -4083,11 +4022,8 @@ app.get('/api/admin/download-db', requireAuth, async (req, res) => {
 
 
 // GET /api/admin/all-properties -- returns ALL properties (verified + pending) for admin
-app.get('/api/admin/all-properties', requireAuth, async (req, res) => {
+app.get('/api/admin/all-properties', requireAuth, requirePermission('listing.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const all = await store.getAllProperties();
     res.json({ success: true, count: all.length, total: all.length, properties: all });
   } catch (err) {
@@ -4096,11 +4032,8 @@ app.get('/api/admin/all-properties', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/pending-listings — listings awaiting approval
-app.get('/api/admin/pending-listings', requireAuth, async (req, res) => {
+app.get('/api/admin/pending-listings', requireAuth, requirePermission('listing.approve'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const all = await store.getAllProperties();
     const pending = all.filter(p =>
       (!p.isVerified && !p.is_verified) ||
@@ -4209,11 +4142,8 @@ app.post('/api/admin/broadcast', requireAuth, async (req, res) => {
 // â”€â”€â”€ ADMIN USER MANAGEMENT (who has admin access) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/admin/admins â€” list all admin users
-app.get('/api/admin/admins', requireAuth, async (req, res) => {
+app.get('/api/admin/admins', requireAuth, requirePermission('admin.manage'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     let admins;
     if (store.isConnected && store.query) {
       // Query only admin users directly — no need to fetch the whole users table
@@ -4237,11 +4167,8 @@ app.get('/api/admin/admins', requireAuth, async (req, res) => {
 });
 
 // POST /api/admin/admins â€” promote an existing user to admin OR create a new admin
-app.post('/api/admin/admins', requireAuth, async (req, res) => {
+app.post('/api/admin/admins', requireAuth, requirePermission('admin.manage'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
 
     const { userId, name, email, phone, password, permissions = [] } = req.body;
 
@@ -4301,11 +4228,8 @@ app.post('/api/admin/admins', requireAuth, async (req, res) => {
 });
 
 // PUT /api/admin/admins/:id â€” update admin permissions/name
-app.put('/api/admin/admins/:id', requireAuth, async (req, res) => {
+app.put('/api/admin/admins/:id', requireAuth, requirePermission('admin.manage'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const user = await store.getUserById(req.params.id);
     if (!user) return res.status(404).json({ success: false, message: 'Admin user not found.' });
 
@@ -4324,11 +4248,8 @@ app.put('/api/admin/admins/:id', requireAuth, async (req, res) => {
 });
 
 // DELETE /api/admin/admins/:id â€” revoke admin access (demote to tenant)
-app.delete('/api/admin/admins/:id', requireAuth, async (req, res) => {
+app.delete('/api/admin/admins/:id', requireAuth, requirePermission('admin.manage'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     if (req.params.id === 'usr-admin-01') {
       return res.status(403).json({ success: false, message: 'Cannot remove the root super-admin.' });
     }
@@ -4354,11 +4275,8 @@ app.delete('/api/admin/admins/:id', requireAuth, async (req, res) => {
 // â”€â”€â”€ ADMIN OPERATIONS DATA ENDPOINTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/admin/inquiries
-app.get('/api/admin/inquiries', requireAuth, async (req, res) => {
+app.get('/api/admin/inquiries', requireAuth, requirePermission('content.moderate'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     let inquiries = [];
     if (store.isConnected && store.query) {
       try {
@@ -4386,11 +4304,8 @@ app.get('/api/admin/inquiries', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/reviews
-app.get('/api/admin/reviews', requireAuth, async (req, res) => {
+app.get('/api/admin/reviews', requireAuth, requirePermission('content.moderate'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     let reviews = [];
     if (store.isConnected && store.query) {
       try {
@@ -4422,11 +4337,8 @@ app.get('/api/admin/reviews', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/reports
-app.get('/api/admin/reports', requireAuth, async (req, res) => {
+app.get('/api/admin/reports', requireAuth, requirePermission('content.moderate'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const reports = store.data?.reports || store.fallbackStore?.data?.reports || [];
     res.json({ success: true, count: reports.length, reports });
   } catch (err) {
@@ -4435,11 +4347,8 @@ app.get('/api/admin/reports', requireAuth, async (req, res) => {
 });
 
 // GET /api/admin/support
-app.get('/api/admin/support', requireAuth, async (req, res) => {
+app.get('/api/admin/support', requireAuth, requirePermission('support.view'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const tickets = store.data?.supportTickets || store.fallbackStore?.data?.supportTickets || [];
     res.json({ success: true, count: tickets.length, tickets });
   } catch (err) {
@@ -4448,11 +4357,8 @@ app.get('/api/admin/support', requireAuth, async (req, res) => {
 });
 
 // DELETE /api/admin/reviews/:id
-app.delete('/api/admin/reviews/:id', requireAuth, async (req, res) => {
+app.delete('/api/admin/reviews/:id', requireAuth, requirePermission('content.moderate'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     if (store.isConnected && store.query) {
       try {
@@ -4474,11 +4380,8 @@ app.delete('/api/admin/reviews/:id', requireAuth, async (req, res) => {
 });
 
 // DELETE /api/admin/inquiries/:id
-app.delete('/api/admin/inquiries/:id', requireAuth, async (req, res) => {
+app.delete('/api/admin/inquiries/:id', requireAuth, requirePermission('content.moderate'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     if (store.isConnected && store.query) {
       try {
@@ -4500,11 +4403,8 @@ app.delete('/api/admin/inquiries/:id', requireAuth, async (req, res) => {
 });
 
 // PATCH /api/admin/reports/:id
-app.patch('/api/admin/reports/:id', requireAuth, async (req, res) => {
+app.patch('/api/admin/reports/:id', requireAuth, requirePermission('content.moderate'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     const { status = 'resolved' } = req.body;
     const updateInList = (list) => {
@@ -4521,11 +4421,8 @@ app.patch('/api/admin/reports/:id', requireAuth, async (req, res) => {
 });
 
 // DELETE /api/admin/reports/:id
-app.delete('/api/admin/reports/:id', requireAuth, async (req, res) => {
+app.delete('/api/admin/reports/:id', requireAuth, requirePermission('content.moderate'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     if (store.data?.reports) {
       store.data.reports = store.data.reports.filter(r => String(r.id) !== String(id));
@@ -4540,11 +4437,8 @@ app.delete('/api/admin/reports/:id', requireAuth, async (req, res) => {
 });
 
 // PATCH /api/admin/support/:id
-app.patch('/api/admin/support/:id', requireAuth, async (req, res) => {
+app.patch('/api/admin/support/:id', requireAuth, requirePermission('support.respond'), auditRequest, async (req, res) => {
   try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) {
-      return res.status(403).json({ success: false, message: 'Admin access required.' });
-    }
     const { id } = req.params;
     const { status = 'closed' } = req.body;
     const updateInList = (list) => {
@@ -4584,10 +4478,8 @@ async function logAdminAction(admin, action, targetType, targetId, targetTitle =
 }
 
 // GET /api/admin/audit-logs — view immutable audit trail
-app.get('/api/admin/audit-logs', requireAuth, async (req, res) => {
-  try {
-    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
-    const { action, adminId, targetType, limit = 100 } = req.query;
+app.get('/api/admin/audit-logs', requireAuth, requirePermission('audit.view'), auditRequest, async (req, res) => {
+  try {const { action, adminId, targetType, limit = 100 } = req.query;
     
     let logs = [];
     if (store.isConnected && store.query) {
@@ -7552,5 +7444,152 @@ app.get('/api/health', async (req, res) => {
       status: 'unhealthy',
       message: err.message
     });
+  }
+});
+
+
+// ─── RBAC ADMIN ENDPOINTS (Phase 1: Security & Trust) ──────────────────────────────────────
+
+// GET /api/admin/rbac/roles - Get all roles with permission counts
+app.get('/api/admin/rbac/roles', requireAuth, requirePermission('admin.manage'), auditRequest, async (req, res) => {
+  try {
+    const roles = await rbacService.getAllRoles();
+    res.json({ success: true, roles });
+  } catch (error) {
+    console.error('❌ Get roles error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/rbac/roles/:id - Get role details with permissions
+app.get('/api/admin/rbac/roles/:id', requireAuth, requirePermission('admin.manage'), auditRequest, async (req, res) => {
+  try {
+    const role = await rbacService.getRoleDetails(req.params.id);
+    if (!role) {
+      return res.status(404).json({ success: false, message: 'Role not found' });
+    }
+    res.json({ success: true, role });
+  } catch (error) {
+    console.error('❌ Get role details error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/rbac/assign - Assign role to user
+app.post('/api/admin/rbac/assign', requireAuth, requirePermission('admin.manage'), auditRequest, async (req, res) => {
+  try {
+    const { userId, roleId, expiresAt } = req.body;
+    
+    if (!userId || !roleId) {
+      return res.status(400).json({ success: false, message: 'userId and roleId are required' });
+    }
+    
+    const result = await rbacService.assignRole(userId, roleId, req.user.id, expiresAt);
+    res.json(result);
+  } catch (error) {
+    console.error('❌ Assign role error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/rbac/revoke - Revoke role from user
+app.post('/api/admin/rbac/revoke', requireAuth, requirePermission('admin.manage'), auditRequest, async (req, res) => {
+  try {
+    const { userId, roleId } = req.body;
+    
+    if (!userId || !roleId) {
+      return res.status(400).json({ success: false, message: 'userId and roleId are required' });
+    }
+    
+    const result = await rbacService.revokeRole(userId, roleId, req.user.id);
+    res.json(result);
+  } catch (error) {
+    console.error('❌ Revoke role error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/rbac/user-permissions/:userId - Get user permissions
+app.get('/api/admin/rbac/user-permissions/:userId', requireAuth, requireAnyPermission('admin.manage', 'user.view'), auditRequest, async (req, res) => {
+  try {
+    const { getUserPermissions, getUserRoles } = require('./middleware/rbac');
+    
+    const permissions = await getUserPermissions(req.params.userId);
+    const roles = await getUserRoles(req.params.userId);
+    
+    res.json({ success: true, permissions, roles });
+  } catch (error) {
+    console.error('❌ Get user permissions error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/audit/events - Get audit events
+app.get('/api/admin/audit/events', requireAuth, requirePermission('audit.view'), auditRequest, async (req, res) => {
+  try {
+    const {
+      actorId,
+      resourceType,
+      resourceId,
+      action,
+      eventType,
+      outcome,
+      severity,
+      startDate,
+      endDate,
+      limit,
+      offset
+    } = req.query;
+    
+    const events = await auditService.getActivityLog({
+      actorId,
+      resourceType,
+      resourceId,
+      action,
+      eventType,
+      outcome,
+      severity,
+      startDate,
+      endDate,
+      limit: limit ? parseInt(limit) : 100,
+      offset: offset ? parseInt(offset) : 0
+    });
+    
+    res.json({ success: true, events, count: events.length });
+  } catch (error) {
+    console.error('❌ Get audit events error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/audit/security-events - Get security-related events
+app.get('/api/admin/audit/security-events', requireAuth, requirePermission('audit.view'), auditRequest, async (req, res) => {
+  try {
+    const { startDate, endDate, limit } = req.query;
+    
+    const events = await auditService.getSecurityEvents({
+      startDate,
+      endDate,
+      limit: limit ? parseInt(limit) : 100
+    });
+    
+    res.json({ success: true, events, count: events.length });
+  } catch (error) {
+    console.error('❌ Get security events error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/audit/summary - Get audit summary statistics
+app.get('/api/admin/audit/summary', requireAuth, requirePermission('audit.view'), auditRequest, async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    
+    const summary = await auditService.getSummary({ startDate, endDate });
+    
+    res.json({ success: true, summary });
+  } catch (error) {
+    console.error('❌ Get audit summary error:', error);
+    res.status(500).json({ success: false, message: error.message });
   }
 });
