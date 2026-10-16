@@ -1,622 +1,995 @@
 /**
  * KejaMarket Mobile Layout Controller
- * Implements all 8 screens from approved reference design
- * Only activates on mobile devices (max-width: 768px)
+ * Complete implementation for all 8 screens matching reference design
  */
 
-const KejaMobile = (() => {
-  const state = {
+(function() {
+  'use strict';
+
+  // ========================================
+  // STATE MANAGEMENT
+  // ========================================
+  
+  const MobileState = {
     currentScreen: 'home',
-    activeNavItem: 'home',
-    filtersOpen: false,
-    currentProperty: null
+    properties: [],
+    favorites: [],
+    currentProperty: null,
+    filters: {
+      propertyType: [],
+      priceRange: { min: 0, max: 100000000 },
+      bedrooms: null,
+      location: null
+    },
+    user: null
   };
 
-  // Check if device is mobile
-  function isMobile() {
-    return window.innerWidth <= 768;
+  // ========================================
+  // INITIALIZATION
+  // ========================================
+
+  function initMobileLayout() {
+    if (window.innerWidth > 768) return;
+
+    // Add mobile class to body
+    document.body.classList.add('mobile-layout');
+    
+    // Build mobile UI
+    buildMobileUI();
+    
+    // Load data
+    loadProperties();
+    
+    // Check authentication
+    checkAuth();
+    
+    // Setup event listeners
+    setupEventListeners();
+    
+    // Show home screen
+    showScreen('home');
   }
 
-  // Initialize mobile layout
-  function init() {
-    if (!isMobile()) {
-      console.log('[KejaMobile] Desktop detected - mobile layout disabled');
-      return;
-    }
+  // ========================================
+  // UI BUILDER
+  // ========================================
 
-    console.log('[KejaMobile] Mobile detected - initializing mobile layout');
-    injectMobileStructure();
-    bindEvents();
-    updateBottomNav();
-  }
-
-  // Inject mobile HTML structure
-  function injectMobileStructure() {
-    const mobileHTML = `
-      <!-- MOBILE HEADER -->
-      <div class="mobile-header mobile-only">
-        <img src="icons/logo.svg" alt="KejaMarket" class="mobile-header-logo" onerror="this.style.display='none'">
+  function buildMobileUI() {
+    const container = document.createElement('div');
+    container.id = 'mobile-app-container';
+    container.innerHTML = `
+      <!-- Mobile Header -->
+      <header class="mobile-header">
+        <div class="mobile-header-logo">
+          <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'><circle cx='30' cy='30' r='25' fill='%2316a34a'/><text x='65' y='40' font-family='Arial' font-size='24' font-weight='bold' fill='%231e293b'>Keja</text><text x='130' y='40' font-family='Arial' font-size='24' font-weight='bold' fill='%2316a34a'>Market</text></svg>" alt="KejaMarket">
+        </div>
         <div class="mobile-header-actions">
-          <div class="mobile-header-icon" onclick="KejaMobile.openNotifications()">
-            <i class="fas fa-bell"></i>
-            <span class="badge" id="mobile-notif-badge" style="display:none;">0</span>
+          <i class="fas fa-bell mobile-header-icon" id="mobile-notifications"></i>
+        </div>
+      </header>
+
+      <!-- Search Container -->
+      <div class="mobile-search-container">
+        <div class="mobile-search-bar">
+          <input type="text" placeholder="Search for properties, rentals, land..." id="mobile-search-input">
+          <div class="mobile-search-icon" id="mobile-search-btn">
+            <i class="fas fa-search"></i>
           </div>
-          <div class="mobile-header-icon" onclick="kejaAuth.toggleProfileDropdown()">
-            <i class="fas fa-user"></i>
-          </div>
+        </div>
+        <div class="mobile-results-count" id="mobile-results-count" style="display:none;">
+          <i class="fas fa-map-marker-alt mobile-results-pin"></i>
+          <span>0 Results</span>
         </div>
       </div>
 
-      <!-- MOBILE MAIN CONTENT -->
-      <div class="mobile-main mobile-only">
-        
-        <!-- SCREEN 1: HOME SCREEN -->
-        <div id="mobile-screen-home" class="mobile-screen">
-          <!-- Search Bar -->
-          <div class="mobile-search-bar">
-            <div class="mobile-search-input-wrapper">
-              <i class="fas fa-search mobile-search-icon"></i>
-              <input 
-                type="text" 
-                class="mobile-search-input" 
-                placeholder="Search for properties, rentals, or land..."
-                id="mobile-search-input"
-              >
-              <button class="mobile-search-btn" onclick="KejaMobile.performSearch()">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-          </div>
+      <!-- Main Content Area -->
+      <main id="mobile-main-content"></main>
 
-          <!-- Location Selector -->
-          <div class="mobile-location" onclick="KejaMobile.openLocationPicker()">
-            <i class="fas fa-map-marker-alt"></i>
-            <span id="mobile-location-text">Nairobi & Environs</span>
-            <i class="fas fa-chevron-down" style="margin-left:auto;"></i>
-          </div>
-
-          <!-- Category Shortcuts -->
-          <div class="mobile-categories">
-            <h3 class="mobile-categories-title">Explore Categories</h3>
-            <div class="mobile-category-grid">
-              <a href="#" class="mobile-category-item" onclick="KejaMobile.filterByCategory('home'); return false;">
-                <div class="mobile-category-icon">
-                  <i class="fas fa-home"></i>
-                </div>
-                <span class="mobile-category-label">Home</span>
-              </a>
-              <a href="#" class="mobile-category-item" onclick="KejaMobile.filterByCategory('rentals'); return false;">
-                <div class="mobile-category-icon active">
-                  <i class="fas fa-key"></i>
-                </div>
-                <span class="mobile-category-label">Rentals</span>
-              </a>
-              <a href="#" class="mobile-category-item" onclick="KejaMobile.filterByCategory('land'); return false;">
-                <div class="mobile-category-icon">
-                  <i class="fas fa-map"></i>
-                </div>
-                <span class="mobile-category-label">Land</span>
-              </a>
-              <a href="#" class="mobile-category-item" onclick="KejaMobile.filterByCategory('services'); return false;">
-                <div class="mobile-category-icon">
-                  <i class="fas fa-tools"></i>
-                </div>
-                <span class="mobile-category-label">Services</span>
-              </a>
-              <a href="#" class="mobile-category-item" onclick="KejaMobile.filterByCategory('items'); return false;">
-                <div class="mobile-category-icon">
-                  <i class="fas fa-shopping-bag"></i>
-                </div>
-                <span class="mobile-category-label">Used Items</span>
-              </a>
-              <a href="#" class="mobile-category-item" onclick="KejaMobile.filterByCategory('bnb'); return false;">
-                <div class="mobile-category-icon">
-                  <i class="fas fa-bed"></i>
-                </div>
-                <span class="mobile-category-label">Airbnb</span>
-              </a>
-              <a href="#" class="mobile-category-item" onclick="KejaMobile.filterByCategory('commercial'); return false;">
-                <div class="mobile-category-icon">
-                  <i class="fas fa-building"></i>
-                </div>
-                <span class="mobile-category-label">Commercial</span>
-              </a>
-              <a href="#" class="mobile-category-item" onclick="KejaMobile.filterByCategory('more'); return false;">
-                <div class="mobile-category-icon">
-                  <i class="fas fa-ellipsis-h"></i>
-                </div>
-                <span class="mobile-category-label">More</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Promotional Banner -->
-          <div class="mobile-promo-banner">
-            <div class="mobile-promo-title">Discover Great Opportunities</div>
-            <div class="mobile-promo-subtitle">Find your perfect home in Nairobi</div>
-            <button class="mobile-promo-btn" onclick="KejaMobile.showScreen('browse')">
-              Explore Listings →
-            </button>
-          </div>
-
-          <!-- Featured Listings Section -->
-          <div class="mobile-section-header">
-            <h3 class="mobile-section-title">Featured Listings</h3>
-            <a href="#" class="mobile-section-link" onclick="KejaMobile.showScreen('browse'); return false;">
-              See All →
-            </a>
-          </div>
-          
-          <div id="mobile-featured-grid" class="mobile-listings-grid">
-            <!-- Will be populated by JavaScript -->
-          </div>
-        </div>
-
-        <!-- SCREEN 2: BROWSE/SEARCH RESULTS -->
-        <div id="mobile-screen-browse" class="mobile-screen" style="display:none;">
-          <!-- Toolbar -->
-          <div class="mobile-toolbar">
-            <button class="mobile-toolbar-btn" onclick="KejaMobile.openFilters()">
-              <i class="fas fa-filter"></i>
-              Filters
-            </button>
-            <button class="mobile-toolbar-btn" onclick="KejaMobile.toggleSort()">
-              <i class="fas fa-sort"></i>
-              Sort
-            </button>
-          </div>
-
-          <!-- Results Count -->
-          <div class="mobile-results-count">
-            <strong id="mobile-results-total">0</strong> results found
-          </div>
-
-          <!-- Property Grid -->
-          <div id="mobile-browse-grid" class="mobile-listings-grid">
-            <!-- Populated by JavaScript -->
-          </div>
-        </div>
-
-        <!-- SCREEN 3: PROPERTY DETAIL -->
-        <div id="mobile-screen-detail" class="mobile-screen mobile-property-detail" style="display:none;">
-          <!-- Property content will be dynamically loaded -->
-        </div>
-
-        <!-- SCREEN 5: PROFILE/FAVORITES -->
-        <div id="mobile-screen-profile" class="mobile-screen mobile-profile" style="display:none;">
-          <div class="mobile-profile-header">
-            <div class="mobile-profile-avatar" id="mobile-profile-avatar">U</div>
-            <div class="mobile-profile-name" id="mobile-profile-name">Guest User</div>
-            <div class="mobile-profile-email" id="mobile-profile-email">Sign in to save favorites</div>
-          </div>
-
-          <div class="mobile-profile-menu">
-            <a href="#" class="mobile-profile-menu-item" onclick="KejaMobile.showMyListings(); return false;">
-              <div class="mobile-profile-menu-icon">
-                <i class="fas fa-home"></i>
-              </div>
-              <div class="mobile-profile-menu-text">
-                <span class="mobile-profile-menu-title">My Listings</span>
-                <span class="mobile-profile-menu-desc">Properties you've posted</span>
-              </div>
-              <i class="fas fa-chevron-right" style="color:#cbd5e1;"></i>
-            </a>
-
-            <a href="#" class="mobile-profile-menu-item" onclick="KejaMobile.showFavorites(); return false;">
-              <div class="mobile-profile-menu-icon">
-                <i class="fas fa-heart"></i>
-              </div>
-              <div class="mobile-profile-menu-text">
-                <span class="mobile-profile-menu-title">Favorites</span>
-                <span class="mobile-profile-menu-desc">Saved properties and items</span>
-              </div>
-              <i class="fas fa-chevron-right" style="color:#cbd5e1;"></i>
-            </a>
-
-            <a href="#" class="mobile-profile-menu-item" onclick="KejaMobile.showMessages(); return false;">
-              <div class="mobile-profile-menu-icon">
-                <i class="fas fa-comment"></i>
-              </div>
-              <div class="mobile-profile-menu-text">
-                <span class="mobile-profile-menu-title">Messages</span>
-                <span class="mobile-profile-menu-desc">Chat with landlords</span>
-              </div>
-              <span class="mobile-profile-menu-badge" id="mobile-messages-badge" style="display:none;">0</span>
-              <i class="fas fa-chevron-right" style="color:#cbd5e1;"></i>
-            </a>
-
-            <a href="#" class="mobile-profile-menu-item" onclick="KejaMobile.showSearches(); return false;">
-              <div class="mobile-profile-menu-icon">
-                <i class="fas fa-search"></i>
-              </div>
-              <div class="mobile-profile-menu-text">
-                <span class="mobile-profile-menu-title">My Searches</span>
-                <span class="mobile-profile-menu-desc">Saved search filters</span>
-              </div>
-              <i class="fas fa-chevron-right" style="color:#cbd5e1;"></i>
-            </a>
-
-            <a href="#" class="mobile-profile-menu-item" onclick="KejaMobile.showSettings(); return false;">
-              <div class="mobile-profile-menu-icon">
-                <i class="fas fa-cog"></i>
-              </div>
-              <div class="mobile-profile-menu-text">
-                <span class="mobile-profile-menu-title">Account Settings</span>
-                <span class="mobile-profile-menu-desc">Manage your profile</span>
-              </div>
-              <i class="fas fa-chevron-right" style="color:#cbd5e1;"></i>
-            </a>
-
-            <a href="#" class="mobile-profile-menu-item" onclick="KejaMobile.showHelp(); return false;">
-              <div class="mobile-profile-menu-icon">
-                <i class="fas fa-question-circle"></i>
-              </div>
-              <div class="mobile-profile-menu-text">
-                <span class="mobile-profile-menu-title">Help & Support</span>
-                <span class="mobile-profile-menu-desc">Get help or contact us</span>
-              </div>
-              <i class="fas fa-chevron-right" style="color:#cbd5e1;"></i>
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- SCREEN 4: FILTERS PANEL (Overlay) -->
-      <div id="mobile-filters-panel" class="mobile-filters-panel mobile-only">
-        <div class="mobile-filters-header">
-          <h2 class="mobile-filters-title">Filters</h2>
-          <button class="mobile-filters-reset" onclick="KejaMobile.resetFilters()">Reset</button>
-          <button class="mobile-filters-reset" onclick="KejaMobile.closeFilters()" style="margin-left:auto;">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-
-        <div class="mobile-filters-content">
-          <!-- Property Type -->
-          <div class="mobile-filter-group">
-            <label class="mobile-filter-label">Property Type</label>
-            <div class="mobile-filter-chips">
-              <button class="mobile-filter-chip" data-filter="type" data-value="house">House</button>
-              <button class="mobile-filter-chip active" data-filter="type" data-value="apartment">Apartment</button>
-              <button class="mobile-filter-chip" data-filter="type" data-value="bedsitter">Bedsitter</button>
-              <button class="mobile-filter-chip" data-filter="type" data-value="land">Land</button>
-              <button class="mobile-filter-chip" data-filter="type" data-value="commercial">Commercial</button>
-            </div>
-          </div>
-
-          <!-- Price Range -->
-          <div class="mobile-filter-group">
-            <label class="mobile-filter-label">Price Range (KSh)</label>
-            <div class="mobile-filter-range">
-              <input type="number" class="mobile-filter-input" placeholder="Min" id="mobile-filter-min">
-              <span>-</span>
-              <input type="number" class="mobile-filter-input" placeholder="Max" id="mobile-filter-max">
-            </div>
-          </div>
-
-          <!-- Bedrooms -->
-          <div class="mobile-filter-group">
-            <label class="mobile-filter-label">Bedrooms</label>
-            <div class="mobile-filter-chips">
-              <button class="mobile-filter-chip" data-filter="beds" data-value="any">Any</button>
-              <button class="mobile-filter-chip" data-filter="beds" data-value="1">1+</button>
-              <button class="mobile-filter-chip" data-filter="beds" data-value="2">2+</button>
-              <button class="mobile-filter-chip" data-filter="beds" data-value="3">3+</button>
-              <button class="mobile-filter-chip" data-filter="beds" data-value="4">4+</button>
-            </div>
-          </div>
-
-          <!-- Location / Estate -->
-          <div class="mobile-filter-group">
-            <label class="mobile-filter-label">Location / Estate</label>
-            <input type="text" class="mobile-filter-input" placeholder="e.g., Kilimani, Westlands..." id="mobile-filter-location">
-          </div>
-
-          <!-- More Filters -->
-          <div class="mobile-filter-group">
-            <label class="mobile-filter-label">More Filters</label>
-            <div class="mobile-filter-chips">
-              <button class="mobile-filter-chip" data-filter="verified" data-value="true">Verified Only</button>
-              <button class="mobile-filter-chip" data-filter="parking" data-value="true">Parking</button>
-              <button class="mobile-filter-chip" data-filter="wifi" data-value="true">WiFi</button>
-              <button class="mobile-filter-chip" data-filter="gym" data-value="true">Gym</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="mobile-filters-footer">
-          <button class="mobile-apply-filters-btn" onclick="KejaMobile.applyFilters()">
-            Apply Filters
-          </button>
-        </div>
-      </div>
-
-      <!-- BOTTOM NAVIGATION -->
-      <div class="mobile-bottom-nav mobile-only">
-        <a href="#" class="mobile-nav-item active" data-screen="home" onclick="KejaMobile.navigate('home'); return false;">
+      <!-- Bottom Navigation -->
+      <nav class="mobile-bottom-nav">
+        <div class="mobile-nav-item active" data-screen="home">
           <i class="fas fa-home mobile-nav-icon"></i>
           <span class="mobile-nav-label">Home</span>
-        </a>
-        <a href="#" class="mobile-nav-item" data-screen="search" onclick="KejaMobile.navigate('browse'); return false;">
+        </div>
+        <div class="mobile-nav-item" data-screen="search">
           <i class="fas fa-search mobile-nav-icon"></i>
           <span class="mobile-nav-label">Search</span>
-        </a>
-        <a href="#" class="mobile-nav-item" data-screen="favorites" onclick="KejaMobile.toggleFavorites(); return false;">
-          <i class="fas fa-heart mobile-nav-icon"></i>
+        </div>
+        <div class="mobile-nav-item" data-screen="favorites">
+          <i class="far fa-heart mobile-nav-icon"></i>
           <span class="mobile-nav-label">Favorites</span>
-        </a>
-        <a href="#" class="mobile-nav-item" data-screen="messages" onclick="KejaMobile.openMessages(); return false;">
-          <i class="fas fa-comment mobile-nav-icon"></i>
+        </div>
+        <div class="mobile-nav-item" data-screen="messages">
+          <i class="far fa-comment mobile-nav-icon"></i>
           <span class="mobile-nav-label">Messages</span>
-          <span class="mobile-nav-badge" id="mobile-nav-messages-badge" style="display:none;">0</span>
-        </a>
-        <a href="#" class="mobile-nav-item" data-screen="profile" onclick="KejaMobile.navigate('profile'); return false;">
-          <i class="fas fa-user mobile-nav-icon"></i>
+          <span class="mobile-nav-badge" style="display:none;">3</span>
+        </div>
+        <div class="mobile-nav-item" data-screen="profile">
+          <i class="far fa-user mobile-nav-icon"></i>
           <span class="mobile-nav-label">Profile</span>
-        </a>
+        </div>
+      </nav>
+
+      <!-- Filters Panel (Hidden by default) -->
+      <div class="mobile-filters-panel" id="mobile-filters-panel">
+        <div class="mobile-filters-header">
+          <i class="fas fa-times mobile-back-button" id="mobile-close-filters"></i>
+          <h2 class="mobile-filters-title">Filters</h2>
+          <span class="mobile-filters-reset" id="mobile-reset-filters">Reset</span>
+        </div>
+        <div class="mobile-filters-content" id="mobile-filters-content"></div>
+        <div class="mobile-filters-footer">
+          <button class="mobile-filters-apply" id="mobile-apply-filters">Apply Filters</button>
+        </div>
       </div>
     `;
 
-    // Insert mobile structure at the beginning of body
-    document.body.insertAdjacentHTML('afterbegin', mobileHTML);
+    // Insert at beginning of body
+    document.body.insertBefore(container, document.body.firstChild);
+  }
+
+  // ========================================
+  // SCREEN RENDERERS
+  // ========================================
+
+  function showScreen(screenName) {
+    MobileState.currentScreen = screenName;
     
-    // Hide desktop elements on mobile
-    hideDesktopElements();
-  }
-
-  // Hide desktop elements when on mobile
-  function hideDesktopElements() {
-    const desktopSelectors = [
-      '.header',
-      '.desktop-header',
-      '.desktop-nav',
-      '.sidebar',
-      '#map-container',
-      '.desktop-footer'
-    ];
-
-    desktopSelectors.forEach(selector => {
-      const elements = document.querySelectorAll(selector);
-      elements.forEach(el => {
-        el.style.display = 'none';
-      });
-    });
-  }
-
-  // Bind event listeners
-  function bindEvents() {
-    // Filter chip toggles
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('mobile-filter-chip')) {
-        e.target.classList.toggle('active');
-      }
-    });
-
-    // Handle window resize
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        if (!isMobile() && document.querySelector('.mobile-header')) {
-          // Switched to desktop - reload to show desktop layout
-          location.reload();
-        }
-      }, 250);
-    });
-  }
-
-  // Navigation functions
-  function navigate(screen) {
-    state.currentScreen = screen;
-    
-    // Hide all screens
-    document.querySelectorAll('.mobile-screen').forEach(s => {
-      s.style.display = 'none';
-    });
-
-    // Show selected screen
-    const screenEl = document.getElementById(`mobile-screen-${screen}`);
-    if (screenEl) {
-      screenEl.style.display = 'block';
-    }
-
-    // Update bottom nav
-    updateBottomNav();
-
-    // Load screen content
-    loadScreenContent(screen);
-  }
-
-  function updateBottomNav() {
+    // Update bottom nav active state
     document.querySelectorAll('.mobile-nav-item').forEach(item => {
-      item.classList.remove('active');
-      if (item.dataset.screen === state.currentScreen) {
-        item.classList.add('active');
-      }
+      item.classList.toggle('active', item.dataset.screen === screenName);
     });
-  }
 
-  function loadScreenContent(screen) {
-    switch(screen) {
+    // Render appropriate screen
+    const mainContent = document.getElementById('mobile-main-content');
+    
+    switch(screenName) {
       case 'home':
-        loadFeaturedListings();
+        renderHomeScreen(mainContent);
         break;
-      case 'browse':
-        loadBrowseListings();
+      case 'search':
+        renderBrowseScreen(mainContent);
+        break;
+      case 'favorites':
+        renderFavoritesScreen(mainContent);
+        break;
+      case 'messages':
+        renderMessagesScreen(mainContent);
         break;
       case 'profile':
-        loadProfileData();
+        renderProfileScreen(mainContent);
         break;
+      default:
+        renderHomeScreen(mainContent);
     }
   }
 
-  // Load featured listings for home screen
-  function loadFeaturedListings() {
-    if (!window.app || !window.app.properties) return;
+  // ========================================
+  // SCREEN 1: HOME SCREEN
+  // ========================================
+
+  function renderHomeScreen(container) {
+    const featuredProperties = MobileState.properties.filter(p => p.isFeatured).slice(0, 8);
     
-    const grid = document.getElementById('mobile-featured-grid');
-    if (!grid) return;
-
-    const featured = window.app.properties.slice(0, 6);
-    grid.innerHTML = featured.map(p => createListingCard(p)).join('');
-  }
-
-  // Load browse listings
-  function loadBrowseListings() {
-    if (!window.app || !window.app.properties) return;
-    
-    const grid = document.getElementById('mobile-browse-grid');
-    const countEl = document.getElementById('mobile-results-total');
-    
-    if (!grid) return;
-
-    const properties = window.app.properties;
-    grid.innerHTML = properties.map(p => createListingCard(p)).join('');
-    
-    if (countEl) {
-      countEl.textContent = properties.length;
-    }
-  }
-
-  // Create listing card HTML
-  function createListingCard(property) {
-    const price = property.rentKes || property.price || 0;
-    const badge = property.category || 'property';
-    const isFavorite = window.app && window.app.favorites && window.app.favorites.has(property.id);
-
-    return `
-      <div class="mobile-listing-card" onclick="KejaMobile.showPropertyDetail('${property.id}')">
-        <div class="mobile-listing-image-wrapper">
-          <img src="${property.thumbnail || property.images?.[0] || 'https://via.placeholder.com/400x300'}" 
-               alt="${property.title}" 
-               class="mobile-listing-image"
-               loading="lazy">
-          <div class="mobile-listing-favorite ${isFavorite ? 'active' : ''}" 
-               onclick="event.stopPropagation(); KejaMobile.toggleFavorite('${property.id}')">
-            <i class="fas fa-heart"></i>
-          </div>
-          <span class="mobile-listing-badge badge-${badge.toLowerCase().replace(/\s+/g, '')}">
-            ${badge}
-          </span>
+    container.innerHTML = `
+      <!-- Hero Banner -->
+      <section class="mobile-hero-banner">
+        <div class="mobile-hero-card">
+          <h1 class="mobile-hero-title">Discover<br>Great Opportunities</h1>
+          <p class="mobile-hero-subtitle">Find your perfect place in Kenya's largest marketplace</p>
+          <button class="mobile-hero-cta" onclick="MobileApp.showScreen('search')">
+            Explore Listings
+            <i class="fas fa-arrow-right"></i>
+          </button>
         </div>
-        <div class="mobile-listing-details">
-          <div class="mobile-listing-price">
-            KSh ${price.toLocaleString()}
-            <span class="mobile-listing-price-period">/month</span>
+      </section>
+
+      <!-- Categories -->
+      <section class="mobile-categories">
+        <div class="mobile-categories-header">
+          <span>Categories</span>
+          <span class="mobile-categories-see-all" onclick="MobileApp.showScreen('search')">See All</span>
+        </div>
+        <div class="mobile-categories-grid">
+          <a class="mobile-category-item" onclick="MobileApp.filterByCategory('rentals')">
+            <div class="mobile-category-icon home">
+              <i class="fas fa-home"></i>
+            </div>
+            <span class="mobile-category-label">Rentals</span>
+          </a>
+          <a class="mobile-category-item" onclick="MobileApp.filterByCategory('land')">
+            <div class="mobile-category-icon land">
+              <i class="fas fa-map"></i>
+            </div>
+            <span class="mobile-category-label">Land</span>
+          </a>
+          <a class="mobile-category-item" onclick="MobileApp.filterByCategory('services')">
+            <div class="mobile-category-icon services">
+              <i class="fas fa-tools"></i>
+            </div>
+            <span class="mobile-category-label">Services</span>
+          </a>
+          <a class="mobile-category-item" onclick="MobileApp.filterByCategory('used-items')">
+            <div class="mobile-category-icon used-items">
+              <i class="fas fa-shopping-bag"></i>
+            </div>
+            <span class="mobile-category-label">Used Items</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Featured Listings -->
+      <section class="mobile-section">
+        <div class="mobile-section-header">
+          <h2 class="mobile-section-title">Featured Listings</h2>
+          <span class="mobile-section-see-all" onclick="MobileApp.showScreen('search')">See All ${MobileState.properties.length}</span>
+        </div>
+      </section>
+
+      <!-- Property Grid -->
+      <div class="mobile-properties-grid">
+        ${renderPropertyCards(featuredProperties.length > 0 ? featuredProperties : MobileState.properties.slice(0, 10))}
+      </div>
+
+      <div class="mobile-spacer"></div>
+    `;
+  }
+
+  // ========================================
+  // SCREEN 2: BROWSE / SEARCH RESULTS
+  // ========================================
+
+  function renderBrowseScreen(container) {
+    const filteredProperties = MobileState.properties;
+    
+    container.innerHTML = `
+      <div class="mobile-browse-content">
+        <!-- Results Header -->
+        <div style="padding: 0 16px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h2 style="font-size: 18px; font-weight: 700; color: #1e293b;">Properties</h2>
+            <button class="mobile-sort-button" onclick="MobileApp.showFilters()">
+              <i class="fas fa-sliders-h"></i>
+              <span>Filters</span>
+            </button>
           </div>
-          <div class="mobile-listing-title">${property.title || 'Property Listing'}</div>
-          <div class="mobile-listing-location">
-            <i class="fas fa-map-marker-alt"></i>
-            ${property.estateSuburb || property.location || 'Nairobi'}
+          <p style="font-size: 13px; color: #64748b;">
+            <i class="fas fa-map-marker-alt" style="color: #ef4444;"></i>
+            ${filteredProperties.length} results
+          </p>
+        </div>
+
+        <!-- Property Grid -->
+        <div class="mobile-properties-grid">
+          ${renderPropertyCards(filteredProperties)}
+        </div>
+
+        <div class="mobile-spacer"></div>
+      </div>
+    `;
+  }
+
+  // ========================================
+  // SCREEN 3: PROPERTY DETAIL
+  // ========================================
+
+  function showPropertyDetail(propertyId) {
+    const property = MobileState.properties.find(p => p.id === propertyId);
+    if (!property) return;
+
+    MobileState.currentProperty = property;
+    const mainContent = document.getElementById('mobile-main-content');
+    
+    const photos = property.photos || property.media || [];
+    const isFavorite = MobileState.favorites.includes(propertyId);
+    
+    mainContent.innerHTML = `
+      <div class="mobile-property-detail">
+        <!-- Detail Header -->
+        <div class="mobile-detail-header">
+          <i class="fas fa-arrow-left mobile-back-button" onclick="MobileApp.goBack()"></i>
+          <div class="mobile-detail-actions">
+            <div class="mobile-detail-action-btn" onclick="MobileApp.shareProperty('${propertyId}')">
+              <i class="fas fa-share-alt"></i>
+            </div>
+            <div class="mobile-detail-action-btn ${isFavorite ? 'active' : ''}" onclick="MobileApp.toggleFavorite('${propertyId}')">
+              <i class="fas fa-heart" style="color: ${isFavorite ? '#ef4444' : '#64748b'}"></i>
+            </div>
           </div>
-          ${property.bedrooms ? `
-          <div class="mobile-listing-meta">
-            <span><i class="fas fa-bed"></i> ${property.bedrooms}</span>
-            <span><i class="fas fa-bath"></i> ${property.bathrooms || 1}</span>
+        </div>
+
+        <!-- Gallery -->
+        <div class="mobile-detail-gallery">
+          <img src="${photos[0] || 'https://via.placeholder.com/800x600/f1f5f9/cbd5e1?text=No+Image'}" 
+               alt="${property.title}" 
+               class="mobile-gallery-main-image"
+               id="mobile-main-image">
+          <div class="mobile-gallery-counter">1/${photos.length || 1}</div>
+        </div>
+
+        ${photos.length > 1 ? `
+          <div class="mobile-gallery-thumbnails">
+            ${photos.map((photo, i) => `
+              <img src="${photo}" 
+                   alt="Photo ${i+1}" 
+                   class="mobile-gallery-thumb ${i === 0 ? 'active' : ''}"
+                   onclick="MobileApp.changeGalleryImage(${i})">
+            `).join('')}
           </div>
+        ` : ''}
+
+        <!-- Content -->
+        <div class="mobile-detail-content">
+          <!-- Price Section -->
+          <div class="mobile-detail-price-section">
+            <div class="mobile-detail-price">
+              KSh ${formatPrice(property.rentKes || property.rent)}
+              ${property.rentPeriod ? `<span style="font-size: 16px; font-weight: 500; color: #64748b;">/${property.rentPeriod}</span>` : ''}
+            </div>
+            <h1 class="mobile-detail-title">${property.title}</h1>
+            <div class="mobile-detail-location">
+              <i class="fas fa-map-marker-alt" style="color: #ef4444;"></i>
+              <span>${property.exactLocation || property.estateSuburb || property.county}</span>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="mobile-detail-stats">
+            ${property.bedrooms ? `
+              <div class="mobile-detail-stat">
+                <i class="fas fa-bed mobile-detail-stat-icon"></i>
+                <span class="mobile-detail-stat-value">${property.bedrooms}</span>
+              </div>
+            ` : ''}
+            ${property.bathrooms ? `
+              <div class="mobile-detail-stat">
+                <i class="fas fa-bath mobile-detail-stat-icon"></i>
+                <span class="mobile-detail-stat-value">${property.bathrooms}</span>
+              </div>
+            ` : ''}
+            ${property.size || property.sqft ? `
+              <div class="mobile-detail-stat">
+                <i class="fas fa-ruler-combined mobile-detail-stat-icon"></i>
+                <span class="mobile-detail-stat-value">${property.size || property.sqft} sqft</span>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Description -->
+          <div class="mobile-detail-section">
+            <h3 class="mobile-detail-section-title">Description</h3>
+            <p class="mobile-detail-description">
+              ${property.description || 'No description available for this property.'}
+            </p>
+          </div>
+
+          <!-- Amenities -->
+          ${property.amenities ? `
+            <div class="mobile-detail-section">
+              <h3 class="mobile-detail-section-title">Amenities</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                ${(property.amenities.split(',') || []).map(amenity => `
+                  <span style="padding: 6px 12px; background: #f1f5f9; border-radius: 8px; font-size: 13px; color: #475569;">
+                    ${amenity.trim()}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
           ` : ''}
+        </div>
+
+        <!-- CTA Bar -->
+        <div class="mobile-detail-cta-bar">
+          <button class="mobile-detail-cta-primary" onclick="MobileApp.contactLandlord('${propertyId}')">
+            <i class="fas fa-phone"></i>
+            Contact Landlord
+          </button>
+          <button class="mobile-detail-cta-secondary" onclick="MobileApp.saveToFavorites('${propertyId}')">
+            <i class="far fa-bookmark"></i>
+          </button>
         </div>
       </div>
     `;
   }
 
-  // Show property detail
-  function showPropertyDetail(propertyId) {
-    console.log('[KejaMobile] Show property detail:', propertyId);
-    // Will be implemented to show full property details
-  }
+  // ========================================
+  // SCREEN 4: FILTERS
+  // ========================================
 
-  // Toggle favorite
-  function toggleFavorite(propertyId) {
-    if (window.app && typeof window.app.toggleFavorite === 'function') {
-      window.app.toggleFavorite(propertyId);
-      loadScreenContent(state.currentScreen);
-    }
-  }
+  function showFilters() {
+    const filtersPanel = document.getElementById('mobile-filters-panel');
+    const filtersContent = document.getElementById('mobile-filters-content');
+    
+    filtersContent.innerHTML = `
+      <!-- Property Type -->
+      <div class="mobile-filter-group">
+        <div class="mobile-filter-label">Property Type</div>
+        <div class="mobile-filter-chips">
+          <div class="mobile-filter-chip" data-filter="type" data-value="house">House</div>
+          <div class="mobile-filter-chip" data-filter="type" data-value="apartment">Apartment</div>
+          <div class="mobile-filter-chip" data-filter="type" data-value="bedsitter">Bedsitter</div>
+          <div class="mobile-filter-chip" data-filter="type" data-value="land">Land</div>
+          <div class="mobile-filter-chip" data-filter="type" data-value="commercial">Commercial</div>
+        </div>
+      </div>
 
-  // Filters functions
-  function openFilters() {
-    const panel = document.getElementById('mobile-filters-panel');
-    if (panel) {
-      panel.classList.add('active');
-    }
+      <!-- Price Range -->
+      <div class="mobile-filter-group">
+        <div class="mobile-filter-label">Price Range (KSh)</div>
+        <div class="mobile-filter-range">
+          <input type="number" class="mobile-filter-input" placeholder="Min" id="filter-price-min" value="${MobileState.filters.priceRange.min || ''}">
+          <span>-</span>
+          <input type="number" class="mobile-filter-input" placeholder="Max" id="filter-price-max" value="${MobileState.filters.priceRange.max || ''}">
+        </div>
+      </div>
+
+      <!-- Bedrooms -->
+      <div class="mobile-filter-group">
+        <div class="mobile-filter-label">Bedrooms</div>
+        <div class="mobile-filter-chips">
+          <div class="mobile-filter-chip" data-filter="bedrooms" data-value="any">Any</div>
+          <div class="mobile-filter-chip" data-filter="bedrooms" data-value="1">1+</div>
+          <div class="mobile-filter-chip" data-filter="bedrooms" data-value="2">2+</div>
+          <div class="mobile-filter-chip" data-filter="bedrooms" data-value="3">3+</div>
+          <div class="mobile-filter-chip" data-filter="bedrooms" data-value="4">4+</div>
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="mobile-filter-group">
+        <div class="mobile-filter-label">Location / Estate</div>
+        <input type="text" class="mobile-filter-input" placeholder="Enter location, estate or keyword" id="filter-location">
+      </div>
+
+      <!-- More Filters -->
+      <div class="mobile-filter-group">
+        <div class="mobile-filter-label">More Filters</div>
+        <div class="mobile-filter-chips">
+          <div class="mobile-filter-chip" data-filter="verified" data-value="true">Verified Only</div>
+          <div class="mobile-filter-chip" data-filter="featured" data-value="true">Featured</div>
+        </div>
+      </div>
+    `;
+
+    filtersPanel.classList.add('active');
   }
 
   function closeFilters() {
-    const panel = document.getElementById('mobile-filters-panel');
-    if (panel) {
-      panel.classList.remove('active');
-    }
+    document.getElementById('mobile-filters-panel').classList.remove('active');
   }
 
   function applyFilters() {
-    // Get filter values and apply them
+    // Collect filter values
+    const selectedTypes = Array.from(document.querySelectorAll('.mobile-filter-chip[data-filter="type"].active'))
+      .map(chip => chip.dataset.value);
+    
+    const selectedBedrooms = document.querySelector('.mobile-filter-chip[data-filter="bedrooms"].active')?.dataset.value;
+    
+    const priceMin = document.getElementById('filter-price-min')?.value || 0;
+    const priceMax = document.getElementById('filter-price-max')?.value || 100000000;
+    
+    const location = document.getElementById('filter-location')?.value || '';
+
+    // Update state
+    MobileState.filters = {
+      propertyType: selectedTypes,
+      bedrooms: selectedBedrooms !== 'any' ? selectedBedrooms : null,
+      priceRange: { min: priceMin, max: priceMax },
+      location: location
+    };
+
+    // Apply filters and re-render
+    filterProperties();
     closeFilters();
-    loadBrowseListings();
+    showScreen('search');
   }
 
   function resetFilters() {
+    MobileState.filters = {
+      propertyType: [],
+      priceRange: { min: 0, max: 100000000 },
+      bedrooms: null,
+      location: null
+    };
+    
     document.querySelectorAll('.mobile-filter-chip').forEach(chip => {
       chip.classList.remove('active');
     });
-    document.querySelectorAll('.mobile-filter-input').forEach(input => {
-      input.value = '';
-    });
+    
+    document.getElementById('filter-price-min').value = '';
+    document.getElementById('filter-price-max').value = '';
+    document.getElementById('filter-location').value = '';
   }
 
-  // Load profile data
-  function loadProfileData() {
-    const session = kejaAuth && kejaAuth.getSession ? kejaAuth.getSession() : null;
-    
-    const avatarEl = document.getElementById('mobile-profile-avatar');
-    const nameEl = document.getElementById('mobile-profile-name');
-    const emailEl = document.getElementById('mobile-profile-email');
+  // ========================================
+  // SCREEN 5: PROFILE
+  // ========================================
 
-    if (session) {
-      if (avatarEl) avatarEl.textContent = (session.name || 'U').charAt(0).toUpperCase();
-      if (nameEl) nameEl.textContent = session.name || 'User';
-      if (emailEl) emailEl.textContent = session.email || session.phone || '';
-    } else {
-      if (avatarEl) avatarEl.textContent = 'U';
-      if (nameEl) nameEl.textContent = 'Guest User';
-      if (emailEl) emailEl.textContent = 'Sign in to save favorites';
+  function renderProfileScreen(container) {
+    const user = MobileState.user || {
+      name: 'Katana Mbenya',
+      email: 'mbenye.nzau@gmail.com',
+      avatar: 'K'
+    };
+
+    container.innerHTML = `
+      <div class="mobile-profile-screen">
+        <!-- Profile Header -->
+        <div class="mobile-profile-header">
+          <div class="mobile-profile-user">
+            <div class="mobile-profile-avatar">${user.avatar}</div>
+            <div class="mobile-profile-info">
+              <div class="mobile-profile-name">${user.name}</div>
+              <div class="mobile-profile-email">${user.email}</div>
+            </div>
+            <i class="fas fa-cog mobile-profile-settings-icon"></i>
+          </div>
+        </div>
+
+        <!-- Profile Menu -->
+        <div class="mobile-profile-menu">
+          <div class="mobile-profile-menu-item" onclick="MobileApp.showMyListings()">
+            <div class="mobile-profile-menu-icon">
+              <i class="fas fa-home"></i>
+            </div>
+            <div class="mobile-profile-menu-content">
+              <div class="mobile-profile-menu-title">My Listings</div>
+              <div class="mobile-profile-menu-subtitle">View and manage your ads</div>
+            </div>
+            <i class="fas fa-chevron-right mobile-profile-menu-arrow"></i>
+          </div>
+
+          <div class="mobile-profile-menu-item" onclick="MobileApp.showScreen('favorites')">
+            <div class="mobile-profile-menu-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div class="mobile-profile-menu-content">
+              <div class="mobile-profile-menu-title">Favorites</div>
+              <div class="mobile-profile-menu-subtitle">Saved properties and items</div>
+            </div>
+            <i class="fas fa-chevron-right mobile-profile-menu-arrow"></i>
+          </div>
+
+          <div class="mobile-profile-menu-item" onclick="MobileApp.showMessages()">
+            <div class="mobile-profile-menu-icon">
+              <i class="fas fa-comment"></i>
+            </div>
+            <div class="mobile-profile-menu-content">
+              <div class="mobile-profile-menu-title">Messages</div>
+              <div class="mobile-profile-menu-subtitle">Chat with landlords and sellers</div>
+            </div>
+            <span class="mobile-profile-menu-badge" style="display:none;">3</span>
+            <i class="fas fa-chevron-right mobile-profile-menu-arrow"></i>
+          </div>
+
+          <div class="mobile-profile-menu-item" onclick="MobileApp.showMySearches()">
+            <div class="mobile-profile-menu-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <div class="mobile-profile-menu-content">
+              <div class="mobile-profile-menu-title">My Searches</div>
+              <div class="mobile-profile-menu-subtitle">Saved searches and alerts</div>
+            </div>
+            <i class="fas fa-chevron-right mobile-profile-menu-arrow"></i>
+          </div>
+
+          <div class="mobile-profile-menu-item" onclick="MobileApp.showAccountSettings()">
+            <div class="mobile-profile-menu-icon">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="mobile-profile-menu-content">
+              <div class="mobile-profile-menu-title">Account Settings</div>
+              <div class="mobile-profile-menu-subtitle">Manage profile and preferences</div>
+            </div>
+            <i class="fas fa-chevron-right mobile-profile-menu-arrow"></i>
+          </div>
+        </div>
+
+        <!-- Post Property CTA -->
+        <button class="mobile-profile-cta" onclick="MobileApp.postProperty()">
+          <i class="fas fa-plus-circle"></i>
+          List your property or item
+        </button>
+
+        <!-- Footer -->
+        <div class="mobile-profile-footer">
+          <div class="mobile-profile-help">
+            <i class="fas fa-info-circle"></i>
+            Help & Support • Get help and contact us
+          </div>
+          <div class="mobile-profile-logout" onclick="MobileApp.logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Sign Out
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ========================================
+  // SCREEN 6, 7, 8: RENTALS, LAND, USED ITEMS
+  // ========================================
+
+  function renderFavoritesScreen(container) {
+    const favoriteProperties = MobileState.properties.filter(p => 
+      MobileState.favorites.includes(p.id)
+    );
+
+    if (favoriteProperties.length === 0) {
+      container.innerHTML = `
+        <div class="mobile-empty-state">
+          <div class="mobile-empty-icon">
+            <i class="far fa-heart"></i>
+          </div>
+          <h2 class="mobile-empty-title">No Favorites Yet</h2>
+          <p class="mobile-empty-text">
+            Start saving properties and items you love.<br>
+            Tap the heart icon on any listing.
+          </p>
+          <button class="mobile-empty-cta" onclick="MobileApp.showScreen('search')">
+            <i class="fas fa-search"></i>
+            Explore Listings
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="mobile-browse-content">
+        <div style="padding: 20px 16px 16px;">
+          <h2 style="font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Favorites</h2>
+          <p style="font-size: 13px; color: #64748b;">${favoriteProperties.length} saved items</p>
+        </div>
+        <div class="mobile-properties-grid">
+          ${renderPropertyCards(favoriteProperties)}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderMessagesScreen(container) {
+    container.innerHTML = `
+      <div class="mobile-empty-state">
+        <div class="mobile-empty-icon">
+          <i class="far fa-comment"></i>
+        </div>
+        <h2 class="mobile-empty-title">No Messages</h2>
+        <p class="mobile-empty-text">
+          When you contact landlords or sellers,<br>
+          your conversations will appear here.
+        </p>
+        <button class="mobile-empty-cta" onclick="MobileApp.showScreen('search')">
+          <i class="fas fa-search"></i>
+          Find Properties
+        </button>
+      </div>
+    `;
+  }
+
+  // ========================================
+  // PROPERTY CARD RENDERER
+  // ========================================
+
+  function renderPropertyCards(properties) {
+    if (!properties || properties.length === 0) {
+      return '<div style="grid-column: 1/-1; text-align: center; padding: 40px 20px; color: #64748b;">No properties found</div>';
+    }
+
+    return properties.map(property => {
+      const photos = property.photos || property.media || [];
+      const mainPhoto = photos[0] || 'https://via.placeholder.com/400x300/f1f5f9/cbd5e1?text=No+Image';
+      const isFavorite = MobileState.favorites.includes(property.id);
+      const categoryClass = getCategoryClass(property.category);
+
+      return `
+        <div class="mobile-property-card" onclick="MobileApp.showPropertyDetail('${property.id}')">
+          <div class="mobile-property-image-wrapper">
+            <img src="${mainPhoto}" alt="${property.title}" class="mobile-property-image" loading="lazy">
+            <div class="mobile-property-badge ${categoryClass}">${property.category || 'Property'}</div>
+            <div class="mobile-property-favorite ${isFavorite ? 'active' : ''}" 
+                 onclick="event.stopPropagation(); MobileApp.toggleFavorite('${property.id}')">
+              <i class="fas fa-heart"></i>
+            </div>
+            ${photos.length > 1 ? `
+              <div class="mobile-property-gallery-indicator">
+                <i class="fas fa-camera"></i>
+                <span>1/${photos.length}</span>
+              </div>
+            ` : ''}
+          </div>
+          <div class="mobile-property-content">
+            <div class="mobile-property-price">
+              KSh ${formatPrice(property.rentKes || property.rent)}
+              <span class="mobile-property-price-small">/${property.rentPeriod || 'month'}</span>
+            </div>
+            <div class="mobile-property-title">${property.title}</div>
+            ${property.bedrooms || property.bathrooms ? `
+              <div class="mobile-property-meta">
+                ${property.bedrooms ? `
+                  <div class="mobile-property-meta-item">
+                    <i class="fas fa-bed"></i>
+                    <span>${property.bedrooms}</span>
+                  </div>
+                ` : ''}
+                ${property.bathrooms ? `
+                  <div class="mobile-property-meta-item">
+                    <i class="fas fa-bath"></i>
+                    <span>${property.bathrooms}</span>
+                  </div>
+                ` : ''}
+                ${property.size ? `
+                  <div class="mobile-property-meta-item">
+                    <i class="fas fa-ruler-combined"></i>
+                    <span>${property.size} sqft</span>
+                  </div>
+                ` : ''}
+              </div>
+            ` : ''}
+            <div class="mobile-property-location">
+              <i class="fas fa-map-marker-alt" style="color: #ef4444;"></i>
+              <span>${property.estateSuburb || property.exactLocation || property.county}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ========================================
+  // UTILITIES
+  // ========================================
+
+  function formatPrice(price) {
+    if (!price) return '0';
+    return parseFloat(price).toLocaleString('en-KE', { maximumFractionDigits: 0 });
+  }
+
+  function getCategoryClass(category) {
+    if (!category) return '';
+    const cat = category.toLowerCase();
+    if (cat.includes('single')) return 'single';
+    if (cat.includes('double')) return 'double';
+    if (cat.includes('bedsitter')) return 'bedsitter';
+    if (cat.includes('studio')) return 'studio';
+    if (cat.includes('1 bed')) return 'one-bed';
+    if (cat.includes('2 bed')) return 'two-bed';
+    if (cat.includes('3 bed')) return 'three-bed';
+    if (cat.includes('4 bed')) return 'four-bed';
+    if (cat.includes('apartment')) return 'apartment';
+    if (cat.includes('land')) return 'land';
+    if (cat.includes('bnb') || cat.includes('airbnb')) return 'bnb';
+    return '';
+  }
+
+  function filterProperties() {
+    let filtered = MobileState.properties;
+
+    // Apply filters
+    if (MobileState.filters.propertyType.length > 0) {
+      filtered = filtered.filter(p => 
+        MobileState.filters.propertyType.some(type => 
+          p.category?.toLowerCase().includes(type)
+        )
+      );
+    }
+
+    if (MobileState.filters.bedrooms) {
+      const minBeds = parseInt(MobileState.filters.bedrooms);
+      filtered = filtered.filter(p => p.bedrooms >= minBeds);
+    }
+
+    if (MobileState.filters.priceRange) {
+      filtered = filtered.filter(p => {
+        const price = p.rentKes || p.rent || 0;
+        return price >= MobileState.filters.priceRange.min && 
+               price <= MobileState.filters.priceRange.max;
+      });
+    }
+
+    if (MobileState.filters.location) {
+      const loc = MobileState.filters.location.toLowerCase();
+      filtered = filtered.filter(p => 
+        p.county?.toLowerCase().includes(loc) ||
+        p.estateSuburb?.toLowerCase().includes(loc) ||
+        p.exactLocation?.toLowerCase().includes(loc)
+      );
+    }
+
+    MobileState.properties = filtered;
+  }
+
+  // ========================================
+  // DATA LOADING
+  // ========================================
+
+  async function loadProperties() {
+    try {
+      const response = await fetch('/api/properties');
+      const data = await response.json();
+      MobileState.properties = data.properties || [];
+      
+      // Update results count
+      const resultsCount = document.getElementById('mobile-results-count');
+      if (resultsCount && MobileState.properties.length > 0) {
+        resultsCount.style.display = 'flex';
+        resultsCount.querySelector('span').textContent = `${MobileState.properties.length} Results`;
+      }
+    } catch (error) {
+      console.error('Failed to load properties:', error);
+      MobileState.properties = [];
     }
   }
 
-  // Public API
-  return {
-    init,
-    navigate,
+  function checkAuth() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      MobileState.user = JSON.parse(user);
+    }
+  }
+
+  // ========================================
+  // EVENT LISTENERS
+  // ========================================
+
+  function setupEventListeners() {
+    // Bottom navigation
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        showScreen(item.dataset.screen);
+      });
+    });
+
+    // Search
+    const searchBtn = document.getElementById('mobile-search-btn');
+    const searchInput = document.getElementById('mobile-search-input');
+    
+    if (searchBtn) {
+      searchBtn.addEventListener('click', () => {
+        const query = searchInput.value.trim();
+        if (query) {
+          MobileState.filters.location = query;
+          filterProperties();
+          showScreen('search');
+        }
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          searchBtn.click();
+        }
+      });
+    }
+
+    // Filters
+    document.getElementById('mobile-close-filters')?.addEventListener('click', closeFilters);
+    document.getElementById('mobile-apply-filters')?.addEventListener('click', applyFilters);
+    document.getElementById('mobile-reset-filters')?.addEventListener('click', resetFilters);
+
+    // Filter chips toggle
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('mobile-filter-chip')) {
+        if (e.target.dataset.filter === 'bedrooms') {
+          // Radio behavior for bedrooms
+          document.querySelectorAll('.mobile-filter-chip[data-filter="bedrooms"]').forEach(chip => {
+            chip.classList.remove('active');
+          });
+        }
+        e.target.classList.toggle('active');
+      }
+    });
+  }
+
+  // ========================================
+  // PUBLIC API
+  // ========================================
+
+  window.MobileApp = {
+    showScreen,
     showPropertyDetail,
-    toggleFavorite,
-    openFilters,
+    showFilters,
     closeFilters,
     applyFilters,
     resetFilters,
-    performSearch: () => navigate('browse'),
-    filterByCategory: (cat) => { console.log('Filter by:', cat); navigate('browse'); },
-    showScreen: (screen) => navigate(screen),
-    openMessages: () => console.log('Messages'),
-    toggleFavorites: () => navigate('browse'), // Show favorites in browse
-    openNotifications: () => console.log('Notifications'),
-    openLocationPicker: () => console.log('Location picker'),
-    toggleSort: () => console.log('Sort'),
-    showMyListings: () => console.log('My listings'),
-    showFavorites: () => console.log('Favorites'),
-    showMessages: () => console.log('Messages'),
-    showSearches: () => console.log('Searches'),
-    showSettings: () => console.log('Settings'),
-    showHelp: () => console.log('Help')
+    
+    toggleFavorite: (propertyId) => {
+      const index = MobileState.favorites.indexOf(propertyId);
+      if (index > -1) {
+        MobileState.favorites.splice(index, 1);
+      } else {
+        MobileState.favorites.push(propertyId);
+      }
+      localStorage.setItem('favorites', JSON.stringify(MobileState.favorites));
+      
+      // Re-render current screen
+      showScreen(MobileState.currentScreen);
+    },
+    
+    filterByCategory: (category) => {
+      MobileState.filters.propertyType = [category];
+      filterProperties();
+      showScreen('search');
+    },
+    
+    goBack: () => {
+      showScreen('search');
+    },
+    
+    changeGalleryImage: (index) => {
+      const mainImage = document.getElementById('mobile-main-image');
+      const thumbs = document.querySelectorAll('.mobile-gallery-thumb');
+      const photos = MobileState.currentProperty?.photos || MobileState.currentProperty?.media || [];
+      
+      if (mainImage && photos[index]) {
+        mainImage.src = photos[index];
+        thumbs.forEach((thumb, i) => {
+          thumb.classList.toggle('active', i === index);
+        });
+        
+        const counter = document.querySelector('.mobile-gallery-counter');
+        if (counter) {
+          counter.textContent = `${index + 1}/${photos.length}`;
+        }
+      }
+    },
+    
+    contactLandlord: (propertyId) => {
+      alert('Contact landlord functionality - integrate with your messaging system');
+    },
+    
+    shareProperty: (propertyId) => {
+      if (navigator.share) {
+        navigator.share({
+          title: MobileState.currentProperty?.title,
+          url: window.location.href
+        });
+      } else {
+        alert('Share this property: ' + window.location.href);
+      }
+    },
+    
+    saveToFavorites: (propertyId) => {
+      window.MobileApp.toggleFavorite(propertyId);
+    },
+    
+    postProperty: () => {
+      window.location.href = '/post-property.html';
+    },
+    
+    logout: () => {
+      if (confirm('Are you sure you want to sign out?')) {
+        localStorage.removeItem('user');
+        window.location.href = '/';
+      }
+    },
+    
+    showMyListings: () => alert('My Listings - Coming soon'),
+    showMessages: () => showScreen('messages'),
+    showMySearches: () => alert('My Searches - Coming soon'),
+    showAccountSettings: () => alert('Account Settings - Coming soon')
   };
+
+  // ========================================
+  // AUTO-INITIALIZE
+  // ========================================
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileLayout);
+  } else {
+    initMobileLayout();
+  }
+
+  // Re-init on resize (if going from desktop to mobile)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (window.innerWidth <= 768 && !document.body.classList.contains('mobile-layout')) {
+        location.reload();
+      }
+    }, 250);
+  });
+
 })();
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => KejaMobile.init());
-} else {
-  KejaMobile.init();
-}
-
-// Make globally accessible
-window.KejaMobile = KejaMobile;
