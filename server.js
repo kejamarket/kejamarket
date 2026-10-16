@@ -7593,3 +7593,253 @@ app.get('/api/admin/audit/summary', requireAuth, requirePermission('audit.view')
     res.status(500).json({ success: false, message: error.message });
   }
 });
+
+
+// ─── VERIFICATION MANAGEMENT ENDPOINTS ──────────────────────────────────────
+
+const verificationService = require('./services/verification-service');
+
+// GET /api/admin/verifications/identity/pending - Get pending identity verifications
+app.get('/api/admin/verifications/identity/pending', requireAuth, requirePermission('identity.review'), auditRequest, async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 50;
+    const verifications = await verificationService.getPendingIdentityVerifications(limit);
+    res.json({ success: true, verifications, count: verifications.length });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/verifications/identity/:id/approve - Approve identity verification
+app.post('/api/admin/verifications/identity/:id/approve', requireAuth, requirePermission('identity.approve'), auditRequest, async (req, res) => {
+  try {
+    const { score } = req.body;
+    const result = await verificationService.approveIdentityVerification(req.params.id, req.user.id, score || 100);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/verifications/identity/:id/reject - Reject identity verification
+app.post('/api/admin/verifications/identity/:id/reject', requireAuth, requirePermission('identity.reject'), auditRequest, async (req, res) => {
+  try {
+    const { reason } = req.body;
+    if (!reason) {
+      return res.status(400).json({ success: false, message: 'Rejection reason is required' });
+    }
+    const result = await verificationService.rejectIdentityVerification(req.params.id, req.user.id, reason);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/verifications/landlord/pending - Get pending landlord verifications
+app.get('/api/admin/verifications/landlord/pending', requireAuth, requirePermission('identity.review'), auditRequest, async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 50;
+    const verifications = await verificationService.getPendingLandlordVerifications(limit);
+    res.json({ success: true, verifications, count: verifications.length });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/verifications/landlord/:id/approve - Approve landlord verification
+app.post('/api/admin/verifications/landlord/:id/approve', requireAuth, requirePermission('identity.approve'), auditRequest, async (req, res) => {
+  try {
+    const result = await verificationService.approveLandlordVerification(req.params.id, req.user.id);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/verifications/landlord/:id/reject - Reject landlord verification
+app.post('/api/admin/verifications/landlord/:id/reject', requireAuth, requirePermission('identity.reject'), auditRequest, async (req, res) => {
+  try {
+    const { reason } = req.body;
+    if (!reason) {
+      return res.status(400).json({ success: false, message: 'Rejection reason is required' });
+    }
+    const result = await verificationService.rejectLandlordVerification(req.params.id, req.user.id, reason);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ─── ADVANCED ANALYTICS ENDPOINTS ───────────────────────────────────────────
+
+const analyticsService = require('./services/analytics-service');
+
+// GET /api/admin/analytics/revenue - Get revenue metrics
+app.get('/api/admin/analytics/revenue', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
+  try {
+    const startDate = req.query.startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const endDate = req.query.endDate || new Date().toISOString();
+    
+    const metrics = await analyticsService.getRevenueMetrics(startDate, endDate);
+    res.json({ success: true, metrics, period: { startDate, endDate } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/analytics/users/growth - Get user growth metrics
+app.get('/api/admin/analytics/users/growth', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
+  try {
+    const days = parseInt(req.query.days) || 30;
+    const metrics = await analyticsService.getUserGrowthMetrics(days);
+    res.json({ success: true, metrics, days });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/analytics/users/behavior - Get user behavior metrics
+app.get('/api/admin/analytics/users/behavior', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
+  try {
+    const metrics = await analyticsService.getUserBehaviorMetrics();
+    res.json({ success: true, metrics });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/analytics/properties/performance - Get property performance
+app.get('/api/admin/analytics/properties/performance', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 100;
+    const properties = await analyticsService.getPropertyPerformance(limit);
+    res.json({ success: true, properties, count: properties.length });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/analytics/properties/metrics - Get listing metrics
+app.get('/api/admin/analytics/properties/metrics', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
+  try {
+    const metrics = await analyticsService.getListingMetrics();
+    res.json({ success: true, metrics });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET /api/admin/analytics/daily-summary - Get daily analytics summary
+app.get('/api/admin/analytics/daily-summary', requireAuth, requirePermission('analytics.view'), auditRequest, async (req, res) => {
+  try {
+    const date = req.query.date || new Date().toISOString().split('T')[0];
+    const summary = await analyticsService.getDailySummary(date);
+    res.json({ success: true, summary });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ─── BULK OPERATIONS ENDPOINTS ──────────────────────────────────────────────
+
+const bulkOpsService = require('./services/bulk-operations-service');
+
+// POST /api/admin/bulk/approve-listings - Bulk approve listings
+app.post('/api/admin/bulk/approve-listings', requireAuth, requirePermission('listing.approve'), auditRequest, async (req, res) => {
+  try {
+    const { propertyIds } = req.body;
+    
+    if (!propertyIds || !Array.isArray(propertyIds) || propertyIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'propertyIds array is required' });
+    }
+    
+    const result = await bulkOpsService.bulkApproveListings(propertyIds, req.user.id);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/bulk/reject-listings - Bulk reject listings
+app.post('/api/admin/bulk/reject-listings', requireAuth, requirePermission('listing.reject'), auditRequest, async (req, res) => {
+  try {
+    const { propertyIds, reason } = req.body;
+    
+    if (!propertyIds || !Array.isArray(propertyIds) || propertyIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'propertyIds array is required' });
+    }
+    
+    if (!reason) {
+      return res.status(400).json({ success: false, message: 'Rejection reason is required' });
+    }
+    
+    const result = await bulkOpsService.bulkRejectListings(propertyIds, req.user.id, reason);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/bulk/ban-users - Bulk ban users
+app.post('/api/admin/bulk/ban-users', requireAuth, requirePermission('user.ban'), auditRequest, async (req, res) => {
+  try {
+    const { userIds, reason } = req.body;
+    
+    if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'userIds array is required' });
+    }
+    
+    if (!reason) {
+      return res.status(400).json({ success: false, message: 'Ban reason is required' });
+    }
+    
+    const result = await bulkOpsService.bulkBanUsers(userIds, req.user.id, reason);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/bulk/send-messages - Bulk send messages
+app.post('/api/admin/bulk/send-messages', requireAuth, requirePermission('communication.send'), auditRequest, async (req, res) => {
+  try {
+    const { userIds, subject, message, method } = req.body;
+    
+    if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'userIds array is required' });
+    }
+    
+    if (!message) {
+      return res.status(400).json({ success: false, message: 'Message is required' });
+    }
+    
+    const result = await bulkOpsService.bulkSendMessages(userIds, subject || 'Message from KejaMarket', message, req.user.id, method || 'email');
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST /api/admin/bulk/update-prices - Bulk update property prices
+app.post('/api/admin/bulk/update-prices', requireAuth, requirePermission('listing.edit'), auditRequest, async (req, res) => {
+  try {
+    const { propertyIds, adjustment, type } = req.body;
+    
+    if (!propertyIds || !Array.isArray(propertyIds) || propertyIds.length === 0) {
+      return res.status(400).json({ success: false, message: 'propertyIds array is required' });
+    }
+    
+    if (adjustment === undefined || adjustment === null) {
+      return res.status(400).json({ success: false, message: 'Price adjustment is required' });
+    }
+    
+    if (!['percentage', 'fixed'].includes(type)) {
+      return res.status(400).json({ success: false, message: 'Type must be "percentage" or "fixed"' });
+    }
+    
+    const result = await bulkOpsService.bulkUpdatePrices(propertyIds, parseFloat(adjustment), type, req.user.id);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});

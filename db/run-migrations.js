@@ -30,8 +30,12 @@ async function runMigrations() {
       await pool.query(sql);
       console.log(`✅ ${file} completed successfully`);
     } catch (error) {
-      console.error(`❌ ${file} failed:`, error.message);
-      throw error;
+      if (error.message.includes('already exists') || error.code === '42710' || error.code === '42P07') {
+        console.log(`ℹ️  ${file} already applied (skipped)`);
+      } else {
+        console.error(`❌ ${file} failed:`, error.message);
+        throw error;
+      }
     }
   }
 
