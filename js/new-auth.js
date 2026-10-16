@@ -57,6 +57,21 @@ class AuthModal {
       modal.classList.add('open');
       modal.style.display = 'flex';
     }
+    
+    // Clear any pre-filled form values
+    const signinEmail = document.getElementById('signin-email');
+    const signinPassword = document.getElementById('signin-password');
+    if (signinEmail) {
+      if (!signinEmail.value.includes('@') || signinEmail.value === 'admin@kejamarket.co.ke') {
+        signinEmail.value = '';
+      }
+    }
+    if (signinPassword) {
+      signinPassword.value = '';
+    }
+    
+    // Ensure Sign In form is visible by default
+    this.switchTab('signin');
   }
 
   close() {
@@ -269,6 +284,7 @@ class AuthModal {
     
     // Save to both localStorage and sessionStorage for compatibility
     localStorage.setItem('keja_user', JSON.stringify(user));
+    localStorage.setItem('keja_session', JSON.stringify(user)); // Add this for auth.js compatibility
     if (token) {
       localStorage.setItem('keja_token', token);
     }
@@ -430,7 +446,10 @@ class AuthModal {
         
         // Store user data
         localStorage.setItem('kejamarket_user', JSON.stringify(googleUser));
+        localStorage.setItem('keja_user', JSON.stringify(googleUser)); // Add compatibility
+        localStorage.setItem('keja_session', JSON.stringify(googleUser)); // Add auth.js compatibility
         localStorage.setItem('kejamarket_auth_token', 'google_token_' + Date.now());
+        localStorage.setItem('keja_token', 'google_token_' + Date.now()); // Add compatibility
         
         this.showMessage('Successfully signed in with Google!', 'success');
         

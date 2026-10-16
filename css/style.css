@@ -994,10 +994,10 @@ button, input, select, textarea {
   height: 100%;
 }
 
-/* Property Listings Grid (4 columns matching reference image) */
+/* Property Listings Grid (5 columns on desktop) */
 .property-listings-grid {
   display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
   gap: 14px !important;
   width: 100% !important;
   box-sizing: border-box !important;
@@ -1005,7 +1005,7 @@ button, input, select, textarea {
 
 @media (max-width: 1060px) {
   .property-listings-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     gap: 12px !important;
   }
 }
@@ -3758,10 +3758,10 @@ button, input, select, textarea {
   font-family: inherit !important;
 }
 
-/* ── 8. PROPERTY LISTINGS GRID (4 cols) ─────────────────────────────────── */
+/* ── 8. PROPERTY LISTINGS GRID (5 cols) ─────────────────────────────────── */
 .property-listings-grid {
   display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-columns: repeat(5, 1fr) !important;
   gap: 14px !important;
   width: 100% !important;
   box-sizing: border-box !important;
@@ -4149,7 +4149,7 @@ button, input, select, textarea {
 
 @media (max-width: 1200px) {
   .property-listings-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr) !important;
   }
   .keja-footer-container {
     grid-template-columns: 1fr 1.2fr 1fr !important;
@@ -4345,8 +4345,8 @@ button, input, select, textarea {
 .secondary-nav { top: 58px !important; }
 .secondary-nav-container { height: 38px !important; }
 
-/* ── SIDEBAR: 240px desktop ── */
-.main-app-layout { grid-template-columns: 240px 1fr !important; }
+/* ── SIDEBAR: 200px desktop ── */
+.main-app-layout { grid-template-columns: 200px 1fr !important; }
 .sidebar-filters { top: 98px !important; max-height: calc(100vh - 100px) !important; }
 
 /* ── FOOTER: Compact ── */
@@ -4363,12 +4363,12 @@ button, input, select, textarea {
 @media (max-width: 1366px) {
   .header-search-wrapper { max-width: 400px !important; }
   .keja-footer-container { grid-template-columns: 1.2fr 1.4fr 1fr !important; }
-  .main-app-layout { grid-template-columns: 230px 1fr !important; }
+  .main-app-layout { grid-template-columns: 190px 1fr !important; }
 }
 
 /* ── 1024px ── */
 @media (max-width: 1024px) {
-  .main-app-layout { grid-template-columns: 220px 1fr !important; gap: 12px !important; }
+  .main-app-layout { grid-template-columns: 180px 1fr !important; gap: 12px !important; }
   .header-search-wrapper { max-width: 320px !important; }
   .search-category-select { display: none !important; }
   /* Hide some header text labels, keep icons */
@@ -4570,8 +4570,8 @@ button, input, select, textarea {
 
 /* ══ 4. RESPONSIVE: collapse at breakpoints ══ */
 @media (max-width: 1200px) {
-  .main-app-layout { grid-template-columns: 190px 1fr !important; }
-  .sidebar-filters { width: 190px !important; min-width: 190px !important; max-width: 190px !important; }
+  .main-app-layout { grid-template-columns: 170px 1fr !important; }
+  .sidebar-filters { width: 170px !important; min-width: 170px !important; max-width: 170px !important; }
   .keja-footer-container { grid-template-columns: 1fr 1.2fr 0.8fr 0.8fr !important; }
   .footer-col-slogan { display: none !important; }
 }

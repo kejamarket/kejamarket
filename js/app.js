@@ -996,10 +996,15 @@ class NairobiRentalsApp {
 
   // Update the results count display in header area
   updateResultsCountDisplay() {
-    const el = document.getElementById('results-count-display');
-    if (el) {
-      const count = this.filteredProperties ? this.filteredProperties.length : 0;
-      el.textContent = count.toLocaleString();
+    const displayEl = document.getElementById('results-count-display');
+    const numEl = document.getElementById('results-count-num');
+    const count = this.filteredProperties ? this.filteredProperties.length : 0;
+    
+    if (displayEl) {
+      displayEl.textContent = count.toLocaleString();
+    }
+    if (numEl) {
+      numEl.textContent = count.toLocaleString();
     }
   }
 

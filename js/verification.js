@@ -209,71 +209,7 @@ const KejaVerification = {
         </div>
       </div>
 
-      ${this.generateEnhancedAmenities(property)}
       ${this.generateMediaInfo(property)}
-    `;
-  },
-
-  /**
-   * Generate enhanced amenities grid
-   */
-  generateEnhancedAmenities(property) {
-    const amenities = [
-      { key: 'hasParking', label: 'Parking Space', icon: '🚗' },
-      { key: 'hasCctv', label: 'CCTV Security', icon: '📹' },
-      { key: 'hasInternet', label: 'Wi-Fi Ready', icon: '📶' },
-      { key: 'hasBalcony', label: 'Balcony/Terrace', icon: '🏠' },
-      { key: 'hasElectricFence', label: 'Electric Fence', icon: '⚡' },
-      { key: 'hasTiles', label: 'Tiled Floors', icon: '🏠' },
-      { key: 'isMasterEnsuite', label: 'Master Ensuite', icon: '🚿' },
-      { key: 'hasGym', label: 'Gym/Fitness', icon: '🏋️' },
-      { key: 'hasSwimmingPool', label: 'Swimming Pool', icon: '🏊' },
-      { key: 'hasLift', label: 'Elevator/Lift', icon: '🛗' },
-      { key: 'hasBorehole', label: 'Borehole Water', icon: '💧' },
-      { key: 'hasGenerator', label: 'Backup Power', icon: '🔌' }
-    ];
-
-    // Check amenities from different property data structures
-    const getAmenityValue = (key) => {
-      if (property.amenities && typeof property.amenities === 'object') {
-        return property.amenities[key];
-      }
-      // Check direct property fields
-      return property[key] || false;
-    };
-
-    const utilityInfo = [
-      { label: 'Water Supply', value: this.getWaterSupplyType(property), icon: '💧' },
-      { label: 'Electricity', value: this.getElectricityType(property), icon: '💡' },
-      { label: 'Security', value: this.getSecurityType(property), icon: '🔒' },
-      { label: 'Garbage Collection', value: `KSh ${property.garbageFeeKes || 500}/month`, icon: '🗑️' }
-    ];
-
-    return `
-      <div class="property-info-section" style="margin: 20px 0;">
-        <h5>⭐ Amenities & Features</h5>
-        <div class="amenities-enhanced">
-          ${amenities.map(amenity => {
-            const isAvailable = getAmenityValue(amenity.key);
-            return `
-              <div class="amenity-item ${isAvailable ? 'available' : 'not-available'}">
-                <span class="amenity-icon">${isAvailable ? '✅' : '❌'}</span>
-                <span>${amenity.label}</span>
-              </div>
-            `;
-          }).join('')}
-        </div>
-        
-        <h6 style="margin-top:16px;margin-bottom:8px;font-size:0.9rem;color:#1e293b;">🔧 Utilities & Services</h6>
-        <div class="amenities-enhanced">
-          ${utilityInfo.map(util => `
-            <div class="amenity-item available">
-              <span class="amenity-icon">${util.icon}</span>
-              <span>${util.label}: ${util.value}</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
     `;
   },
 

@@ -481,6 +481,14 @@ const AdminBuildings = (() => {
             <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Description</label>
             <textarea id="bldg-desc" rows="3" placeholder="Brief description of the building..." style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;resize:vertical;"></textarea>
           </div>
+          <div style="grid-column:1/-1;">
+            <label style="display:block;font-weight:600;margin-bottom:4px;color:#374151;">Building Photo</label>
+            <input id="bldg-photo" type="file" accept="image/*" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">
+            <small style="display:block;margin-top:4px;color:#6b7280;">Upload a photo of the building (optional)</small>
+            <div id="bldg-photo-preview" style="margin-top:10px;display:none;">
+              <img id="bldg-preview-img" src="" alt="Preview" style="max-width:200px;max-height:200px;border-radius:8px;border:2px solid #e5e7eb;">
+            </div>
+          </div>
         </div>
         <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
           <button type="button" onclick="closeAdminModal()" class="btn-secondary">Cancel</button>
@@ -488,6 +496,29 @@ const AdminBuildings = (() => {
         </div>
       </form>
     `);
+    
+    // Add photo preview listener
+    setTimeout(() => {
+      const photoInput = document.getElementById('bldg-photo');
+      const previewDiv = document.getElementById('bldg-photo-preview');
+      const previewImg = document.getElementById('bldg-preview-img');
+      
+      if (photoInput) {
+        photoInput.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              previewImg.src = event.target.result;
+              previewDiv.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          } else {
+            previewDiv.style.display = 'none';
+          }
+        });
+      }
+    }, 100);
   }
 
   async function submitAddBuilding(e) {
@@ -496,6 +527,20 @@ const AdminBuildings = (() => {
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
     try {
+      // Get photo if uploaded
+      const photoInput = document.getElementById('bldg-photo');
+      let photoBase64 = null;
+      
+      if (photoInput && photoInput.files && photoInput.files[0]) {
+        const file = photoInput.files[0];
+        photoBase64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+      
       const res = await fetch(`${API_BASE}/api/admin/buildings`, {
         method: 'POST',
         headers: {
@@ -507,6 +552,10 @@ const AdminBuildings = (() => {
           location: document.getElementById('bldg-location').value.trim(),
           totalFloors: parseInt(document.getElementById('bldg-floors').value) || 1,
           status: document.getElementById('bldg-status').value,
+          description: document.getElementById('bldg-desc').value.trim(),
+          photo: photoBase64
+        })
+      });
           description: document.getElementById('bldg-desc').value.trim()
         })
       });

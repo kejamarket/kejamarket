@@ -17,6 +17,10 @@
     "build": "echo 'Build completed - static files ready'",
     "dev": "node server.js",
     "test": "node validate.js",
+    "test:system": "node test-system.js",
+    "test:load": "node load-test.js",
+    "test:load:medium": "node load-test.js 500 20",
+    "test:load:heavy": "node load-test.js 1000 50",
     "validate": "node validate.js"
   },
   "keywords": ["real-estate", "kenya", "nairobi", "rental", "property", "marketplace", "apartments", "houses"],

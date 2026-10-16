@@ -69,7 +69,17 @@ const kejaAuth = (() => {
 
   function getSession() {
     try {
-      return JSON.parse(localStorage.getItem('keja_session')) || null;
+      // Check multiple localStorage keys for compatibility
+      let session = JSON.parse(localStorage.getItem('keja_session') || 'null');
+      if (session) return session;
+      
+      session = JSON.parse(localStorage.getItem('keja_user') || 'null');
+      if (session) return session;
+      
+      session = JSON.parse(localStorage.getItem('kejamarket_user') || 'null');
+      if (session) return session;
+      
+      return null;
     } catch {
       return null;
     }
@@ -109,23 +119,31 @@ const kejaAuth = (() => {
      OPEN MODAL
   ───────────────────────────────────────── */
   function openAuthModal(initialTab) {
-    if (initialTab === 'reset' || initialTab === 'forgot') {
-      showPanel(initialTab);
-    } else {
-      const session = getSession();
-      if (session) {
-        showLoggedInPanel(session);
+    // Use the new auth modal system
+    if (window.authModal && typeof window.authModal.open === 'function') {
+      window.authModal.open();
+      if (initialTab === 'signup') {
+        window.authModal.switchTab('signup');
       } else {
-        showPanel(initialTab || 'signin');
+        window.authModal.switchTab('signin');
       }
-    }
-    const modal = document.getElementById('modal-auth');
-    if (modal) {
-      modal.classList.add('open');
-      modal.style.setProperty('display', 'flex', 'important');
-    }
-    if (window.app && typeof window.app.openModal === 'function') {
-      window.app.openModal('modal-auth');
+    } else {
+      // Fallback to old system
+      if (initialTab === 'reset' || initialTab === 'forgot') {
+        showPanel(initialTab);
+      } else {
+        const session = getSession();
+        if (session) {
+          showLoggedInPanel(session);
+        } else {
+          showPanel(initialTab || 'signin');
+        }
+      }
+      const modal = document.getElementById('modal-auth');
+      if (modal) {
+        modal.classList.add('open');
+        modal.style.setProperty('display', 'flex', 'important');
+      }
     }
   }
 

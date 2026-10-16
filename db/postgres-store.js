@@ -73,11 +73,13 @@ class PostgreSQLStore {
 
       const config = {
         connectionString: dbUrl,
-        max: 5,  // Optimized for Render 512MB RAM tier (each connection uses 5-8MB)
-        min: 1,  // Keep 1 connection warm
-        idleTimeoutMillis: 15000, // Reclaim idle connection memory faster
-        connectionTimeoutMillis: 5000,
-        statement_timeout: 10000, // Prevent slow queries from hanging connections
+        max: 20,  // Increased for 10K+ concurrent users (pool shared across cluster workers)
+        min: 2,  // Keep 2 connections warm to reduce cold starts
+        idleTimeoutMillis: 30000, // 30s idle timeout - balance between availability and resource usage
+        connectionTimeoutMillis: 2000, // 2s connection timeout - fail fast for high concurrency
+        statement_timeout: 10000, // 10s query timeout - prevent slow queries from blocking pool
+        query_timeout: 8000, // 8s query execution timeout
+        allowExitOnIdle: false, // Keep pool alive in cluster mode
       };
 
       try {
@@ -88,6 +90,16 @@ class PostgreSQLStore {
         this.pool.on('error', (err) => {
           console.warn('⚠️ Unexpected error on idle PostgreSQL client (will auto-reconnect):', err.message);
         });
+        this.pool.on('connect', () => {
+          // Connection established successfully
+        });
+        this.pool.on('acquire', () => {
+          // Client acquired from pool
+        });
+        this.pool.on('remove', () => {
+          // Client removed from pool
+        });
+        
         const client = await this.pool.connect();
         await client.query('SELECT NOW()');
         client.release();
@@ -114,24 +126,81 @@ class PostgreSQLStore {
     }
   }
 
-  async query(text, params = []) {
+  /**
+   * Health check for monitoring database connection status
+   * @returns {Promise<Object>} Health status with pool stats
+   */
+  async healthCheck() {
+    if (!this.isConnected || !this.pool) {
+      return {
+        status: 'disconnected',
+        message: 'Database not connected',
+        poolStats: null
+      };
+    }
+
+    try {
+      const start = Date.now();
+      const client = await this.pool.connect();
+      const result = await client.query('SELECT NOW(), pg_postmaster_start_time() as server_start');
+      client.release();
+      
+      const responseTime = Date.now() - start;
+      
+      return {
+        status: 'healthy',
+        responseTime: `${responseTime}ms`,
+        serverStartTime: result.rows[0].server_start,
+        poolStats: {
+          total: this.pool.totalCount,
+          idle: this.pool.idleCount,
+          waiting: this.pool.waitingCount
+        }
+      };
+    } catch (err) {
+      return {
+        status: 'unhealthy',
+        message: err.message,
+        poolStats: {
+          total: this.pool.totalCount,
+          idle: this.pool.idleCount,
+          waiting: this.pool.waitingCount
+        }
+      };
+    }
+  }
+
+  async query(text, params = [], retries = 2) {
     if (!this.isConnected) {
       throw new Error('Database not connected');
     }
     
-    try {
-      const start = Date.now();
-      const res = await this.pool.query(text, params);
-      const duration = Date.now() - start;
-      
-      if (duration > 1000) {
-        console.log('⚠️  Slow query:', duration + 'ms', text);
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        const start = Date.now();
+        const res = await this.pool.query(text, params);
+        const duration = Date.now() - start;
+        
+        if (duration > 1000) {
+          console.log('⚠️  Slow query:', duration + 'ms', text.substring(0, 100));
+        }
+        
+        return res;
+      } catch (err) {
+        const isRetryable = err.code === 'ECONNRESET' || 
+                           err.code === 'ETIMEDOUT' || 
+                           err.code === '57P01' || // admin_shutdown
+                           err.code === '53300'; // too_many_connections
+        
+        if (isRetryable && attempt < retries) {
+          console.warn(`⚠️  Query failed (attempt ${attempt + 1}/${retries + 1}), retrying:`, err.code);
+          await new Promise(resolve => setTimeout(resolve, 100 * (attempt + 1))); // exponential backoff
+          continue;
+        }
+        
+        console.error('Database query error:', err);
+        throw err;
       }
-      
-      return res;
-    } catch (err) {
-      console.error('Database query error:', err);
-      throw err;
     }
   }
 

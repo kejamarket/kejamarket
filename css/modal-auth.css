@@ -1,0 +1,520 @@
+/**
+ * KejaMarket Authentication Modal Styles
+ * Modern, responsive modal with left/right panel layout
+ * Optimized for mobile, tablet, and desktop
+ */
+
+/* ============================================================================
+   MODAL OVERLAY
+   ============================================================================ */
+
+#modal-auth {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2500;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#modal-auth.open {
+  display: flex !important;
+  opacity: 1 !important;
+}
+
+/* ============================================================================
+   MAIN CONTAINER
+   ============================================================================ */
+
+.auth-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: white;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================================
+   LEFT PANEL (Brand & Features)
+   ============================================================================ */
+
+.auth-left {
+  flex: 1;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  min-height: 100vh;
+}
+
+/* Close Button */
+.auth-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.auth-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* Content Area */
+.auth-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Logo Section */
+.auth-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.auth-logo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.auth-logo h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero Section */
+.auth-hero h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.auth-hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Features List */
+.auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 300px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+
+.feature i {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  width: 20px;
+}
+
+/* ============================================================================
+   RIGHT PANEL (Forms)
+   ============================================================================ */
+
+.auth-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* ============================================================================
+   TABS
+   ============================================================================ */
+
+.auth-tabs {
+  display: flex;
+  background: #e2e8f0;
+  padding: 4px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+}
+
+.auth-tab.active {
+  background: white;
+  color: #16a34a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================================
+   FORMS
+   ============================================================================ */
+
+.auth-form {
+  display: none;
+  flex: 1;
+  padding: 2rem;
+  background: white;
+  margin: 0;
+  border-radius: 0 0 0 16px;
+}
+
+.auth-form.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form Header */
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.form-header p {
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ============================================================================
+   FORM GROUPS & INPUTS
+   ============================================================================ */
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Input Group */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.6rem;
+  padding-left: 2.5rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+.input-group i {
+  position: absolute;
+  left: 0.75rem;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Password Toggle */
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 0.9rem;
+  z-index: 2;
+}
+
+/* ============================================================================
+   PHONE INPUT
+   ============================================================================ */
+
+.phone-group {
+  position: relative;
+}
+
+.phone-prefix {
+  position: absolute;
+  left: 0.75rem;
+  z-index: 2;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.85rem;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding-right: 0.5rem;
+  border-right: 2px solid #e5e7eb;
+  height: 20px;
+}
+
+.phone-group input {
+  padding-left: 4.5rem !important;
+}
+
+/* ============================================================================
+   BUTTONS
+   ============================================================================ */
+
+.auth-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border: none;
+  padding: 0.875rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.auth-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #15803d, #166534);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.auth-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================================
+   ROLE SELECTION
+   ============================================================================ */
+
+.role-selection {
+  margin-bottom: 1.5rem;
+}
+
+.role-selection label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.role-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.role-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.5rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.role-btn:hover,
+.role-btn.active {
+  border-color: #16a34a;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.role-btn i {
+  font-size: 1.1rem;
+}
+
+/* ============================================================================
+   FORM EXTRAS
+   ============================================================================ */
+
+/* Form Actions (Forgot Password, etc.) */
+.form-actions {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.form-actions a {
+  color: #16a34a;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.form-actions a:hover {
+  text-decoration: underline;
+}
+
+/* Form Divider */
+.form-divider {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.form-divider span {
+  padding: 0 1rem;
+}
+
+/* Form Switch (Already have account? Sign in) */
+.form-switch {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 1rem 0 0 0;
+}
+
+.form-switch a {
+  color: #16a34a;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.form-switch a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN - TABLET
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .auth-left {
+    flex: none;
+    height: 40vh;
+    min-height: 300px;
+  }
+
+  .auth-right {
+    flex: none;
+    height: 60vh;
+    min-height: 400px;
+  }
+
+  .auth-logo h1 {
+    font-size: 2rem;
+  }
+
+  .auth-hero h2 {
+    font-size: 1.5rem;
+  }
+
+  .auth-close {
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1.25rem;
+  }
+
+  .auth-form {
+    padding: 1.5rem;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN - MOBILE
+   ============================================================================ */
+
+@media (max-width: 480px) {
+  .auth-left {
+    height: 35vh;
+  }
+
+  .auth-right {
+    height: 65vh;
+  }
+
+  .role-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .role-btn {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+}
