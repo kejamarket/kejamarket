@@ -14,9 +14,7 @@
   },
   "scripts": {
     "start": "node start.js",
-    "build": "node migrate-db.js",
-    "postinstall": "node migrate-db.js",
-    "migrate": "node migrate-db.js",
+    "build": "echo 'Build complete'",
     "dev": "node server.js",
     "test": "node validate.js",
     "test:system": "node test-system.js",
