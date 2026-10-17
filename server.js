@@ -83,8 +83,8 @@ const apiLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => {
-    // Skip rate limiting for health checks and cache stats
-    return req.path === '/api/health' || req.path === '/api/cache-stats';
+    // Skip rate limiting for health checks, cache stats, and seed endpoint
+    return req.path === '/api/health' || req.path === '/api/cache-stats' || req.path === '/api/seed-database';
   }
 });
 
