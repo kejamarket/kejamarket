@@ -14,8 +14,9 @@
   },
   "scripts": {
     "start": "node start.js",
-    "build": "node init-database.js",
-    "postinstall": "node init-database.js",
+    "build": "node migrate-db.js",
+    "postinstall": "node migrate-db.js",
+    "migrate": "node migrate-db.js",
     "dev": "node server.js",
     "test": "node validate.js",
     "test:system": "node test-system.js",
