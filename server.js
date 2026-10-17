@@ -6921,6 +6921,42 @@ app.get('/api/cache-stats', (req, res) => {
   res.json({ success: true, cache: cache.getStats() });
 });
 
+// MANUAL SEED ENDPOINT - Open this in browser after deploy
+app.get('/api/seed-database', async (req, res) => {
+  try {
+    const { Client } = require('pg');
+    const fs = require('fs');
+    const path = require('path');
+    
+    const client = new Client({ connectionString: process.env.DATABASE_URL });
+    await client.connect();
+    
+    const seedData = JSON.parse(fs.readFileSync(path.join(__dirname, 'db', 'data.json'), 'utf8'));
+    let inserted = 0;
+    
+    for (const prop of seedData.properties || []) {
+      try {
+        await client.query(
+          `INSERT INTO properties (id, title, category, rent_kes, bedrooms, bathrooms, estate_suburb, county, status, raw_data)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+           ON CONFLICT (id) DO UPDATE SET title=EXCLUDED.title`,
+          [prop.id, prop.title, prop.category, prop.rentKes || prop.rent, prop.bedrooms, prop.bathrooms, 
+           prop.estateSuburb, prop.county, 'approved', JSON.stringify(prop)]
+        );
+        inserted++;
+      } catch (e) {}
+    }
+    
+    const countResult = await client.query('SELECT COUNT(*) FROM properties');
+    const total = parseInt(countResult.rows[0].count);
+    await client.end();
+    
+    res.json({ success: true, message: 'Database seeded', inserted, total });
+  } catch (error) {
+    res.json({ success: false, error: error.message });
+  }
+});
+
 
 
 
