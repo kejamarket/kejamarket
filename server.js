@@ -6921,7 +6921,7 @@ app.get('/api/cache-stats', (req, res) => {
   res.json({ success: true, cache: cache.getStats() });
 });
 
-// MANUAL SEED ENDPOINT - Open this in browser after deploy
+// MANUAL SEED ENDPOINT - Open this URL in browser: /api/seed-database
 app.get('/api/seed-database', async (req, res) => {
   try {
     const { Client } = require('pg');
