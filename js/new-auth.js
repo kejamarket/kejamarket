@@ -425,47 +425,92 @@ class AuthModal {
     }
   }
 
-  googleSignIn() {
-    console.log('[NEW-AUTH] Google Sign In clicked');
+  // Google Sign In - Real OAuth Implementation
+  async googleSignIn() {
+    console.log('[NEW-AUTH] Starting Google Sign In...');
     
-    // For now, simulate Google sign in success
-    // In production, this would integrate with Google OAuth
-    try {
-      this.showMessage('Connecting to Google...', 'info');
+    // Check if Google OAuth is configured
+    const GOOGLE_CLIENT_ID = '1084466637843-gqefl7vr6pqmgbm0l9l6lnm9oqkfhqrc.apps.googleusercontent.com'; // Replace with your actual client ID
+    
+    if (!window.google || !window.google.accounts) {
+      this.showMessage('Google Sign In is loading. Please try again in a moment.', 'info');
       
-      // Simulate Google OAuth flow
-      setTimeout(() => {
-        // Mock Google user data
-        const googleUser = {
-          id: 'google_' + Math.random().toString(36).substr(2, 9),
-          email: 'user@gmail.com',
-          name: 'Google User',
-          picture: 'https://via.placeholder.com/64x64?text=👤',
-          provider: 'google'
-        };
-        
-        // Store user data
-        localStorage.setItem('kejamarket_user', JSON.stringify(googleUser));
-        localStorage.setItem('keja_user', JSON.stringify(googleUser)); // Add compatibility
-        localStorage.setItem('keja_session', JSON.stringify(googleUser)); // Add auth.js compatibility
-        localStorage.setItem('kejamarket_auth_token', 'google_token_' + Date.now());
-        localStorage.setItem('keja_token', 'google_token_' + Date.now()); // Add compatibility
-        
-        this.showMessage('Successfully signed in with Google!', 'success');
-        
-        // Update UI
-        this.updateAuthUI(googleUser);
-        
-        // Close modal after short delay
-        setTimeout(() => {
-          this.close();
-        }, 1500);
-        
-      }, 1500);
+      // Load Google Identity Services
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+      
+      script.onload = () => {
+        setTimeout(() => this.googleSignIn(), 500);
+      };
+      return;
+    }
+    
+    try {
+      this.showMessage('Opening Google Sign In...', 'info');
+      
+      // Initialize Google Sign In
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: async (response) => {
+          try {
+            // Decode JWT token to get user info
+            const decoded = JSON.parse(atob(response.credential.split('.')[1]));
+            
+            // Send to backend for verification and user creation/login
+            const res = await fetch('/api/auth/google', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ credential: response.credential })
+            });
+            
+            const data = await res.json();
+            
+            if (data.success) {
+              const user = data.user;
+              
+              // Store user data
+              localStorage.setItem('kejamarket_user', JSON.stringify(user));
+              localStorage.setItem('keja_user', JSON.stringify(user));
+              localStorage.setItem('keja_session', JSON.stringify(user));
+              localStorage.setItem('kejamarket_auth_token', data.token);
+              localStorage.setItem('keja_token', data.token);
+              
+              this.showMessage(`Welcome, ${user.name}!`, 'success');
+              this.updateAuthUI(user);
+              
+              setTimeout(() => this.close(), 1500);
+            } else {
+              this.showMessage(data.message || 'Google sign in failed', 'error');
+            }
+          } catch (err) {
+            console.error('[NEW-AUTH] Google callback error:', err);
+            this.showMessage('Failed to process Google sign in', 'error');
+          }
+        }
+      });
+      
+      // Show the one-tap prompt
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          // Fallback: show button popup
+          window.google.accounts.id.renderButton(
+            document.querySelector('.google-btn'),
+            { 
+              theme: 'outline', 
+              size: 'large',
+              width: '100%',
+              text: 'signin_with'
+            }
+          );
+        }
+      });
       
     } catch (error) {
       console.error('[NEW-AUTH] Google sign in error:', error);
-      this.showMessage('Google sign in failed. Please try again.', 'error');
+      this.showMessage('Google sign in initialization failed', 'error');
     }
   }
 

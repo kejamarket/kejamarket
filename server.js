@@ -1157,6 +1157,73 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
   }
 });
 
+// POST /api/auth/google - Google OAuth Sign In
+app.post('/api/auth/google', authLimiter, async (req, res) => {
+  try {
+    const { credential } = req.body;
+    
+    if (!credential) {
+      return res.status(400).json({ success: false, message: 'Google credential required' });
+    }
+    
+    // Decode JWT token from Google
+    const decoded = JSON.parse(Buffer.from(credential.split('.')[1], 'base64').toString());
+    
+    const googleEmail = decoded.email;
+    const googleName = decoded.name;
+    const googlePicture = decoded.picture;
+    const googleId = decoded.sub;
+    
+    if (!googleEmail) {
+      return res.status(400).json({ success: false, message: 'Invalid Google credential' });
+    }
+    
+    // Check if user exists by email
+    let user = await store.getUserByEmail(googleEmail);
+    
+    if (!user) {
+      // Create new user with Google account
+      user = await store.createUser({
+        name: googleName,
+        email: googleEmail,
+        phone: '', // Google doesn't provide phone
+        password: 'google_oauth_' + Math.random().toString(36), // Random password (won't be used)
+        role: 'tenant',
+        provider: 'google',
+        googleId: googleId,
+        picture: googlePicture,
+        isEmailVerified: true, // Google emails are verified
+        isPhoneVerified: false
+      });
+      
+      console.log(`[GOOGLE AUTH] New user created: ${googleEmail}`);
+    } else {
+      // Update existing user with Google info
+      await store.updateUser(user.id, {
+        googleId: googleId,
+        picture: googlePicture,
+        provider: 'google',
+        isEmailVerified: true
+      });
+      
+      console.log(`[GOOGLE AUTH] Existing user logged in: ${googleEmail}`);
+    }
+    
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '14d' });
+    
+    res.json({
+      success: true,
+      message: `Welcome, ${user.name}!`,
+      user: store.sanitizeUser(user),
+      token
+    });
+    
+  } catch (err) {
+    console.error('[GOOGLE AUTH ERROR]:', err);
+    res.status(401).json({ success: false, message: 'Google authentication failed' });
+  }
+});
+
 // GET /api/auth/me
 app.get('/api/auth/me', requireAuth, (req, res) => {
   res.json({
