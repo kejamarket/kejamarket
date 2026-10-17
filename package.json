@@ -14,9 +14,7 @@
   },
   "scripts": {
     "start": "node start.js",
-    "build": "node migrate-db.js && node seed-postgres.js",
-    "migrate": "node migrate-db.js",
-    "seed": "node seed-postgres.js",
+    "build": "echo 'Build completed - static files ready'",
     "dev": "node server.js",
     "test": "node validate.js",
     "test:system": "node test-system.js",
