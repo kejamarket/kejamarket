@@ -6943,6 +6943,7 @@ app.get('/api/seed-database', async (req, res) => {
         estate_suburb TEXT,
         county TEXT,
         status TEXT,
+        is_verified BOOLEAN DEFAULT true,
         raw_data JSONB
       )
     `);
@@ -6955,12 +6956,12 @@ app.get('/api/seed-database', async (req, res) => {
     for (const prop of seedData.properties || []) {
       try {
         await client.query(
-          `INSERT INTO properties (id, title, category, rent_kes, bedrooms, bathrooms, estate_suburb, county, status, raw_data)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-           ON CONFLICT (id) DO UPDATE SET title=EXCLUDED.title, raw_data=EXCLUDED.raw_data`,
+          `INSERT INTO properties (id, title, category, rent_kes, bedrooms, bathrooms, estate_suburb, county, status, is_verified, raw_data)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+           ON CONFLICT (id) DO UPDATE SET title=EXCLUDED.title, is_verified=true, raw_data=EXCLUDED.raw_data`,
           [prop.id, prop.title, prop.category || null, prop.rentKes || prop.rent || null, 
            prop.bedrooms || null, prop.bathrooms || null, prop.estateSuburb || null, 
-           prop.county || null, 'approved', JSON.stringify(prop)]
+           prop.county || null, 'approved', true, JSON.stringify(prop)]
         );
         inserted++;
       } catch (e) {
