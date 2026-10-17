@@ -14,7 +14,8 @@
   },
   "scripts": {
     "start": "node start.js",
-    "build": "echo 'Build completed - static files ready'",
+    "build": "node init-database.js",
+    "postinstall": "node init-database.js",
     "dev": "node server.js",
     "test": "node validate.js",
     "test:system": "node test-system.js",
