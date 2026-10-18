@@ -64,6 +64,8 @@ class AuthModal {
   open(initialTab = 'signin') {
     const modal = document.getElementById('modal-auth');
     if (modal) {
+      modal.style.removeProperty('display');
+      modal.style.setProperty('display', 'flex', 'important');
       modal.classList.add('open');
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
@@ -75,7 +77,12 @@ class AuthModal {
     const modal = document.getElementById('modal-auth');
     if (modal) {
       modal.classList.remove('open');
+      modal.style.setProperty('display', 'none', 'important');
+      modal.style.display = 'none';
       document.body.style.overflow = '';
+    }
+    if (window.app && typeof window.app.closeModal === 'function') {
+      try { window.app.closeModal('modal-auth'); } catch (_) {}
     }
     this.clearAlert();
   }
@@ -225,6 +232,13 @@ class AuthModal {
     }
   }
 
+  getApiBase() {
+    if (window.location.origin.includes(':3000') || window.location.origin.includes(':5500') || window.location.protocol === 'file:') {
+      return 'http://localhost:3001';
+    }
+    return '';
+  }
+
   showAlert(message, type = 'error') {
     const box = document.getElementById('auth-alert-box');
     if (!box) return;
@@ -232,6 +246,12 @@ class AuthModal {
     const icon = type === 'error' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle';
     box.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
     box.style.display = 'flex';
+    try {
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (_) {}
+    if (type === 'error' && window.app && typeof window.app.showToast === 'function') {
+      window.app.showToast(message, 'error');
+    }
   }
 
   clearAlert() {
@@ -270,7 +290,7 @@ class AuthModal {
     this.setButtonLoading(submitBtn, true, 'Signing In...');
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${this.getApiBase()}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier, password })
@@ -358,7 +378,7 @@ class AuthModal {
     this.setButtonLoading(submitBtn, true, 'Creating Account...');
 
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch(`${this.getApiBase()}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
@@ -369,7 +389,14 @@ class AuthModal {
       if (data.success && data.user) {
         this.handleAuthSuccess(data.user, data.token);
       } else {
-        this.showAlert(data.message || 'Registration was unsuccessful. Please verify your details.');
+        const errorMsg = data.message || 'Registration was unsuccessful. Please verify your details.';
+        this.showAlert(errorMsg, 'error');
+        if (errorMsg.toLowerCase().includes('already exists')) {
+          const box = document.getElementById('auth-alert-box');
+          if (box) {
+            box.innerHTML += ' <a href="#" style="color:#2563eb; font-weight:800; text-decoration:underline; margin-left:8px;" onclick="authModal.switchTab(\'signin\'); return false;">Sign In Here &rarr;</a>';
+          }
+        }
       }
     } catch (err) {
       console.error('[AUTH] Sign up error:', err);
@@ -477,22 +504,48 @@ class AuthModal {
   // AUTH SUCCESS & SESSION
   // ════════════════════════════════════════════════════════════════
   handleAuthSuccess(user, token) {
-    // Store user across keys for complete backwards compatibility
-    localStorage.setItem('keja_user', JSON.stringify(user));
-    localStorage.setItem('keja_session', JSON.stringify(user));
-    localStorage.setItem('kejamarket_user', JSON.stringify(user));
+    const userStr = JSON.stringify(user);
+    const sessionKeys = [
+      'keja_user',
+      'keja_session',
+      'kejamarket_user',
+      'user'
+    ];
+    sessionKeys.forEach(k => {
+      try { localStorage.setItem(k, userStr); } catch (_) {}
+    });
     if (token) {
-      localStorage.setItem('keja_token', token);
-      localStorage.setItem('kejamarket_auth_token', token);
+      try {
+        localStorage.setItem('keja_token', token);
+        localStorage.setItem('kejamarket_auth_token', token);
+      } catch (_) {}
     }
 
+    // Immediately update header UI across both auth implementations
     this.updateHeaderUI(user);
+    if (window.kejaAuth && typeof window.kejaAuth.updateHeaderUI === 'function') {
+      try { window.kejaAuth.updateHeaderUI(user); } catch (_) {}
+    }
+    if (window.updateCommunicationButtons) {
+      try { window.updateCommunicationButtons(); } catch (_) {}
+    }
+
+    // Immediately close modal pop-up
     this.close();
 
-    // Show toast
+    // Show friendly, prominent welcome toast
+    const firstName = user.name ? user.name.trim().split(' ')[0] : 'there';
+    const welcomeMsg = `Welcome, ${firstName}! Your KejaMarket account is ready.`;
+
     if (window.app && typeof window.app.showToast === 'function') {
-      window.app.showToast(`Welcome to KejaMarket, ${user.name}!`, 'success');
+      window.app.showToast(welcomeMsg, 'success');
+    } else {
+      this.showToast(welcomeMsg, 'success');
     }
+
+    // Dispatch global events so components immediately refresh to logged-in state
+    window.dispatchEvent(new CustomEvent('keja:auth:login', { detail: { user, token } }));
+    window.dispatchEvent(new CustomEvent('auth-changed', { detail: { user } }));
 
     // Redirect to admin dashboard if admin
     if (user.role === 'admin' || user.isAdmin || user.id === 'usr-admin-01') {
@@ -507,14 +560,14 @@ class AuthModal {
   updateHeaderUI(user) {
     const authLabel = document.getElementById('auth-header-label');
     if (authLabel) {
-      const firstName = user.name ? user.name.split(' ')[0] : 'Account';
+      const firstName = user && user.name ? user.name.trim().split(' ')[0] : (user ? 'Account' : 'Sign In');
       authLabel.textContent = firstName;
     }
   }
 
   checkExistingSession() {
     try {
-      const userData = localStorage.getItem('keja_user') || localStorage.getItem('kejamarket_user');
+      const userData = localStorage.getItem('keja_user') || localStorage.getItem('kejamarket_user') || localStorage.getItem('keja_session');
       if (userData) {
         const user = JSON.parse(userData);
         if (user && user.name) {
@@ -527,11 +580,24 @@ class AuthModal {
   }
 
   signOut() {
-    localStorage.removeItem('keja_user');
-    localStorage.removeItem('keja_session');
-    localStorage.removeItem('kejamarket_user');
-    localStorage.removeItem('keja_token');
-    localStorage.removeItem('kejamarket_auth_token');
+    const sessionKeys = [
+      'keja_token',
+      'keja_session',
+      'keja_user',
+      'kejamarket_user',
+      'kejamarket_auth_token',
+      'user',
+      'currentUser',
+      'keja_active_hunt_id'
+    ];
+    sessionKeys.forEach(k => {
+      try { localStorage.removeItem(k); } catch (_) {}
+      try { sessionStorage.removeItem(k); } catch (_) {}
+    });
+    try {
+      document.cookie = 'token=; Max-Age=0; path=/;';
+      document.cookie = 'keja_token=; Max-Age=0; path=/;';
+    } catch (_) {}
 
     const authLabel = document.getElementById('auth-header-label');
     if (authLabel) authLabel.textContent = 'Sign In';
@@ -539,11 +605,43 @@ class AuthModal {
     const profileDropdown = document.getElementById('profile-dropdown');
     if (profileDropdown) profileDropdown.style.display = 'none';
 
+    if (window.kejaAuth && typeof window.kejaAuth.updateHeaderUI === 'function') {
+      try { window.kejaAuth.updateHeaderUI(null); } catch (_) {}
+    }
+
+    this.close();
+
     if (window.app && typeof window.app.showToast === 'function') {
       window.app.showToast('You have been signed out successfully.', 'info');
     }
 
-    setTimeout(() => window.location.reload(), 400);
+    window.dispatchEvent(new CustomEvent('keja:auth:logout'));
+    window.dispatchEvent(new CustomEvent('auth-changed', { detail: { user: null } }));
+
+    // Seamless refresh so the page cleanly reflects the guest / logged-out state
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 250);
+  }
+
+  showToast(message, type = 'success') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = `toast-msg ${type}`;
+    const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+    toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
   }
 
   setButtonLoading(button, isLoading, text) {

@@ -101,8 +101,25 @@ const kejaAuth = (() => {
   }
 
   function clearSession() {
-    localStorage.removeItem('keja_token');
-    localStorage.removeItem('keja_session');
+    const sessionKeys = [
+      'keja_token',
+      'keja_session',
+      'keja_user',
+      'kejamarket_user',
+      'kejamarket_auth_token',
+      'user',
+      'currentUser',
+      'keja_active_hunt_id'
+    ];
+    sessionKeys.forEach(key => {
+      try { localStorage.removeItem(key); } catch (_) {}
+      try { sessionStorage.removeItem(key); } catch (_) {}
+    });
+    try {
+      document.cookie = 'token=; Max-Age=0; path=/;';
+      document.cookie = 'keja_token=; Max-Age=0; path=/;';
+    } catch (_) {}
+
     if (typeof applyAuthWall === 'function') applyAuthWall(null);
     // Update post button visibility when session is cleared
     if (window.app && typeof window.app.updatePostButtonsVisibility === 'function') {
@@ -824,42 +841,57 @@ const kejaAuth = (() => {
   function signOut() {
     console.log('[AUTH] Sign out initiated');
     
-    // Clear session data
+    // Clear session data completely
     clearSession();
     console.log('[AUTH] Session cleared');
     
     // Update header UI to show logged-out state
     updateHeaderUI(null);
+    const authLabel = document.getElementById('auth-header-label');
+    if (authLabel) authLabel.textContent = 'Sign In';
     console.log('[AUTH] Header UI updated');
     
-    // Close any open modals using the unified app.closeModal approach
+    // Close any open modals
     if (window.app && typeof window.app.closeModal === 'function') {
       window.app.closeModal('modal-auth');
       window.app.closeModal('modal-admin');  
       window.app.closeModal('modal-landlord-portal');
       window.app.closeModal('modal-service-portal');
       window.app.closeModal('modal-user-dashboard');
-      console.log('[AUTH] All modals closed');
-      
-      // Show success message
-      if (typeof window.app.showToast === 'function') {
-        window.app.showToast('You have been signed out successfully.', 'info');
-      }
-    } else {
-      console.log('[AUTH] app.closeModal not available');
+      window.app.closeModal('modal-mobile-account');
+    }
+
+    const modal = document.getElementById('modal-auth');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.style.setProperty('display', 'none', 'important');
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    if (window.updateCommunicationButtons) {
+      try { window.updateCommunicationButtons(); } catch (_) {}
     }
     
     // Close profile dropdown if open
     closeProfileDropdown();
-    console.log('[AUTH] Profile dropdown closed');
+    
+    // Show success toast
+    if (window.app && typeof window.app.showToast === 'function') {
+      window.app.showToast('You have been signed out successfully.', 'info');
+    }
     
     // Reset to sign-in panel in auth modal for next use
     showPanel('signin');
-    console.log('[AUTH] Auth modal reset to signin panel');
+
+    window.dispatchEvent(new CustomEvent('keja:auth:logout'));
+    window.dispatchEvent(new CustomEvent('auth-changed', { detail: { user: null } }));
     
-    // Redirect to homepage
+    // Redirect / reload to refresh the page to a clean logged-out guest state
     console.log('[AUTH] Redirecting to homepage...');
-    window.location.href = '/';
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 250);
   }
 
   /* ─────────────────────────────────────────

@@ -76,9 +76,9 @@ class PostgreSQLStore {
         max: 20,  // Increased for 10K+ concurrent users (pool shared across cluster workers)
         min: 2,  // Keep 2 connections warm to reduce cold starts
         idleTimeoutMillis: 30000, // 30s idle timeout - balance between availability and resource usage
-        connectionTimeoutMillis: 2000, // 2s connection timeout - fail fast for high concurrency
-        statement_timeout: 10000, // 10s query timeout - prevent slow queries from blocking pool
-        query_timeout: 8000, // 8s query execution timeout
+        connectionTimeoutMillis: 10000, // 10s connection timeout for reliable cloud database pooler connection
+        statement_timeout: 15000, // 15s query timeout - prevent slow queries from blocking pool
+        query_timeout: 12000, // 12s query execution timeout
         allowExitOnIdle: false, // Keep pool alive in cluster mode
       };
 

@@ -960,7 +960,7 @@ app.post('/api/auth/register', async (req, res) => {
     sendRealSMS(
       cleanPhone,
       `Habari ${user.name}! Welcome to KejaMarket (kejamarket.co.ke). Your account is active.`
-    );
+    ).catch(e => console.warn('[REGISTER-SMS-WARN]', e.message));
 
     // Send welcome email
     if (user.email) {

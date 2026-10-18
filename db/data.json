@@ -12,6 +12,24 @@
       "numProperties": "10+",
       "area": "Nairobi Metro",
       "createdAt": "2026-09-14T14:13:34.258Z"
+    },
+    {
+      "id": "usr-1792312532411-95",
+      "name": "Stalin Test",
+      "phone": "254712345699",
+      "email": "stalintest@example.com",
+      "password": "$2b$10$IdQvItvnKhsgRtcOsSdV8OV51Mf0ZfGlwnBFMV1IFOorWZFWWGQUy",
+      "role": "tenant",
+      "isPhoneVerified": true,
+      "isVerified": true,
+      "numProperties": null,
+      "area": null,
+      "agencyName": null,
+      "contactPerson": null,
+      "officeLocation": null,
+      "registrationNo": null,
+      "coverageArea": null,
+      "createdAt": "2026-10-18T08:35:32.411Z"
     }
   ],
   "properties": [
