@@ -462,15 +462,15 @@
             "name": "What is KejaMarket?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "KejaMarket (https://kejamarket.co.ke) is Kenya's premier verified real estate and rental property marketplace connecting tenants directly with verified landlords and property managers across Nairobi and major Kenyan towns with zero agency or viewing fees."
+              "text": "KejaMarket (https://kejamarket.co.ke) is Kenya's premier verified rental property marketplace connecting tenants directly with verified landlords and property managers across Nairobi with a verified viewing booking system and zero broker commissions."
             }
           },
           {
             "@type": "Question",
-            "name": "How do I find rental houses in Nairobi without paying viewing fees?",
+            "name": "How do I schedule a verified property viewing on KejaMarket?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Browse listings on KejaMarket by location, estate, or price. Every verified listing provides direct 'Call Landlord' and 'WhatsApp' contact buttons so you can deal directly with the property owner or caretaker without paying viewing fees to brokers."
+              "text": "Browse listings on KejaMarket by location, estate, or price. Request your preferred viewing slot for free. Once the property manager confirms availability, lock your appointment with the official KSh 200 platform commitment fee to unlock exact GPS navigation and direct caretaker contacts."
             }
           },
           {
@@ -758,21 +758,21 @@
           <div class="filter-checklist-box" id="property-type-checklist-container">
             <!-- Top 5 Visible Property Types -->
             <label class="filter-check-item property-type-bnb"><input type="checkbox" class="prop-type-checkbox" value="Bnb (Short Stay)" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-umbrella-beach"></i></span><span class="item-label">Bnb (Short Stay)</span></label>
-            <label class="filter-check-item property-type-single"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #f97316;"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">Single Room</span></label>
-            <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #ef4444;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
-            <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #eab308;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
-            <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00b53f;"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
+            <label class="filter-check-item property-type-single"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FF6D00;"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">Single Room</span></label>
+            <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FF1744;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
+            <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FFD600;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
+            <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00C853;"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
 
             <!-- Remaining Property Types (Expandable via Chevron) -->
             <div id="property-type-more-items" class="property-type-collapsed">
-              <label class="filter-check-item property-type-double"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #fb923c;"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
-              <label class="filter-check-item property-type-3bed"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #14b8a6;"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
-              <label class="filter-check-item property-type-4bed"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #3b82f6;"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
-              <label class="filter-check-item property-type-townhouse"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #8b5cf6;"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
-              <label class="filter-check-item property-type-villa"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #ec4899;"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa</span></label>
-              <label class="filter-check-item property-type-apartment"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #06b6d4;"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">Apartment</span></label>
-              <label class="filter-check-item property-type-bungalow"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #84cc16;"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
-              <label class="filter-check-item property-type-studio"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #f43f5e;"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
+              <label class="filter-check-item property-type-double"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FF9100;"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
+              <label class="filter-check-item property-type-3bed"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00E5FF;"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
+              <label class="filter-check-item property-type-4bed"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #2979FF;"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
+              <label class="filter-check-item property-type-townhouse"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #AA00FF;"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
+              <label class="filter-check-item property-type-villa"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FF00A8;"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa</span></label>
+              <label class="filter-check-item property-type-apartment"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00D4FF;"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">Apartment</span></label>
+              <label class="filter-check-item property-type-bungalow"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #76FF03;"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
+              <label class="filter-check-item property-type-studio"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #F50057;"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
             </div>
           </div>
           <button type="button" class="btn-toggle-property-types" id="btn-toggle-property-types" onclick="app.togglePropertyTypeExpansion && app.togglePropertyTypeExpansion()" title="Toggle more property types" aria-label="Toggle more property types">
@@ -1983,144 +1983,145 @@
     </div>
   </div>
   <div class="modal-backdrop" id="modal-property-detail">
-    <div class="modal-dialog" style="max-width: 860px;">
-      <div class="modal-header">
-        <h3 id="detail-modal-title">Property Details</h3>
-        <button class="modal-close-btn" onclick="app.closeModal('modal-property-detail')">&times;</button>
+    <div class="modal-dialog" style="max-width: 660px; width: 94%; max-height: 88vh; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+      <div class="modal-header" style="padding: 12px 18px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+        <h3 id="detail-modal-title" style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 82%;">Property Details</h3>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-property-detail')" style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border: none; font-size: 1.1rem; cursor: pointer; color: #64748b;">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="padding: 16px 20px 20px 20px; overflow-y: auto;">
         
         <!-- Property Status Alert Banner & Landlord Control Bar -->
-        <div id="detail-taken-banner" style="display: none; background: #fef2f2; border: 1.5px solid #fca5a5; color: #991b1b; padding: 14px 18px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-          <div style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem;">
-            <span style="background: #dc2626; color: white; padding: 3px 9px; border-radius: 6px; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.5px;">JUST RENTED OUT</span>
-            <span>This house has been rented out! Units in this area go fast.</span>
+        <div id="detail-taken-banner" style="display: none; background: #fef2f2; border: 1.5px solid #fca5a5; color: #991b1b; padding: 12px 16px; border-radius: 10px; margin-bottom: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.9rem;">
+            <span style="background: #dc2626; color: white; padding: 2px 7px; border-radius: 5px; font-size: 0.72rem; font-weight: 800;">JUST RENTED OUT</span>
+            <span>This house has been rented out!</span>
           </div>
-          <button type="button" class="btn-notify-similar" id="btn-detail-notify-similar" onclick="app.openSimilarAlertModal(app.currentPropertyId)" style="background: #0f172a; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.84rem; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
-            <i class="fas fa-bell" style="color: #f59e0b;"></i> Notify Me When Similar Becomes Available
+          <button type="button" class="btn-notify-similar" id="btn-detail-notify-similar" onclick="app.openSimilarAlertModal(app.currentPropertyId)" style="background: #0f172a; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer;">
+            <i class="fas fa-bell" style="color: #f59e0b;"></i> Notify Similar
           </button>
         </div>
 
-        <div id="detail-landlord-status-bar" style="display: none; background: #f8fafc; border: 1.5px dashed #0284c7; padding: 12px 16px; border-radius: 10px; margin-bottom: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-          <div style="font-size: 0.85rem; color: #0f172a; font-weight: 700;">
+        <div id="detail-landlord-status-bar" style="display: none; background: #f8fafc; border: 1.5px dashed #0284c7; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+          <div style="font-size: 0.82rem; color: #0f172a; font-weight: 700;">
             <i class="fas fa-shield-alt" style="color: #0284c7;"></i> Landlord Controls:
-            <span id="detail-status-pill" style="margin-left: 6px; padding: 3px 10px; border-radius: 6px; font-weight: 800; font-size: 0.78rem; background: #dcfce7; color: #166534;">VACANT / AVAILABLE</span>
+            <span id="detail-status-pill" style="margin-left: 6px; padding: 2px 8px; border-radius: 5px; font-weight: 800; font-size: 0.74rem; background: #dcfce7; color: #166534;">VACANT / AVAILABLE</span>
           </div>
-          <button id="btn-toggle-taken-status" type="button" class="btn-secondary" style="padding: 7px 16px; font-size: 0.84rem; font-weight: 700; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px;" onclick="app.toggleCurrentPropertyTakenStatus()">
-            <i class="fas fa-tag"></i> Mark as Taken / Occupied
+          <button id="btn-toggle-taken-status" type="button" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; font-weight: 700; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="app.toggleCurrentPropertyTakenStatus()">
+            <i class="fas fa-tag"></i> Mark Occupied
           </button>
         </div>
 
-        <!-- Compact & Expandable Anti-Fraud & Tenant Safety Warning Banner -->
-        <div class="detail-fraud-warning-compact" id="detail-fraud-warning" style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1px solid #fde68a; border-left: 4px solid #d97706; border-radius: 8px; margin-bottom: 12px; overflow: hidden; transition: all 0.25s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-          <div class="fraud-warning-header" onclick="app.toggleFraudWarning()" style="display: flex; align-items: center; justify-content: space-between; padding: 7px 12px; cursor: pointer; user-select: none; gap: 8px;">
-            <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #92400e; font-size: 0.82rem; min-width: 0;">
-              <i class="fas fa-shield-alt" style="font-size: 0.95rem; color: #d97706; flex-shrink: 0;"></i>
-              <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><strong>Safety Alert:</strong> Never send money before viewing. House viewings are 100% Free.</span>
-            </div>
-            <button type="button" class="fraud-warning-toggle-btn" style="background: #ffffff; border: 1px solid #fcd34d; color: #b45309; padding: 2px 9px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; flex-shrink: 0; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
-              <span id="fraud-toggle-text">Safety Tips</span>
-              <i class="fas fa-chevron-down" id="fraud-toggle-icon" style="font-size: 0.68rem; transition: transform 0.2s;"></i>
-            </button>
-          </div>
-          <div id="fraud-warning-details" style="display: none; padding: 8px 12px 10px 12px; border-top: 1px dashed #fde68a; background: #ffffff;">
-            <ul style="margin: 0; padding-left: 18px; font-size: 0.8rem; color: #78350f; line-height: 1.55;">
-              <li><strong>Zero Viewing Fees:</strong> Physical house viewings on KejaMarket are <strong>100% FREE</strong>. Never pay any "fuel" or "booking" fee.</li>
-              <li><strong>Verify In Person:</strong> Meet the verified landlord or caretaker at the building gate, inspect the vacant room, and verify keys before sending any deposit.</li>
-              <li><strong>Official M-Pesa Only:</strong> When ready to rent, pay only to an official verified Paybill / Till or in-person with a written tenancy agreement.</li>
-            </ul>
-          </div>
-        </div>
-        <!-- Main Photo Gallery (Jiji-Style Interactive Carousel) -->
-        <div class="detail-gallery-main" id="detail-gallery-main-container">
-          <img id="detail-main-photo" src="" alt="Property main view" onclick="app.openLightbox()">
+        <!-- Main Photo Gallery -->
+        <div class="detail-gallery-main" id="detail-gallery-main-container" style="border-radius: 14px; overflow: hidden; height: 260px; max-height: 280px; position: relative;">
+          <img id="detail-main-photo" src="" alt="Property main view" onclick="app.openLightbox()" style="width: 100%; height: 100%; object-fit: cover;">
           <button type="button" class="gallery-nav-btn prev" onclick="app.prevDetailPhoto(event)" title="Previous photo" aria-label="Previous photo">
             <i class="fas fa-chevron-left"></i>
           </button>
           <button type="button" class="gallery-nav-btn next" onclick="app.nextDetailPhoto(event)" title="Next photo" aria-label="Next photo">
             <i class="fas fa-chevron-right"></i>
           </button>
-          <div class="gallery-counter-badge" id="detail-photo-counter">
+          <div class="gallery-counter-badge" id="detail-photo-counter" style="position: absolute; bottom: 10px; right: 10px; background: rgba(15,23,42,0.75); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
             <i class="fas fa-camera"></i> <span id="detail-photo-index">1</span> / <span id="detail-photo-total">1</span>
           </div>
-          <button type="button" class="gallery-fullscreen-btn" onclick="app.openLightbox(event)" title="View Fullscreen Photo" aria-label="Fullscreen">
+          <button type="button" class="gallery-fullscreen-btn" onclick="app.openLightbox(event)" title="View Fullscreen Photo" aria-label="Fullscreen" style="position: absolute; top: 10px; right: 10px; background: rgba(15,23,42,0.6); color: white; border: none; border-radius: 6px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
             <i class="fas fa-expand"></i>
           </button>
-          <span class="card-watermark"><i class="fas fa-home"></i> NAIROBI RENTALS LIVE</span>
         </div>
-        <div class="detail-thumbs-strip" id="detail-thumbs-container"></div>
-        <div id="detail-videos-container" style="display:none; margin: 12px 0;"></div>
+        <div class="detail-thumbs-strip" id="detail-thumbs-container" style="margin-top: 8px;"></div>
+        <div id="detail-videos-container" style="display:none; margin: 10px 0;"></div>
 
         <!-- Price & Location Overview -->
-        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin: 12px 0 8px 0; gap: 8px;">
           <div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #00b53f;" id="detail-modal-price">KSh 0 / month</div>
-            <div style="font-size: 0.85rem; color: #64748b;" id="detail-modal-deposit">Deposit: KSh 0</div>
+            <div style="font-size: 1.45rem; font-weight: 900; color: #00b53f; line-height: 1.2;" id="detail-modal-price">KSh 0 / month</div>
+            <div style="font-size: 0.8rem; color: #64748b;" id="detail-modal-deposit">Deposit: KSh 0</div>
           </div>
-          <div style="font-size: 0.92rem; color: #334155; font-weight: 600;" id="detail-modal-location"></div>
+          <div style="font-size: 0.88rem; color: #334155; font-weight: 700;" id="detail-modal-location"></div>
+        </div>
+
+        <!-- High-Conversion Viewing Booking Callout Banner (PROMINENT CTA) -->
+        <div style="background: linear-gradient(135deg, #f0fdf4, #e8fbf0); border: 1.5px solid #86efac; border-radius: 12px; padding: 12px 14px; margin: 12px 0 16px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 6px rgba(0,181,63,0.12);">
+          <div style="min-width: 220px; flex: 1;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="background: #00b53f; color: white; padding: 2px 7px; border-radius: 4px; font-size: 0.7rem; font-weight: 800;">VERIFIED VIEWING</span>
+              <span style="font-weight: 800; font-size: 0.92rem; color: #166534;">Schedule an In-Person Viewing</span>
+            </div>
+            <div style="font-size: 0.78rem; color: #15803d; margin-top: 2px; line-height: 1.3;">
+              Free to request · 60s Caretaker SLA · Pay KSh 200 platform fee to unlock exact GPS & contact
+            </div>
+          </div>
+          <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)"
+            style="padding: 9px 16px; font-size: 0.88rem; font-weight: 800; border-radius: 8px; background: #00b53f; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 3px 8px rgba(0,181,63,0.35); flex-shrink: 0;">
+            <i class="fas fa-calendar-check"></i> Book Viewing (KSh 200)
+          </button>
         </div>
 
         <!-- Specifications Grid -->
-        <div class="detail-specs-grid">
-          <div class="spec-item">
-            <span class="spec-label">House Type</span>
-            <span class="spec-value" id="spec-category">-</span>
+        <div class="detail-specs-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
+          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
+            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">House Type</span>
+            <span class="spec-value" id="spec-category" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
           </div>
-          <div class="spec-item">
-            <span class="spec-label">Bedrooms</span>
-            <span class="spec-value" id="spec-bedrooms">-</span>
+          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
+            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Bedrooms</span>
+            <span class="spec-value" id="spec-bedrooms" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
           </div>
-          <div class="spec-item">
-            <span class="spec-label">Water Supply</span>
-            <span class="spec-value" id="spec-water">-</span>
+          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
+            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Water Supply</span>
+            <span class="spec-value" id="spec-water" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
           </div>
-          <div class="spec-item">
-            <span class="spec-label">Electricity</span>
-            <span class="spec-value" id="spec-electricity">-</span>
+          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
+            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Electricity</span>
+            <span class="spec-value" id="spec-electricity" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
           </div>
-          <div class="spec-item">
-            <span class="spec-label">Listing Source</span>
-            <span class="spec-value" id="spec-source">-</span>
+          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
+            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Listing Source</span>
+            <span class="spec-value" id="spec-source" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
           </div>
-          <div class="spec-item">
-            <span class="spec-label">Verification</span>
-            <span class="spec-value" id="spec-verified">-</span>
+          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
+            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Verification</span>
+            <span class="spec-value" id="spec-verified" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
           </div>
         </div>
 
         <!-- Description -->
-        <div style="margin-bottom: 18px;">
-          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 6px;">Description</h4>
-          <p id="detail-modal-desc" style="font-size: 0.9rem; color: #475569; line-height: 1.6;"></p>
+        <div style="margin-bottom: 14px;">
+          <h4 style="font-size: 0.92rem; font-weight: 800; color: #0f172a; margin: 0 0 4px 0;">Description</h4>
+          <p id="detail-modal-desc" style="font-size: 0.85rem; color: #475569; line-height: 1.55; margin: 0;"></p>
         </div>
         
         <!-- Enhanced Property Information Container -->
         <div id="enhanced-property-info-container"></div>
 
         <!-- Amenities -->
-        <div style="margin-bottom: 20px;">
-          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px;">Amenities & Features</h4>
-          <div id="detail-amenities-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; font-size: 0.85rem;"></div>
+        <div style="margin-bottom: 16px;">
+          <h4 style="font-size: 0.92rem; font-weight: 800; color: #0f172a; margin: 0 0 8px 0;">Amenities & Features</h4>
+          <div id="detail-amenities-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; font-size: 0.82rem;"></div>
         </div>
 
-        <!-- Interactive Property Location Map (GPS Pin) -->
-        <div id="detail-map-section" style="margin-bottom: 22px; position: relative;">
-          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
-            <span><i class="fas fa-map-marked-alt" style="color: #00b53f;"></i> Exact GPS Location on Map</span>
-            <span id="detail-gps-badge" style="font-size: 0.78rem; font-weight: 600; color: #64748b; font-family: monospace;">-</span>
+        <!-- Location & Map Section with Protective GPS Card -->
+        <div id="detail-map-section" style="margin-bottom: 18px;">
+          <h4 style="font-size: 0.92rem; font-weight: 800; color: #0f172a; margin: 0 0 8px 0; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-map-marked-alt" style="color: #00b53f;"></i> Exact GPS Location</span>
+            <span id="detail-gps-badge" style="font-size: 0.74rem; font-weight: 700; color: #64748b;">-</span>
           </h4>
-          <div style="position:relative;">
-            <div id="detail-property-map" style="height: 220px; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08);"></div>
-            <!-- Lock overlay â€” hidden when logged in -->
-            <div id="detail-map-lock-overlay" onclick="kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id))"
-              style="display:none; position:absolute; inset:0; border-radius:10px; background:rgba(15,23,42,0.72); backdrop-filter:blur(3px); cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:#fff; text-align:center;">
-              <i class="fas fa-map-marked-alt" style="font-size:2rem; color:#4ade80;"></i>
-              <div style="font-weight:800; font-size:0.95rem;">GPS Location Hidden</div>
-              <div style="font-size:0.8rem; color:#94a3b8; max-width:220px; line-height:1.4;">Sign in free to see the exact map pin and get directions</div>
-              <div style="margin-top:4px; background:#00b53f; color:#fff; padding:7px 20px; border-radius:6px; font-weight:700; font-size:0.85rem;">
-                <i class="fas fa-unlock-alt"></i> Sign In to Unlock
-              </div>
+
+          <!-- Live Leaflet Map Canvas (Shown ONLY when GPS is unlocked by confirmed booking) -->
+          <div id="detail-property-map" style="display: none; height: 200px; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08);"></div>
+
+          <!-- Presentable GPS Protection Card (Shown for Public Tenants) -->
+          <div id="detail-gps-locked-card" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 12px; padding: 18px; text-align: center; color: white; position: relative; overflow: hidden; box-shadow: 0 4px 14px rgba(15,23,42,0.12);">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(0,181,63,0.18); border: 2px solid #00b53f; color: #4ade80; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 8px;">
+              <i class="fas fa-lock"></i>
             </div>
+            <h5 style="font-size: 0.96rem; font-weight: 800; color: #ffffff; margin: 0 0 4px 0;">Exact Map Pin & GPS Protected</h5>
+            <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.45; margin: 0 auto 12px auto; max-width: 420px;">
+              General Area: <strong style="color: #4ade80;" id="detail-gps-locked-suburb">Kilimani, Nairobi</strong>. Turn-by-turn Google Maps pin and on-site caretaker contacts are unlocked immediately upon viewing slot confirmation and KSh 200 fee payment.
+            </p>
+            <button type="button" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)"
+              style="background: #00b53f; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 800; font-size: 0.84rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,181,63,0.35);">
+              <i class="fas fa-calendar-check"></i> Book Viewing to Unlock Pin
+            </button>
           </div>
         </div>
 
@@ -2138,30 +2139,19 @@
               <div style="font-size: 0.8rem; color: #15803d;" id="detail-landlord-since">-</div>
               <div style="font-size: 0.88rem; font-weight: 700; margin-top: 4px; color: #0f172a;" id="detail-landlord-phone-display">-</div>
             </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button id="detail-btn-inbox-chat" class="btn-primary" style="padding: 10px 18px; font-size: 0.9rem; border-radius: 8px; background: #00b53f; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="app.openChatForCurrentProperty()">
-                <i class="fas fa-comment-dots"></i> Message
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <button id="detail-btn-book-viewing" class="btn-primary" style="padding: 9px 18px; font-size: 0.88rem; border-radius: 8px; background: #00b53f; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 7px; color: white; box-shadow: 0 2px 8px rgba(0,181,63,0.3);" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)">
+                <i class="fas fa-calendar-check"></i> Book Viewing (KSh 200)
               </button>
-              <a id="detail-btn-call" href="#" class="btn-secondary" style="padding: 10px 18px; font-size: 0.9rem; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px;">
-                <i class="fas fa-phone-alt"></i> Call
+              <button id="detail-btn-inbox-chat" class="btn-secondary" style="padding: 9px 15px; font-size: 0.86rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1.5px solid #cbd5e1; background: white;" onclick="app.openChatForCurrentProperty()">
+                <i class="fas fa-comment-dots"></i> Message Landlord
+              </button>
+              <a id="detail-btn-call" href="#" class="btn-secondary" style="padding: 9px 14px; font-size: 0.86rem; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; border: 1.5px solid #cbd5e1; background: #f8fafc; color: #64748b;">
+                <i class="fas fa-lock"></i> Call Protected
               </a>
-              <a id="detail-btn-directions" href="#" target="_blank" class="btn-secondary" style="padding: 10px 14px; font-size: 0.88rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 6px;">
+              <a id="detail-btn-directions" href="#" target="_blank" class="btn-secondary" style="display: none; padding: 9px 12px; font-size: 0.86rem; border-radius: 8px; text-decoration: none; align-items: center; gap: 5px; border: 1.5px solid #cbd5e1; background: white;">
                 <i class="fas fa-directions"></i> Maps
               </a>
-              <div class="detail-social-share-toolbar" style="display: flex; align-items: center; gap: 6px;">
-                <button type="button" class="btn-secondary" style="padding: 10px 12px; font-size: 0.88rem; border-radius: 8px; font-weight: 700; background: #25d366; color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="app.handleCardWhatsApp(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, event)" title="Share to WhatsApp">
-                  <i class="fab fa-whatsapp"></i> WhatsApp
-                </button>
-                <button type="button" class="btn-secondary" style="padding: 10px 12px; font-size: 0.88rem; border-radius: 8px; font-weight: 700; background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="app.handleCardInstagram(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, event)" title="Share to Instagram">
-                  <i class="fab fa-instagram"></i> Instagram
-                </button>
-                <button type="button" class="btn-secondary" style="padding: 10px 12px; font-size: 0.88rem; border-radius: 8px; font-weight: 700; background: #1877f2; color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="app.handleCardFacebook(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, event)" title="Share to Facebook">
-                  <i class="fab fa-facebook-f"></i> Facebook
-                </button>
-                <button type="button" class="btn-secondary" style="padding: 10px 12px; font-size: 0.88rem; border-radius: 8px; font-weight: 700; background: #0f172a; color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="app.handleCardTikTok(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, event)" title="Share to TikTok">
-                  <i class="fab fa-tiktok"></i> TikTok
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -2244,6 +2234,23 @@
         <div id="detail-services-container" style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 18px;"></div>
 
       </div>
+
+      <!-- Sticky Quick-Action Footer Bar -->
+      <div id="detail-sticky-footer" style="background: #ffffff; border-top: 1px solid #e2e8f0; padding: 10px 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); z-index: 10; flex-shrink: 0;">
+        <div style="min-width: 0;">
+          <div style="font-size: 1.15rem; font-weight: 900; color: #00b53f; line-height: 1.1;" id="detail-sticky-price">KSh 0/mo</div>
+          <div style="font-size: 0.74rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;" id="detail-sticky-suburb">-</div>
+        </div>
+        <div style="display: flex; gap: 8px; flex-shrink: 0;">
+          <button type="button" class="btn-secondary" onclick="app.openChatForCurrentProperty()" style="padding: 8px 13px; font-size: 0.82rem; font-weight: 700; border-radius: 8px; border: 1.5px solid #cbd5e1; background: white; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+            <i class="fas fa-comment-dots"></i> Message
+          </button>
+          <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)" style="padding: 8px 16px; font-size: 0.86rem; font-weight: 800; border-radius: 8px; background: #00b53f; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,181,63,0.35);">
+            <i class="fas fa-calendar-check"></i> Book Viewing (KSh 200)
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -2347,55 +2354,81 @@
        MODAL 5: In-app Messages / Direct Landlord-Tenant Chat Inbox
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-messages">
-    <div class="modal-dialog" style="max-width: 600px; display: flex; flex-direction: column; max-height: 88vh; padding: 0; overflow: hidden; border-radius: 16px;">
+    <div class="modal-dialog" style="max-width: 460px; width: 92%; display: flex; flex-direction: column; max-height: 82vh; padding: 0; overflow: hidden; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.2);">
       
-      <!-- Chat Header -->
-      <div class="modal-header" style="background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 14px 20px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div style="width: 40px; height: 40px; border-radius: 50%; background: #00b53f; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: white;" id="chat-landlord-avatar">
+      <!-- Modern Sleek Chat Header -->
+      <div class="modal-header" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 11px;">
+          <div style="position: relative;">
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #00b53f; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95rem; color: white; box-shadow: 0 2px 8px rgba(0,181,63,0.35);" id="chat-landlord-avatar">
+              LA
             </div>
+            <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background: #22c55e; border: 2px solid #0f172a; border-radius: 50%;"></span>
+          </div>
           <div>
-            <h3 style="font-size: 1.05rem; font-weight: 700; color: white; margin: 0;" id="chat-landlord-title">Landlord Inbox & Inquiries</h3>
-            <div style="font-size: 0.78rem; color: #94a3b8;" id="chat-property-subtitle">Direct chat Â· Real-time reply</div>
+            <h3 style="font-size: 0.98rem; font-weight: 800; color: white; margin: 0; line-height: 1.2;" id="chat-landlord-title">Landlord</h3>
+            <div style="font-size: 0.74rem; color: #94a3b8; display: flex; align-items: center; gap: 5px;" id="chat-property-subtitle">
+              <span>Kilimani</span> • <span style="color: #4ade80;">Replies via KejaMarket</span>
+            </div>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="app.closeModal('modal-messages')" style="color: white;">&times;</button>
+        <button class="modal-close-btn" onclick="app.closeModal('modal-messages')" style="color: #94a3b8; background: rgba(255,255,255,0.08); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: none; font-size: 1.1rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.color='#94a3b8'; this.style.background='rgba(255,255,255,0.08)'">&times;</button>
       </div>
 
-      <!-- Quick Context Property Banner (when messaging about a specific house) -->
-      <div id="chat-property-banner" style="display: none; background: #f0fdf4; border-bottom: 1px solid #bbf7d0; padding: 10px 16px; font-size: 0.82rem; color: #166534; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <strong>Listing:</strong> <span id="chat-banner-title">-</span>
-          <span style="color: #00b53f; font-weight: 700; margin-left: 6px;" id="chat-banner-price">-</span>
+      <!-- Quick Context Property Bar with 1-Click Booking Button -->
+      <div id="chat-property-banner" style="display: none; background: #f0fdf4; border-bottom: 1px solid #bbf7d0; padding: 9px 14px; font-size: 0.8rem; color: #166534; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+        <div style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+          <i class="fas fa-home" style="color: #00b53f; margin-right: 4px;"></i>
+          <span id="chat-banner-title" style="font-weight: 700;">-</span>
+          <span style="color: #00b53f; font-weight: 800; margin-left: 4px;" id="chat-banner-price">-</span>
         </div>
+        <button type="button" onclick="app.triggerViewingFromChat()" style="background: #00b53f; color: white; border: none; padding: 5px 11px; border-radius: 6px; font-weight: 800; font-size: 0.74rem; cursor: pointer; white-space: nowrap; flex-shrink: 0; box-shadow: 0 1px 4px rgba(0,181,63,0.3);">
+          <i class="fas fa-calendar-check"></i> Book Viewing
+        </button>
+      </div>
+
+      <!-- High-Conversion Viewing Booking Callout Banner -->
+      <div id="chat-viewing-cta-card" style="margin: 8px 12px 0 12px; background: linear-gradient(135deg, #f0fdf4, #e8fbf0); border: 1px solid #bbf7d0; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: #00b53f; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.92rem; flex-shrink: 0;">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div style="min-width: 0;">
+            <div style="font-weight: 800; font-size: 0.82rem; color: #166534; line-height: 1.2;">Schedule In-Person Viewing</div>
+            <div style="font-size: 0.72rem; color: #15803d; line-height: 1.25; margin-top: 2px;">Caretaker confirms in 60s · KSh 200 fee unlocks GPS & contact</div>
+          </div>
+        </div>
+        <button type="button" onclick="app.triggerViewingFromChat()" style="background: #00b53f; color: white; border: none; padding: 7px 12px; border-radius: 7px; font-weight: 800; font-size: 0.76rem; cursor: pointer; white-space: nowrap; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,181,63,0.25);">
+          Book Slot
+        </button>
       </div>
 
       <!-- Chat Messages Scrollable Feed -->
-      <div class="modal-body" id="chat-messages-container" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: #f8fafc; min-height: 260px; max-height: 380px;">
+      <div class="modal-body" id="chat-messages-container" style="flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; background: #f8fafc; min-height: 220px; max-height: 320px;">
         <!-- Messages rendered dynamically by JS -->
       </div>
 
-      <!-- Quick Reply Suggestions -->
-      <div style="background: #ffffff; border-top: 1px solid #e2e8f0; padding: 8px 14px; display: flex; gap: 8px; overflow-x: auto; white-space: nowrap;" id="chat-quick-replies">
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Is this house still available?')">Is this available?</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Can I schedule a viewing today?')">Book viewing</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('Is borehole water continuous 24/7?')">Water 24/7?</button>
-        <button type="button" class="category-pill" style="font-size: 0.75rem; padding: 4px 10px; margin: 0;" onclick="app.sendQuickReply('What is the deposit and token policy?')">Deposit policy</button>
+      <!-- Quick Reply Action Chips -->
+      <div style="background: #ffffff; border-top: 1px solid #e2e8f0; padding: 7px 12px; display: flex; gap: 7px; overflow-x: auto; white-space: nowrap; scrollbar-width: none;" id="chat-quick-replies">
+        <button type="button" class="category-pill" style="font-size: 0.74rem; font-weight: 700; padding: 5px 11px; margin: 0; background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;" onclick="app.triggerViewingFromChat()"><i class="fas fa-calendar-alt"></i> Book viewing</button>
+        <button type="button" class="category-pill" style="font-size: 0.74rem; padding: 5px 11px; margin: 0;" onclick="app.sendQuickReply('Is this house still vacant and available?')">Is this available?</button>
+        <button type="button" class="category-pill" style="font-size: 0.74rem; padding: 5px 11px; margin: 0;" onclick="app.sendQuickReply('Is borehole or city water supply continuous 24/7?')">Water 24/7?</button>
+        <button type="button" class="category-pill" style="font-size: 0.74rem; padding: 5px 11px; margin: 0;" onclick="app.sendQuickReply('What is the deposit and token/utility policy?')">Deposit policy</button>
       </div>
 
-      <!-- Chat Input Form -->
-      <form id="form-chat-send" onsubmit="app.handleChatMessageSubmit(event)" style="background: #ffffff; padding: 12px 16px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; align-items: center;">
+      <!-- Compact Chat Input Form -->
+      <form id="form-chat-send" onsubmit="app.handleChatMessageSubmit(event)" style="background: #ffffff; padding: 10px 14px; border-top: 1px solid #e2e8f0; display: flex; gap: 8px; align-items: center;">
         <input 
           type="text" 
           id="chat-message-input" 
           class="form-control" 
           placeholder="Type your message to the landlord..." 
-          style="flex: 1; font-size: 0.9rem; border-radius: 24px; padding: 10px 18px;" 
+          style="flex: 1; font-size: 0.86rem; border-radius: 20px; padding: 9px 16px; border: 1.5px solid #e2e8f0; outline: none; background: #f8fafc;" 
           required
           autocomplete="off"
         >
-        <button type="submit" class="btn-primary" style="border-radius: 50%; width: 42px; height: 42px; padding: 0; display: flex; align-items: center; justify-content: center; background: #00b53f; border: none; cursor: pointer; flex-shrink: 0;" title="Send Message">
-          <i class="fas fa-paper-plane" style="font-size: 0.95rem; color: white;"></i>
+        <button type="submit" class="btn-primary" style="border-radius: 50%; width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center; background: #00b53f; border: none; cursor: pointer; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,181,63,0.35);" title="Send Message">
+          <i class="fas fa-paper-plane" style="font-size: 0.88rem; color: white;"></i>
         </button>
       </form>
 
@@ -4722,6 +4755,7 @@
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/app.js?v=19.0&t=202610180330" defer></script>
+  <script src="js/viewing-booking.js?v=1.0&t=20261018" defer></script>
   
   <!-- Mobile Layout Controller -->
   <script src="js/mobile-layout.js?v=2.1&t=202610180330" defer></script>
@@ -5244,6 +5278,29 @@
     </div>
   </div>
 
+  <!-- ====================================================================
+       MODAL: KEJAMARKET VERIFIED VIEWING BOOKING & UNLOCK (SPEC v1.1)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-viewing-booking" style="display: none; align-items: center; justify-content: center; z-index: 2950;">
+    <div class="modal-dialog" style="max-width: 520px; width: 95%; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.22); background: white;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #065f46 0%, #00b53f 100%); color: white; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">Book a Property Viewing</h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #a7f3d0;">60-Second Availability Confirmation • KSh 200 Commitment Fee</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-viewing-booking')" style="color: white; font-size: 1.8rem; background: none; border: none; cursor: pointer; line-height: 1;">&times;</button>
+      </div>
+
+      <div class="modal-body" id="viewing-modal-body" style="padding: 20px; background: #ffffff; max-height: 82vh; overflow-y: auto;">
+        <!-- Populated dynamically by KejaViewing client module -->
+      </div>
+    </div>
+  </div>
 
   <!-- ====================================================================
        MODAL: 3-DAY HOUSE HUNT CONCIERGE REQUEST & PAYMENT WIZARD

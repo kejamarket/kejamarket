@@ -57,18 +57,18 @@
  PROPERTY TYPE FILTER COLORS (Checkboxes)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  [████] Single Room               #f97316    rgb(249, 115, 22)    ORANGE
-  [████] Bedsitter                 #ef4444    rgb(239, 68, 68)     RED
-  [████] 1 Bedroom                 #eab308    rgb(234, 179, 8)     YELLOW
-  [████] 2 Bedrooms                #00b53f    rgb(0, 181, 63)      GREEN (PRIMARY)
-  [████] Double Room               #fb923c    rgb(251, 146, 60)    ORANGE-LIGHT
-  [████] 3 Bedrooms                #14b8a6    rgb(20, 184, 166)    TEAL
-  [████] 4+ Bedrooms               #3b82f6    rgb(59, 130, 246)    BLUE
-  [████] Townhouse                 #8b5cf6    rgb(139, 92, 246)    PURPLE
-  [████] Villa                     #ec4899    rgb(236, 72, 153)    PINK
-  [████] Apartment                 #06b6d4    rgb(6, 182, 212)     CYAN
-  [████] Bungalow                  #84cc16    rgb(132, 204, 22)    LIME
-  [████] Studio                    #f43f5e    rgb(244, 63, 94)     ROSE
+  [████] Single Room               #FF6D00    rgb(255, 109, 0)     DEEP ORANGE
+  [████] Bedsitter                 #FF1744    rgb(255, 23, 68)     BRIGHT RED
+  [████] 1 Bedroom                 #FFD600    rgb(255, 214, 0)     BRIGHT YELLOW
+  [████] 2 Bedrooms                #00C853    rgb(0, 200, 83)      BRIGHT GREEN
+  [████] Double Room               #FF9100    rgb(255, 145, 0)     ORANGE
+  [████] 3 Bedrooms                #00E5FF    rgb(0, 229, 255)     CYAN
+  [████] 4+ Bedrooms               #2979FF    rgb(41, 121, 255)    BRIGHT BLUE
+  [████] Townhouse                 #AA00FF    rgb(170, 0, 255)     PURPLE
+  [████] Villa                     #FF00A8    rgb(255, 0, 168)     HOT PINK
+  [████] Apartment                 #00D4FF    rgb(0, 212, 255)     LIGHT CYAN
+  [████] Bungalow                  #76FF03    rgb(118, 255, 3)     BRIGHT LIME
+  [████] Studio                    #F50057    rgb(245, 0, 87)      DEEP PINK
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  STATUS & FEEDBACK COLORS

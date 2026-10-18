@@ -132,18 +132,18 @@
 ### Property Type Filter Colors (Checkboxes)
 | Type | Color | Hex | Location |
 |------|-------|-----|----------|
-| Single Room | Orange | `#f97316` | `index.html:761` |
-| Bedsitter | Red | `#ef4444` | `index.html:762` |
-| 1 Bedroom | Yellow | `#eab308` | `index.html:763` |
-| 2 Bedrooms | Green | `#00b53f` | `index.html:764` |
-| Double Room | Orange-Light | `#fb923c` | `index.html:768` |
-| 3 Bedrooms | Teal | `#14b8a6` | `index.html:769` |
-| 4+ Bedrooms | Blue | `#3b82f6` | `index.html:770` |
-| Townhouse | Purple | `#8b5cf6` | `index.html:771` |
-| Villa | Pink | `#ec4899` | `index.html:772` |
-| Apartment | Cyan | `#06b6d4` | `index.html:773` |
-| Bungalow | Lime | `#84cc16` | `index.html:774` |
-| Studio | Rose | `#f43f5e` | `index.html:775` |
+| Single Room | Deep Orange | `#FF6D00` | `index.html:761` |
+| Bedsitter | Bright Red | `#FF1744` | `index.html:762` |
+| 1 Bedroom | Bright Yellow | `#FFD600` | `index.html:763` |
+| 2 Bedrooms | Bright Green | `#00C853` | `index.html:764` |
+| Double Room | Orange | `#FF9100` | `index.html:768` |
+| 3 Bedrooms | Cyan | `#00E5FF` | `index.html:769` |
+| 4+ Bedrooms | Bright Blue | `#2979FF` | `index.html:770` |
+| Townhouse | Purple | `#AA00FF` | `index.html:771` |
+| Villa | Hot Pink | `#FF00A8` | `index.html:772` |
+| Apartment | Light Cyan | `#00D4FF` | `index.html:773` |
+| Bungalow | Bright Lime | `#76FF03` | `index.html:774` |
+| Studio | Deep Pink | `#F50057` | `index.html:775` |
 
 ### Filter Section Icons
 | Filter Type | Icon Color | Hex | Location |
