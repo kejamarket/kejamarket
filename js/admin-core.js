@@ -35,6 +35,7 @@ const AdminCore = (() => {
     'users-verified': ['super', 'verification', 'support'],
     'users-suspended': ['super', 'support'],
     'house-hunts': ['super', 'support'],
+    'viewings': ['super', 'support'],
     'buildings': ['super', 'listings'],
     'units': ['super', 'listings'],
     'messages-broadcast': ['super', 'support'],
@@ -178,6 +179,7 @@ const AdminCore = (() => {
         'users-verified': '<i class="fas fa-user-check"></i> Verified Accounts',
         'users-suspended': '<i class="fas fa-user-slash"></i> Suspended & Banned Users',
         'house-hunts': '<i class="fas fa-search-location"></i> House Hunt Concierge',
+        'viewings': '<i class="fas fa-calendar-check"></i> Live Viewing Queue',
         'buildings': '<i class="fas fa-building"></i> Buildings & Apartment Blocks',
         'units': '<i class="fas fa-door-open"></i> Unit Portfolio Management',
         'messages-broadcast': '<i class="fas fa-bullhorn"></i> Communications & Broadcasts',
@@ -284,6 +286,11 @@ const AdminCore = (() => {
         case 'house-hunts':
           if (window.AdminHunts && typeof window.AdminHunts.loadHouseHunts === 'function') {
             await window.AdminHunts.loadHouseHunts(viewData);
+          }
+          break;
+        case 'viewings':
+          if (window.AdminViewings && typeof window.AdminViewings.init === 'function') {
+            await window.AdminViewings.init();
           }
           break;
         case 'buildings':
@@ -1912,47 +1919,138 @@ const AdminCore = (() => {
     .catch(e => showToast(e.message, 'error'));
   }
 
-  // Inquiries module
-  async function loadInquiriesModule() {
+  // Inquiries & Tenant <-> Landlord Communications Module
+  async function loadInquiriesModule(filter = 'all') {
     const content = document.getElementById('admin-content');
     content.innerHTML = `
-      <div class="module-header"><h1><i class="fas fa-envelope"></i> Tenant Inquiries Desk</h1></div>
-      <div id="inquiries-container"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading inquiries...</div></div>
+      <div class="module-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
+        <div>
+          <h1 style="margin:0; font-size:1.4rem; font-weight:800; color:#0f172a; display:flex; align-items:center; gap:10px;">
+            <i class="fas fa-comments" style="color:#00b53f;"></i> Tenant ↔ Landlord Communications Desk
+          </h1>
+          <p style="margin:4px 0 0 0; font-size:0.85rem; color:#64748b;">
+            All pre-payment inquiries, tenant questions & viewing booking communications flowing through KejaMarket
+          </p>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-secondary" onclick="AdminCore.loadInquiries('${filter}')" style="padding:8px 14px; font-size:0.84rem; border-radius:8px; border:1.5px solid #cbd5e1; background:white; cursor:pointer;">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div style="display:flex; gap:8px; margin-bottom:18px; border-bottom:1.5px solid #e2e8f0; padding-bottom:8px;">
+        <button class="tab-btn ${filter === 'all' ? 'active' : ''}" onclick="AdminCore.loadInquiries('all')"
+          style="padding:8px 16px; border-radius:6px; font-size:0.85rem; font-weight:700; cursor:pointer; border:none; background:${filter === 'all' ? '#00b53f' : '#f1f5f9'}; color:${filter === 'all' ? '#fff' : '#475569'};">
+          All Messages
+        </button>
+        <button class="tab-btn ${filter === 'landlord' ? 'active' : ''}" onclick="AdminCore.loadInquiries('landlord')"
+          style="padding:8px 16px; border-radius:6px; font-size:0.85rem; font-weight:700; cursor:pointer; border:none; background:${filter === 'landlord' ? '#00b53f' : '#f1f5f9'}; color:${filter === 'landlord' ? '#fff' : '#475569'};">
+          🏠 Tenant ↔ Landlord Chats
+        </button>
+        <button class="tab-btn ${filter === 'admin' ? 'active' : ''}" onclick="AdminCore.loadInquiries('admin')"
+          style="padding:8px 16px; border-radius:6px; font-size:0.85rem; font-weight:700; cursor:pointer; border:none; background:${filter === 'admin' ? '#00b53f' : '#f1f5f9'}; color:${filter === 'admin' ? '#fff' : '#475569'};">
+          🛡️ Admin Support Messages
+        </button>
+      </div>
+
+      <div id="inquiries-container"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading communications...</div></div>
     `;
+
     try {
       const res = await fetch(`${API_BASE}/api/admin/inquiries`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
       });
       const data = await res.json();
-      const inqs = data.inquiries || [];
+      let inqs = data.inquiries || [];
+
+      // Update sidebar badge
+      const badge = document.getElementById('badge-inquiries-count');
+      if (badge) {
+        badge.textContent = inqs.length;
+        badge.style.display = inqs.length > 0 ? 'inline-block' : 'none';
+      }
+
+      if (filter === 'landlord') {
+        inqs = inqs.filter(i => i.isLandlordChat);
+      } else if (filter === 'admin') {
+        inqs = inqs.filter(i => !i.isLandlordChat);
+      }
+
       const container = document.getElementById('inquiries-container');
       if (!inqs.length) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-envelope"></i><p>No new customer inquiries.</p></div>';
+        container.innerHTML = `
+          <div style="text-align:center; padding:48px 20px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px;">
+            <div style="width:60px; height:60px; border-radius:50%; background:#dcfce7; color:#15803d; display:inline-flex; align-items:center; justify-content:center; font-size:1.8rem; margin-bottom:12px;">
+              <i class="fas fa-comments"></i>
+            </div>
+            <h3 style="margin:0 0 6px 0; color:#0f172a; font-weight:800;">No Messages in this View</h3>
+            <p style="margin:0; font-size:0.86rem; color:#64748b;">All tenant inquiries have been processed.</p>
+          </div>
+        `;
         return;
       }
+
       container.innerHTML = `
-        <div class="table-container"><table class="admin-table">
-          <thead><tr><th>Seeker</th><th>Subject / Property</th><th>Message</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody>${inqs.map(i => `
-            <tr>
-              <td><strong>${escapeHtml(i.name || 'Tenant')}</strong><br><small style="color:#64748b;">${i.phone || i.email || '-'}</small></td>
-              <td>${escapeHtml(i.propertyTitle || i.subject || 'General Inquiry')}</td>
-              <td>${escapeHtml((i.message || '').substring(0, 60))}${(i.message || '').length > 60 ? '...' : ''}</td>
-              <td>${formatDate(i.createdAt)}</td>
-              <td><span class="status-badge ${i.status === 'responded' ? 'status-active' : 'status-pending'}">${i.status || 'New'}</span></td>
-              <td>
-                <div style="display:flex;gap:6px;">
-                  <button class="btn-action btn-primary" onclick="AdminCore.viewInquiry('${i.id}')" title="View & Reply">
-                    <i class="fas fa-reply"></i> Reply
-                  </button>
-                  <button class="btn-action btn-delete" onclick="AdminCore.deleteInquiry('${i.id}')" title="Delete">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          `).join('')}</tbody>
-        </table></div>
+        <div class="table-container" style="background:#fff; border-radius:14px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+          <table class="admin-table" style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr style="background:#f8fafc; border-bottom:1.5px solid #e2e8f0; text-align:left; font-size:0.78rem; text-transform:uppercase; color:#64748b;">
+                <th style="padding:12px 16px;">Tenant (Seeker)</th>
+                <th style="padding:12px 16px;">Target Landlord</th>
+                <th style="padding:12px 16px;">Property Listing</th>
+                <th style="padding:12px 16px;">Message</th>
+                <th style="padding:12px 16px;">Date & Time</th>
+                <th style="padding:12px 16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${inqs.map(i => {
+                const phone = i.phone || '';
+                const cleanPhone = phone.replace(/[^0-9]/g, '');
+                return `
+                  <tr style="border-bottom:1px solid #f1f5f9; font-size:0.86rem;">
+                    <td style="padding:12px 16px;">
+                      <div style="font-weight:800; color:#0f172a;">${escapeHtml(i.name || 'Tenant')}</div>
+                      ${phone ? `
+                        <div style="font-size:0.78rem; color:#00b53f; font-weight:700; margin-top:2px;">
+                          <a href="tel:${phone}" style="color:inherit; text-decoration:none;"><i class="fas fa-phone-alt"></i> ${phone}</a>
+                          ${cleanPhone ? `<a href="https://wa.me/${cleanPhone.startsWith('0') ? '254' + cleanPhone.slice(1) : cleanPhone}" target="_blank" style="margin-left:6px; color:#22c55e;"><i class="fab fa-whatsapp"></i></a>` : ''}
+                        </div>
+                      ` : '<small style="color:#94a3b8;">No phone</small>'}
+                    </td>
+                    <td style="padding:12px 16px;">
+                      <div style="font-weight:700; color:#334155;">${escapeHtml(i.recipientName || 'Landlord')}</div>
+                      <span style="font-size:0.72rem; padding:2px 7px; border-radius:10px; font-weight:700; background:${i.isLandlordChat ? '#eff6ff' : '#f0fdf4'}; color:${i.isLandlordChat ? '#1d4ed8' : '#166534'};">
+                        ${i.isLandlordChat ? 'Direct Chat' : 'Admin Support'}
+                      </span>
+                    </td>
+                    <td style="padding:12px 16px;">
+                      <div style="font-weight:800; color:#0f172a; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(i.propertyTitle || 'General')}</div>
+                      <small style="color:#64748b;"><i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${escapeHtml(i.estateSuburb || 'Nairobi')}</small>
+                    </td>
+                    <td style="padding:12px 16px; max-width:280px;">
+                      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:8px 12px; font-size:0.83rem; color:#1e293b; line-height:1.4;">
+                        ${escapeHtml(i.message || '')}
+                      </div>
+                    </td>
+                    <td style="padding:12px 16px; white-space:nowrap; font-size:0.78rem; color:#64748b;">
+                      ${formatDate(i.createdAt)}
+                    </td>
+                    <td style="padding:12px 16px;">
+                      <div style="display:flex; gap:6px;">
+                        <button class="btn-action btn-primary" onclick="AdminCore.viewInquiry('${i.id}')" title="Reply to Tenant" style="padding:6px 10px; font-size:0.8rem; border-radius:6px; background:#00b53f; color:white; border:none; cursor:pointer; font-weight:700;">
+                          <i class="fas fa-reply"></i> Reply
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
       `;
     } catch (err) {
       document.getElementById('inquiries-container').innerHTML = `<div class="error-state">${err.message}</div>`;
@@ -2056,8 +2154,32 @@ const AdminCore = (() => {
       btn.addEventListener('click', () => {
         const mod = btn.dataset.module;
         if (mod) navigate(mod);
+        // On mobile, close sidebar after clicking nav button
+        const sidebar = document.getElementById('admin-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        if (sidebar && sidebar.classList.contains('open')) {
+          sidebar.classList.remove('open');
+          if (overlay) overlay.classList.remove('active');
+        }
       });
     });
+
+    // Mobile Hamburger Menu Toggle
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    if (mobileToggle && sidebar) {
+      mobileToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        if (overlay) overlay.classList.toggle('active');
+      });
+    }
+    if (overlay && sidebar) {
+      overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      });
+    }
 
     const logout = document.getElementById('admin-logout');
     if (logout) {
@@ -2212,6 +2334,7 @@ const AdminCore = (() => {
     viewInquiry,
     sendInquiryReply,
     deleteInquiry,
+    loadInquiries: loadInquiriesModule,
     state
   };
 })();

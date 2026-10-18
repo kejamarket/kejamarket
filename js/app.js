@@ -2518,8 +2518,11 @@ class NairobiRentalsApp {
       }
     }
 
-    if (isLoggedIn) {
-      // Logged in: show real phone & enable call
+    const isContactUnlocked = p.contactLocked === false;
+    const isGpsUnlocked = p.gpsLocked === false;
+
+    if (isContactUnlocked && contactPhone) {
+      // Unlocked viewing pass holder or owner/admin: show real phone & enable call
       if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i><a href="tel:${contactPhone}" style="color:#0f172a;text-decoration:none;font-weight:700;">${contactPhone}</a>`;
       if (callBtn) {
         callBtn.href = `tel:${contactPhone}`;
@@ -2529,14 +2532,17 @@ class NairobiRentalsApp {
         callBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')} (${contactPhone})`;
       }
     } else {
-      // Guest: mask phone number, prompt sign-in
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#94a3b8;margin-right:5px;"></i><span style="color:#94a3b8;font-weight:700;letter-spacing:2px;">+254 *** ***</span>&nbsp;<a href="#" onclick="event.preventDefault();kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}'))" style="color:#4f46e5;text-decoration:underline;font-weight:600;font-size:0.78rem;">Sign in to view</a>`;
+      // Gated: phone locked until viewing slot is confirmed & paid
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#d97706;margin-right:5px;"></i><span style="color:#b45309;font-weight:700;">Contact Protected</span>&nbsp;<a href="#" onclick="event.preventDefault(); KejaViewing.openBookingModal('${p.id}');" style="color:#00b53f;text-decoration:underline;font-weight:700;font-size:0.8rem;">Book viewing to unlock</a>`;
       if (callBtn) {
         callBtn.href = '#';
-        callBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}')); return false;`);
-        callBtn.style.opacity = '0.65';
+        callBtn.onclick = (e) => {
+          e.preventDefault();
+          KejaViewing.openBookingModal(p.id);
+        };
+        callBtn.style.opacity = '1';
         callBtn.style.pointerEvents = 'auto';
-        callBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Call`;
+        callBtn.innerHTML = `<i class="fas fa-lock"></i> Book Viewing to Call`;
       }
     }
 
@@ -2553,52 +2559,82 @@ class NairobiRentalsApp {
       chatBtn.innerHTML = `<i class="fas fa-comment-dots"></i> Message ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')}`;
     }
 
-    // Caretaker Card Population
+    // Caretaker Card Population (Gated behind confirmed viewing)
     const caretakerCard = document.getElementById('detail-caretaker-card');
     const caretakerNameEl = document.getElementById('detail-caretaker-name');
     const caretakerCallBtn = document.getElementById('detail-btn-caretaker-call');
 
     if (caretakerCard) {
-      if (p.caretakerPhone || p.caretakerName) {
-        caretakerCard.style.display = 'block';
+      caretakerCard.style.display = 'block';
+      if (isContactUnlocked && (p.caretakerPhone || p.caretakerName)) {
         if (caretakerNameEl) caretakerNameEl.textContent = p.caretakerName || 'Building Caretaker';
         if (caretakerCallBtn) {
-          if (isLoggedIn) {
-            caretakerCallBtn.href = `tel:${p.caretakerPhone || ''}`;
-            caretakerCallBtn.removeAttribute('onclick');
-            caretakerCallBtn.style.opacity = '1';
-            caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${p.caretakerPhone || ''})`;
-          } else {
-            caretakerCallBtn.href = '#';
-            caretakerCallBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(()=>app.unlockDetailPhotos('${p.id}')); return false;`);
-            caretakerCallBtn.style.opacity = '0.65';
-            caretakerCallBtn.innerHTML = `<i class="fas fa-lock"></i> Sign In to Call`;
-          }
+          caretakerCallBtn.href = `tel:${p.caretakerPhone || ''}`;
+          caretakerCallBtn.removeAttribute('onclick');
+          caretakerCallBtn.style.opacity = '1';
+          caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${p.caretakerPhone || ''})`;
         }
       } else {
-        caretakerCard.style.display = 'none';
+        if (caretakerNameEl) caretakerNameEl.textContent = 'On-Site Building Caretaker';
+        if (caretakerCallBtn) {
+          caretakerCallBtn.href = '#';
+          caretakerCallBtn.onclick = (e) => {
+            e.preventDefault();
+            KejaViewing.openBookingModal(p.id);
+          };
+          caretakerCallBtn.style.opacity = '1';
+          caretakerCallBtn.innerHTML = `<i class="fas fa-lock"></i> Book Viewing to Call`;
+        }
       }
     }
 
-    // Google Maps Link + Map visibility — gated behind login
+    // Google Maps Link + Map visibility — gated behind paid confirmed viewing
     const directionsBtn = document.getElementById('detail-btn-directions');
     const mapSection = document.getElementById('detail-map-section');
-    const gpsLockOverlay = document.getElementById('detail-map-lock-overlay');
+    const mapEl = document.getElementById('detail-property-map');
+    const gpsLockedCard = document.getElementById('detail-gps-locked-card');
 
-    if (isLoggedIn) {
+    if (isGpsUnlocked && p.latitude && p.longitude) {
       if (directionsBtn) {
         directionsBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${p.latitude},${p.longitude}`;
+        directionsBtn.removeAttribute('onclick');
         directionsBtn.style.opacity = '1';
         directionsBtn.style.pointerEvents = 'auto';
       }
-      if (gpsLockOverlay) gpsLockOverlay.style.display = 'none';
+      if (mapEl) mapEl.style.display = 'block';
+      if (gpsLockedCard) gpsLockedCard.style.display = 'none';
+      if (gpsBadge) gpsBadge.textContent = `${Number(p.latitude).toFixed(4)}, ${Number(p.longitude).toFixed(4)}`;
+      // Initialize or refresh Detail Map Canvas only when unlocked
+      setTimeout(() => {
+        this.initDetailMap(p);
+      }, 250);
     } else {
       if (directionsBtn) {
         directionsBtn.href = '#';
-        directionsBtn.setAttribute('onclick', `event.preventDefault(); kejaAuth.requireTenantAuth(() => app.unlockDetailPhotos('${p.id}')); return false;`);
-        directionsBtn.style.opacity = '0.5';
+        directionsBtn.onclick = (e) => {
+          e.preventDefault();
+          KejaViewing.openBookingModal(p.id);
+        };
+        directionsBtn.style.opacity = '0.7';
       }
-      if (gpsLockOverlay) gpsLockOverlay.style.display = 'flex';
+      if (mapEl) mapEl.style.display = 'none';
+      if (gpsLockedCard) {
+        gpsLockedCard.style.display = 'block';
+        const suburbEl = document.getElementById('detail-gps-locked-suburb');
+        if (suburbEl) suburbEl.textContent = p.estateSuburb ? `${p.estateSuburb}, Nairobi` : (p.county || 'Nairobi');
+      }
+      if (gpsBadge) gpsBadge.textContent = '🔒 Pin Protected';
+    }
+
+    // Populate Sticky Action Bar at bottom
+    const stickyPrice = document.getElementById('detail-sticky-price');
+    const stickySuburb = document.getElementById('detail-sticky-suburb');
+    if (stickyPrice) {
+      const period = p.rentPeriod || (isBnb ? 'night' : 'mo');
+      stickyPrice.textContent = `KSh ${Number(p.rentKes || p.price || 0).toLocaleString()}/${period}`;
+    }
+    if (stickySuburb) {
+      stickySuburb.textContent = `${p.estateSuburb || p.county || 'Nairobi'} · ${p.title || 'Listing'}`;
     }
 
     // Social Live Comments, Tenant Critiques & Discussion
@@ -2618,11 +2654,6 @@ class NairobiRentalsApp {
     if (fraudToggleIcon) fraudToggleIcon.style.transform = 'rotate(0deg)';
 
     this.openModal('modal-property-detail');
-
-    // Initialize or refresh Detail Map Canvas
-    setTimeout(() => {
-      this.initDetailMap(p);
-    }, 250);
   }
 
   initDetailMap(property) {
@@ -3200,21 +3231,49 @@ class NairobiRentalsApp {
     container.innerHTML = msgs.map(m => {
       const isMe = m.senderId === (session ? session.id : 'me') || m.isSenderMe;
       const timeStr = m.createdAt ? new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now';
+      const isViewingQuery = /viewing|schedule|visit|see the house|inspect/i.test(m.text || '');
 
       return `
         <div style="display: flex; flex-direction: column; align-items: ${isMe ? 'flex-end' : 'flex-start'}; margin-bottom: 4px;">
-          <div style="font-size: 0.72rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
-            ${isMe ? 'You' : m.senderName} · ${timeStr}
+          <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
+            ${isMe ? 'You' : (m.senderName || 'Landlord')} · ${timeStr}
           </div>
-          <div style="max-width: 80%; padding: 10px 14px; border-radius: ${isMe ? '16px 16px 2px 16px' : '16px 16px 16px 2px'}; background: ${isMe ? '#00b53f' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.88rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
+          <div style="max-width: 82%; padding: 9px 13px; border-radius: ${isMe ? '14px 14px 2px 14px' : '14px 14px 14px 2px'}; background: ${isMe ? '#00b53f' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.86rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
             ${m.text}
           </div>
+          ${isViewingQuery && !this.isAdminChat ? `
+            <div style="max-width: 82%; margin-top: 5px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 9px; padding: 8px 10px; font-size: 0.76rem; color: #166534; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div>
+                <i class="fas fa-calendar-check" style="color: #00b53f;"></i> <strong>Book Official Viewing:</strong> 60s SLA
+              </div>
+              <button type="button" onclick="app.triggerViewingFromChat()" style="background: #00b53f; color: white; border: none; border-radius: 6px; padding: 4px 10px; font-weight: 800; font-size: 0.72rem; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,181,63,0.3);">
+                Book (KSh 200)
+              </button>
+            </div>
+          ` : ''}
         </div>
       `;
     }).join('');
 
     // Scroll to bottom
     container.scrollTop = container.scrollHeight;
+  }
+
+  triggerViewingFromChat() {
+    const prop = this.activeChatProperty || this.selectedPropertyForDetail;
+    if (!prop) {
+      this.closeModal('modal-messages');
+      return;
+    }
+    const propId = prop.id;
+    // Post note to chat thread so admin and landlord have record of inquiry
+    this.sendChatMessage("Hello, I would like to schedule an in-person viewing appointment for this property.");
+    this.closeModal('modal-messages');
+    setTimeout(() => {
+      if (window.KejaViewing && typeof KejaViewing.openBookingModal === 'function') {
+        KejaViewing.openBookingModal(propId);
+      }
+    }, 200);
   }
 
   sendQuickReply(text) {
@@ -3241,17 +3300,24 @@ class NairobiRentalsApp {
     const prop = this.activeChatProperty;
     const isAdminChat = this.isAdminChat || !prop;
 
+    const recipientId = prop 
+      ? (prop.landlord?.id || prop.landlordId || prop.landlord_id || 'usr-admin-01') 
+      : 'usr-admin-01';
+    const recipientName = prop 
+      ? (prop.landlord?.name || prop.caretaker_name || 'Landlord') 
+      : 'KejaMarket Admin';
+
     const newMsg = {
       id: 'msg-' + Date.now(),
       isAdminMessage: isAdminChat,
       propertyId: prop ? prop.id : null,
       propertyTitle: prop ? prop.title : 'Admin Inquiry',
-      estateSuburb: prop ? prop.estateSuburb : 'Nairobi',
-      recipientId: prop ? prop.landlord.id : 'usr-admin-01',
-      recipientName: prop ? prop.landlord.name : 'KejaMarket Admin',
-      senderId: session ? session.id : 'me',
-      senderName: session ? session.name : 'User',
-      senderPhone: session ? session.phone : '',
+      estateSuburb: prop ? (prop.estateSuburb || prop.county || 'Nairobi') : 'Nairobi',
+      recipientId: recipientId,
+      recipientName: recipientName,
+      senderId: session ? session.id : ('guest-' + Date.now()),
+      senderName: session ? (session.name || 'Tenant') : 'Interested Tenant',
+      senderPhone: session ? (session.phone || '') : '',
       isSenderMe: true,
       text: text,
       createdAt: new Date().toISOString()
@@ -3261,7 +3327,7 @@ class NairobiRentalsApp {
     this.saveChatMessages();
     this.renderChatMessages();
 
-    // Post to backend
+    // Post to backend database
     try {
       const headers = { 'Content-Type': 'application/json' };
       if (window.kejaAuth && window.kejaAuth.getToken()) {
@@ -3273,15 +3339,13 @@ class NairobiRentalsApp {
         body: JSON.stringify(newMsg)
       });
     } catch (err) {
-      console.warn('Message offline sync');
+      console.warn('Message offline sync:', err);
     }
 
     if (isAdminChat) {
-      // No auto-reply — admin responds manually through the admin portal
-      this.showToast('Message sent to KejaMarket Admin. We will respond via SMS shortly.', 'success');
+      this.showToast('Message sent to KejaMarket Admin. We will respond shortly.', 'success');
     } else if (prop) {
-      // No auto-reply — landlord replies manually through their portal
-      this.showToast(`Message sent to ${prop.landlord?.name || 'landlord'}. They will reply shortly.`, 'info');
+      this.showToast(`Message sent to ${recipientName}. They will reply shortly.`, 'info');
     }
   }
 

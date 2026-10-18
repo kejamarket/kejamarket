@@ -28,7 +28,7 @@ class CommentManager {
               id: 'rep-101-1',
               author: 'James Mwangi (Landlord)',
               isLandlord: true,
-              text: 'Hello Faith! Yes, viewing is 100% free anytime between 9am and 6pm. The caretaker is on-site at the gate.',
+              text: 'Hello Faith! You can book an official viewing through KejaMarket anytime between 9am and 6pm. Once confirmed and verified, the exact gate location and caretaker contacts will unlock.',
               createdAt: new Date(Date.now() - 5400000).toISOString()
             }
           ]

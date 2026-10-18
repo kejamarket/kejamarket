@@ -1726,6 +1726,517 @@ class PostgreSQLStore {
     if (!this.fallbackStore.data.huntProperties) this.fallbackStore.data.huntProperties=[];
     this.fallbackStore.data.huntProperties.push(p); return p;
   }
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // VIEWING BOOKING SYSTEM (Spec v1.1)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  async createViewingRequest(data) {
+    if (!this.isConnected) return null;
+    const id = 'vr-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7);
+    const r = await this.query(`
+      INSERT INTO viewing_requests (
+        id, tenant_id, property_id, preferred_date, preferred_time,
+        alternate_date, alternate_time, status, rep_notified_at,
+        rep_notification_channel, escalation_due_at, metadata
+      ) VALUES (
+        $1, $2, $3, $4, $5,
+        $6, $7, 'awaiting_property_confirmation', NOW(),
+        $8, NOW() + INTERVAL '60 seconds', $9
+      ) RETURNING *
+    `, [
+      id,
+      data.tenantId,
+      data.propertyId,
+      data.preferredDate,
+      data.preferredTime,
+      data.alternateDate || null,
+      data.alternateTime || null,
+      data.repNotificationChannel || 'in_app',
+      JSON.stringify(data.metadata || {})
+    ]);
+    return r.rows[0];
+  }
+
+  async getViewingRequest(id) {
+    if (!this.isConnected) return null;
+    const r = await this.query(`
+      SELECT 
+        vr.*,
+        p.title AS property_title,
+        p.rent_kes AS property_price,
+        p.estate_suburb AS property_location,
+        p.county,
+        p.caretaker_name,
+        p.caretaker_phone,
+        p.backup_contact_phone,
+        p.backup_contact_name,
+        p.latitude,
+        p.longitude,
+        p.exact_location,
+        p.landlord_id,
+        u.name AS tenant_name,
+        u.phone AS tenant_phone,
+        u.email AS tenant_email,
+        vb.id AS booking_id,
+        vb.status AS booking_status,
+        vb.payment_amount,
+        vb.receipt_id,
+        vb.contact_unlocked_at,
+        vb.gps_unlocked_at
+      FROM viewing_requests vr
+      JOIN properties p ON vr.property_id = p.id
+      JOIN users u ON vr.tenant_id = u.id
+      LEFT JOIN viewing_bookings vb ON vb.request_id = vr.id
+      WHERE vr.id = $1
+    `, [id]);
+    return r.rows[0] || null;
+  }
+
+  async getViewingRequestsByTenant(tenantId) {
+    if (!this.isConnected) return [];
+    const r = await this.query(`
+      SELECT 
+        vr.*,
+        p.title AS property_title,
+        p.rent_kes AS property_price,
+        p.estate_suburb AS property_location,
+        p.county,
+        vb.id AS booking_id,
+        vb.status AS booking_status,
+        vb.payment_amount,
+        vb.receipt_id,
+        vb.contact_unlocked_at,
+        vb.gps_unlocked_at,
+        vb.unlocked_contact_snapshot
+      FROM viewing_requests vr
+      JOIN properties p ON vr.property_id = p.id
+      LEFT JOIN viewing_bookings vb ON vb.request_id = vr.id
+      WHERE vr.tenant_id = $1
+      ORDER BY vr.created_at DESC
+    `, [tenantId]);
+    return r.rows;
+  }
+
+  async getViewingRequestsForLandlord(landlordId) {
+    if (!this.isConnected) return [];
+    const r = await this.query(`
+      SELECT 
+        vr.*,
+        p.title AS property_title,
+        p.rent_kes AS property_price,
+        p.estate_suburb AS property_location,
+        p.county,
+        u.name AS tenant_name,
+        u.phone AS tenant_phone,
+        vb.id AS booking_id,
+        vb.status AS booking_status
+      FROM viewing_requests vr
+      JOIN properties p ON vr.property_id = p.id
+      JOIN users u ON vr.tenant_id = u.id
+      LEFT JOIN viewing_bookings vb ON vb.request_id = vr.id
+      WHERE p.landlord_id = $1
+      ORDER BY vr.created_at DESC
+    `, [landlordId]);
+    return r.rows;
+  }
+
+  async updateViewingRequest(id, updates) {
+    if (!this.isConnected) return null;
+    const allowed = [
+      'status', 'confirmed_date', 'confirmed_time', 'escalation_due_at',
+      'confirmation_source', 'confirmed_by_staff_id', 'confirmation_method',
+      'confirmation_notes', 'confirmed_at', 'decline_reason', 'cancelled_by',
+      'cancelled_at', 'assigned_admin_id', 'admin_notes', 'metadata'
+    ];
+    const fields = [];
+    const vals = [];
+    let idx = 1;
+    for (const key of allowed) {
+      if (updates[key] !== undefined) {
+        fields.push(`${key} = $${idx++}`);
+        vals.push(key === 'metadata' && typeof updates[key] === 'object' ? JSON.stringify(updates[key]) : updates[key]);
+      }
+    }
+    if (!fields.length) return null;
+    fields.push(`updated_at = NOW()`);
+    vals.push(id);
+    const r = await this.query(`UPDATE viewing_requests SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`, vals);
+    return r.rows[0] || null;
+  }
+
+  async confirmViewingSlot(requestId, confirmedSlot, confirmedByUserId = null, confirmedByRole = 'landlord', notes = null) {
+    if (!this.isConnected) return null;
+    const date = confirmedSlot.date;
+    const time = confirmedSlot.time;
+
+    const req = await this.getViewingRequest(requestId);
+    if (!req) throw new Error('Viewing request not found');
+
+    // Slot lock for 15 minutes to allow payment
+    const lockId = 'lock-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6);
+    try {
+      await this.query(`
+        INSERT INTO viewing_slot_locks (id, property_id, viewing_date, viewing_time, request_id, expires_at)
+        VALUES ($1, $2, $3, $4, $5, NOW() + INTERVAL '15 minutes')
+        ON CONFLICT (property_id, viewing_date, viewing_time) 
+        DO UPDATE SET request_id = EXCLUDED.request_id, expires_at = NOW() + INTERVAL '15 minutes', is_released = false
+      `, [lockId, req.property_id, date, time, requestId]);
+    } catch (lockErr) {
+      console.warn('Slot lock note:', lockErr.message);
+    }
+
+    await this.query(`
+      UPDATE viewing_requests SET
+        status = 'slot_confirmed_awaiting_payment',
+        confirmed_date = $1,
+        confirmed_time = $2,
+        confirmed_at = NOW(),
+        confirmation_source = $3,
+        confirmed_by_staff_id = $4,
+        confirmation_notes = $5,
+        updated_at = NOW()
+      WHERE id = $6
+    `, [date, time, confirmedByRole, confirmedByUserId, notes, requestId]);
+
+    const bookingId = 'vb-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7);
+    const rBooking = await this.query(`
+      INSERT INTO viewing_bookings (
+        id, request_id, tenant_id, property_id, viewing_date, viewing_time,
+        payment_amount, status, created_at, updated_at
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, 200.00, 'awaiting_payment', NOW(), NOW()
+      )
+      ON CONFLICT (request_id) DO UPDATE SET
+        viewing_date = EXCLUDED.viewing_date,
+        viewing_time = EXCLUDED.viewing_time,
+        updated_at = NOW()
+      RETURNING *
+    `, [bookingId, requestId, req.tenant_id, req.property_id, date, time]);
+
+    return { request: await this.getViewingRequest(requestId), booking: rBooking.rows[0] };
+  }
+
+  async declineViewingRequest(requestId, reason, declinedByUserId = null) {
+    if (!this.isConnected) return null;
+    const r = await this.query(`
+      UPDATE viewing_requests SET
+        status = 'declined',
+        decline_reason = $1,
+        updated_at = NOW()
+      WHERE id = $2
+      RETURNING *
+    `, [reason, requestId]);
+    return r.rows[0];
+  }
+
+  async recordPolicyAcceptance(requestId, tenantId, ipAddress = null, userAgent = null) {
+    if (!this.isConnected) return false;
+    const id = 'vpa-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6);
+    await this.query(`
+      INSERT INTO viewing_policy_acceptances (id, tenant_id, request_id, policy_version, ip_address, user_agent)
+      VALUES ($1, $2, $3, '1.0', $4, $5)
+    `, [id, tenantId, requestId, ipAddress, userAgent]);
+    return true;
+  }
+
+  async getOverdueEscalations() {
+    if (!this.isConnected) return [];
+    const r = await this.query(`
+      SELECT 
+        vr.*,
+        p.title AS property_title,
+        p.caretaker_phone,
+        p.caretaker_name,
+        p.backup_contact_phone,
+        p.backup_contact_name,
+        p.landlord_id,
+        u.name AS tenant_name,
+        u.phone AS tenant_phone
+      FROM viewing_requests vr
+      JOIN properties p ON vr.property_id = p.id
+      JOIN users u ON vr.tenant_id = u.id
+      WHERE vr.status = 'awaiting_property_confirmation'
+        AND vr.escalation_due_at <= NOW()
+      ORDER BY vr.escalation_due_at ASC
+    `);
+    return r.rows;
+  }
+
+  async markEscalated(requestId) {
+    if (!this.isConnected) return null;
+    const r = await this.query(`
+      UPDATE viewing_requests SET
+        status = 'escalated_to_admin',
+        updated_at = NOW()
+      WHERE id = $1 AND status = 'awaiting_property_confirmation'
+      RETURNING *
+    `, [requestId]);
+    return r.rows[0];
+  }
+
+  async getAdminViewingQueue(filter = 'active') {
+    if (!this.isConnected) return [];
+    let whereClause = '';
+    if (filter === 'escalated') {
+      whereClause = `WHERE vr.status = 'escalated_to_admin'`;
+    } else if (filter === 'active') {
+      whereClause = `WHERE vr.status IN ('awaiting_property_confirmation', 'escalated_to_admin', 'slot_confirmed_awaiting_payment', 'payment_initiated')`;
+    } else if (filter === 'all') {
+      whereClause = ``;
+    } else {
+      whereClause = `WHERE vr.status = '${filter}'`;
+    }
+
+    const r = await this.query(`
+      SELECT 
+        vr.*,
+        p.title AS property_title,
+        p.rent_kes AS property_price,
+        p.estate_suburb AS property_location,
+        p.county,
+        p.caretaker_phone,
+        p.caretaker_name,
+        p.backup_contact_phone,
+        p.backup_contact_name,
+        p.landlord_id,
+        u.name AS tenant_name,
+        u.phone AS tenant_phone,
+        vb.id AS booking_id,
+        vb.status AS booking_status,
+        vb.payment_amount,
+        vb.receipt_id
+      FROM viewing_requests vr
+      JOIN properties p ON vr.property_id = p.id
+      JOIN users u ON vr.tenant_id = u.id
+      LEFT JOIN viewing_bookings vb ON vb.request_id = vr.id
+      ${whereClause}
+      ORDER BY 
+        CASE WHEN vr.status = 'escalated_to_admin' THEN 1
+             WHEN vr.status = 'awaiting_property_confirmation' THEN 2
+             ELSE 3 END,
+        vr.escalation_due_at ASC NULLS LAST,
+        vr.created_at DESC
+    `);
+    return r.rows;
+  }
+
+  async verifyAndConfirmViewingPayment(requestIdOrBookingId, transactionDetails = {}) {
+    if (!this.isConnected) return null;
+
+    const r = await this.query(`
+      SELECT 
+        vb.*,
+        vr.id AS req_id,
+        vr.tenant_id,
+        vr.property_id,
+        p.caretaker_name,
+        p.caretaker_phone,
+        p.backup_contact_name,
+        p.backup_contact_phone,
+        p.latitude,
+        p.longitude,
+        p.exact_location,
+        p.title AS property_title
+      FROM viewing_bookings vb
+      JOIN viewing_requests vr ON vb.request_id = vr.id
+      JOIN properties p ON vr.property_id = p.id
+      WHERE vb.id = $1 OR vb.request_id = $1
+    `, [requestIdOrBookingId]);
+
+    if (!r.rows[0]) return null;
+    const row = r.rows[0];
+
+    const contactSnapshot = {
+      caretaker_name: row.caretaker_name || 'Property Manager',
+      caretaker_phone: row.caretaker_phone || row.backup_contact_phone || 'Available via Support',
+      backup_contact_name: row.backup_contact_name || '',
+      backup_contact_phone: row.backup_contact_phone || '',
+      exact_location: row.exact_location || '',
+      latitude: row.latitude || null,
+      longitude: row.longitude || null,
+      unlocked_at: new Date().toISOString()
+    };
+
+    const receiptId = transactionDetails.receipt || ('KM-VIEW-' + Date.now().toString(36).toUpperCase());
+
+    await this.query(`
+      UPDATE viewing_bookings SET
+        status = 'confirmed',
+        payment_transaction_id = $1,
+        payment_verified_at = NOW(),
+        contact_unlocked_at = NOW(),
+        gps_unlocked_at = NOW(),
+        unlocked_contact_snapshot = $2,
+        receipt_id = $3,
+        updated_at = NOW()
+      WHERE id = $4
+    `, [transactionDetails.transactionId || null, JSON.stringify(contactSnapshot), receiptId, row.id]);
+
+    await this.query(`
+      UPDATE viewing_requests SET
+        status = 'booking_confirmed',
+        updated_at = NOW()
+      WHERE id = $1
+    `, [row.req_id]);
+
+    if (transactionDetails.transactionId) {
+      try {
+        await this.query(`
+          UPDATE transactions SET
+            viewing_request_id = $1,
+            viewing_booking_id = $2
+          WHERE id = $3
+        `, [row.req_id, row.id, transactionDetails.transactionId]);
+      } catch (txErr) {
+        console.warn('Transaction link error:', txErr.message);
+      }
+    }
+
+    return {
+      bookingId: row.id,
+      requestId: row.req_id,
+      status: 'confirmed',
+      receiptId,
+      unlocked: contactSnapshot
+    };
+  }
+
+  async getUnlockedViewingData(bookingOrRequestId, tenantId, isAdmin = false) {
+    if (!this.isConnected) return null;
+    const r = await this.query(`
+      SELECT 
+        vb.id AS booking_id,
+        vb.status AS booking_status,
+        vb.tenant_id,
+        vb.viewing_date,
+        vb.viewing_time,
+        vb.contact_unlocked_at,
+        vb.gps_unlocked_at,
+        vb.unlocked_contact_snapshot,
+        vb.receipt_id,
+        p.id AS property_id,
+        p.title AS property_title,
+        p.estate_suburb AS property_location,
+        p.county,
+        p.caretaker_name,
+        p.caretaker_phone,
+        p.backup_contact_phone,
+        p.backup_contact_name,
+        p.latitude,
+        p.longitude,
+        p.exact_location
+      FROM viewing_bookings vb
+      JOIN properties p ON vb.property_id = p.id
+      WHERE (vb.id = $1 OR vb.request_id = $1)
+    `, [bookingOrRequestId]);
+
+    if (!r.rows[0]) return null;
+    const row = r.rows[0];
+
+    if (!isAdmin && row.tenant_id !== tenantId) {
+      return { error: 'unauthorized', message: 'You do not have access to this viewing booking' };
+    }
+
+    if (row.booking_status !== 'confirmed' && row.booking_status !== 'completed' && !isAdmin) {
+      return { error: 'payment_required', message: 'Viewing commitment fee must be paid to unlock contact and GPS details' };
+    }
+
+    return {
+      bookingId: row.booking_id,
+      propertyId: row.property_id,
+      propertyTitle: row.property_title,
+      viewingDate: row.viewing_date,
+      viewingTime: row.viewing_time,
+      receiptId: row.receipt_id,
+      unlockedAt: row.contact_unlocked_at,
+      contact: {
+        name: row.unlocked_contact_snapshot?.caretaker_name || row.caretaker_name || 'Property Manager',
+        phone: row.unlocked_contact_snapshot?.caretaker_phone || row.caretaker_phone || row.backup_contact_phone
+      },
+      location: {
+        exact: row.unlocked_contact_snapshot?.exact_location || row.exact_location,
+        latitude: row.unlocked_contact_snapshot?.latitude || row.latitude,
+        longitude: row.unlocked_contact_snapshot?.longitude || row.longitude
+      }
+    };
+  }
+
+  async hasTenantUnlockedProperty(propertyId, tenantId) {
+    if (!this.isConnected || !tenantId) return false;
+    const r = await this.query(`
+      SELECT id FROM viewing_bookings
+      WHERE property_id = $1 
+        AND tenant_id = $2 
+        AND status IN ('confirmed', 'completed')
+        AND contact_unlocked_at IS NOT NULL
+      LIMIT 1
+    `, [propertyId, tenantId]);
+    return r.rows.length > 0;
+  }
+
+  async recordViewingOutcome(bookingId, outcome, notes = null, staffId = null) {
+    if (!this.isConnected) return null;
+    const r = await this.query(`
+      UPDATE viewing_bookings SET
+        status = $1,
+        outcome_recorded_at = NOW(),
+        outcome_recorded_by = $2,
+        outcome_notes = $3,
+        updated_at = NOW()
+      WHERE id = $4
+      RETURNING *
+    `, [outcome, staffId, notes, bookingId]);
+    return r.rows[0];
+  }
+
+  async reconfirmPropertyAvailability(propertyId, confirmedByUserId = null) {
+    if (!this.isConnected) return null;
+    const r = await this.query(`
+      UPDATE properties SET
+        availability_last_confirmed_at = NOW(),
+        reconfirmation_due_at = NOW() + INTERVAL '14 days',
+        listing_status = 'published',
+        status = 'active',
+        is_verified = TRUE,
+        raw_data = jsonb_set(COALESCE(raw_data, '{}'::jsonb), '{status}', '"active"'::jsonb)
+      WHERE id = $1
+      RETURNING id, title, listing_status, availability_last_confirmed_at, reconfirmation_due_at
+    `, [propertyId]);
+    return r.rows[0] || null;
+  }
+
+  async checkStaleAndReconfirmationListings() {
+    if (!this.isConnected) return { unconfirmedCount: 0, archivedCount: 0 };
+    
+    // 1) 21 days without reconfirmation -> auto-archive
+    const rArchive = await this.query(`
+      UPDATE properties SET
+        listing_status = 'archived',
+        status = 'archived',
+        raw_data = jsonb_set(COALESCE(raw_data, '{}'::jsonb), '{status}', '"archived"'::jsonb)
+      WHERE (listing_status IS NULL OR listing_status != 'archived')
+        AND (status IS NULL OR status != 'archived')
+        AND COALESCE(availability_last_confirmed_at, created_at) < NOW() - INTERVAL '21 days'
+      RETURNING id
+    `);
+
+    // 2) 14 days without reconfirmation -> temporarily hide (unconfirmed)
+    const rUnconfirmed = await this.query(`
+      UPDATE properties SET
+        listing_status = 'temporarily_unconfirmed',
+        status = 'unconfirmed',
+        raw_data = jsonb_set(COALESCE(raw_data, '{}'::jsonb), '{status}', '"unconfirmed"'::jsonb)
+      WHERE (listing_status = 'published' OR status = 'active')
+        AND COALESCE(availability_last_confirmed_at, created_at) < NOW() - INTERVAL '14 days'
+      RETURNING id
+    `);
+
+    return {
+      archivedCount: rArchive.rowCount,
+      unconfirmedCount: rUnconfirmed.rowCount
+    };
+  }
 }
 
 module.exports = new PostgreSQLStore();

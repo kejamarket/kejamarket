@@ -1,0 +1,398 @@
+    const result = await bulkOpsService.bulkUpdatePrices(propertyIds, parseFloat(adjustment), type, req.user.id);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+// KEJAMARKET VIEWING BOOKING SYSTEM (SPEC v1.1)
+// ════════════════════════════════════════════════════════════════════════════
+
+// POST /api/viewings/request — Tenant submits a viewing request
+app.post('/api/viewings/request', requireAuth, async (req, res) => {
+  try {
+    const { propertyId, preferredDate, preferredTime, alternateDate, alternateTime, notes } = req.body;
+    if (!propertyId || !preferredDate || !preferredTime) {
+      return res.status(400).json({ success: false, message: 'Property, preferred date, and preferred time are required.' });
+    }
+
+    const property = await store.getPropertyById(propertyId);
+    if (!property) {
+      return res.status(404).json({ success: false, message: 'Property not found.' });
+    }
+
+    const viewingReq = await store.createViewingRequest({
+      tenantId: req.user.id,
+      propertyId,
+      preferredDate,
+      preferredTime,
+      alternateDate: alternateDate || null,
+      alternateTime: alternateTime || null,
+      repNotificationChannel: 'in_app',
+      metadata: { notes: notes || '' }
+    });
+
+    // Notify landlord if landlord phone exists
+    const landlordPhone = property.caretaker_phone || property.caretakerPhone || property.phone;
+    if (landlordPhone && typeof sendRealSMS === 'function') {
+      try {
+        sendRealSMS(
+          formatPhone(landlordPhone),
+          `[KejaMarket] New viewing request for "${property.title || 'your property'}" on ${preferredDate} at ${preferredTime}. Log in to confirm availability within 60s.`
+        );
+      } catch (smsErr) {
+        console.warn('Viewing request SMS notification error:', smsErr.message);
+      }
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Viewing request received. Property manager has 60 seconds to respond before our team assists.',
+      request: viewingReq,
+      escalationSeconds: 60
+    });
+  } catch (err) {
+    console.error('Viewing request error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/viewings/my — Tenant's viewing requests
+app.get('/api/viewings/my', requireAuth, async (req, res) => {
+  try {
+    const requests = await store.getViewingRequestsByTenant(req.user.id);
+    res.json({ success: true, requests });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/viewings/property/:propertyId/my — Check if tenant has active request for property
+app.get('/api/viewings/property/:propertyId/my', requireAuth, async (req, res) => {
+  try {
+    const requests = await store.getViewingRequestsByTenant(req.user.id);
+    const match = (requests || []).find(r => r.property_id === req.params.propertyId);
+    res.json({ success: true, request: match || null });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/viewings/:id — Status polling for a viewing request
+app.get('/api/viewings/:id', requireAuth, async (req, res) => {
+  try {
+    const vr = await store.getViewingRequest(req.params.id);
+    if (!vr) {
+      return res.status(404).json({ success: false, message: 'Viewing request not found.' });
+    }
+
+    const isAdmin = req.user.isAdmin || req.user.role === 'admin' || req.user.id === 'usr-admin-01';
+    const isTenant = req.user.id === vr.tenant_id;
+    const isLandlord = req.user.id === vr.landlord_id;
+
+    if (!isAdmin && !isTenant && !isLandlord) {
+      return res.status(403).json({ success: false, message: 'Unauthorized to view this viewing request.' });
+    }
+
+    // Never return private caretaker contacts or exact GPS in this general status check
+    const sanitizedVr = { ...vr };
+    if (!isAdmin && (!vr.contact_unlocked_at || !isTenant)) {
+      delete sanitizedVr.caretaker_phone;
+      delete sanitizedVr.backup_contact_phone;
+      delete sanitizedVr.latitude;
+      delete sanitizedVr.longitude;
+      delete sanitizedVr.exact_location;
+    }
+
+    res.json({ success: true, request: sanitizedVr });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/viewings/:id/accept-policy — Audit log tenant accepting the no-show policy
+app.post('/api/viewings/:id/accept-policy', requireAuth, async (req, res) => {
+  try {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const ua = req.headers['user-agent'];
+    await store.recordPolicyAcceptance(req.params.id, req.user.id, ip, ua);
+    res.json({ success: true, message: 'Viewing policy accepted.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/viewings/:id/confirm — Landlord or Staff confirms a viewing slot
+app.post('/api/viewings/:id/confirm', requireAuth, async (req, res) => {
+  try {
+    const { confirmedDate, confirmedTime, notes } = req.body;
+    const vr = await store.getViewingRequest(req.params.id);
+    if (!vr) {
+      return res.status(404).json({ success: false, message: 'Viewing request not found.' });
+    }
+
+    const isAdmin = req.user.isAdmin || req.user.role === 'admin' || req.user.id === 'usr-admin-01';
+    const isLandlord = req.user.id === vr.landlord_id;
+
+    if (!isAdmin && !isLandlord) {
+      return res.status(403).json({ success: false, message: 'Only the property manager or KejaMarket staff can confirm this slot.' });
+    }
+
+    const date = confirmedDate || vr.preferred_date;
+    const time = confirmedTime || vr.preferred_time;
+
+    const result = await store.confirmViewingSlot(
+      req.params.id,
+      { date, time },
+      req.user.id,
+      isAdmin ? 'admin' : 'landlord',
+      notes || null
+    );
+
+    // Notify tenant that slot is confirmed and they have 15 mins to lock it with KSh 200
+    if (vr.tenant_phone && typeof sendRealSMS === 'function') {
+      try {
+        sendRealSMS(
+          formatPhone(vr.tenant_phone),
+          `[KejaMarket] Great news! Your viewing for "${vr.property_title}" is CONFIRMED for ${date} at ${time}. Complete the KSh 200 commitment fee within 15 minutes to unlock exact GPS & contact details: kejamarket.co.ke`
+        );
+      } catch (smsErr) {
+        console.warn('Viewing confirm SMS error:', smsErr.message);
+      }
+    }
+
+    res.json({
+      success: true,
+      message: 'Viewing slot confirmed. Tenant notified to pay KSh 200 commitment fee.',
+      ...result
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/viewings/:id/decline — Landlord or Staff declines request
+app.post('/api/viewings/:id/decline', requireAuth, async (req, res) => {
+  try {
+    const { reason } = req.body;
+    const vr = await store.getViewingRequest(req.params.id);
+    if (!vr) {
+      return res.status(404).json({ success: false, message: 'Viewing request not found.' });
+    }
+
+    const isAdmin = req.user.isAdmin || req.user.role === 'admin' || req.user.id === 'usr-admin-01';
+    const isLandlord = req.user.id === vr.landlord_id;
+
+    if (!isAdmin && !isLandlord) {
+      return res.status(403).json({ success: false, message: 'Unauthorized to decline this request.' });
+    }
+
+    const updated = await store.declineViewingRequest(req.params.id, reason || 'Property unavailable at requested time', req.user.id);
+    res.json({ success: true, message: 'Viewing request declined.', request: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/viewings/:id/pay — Tenant initiates KSh 200 viewing commitment fee
+app.post('/api/viewings/:id/pay', requireAuth, async (req, res) => {
+  try {
+    const { phone } = req.body;
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'M-Pesa phone number is required.' });
+    }
+
+    const vr = await store.getViewingRequest(req.params.id);
+    if (!vr) {
+      return res.status(404).json({ success: false, message: 'Viewing request not found.' });
+    }
+
+    if (vr.tenant_id !== req.user.id && !req.user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'You can only pay for your own viewing booking.' });
+    }
+
+    const feeAmount = 200; // Spec v1.1 KSh 200 commitment fee
+    const formattedPhone = formatPhone(phone);
+
+    // If live Daraja configured, dispatch real STK push
+    if (hasDarajaCredentials()) {
+      try {
+        const token = await getMpesaToken();
+        const timestamp = getDarajaTimestamp();
+        const password = generatePassword(timestamp);
+
+        const payload = {
+          BusinessShortCode: PAYBILL,
+          Password: password,
+          Timestamp: timestamp,
+          TransactionType: 'CustomerPayBillOnline',
+          Amount: feeAmount,
+          PartyA: formattedPhone,
+          PartyB: PAYBILL,
+          PhoneNumber: formattedPhone,
+          CallBackURL: CALLBACK_URL,
+          AccountReference: `VIEW-${vr.id.slice(-6).toUpperCase()}`,
+          TransactionDesc: `Viewing Fee: ${vr.property_title || 'KejaMarket'}`.slice(0, 32),
+        };
+
+        const stkRes = await fetch(`${MPESA_BASE}/mpesa/stkpush/v1/processrequest`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const stkData = await stkRes.json();
+        if (stkData.ResponseCode === '0') {
+          await store.createTransaction({
+            checkoutRequestId: stkData.CheckoutRequestID,
+            merchantRequestId: stkData.MerchantRequestID,
+            phone: formattedPhone,
+            amount: feeAmount,
+            itemType: 'viewing_fee',
+            itemName: `Viewing Fee: ${vr.property_title}`,
+            targetPropertyId: vr.property_id,
+            userId: req.user.id,
+            status: 'PENDING'
+          });
+
+          await store.updateViewingRequest(vr.id, {
+            status: 'payment_initiated'
+          });
+
+          return res.json({
+            success: true,
+            checkoutRequestId: stkData.CheckoutRequestID,
+            message: `M-Pesa STK push dispatched to ${formattedPhone}. Enter your PIN on your phone.`
+          });
+        }
+      } catch (stkErr) {
+        console.warn('Viewing fee STK push error:', stkErr.message);
+      }
+    }
+
+    // Sandbox / Simulation fallback
+    const mockCheckoutId = 'ws_VIEW_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+    await store.createTransaction({
+      checkoutRequestId: mockCheckoutId,
+      merchantRequestId: 'MR_VIEW_' + Date.now(),
+      phone: formattedPhone,
+      amount: feeAmount,
+      itemType: 'viewing_fee',
+      itemName: `Viewing Fee: ${vr.property_title}`,
+      targetPropertyId: vr.property_id,
+      userId: req.user.id,
+      status: 'PENDING'
+    });
+
+    res.json({
+      success: true,
+      checkoutRequestId: mockCheckoutId,
+      isSimulation: true,
+      message: `Prompt sent to ${formattedPhone}. Please verify payment with your M-Pesa receipt.`
+    });
+  } catch (err) {
+    console.error('Viewing payment error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/viewings/:id/unlock — Unlock exact GPS and landlord/caretaker phone after payment
+app.get('/api/viewings/:id/unlock', requireAuth, async (req, res) => {
+  try {
+    const isAdmin = req.user.isAdmin || req.user.role === 'admin' || req.user.id === 'usr-admin-01';
+    const unlocked = await store.getUnlockedViewingData(req.params.id, req.user.id, isAdmin);
+    if (!unlocked) {
+      return res.status(404).json({ success: false, message: 'Viewing booking not found.' });
+    }
+    if (unlocked.error) {
+      return res.status(unlocked.error === 'unauthorized' ? 403 : 402).json({
+        success: false,
+        message: unlocked.message
+      });
+    }
+
+    res.json({
+      success: true,
+      data: unlocked
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+// ADMIN VIEWING QUEUE & ACTIONS (SPEC v1.1)
+// ════════════════════════════════════════════════════════════════════════════
+
+// GET /api/admin/viewings/queue — Admin live escalated queue
+app.get('/api/admin/viewings/queue', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const filter = req.query.filter || 'active';
+    const queue = await store.getAdminViewingQueue(filter);
+    res.json({
+      success: true,
+      queue,
+      count: queue.length
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/viewings/:id/staff-confirm — Staff confirms with caretaker by phone
+app.post('/api/admin/viewings/:id/staff-confirm', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const { confirmedDate, confirmedTime, notes } = req.body;
+    const result = await store.confirmViewingSlot(
+      req.params.id,
+      { date: confirmedDate, time: confirmedTime },
+      req.user.id,
+      'admin_staff',
+      notes || 'Confirmed via phone by KejaMarket operations team'
+    );
+    res.json({
+      success: true,
+      message: 'Staff confirmation recorded. Slot locked for 15 minutes awaiting tenant payment.',
+      ...result
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PATCH /api/admin/viewings/:id/outcome — Record post-viewing outcome
+app.patch('/api/admin/viewings/:id/outcome', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const { outcome, notes } = req.body;
+    if (!['completed', 'tenant_no_show', 'landlord_cancelled', 'refunded'].includes(outcome)) {
+      return res.status(400).json({ success: false, message: 'Invalid viewing outcome status.' });
+    }
+
+    const updated = await store.recordViewingOutcome(req.params.id, outcome, notes, req.user.id);
+    res.json({ success: true, message: `Viewing outcome marked as ${outcome}.`, booking: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+// 60-SECOND ESCALATION BACKGROUND WORKER (SPEC v1.1)
+// ════════════════════════════════════════════════════════════════════════════
+setInterval(async () => {
+  try {
+    if (!store || !store.getOverdueEscalations) return;
+    const overdue = await store.getOverdueEscalations();
+    if (overdue && overdue.length > 0) {
+      for (const item of overdue) {
+        await store.markEscalated(item.id);
+        console.log(`⏱️ [VIEWING ESCALATED] Request ${item.id} exceeded 60s SLA. Escalated to admin live queue.`);
+      }
+    }
+  } catch (escalationErr) {
+    console.warn('Escalation worker check:', escalationErr.message);
+  }
+}, 15000); // Check every 15 seconds

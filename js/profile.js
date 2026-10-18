@@ -25,8 +25,8 @@ const kejaProfile = (() => {
       },
       {
         id: 'notif-2',
-        title: 'Anti-Scam Tip: Never pay viewing fees',
-        message: 'KejaMarket verifies listings. Landlords on our platform do NOT charge viewing fees. Report any suspicious requests.',
+        title: 'Anti-Scam Tip: Official KSh 200 Viewing Fee Only',
+        message: 'Only pay the official KSh 200 KejaMarket viewing fee on the platform after your slot is confirmed. Never send fuel or informal money directly to individuals.',
         time: '2 hours ago',
         read: false,
         icon: 'fa-shield-alt',
@@ -492,8 +492,8 @@ const kejaProfile = (() => {
           </div>
         </div>
 
-        <h4 style="color:#1e1b4b; margin:12px 0 6px 0;">1. Zero Viewing Fees</h4>
-        <p>Direct landlords and verified agents on KejaMarket do NOT demand upfront "viewing fees". If anyone asks you for money just to show you an apartment, report their profile immediately.</p>
+        <h4 style="color:#1e1b4b; margin:12px 0 6px 0;">1. Official KSh 200 Platform Viewing Fee Only</h4>
+        <p>Browsing and discovery are free. Pay only the official KSh 200 KejaMarket viewing commitment fee on the platform once your viewing time is confirmed to unlock the exact location and caretaker contact. Never send direct "fuel money" or informal booking deposits to individuals.</p>
 
         <h4 style="color:#1e1b4b; margin:12px 0 6px 0;">2. Water &amp; Electricity Verification</h4>
         <p>Always check if borehole water runs 24/7 and verify whether electricity is postpaid or prepaid KPLC tokens. Check our badge indicators on each listing card.</p>

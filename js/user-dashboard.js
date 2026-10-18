@@ -1315,17 +1315,17 @@ const kejaDashboard = (() => {
               <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
             </summary>
             <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
-              KejaMarket (<strong>kejamarket.co.ke</strong>) is Kenya's verified online rental property marketplace. We eliminate middleman brokers by allowing verified landlords and property managers to list vacant houses, apartments, bedsitters, and Airbnbs directly. Tenants can browse with real-time interactive maps, view watermarked photos, and contact landlords directly via phone call or WhatsApp without paying any viewing fees.
+              KejaMarket (<strong>kejamarket.co.ke</strong>) is Kenya's verified online rental property marketplace. Tenants browse property photos, rent, deposit, amenities, and general neighborhood areas for free. Once you find a house you like, book a viewing slot through KejaMarket. When the landlord or caretaker confirms the appointment, a KSh 200 commitment fee unlocks exact GPS directions and verified contact details.
             </div>
           </details>
 
           <details class="keja-faq-item" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px;">
             <summary style="font-weight: 700; color: #0f172a; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-              <span>Does KejaMarket charge viewing fees or broker commission?</span>
+              <span>Does KejaMarket charge broker commissions or viewing fees?</span>
               <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
             </summary>
             <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
-              No. KejaMarket is 100% free for house hunters and tenants. You can search rentals, filter by neighborhood and price range, view exact building coordinates, and contact property owners directly without paying broker viewing fees.
+              Property discovery and browsing are 100% free. Once you choose to book a physical viewing, an official KSh 200 viewing commitment fee is charged only after the property representative confirms availability. This reserves your slot, prevents double bookings, and unlocks direct caretaker contacts and exact GPS. Never pay arbitrary broker or "fuel" fees directly to individuals.
             </div>
           </details>
 

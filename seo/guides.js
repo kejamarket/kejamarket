@@ -26,8 +26,8 @@ const GUIDES_DATA = {
       
       <h2>5 Golden Rules to Protect Yourself Before Paying Any Deposit</h2>
       
-      <h3>1. Never Pay a "Viewing Fee" to See a Vacant House</h3>
-      <p>Legitimate landlords and registered property managers do not charge viewing fees or consultation fees. Any agent demanding KSh 1,000 to KSh 2,500 before showing you an apartment is engaging in predatory practices. On KejaMarket, all listings provide genuine photos, location details, and direct contact with zero viewing fees.</p>
+      <h3>1. Never Pay Unofficial Broker or "Fuel" Viewing Fees</h3>
+      <p>Legitimate landlords and registered property managers do not demand arbitrary consultation or fuel fees. On KejaMarket, property discovery and browsing are 100% free. Once your viewing slot is explicitly confirmed by the property representative, KejaMarket collects an official KSh 200 platform viewing commitment fee to reserve your appointment and unlock verified directions and contacts. Never send money directly to unverified numbers or rogue street brokers.</p>
 
       <h3>2. Inspect the Property In Person During Daylight</h3>
       <p>Always inspect the unit physically before committing. Check essential utility infrastructure:</p>
@@ -401,7 +401,7 @@ async function renderGuidePage(store, slug) {
       <div style="background:linear-gradient(135deg,#0F2419 0%,#1B6A3B 100%);color:#fff;border-radius:16px;padding:32px;margin:48px 0;text-align:center;">
         <h2 style="font-size:1.5rem;font-weight:800;color:#fff;margin:0 0 10px 0;">Ready to Find Your Next Home in Nairobi?</h2>
         <p style="color:#d1fae5;font-size:1rem;max-width:540px;margin:0 auto 20px auto;">
-          Explore verified apartments with direct landlord contacts, zero fake photos, and zero viewing fees.
+          Explore verified apartments with official viewing coordination, zero fake photos, and secure caretaker unlock.
         </p>
         <a href="/rentals/nairobi" class="km-btn km-btn-primary" style="background:#E8B84B;color:#0F2419;font-weight:800;padding:12px 28px;border-radius:8px;text-decoration:none;display:inline-block;">
           Browse Nairobi Listings →

@@ -2363,3 +2363,59 @@ textarea.form-control {
   color: #ffffff;
   border-color: #2563eb;
 }
+
+/* ============================================================
+   RESPONSIVE MOBILE ADMIN STYLES (Poster 2 - Mobile Support)
+   ============================================================ */
+@media (max-width: 992px) {
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    z-index: 10000;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.25);
+  }
+  .admin-sidebar.open {
+    left: 0;
+  }
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: none;
+  }
+  .sidebar-overlay.active {
+    display: block;
+  }
+  .admin-main {
+    margin-left: 0 !important;
+    max-width: 100vw !important;
+  }
+  .mobile-menu-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    cursor: pointer;
+    font-size: 1.1rem;
+  }
+  .admin-global-search-container {
+    display: none;
+  }
+  .admin-content {
+    padding: 14px;
+  }
+}

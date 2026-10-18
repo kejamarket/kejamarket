@@ -85,7 +85,17 @@
 
       <!-- 4. House Hunt Concierge -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title">Concierge</div>
+        <div class="sidebar-section-title">Viewing & Concierge</div>
+        <button class="admin-nav-btn" data-module="viewings" data-rbac="support,super">
+          <i class="fas fa-calendar-check nav-icon" style="color:#00b53f;"></i>
+          <span>Live Viewing Queue</span>
+          <span class="admin-badge" id="admin-viewings-count" style="display:none; margin-left:auto; background:#dc2626; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">0</span>
+        </button>
+        <button class="admin-nav-btn" data-module="inquiries" data-rbac="support,super">
+          <i class="fas fa-comments nav-icon" style="color:#3b82f6;"></i>
+          <span>Tenant ↔ Landlord Chats</span>
+          <span class="admin-badge" id="badge-inquiries-count" style="display:none; margin-left:auto; background:#3b82f6; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">0</span>
+        </button>
         <button class="admin-nav-btn" data-module="house-hunts" data-rbac="support,super">
           <i class="fas fa-search-location nav-icon"></i>
           <span>House Hunts</span>
@@ -109,13 +119,13 @@
       <!-- 6. Communications & Broadcasts -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">Communications</div>
+        <button class="admin-nav-btn" data-module="inquiries" data-rbac="support,super">
+          <i class="fas fa-comments nav-icon" style="color:#10b981;"></i>
+          <span>All Messages & Chats</span>
+        </button>
         <button class="admin-nav-btn" data-module="messages-broadcast" data-rbac="support,super">
           <i class="fas fa-bullhorn nav-icon"></i>
           <span>Broadcasts & SMS</span>
-        </button>
-        <button class="admin-nav-btn" data-module="inquiries" data-rbac="support,super">
-          <i class="fas fa-envelope nav-icon"></i>
-          <span>Inquiries</span>
         </button>
         <button class="admin-nav-btn" data-module="support" data-rbac="support,super">
           <i class="fas fa-ticket-alt nav-icon"></i>
@@ -257,6 +267,7 @@
 <script src="js/admin-bnb.js?v=1.0"></script>
 <script src="js/admin-operations.js?v=1.0"></script>
 <script src="js/admin-hunts.js?v=1.0"></script>
+<script src="js/admin-viewings.js?v=1.0"></script>
 
 <!-- Mobile Menu Toggle Script -->
 <script>
