@@ -1595,13 +1595,13 @@ window.kejaAuth = kejaAuth;
     console.log('[AUTH] DOM loaded, checking initial auth state');
     
     // Check if user is logged in and update header
-    const session = getSession();
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     if (session) {
       console.log('[AUTH] User session found on page load:', session.name || session.email);
-      updateHeaderUI(session);
+      window.kejaAuth.updateHeaderUI(session);
     } else {
       console.log('[AUTH] No user session found on page load');
-      updateHeaderUI(null);
+      window.kejaAuth.updateHeaderUI(null);
     }
 
     // Disable any competing modal systems for profile
