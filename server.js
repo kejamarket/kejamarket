@@ -11,6 +11,14 @@
  */
 
 require('dotenv').config();
+
+process.on('uncaughtException', (err) => {
+  console.error('[SERVER uncaughtException]', err && (err.stack || err.message || err));
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[SERVER unhandledRejection]', reason && (reason.stack || reason.message || reason));
+});
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -7019,13 +7027,17 @@ async function startServer() {
     }
   });
 
+  server.on('clientError', (err, socket) => {
+    if (err.code === 'ECONNRESET' || !socket.writable) return;
+    socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+  });
+
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`âŒ Port ${PORT} is already in use`);
+      console.error(`❌ Port ${PORT} is already in use`);
       process.exit(1);
     } else {
-      console.error(`âŒ Server error:`, err);
-      process.exit(1);
+      console.error(`❌ Server error:`, err);
     }
   });
 
