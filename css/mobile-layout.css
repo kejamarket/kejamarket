@@ -1141,6 +1141,115 @@ body.mobile-layout > .main-content > #recently-added-section {
   margin-top: 2px;
 }
 /* ========================================
+   PROFILE SCREEN
+   ======================================== */
+.km-profile-screen {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+.km-profile-header {
+  background: linear-gradient(135deg, #00b53f 0%, #047857 100%);
+  padding: 24px 18px 28px;
+  color: white;
+}
+.km-profile-user-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.km-profile-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  border: 2.5px solid rgba(255,255,255,0.6);
+  color: white;
+  font-size: 24px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.km-profile-name {
+  font-size: 17px;
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+.km-profile-email {
+  font-size: 12px;
+  opacity: 0.85;
+}
+.km-profile-menu {
+  padding: 16px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.km-profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.km-profile-menu-item:active {
+  background: #f0fdf4;
+}
+.km-profile-menu-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  color: #00b53f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+.km-profile-menu-text {
+  flex: 1;
+  min-width: 0;
+}
+.km-profile-menu-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+.km-profile-menu-subtitle {
+  font-size: 11.5px;
+  color: #64748b;
+}
+.km-profile-menu-arrow {
+  color: #cbd5e1;
+  font-size: 13px;
+}
+.km-profile-menu-badge {
+  background: #00b53f;
+  color: white;
+  border-radius: 12px;
+  padding: 2px 9px;
+  font-size: 12px;
+  font-weight: 800;
+  min-width: 22px;
+  text-align: center;
+}
+.km-profile-footer {
+  padding: 16px 18px;
+  text-align: center;
+  border-top: 1px solid #f1f5f9;
+  margin: 8px 14px 0;
+}
+
+/* ========================================
    DESKTOP PREVIEW CONTAINER FOR ?view=mobile
    ======================================== */
 @media screen and (min-width: 769px) {

@@ -138,19 +138,48 @@
     updateFavBadge();
   }
 
-  // Load properties from API or fallback reference
+  // Load properties from API or fallback sources (142+ properties)
   async function loadProperties() {
-    try {
-      const res = await fetch('/api/properties');
-      const data = await res.json();
-      if (data && data.properties && data.properties.length > 0) {
-        State.properties = data.properties;
-      }
-    } catch (_) {}
+    // 1. If desktop kejaApp already loaded properties, inherit them immediately
+    if (window.kejaApp && Array.isArray(window.kejaApp.properties) && window.kejaApp.properties.length > 20) {
+      State.properties = window.kejaApp.properties;
+      State.filteredProperties = [...State.properties];
+      console.log('[MobileApp] Inherited', State.properties.length, 'properties from kejaApp');
+      return;
+    }
 
+    try {
+      // Fetch up to 300 verified properties — same endpoint as desktop
+      const res = await fetch('/api/properties?pageSize=300&sort=newest');
+      const data = await res.json();
+      let propsArray = [];
+      if (data && data.properties && Array.isArray(data.properties)) {
+        propsArray = data.properties;
+      } else if (data && data.data && Array.isArray(data.data)) {
+        propsArray = data.data;
+      } else if (Array.isArray(data)) {
+        propsArray = data;
+      }
+
+      if (propsArray.length > 0) {
+        State.properties = propsArray;
+        console.log('[MobileApp] Loaded', State.properties.length, 'properties from API');
+      }
+    } catch (e) {
+      console.warn('[MobileApp] API fetch failed, using fallback:', e.message);
+    }
+
+    // 2. Fallback to SEED_PROPERTIES (142+ authentic listings)
+    if (!State.properties.length && typeof SEED_PROPERTIES !== 'undefined' && Array.isArray(SEED_PROPERTIES)) {
+      State.properties = SEED_PROPERTIES;
+      console.log('[MobileApp] Fallback loaded', State.properties.length, 'properties from SEED_PROPERTIES');
+    }
+
+    // 3. Fallback to EXACT_12_REFERENCE_PROPERTIES if available
     if (!State.properties.length && window.EXACT_12_REFERENCE_PROPERTIES) {
       State.properties = window.EXACT_12_REFERENCE_PROPERTIES;
     }
+
     State.filteredProperties = [...State.properties];
   }
 
@@ -232,6 +261,9 @@
         break;
       case 'filters':
         renderFiltersScreen(headerSlot, mainSlot);
+        break;
+      case 'afford':
+        renderAffordabilityScreen(headerSlot, mainSlot);
         break;
       case 'request-viewing':
         renderRequestViewingScreen(headerSlot, mainSlot, params.id || params);
@@ -315,7 +347,7 @@
       <!-- Quick Category Grid - Exact 8 Icons from Reference -->
       <section class="km-category-grid-section">
         <div class="km-category-grid">
-          <button type="button" class="km-cat-item" onclick="MobileApp.openAffordabilityModal()">
+          <button type="button" class="km-cat-item" onclick="MobileApp.showScreen('afford')">
             <div class="km-cat-icon"><i class="fas fa-calculator"></i></div>
             <span class="km-cat-label">What Can I Afford?</span>
           </button>
@@ -412,18 +444,36 @@
       </div>
     `;
 
-    // Filter properties based on params or active filter
+    // Filter properties based on params or active filter — same logic as website
     let list = [...State.properties];
-    if (params.category) {
-      const cat = params.category.toLowerCase();
-      if (cat === 'rentals') list = list.filter(p => !p.isBnb);
-      else if (cat === 'bnb') list = list.filter(p => p.isBnb);
-      else if (cat === 'land') list = list.filter(p => p.category && p.category.toLowerCase().includes('land'));
+    const cat = (params.category || State.selectedCategory || 'all').toLowerCase();
+    if (cat && cat !== 'all') {
+      if (cat === 'rentals') {
+        list = list.filter(p => !p.isBnb && !(p.category && p.category.toLowerCase().includes('land')) && !(p.category && p.category.toLowerCase().includes('sale')));
+      } else if (cat === 'bnb' || cat === 'airbnbs') {
+        list = list.filter(p => p.isBnb || (p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb'))));
+      } else if (cat === 'land') {
+        list = list.filter(p => p.category && p.category.toLowerCase().includes('land'));
+      } else if (cat === 'apartments') {
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('apartment') || p.category.toLowerCase().includes('flat')));
+      } else if (cat === 'bedsitters') {
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('bedsitter') || p.category.toLowerCase().includes('studio')));
+      } else if (cat === 'single-room') {
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('single') || p.category.toLowerCase().includes('single room') || (p.bedrooms === 0 || p.bedrooms === 1)) && !p.isBnb);
+      } else if (cat === 'selling') {
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('sale') || p.category.toLowerCase().includes('selling')));
+      }
     }
+    // Apply active filters
+    if (State.filters.minPrice) list = list.filter(p => (p.rentKes || p.price || 0) >= State.filters.minPrice);
+    if (State.filters.maxPrice) list = list.filter(p => (p.rentKes || p.price || 0) <= State.filters.maxPrice);
+    if (State.filters.location) list = list.filter(p => (p.estateSuburb && p.estateSuburb.toLowerCase().includes(State.filters.location.toLowerCase())) || (p.county && p.county.toLowerCase().includes(State.filters.location.toLowerCase())));
+    if (State.filters.beds && State.filters.beds !== 'any') list = list.filter(p => (p.bedrooms || 0) >= parseInt(State.filters.beds));
     if (params.location) {
       list = list.filter(p => (p.estateSuburb && p.estateSuburb.toLowerCase().includes(params.location.toLowerCase())) || 
                               (p.county && p.county.toLowerCase().includes(params.location.toLowerCase())));
     }
+    if (params.searchList) list = params.searchList;
 
     mSlot.innerHTML = `
       <!-- Location search bar & Filter shortcut -->
@@ -437,13 +487,16 @@
         </button>
       </div>
 
-      <!-- Horizontal Category Chips -->
+      <!-- Horizontal Category Chips — same categories as website navbar -->
       <div class="km-chips-scroll">
         <span class="km-chip ${State.selectedCategory === 'all' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('all')">All</span>
-        <span class="km-chip ${State.selectedCategory === 'houses' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('houses')">Houses</span>
+        <span class="km-chip ${State.selectedCategory === 'rentals' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('rentals')">Rentals</span>
         <span class="km-chip ${State.selectedCategory === 'apartments' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('apartments')">Apartments</span>
-        <span class="km-chip ${State.selectedCategory === 'land' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('land')">Land</span>
         <span class="km-chip ${State.selectedCategory === 'bedsitters' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('bedsitters')">Bedsitters</span>
+        <span class="km-chip ${State.selectedCategory === 'single-room' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('single-room')">Single Room</span>
+        <span class="km-chip ${State.selectedCategory === 'land' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('land')">Land</span>
+        <span class="km-chip ${State.selectedCategory === 'bnb' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('bnb')">BnB</span>
+        <span class="km-chip ${State.selectedCategory === 'selling' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('selling')">For Sale</span>
       </div>
 
       <!-- Counter and Sort Bar -->
@@ -557,29 +610,31 @@
   }
 
   // ==========================================
-  // SCREEN 4: FILTERS (FULL SCREEN)
+  // SCREEN 4: FILTERS (FULL SCREEN) — matches website filter categories
   // ==========================================
   function renderFiltersScreen(hSlot, mSlot) {
     hSlot.innerHTML = `
       <div class="km-screen-header">
         <button type="button" class="back-btn" onclick="MobileApp.showScreen('browse')"><i class="fas fa-times"></i></button>
         <span class="screen-title">Filters</span>
-        <button type="button" class="header-action" onclick="MobileApp.resetFilters()">Reset</button>
+        <button type="button" class="header-action" onclick="MobileApp.resetFilters()" style="color:#00b53f; font-weight:800;">Reset</button>
       </div>
     `;
 
     mSlot.innerHTML = `
       <div class="km-filters-screen">
-        <!-- Property Type -->
+        <!-- Property Type — same as website's category nav -->
         <div class="km-filter-group">
           <div class="km-filter-title">Property Type</div>
           <div class="km-filter-chip-grid">
             <div class="km-fchip ${State.filters.type === 'all' ? 'active' : ''}" onclick="MobileApp.setFilterType('all', this)">All</div>
-            <div class="km-fchip ${State.filters.type === 'house' ? 'active' : ''}" onclick="MobileApp.setFilterType('house', this)">House</div>
-            <div class="km-fchip ${State.filters.type === 'apartment' ? 'active' : ''}" onclick="MobileApp.setFilterType('apartment', this)">Apartment</div>
-            <div class="km-fchip ${State.filters.type === 'bungalow' ? 'active' : ''}" onclick="MobileApp.setFilterType('bungalow', this)">Bungalow</div>
+            <div class="km-fchip ${State.filters.type === 'rentals' ? 'active' : ''}" onclick="MobileApp.setFilterType('rentals', this)">Rentals</div>
+            <div class="km-fchip ${State.filters.type === 'apartments' ? 'active' : ''}" onclick="MobileApp.setFilterType('apartments', this)">Apartments</div>
+            <div class="km-fchip ${State.filters.type === 'bedsitters' ? 'active' : ''}" onclick="MobileApp.setFilterType('bedsitters', this)">Bedsitters</div>
+            <div class="km-fchip ${State.filters.type === 'single-room' ? 'active' : ''}" onclick="MobileApp.setFilterType('single-room', this)">Single Room</div>
             <div class="km-fchip ${State.filters.type === 'land' ? 'active' : ''}" onclick="MobileApp.setFilterType('land', this)">Land</div>
-            <div class="km-fchip ${State.filters.type === 'commercial' ? 'active' : ''}" onclick="MobileApp.setFilterType('commercial', this)">Commercial</div>
+            <div class="km-fchip ${State.filters.type === 'bnb' ? 'active' : ''}" onclick="MobileApp.setFilterType('bnb', this)">BnB / Airbnb</div>
+            <div class="km-fchip ${State.filters.type === 'selling' ? 'active' : ''}" onclick="MobileApp.setFilterType('selling', this)">For Sale</div>
           </div>
         </div>
 
@@ -1380,7 +1435,6 @@
 
   function setCategoryChip(cat) {
     State.selectedCategory = cat;
-    document.querySelectorAll('.km-chip').forEach(c => c.classList.remove('active'));
     showScreen('browse', { category: cat === 'all' ? null : cat });
   }
 
@@ -1475,6 +1529,237 @@
     window.location.reload();
   }
 
+  // ==========================================
+  // AFFORDABILITY CALCULATOR SCREEN
+  // ==========================================
+  function renderAffordabilityScreen(hSlot, mSlot) {
+    hSlot.innerHTML = `
+      <div class="km-screen-header">
+        <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-arrow-left"></i></button>
+        <span class="screen-title">What Can I Afford?</span>
+        <div style="width:36px;"></div>
+      </div>
+    `;
+
+    mSlot.innerHTML = `
+      <div style="padding: 18px; background:#fff; min-height:100vh; padding-bottom:80px;">
+        <!-- Hero Banner -->
+        <div style="background: linear-gradient(135deg, #00b53f, #047857); border-radius:16px; padding:20px; color:white; text-align:center; margin-bottom:22px;">
+          <i class="fas fa-calculator" style="font-size:32px; margin-bottom:10px;"></i>
+          <div style="font-size:18px; font-weight:900; margin-bottom:4px;">Budget Calculator</div>
+          <div style="font-size:12px; opacity:0.9;">Enter your monthly income to find matching properties</div>
+        </div>
+
+        <!-- Monthly Income -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px; font-weight:800; color:#0f172a; margin-bottom:6px;">Your Monthly Income (KSh)</div>
+          <input type="number" id="km-afford-income" class="km-range-input" style="width:100%; box-sizing:border-box; font-size:16px;" placeholder="e.g. 50,000" oninput="MobileApp.calcAffordability()">
+        </div>
+
+        <!-- Savings for Deposit -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px; font-weight:800; color:#0f172a; margin-bottom:6px;">Savings for Deposit (KSh)</div>
+          <input type="number" id="km-afford-savings" class="km-range-input" style="width:100%; box-sizing:border-box;" placeholder="e.g. 20,000" oninput="MobileApp.calcAffordability()">
+        </div>
+
+        <!-- Result Card -->
+        <div id="km-afford-result" style="display:none; background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:14px; padding:18px; margin-bottom:20px; text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#15803d; margin-bottom:4px;">YOUR IDEAL RENT RANGE</div>
+          <div id="km-afford-range" style="font-size:24px; font-weight:900; color:#00b53f;">KSh 0 – 0</div>
+          <div style="font-size:11.5px; color:#64748b; margin-top:4px;">Based on spending up to 30% of income on rent</div>
+        </div>
+
+        <!-- Guideline Tips -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; margin-bottom:22px;">
+          <div style="font-weight:800; font-size:13px; color:#0f172a; margin-bottom:10px;"><i class="fas fa-lightbulb" style="color:#f59e0b;"></i> Nairobi Budget Guide</div>
+          <div style="display:flex; gap:6px; align-items:flex-start; margin-bottom:8px; font-size:12px; color:#475569;">
+            <i class="fas fa-circle" style="color:#00b53f; font-size:6px; margin-top:5px;"></i>
+            <span><strong>KSh 5,000–12,000:</strong> Single rooms, bedsitters in Umoja, Githurai, Kahawa</span>
+          </div>
+          <div style="display:flex; gap:6px; align-items:flex-start; margin-bottom:8px; font-size:12px; color:#475569;">
+            <i class="fas fa-circle" style="color:#00b53f; font-size:6px; margin-top:5px;"></i>
+            <span><strong>KSh 15,000–30,000:</strong> 1–2 bed in South B, Roysambu, Ruaka</span>
+          </div>
+          <div style="display:flex; gap:6px; align-items:flex-start; margin-bottom:8px; font-size:12px; color:#475569;">
+            <i class="fas fa-circle" style="color:#00b53f; font-size:6px; margin-top:5px;"></i>
+            <span><strong>KSh 30,000–60,000:</strong> 2–3 bed in Kilimani, Westlands, Ruaka</span>
+          </div>
+          <div style="display:flex; gap:6px; align-items:flex-start; font-size:12px; color:#475569;">
+            <i class="fas fa-circle" style="color:#00b53f; font-size:6px; margin-top:5px;"></i>
+            <span><strong>KSh 60,000+:</strong> Premium 3+ bed in Karen, Lavington, Kileleshwa</span>
+          </div>
+        </div>
+
+        <button type="button" class="km-btn-apply" id="km-afford-browse-btn" onclick="MobileApp.browseAffordable()" style="display:none;">
+          <i class="fas fa-search"></i> Browse Matching Properties
+        </button>
+      </div>
+    `;
+  }
+
+  // ==========================================
+  // FILTER & INTERACTION HANDLERS
+  // ==========================================
+  function setFilterType(type, el) {
+    State.filters.type = type;
+    if (el && el.parentElement) {
+      el.parentElement.querySelectorAll('.km-fchip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+  }
+
+  function setFilterBeds(beds, el) {
+    State.filters.beds = beds;
+    if (el && el.parentElement) {
+      el.parentElement.querySelectorAll('.km-fchip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+  }
+
+  function resetFilters() {
+    State.filters = {
+      type: 'all',
+      minPrice: null,
+      maxPrice: null,
+      location: '',
+      beds: 'any'
+    };
+    const minInput = document.getElementById('km-filter-min');
+    const maxInput = document.getElementById('km-filter-max');
+    const subSelect = document.getElementById('km-filter-suburb');
+    if (minInput) minInput.value = '';
+    if (maxInput) maxInput.value = '';
+    if (subSelect) subSelect.value = '';
+    document.querySelectorAll('.km-filter-chip-grid').forEach(grid => {
+      grid.querySelectorAll('.km-fchip').forEach((c, idx) => {
+        if (idx === 0) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+    });
+  }
+
+  function applyFilters() {
+    const minInput = document.getElementById('km-filter-min');
+    const maxInput = document.getElementById('km-filter-max');
+    const subSelect = document.getElementById('km-filter-suburb');
+    if (minInput && minInput.value) State.filters.minPrice = parseFloat(minInput.value);
+    else State.filters.minPrice = null;
+    if (maxInput && maxInput.value) State.filters.maxPrice = parseFloat(maxInput.value);
+    else State.filters.maxPrice = null;
+    if (subSelect && subSelect.value) State.filters.location = subSelect.value;
+    else State.filters.location = '';
+
+    showScreen('browse', {
+      category: State.filters.type === 'all' ? null : State.filters.type,
+      location: State.filters.location
+    });
+  }
+
+  function handleBrowseLoc(val) {
+    if (!val || val.trim() === '') {
+      showScreen('browse', {});
+      return;
+    }
+    showScreen('browse', { location: val.trim() });
+  }
+
+  function sortListings() {
+    State._sortOrder = (State._sortOrder === 'asc') ? 'desc' : 'asc';
+    const sorted = [...State.properties].sort((a, b) => {
+      const pA = a.rentKes || a.price || 0;
+      const pB = b.rentKes || b.price || 0;
+      return State._sortOrder === 'asc' ? pA - pB : pB - pA;
+    });
+    showScreen('browse', { searchList: sorted });
+  }
+
+  function selectTime(timeStr, el) {
+    State.selectedViewingTime = timeStr;
+    if (el && el.parentElement) {
+      el.parentElement.querySelectorAll('.km-time-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+  }
+
+  function cancelBooking(propId) {
+    if (confirm('Are you sure you want to cancel this booking?')) {
+      State.viewingRequests = State.viewingRequests.filter(r => r.propertyId !== propId && r.id !== propId);
+      localStorage.setItem('keja_viewings', JSON.stringify(State.viewingRequests));
+      showScreen('my-bookings');
+    }
+  }
+
+  function filterRequestTab(status, el) {
+    if (el && el.parentElement) {
+      el.parentElement.querySelectorAll('.km-tab-pill-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+    }
+    const container = document.getElementById('km-requests-list-container');
+    if (!container) return;
+    let list = State.viewingRequests.length > 0 ? State.viewingRequests : [
+      {
+        id: 'vr-101',
+        title: '3 Bedroom House in Kileleshwa',
+        date: 'Tue 29 Apr • 11:00 AM',
+        status: 'pending',
+        statusText: 'Pending: Awaiting landlord response',
+        thumbnail: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80'
+      },
+      {
+        id: 'vr-102',
+        title: '2 Bedroom Apartment, Ruaka',
+        date: 'Thu 1 May • 2:00 PM',
+        status: 'confirmed',
+        statusText: 'Confirmed: Slot Locked',
+        thumbnail: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80'
+      }
+    ];
+    if (status !== 'all') {
+      list = list.filter(r => r.status === status);
+    }
+    if (list.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:#64748b;">No ${status} viewing requests found.</div>`;
+    } else {
+      container.innerHTML = list.map(req => `
+        <div class="km-request-card" onclick="MobileApp.openRequestDetails('${req.id}')">
+          <img src="${req.thumbnail}" class="km-req-thumb" alt="${req.title}">
+          <div style="flex:1;">
+            <div style="font-weight:800; font-size:13px; color:#0f172a; margin-bottom:2px;">${req.title}</div>
+            <div style="font-size:11.5px; color:#64748b; margin-bottom:6px;">${req.date}</div>
+            <span class="km-badge-status ${req.status}">${req.statusText}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function openRequestDetails(id) {
+    const req = State.viewingRequests.find(r => r.id === id) || { propertyId: 'km-prop-001' };
+    showScreen('countdown', { id: req.propertyId });
+  }
+
+  function composeNewMessage() {
+    showScreen('browse');
+  }
+
+  function shareProperty(propId) {
+    const prop = State.properties.find(p => p.id === propId) || State.selectedProperty;
+    const url = window.location.origin + '/?prop=' + (prop ? prop.id : '');
+    if (navigator.share) {
+      navigator.share({
+        title: prop ? prop.title : 'KejaMarket Property',
+        text: 'Check out this property on KejaMarket:',
+        url: url
+      }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+        alert('Listing link copied to clipboard!');
+      });
+    } else {
+      prompt('Copy listing link:', url);
+    }
+  }
+
   // Public Interface
   window.MobileApp = {
     init,
@@ -1489,8 +1774,46 @@
     sendQuickMsg,
     startSmartHunt,
     logout,
-    openAffordabilityModal: () => showScreen('browse'),
-    openWhatsAppAlerts: () => window.open('https://wa.me/254792409540?text=Hi%20KejaMarket,%20please%20subscribe%20me%20to%20instant%20property%20alerts', '_blank')
+    shareProperty,
+    calcAffordability() {
+      const income = parseFloat(document.getElementById('km-afford-income')?.value || 0);
+      if (!income || income < 1000) {
+        const r = document.getElementById('km-afford-result');
+        const b = document.getElementById('km-afford-browse-btn');
+        if (r) r.style.display = 'none';
+        if (b) b.style.display = 'none';
+        return;
+      }
+      const maxRent = Math.round(income * 0.30);
+      const minRent = Math.round(income * 0.15);
+      const resultEl = document.getElementById('km-afford-result');
+      const rangeEl = document.getElementById('km-afford-range');
+      const browseBtn = document.getElementById('km-afford-browse-btn');
+      if (resultEl) resultEl.style.display = 'block';
+      if (rangeEl) rangeEl.textContent = `KSh ${minRent.toLocaleString()} – ${maxRent.toLocaleString()}`;
+      if (browseBtn) browseBtn.style.display = 'block';
+      State._affordMax = maxRent;
+      State._affordMin = minRent;
+    },
+    browseAffordable() {
+      const min = State._affordMin || 0;
+      const max = State._affordMax || 999999;
+      State.filters.minPrice = min;
+      State.filters.maxPrice = max;
+      showScreen('browse', {});
+    },
+    openWhatsAppAlerts: () => window.open('https://wa.me/254792409540?text=Hi%20KejaMarket,%20please%20subscribe%20me%20to%20instant%20property%20alerts', '_blank'),
+    resetFilters,
+    setFilterType,
+    setFilterBeds,
+    applyFilters,
+    handleBrowseLoc,
+    openRequestDetails,
+    cancelBooking,
+    composeNewMessage,
+    filterRequestTab,
+    sortListings,
+    selectTime
   };
 
   // Run on load
