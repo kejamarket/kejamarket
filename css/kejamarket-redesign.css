@@ -547,7 +547,7 @@ body { background: #f7f9fb !important; }
    ════════════════════════════════════════════════════════════════ */
 .secondary-nav {
   background: #fff !important; border-bottom: 1px solid var(--bdr) !important;
-  position: sticky !important; top: 62px !important; z-index: 999 !important;
+  position: sticky !important; top: 45px !important; z-index: 999 !important;
 }
 .secondary-nav-container {
   max-width: 1440px !important; margin: 0 auto !important; padding: 0 20px !important;
@@ -2517,9 +2517,10 @@ body { background: #f7f9fb !important; }
   position: relative !important;
 }
 
-/* Fix header to prevent content from flowing under dropdown */
+/* Keep header sticky at the very top */
 .site-header {
-  position: relative !important;
+  position: sticky !important;
+  top: 0 !important;
   z-index: 1000 !important;
 }
 
