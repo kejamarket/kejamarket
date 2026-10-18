@@ -21,8 +21,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Google Sign In -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
   <link rel="stylesheet" href="css/kejamarket-redesign.css?v=26.0&t=202610090400">
@@ -3056,17 +3055,7 @@
           <!-- ══ SIGN IN PANEL ═══════════════════════════════════════════ -->
           <div id="signin-form" class="auth-panel active">
 
-            <button type="button" class="auth-google-btn" onclick="authModal.googleSignIn()">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17.64 9.20454C17.64 8.56636 17.5827 7.95272 17.4764 7.36363H9V10.845H13.8436C13.635 11.97 13.0009 12.9231 12.0477 13.5613V15.8195H14.9564C16.6582 14.2527 17.64 11.9454 17.64 9.20454Z" fill="#4285F4"/>
-                <path d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5613C11.2418 14.1013 10.2109 14.4204 9 14.4204C6.65591 14.4204 4.67182 12.8372 3.96409 10.71H0.957275V13.0418C2.43818 15.9831 5.48182 18 9 18Z" fill="#34A853"/>
-                <path d="M3.96409 10.71C3.78409 10.17 3.68182 9.59318 3.68182 9C3.68182 8.40682 3.78409 7.83 3.96409 7.29V4.95818H0.957275C0.347727 6.17318 0 7.54773 0 9C0 10.4523 0.347727 11.8268 0.957275 13.0418L3.96409 10.71Z" fill="#FBBC05"/>
-                <path d="M9 3.57954C10.3214 3.57954 11.5077 4.03364 12.4405 4.92545L15.0218 2.34409C13.4632 0.891818 11.4259 0 9 0C5.48182 0 2.43818 2.01682 0.957275 4.95818L3.96409 7.29C4.67182 5.16273 6.65591 3.57954 9 3.57954Z" fill="#EA4335"/>
-              </svg>
-              Continue with Google
-            </button>
 
-            <div class="auth-divider"><span>or sign in with email / phone</span></div>
 
             <form id="signin-form-element">
               <div class="form-group">
@@ -3115,17 +3104,7 @@
           <!-- ══ SIGN UP PANEL ═══════════════════════════════════════════ -->
           <div id="signup-form" class="auth-panel">
 
-            <button type="button" class="auth-google-btn" onclick="authModal.googleSignIn()">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17.64 9.20454C17.64 8.56636 17.5827 7.95272 17.4764 7.36363H9V10.845H13.8436C13.635 11.97 13.0009 12.9231 12.0477 13.5613V15.8195H14.9564C16.6582 14.2527 17.64 11.9454 17.64 9.20454Z" fill="#4285F4"/>
-                <path d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5613C11.2418 14.1013 10.2109 14.4204 9 14.4204C6.65591 14.4204 4.67182 12.8372 3.96409 10.71H0.957275V13.0418C2.43818 15.9831 5.48182 18 9 18Z" fill="#34A853"/>
-                <path d="M3.96409 10.71C3.78409 10.17 3.68182 9.59318 3.68182 9C3.68182 8.40682 3.78409 7.83 3.96409 7.29V4.95818H0.957275C0.347727 6.17318 0 7.54773 0 9C0 10.4523 0.347727 11.8268 0.957275 13.0418L3.96409 10.71Z" fill="#FBBC05"/>
-                <path d="M9 3.57954C10.3214 3.57954 11.5077 4.03364 12.4405 4.92545L15.0218 2.34409C13.4632 0.891818 11.4259 0 9 0C5.48182 0 2.43818 2.01682 0.957275 4.95818L3.96409 7.29C4.67182 5.16273 6.65591 3.57954 9 3.57954Z" fill="#EA4335"/>
-              </svg>
-              Sign up with Google
-            </button>
 
-            <div class="auth-divider"><span>or create account below</span></div>
 
             <!-- Role Selection -->
             <div class="role-selection-wrapper">
@@ -3842,33 +3821,6 @@
       font-size: 14px !important;
     }
 
-    .google-btn {
-      width: 100% !important;
-      padding: 11px 16px !important;
-      border: 1.5px solid #d1d5db !important;
-      background: white !important;
-      border-radius: 8px !important;
-      font-weight: 600 !important;
-      font-size: 14px !important;
-      color: #374151 !important;
-      cursor: pointer !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 10px !important;
-      transition: all 0.2s ease !important;
-      margin-bottom: 16px !important;
-    }
-
-    .google-btn:hover {
-      background: #f9fafb !important;
-      border-color: #9ca3af !important;
-    }
-
-    .google-btn svg {
-      width: 18px !important;
-      height: 18px !important;
-    }
 
     .auth-btn {
       width: 100% !important;

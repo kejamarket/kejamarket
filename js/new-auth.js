@@ -449,56 +449,6 @@ class AuthModal {
     }
   }
 
-  // ════════════════════════════════════════════════════════════════
-  // GOOGLE ONE-TAP & OAUTH
-  // ════════════════════════════════════════════════════════════════
-  googleSignIn() {
-    this.showAlert('Connecting with Google...', 'info');
-
-    const GOOGLE_CLIENT_ID = '1084466637843-gqefl7vr6pqmgbm0l9l6lnm9oqkfhqrc.apps.googleusercontent.com';
-
-    if (!window.google || !window.google.accounts) {
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-
-      script.onload = () => {
-        setTimeout(() => this.googleSignIn(), 300);
-      };
-      return;
-    }
-
-    try {
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: async (response) => {
-          try {
-            const res = await fetch('/api/auth/google', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ credential: response.credential })
-            });
-
-            const data = await res.json();
-
-            if (data.success && data.user) {
-              this.handleAuthSuccess(data.user, data.token);
-            } else {
-              this.showAlert(data.message || 'Google Sign-In failed.');
-            }
-          } catch (e) {
-            this.showAlert('Google Sign-In error. Please try password sign-in.');
-          }
-        }
-      });
-
-      window.google.accounts.id.prompt();
-    } catch (e) {
-      this.showAlert('Google service is currently unavailable. Please use email/password.');
-    }
-  }
 
   // ════════════════════════════════════════════════════════════════
   // AUTH SUCCESS & SESSION
