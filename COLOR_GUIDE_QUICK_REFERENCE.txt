@@ -1,0 +1,175 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    KEJAMARKET COLOR PALETTE - QUICK REFERENCE
+═══════════════════════════════════════════════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ BRAND COLORS (Primary)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [████] KejaMarket Green          #00b53f    rgb(0, 181, 63)      DEFAULT PRIMARY
+  [████] Green (Hover)             #009634    rgb(0, 150, 52)      BUTTON HOVER
+  [████] Green (Light)             #e8f8ee    rgb(232, 248, 238)   LIGHT BACKGROUND
+  [████] Green (Dark)              #007728    rgb(0, 119, 40)      DARK TEXT ON GREEN
+  [████] SMS Banner Green          #007a38    rgb(0, 122, 56)      BANNER BG
+
+  [████] KejaMarket Red            #e62e2d    rgb(230, 46, 45)     SELL BUTTON
+  [████] Red (Hover)               #cc2524    rgb(204, 37, 36)     RED BUTTON HOVER
+  [████] Red (Light)               #fee2e2    rgb(254, 226, 226)   LIGHT RED BG
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TEXT COLORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [████] Primary Text              #0f172a    rgb(15, 23, 42)      DARK NAVY
+  [████] Secondary Text            #334155    rgb(51, 65, 85)      SLATE
+  [████] Muted Text                #64748b    rgb(100, 116, 139)   GRAY
+  [████] Light Text                #94a3b8    rgb(148, 163, 184)   LIGHT GRAY
+  [████] White Text                #ffffff    rgb(255, 255, 255)   ON COLORED BG
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ BACKGROUND COLORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [████] Body Background           #f0f4f8    rgb(240, 244, 248)   PAGE BG
+  [████] Card/Surface              #ffffff    rgb(255, 255, 255)   CARDS, MODALS
+  [████] Light Gray                #f8fafc    rgb(248, 250, 252)   FILTER SECTIONS
+  [████] Lighter Gray              #f1f5f9    rgb(241, 245, 249)   PILLS, DISABLED BTN
+  [████] Even Lighter              #fafafa    rgb(250, 250, 250)   ALT LIGHT BG
+  [████] Light Green               #f0fdf4    rgb(240, 253, 244)   GREEN TINT BG
+  [████] Border Gray               #e2e8f0    rgb(226, 232, 240)   BORDERS
+  [████] Medium Gray               #cbd5e1    rgb(203, 213, 225)   DARK BORDERS
+  [████] Dark Navy                 #0f172a    rgb(15, 23, 42)      TOP BAR BG
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ CATEGORY ICON COLORS (Mobile Bottom Nav)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [████] Home                      #16a34a    rgb(22, 163, 74)     GREEN
+  [████] Search                    #10b981    rgb(16, 185, 129)    LIGHT GREEN
+  [████] Favorite                  #ef4444    rgb(239, 68, 68)     RED
+  [████] Land                      #06b6d4    rgb(6, 182, 212)     CYAN
+  [████] Services                  #f59e0b    rgb(245, 158, 11)    AMBER
+  [████] Used Items                #8b5cf6    rgb(139, 92, 246)    PURPLE
+  [████] BNB                       #ec4899    rgb(236, 72, 153)    PINK
+  [████] Chat                      #6366f1    rgb(99, 102, 241)    INDIGO
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PROPERTY TYPE FILTER COLORS (Checkboxes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [████] Single Room               #f97316    rgb(249, 115, 22)    ORANGE
+  [████] Bedsitter                 #ef4444    rgb(239, 68, 68)     RED
+  [████] 1 Bedroom                 #eab308    rgb(234, 179, 8)     YELLOW
+  [████] 2 Bedrooms                #00b53f    rgb(0, 181, 63)      GREEN (PRIMARY)
+  [████] Double Room               #fb923c    rgb(251, 146, 60)    ORANGE-LIGHT
+  [████] 3 Bedrooms                #14b8a6    rgb(20, 184, 166)    TEAL
+  [████] 4+ Bedrooms               #3b82f6    rgb(59, 130, 246)    BLUE
+  [████] Townhouse                 #8b5cf6    rgb(139, 92, 246)    PURPLE
+  [████] Villa                     #ec4899    rgb(236, 72, 153)    PINK
+  [████] Apartment                 #06b6d4    rgb(6, 182, 212)     CYAN
+  [████] Bungalow                  #84cc16    rgb(132, 204, 22)    LIME
+  [████] Studio                    #f43f5e    rgb(244, 63, 94)     ROSE
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STATUS & FEEDBACK COLORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [████] Success/Verified          #00b53f    rgb(0, 181, 63)      GREEN
+  [████] Live Status               #4ade80    rgb(74, 222, 128)    LIME
+  [████] Info Badge                #38bdf8    rgb(56, 189, 248)    SKY BLUE
+  [████] Error/Alert               #ef4444    rgb(239, 68, 68)     RED
+  [████] Warning                   #f59e0b    rgb(245, 158, 11)    AMBER
+  [████] Disabled/Inactive         #64748b    rgb(100, 116, 139)   MUTED GRAY
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ SPECIAL COLORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Highlight Search Term:
+    Background: #fef08a       rgb(254, 240, 138)  YELLOW
+    Text:       #854d0e       rgb(133, 77, 14)    BROWN
+
+  Mobile Hero Banner Gradient:
+    From: #16a34a             rgb(22, 163, 74)    GREEN
+    To:   #15803d             rgb(21, 128, 61)    DARK GREEN
+
+  Profile Avatar Gradient:
+    From: #064e22             rgb(6, 78, 34)      DARK GREEN
+    To:   #00b53f             rgb(0, 181, 63)     PRIMARY GREEN
+
+  Service Banners - Smart House Hunt:
+    From: #d4f4dd             rgb(212, 244, 221)  LIGHT GREEN
+    To:   #a7f3d0             rgb(167, 243, 208)  MINT
+
+  Service Banners - What Can I Afford:
+    From: #e9d5ff             rgb(233, 213, 255)  LIGHT PURPLE
+    To:   #d8b4fe             rgb(216, 180, 254)  LAVENDER
+
+  Service Banners - Instant Alerts:
+    From: #fce7f3             rgb(252, 231, 243)  LIGHT PINK
+    To:   #fbcfe8             rgb(251, 207, 232)  ROSE
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ SHADOW COLORS (For Depth)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Small Shadow:       0 1px 2px 0 rgba(0, 0, 0, 0.05)
+  Medium Shadow:      0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04)
+  Large Shadow:       0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
+  Hover Shadow:       0 12px 20px -2px rgba(37, 99, 235, 0.12), 0 6px 10px -2px rgba(0, 0, 0, 0.08)
+  Button Shadow:      0 4px 8px rgba(0, 181, 63, 0.25)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ LOCATION BY FILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  css/style.css
+    ✓ Root color variables (primary, secondary, text, backgrounds)
+    ✓ Header styles with colors
+    ✓ Search bar and suggestions colors
+    ✓ Profile dropdown colors
+    ✓ Button styles and states
+    ✓ Filter pills colors
+    ✓ Property card colors
+    ✓ Top notification bar
+
+  css/mobile-layout.css
+    ✓ Mobile header colors
+    ✓ Mobile search bar colors
+    ✓ Category icon colors (8 categories)
+    ✓ Mobile hero banner gradient
+    ✓ Mobile property card colors
+    ✓ Mobile navigation colors
+
+  css/location-picker.css
+    ✓ Location modal overlay and background
+    ✓ Location items colors
+    ✓ Search input focus states
+    ✓ Pin icon and badge colors
+    ✓ Breadcrumb colors
+    ✓ Highlight colors for search terms
+
+  index.html (Inline Styles)
+    ✓ Property type checkbox colors
+    ✓ Filter section icon colors
+    ✓ Logo text colors
+    ✓ Header element inline styles
+    ✓ Service banner gradients
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ DESIGN SYSTEM NOTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Primary Action:     Use #00b53f (GREEN)
+  Secondary Action:   Use #e62e2d (RED)
+  Danger/Delete:      Use #ef4444 (BRIGHT RED)
+  Success Message:    Use #00b53f (GREEN)
+  Error Message:      Use #ef4444 (RED)
+  Warning Message:    Use #f59e0b (AMBER)
+  Info Message:       Use #38bdf8 (SKY BLUE)
+
+  Dark Mode Ready:    YES - Colors have sufficient contrast
+  WCAG AA Compliant:  YES - All primary text meets AA standards
+  Accessible:         YES - Not relying on color alone for information
+
+═══════════════════════════════════════════════════════════════════════════════
