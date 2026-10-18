@@ -1628,7 +1628,7 @@ window.kejaAuth = kejaAuth;
    * Show messages and notifications for logged-in users
    */
   function updateCommunicationButtons() {
-    const session = getSession();
+    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
     const messagesBtn = document.getElementById('btn-messages');
     const notificationsBtn = document.getElementById('btn-notifications');
     
