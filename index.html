@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -15,8 +15,8 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=26.0&t=202610090400" as="style">
-  <link rel="preload" href="js/app.js?v=18.0&t=202610090400" as="script">
-  <link rel="preload" href="js/auth.js?v=5.0&t=202610090400" as="script">
+  <link rel="preload" href="js/app.js?v=19.0&t=202610180330" as="script">
+  <link rel="preload" href="js/auth.js?v=5.1&t=202610180330" as="script">
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -754,13 +754,16 @@
         </div>
         <div class="filter-accordion-body" style="display:block;">
           <div class="filter-checklist-box" id="property-type-checklist-container">
+            <!-- Top 5 Visible Property Types -->
             <label class="filter-check-item property-type-bnb"><input type="checkbox" class="prop-type-checkbox" value="Bnb (Short Stay)" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-umbrella-beach"></i></span><span class="item-label">Bnb (Short Stay)</span></label>
             <label class="filter-check-item property-type-single"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #f97316;"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">Single Room</span></label>
+            <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #ef4444;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
+            <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #eab308;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
+            <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00b53f;"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
+
+            <!-- Remaining Property Types (Expandable via Chevron) -->
             <div id="property-type-more-items" class="property-type-collapsed">
               <label class="filter-check-item property-type-double"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #fb923c;"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
-              <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #ef4444;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
-              <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #eab308;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
-              <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00b53f;"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
               <label class="filter-check-item property-type-3bed"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #14b8a6;"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
               <label class="filter-check-item property-type-4bed"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #3b82f6;"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
               <label class="filter-check-item property-type-townhouse"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #8b5cf6;"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
@@ -770,9 +773,8 @@
               <label class="filter-check-item property-type-studio"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #f43f5e;"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
             </div>
           </div>
-          <button type="button" class="btn-toggle-property-types" id="btn-toggle-property-types" onclick="app.togglePropertyTypeExpansion && app.togglePropertyTypeExpansion()">
-            <span id="property-type-toggle-text">Show More</span>
-            <i id="property-type-toggle-icon" class="fas fa-chevron-down"></i>
+          <button type="button" class="btn-toggle-property-types" id="btn-toggle-property-types" onclick="app.togglePropertyTypeExpansion && app.togglePropertyTypeExpansion()" title="Toggle more property types" aria-label="Toggle more property types">
+            <i id="property-type-toggle-icon" class="fas fa-chevron-down acc-icon"></i>
           </button>
         </div>
       </div>
@@ -1173,7 +1175,7 @@
           <div class="service-banner-content">
             <h3 class="service-banner-title">3-Day Smart House Hunt</h3>
             <p class="service-banner-text">Can't find a house? Let our verified ground team inspect & match results in 72 hours</p>
-            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">Start Hunt â†’</button>
+            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">Start Hunt &rarr;</button>
           </div>
           <div class="service-banner-image">
             <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=180&h=120&fit=crop&crop=faces" alt="Professional woman" />
@@ -1191,7 +1193,7 @@
           <div class="service-banner-content">
             <h3 class="service-banner-title">What Can I Afford?</h3>
             <p class="service-banner-text">Avoid rent stress. Calculate your safe rent income instantly.</p>
-            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openAffordabilityCalculator && app.openAffordabilityCalculator()">Calculate â†’</button>
+            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openAffordabilityCalculator && app.openAffordabilityCalculator()">Calculate &rarr;</button>
           </div>
           <div class="service-banner-image">
             <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=180&h=120&fit=crop" alt="Houses with calculator" />
@@ -1209,7 +1211,7 @@
           <div class="service-banner-content">
             <h3 class="service-banner-title">Instant Vacancy Alerts</h3>
             <p class="service-banner-text">Hot rentals in Ruaka, Roysambu & Kilimani get taken fast. Get an instant SMS or WhatsApp alert</p>
-            <button class="service-banner-btn" onclick="event.stopPropagation(); openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()">Get Alerts â†’</button>
+            <button class="service-banner-btn" onclick="event.stopPropagation(); openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()">Get Alerts &rarr;</button>
           </div>
           <div class="service-banner-image">
             <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=180&h=120&fit=crop" alt="WhatsApp on phone" />
@@ -5190,34 +5192,36 @@
   <!-- Performance: Lazy loading for images -->
   <script src="js/lazy-load.js" defer></script>
   
-  <!-- Critical: Core functionality -->
-  <script src="js/offline-manager.js?v=31.0" defer></script>
-  <script src="js/auth.js?v=5.0&t=202610090400" defer></script>
-  <script src="js/new-auth.js?v=2.0&t=202610090400" defer></script>
-  <script src="js/app.js?v=18.0&t=202610090400" defer></script>
-  
-  <!-- NEW: Mobile Layout Controller - All 8 Screens -->
-  <script src="js/mobile-layout.js?v=2.0&t=202610090400" defer></script>
-  
-  <!-- Maps: Load only when needed -->
+  <!-- Data & Core Dependencies (Must load before app.js) -->
+  <script src="db/locations-hierarchy.js?v=2.0&t=202610180330" defer></script>
+  <script src="js/data/locations.js?v=6.0&t=202610180330" defer></script>
+  <script src="js/data/seedListings.js?v=6.1&t=202610180330" defer></script>
+  <script src="js/location-search.js?v=2.0&t=202610180330" defer></script>
+
+  <!-- Maps & Leaflet -->
   <script src="vendor/leaflet/leaflet.js" defer></script>
-  <script src="js/map.js?v=6.0&t=202610090120" defer></script>
+  <script src="js/map.js?v=6.1&t=202610180330" defer></script>
+
+  <!-- Landlord & Management (Must load before app.init) -->
+  <script src="js/landlord.js?v=7.1&t=202610180330" defer></script>
+
+  <!-- Critical: Core functionality & Auth -->
+  <script src="js/offline-manager.js?v=32.0" defer></script>
+  <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
+  <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
+  <script src="js/app.js?v=19.0&t=202610180330" defer></script>
   
-  <!-- Data & Core Features -->
-  <script src="db/locations-hierarchy.js?v=2.0&t=202610090100" defer></script>
-  <script src="js/location-search.js?v=2.0&t=202610090100" defer></script>
-  <script src="js/data/locations.js?v=6.0&t=202609171345" defer></script>
-  <script src="js/data/seedListings.js?v=6.1&t=202610022315" defer></script>
+  <!-- Mobile Layout Controller -->
+  <script src="js/mobile-layout.js?v=2.1&t=202610180330" defer></script>
   
   <!-- Secondary Features: Deferred loading -->
   <script src="js/reviews.js?v=4.0&t=202609170130" defer></script>
   <script src="js/comments.js?v=4.0&t=202609170130" defer></script>
   <script src="js/watermark.js?v=1.0&t=202609172330" defer></script>
-  <script src="js/recently-added.js?v=4.0&t=202609170130" defer></script>
+  <script src="js/recently-added.js?v=4.1&t=202610180330" defer></script>
   <script src="js/verification.js?v=4.0&t=202609170130" defer></script>
   
   <!-- Portal Features: Load on demand -->
-  <script src="js/landlord.js?v=7.0&t=202610090120" defer></script>
   <script src="js/landlord-portal.js?v=4.0&t=202609170130" defer></script>
   <script src="js/service-portal.js?v=4.0&t=202609170130" defer></script>
   <script src="js/user-dashboard.js?v=4.0&t=202609170130" defer></script>

@@ -121,9 +121,7 @@ const REAL_SERVICE_PROVIDERS = [
     coverage: ['Nairobi', 'Westlands', 'Kilimani', 'Lavington', 'Karen', 'Runda'],
     phone: '0700111222',
     whatsapp: '0700111222',
-    email: 'service@nairobipl
-
-umbing.co.ke',
+    email: 'service@nairobiplumbing.co.ke',
     photos: [
       'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800',
       'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800'

@@ -1574,11 +1574,17 @@ const kejaAuth = (() => {
     handleForgotPassword,
     handleResetPassword,
     checkResetTokenFromUrl,
+    updateHeaderUI,
+    openAuthModal,
+    showPanel,
   };
 
 })();
 
 window.kejaAuth = kejaAuth;
+window.getSession = function() {
+  return (window.kejaAuth && typeof window.kejaAuth.getSession === 'function') ? window.kejaAuth.getSession() : null;
+};
 
 
 
@@ -1595,13 +1601,17 @@ window.kejaAuth = kejaAuth;
     console.log('[AUTH] DOM loaded, checking initial auth state');
     
     // Check if user is logged in and update header
-    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function') ? window.kejaAuth.getSession() : null;
     if (session) {
       console.log('[AUTH] User session found on page load:', session.name || session.email);
-      window.kejaAuth.updateHeaderUI(session);
+      if (window.kejaAuth && typeof window.kejaAuth.updateHeaderUI === 'function') {
+        window.kejaAuth.updateHeaderUI(session);
+      }
     } else {
       console.log('[AUTH] No user session found on page load');
-      window.kejaAuth.updateHeaderUI(null);
+      if (window.kejaAuth && typeof window.kejaAuth.updateHeaderUI === 'function') {
+        window.kejaAuth.updateHeaderUI(null);
+      }
     }
 
     // Disable any competing modal systems for profile
@@ -1628,7 +1638,7 @@ window.kejaAuth = kejaAuth;
    * Show messages and notifications for logged-in users
    */
   function updateCommunicationButtons() {
-    const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+    const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function') ? window.kejaAuth.getSession() : null;
     const messagesBtn = document.getElementById('btn-messages');
     const notificationsBtn = document.getElementById('btn-notifications');
     

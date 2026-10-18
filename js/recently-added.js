@@ -100,13 +100,19 @@ const KejaRecentlyAdded = {
       </div>
     `;
 
-    // Insert after main property grid
-    const mainGrid = document.getElementById('properties-grid');
+    // Insert after main property grid or pagination container
+    const mainGrid = document.getElementById('pagination-container') ||
+                     document.getElementById('view-grid-container') ||
+                     document.getElementById('property-grid') ||
+                     document.getElementById('properties-grid');
     if (mainGrid && mainGrid.parentNode) {
       mainGrid.parentNode.insertBefore(container, mainGrid.nextSibling);
     } else {
       // Fallback: append to main content area
-      const mainContent = document.querySelector('.main-content');
+      const mainContent = document.querySelector('.main-layout') ||
+                          document.querySelector('.main-container') ||
+                          document.querySelector('main') ||
+                          document.body;
       if (mainContent) {
         mainContent.appendChild(container);
       }
@@ -162,33 +168,37 @@ const KejaRecentlyAdded = {
    */
   async loadCategoryProperties() {
     const grid = document.getElementById('recently-added-grid');
+    if (!grid) return;
     
     // Show loading
     grid.innerHTML = this.getLoadingHTML();
     
     try {
-      // Get properties from main app
-      const allProperties = window.app ? window.app.properties : [];
+      // Get properties from main app or seed fallback
+      const allProperties = (window.app && Array.isArray(window.app.properties) && window.app.properties.length > 0)
+        ? window.app.properties
+        : ((typeof SEED_PROPERTIES !== 'undefined' && Array.isArray(SEED_PROPERTIES)) ? SEED_PROPERTIES : (window.EXACT_12_REFERENCE_PROPERTIES || []));
       const categoryProperties = this.categorizeProperties(allProperties);
       const properties = categoryProperties[this.currentCategory] || [];
       
       // Display properties
       const displayProperties = properties.slice(0, this.propertiesPerPage * this.currentPage);
+      const loadMoreSection = document.getElementById('load-more-section');
       
       if (displayProperties.length === 0) {
         grid.innerHTML = this.getEmptyStateHTML();
-        document.getElementById('load-more-section').style.display = 'none';
+        if (loadMoreSection) loadMoreSection.style.display = 'none';
       } else {
         grid.innerHTML = displayProperties.map(property => this.createPropertyCard(property)).join('');
         
         // Show/hide load more button
         const hasMore = properties.length > displayProperties.length;
-        document.getElementById('load-more-section').style.display = hasMore ? 'block' : 'none';
+        if (loadMoreSection) loadMoreSection.style.display = hasMore ? 'block' : 'none';
       }
       
     } catch (error) {
       console.error('Error loading recently added properties:', error);
-      grid.innerHTML = this.getErrorHTML();
+      if (grid) grid.innerHTML = this.getErrorHTML();
     }
   },
 

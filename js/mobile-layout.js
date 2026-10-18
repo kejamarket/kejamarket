@@ -712,7 +712,8 @@
   window.addEventListener('resize', () => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (window.innerWidth <= 768 && !document.body.classList.contains('mobile-layout')) {
+      if ((window.innerWidth <= 768 && !document.body.classList.contains('mobile-layout')) ||
+          (window.innerWidth > 768 && document.body.classList.contains('mobile-layout'))) {
         location.reload();
       }
     }, 250);

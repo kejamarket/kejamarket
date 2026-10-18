@@ -556,9 +556,6 @@ const AdminBuildings = (() => {
           photo: photoBase64
         })
       });
-          description: document.getElementById('bldg-desc').value.trim()
-        })
-      });
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
       closeAdminModal();

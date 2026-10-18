@@ -2058,14 +2058,14 @@ app.get('/api/properties/area-stats', cache.middleware(120, 'area-stats'), async
   try {
     if (store.isConnected && store.query) {
       const qRes = await store.query(`
-        SELECT TRIM(SPLIT_PART(COALESCE(estate_suburb, raw_data->>'exactLocation', raw_data->>'location', ''), ',', 1)) as name,
+        SELECT COALESCE(NULLIF(TRIM(estate_suburb), ''), TRIM(SPLIT_PART(COALESCE(raw_data->>'exactLocation', raw_data->>'location', ''), ',', 1))) as name,
                COUNT(*) as count
         FROM properties
         WHERE (is_verified = true OR (raw_data->>'status') = 'approved')
           AND COALESCE(raw_data->>'status', '') NOT IN ('pending', 'rejected')
           AND COALESCE(estate_suburb, raw_data->>'exactLocation', raw_data->>'location', '') != ''
-        GROUP BY name
-        HAVING LENGTH(TRIM(SPLIT_PART(COALESCE(estate_suburb, raw_data->>'exactLocation', raw_data->>'location', ''), ',', 1))) > 1
+        GROUP BY 1
+        HAVING LENGTH(COALESCE(NULLIF(TRIM(estate_suburb), ''), TRIM(SPLIT_PART(COALESCE(raw_data->>'exactLocation', raw_data->>'location', ''), ',', 1)))) > 1
         ORDER BY count DESC
       `);
       const areas = qRes.rows.map(r => ({ name: r.name, count: parseInt(r.count) || 0 }));
@@ -2077,10 +2077,10 @@ app.get('/api/properties/area-stats', cache.middleware(120, 'area-stats'), async
     const counts = {};
     (allProps || []).forEach(p => {
       const raw = p.raw_data || p;
-      const area = raw.estateSuburb || raw.estate_suburb || raw.exactLocation || raw.exact_location || raw.location || '';
-      if (area) {
-        const key = area.split(',')[0].trim();
-        if (key && key.length > 1) counts[key] = (counts[key] || 0) + 1;
+      const suburbName = (raw.estateSuburb || raw.estate_suburb || '').trim();
+      const area = suburbName || (raw.exactLocation || raw.exact_location || raw.location || '').split(',')[0].trim();
+      if (area && area.length > 1) {
+        counts[area] = (counts[area] || 0) + 1;
       }
     });
     const areas = Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([name, count]) => ({ name, count }));
@@ -2090,13 +2090,15 @@ app.get('/api/properties/area-stats', cache.middleware(120, 'area-stats'), async
   }
 });
 
-// GET /api/properties â€” server-side search, filtering, pagination
+// GET /api/properties — server-side search, filtering, pagination
 app.get('/api/properties', cache.middleware(15, 'properties'), async (req, res) => {
   try {
     const {
       category, suburb, corridor, minPrice, maxPrice,
-      q, page, pageSize, sort
+      q, page, pageSize, limit, sort
     } = req.query;
+
+    const parsedPageSize = pageSize ? parseInt(pageSize) : (limit ? parseInt(limit) : 50);
 
     // If postgres store supports server-side search, use it
     if (store.searchProperties) {
@@ -2108,7 +2110,7 @@ app.get('/api/properties', cache.middleware(15, 'properties'), async (req, res) 
         maxPrice: maxPrice ? Number(maxPrice) : null,
         query: q || null,
         page: page ? parseInt(page) : 1,
-        pageSize: pageSize ? parseInt(pageSize) : 50,
+        pageSize: parsedPageSize,
         sort: sort || 'newest',
         isVerified: true  // Only show verified properties
       });
@@ -2153,7 +2155,7 @@ app.get('/api/properties', cache.middleware(15, 'properties'), async (req, res) 
 
     // Apply pagination
     const p = page ? parseInt(page) : 1;
-    const ps = pageSize ? parseInt(pageSize) : 50;
+    const ps = parsedPageSize;
     const start = (p - 1) * ps;
     const end = start + ps;
     const paginatedProperties = properties.slice(start, end);
@@ -6991,15 +6993,15 @@ async function startServer() {
     // Keep-alive socket timeouts optimized for high-concurrency reverse proxies
     server.keepAliveTimeout = 65000;
     server.headersTimeout = 66000;
-    console.log(`ðŸš€ KejaMarket Production API Server running on port ${PORT}`);
-    console.log(`ðŸ”— Web Application: http://localhost:${PORT}`);
-    console.log(`ðŸ“± M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
+    console.log(`🚀 KejaMarket Production API Server running on port ${PORT}`);
+    console.log(`🔗 Web Application: http://localhost:${PORT}`);
+    console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
 
     const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
     const PING_INTERVAL = 9 * 60 * 1000;
 
     if (process.env.NODE_ENV === 'production') {
-      console.log(`ðŸ“¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
+      console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
       setInterval(() => {
         try {
           const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');

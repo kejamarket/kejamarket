@@ -360,7 +360,7 @@
 
     // Register service worker if available
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=31.0')
+      navigator.serviceWorker.register('/sw.js?v=32.0')
         .then((reg) => {
           console.log('[OfflineManager] Service worker active with scope:', reg.scope);
         })

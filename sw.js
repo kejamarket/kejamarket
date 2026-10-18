@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v80-performance-optimized';
+const CACHE_NAME = 'kejamarket-v81-performance-optimized';
 
 const STATIC_ASSETS = [
   '/',

@@ -6,7 +6,9 @@ window.EXACT_12_REFERENCE_PROPERTIES = [{"id": "km-prop-001", "title": "Cozy Stu
 
 class NairobiRentalsApp {
   constructor() {
-    this.properties = [...SEED_PROPERTIES];
+    this.properties = (typeof SEED_PROPERTIES !== 'undefined' && Array.isArray(SEED_PROPERTIES))
+      ? [...SEED_PROPERTIES]
+      : (window.EXACT_12_REFERENCE_PROPERTIES ? [...window.EXACT_12_REFERENCE_PROPERTIES] : []);
     this.services = [];
     this.marketplaceItems = [];
     this.favorites = new Set();
@@ -64,13 +66,19 @@ class NairobiRentalsApp {
 
     this.applyFilters();
 
-    // Init map and landlord managers
-    window.mapController.init();
-    window.landlordManager.initModal();
+    // Init map and landlord managers safely
+    if (window.mapController && typeof window.mapController.init === 'function') {
+      window.mapController.init();
+    }
+    if (window.landlordManager && typeof window.landlordManager.initModal === 'function') {
+      window.landlordManager.initModal();
+    }
 
     // Show initial map pins
     setTimeout(() => {
-      window.mapController.renderPins(this.filteredProperties);
+      if (window.mapController && typeof window.mapController.renderPins === 'function') {
+        window.mapController.renderPins(this.filteredProperties);
+      }
     }, 300);
   }
 
@@ -271,9 +279,33 @@ class NairobiRentalsApp {
     }
   }
 
+  getCategories() {
+    if (typeof MASTER_CATEGORIES !== 'undefined' && Array.isArray(MASTER_CATEGORIES)) return MASTER_CATEGORIES;
+    if (window.MASTER_CATEGORIES && Array.isArray(window.MASTER_CATEGORIES)) return window.MASTER_CATEGORIES;
+    return [
+      'Single Room', 'Bedsitter / Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom+',
+      'Maisonette / Townhouse', 'Bungalow', 'Penthouse', 'Room In Shared Apartment', 'Hostels / Student Room',
+      'Conference Room / Boardroom', 'Meeting & Event Hall', 'Commercial Office / Co-Working', 'Commercial Shop / Stall',
+      'BnB / Airbnb (Daily Stay)', 'Studio BnB (Short-Stay)', '1 & 2 Bedroom BnB (Furnished)', 'Luxury Villa / Vacation Stay'
+    ];
+  }
+
+  getRegions() {
+    if (typeof NAIROBI_REGIONS !== 'undefined' && Array.isArray(NAIROBI_REGIONS)) return NAIROBI_REGIONS;
+    if (window.NAIROBI_REGIONS && Array.isArray(window.NAIROBI_REGIONS)) return window.NAIROBI_REGIONS;
+    return [];
+  }
+
+  getSuburbs() {
+    if (typeof ALL_SUBURBS !== 'undefined' && Array.isArray(ALL_SUBURBS)) return ALL_SUBURBS;
+    if (window.ALL_SUBURBS && Array.isArray(window.ALL_SUBURBS)) return window.ALL_SUBURBS;
+    return [];
+  }
+
   renderCategoryPills() {
     const container = document.getElementById('category-pills-container');
     const sidebarList = document.getElementById('sidebar-category-list');
+    const categories = this.getCategories();
 
     const getCatIcon = (cat) => {
       if (cat === 'All') return 'fa-th-large';
@@ -293,7 +325,7 @@ class NairobiRentalsApp {
     // Horizontal scrolling pills (mobile / hidden on desktop)
     if (container) {
       const allPill = `<button class="category-pill active" data-category="All" onclick="app.setCategory('All', this)"><i class="fas fa-th-large"></i> All Properties</button>`;
-      const pills = MASTER_CATEGORIES.map(cat =>
+      const pills = categories.map(cat =>
         `<button class="category-pill" data-category="${cat}" onclick="app.setCategory('${cat}', this)"><i class="fas ${getCatIcon(cat)}"></i> ${cat}</button>`
       ).join('');
       container.innerHTML = allPill + pills;
@@ -302,7 +334,7 @@ class NairobiRentalsApp {
     // Sidebar vertical category list
     if (sidebarList) {
       const allItem = `<button class="sidebar-cat-item active" data-category="All" onclick="app.setCategory('All', this)"><i class="fas fa-th-large"></i><span>All Properties</span></button>`;
-      const items = MASTER_CATEGORIES.map(cat =>
+      const items = categories.map(cat =>
         `<button class="sidebar-cat-item" data-category="${cat}" onclick="app.setCategory('${cat}', this)"><i class="fas ${getCatIcon(cat)}"></i><span>${cat}</span></button>`
       ).join('');
       sidebarList.innerHTML = allItem + items;
@@ -312,7 +344,7 @@ class NairobiRentalsApp {
     const headerCatSelect = document.getElementById('header-category-select');
     if (headerCatSelect) {
       headerCatSelect.innerHTML = `<option value="All">All Categories</option>` + 
-        MASTER_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+        categories.map(c => `<option value="${c}">${c}</option>`).join('');
       headerCatSelect.addEventListener('change', (e) => {
         this.setCategory(e.target.value);
       });
@@ -340,11 +372,13 @@ class NairobiRentalsApp {
   }
 
   populateSidebarFilters() {
+    const regions = this.getRegions();
+
     // Populate Counties / Corridors for Properties
     const corridorSelect = document.getElementById('filter-corridor');
     if (corridorSelect) {
       corridorSelect.innerHTML = `<option value="all">Nairobi & Environs</option>` +
-        NAIROBI_REGIONS.map(r => `<option value="${r.corridorId}">${r.corridorName} (${r.county})</option>`).join('');
+        regions.map(r => `<option value="${r.corridorId}">${r.corridorName} (${r.county})</option>`).join('');
       
       corridorSelect.addEventListener('change', (e) => {
         this.activeCorridor = e.target.value;
@@ -360,7 +394,7 @@ class NairobiRentalsApp {
     const serviceCorridorSelect = document.getElementById('filter-service-corridor');
     if (serviceCorridorSelect) {
       serviceCorridorSelect.innerHTML = `<option value="all">All Nairobi Corridors</option>` +
-        NAIROBI_REGIONS.map(r => `<option value="${r.corridorId}">${r.corridorName} (${r.county})</option>`).join('');
+        regions.map(r => `<option value="${r.corridorId}">${r.corridorName} (${r.county})</option>`).join('');
       
       serviceCorridorSelect.addEventListener('change', (e) => {
         this.activeServiceCorridor = e.target.value;
@@ -380,27 +414,26 @@ class NairobiRentalsApp {
   togglePropertyTypeExpansion() {
     const moreItems = document.getElementById('property-type-more-items');
     const toggleBtn = document.getElementById('btn-toggle-property-types');
-    const toggleText = document.getElementById('property-type-toggle-text');
     const toggleIcon = document.getElementById('property-type-toggle-icon');
     
-    if (!moreItems || !toggleBtn || !toggleText || !toggleIcon) return;
+    if (!moreItems || !toggleBtn || !toggleIcon) return;
     
-    const isCollapsed = moreItems.classList.contains('property-type-collapsed');
+    const isCollapsed = moreItems.classList.contains('property-type-collapsed') || moreItems.style.display === 'none';
     
     if (isCollapsed) {
       // Expand
       moreItems.classList.remove('property-type-collapsed');
       moreItems.classList.add('property-type-expanded');
+      moreItems.style.display = 'flex';
       toggleBtn.classList.add('expanded');
-      toggleText.textContent = 'Show Less';
       toggleIcon.classList.remove('fa-chevron-down');
       toggleIcon.classList.add('fa-chevron-up');
     } else {
       // Collapse
       moreItems.classList.remove('property-type-expanded');
       moreItems.classList.add('property-type-collapsed');
+      moreItems.style.display = 'none';
       toggleBtn.classList.remove('expanded');
-      toggleText.textContent = 'Show More';
       toggleIcon.classList.remove('fa-chevron-up');
       toggleIcon.classList.add('fa-chevron-down');
     }
@@ -444,29 +477,41 @@ class NairobiRentalsApp {
 
     const typeContainer = document.getElementById('property-type-checklist-container');
     if (typeContainer) {
-      const types = [
-        { name: 'Bnb (Short Stay)', icon: 'fa-umbrella-beach' },
-        { name: 'Single Room', icon: 'fa-door-open' },
-        { name: 'Double Room', icon: 'fa-person-booth' },
-        { name: 'Bedsitter', icon: 'fa-bed' },
-        { name: '1 Bedroom', icon: 'fa-bed' },
-        { name: '2 Bedrooms', icon: 'fa-door-closed' },
-        { name: '3 Bedrooms', icon: 'fa-home' },
-        { name: '4+ Bedrooms', icon: 'fa-star' },
-        { name: 'Townhouse', icon: 'fa-city' },
-        { name: 'Villa', icon: 'fa-tree' },
-        { name: 'Apartment', icon: 'fa-building' },
-        { name: 'Bungalow', icon: 'fa-warehouse' },
-        { name: 'Studio', icon: 'fa-couch' }
+      const topTypes = [
+        { name: 'Bnb (Short Stay)', icon: 'fa-umbrella-beach', color: '#8b5cf6' },
+        { name: 'Single Room', icon: 'fa-door-open', color: '#f97316' },
+        { name: 'Bedsitter', icon: 'fa-bed', color: '#ef4444' },
+        { name: '1 Bedroom', icon: 'fa-bed', color: '#eab308' },
+        { name: '2 Bedrooms', icon: 'fa-door-closed', color: '#00b53f' }
       ];
 
-      typeContainer.innerHTML = types.map(t => `
+      const moreTypes = [
+        { name: 'Double Room', icon: 'fa-person-booth', color: '#fb923c' },
+        { name: '3 Bedrooms', icon: 'fa-home', color: '#14b8a6' },
+        { name: '4+ Bedrooms', icon: 'fa-star', color: '#3b82f6' },
+        { name: 'Townhouse', icon: 'fa-city', color: '#8b5cf6' },
+        { name: 'Villa', icon: 'fa-tree', color: '#ec4899' },
+        { name: 'Apartment', icon: 'fa-building', color: '#06b6d4' },
+        { name: 'Bungalow', icon: 'fa-warehouse', color: '#84cc16' },
+        { name: 'Studio', icon: 'fa-couch', color: '#f43f5e' }
+      ];
+
+      const isMoreExpanded = document.getElementById('property-type-more-items')?.classList.contains('property-type-expanded');
+
+      const renderType = t => `
         <label class="filter-check-item">
-          <input type="checkbox" class="prop-type-checkbox" value="${t.name}" onchange="app.onPropertyTypeCheckboxChange(this)">
+          <input type="checkbox" class="prop-type-checkbox" value="${t.name}" onchange="app.onPropertyTypeCheckboxChange(this)" style="${t.color ? `accent-color: ${t.color};` : ''}">
           <span class="item-icon"><i class="fas ${t.icon}"></i></span>
           <span class="item-label">${t.name}</span>
         </label>
-      `).join('');
+      `;
+
+      typeContainer.innerHTML = `
+        ${topTypes.map(renderType).join('')}
+        <div id="property-type-more-items" class="${isMoreExpanded ? 'property-type-expanded' : 'property-type-collapsed'}" style="${isMoreExpanded ? 'display:flex;' : 'display:none;'} flex-direction: column;">
+          ${moreTypes.map(renderType).join('')}
+        </div>
+      `;
     }
   }
 
@@ -570,9 +615,10 @@ class NairobiRentalsApp {
     const suburbSelect = document.getElementById('filter-suburb');
     if (!suburbSelect) return;
 
-    let availableSuburbs = ALL_SUBURBS;
+    const suburbs = this.getSuburbs();
+    let availableSuburbs = suburbs;
     if (this.activeCorridor !== 'all') {
-      availableSuburbs = ALL_SUBURBS.filter(s => s.corridorId === this.activeCorridor);
+      availableSuburbs = suburbs.filter(s => s.corridorId === this.activeCorridor);
     }
 
     suburbSelect.innerHTML = `<option value="all">All Suburbs & Estates (${availableSuburbs.length})</option>` +
@@ -588,9 +634,10 @@ class NairobiRentalsApp {
     const serviceSuburbSelect = document.getElementById('filter-service-suburb');
     if (!serviceSuburbSelect) return;
 
-    let availableSuburbs = ALL_SUBURBS;
+    const suburbs = this.getSuburbs();
+    let availableSuburbs = suburbs;
     if (this.activeServiceCorridor && this.activeServiceCorridor !== 'all') {
-      availableSuburbs = ALL_SUBURBS.filter(s => s.corridorId === this.activeServiceCorridor);
+      availableSuburbs = suburbs.filter(s => s.corridorId === this.activeServiceCorridor);
     }
 
     serviceSuburbSelect.innerHTML = `<option value="all">All Suburbs & Estates (${availableSuburbs.length})</option>` +
@@ -708,7 +755,8 @@ class NairobiRentalsApp {
     };
 
     const allItem = `<button class="sidebar-cat-item active" data-category="All" onclick="app.setCategory('All', this)"><i class="fas fa-th-large"></i><span>All Properties</span></button>`;
-    const items = MASTER_CATEGORIES
+    const categories = this.getCategories();
+    const items = categories
       .filter(cat => !cat.includes('Marketplace'))
       .map(cat => `<button class="sidebar-cat-item" data-category="${cat}" onclick="app.setCategory('${cat}', this)"><i class="fas ${getIcon(cat)}"></i><span>${cat}</span></button>`)
       .join('');
@@ -1781,7 +1829,9 @@ class NairobiRentalsApp {
     this.renderPagination();
 
     // Update map pins
-    window.mapController.renderPins(result);
+    if (window.mapController && typeof window.mapController.renderPins === 'function') {
+      window.mapController.renderPins(result);
+    }
   }
 
   renderListingsSummary() {
@@ -4734,8 +4784,10 @@ function installPWAInstantly() {
 }
 window.installPWAInstantly = installPWAInstantly;
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.app.init();
+function startApp() {
+  if (window.app && typeof window.app.init === 'function') {
+    window.app.init();
+  }
   // Automatically open shared property if URL has ?property=xyz
   try {
     const urlParams = new URLSearchParams(window.location.search);
@@ -4750,8 +4802,13 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) {
     console.error('Error checking shared property URL:', e);
   }
+}
 
-});
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
+}
 
 // Global popup dismissal on click outside
 document.addEventListener('click', function kejaGlobalPopupCloser(e) {
