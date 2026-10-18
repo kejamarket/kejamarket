@@ -1371,68 +1371,74 @@ app.post('/api/auth/verify-landlord', optionalAuth, (req, res) => {
 // PASSWORD RESET ROUTES (Email-only via Resend)
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/auth/forgot-password â€” email-only reset link via Resend
+// POST /api/auth/forgot-password -- accepts email OR Kenyan phone number
 app.post('/api/auth/forgot-password', resetLimiter, async (req, res) => {
-  // Always return neutral response to prevent user enumeration
   const neutralResponse = {
     success: true,
-    message: 'If that email address is registered, a password reset link has been sent. Please check your inbox.'
+    message: 'If that account is registered, reset instructions have been dispatched.'
   };
-
   try {
-    const { email } = req.body;
-    if (!email || !email.trim()) {
-      return res.status(400).json({ success: false, message: 'Please enter your registered email address.' });
+    const rawIdentifier = (req.body.identifier || req.body.email || '').trim();
+    if (!rawIdentifier) {
+      return res.status(400).json({ success: false, message: 'Please enter your registered email or phone number.' });
     }
 
-    const cleanEmail = email.trim().toLowerCase();
+    const strippedDigits = rawIdentifier.replace(/\D/g, '');
+    const isPhone = /^(254|07|01|7|1)\d{7,9}$/.test(strippedDigits) || /^\+254\d{9}$/.test(rawIdentifier);
+
+    if (isPhone) {
+      let digits = strippedDigits;
+      if (digits.startsWith('254')) digits = digits.slice(3);
+      if (digits.startsWith('0')) digits = digits.slice(1);
+      const canonicalPhone = '254' + digits;
+
+      const user = await store.findUserByIdentifier(canonicalPhone);
+      if (!user) return res.json(neutralResponse);
+
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      pendingOtps.set('sms_reset_' + canonicalPhone, {
+        otp, userId: user.id, phone: canonicalPhone,
+        expiresAt: Date.now() + 15 * 60 * 1000
+      });
+
+      const smsMsg = 'KejaMarket Password Reset OTP: ' + otp + '. Valid 15 mins. Never share this code.';
+      if (typeof sendRealSMS === 'function') {
+        sendRealSMS(canonicalPhone, smsMsg).catch(e => console.warn('[RESET-SMS]', e.message));
+      }
+      console.log('[RESET] SMS OTP generated for phone', canonicalPhone, 'user', user.id);
+      return res.json({ success: true, message: 'An OTP has been sent via SMS. Enter it to reset your password.', via: 'sms' });
+    }
+
+    // Email path
+    const cleanEmail = rawIdentifier.toLowerCase();
     const user = await store.findUserByIdentifier(cleanEmail);
+    if (!user || !user.email || user.email.toLowerCase() !== cleanEmail) return res.json(neutralResponse);
 
-    // If user does not exist or has no matching email, still return neutral success
-    if (!user || !user.email || user.email.toLowerCase() !== cleanEmail) {
-      return res.json(neutralResponse);
-    }
-
-    // Generate cryptographically random 64-character hex token
     const crypto = require('crypto');
     const rawToken = crypto.randomBytes(32).toString('hex');
     const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
 
-    // Store token hash in DB or memory fallback
     try {
       if (store.createPasswordResetToken) {
         await store.createPasswordResetToken(user.id, tokenHash, expiresAt);
       } else {
-        pendingOtps.set('reset_' + tokenHash, {
-          tokenHash,
-          userId: user.id,
-          expiresAt: Date.now() + 60 * 60 * 1000
-        });
+        pendingOtps.set('reset_' + tokenHash, { tokenHash, userId: user.id, expiresAt: Date.now() + 60 * 60 * 1000 });
       }
     } catch (tokenErr) {
-      console.warn('Token DB storage failed, using memory fallback:', tokenErr.message);
-      pendingOtps.set('reset_' + tokenHash, {
-        tokenHash,
-        userId: user.id,
-        expiresAt: Date.now() + 60 * 60 * 1000
-      });
+      pendingOtps.set('reset_' + tokenHash, { tokenHash, userId: user.id, expiresAt: Date.now() + 60 * 60 * 1000 });
     }
 
-    // Build reset link using APP_URL or request host
     const appUrl = (process.env.APP_URL || (req.protocol + '://' + req.get('host'))).replace(/\/+$/, '');
-    const resetUrl = `${appUrl}/?reset_token=${rawToken}`;
-
-    // Send email via Resend (non-blocking)
+    const resetUrl = appUrl + '/?reset_token=' + rawToken;
     emailService.sendPasswordResetLink(user.email, user.name || 'KejaMarket User', resetUrl).catch(err => {
-      console.error('Failed to send password reset email via Resend:', err.message);
+      console.error('[RESET] Email dispatch failed:', err.message);
     });
-
-    console.log(`[RESET] Password reset link generated for user ID ${user.id}`);
-    return res.json(neutralResponse);
+    console.log('[RESET] Email reset link generated for user', user.id);
+    return res.json({ ...neutralResponse, via: 'email' });
   } catch (err) {
-    console.error('Forgot password error:', err);
-    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+    console.error('[RESET] Error:', err);
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred.' });
   }
 });
 
@@ -4495,6 +4501,190 @@ app.delete('/api/admin/inquiries/:id', requireAuth, requirePermission('content.m
       store.fallbackStore.data.inquiries = store.fallbackStore.data.inquiries.filter(i => String(i.id) !== String(id));
     }
     res.json({ success: true, message: 'Inquiry deleted successfully.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
+// POST /api/admin/inquiries/:id/reply — reply to tenant/user property inquiry
+app.post('/api/admin/inquiries/:id/reply', requireAuth, requirePermission('content.moderate'), auditRequest, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reply } = req.body;
+    if (!reply || !reply.trim()) {
+      return res.status(400).json({ success: false, message: 'Reply message cannot be empty' });
+    }
+
+    let inquiry = null;
+    if (store.isConnected && store.query) {
+      try {
+        const msgRes = await store.query('SELECT * FROM messages WHERE id = $1', [id]);
+        if (msgRes.rows.length > 0) {
+          inquiry = msgRes.rows[0];
+          await store.query('UPDATE messages SET is_read = true WHERE id = $1', [id]);
+        }
+      } catch (e) {
+        console.warn('DB inquiry reply fetch error:', e.message);
+      }
+    }
+
+    if (!inquiry && store.data?.inquiries) {
+      inquiry = store.data.inquiries.find(i => String(i.id) === String(id));
+      if (inquiry) inquiry.status = 'responded';
+    }
+
+    // Dispatch SMS notification if phone is available
+    const recipientPhone = inquiry?.sender_phone || inquiry?.phone;
+    if (recipientPhone) {
+      try {
+        const smsMsg = `KejaMarket Inquiry Response: ${reply.trim().substring(0, 140)}`;
+        if (global.africasTalkingSMS) {
+          await global.africasTalkingSMS.send({ to: [recipientPhone], message: smsMsg });
+        }
+      } catch (smsErr) {
+        console.warn('SMS dispatch on inquiry reply error:', smsErr.message);
+      }
+    }
+
+    res.json({ success: true, message: 'Inquiry response recorded and sent successfully.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ─── FRAUD & RISK MANAGEMENT ROUTES ───────────────────────────────
+// GET /api/admin/fraud/flags — list all fraud flags
+app.get('/api/admin/fraud/flags', requireAuth, requirePermission('fraud.review'), auditRequest, async (req, res) => {
+  try {
+    let flags = [];
+    if (store.isConnected && store.query) {
+      try {
+        const result = await store.query(`
+          SELECT f.*, u.name as user_name, u.email as user_email, u.phone as user_phone,
+                 p.title as property_title, p.location as property_location
+          FROM fraud_flags f
+          LEFT JOIN users u ON f.user_id = u.id
+          LEFT JOIN properties p ON f.property_id = p.id
+          ORDER BY f.created_at DESC LIMIT 100
+        `);
+        flags = result.rows;
+      } catch (e) {
+        console.warn('DB fraud flags fetch error:', e.message);
+      }
+    }
+    
+    // Auto-detect duplicate properties and suspicious listings if empty
+    if (flags.length === 0 && store.isConnected && store.query) {
+      try {
+        const dupRes = await store.query(`
+          SELECT title, location, COUNT(*) as count, array_agg(id) as property_ids
+          FROM properties
+          GROUP BY title, location
+          HAVING COUNT(*) > 1
+          LIMIT 5
+        `);
+        for (const row of dupRes.rows) {
+          flags.push({
+            id: 'fraud-auto-' + (row.property_ids[0] || '1'),
+            flag_type: 'duplicate_listing',
+            severity: 'medium',
+            description: `Duplicate listing detected: "${row.title}" in ${row.location} appears ${row.count} times.`,
+            auto_detected: true,
+            status: 'open',
+            created_at: new Date().toISOString()
+          });
+        }
+      } catch (err) {
+        console.warn('Auto duplicate detection notice:', err.message);
+      }
+    }
+
+    res.json({ success: true, count: flags.length, flags });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/fraud/flags — manually flag user or property
+app.post('/api/admin/fraud/flags', requireAuth, requirePermission('fraud.investigate'), auditRequest, async (req, res) => {
+  try {
+    const { userId, propertyId, flagType, severity = 'medium', description } = req.body;
+    if (!description) return res.status(400).json({ success: false, message: 'Description is required' });
+
+    if (store.isConnected && store.query) {
+      const insRes = await store.query(`
+        INSERT INTO fraud_flags (user_id, property_id, flag_type, severity, description, auto_detected, assigned_to)
+        VALUES ($1, $2, $3, $4, $5, FALSE, $6)
+        RETURNING *
+      `, [userId || null, propertyId || null, flagType || 'suspicious_activity', severity, description, req.user.id]);
+      return res.json({ success: true, flag: insRes.rows[0] });
+    }
+    res.json({ success: true, message: 'Flag recorded' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/fraud/flags/:id/resolve — resolve or dismiss flag
+app.post('/api/admin/fraud/flags/:id/resolve', requireAuth, requirePermission('fraud.investigate'), auditRequest, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status = 'resolved', resolutionNotes = '', actionTaken = '' } = req.body;
+    if (store.isConnected && store.query) {
+      await store.query(`
+        UPDATE fraud_flags 
+        SET status = $1, resolution_notes = $2, action_taken = $3, investigated_by = $4, investigated_at = NOW()
+        WHERE id = $5
+      `, [status, resolutionNotes, actionTaken, req.user.id, id]);
+    }
+    res.json({ success: true, message: `Flag marked as ${status}` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/fraud/risk-scores — high risk users summary
+app.get('/api/admin/fraud/risk-scores', requireAuth, requirePermission('fraud.review'), auditRequest, async (req, res) => {
+  try {
+    let riskScores = [];
+    if (store.isConnected && store.query) {
+      try {
+        const r = await store.query(`
+          SELECT urs.*, u.name, u.email, u.phone, u.role
+          FROM user_risk_scores urs
+          JOIN users u ON urs.user_id = u.id
+          ORDER BY urs.risk_score DESC LIMIT 50
+        `);
+        riskScores = r.rows;
+      } catch (e) {
+        console.warn('Risk scores fetch error:', e.message);
+      }
+    }
+    res.json({ success: true, count: riskScores.length, riskScores });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/bulk/history — list past bulk operations
+app.get('/api/admin/bulk/history', requireAuth, requirePermission('listing.view'), auditRequest, async (req, res) => {
+  try {
+    let history = [];
+    if (store.isConnected && store.query) {
+      try {
+        const r = await store.query(`
+          SELECT b.*, u.name as initiated_by_name
+          FROM bulk_operations b
+          LEFT JOIN users u ON b.initiated_by = u.id
+          ORDER BY b.created_at DESC LIMIT 20
+        `);
+        history = r.rows;
+      } catch (e) {
+        console.warn('Bulk history fetch error:', e.message);
+      }
+    }
+    res.json({ success: true, count: history.length, history });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -49,7 +49,9 @@ const AdminCore = (() => {
     'adminUsers': ['super'],
     'audit': ['super'],
     'system-settings': ['super'],
-    'backups': ['super']
+    'backups': ['super'],
+    'fraud': ['super', 'listings', 'verification'],
+    'bulk-operations': ['super', 'listings']
   };
 
   // Check if current user has permission for module
@@ -190,7 +192,9 @@ const AdminCore = (() => {
         'adminUsers': '<i class="fas fa-user-shield"></i> Administrators & RBAC',
         'audit': '<i class="fas fa-clipboard-list"></i> Security & Audit Logs',
         'system-settings': '<i class="fas fa-cogs"></i> System Settings & Feature Controls',
-        'backups': '<i class="fas fa-database"></i> Database Diagnostics & Backups'
+        'backups': '<i class="fas fa-database"></i> Database Diagnostics & Backups',
+        'fraud': '<i class="fas fa-shield-virus"></i> Fraud Detection & Risk Management',
+        'bulk-operations': '<i class="fas fa-layer-group"></i> Bulk Operations & Management'
       };
       pageTitle.innerHTML = titles[moduleName] || `<i class="fas fa-folder"></i> ${moduleName}`;
     }
@@ -244,23 +248,31 @@ const AdminCore = (() => {
         case 'users-tenants':
         case 'users-landlords':
         case 'users-service-providers':
+        case 'users-verified':
         case 'users-suspended':
           if (window.AdminUsers) {
             const filter = moduleName === 'users-tenants' ? 'tenants' : 
                           moduleName === 'users-landlords' ? 'landlords' : 
                           moduleName === 'users-service-providers' ? 'service-providers' :
+                          moduleName === 'users-verified' ? 'verified' :
                           moduleName === 'users-suspended' ? 'suspended' : 'all';
             // Inject scaffold first so AdminUsers.init() can find #users-content
             contentArea.innerHTML = `
-              <div class="module-header">
-                <h1><i class="fas fa-users"></i> User Management</h1>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-                  <button class="tab-btn ${filter === 'all' ? 'active' : ''}" onclick="AdminCore.navigate('users')" style="font-size:0.82rem;">All Users</button>
-                  <button class="tab-btn ${filter === 'tenants' ? 'active' : ''}" onclick="AdminCore.navigate('users-tenants')" style="font-size:0.82rem;">🏠 Tenants</button>
-                  <button class="tab-btn ${filter === 'landlords' ? 'active' : ''}" onclick="AdminCore.navigate('users-landlords')" style="font-size:0.82rem;">🏢 Landlords</button>
-                  <button class="tab-btn ${filter === 'service-providers' ? 'active' : ''}" onclick="AdminCore.navigate('users-service-providers')" style="font-size:0.82rem;">🔧 Service Providers</button>
-                  <button class="tab-btn ${filter === 'suspended' ? 'active' : ''}" onclick="AdminCore.navigate('users-suspended')" style="font-size:0.82rem;">🚫 Suspended</button>
+              <div class="module-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+                <div>
+                  <h1 style="margin:0;"><i class="fas fa-users"></i> User Management</h1>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+                    <button class="tab-btn ${filter === 'all' ? 'active' : ''}" onclick="AdminCore.navigate('users')" style="font-size:0.82rem;">All Users</button>
+                    <button class="tab-btn ${filter === 'tenants' ? 'active' : ''}" onclick="AdminCore.navigate('users-tenants')" style="font-size:0.82rem;">🏠 Tenants</button>
+                    <button class="tab-btn ${filter === 'landlords' ? 'active' : ''}" onclick="AdminCore.navigate('users-landlords')" style="font-size:0.82rem;">🏢 Landlords</button>
+                    <button class="tab-btn ${filter === 'service-providers' ? 'active' : ''}" onclick="AdminCore.navigate('users-service-providers')" style="font-size:0.82rem;">🔧 Service Providers</button>
+                    <button class="tab-btn ${filter === 'verified' ? 'active' : ''}" onclick="AdminCore.navigate('users-verified')" style="font-size:0.82rem;">✅ Verified Accounts</button>
+                    <button class="tab-btn ${filter === 'suspended' ? 'active' : ''}" onclick="AdminCore.navigate('users-suspended')" style="font-size:0.82rem;">🚫 Suspended</button>
+                  </div>
                 </div>
+                <button onclick="AdminCore.exportToCSV('users')" class="btn-secondary" style="display:inline-flex; align-items:center; gap:6px; font-size:0.85rem; padding:8px 14px; border-radius:8px; cursor:pointer;">
+                  <i class="fas fa-file-csv" style="color:#6366f1;"></i> Export Users CSV
+                </button>
               </div>
               <div id="users-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading users...</div></div>
             `;
@@ -336,6 +348,12 @@ const AdminCore = (() => {
           break;
         case 'backups':
           await loadBackupsModule();
+          break;
+        case 'fraud':
+          await loadFraudModule();
+          break;
+        case 'bulk-operations':
+          await loadBulkOperationsModule();
           break;
         default:
           contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><p>Module "${moduleName}" is active.</p></div>`;
@@ -584,8 +602,11 @@ const AdminCore = (() => {
   async function loadPropertiesModule(filter = 'all') {
     const content = document.getElementById('admin-content');
     content.innerHTML = `
-      <div class="module-header">
-        <h1><i class="fas fa-home"></i> Property Management</h1>
+      <div class="module-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <h1 style="margin:0;"><i class="fas fa-home"></i> Property Management</h1>
+        <button onclick="AdminCore.exportToCSV('properties')" class="btn-secondary" style="display:inline-flex; align-items:center; gap:6px; font-size:0.85rem; padding:8px 14px; border-radius:8px; cursor:pointer;">
+          <i class="fas fa-file-csv" style="color:#10b981;"></i> Export CSV
+        </button>
       </div>
 
       <!-- Quality Checks Indicator Banner -->
@@ -980,9 +1001,12 @@ const AdminCore = (() => {
       <div class="stats-row" id="finance-stats-row">
         <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading revenue metrics...</div>
       </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin:24px 0 14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin:24px 0 14px; flex-wrap:wrap; gap:10px;">
         <h2 style="font-size:1.15rem; font-weight:800; color:#1e293b; margin:0;">Transaction History & Receipts</h2>
-        <button class="btn-primary" onclick="AdminCore.navigate('mpesa-config')"><i class="fas fa-cog"></i> M-Pesa Config</button>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-secondary" onclick="AdminCore.exportToCSV('transactions')" style="display:inline-flex; align-items:center; gap:6px; font-size:0.85rem; padding:8px 14px; border-radius:8px; cursor:pointer;"><i class="fas fa-file-csv" style="color:#10b981;"></i> Export Ledger CSV</button>
+          <button class="btn-primary" onclick="AdminCore.navigate('mpesa-config')"><i class="fas fa-cog"></i> M-Pesa Config</button>
+        </div>
       </div>
       <div id="finance-transactions-table">
         <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading transactions...</div>

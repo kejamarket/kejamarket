@@ -217,6 +217,17 @@
         </div>
       </div>
 
+      <!-- Live System Status & Quick Refresh -->
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: auto;">
+        <div id="admin-health-badge" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 20px; font-size: 0.78rem; font-weight: 700; color: #065f46;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block; box-shadow: 0 0 0 2px rgba(16,185,129,0.2);"></span>
+          <span id="health-status-text">PostgreSQL Online</span>
+        </div>
+        <button id="admin-refresh-btn" onclick="AdminCore.refreshCurrentModule()" title="Refresh view" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; color: #475569; transition: all 0.2s;" onmouseover="this.style.background='#f1f5f9'; this.style.color='#7c3aed';" onmouseout="this.style.background='#fff'; this.style.color='#475569';">
+          <i class="fas fa-sync-alt" id="refresh-spinner-icon"></i>
+        </button>
+      </div>
+
       <div class="admin-user-info">
         <div class="user-details">
           <div id="admin-user-name" class="user-name">Administrator</div>

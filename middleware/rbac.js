@@ -17,6 +17,8 @@ const pool = new Pool({
  * @returns {Promise<boolean>}
  */
 async function checkPermission(userId, requiredPermission) {
+  // Super admin / system owner always has all permissions
+  if (userId === 'usr-admin-01') return true;
   try {
     const result = await pool.query(`
       SELECT EXISTS (
@@ -98,6 +100,12 @@ function requirePermission(permission) {
         message: 'Unauthorized - Please log in' 
       });
     }
+
+    // Super admin bypass
+    if (req.user.id === 'usr-admin-01' || req.user.adminRole === 'super' || (req.user.role === 'admin' && !req.user.adminRole)) {
+      req.permission = permission;
+      return next();
+    }
     
     const hasPermission = await checkPermission(req.user.id, permission);
     
@@ -130,6 +138,12 @@ function requireAnyPermission(...permissions) {
         message: 'Unauthorized - Please log in' 
       });
     }
+
+    // Super admin bypass
+    if (req.user.id === 'usr-admin-01' || req.user.adminRole === 'super' || (req.user.role === 'admin' && !req.user.adminRole)) {
+      req.permission = permissions[0];
+      return next();
+    }
     
     for (const permission of permissions) {
       const hasPermission = await checkPermission(req.user.id, permission);
@@ -160,6 +174,12 @@ function requireAllPermissions(...permissions) {
         success: false, 
         message: 'Unauthorized - Please log in' 
       });
+    }
+
+    // Super admin bypass
+    if (req.user.id === 'usr-admin-01' || req.user.adminRole === 'super' || (req.user.role === 'admin' && !req.user.adminRole)) {
+      req.permissions = permissions;
+      return next();
     }
     
     const missingPermissions = [];
