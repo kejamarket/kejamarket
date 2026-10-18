@@ -7282,26 +7282,6 @@ async function startServer() {
     console.log(`🔗 Web Application: http://localhost:${PORT}`);
     console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
 
-    const PUBLIC_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.onrender.com';
-    const PING_INTERVAL = 9 * 60 * 1000;
-
-    if (process.env.NODE_ENV === 'production') {
-      console.log(`📡 Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
-      setInterval(() => {
-        try {
-          const httpModule = PUBLIC_URL.startsWith('https') ? require('https') : require('http');
-          httpModule.get(`${PUBLIC_URL}/api/health`, (res) => {
-            console.log(`[Keep-Alive Ping] Status: ${res.statusCode}`);
-          }).on('error', (err) => {
-            console.warn(`[Keep-Alive Ping] Warning: ${err.message}`);
-          });
-        } catch (err) {
-          console.warn(`[Keep-Alive Ping] Failed: ${err.message}`);
-        }
-      }, PING_INTERVAL);
-    } else {
-      console.log(`ðŸ“¡ Keep-Alive Heartbeat active for ${PUBLIC_URL} (Pinging every 9 minutes)`);
-    }
   });
 
   server.on('clientError', (err, socket) => {
