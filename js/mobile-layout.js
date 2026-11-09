@@ -31,7 +31,9 @@
     },
     activeFilterCounty: 'all',
     countdownTarget: null,
-    countdownInterval: null
+    countdownInterval: null,
+    selectedViewingType: 'physical',
+    selectedViewingTime: '10:00 AM'
   };
 
   // Comprehensive Kenya Counties & Residential Areas Master Database for Filters
@@ -2051,6 +2053,9 @@
   function renderRequestViewingScreen(hSlot, mSlot, propId) {
     const prop = State.properties.find(p => p.id === propId) || State.selectedProperty || State.properties[0];
     State.selectedProperty = prop;
+    // Reset viewing state each time screen opens
+    State.selectedViewingType = 'physical';
+    State.selectedViewingTime = '10:00 AM';
     const thumb = (prop.media && prop.media[0] && prop.media[0].url) || prop.thumbnail;
 
     hSlot.innerHTML = `
@@ -2133,6 +2138,11 @@
   function renderViewingConfirmedScreen(hSlot, mSlot, params) {
     const prop = State.properties.find(p => p.id === params.id) || State.selectedProperty || State.properties[0];
     const isVirtual = params.viewingType === 'virtual';
+    const bookDate = params.date || '';
+    const bookTime = params.time || '';
+    const dateLabel = bookDate ? new Date(bookDate).toLocaleDateString('en-KE', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) : '';
+    const phone = prop ? (prop.whatsapp || prop.landlord?.whatsapp || prop.phone || prop.contactPhone || '').replace(/[^0-9]/g, '') : '';
+
     hSlot.innerHTML = `
       <div class="km-screen-header">
         <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-times"></i></button>
@@ -2142,24 +2152,71 @@
     `;
 
     mSlot.innerHTML = `
-      <div style="padding:24px 18px; text-align:center; background:#fff; min-height:100vh;">
-        <div style="width:68px; height:68px; border-radius:50%; background:#dcfce7; color:#15803d; font-size:32px; display:flex; align-items:center; justify-content:center; margin:20px auto 16px;">
-          <i class="${isVirtual ? 'fab fa-whatsapp' : 'fas fa-check'}"></i>
+      <div style="padding:24px 18px; text-align:center; background:#fff; min-height:100vh; padding-bottom:80px;">
+
+        <!-- Success Icon -->
+        <div style="width:72px; height:72px; border-radius:50%; background:${isVirtual ? '#dcf8ff' : '#dcfce7'}; color:${isVirtual ? '#25D366' : '#15803d'}; font-size:34px; display:flex; align-items:center; justify-content:center; margin:20px auto 16px; box-shadow:0 4px 16px rgba(0,104,24,0.15);">
+          <i class="${isVirtual ? 'fab fa-whatsapp' : 'fas fa-calendar-check'}"></i>
         </div>
-        <h2 style="font-size:19px; font-weight:900; color:#0f172a; margin-bottom:6px;">${isVirtual ? 'WhatsApp Video Tour Booked!' : 'Free Viewing Request Sent!'}</h2>
-        <p style="font-size:12.5px; color:#64748b; line-height:1.5; margin-bottom:24px;">
-          ${isVirtual 
-            ? 'The caretaker has been notified to start a live WhatsApp video call with you at the scheduled time to inspect every room, tap, and finish.'
-            : 'The property manager has been notified via SMS & WhatsApp. You will receive immediate directions and gate pin confirmation.'}
+
+        <h2 style="font-size:20px; font-weight:900; color:#0f172a; margin-bottom:6px;">
+          ${isVirtual ? '📱 WhatsApp Video Tour Booked!' : '✅ Free Viewing Request Sent!'}
+        </h2>
+
+        <!-- Booking Summary Card -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:14px; text-align:left; margin:16px 0;">
+          <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px;">Booking Summary</div>
+          ${prop ? `<div style="display:flex; gap:10px; align-items:center; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid #e2e8f0;">
+            <img src="${(prop.media && prop.media[0] && prop.media[0].url) || prop.thumbnail || ''}" style="width:52px; height:52px; border-radius:8px; object-fit:cover;" alt="${prop.title}">
+            <div>
+              <div style="font-size:13px; font-weight:800; color:#0f172a;">${prop.title}</div>
+              <div style="font-size:12px; color:#006818; font-weight:700;">KSh ${formatKsh(prop.rentKes || prop.price)}/mo</div>
+              <div style="font-size:11px; color:#64748b;"><i class="fas fa-map-marker-alt" style="color:#006818;"></i> ${prop.estateSuburb || prop.county || 'Nairobi'}</div>
+            </div>
+          </div>` : ''}
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:8px; text-align:center;">
+              <i class="${isVirtual ? 'fab fa-whatsapp' : 'fas fa-walking'}" style="color:#006818; font-size:16px; display:block; margin-bottom:3px;"></i>
+              <div style="font-size:10px; color:#64748b; font-weight:600;">Type</div>
+              <div style="font-size:11px; font-weight:800; color:#0f172a;">${isVirtual ? 'Video Tour' : 'Walk-In'}</div>
+            </div>
+            <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:8px; text-align:center;">
+              <i class="fas fa-clock" style="color:#006818; font-size:16px; display:block; margin-bottom:3px;"></i>
+              <div style="font-size:10px; color:#64748b; font-weight:600;">Time</div>
+              <div style="font-size:11px; font-weight:800; color:#0f172a;">${bookTime || '10:00 AM'}</div>
+            </div>
+          </div>
+          ${dateLabel ? `<div style="margin-top:8px; background:#f0fdf4; border-radius:8px; padding:8px; text-align:center; font-size:11.5px; font-weight:700; color:#166534;"><i class="fas fa-calendar-alt"></i> ${dateLabel}</div>` : ''}
+        </div>
+
+        <!-- Description -->
+        <p style="font-size:12.5px; color:#64748b; line-height:1.55; margin-bottom:20px; text-align:left;">
+          ${isVirtual
+            ? '📹 The caretaker will start a live WhatsApp video call at the scheduled time — you can inspect every room, water pressure, lighting, and ask real-time questions without leaving home.'
+            : '🏠 The property manager has been notified via SMS & WhatsApp. You will receive gate directions, caretaker name, and gate pin before your visit. Zero fees required.'}
         </p>
 
-        <button type="button" class="km-btn-call" style="width:100%; height:48px; margin-bottom:12px;" onclick="MobileApp.chatOnWhatsApp('${prop.id}')">
-          <i class="fab fa-whatsapp"></i> Instant Chat with Caretaker
+        <!-- Action Buttons -->
+        ${isVirtual && phone ? `
+        <a href="https://wa.me/${phone}?text=${encodeURIComponent(`Hi! I booked a WhatsApp Video Tour on KejaMarket for: *${prop ? prop.title : 'your property'}* on ${dateLabel} at ${bookTime}. Please prepare for the live inspection at the agreed time.`)}"
+           target="_blank"
+           style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; height:50px; background:#25D366; color:#fff; border-radius:12px; font-weight:800; font-size:14px; text-decoration:none; margin-bottom:10px; box-shadow:0 2px 8px rgba(37,211,102,0.3);">
+          <i class="fab fa-whatsapp" style="font-size:18px;"></i> Start Video Tour on WhatsApp
+        </a>
+        ` : `
+        <button type="button" style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; height:50px; background:#25D366; color:#fff; border-radius:12px; font-weight:800; font-size:14px; border:none; cursor:pointer; margin-bottom:10px; box-shadow:0 2px 8px rgba(37,211,102,0.3);" onclick="MobileApp.chatOnWhatsApp('${prop ? prop.id : ''}')">
+          <i class="fab fa-whatsapp" style="font-size:18px;"></i> Chat with Caretaker
+        </button>
+        `}
+
+        <button type="button" onclick="MobileApp.showScreen('my-requests')" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:44px; background:#f1f5f9; color:#0f172a; border-radius:12px; font-weight:700; font-size:13px; border:none; cursor:pointer; margin-bottom:10px;">
+          <i class="fas fa-list-check" style="color:#006818;"></i> View My Bookings
         </button>
 
-        <button type="button" class="km-btn-reset-filters" style="width:100%; height:44px;" onclick="MobileApp.showScreen('home')">
-          Back to Listings
+        <button type="button" onclick="MobileApp.showScreen('home')" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:44px; background:#fff; color:#64748b; border-radius:12px; font-weight:600; font-size:13px; border:1px solid #e2e8f0; cursor:pointer;">
+          <i class="fas fa-home"></i> Back to Listings
         </button>
+
       </div>
     `;
   }
@@ -2615,20 +2672,31 @@
     `;
 
     mSlot.innerHTML = `
-      <div style="padding:14px; background:#fff; min-height:100vh;">
-        ${State.viewingRequests.length > 0 ? State.viewingRequests.map(r => `
-          <div style="border:1px solid #e2e8f0; border-radius:12px; padding:12px; margin-bottom:10px; display:flex; gap:10px; align-items:center;">
-            <img src="${r.thumbnail || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=300&q=80'}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">
-            <div>
-              <div style="font-weight:800; font-size:13px; color:#0f172a;">${r.title}</div>
-              <div style="font-size:11.5px; color:#64748b;">${r.date || 'Pending Confirmation'}</div>
-              <span style="display:inline-block; margin-top:4px; font-size:10px; font-weight:800; background:#e8f8ee; color:#006818; padding:2px 6px; border-radius:4px;">Request Active</span>
+      <div style="padding:14px; background:#fff; min-height:100vh; padding-bottom:80px;">
+        ${State.viewingRequests.length > 0 ? State.viewingRequests.map(r => {
+          const isVirtual = r.viewingType === 'virtual';
+          return `
+          <div style="border:1px solid #e2e8f0; border-radius:12px; padding:12px; margin-bottom:10px; display:flex; gap:10px; align-items:flex-start;">
+            <img src="${r.thumbnail || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=300&q=80'}" style="width:62px; height:62px; border-radius:8px; object-fit:cover; flex-shrink:0;">
+            <div style="flex:1; min-width:0;">
+              <div style="font-weight:800; font-size:13px; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.title}</div>
+              <div style="font-size:11.5px; color:#64748b; margin-top:2px;"><i class="fas fa-calendar-alt" style="color:#006818;"></i> ${r.date || 'Pending Confirmation'}</div>
+              <div style="display:flex; gap:6px; margin-top:5px; flex-wrap:wrap;">
+                <span style="font-size:10px; font-weight:800; background:${isVirtual ? '#eff6ff' : '#f0fdf4'}; color:${isVirtual ? '#2563eb' : '#006818'}; padding:2px 7px; border-radius:4px;">
+                  <i class="${isVirtual ? 'fab fa-whatsapp' : 'fas fa-walking'}"></i> ${isVirtual ? 'Video Tour' : 'Walk-In'}
+                </span>
+                <span style="font-size:10px; font-weight:800; background:#e8f8ee; color:#006818; padding:2px 7px; border-radius:4px;">
+                  <i class="fas fa-clock"></i> Active
+                </span>
+              </div>
             </div>
           </div>
-        `).join('') : `
+        `}).join('') : `
           <div style="text-align:center; padding:40px 20px; color:#64748b;">
             <i class="fas fa-calendar-times" style="font-size:32px; color:#cbd5e1; margin-bottom:10px; display:block;"></i>
-            No active viewing appointments yet.
+            <div style="font-size:14px; font-weight:700; color:#0f172a; margin-bottom:6px;">No Viewing Appointments Yet</div>
+            <div style="font-size:12px; margin-bottom:18px;">Browse listings and tap "Request a Viewing" to book your first free inspection.</div>
+            <button type="button" onclick="MobileApp.showScreen('home')" style="background:#006818; color:#fff; border:none; border-radius:10px; padding:10px 22px; font-weight:800; font-size:13px; cursor:pointer;">Browse Listings</button>
           </div>
         `}
       </div>
@@ -3047,12 +3115,29 @@
     if (thumbEl) thumbEl.classList.add('active');
   }
 
-  function submitViewingRequest(propId) {
+  async function submitViewingRequest(propId) {
     const prop = State.selectedProperty || State.properties.find(p => p.id === propId);
-    const date = document.getElementById('km-viewing-date')?.value || 'Tomorrow';
+    if (!prop) return;
+
+    const dateEl = document.getElementById('km-viewing-date');
+    const date = (dateEl && dateEl.value) ? dateEl.value : new Date(Date.now() + 86400000).toISOString().split('T')[0];
     const time = State.selectedViewingTime || '10:00 AM';
     const viewingType = State.selectedViewingType || 'physical';
+    const msgEl = document.getElementById('km-viewing-msg');
+    const notes = (msgEl && msgEl.value.trim()) || '';
 
+    // Show submitting state
+    const btn = document.querySelector('.km-btn-call[onclick*="submitViewingRequest"]');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; }
+
+    // Check if user is signed in
+    const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function')
+      ? window.kejaAuth.getSession()
+      : JSON.parse(localStorage.getItem('keja_session') || localStorage.getItem('keja_user') || 'null');
+
+    const isLoggedIn = !!(session && (session.id || session.phone || session.email));
+
+    // Save locally always
     const newReq = {
       id: 'vr-' + Date.now(),
       propertyId: prop.id,
@@ -3065,7 +3150,45 @@
     State.viewingRequests.unshift(newReq);
     localStorage.setItem('keja_viewings', JSON.stringify(State.viewingRequests));
 
-    showScreen('viewing-confirmed', { id: prop.id, viewingType: viewingType });
+    // If logged in, also POST to server API
+    if (isLoggedIn) {
+      try {
+        const token = session.token || localStorage.getItem('keja_token') || '';
+        const resp = await fetch('/api/viewings/request', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify({
+            propertyId: prop.id,
+            preferredDate: date,
+            preferredTime: time,
+            viewingType: viewingType,
+            notes: notes
+          })
+        });
+        const result = await resp.json();
+        if (!result.success) {
+          console.warn('Server viewing request failed:', result.message);
+        }
+      } catch (err) {
+        console.warn('Viewing API error (offline fallback ok):', err.message);
+      }
+    }
+
+    // If WhatsApp Video Tour — open WhatsApp call directly
+    if (viewingType === 'virtual') {
+      const phone = (prop.whatsapp || prop.landlord?.whatsapp || prop.phone || prop.contactPhone || '').replace(/[^0-9]/g, '');
+      if (phone) {
+        const waText = encodeURIComponent(
+          `Hi! I have scheduled a WhatsApp Video Tour on KejaMarket for: *${prop.title}* on ${date} at ${time}. Please prepare for a live video inspection at the agreed time. Thank you!`
+        );
+        setTimeout(() => window.open(`https://wa.me/${phone}?text=${waText}`, '_blank'), 300);
+      }
+    }
+
+    showScreen('viewing-confirmed', { id: prop.id, viewingType: viewingType, date: date, time: time });
   }
 
   function sendQuickReply(text) {

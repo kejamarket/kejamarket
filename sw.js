@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v90-full-rebuild-202611100040';
+﻿const CACHE_NAME = 'kejamarket-v91-viewing-system-complete';
 
 const STATIC_ASSETS = [
   '/',
@@ -256,3 +256,4 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
