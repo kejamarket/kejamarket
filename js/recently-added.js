@@ -45,9 +45,9 @@ const KejaRecentlyAdded = {
    * Initialize Recently Added section
    */
   init() {
-    console.log('KejaMarket Recently Added initialized');
-    this.createSection();
-    this.bindEvents();
+    // Disabled - removed bottom section
+    const existing = document.getElementById('recently-added-section');
+    if (existing) existing.remove();
   },
 
   /**

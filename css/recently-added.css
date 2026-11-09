@@ -1,9 +1,8 @@
 /* KejaMarket Recently Added Section Styles */
 
-/* Recently Added Container */
-.recently-added-section {
-  margin: 40px 0;
-  padding: 0 20px;
+.recently-added-section,
+#recently-added-section {
+  display: none !important;
 }
 
 .recently-added-header {

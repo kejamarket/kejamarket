@@ -1,4 +1,4 @@
-window.EXACT_12_REFERENCE_PROPERTIES = [{"id": "km-prop-001", "title": "Cozy Studio BNB - Kilimani", "category": "Bnb (Short Stay)", "estateSuburb": "Kilimani", "county": "Nairobi", "locationDisplay": "Kilimani, Nairobi", "rentKes": 2500, "bedrooms": 1, "bathrooms": 1, "isBnb": true, "rentPeriod": "month", "amenities": ["wifi", "parking"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 WiFi", "badgeColor": "#8b5cf6", "badgeLabel": "Bnb (Short Stay)", "badgeIcon": "fa-umbrella-beach", "thumbnail": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-002", "title": "Single Room - Umoja", "category": "Single Room", "estateSuburb": "Umoja", "county": "Nairobi", "locationDisplay": "Umoja, Nairobi", "rentKes": 8000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 Parking", "badgeColor": "#0284c7", "badgeLabel": "Single Room", "badgeIcon": "fa-door-open", "thumbnail": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-003", "title": "Double Room - South B", "category": "Double Room", "estateSuburb": "South B", "county": "Nairobi", "locationDisplay": "South B, Nairobi", "rentKes": 12000, "bedrooms": 2, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "2 Beds \u00b7 Private Bath \u00b7 WiFi", "badgeColor": "#ea580c", "badgeLabel": "Double Room", "badgeIcon": "fa-person-booth", "thumbnail": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-004", "title": "Bedsitter - Westlands", "category": "Bedsitter", "estateSuburb": "Westlands", "county": "Nairobi", "locationDisplay": "Westlands, Nairobi", "rentKes": 15000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "1 Bed \u00b7 Kitchenette \u00b7 WiFi", "badgeColor": "#10b981", "badgeLabel": "Bedsitter", "badgeIcon": "fa-bed", "thumbnail": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-005", "title": "2 Bedroom Apartment - Lavington", "category": "2 Bedrooms", "estateSuburb": "Lavington", "county": "Nairobi", "locationDisplay": "Lavington, Nairobi", "rentKes": 45000, "bedrooms": 2, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "2 Beds \u00b7 2 Baths \u00b7 Parking", "badgeColor": "#ef4444", "badgeLabel": "2 Bedrooms", "badgeIcon": "fa-door-closed", "thumbnail": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-006", "title": "3 Bedroom House - Runda", "category": "3 Bedrooms", "estateSuburb": "Runda", "county": "Nairobi", "locationDisplay": "Runda, Nairobi", "rentKes": 95000, "bedrooms": 3, "bathrooms": 3, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "3 Beds \u00b7 3 Baths \u00b7 Garden", "badgeColor": "#2563eb", "badgeLabel": "3 Bedrooms", "badgeIcon": "fa-home", "thumbnail": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-007", "title": "4 Bedroom Maisonette - Karen", "category": "4+ Bedrooms", "estateSuburb": "Karen", "county": "Nairobi", "locationDisplay": "Karen, Nairobi", "rentKes": 250000, "bedrooms": 4, "bathrooms": 4, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "4 Beds \u00b7 4 Baths \u00b7 Garden", "badgeColor": "#6366f1", "badgeLabel": "4+ Bedrooms", "badgeIcon": "fa-star", "thumbnail": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-008", "title": "Maisonette - Kilieshwa", "category": "Maisonette", "estateSuburb": "Kileleshwa", "county": "Nairobi", "locationDisplay": "Kileleshwa, Nairobi", "rentKes": 180000, "bedrooms": 3, "bathrooms": 3, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "3 Beds \u00b7 3 Baths \u00b7 Parking", "badgeColor": "#db2777", "badgeLabel": "Maisonette", "badgeIcon": "fa-building", "thumbnail": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-009", "title": "Villa - Muthaiga", "category": "Villa", "estateSuburb": "Muthaiga", "county": "Nairobi", "locationDisplay": "Muthaiga, Nairobi", "rentKes": 400000, "bedrooms": 5, "bathrooms": 5, "isBnb": false, "rentPeriod": "month", "amenities": ["pool"], "specAmenitiesText": "5 Beds \u00b7 5 Baths \u00b7 Pool", "badgeColor": "#16a34a", "badgeLabel": "Villa", "badgeIcon": "fa-tree", "thumbnail": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-010", "title": "Apartment - Syokimau", "category": "Apartment", "estateSuburb": "Syokimau", "county": "Nairobi", "locationDisplay": "Syokimau, Nairobi", "rentKes": 35000, "bedrooms": 2, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["gym"], "specAmenitiesText": "2 Beds \u00b7 2 Baths \u00b7 Gym", "badgeColor": "#ec4899", "badgeLabel": "Apartment", "badgeIcon": "fa-building", "thumbnail": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-011", "title": "Bungalow - Kitengela", "category": "Bungalow", "estateSuburb": "Kitengela", "county": "Nairobi", "locationDisplay": "Kitengela, Nairobi", "rentKes": 28000, "bedrooms": 3, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "3 Beds \u00b7 2 Baths \u00b7 Garden", "badgeColor": "#d97706", "badgeLabel": "Bungalow", "badgeIcon": "fa-home", "thumbnail": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-012", "title": "Studio Apartment - Ruaka", "category": "Studio", "estateSuburb": "Ruaka", "county": "Nairobi", "locationDisplay": "Ruaka, Nairobi", "rentKes": 18000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 WiFi", "badgeColor": "#06b6d4", "badgeLabel": "Studio", "badgeIcon": "fa-couch", "thumbnail": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"}]}];
+window.EXACT_12_REFERENCE_PROPERTIES = [{"id": "km-prop-001", "title": "Cozy Studio BNB - Kilimani", "category": "Bnb (Short Stay)", "estateSuburb": "Kilimani", "county": "Nairobi", "locationDisplay": "Kilimani, Nairobi", "rentKes": 2500, "bedrooms": 1, "bathrooms": 1, "isBnb": true, "rentPeriod": "month", "amenities": ["wifi", "parking"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 WiFi", "badgeColor": "#8b5cf6", "badgeLabel": "Bnb (Short Stay)", "badgeIcon": "fa-umbrella-beach", "thumbnail": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-002", "title": "Single Room - Umoja", "category": "Single Room", "estateSuburb": "Umoja", "county": "Nairobi", "locationDisplay": "Umoja, Nairobi", "rentKes": 8000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 Parking", "badgeColor": "#0284c7", "badgeLabel": "Single Room", "badgeIcon": "fa-door-open", "thumbnail": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-003", "title": "Double Room - South B", "category": "Double Room", "estateSuburb": "South B", "county": "Nairobi", "locationDisplay": "South B, Nairobi", "rentKes": 12000, "bedrooms": 2, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "2 Beds \u00b7 Private Bath \u00b7 WiFi", "badgeColor": "#ea580c", "badgeLabel": "Double Room", "badgeIcon": "fa-person-booth", "thumbnail": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-004", "title": "Bedsitter - Westlands", "category": "Bedsitter", "estateSuburb": "Westlands", "county": "Nairobi", "locationDisplay": "Westlands, Nairobi", "rentKes": 15000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "1 Bed \u00b7 Kitchenette \u00b7 WiFi", "badgeColor": "#10b981", "badgeLabel": "Bedsitter", "badgeIcon": "fa-bed", "thumbnail": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-005", "title": "2 Bedroom Apartment - Lavington", "category": "2 Bedrooms", "estateSuburb": "Lavington", "county": "Nairobi", "locationDisplay": "Lavington, Nairobi", "rentKes": 45000, "bedrooms": 2, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "2 Beds \u00b7 2 Baths \u00b7 Parking", "badgeColor": "#ef4444", "badgeLabel": "2 Bedrooms", "badgeIcon": "fa-door-closed", "thumbnail": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-006", "title": "3 Bedroom House - Runda", "category": "3 Bedrooms", "estateSuburb": "Runda", "county": "Nairobi", "locationDisplay": "Runda, Nairobi", "rentKes": 95000, "bedrooms": 3, "bathrooms": 3, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "3 Beds \u00b7 3 Baths \u00b7 Garden", "badgeColor": "#2563eb", "badgeLabel": "3 Bedrooms", "badgeIcon": "fa-home", "thumbnail": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-007", "title": "4 Bedroom Maisonette - Karen", "category": "4+ Bedrooms", "estateSuburb": "Karen", "county": "Nairobi", "locationDisplay": "Karen, Nairobi", "rentKes": 250000, "bedrooms": 4, "bathrooms": 4, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "4 Beds \u00b7 4 Baths \u00b7 Garden", "badgeColor": "#6366f1", "badgeLabel": "4+ Bedrooms", "badgeIcon": "fa-star", "thumbnail": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-008", "title": "Maisonette - Kilieshwa", "category": "Maisonette", "estateSuburb": "Kileleshwa", "county": "Nairobi", "locationDisplay": "Kileleshwa, Nairobi", "rentKes": 180000, "bedrooms": 3, "bathrooms": 3, "isBnb": false, "rentPeriod": "month", "amenities": ["parking"], "specAmenitiesText": "3 Beds \u00b7 3 Baths \u00b7 Parking", "badgeColor": "#db2777", "badgeLabel": "Maisonette", "badgeIcon": "fa-building", "thumbnail": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-009", "title": "Villa - Muthaiga", "category": "Villa", "estateSuburb": "Muthaiga", "county": "Nairobi", "locationDisplay": "Muthaiga, Nairobi", "rentKes": 400000, "bedrooms": 5, "bathrooms": 5, "isBnb": false, "rentPeriod": "month", "amenities": ["pool"], "specAmenitiesText": "5 Beds \u00b7 5 Baths \u00b7 Pool", "badgeColor": "#006818", "badgeLabel": "Villa", "badgeIcon": "fa-tree", "thumbnail": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-010", "title": "Apartment - Syokimau", "category": "Apartment", "estateSuburb": "Syokimau", "county": "Nairobi", "locationDisplay": "Syokimau, Nairobi", "rentKes": 35000, "bedrooms": 2, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["gym"], "specAmenitiesText": "2 Beds \u00b7 2 Baths \u00b7 Gym", "badgeColor": "#ec4899", "badgeLabel": "Apartment", "badgeIcon": "fa-building", "thumbnail": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-011", "title": "Bungalow - Kitengela", "category": "Bungalow", "estateSuburb": "Kitengela", "county": "Nairobi", "locationDisplay": "Kitengela, Nairobi", "rentKes": 28000, "bedrooms": 3, "bathrooms": 2, "isBnb": false, "rentPeriod": "month", "amenities": ["garden"], "specAmenitiesText": "3 Beds \u00b7 2 Baths \u00b7 Garden", "badgeColor": "#d97706", "badgeLabel": "Bungalow", "badgeIcon": "fa-home", "thumbnail": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80"}]}, {"id": "km-prop-012", "title": "Studio Apartment - Ruaka", "category": "Studio", "estateSuburb": "Ruaka", "county": "Nairobi", "locationDisplay": "Ruaka, Nairobi", "rentKes": 18000, "bedrooms": 1, "bathrooms": 1, "isBnb": false, "rentPeriod": "month", "amenities": ["wifi"], "specAmenitiesText": "1 Bed \u00b7 1 Bath \u00b7 WiFi", "badgeColor": "#06b6d4", "badgeLabel": "Studio", "badgeIcon": "fa-couch", "thumbnail": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80", "media": [{"url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"}]}];
 /**
  * Nairobi Rentals Live - Main Application Controller
  * High-performance orchestrator for search, filtering, view switching, modals, and user interactions.
@@ -93,7 +93,18 @@ class NairobiRentalsApp {
         }
       }
     } catch (err) {
-      console.log('Could not load hierarchical locations:', err);
+      console.log('Could not load hierarchical locations from API, using local seed:', err);
+    }
+    // Fallback to local 650+ Kenya locations seed if API returned empty
+    if ((!window.KEJA_MASTER_LOCATIONS || window.KEJA_MASTER_LOCATIONS.length === 0) && typeof window !== 'undefined' && window.ALL_KE_LOCATIONS) {
+      window.KEJA_MASTER_LOCATIONS = window.ALL_KE_LOCATIONS.map(l => ({
+        id: l.name,
+        name: l.name,
+        fullPath: l.county ? `${l.county} → ${l.name}` : l.name,
+        type: l.type,
+        county: l.county,
+        aliases: []
+      }));
     }
   }
 
@@ -482,7 +493,7 @@ class NairobiRentalsApp {
         { name: 'Single Room', icon: 'fa-door-open', color: '#f97316' },
         { name: 'Bedsitter', icon: 'fa-bed', color: '#ef4444' },
         { name: '1 Bedroom', icon: 'fa-bed', color: '#eab308' },
-        { name: '2 Bedrooms', icon: 'fa-door-closed', color: '#00b53f' }
+        { name: '2 Bedrooms', icon: 'fa-door-closed', color: '#1db010' }
       ];
 
       const moreTypes = [
@@ -704,7 +715,7 @@ class NairobiRentalsApp {
 
     // Update top tab strip button visual state
     const tabStyles = {
-      properties: { activeBg: '#f0fdf4', activeBorder: '#00b53f', activeColor: '#166534', dimBg: '#f9fafb', dimBorder: '#e2e8f0', dimColor: '#94a3b8' },
+      properties: { activeBg: '#f0fdf4', activeBorder: '#1db010', activeColor: '#166534', dimBg: '#f9fafb', dimBorder: '#e2e8f0', dimColor: '#94a3b8' },
       services:   { activeBg: '#faf5ff', activeBorder: '#7c3aed', activeColor: '#6b21a8', dimBg: '#f9fafb', dimBorder: '#e2e8f0', dimColor: '#94a3b8' },
       marketplace:{ activeBg: '#fffbe6', activeBorder: '#f59e0b', activeColor: '#854d0e', dimBg: '#f9fafb', dimBorder: '#e2e8f0', dimColor: '#94a3b8' }
     };
@@ -1165,7 +1176,7 @@ class NairobiRentalsApp {
       resultsDropdown.innerHTML = results.map(loc => `
         <div class="location-search-result-item" onclick="app.selectSidebarLocation('${this.escapeHtml(loc.name).replace(/'/g, "\\'")}')">
           <div style="display:flex; align-items:center; gap:8px;">
-            <i class="fas fa-map-marker-alt" style="color:#00b53f; font-size:0.85rem;"></i>
+            <i class="fas fa-map-marker-alt" style="color:#1db010; font-size:0.85rem;"></i>
             <div style="flex:1; min-width:0;">
               <div style="font-weight:700; font-size:0.8rem; color:#0f172a;">
                 ${this.highlightMatch(loc.name, query)}
@@ -1361,13 +1372,13 @@ class NairobiRentalsApp {
     if (topSuggestions.length === 0) {
       dropdown.innerHTML = `
         <div class="search-suggestion-item empty" style="padding: 12px; color: #64748b; font-size: 0.85rem; text-align: center;">
-          <i class="fas fa-search" style="margin-right: 6px; color: #00b53f;"></i> Press enter to search for "<strong>${this.escapeHtml(query)}</strong>"
+          <i class="fas fa-search" style="margin-right: 6px; color: #1db010;"></i> Press enter to search for "<strong>${this.escapeHtml(query)}</strong>"
         </div>`;
     } else {
       dropdown.innerHTML = topSuggestions.map(item => `
         <div class="search-suggestion-item" onclick="app.selectSearchSuggestion('${this.escapeHtml(item.text).replace(/'/g, "\\'")}', '${item.id || ''}')">
           <div style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
-            <i class="${item.icon}" style="color: #00b53f; font-size: 0.95rem; flex-shrink: 0;"></i>
+            <i class="${item.icon}" style="color: #1db010; font-size: 0.95rem; flex-shrink: 0;"></i>
             <div style="min-width: 0; flex: 1;">
               <div style="font-weight: 700; font-size: 0.88rem; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 ${this.highlightMatch(item.text, query)}
@@ -1468,9 +1479,9 @@ class NairobiRentalsApp {
   renderFormPhotoPreviews(inputEl, previewGrid, maxPhotos) {
     if (!inputEl._uploadedPhotos) inputEl._uploadedPhotos = [];
     previewGrid.innerHTML = inputEl._uploadedPhotos.map((url, idx) => `
-      <div style="position: relative; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 2px solid #00b53f;">
+      <div style="position: relative; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 2px solid #1db010;">
         <img src="${url}" style="width: 100%; height: 100%; object-fit: cover;">
-        ${idx === 0 ? '<span style="position: absolute; bottom: 0; left: 0; right: 0; background: #00b53f; color: white; font-size: 0.6rem; text-align: center; font-weight: 700;">COVER</span>' : ''}
+        ${idx === 0 ? '<span style="position: absolute; bottom: 0; left: 0; right: 0; background: #1db010; color: white; font-size: 0.6rem; text-align: center; font-weight: 700;">COVER</span>' : ''}
         <span style="position: absolute; top: 2px; left: 2px; background: rgba(15,23,42,0.85); color: #fff; font-size: 0.52rem; font-weight: 700; padding: 1px 3px; border-radius: 2px; border: 1px solid rgba(0,181,63,0.8);">kejamarket.co.ke</span>
         <button type="button" style="position: absolute; top: 2px; right: 2px; background: rgba(220,38,38,0.9); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 0.7rem;" onclick="app.removeFormPhoto('${inputEl.id}', '${previewGrid.id}', ${idx}, ${maxPhotos})">&times;</button>
       </div>
@@ -1524,7 +1535,7 @@ class NairobiRentalsApp {
           <div style="position: relative; width: 160px; border-radius: 8px; overflow: hidden; background: #000; border: 2px solid #7c3aed;">
             <video src="${e.target.result}" ${posterUrl ? `poster="${posterUrl}"` : ''} controlsList="nodownload" oncontextmenu="return false;" style="width: 100%; height: 95px; object-fit: cover;" controls></video>
             <span style="position: absolute; top: 4px; left: 4px; background: rgba(15,23,42,0.85); color: #fff; font-size: 0.58rem; font-weight: 700; padding: 1px 5px; border-radius: 3px; border: 1px solid rgba(0,181,63,0.8); z-index: 5;">
-              <span style="display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #00b53f; margin-right: 3px;"></span>kejamarket.co.ke
+              <span style="display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #1db010; margin-right: 3px;"></span>kejamarket.co.ke
             </span>
             <span style="position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">
               ${Math.round(duration)}s
@@ -1853,7 +1864,7 @@ class NairobiRentalsApp {
     const baths = p.bathrooms ?? 1;
 
     // Category badge color & icon mapping matching Desktop Reference Screenshot
-    let badgeColor = p.badgeColor || '#00b53f';
+    let badgeColor = p.badgeColor || '#1db010';
     let badgeLabel = p.badgeLabel || p.category || 'Apartment';
     let badgeIcon = p.badgeIcon || 'fa-building';
 
@@ -1879,7 +1890,7 @@ class NairobiRentalsApp {
     } else if (catLower.includes('maisonette') || titleLower.includes('maisonette')) {
       badgeColor = '#db2777'; badgeLabel = 'Maisonette'; badgeIcon = 'fa-building';
     } else if (catLower.includes('villa') || titleLower.includes('villa')) {
-      badgeColor = '#16a34a'; badgeLabel = 'Villa'; badgeIcon = 'fa-tree';
+      badgeColor = '#006818'; badgeLabel = 'Villa'; badgeIcon = 'fa-tree';
     } else if (catLower.includes('bungalow') || titleLower.includes('bungalow')) {
       badgeColor = '#d97706'; badgeLabel = 'Bungalow'; badgeIcon = 'fa-home';
     } else if (catLower.includes('apartment') || titleLower.includes('apartment')) {
@@ -2127,7 +2138,7 @@ class NairobiRentalsApp {
       btnEl.innerHTML = `<i class="fas fa-phone"></i> ${phone}`;
       btnEl.style.background = '#e6f8ec';
       btnEl.style.color = '#008e31';
-      btnEl.style.borderColor = '#00b53f';
+      btnEl.style.borderColor = '#1db010';
     }
 
     // Immediately open phone dialer app
@@ -2175,6 +2186,11 @@ class NairobiRentalsApp {
       // Fix county/estateSuburb from seed if missing
       if (!p.county && seed.county) p.county = seed.county;
       if (!p.estateSuburb && seed.estateSuburb) p.estateSuburb = seed.estateSuburb;
+    }
+
+    // Populate media from photos array if media is empty
+    if ((!p.media || !p.media.length) && p.photos && p.photos.length) {
+      p.media = p.photos.map((url, i) => ({ url: typeof url === 'string' ? url : (url.url || ''), caption: `Photo ${i + 1}` }));
     }
 
     // Ensure county always has a value
@@ -2226,8 +2242,48 @@ class NairobiRentalsApp {
     return p;
   }
 
-  openPropertyDetail(propertyId) {
-    const p = this.properties.find(x => x.id === propertyId);
+  getCoordinatesForProperty(p) {
+    if (p && p.latitude && p.longitude && !isNaN(p.latitude) && !isNaN(p.longitude)) {
+      return { lat: Number(p.latitude), lng: Number(p.longitude), isExact: true };
+    }
+    const locationStr = `${p.estateSuburb || ''} ${p.exactEstate || ''} ${p.location || ''} ${p.county || ''}`.toLowerCase();
+    
+    if (locationStr.includes('mlolongo')) return { lat: -1.3845, lng: 36.9610, isExact: false, areaName: 'Mlolongo' };
+    if (locationStr.includes('kilimani')) return { lat: -1.2921, lng: 36.7856, isExact: false, areaName: 'Kilimani' };
+    if (locationStr.includes('ruaka')) return { lat: -1.2056, lng: 36.7767, isExact: false, areaName: 'Ruaka' };
+    if (locationStr.includes('roysambu')) return { lat: -1.2185, lng: 36.8872, isExact: false, areaName: 'Roysambu' };
+    if (locationStr.includes('umoja')) return { lat: -1.2889, lng: 36.8967, isExact: false, areaName: 'Umoja' };
+    if (locationStr.includes('westlands')) return { lat: -1.2675, lng: 36.8044, isExact: false, areaName: 'Westlands' };
+    if (locationStr.includes('south b')) return { lat: -1.3142, lng: 36.8372, isExact: false, areaName: 'South B' };
+    if (locationStr.includes('kileleshwa')) return { lat: -1.2811, lng: 36.7878, isExact: false, areaName: 'Kileleshwa' };
+    if (locationStr.includes('syokimau')) return { lat: -1.3650, lng: 36.9380, isExact: false, areaName: 'Syokimau' };
+    if (locationStr.includes('kasarani')) return { lat: -1.2222, lng: 36.9011, isExact: false, areaName: 'Kasarani' };
+    if (locationStr.includes('juja')) return { lat: -1.1026, lng: 37.0144, isExact: false, areaName: 'Juja' };
+    if (locationStr.includes('thika')) return { lat: -1.0396, lng: 37.0900, isExact: false, areaName: 'Thika' };
+    if (locationStr.includes('mombasa') || locationStr.includes('nyali')) return { lat: -4.0435, lng: 39.6682, isExact: false, areaName: 'Mombasa' };
+    if (locationStr.includes('nakuru')) return { lat: -0.3031, lng: 36.0800, isExact: false, areaName: 'Nakuru' };
+    if (locationStr.includes('kisumu')) return { lat: -0.0917, lng: 34.7680, isExact: false, areaName: 'Kisumu' };
+    if (locationStr.includes('eldoret')) return { lat: 0.5143, lng: 35.2698, isExact: false, areaName: 'Eldoret' };
+
+    return { lat: -1.2864, lng: 36.8172, isExact: false, areaName: 'Nairobi' };
+  }
+
+  async openPropertyDetail(propertyId) {
+    let p = this.properties.find(x => x.id === propertyId);
+    if (!p) {
+      try {
+        const res = await fetch(`/api/properties/${propertyId}`);
+        if (res.ok) {
+          const data = await res.json();
+          p = data.property || data;
+          if (p) {
+            this.properties.push(p);
+          }
+        }
+      } catch (err) {
+        console.warn('Could not fetch single property by id:', err);
+      }
+    }
     if (!p) return;
     this.normalizeProperty(p);
 
@@ -2325,7 +2381,7 @@ class NairobiRentalsApp {
       toggleBtn.innerHTML = isTaken
         ? '<i class="fas fa-check-circle"></i> Mark as Vacant / Available'
         : '<i class="fas fa-tag"></i> Mark as Taken / Occupied';
-      toggleBtn.style.background = isTaken ? '#00b53f' : '';
+      toggleBtn.style.background = isTaken ? '#1db010' : '';
       toggleBtn.style.color = isTaken ? '#ffffff' : '';
     }
 
@@ -2340,18 +2396,26 @@ class NairobiRentalsApp {
     document.getElementById('detail-modal-deposit').textContent = isBnb 
       ? `Short-Stay / Daily Booking (No Deposit Required)`
       : `Deposit: KSh ${modalDeposit.toLocaleString()}`;
+
+    // Upfront Move-in Breakdown
+    const bRentEl = document.getElementById('dt-breakdown-rent');
+    const bDepEl = document.getElementById('dt-breakdown-deposit');
+    const bTotEl = document.getElementById('dt-breakdown-total');
+    if (bRentEl) bRentEl.textContent = `KSh ${modalRent.toLocaleString()}`;
+    if (bDepEl) bDepEl.textContent = isBnb ? 'KSh 0 (No Deposit)' : `KSh ${modalDeposit.toLocaleString()}`;
+    if (bTotEl) bTotEl.textContent = isBnb ? `KSh ${modalRent.toLocaleString()}` : `KSh ${(modalRent + modalDeposit).toLocaleString()}`;
     // Location & GPS Gating
     const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
     const locationEl = document.getElementById('detail-modal-location');
     const gpsBadge = document.getElementById('detail-gps-badge');
 
     if (isLoggedIn) {
-      if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
+      if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#1db010;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
       if (gpsBadge) gpsBadge.textContent = (p.latitude != null && p.longitude != null)
         ? `GPS: ${Number(p.latitude).toFixed(5)}, ${Number(p.longitude).toFixed(5)}`
         : 'GPS: Coordinates not available';
     } else {
-      if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.estateSuburb}, ${p.county} <span style="font-size:0.75rem; color:#64748b; margin-left:6px;"><i class="fas fa-lock"></i> Exact landmark & pin protected</span>`;
+      if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#1db010;"></i> ${p.estateSuburb}, ${p.county} <span style="font-size:0.75rem; color:#64748b; margin-left:6px;"><i class="fas fa-lock"></i> Exact landmark & pin protected</span>`;
       if (gpsBadge) gpsBadge.textContent = 'GPS: Protected (Sign in to view)';
     }
     document.getElementById('detail-modal-desc').textContent = p.description;
@@ -2366,7 +2430,7 @@ class NairobiRentalsApp {
     if (specSource) {
       specSource.innerHTML = isAgencyListing
         ? `<span style="color:#7c3aed;font-weight:700;"><i class="fas fa-building"></i> Real Estate Agency</span>`
-        : `<span style="color:#00b53f;font-weight:700;"><i class="fas fa-user-check"></i> Direct Landlord</span>`;
+        : `<span style="color:#1db010;font-weight:700;"><i class="fas fa-user-check"></i> Direct Landlord</span>`;
     }
     const specVerifiedEl = document.getElementById('spec-verified');
     if (specVerifiedEl) {
@@ -2391,6 +2455,53 @@ class NairobiRentalsApp {
         if (e) e.stopPropagation();
         this.openLightbox(e);
       };
+    }
+
+    // Dynamic house type badge overlaid on main modal photo
+    const modalCatBadge = document.getElementById('detail-modal-cat-badge');
+    if (modalCatBadge) {
+      let bLabel = 'Rental';
+      let bIcon = 'fa-home';
+      let bColor = '#006818';
+      const c = (p.category || '').toLowerCase();
+      const t = (p.title || '').toLowerCase();
+      const beds = Number(p.bedrooms ?? 1);
+
+      if (c.includes('single') || t.includes('single room')) {
+        bLabel = 'Single Room'; bIcon = 'fa-door-open'; bColor = '#0284c7';
+      } else if (c.includes('double') || t.includes('double room')) {
+        bLabel = 'Double Room'; bIcon = 'fa-person-booth'; bColor = '#ea580c';
+      } else if (c.includes('bedsit') || t.includes('bedsit')) {
+        bLabel = 'Bedsitter'; bIcon = 'fa-bed'; bColor = '#10b981';
+      } else if (c.includes('studio') || t.includes('studio')) {
+        bLabel = 'Studio'; bIcon = 'fa-couch'; bColor = '#06b6d4';
+      } else if (beds === 1 || c.includes('1 bed') || t.includes('1 bed') || t.includes('one bed')) {
+        bLabel = '1 Bedroom'; bIcon = 'fa-door-open'; bColor = '#059669';
+      } else if (beds === 2 || c.includes('2 bed') || t.includes('2 bed') || t.includes('two bed')) {
+        bLabel = '2 Bedrooms'; bIcon = 'fa-door-closed'; bColor = '#ef4444';
+      } else if (beds === 3 || c.includes('3 bed') || t.includes('3 bed') || t.includes('three bed')) {
+        bLabel = '3 Bedrooms'; bIcon = 'fa-home'; bColor = '#2563eb';
+      } else if (beds >= 4 || c.includes('4 bed') || t.includes('4 bed') || t.includes('four bed')) {
+        bLabel = '4+ Bedrooms'; bIcon = 'fa-star'; bColor = '#6366f1';
+      } else if (c.includes('maisonette') || t.includes('maisonette')) {
+        bLabel = 'Maisonette'; bIcon = 'fa-building'; bColor = '#db2777';
+      } else if (c.includes('villa') || t.includes('villa')) {
+        bLabel = 'Villa'; bIcon = 'fa-tree'; bColor = '#006818';
+      } else if (c.includes('bungalow') || t.includes('bungalow')) {
+        bLabel = 'Bungalow'; bIcon = 'fa-home'; bColor = '#d97706';
+      } else if (c.includes('bnb') || c.includes('airbnb') || p.isBnb) {
+        bLabel = 'BnB / Stay'; bIcon = 'fa-umbrella-beach'; bColor = '#8b5cf6';
+      } else if (c.includes('commercial') || t.includes('shop') || t.includes('office')) {
+        bLabel = 'Commercial'; bIcon = 'fa-store'; bColor = '#475569';
+      } else if (c.includes('land') || c.includes('plot')) {
+        bLabel = 'Land & Plots'; bIcon = 'fa-map-marked-alt'; bColor = '#854d0e';
+      } else {
+        bLabel = p.category || 'Apartment'; bIcon = 'fa-city'; bColor = '#ec4899';
+      }
+
+      modalCatBadge.innerHTML = `<i class="fas ${bIcon}"></i> ${bLabel}`;
+      modalCatBadge.style.background = bColor;
+      modalCatBadge.style.display = 'inline-flex';
     }
     this.updatePhotoCounter();
     this.setupGallerySwipe();
@@ -2420,7 +2531,7 @@ class NairobiRentalsApp {
                 <div style="flex: 1; min-width: 240px; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: relative;">
                   <video src="${v.url || v}" ${v.poster ? `poster="${v.poster}"` : ''} controls playsinline controlsList="nodownload" oncontextmenu="return false;" style="width: 100%; max-height: 220px; object-fit: contain; display: block;"></video>
                   <div class="video-watermark-overlay" style="position: absolute; top: 10px; right: 10px; pointer-events: none; background: rgba(15, 23, 42, 0.85); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; display: flex; align-items: center; gap: 6px; border: 1.5px solid rgba(0, 181, 63, 0.85); box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 10; font-family: 'Montserrat', 'Inter', sans-serif;">
-                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #00b53f; display: inline-block; box-shadow: 0 0 6px #00b53f;"></span>
+                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #1db010; display: inline-block; box-shadow: 0 0 6px #1db010;"></span>
                     kejamarket.co.ke
                   </div>
                   <div style="padding: 6px 10px; background: #1e1b4b; color: #c084fc; font-size: 0.75rem; font-weight: 600; display: flex; justify-content: space-between;">
@@ -2444,23 +2555,23 @@ class NairobiRentalsApp {
       const items = [];
       // Only add BnB amenities if it's actually a BnB property
       if (isBnb) {
-        items.push('<span><i class="fas fa-wifi" style="color:#00b53f;"></i> High-Speed Fiber WiFi (100Mbps)</span>');
-        items.push('<span><i class="fas fa-tv" style="color:#00b53f;"></i> Smart 4K TV with Netflix & YouTube</span>');
-        items.push('<span><i class="fas fa-key" style="color:#00b53f;"></i> Keyless Smart Lock Self Check-in</span>');
-        items.push('<span><i class="fas fa-utensils" style="color:#00b53f;"></i> Fully Equipped Kitchen & Microwave</span>');
-        items.push('<span><i class="fas fa-coffee" style="color:#00b53f;"></i> Coffee Maker & Electric Kettle</span>');
-        items.push('<span><i class="fas fa-broom" style="color:#00b53f;"></i> Housekeeping & Fresh Linens</span>');
+        items.push('<span><i class="fas fa-wifi" style="color:#1db010;"></i> High-Speed Fiber WiFi (100Mbps)</span>');
+        items.push('<span><i class="fas fa-tv" style="color:#1db010;"></i> Smart 4K TV with Netflix & YouTube</span>');
+        items.push('<span><i class="fas fa-key" style="color:#1db010;"></i> Keyless Smart Lock Self Check-in</span>');
+        items.push('<span><i class="fas fa-utensils" style="color:#1db010;"></i> Fully Equipped Kitchen & Microwave</span>');
+        items.push('<span><i class="fas fa-coffee" style="color:#1db010;"></i> Coffee Maker & Electric Kettle</span>');
+        items.push('<span><i class="fas fa-broom" style="color:#1db010;"></i> Housekeeping & Fresh Linens</span>');
       }
       // Only show amenities that are actually available (value is true)
-      if (p.amenities.hasBalcony) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Private Balcony with View</span>');
-      if (p.amenities.hasParking) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Free Dedicated Parking</span>');
-      if (p.amenities.hasElectricFence) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Electric Perimeter Fence</span>');
-      if (p.amenities.hasCctv) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> 24/7 CCTV Surveillance</span>');
-      if (p.amenities.hasInternet && !isBnb) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> High-Speed Fiber WiFi</span>');
-      if (p.amenities.hasTiles) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Ceramic Floor Tiles</span>');
-      if (p.amenities.isMasterEnsuite) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Master Bedroom Ensuite</span>');
-      if (p.amenities.hasGym) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Equipped Gym</span>');
-      if (p.amenities.hasSwimmingPool) items.push('<span><i class="fas fa-check" style="color:#00b53f;"></i> Heated Swimming Pool</span>');
+      if (p.amenities.hasBalcony) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> Private Balcony with View</span>');
+      if (p.amenities.hasParking) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> Free Dedicated Parking</span>');
+      if (p.amenities.hasElectricFence) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> Electric Perimeter Fence</span>');
+      if (p.amenities.hasCctv) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> 24/7 CCTV Surveillance</span>');
+      if (p.amenities.hasInternet && !isBnb) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> High-Speed Fiber WiFi</span>');
+      if (p.amenities.hasTiles) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> Ceramic Floor Tiles</span>');
+      if (p.amenities.isMasterEnsuite) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> Master Bedroom Ensuite</span>');
+      if (p.amenities.hasGym) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> Equipped Gym</span>');
+      if (p.amenities.hasSwimmingPool) items.push('<span><i class="fas fa-check" style="color:#1db010;"></i> Heated Swimming Pool</span>');
 
       // Only show available amenities, hide the section if nothing is available
       amenitiesContainer.innerHTML = items.length > 0 
@@ -2523,7 +2634,7 @@ class NairobiRentalsApp {
 
     if (isContactUnlocked && contactPhone) {
       // Unlocked viewing pass holder or owner/admin: show real phone & enable call
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i><a href="tel:${contactPhone}" style="color:#0f172a;text-decoration:none;font-weight:700;">${contactPhone}</a>`;
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#1db010;margin-right:5px;"></i><a href="tel:${contactPhone}" style="color:#0f172a;text-decoration:none;font-weight:700;">${contactPhone}</a>`;
       if (callBtn) {
         callBtn.href = `tel:${contactPhone}`;
         callBtn.removeAttribute('onclick');
@@ -2533,7 +2644,7 @@ class NairobiRentalsApp {
       }
     } else {
       // Gated: phone locked until viewing slot is confirmed & paid
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#d97706;margin-right:5px;"></i><span style="color:#b45309;font-weight:700;">Contact Protected</span>&nbsp;<a href="#" onclick="event.preventDefault(); KejaViewing.openBookingModal('${p.id}');" style="color:#00b53f;text-decoration:underline;font-weight:700;font-size:0.8rem;">Book viewing to unlock</a>`;
+      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#d97706;margin-right:5px;"></i><span style="color:#b45309;font-weight:700;">Contact Protected</span>&nbsp;<a href="#" onclick="event.preventDefault(); KejaViewing.openBookingModal('${p.id}');" style="color:#1db010;text-decoration:underline;font-weight:700;font-size:0.8rem;">Book viewing to unlock</a>`;
       if (callBtn) {
         callBtn.href = '#';
         callBtn.onclick = (e) => {
@@ -2588,43 +2699,26 @@ class NairobiRentalsApp {
       }
     }
 
-    // Google Maps Link + Map visibility — gated behind paid confirmed viewing
+    // Google Maps Link + Map visibility — Always visible, showing neighborhood or exact location
     const directionsBtn = document.getElementById('detail-btn-directions');
     const mapSection = document.getElementById('detail-map-section');
     const mapEl = document.getElementById('detail-property-map');
     const gpsLockedCard = document.getElementById('detail-gps-locked-card');
+    const coords = this.getCoordinatesForProperty(p);
 
-    if (isGpsUnlocked && p.latitude && p.longitude) {
-      if (directionsBtn) {
-        directionsBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${p.latitude},${p.longitude}`;
-        directionsBtn.removeAttribute('onclick');
-        directionsBtn.style.opacity = '1';
-        directionsBtn.style.pointerEvents = 'auto';
-      }
-      if (mapEl) mapEl.style.display = 'block';
-      if (gpsLockedCard) gpsLockedCard.style.display = 'none';
-      if (gpsBadge) gpsBadge.textContent = `${Number(p.latitude).toFixed(4)}, ${Number(p.longitude).toFixed(4)}`;
-      // Initialize or refresh Detail Map Canvas only when unlocked
-      setTimeout(() => {
-        this.initDetailMap(p);
-      }, 250);
-    } else {
-      if (directionsBtn) {
-        directionsBtn.href = '#';
-        directionsBtn.onclick = (e) => {
-          e.preventDefault();
-          KejaViewing.openBookingModal(p.id);
-        };
-        directionsBtn.style.opacity = '0.7';
-      }
-      if (mapEl) mapEl.style.display = 'none';
-      if (gpsLockedCard) {
-        gpsLockedCard.style.display = 'block';
-        const suburbEl = document.getElementById('detail-gps-locked-suburb');
-        if (suburbEl) suburbEl.textContent = p.estateSuburb ? `${p.estateSuburb}, Nairobi` : (p.county || 'Nairobi');
-      }
-      if (gpsBadge) gpsBadge.textContent = '🔒 Pin Protected';
+    if (directionsBtn) {
+      directionsBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}`;
+      directionsBtn.removeAttribute('onclick');
+      directionsBtn.style.opacity = '1';
+      directionsBtn.style.pointerEvents = 'auto';
     }
+    if (mapEl) mapEl.style.display = 'block';
+    if (gpsLockedCard) gpsLockedCard.style.display = 'none';
+    if (gpsBadge) gpsBadge.textContent = `${Number(coords.lat).toFixed(4)}, ${Number(coords.lng).toFixed(4)}`;
+    // Initialize or refresh Detail Map Canvas
+    setTimeout(() => {
+      this.initDetailMap(p);
+    }, 250);
 
     // Populate Sticky Action Bar at bottom
     const stickyPrice = document.getElementById('detail-sticky-price');
@@ -2646,6 +2740,33 @@ class NairobiRentalsApp {
     // Load verified services to show in property detail
     this.loadPropertyDetailServices();
 
+    // Render Other Related Houses in modal
+    const relatedContainer = document.getElementById('detail-related-houses-grid');
+    const relatedSub = document.getElementById('detail-related-sub');
+    if (relatedContainer && Array.isArray(this.properties)) {
+      let related = this.properties.filter(item => item.id !== p.id && (item.estateSuburb === p.estateSuburb || item.category === p.category)).slice(0, 3);
+      if (related.length === 0) {
+        related = this.properties.filter(item => item.id !== p.id).slice(0, 3);
+      }
+      if (relatedSub) {
+        relatedSub.textContent = `Similar verified rentals in ${p.estateSuburb || p.county || 'Nairobi'}`;
+      }
+      relatedContainer.innerHTML = related.map(rel => {
+        const thumb = rel.media?.[0]?.url || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80';
+        const price = typeof rel.rentKes === 'number' ? rel.rentKes : (rel.price || 0);
+        return `
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; overflow:hidden; cursor:pointer; transition:transform 0.15s;" onclick="app.openPropertyDetail('${rel.id}')">
+            <img src="${thumb}" alt="${rel.title}" style="width:100%; height:120px; object-fit:cover;">
+            <div style="padding:10px;">
+              <div style="font-size:0.95rem; font-weight:800; color:#006818;">KSh ${price.toLocaleString()}/mo</div>
+              <div style="font-size:0.84rem; font-weight:700; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">${rel.title}</div>
+              <div style="font-size:0.75rem; color:#64748b; margin-top:3px;"><i class="fas fa-map-marker-alt"></i> ${rel.estateSuburb || rel.county || 'Nairobi'} &middot; ${rel.bedrooms || 1} Bed</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     const fraudDetails = document.getElementById('fraud-warning-details');
     const fraudToggleText = document.getElementById('fraud-toggle-text');
     const fraudToggleIcon = document.getElementById('fraud-toggle-icon');
@@ -2656,40 +2777,63 @@ class NairobiRentalsApp {
     this.openModal('modal-property-detail');
   }
 
-  initDetailMap(property) {
+  initDetailMap(property, retryCount = 0) {
     const mapEl = document.getElementById('detail-property-map');
     if (!mapEl) return;
-
-    if (!this.detailMap) {
-      this.detailMap = L.map('detail-property-map', {
-        attributionControl: true,  // Enable attribution (required by OpenStreetMap)
-        preferCanvas: false,       // Use SVG for better quality
-        zoomControl: true,         // Show zoom controls
-        scrollWheelZoom: true     // Allow mouse wheel zoom
-      }).setView([property.latitude, property.longitude], 15);
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        minZoom: 10,
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
-        subdomains: ['a', 'b', 'c'],
-        tileSize: 256,
-        detectRetina: true,
-        updateWhenZooming: false
-      }).addTo(this.detailMap);
-
-      this.detailMarker = L.marker([property.latitude, property.longitude]).addTo(this.detailMap)
-        .bindPopup(`<b>${property.title}</b><br><span style="color:#00b53f;font-weight:bold;">KSh ${property.rentKes.toLocaleString()}</span><br>${property.estateSuburb}`)
-        .openPopup();
-    } else {
-      this.detailMap.invalidateSize();
-      this.detailMap.setView([property.latitude, property.longitude], 15);
-      if (this.detailMarker) {
-        this.detailMarker.setLatLng([property.latitude, property.longitude])
-          .bindPopup(`<b>${property.title}</b><br><span style="color:#00b53f;font-weight:bold;">KSh ${property.rentKes.toLocaleString()}</span><br>${property.estateSuburb}`)
-          .openPopup();
+    if (typeof L === 'undefined') {
+      if (retryCount < 15) {
+        setTimeout(() => this.initDetailMap(property, retryCount + 1), 200);
       }
+      return;
     }
+    mapEl.style.display = 'block';
+
+    const coords = this.getCoordinatesForProperty(property);
+    const rentText = property.rentKes || property.price || 0;
+
+    // Reset existing map instance to prevent "Map container is already initialized"
+    if (this.detailMap) {
+      try {
+        this.detailMap.remove();
+      } catch (e) {}
+      this.detailMap = null;
+    } else if (mapEl._leaflet_id) {
+      delete mapEl._leaflet_id;
+      mapEl.innerHTML = '';
+    }
+
+    this.detailMap = L.map('detail-property-map', {
+      attributionControl: true,
+      preferCanvas: false,
+      zoomControl: true,
+      scrollWheelZoom: true
+    }).setView([coords.lat, coords.lng], 15);
+    
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      minZoom: 5,
+      attribution: '© <a href="https://carto.com/">CARTO</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
+      subdomains: ['a', 'b', 'c', 'd'],
+      tileSize: 256,
+      detectRetina: true,
+      updateWhenZooming: false
+    }).addTo(this.detailMap);
+
+    this.detailMarker = L.marker([coords.lat, coords.lng]).addTo(this.detailMap)
+      .bindPopup(`<b>${property.title}</b><br><span style="color:#006818;font-weight:bold;">KSh ${rentText.toLocaleString()}/mo</span><br>${property.estateSuburb || coords.areaName}`)
+      .openPopup();
+
+    this.detailCircle = L.circle([coords.lat, coords.lng], {
+      radius: 250,
+      color: '#006818',
+      fillColor: '#1db010',
+      fillOpacity: 0.15
+    }).addTo(this.detailMap);
+
+    // Invalidate size across modal animation frames
+    setTimeout(() => { if (this.detailMap) this.detailMap.invalidateSize(); }, 150);
+    setTimeout(() => { if (this.detailMap) this.detailMap.invalidateSize(); }, 400);
+    setTimeout(() => { if (this.detailMap) this.detailMap.invalidateSize(); }, 800);
   }
 
   selectDetailPhoto(url, thumbEl, index) {
@@ -2851,11 +2995,11 @@ class NairobiRentalsApp {
 
     if (landlordName) landlordName.textContent = p.landlord?.name || 'Landlord';
     if (landlordSince) landlordSince.textContent = `Member since ${p.landlord?.memberSince || 'N/A'}`;
-    if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
+    if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#1db010;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
     if (gpsBadge) gpsBadge.textContent = (p.latitude != null && p.longitude != null)
       ? `GPS: ${Number(p.latitude).toFixed(5)}, ${Number(p.longitude).toFixed(5)}`
       : 'GPS: Coordinates not available';
-    if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#00b53f;margin-right:5px;"></i>${p.landlord?.phone || 'Contact via Chat'}`;
+    if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#1db010;margin-right:5px;"></i>${p.landlord?.phone || 'Contact via Chat'}`;
     if (callBtn) {
       callBtn.href = `tel:${p.landlord?.phone || ''}`;
       callBtn.removeAttribute('onclick');
@@ -3127,7 +3271,7 @@ class NairobiRentalsApp {
     const quickReplies = document.getElementById('chat-quick-replies');
 
     if (avatarEl) avatarEl.innerHTML = '<i class="fas fa-headset"></i>';
-    if (titleEl) titleEl.innerHTML = '<i class="fas fa-headset" style="color: #00b53f; margin-right: 6px;"></i> KejaMarket Admin Support';
+    if (titleEl) titleEl.innerHTML = '<i class="fas fa-headset" style="color: #1db010; margin-right: 6px;"></i> KejaMarket Admin Support';
     if (subEl) subEl.textContent = 'Reach out directly to Admin · Prompt assistance & replies';
     if (banner) banner.style.display = 'none';
     if (input) input.placeholder = 'Type your message to KejaMarket Admin...';
@@ -3176,7 +3320,7 @@ class NairobiRentalsApp {
         const userName = session && session.name ? session.name.split(' ')[0] : 'there';
         container.innerHTML = `
           <div style="text-align: center; padding: 24px 16px; color: #64748b;">
-            <div style="width: 50px; height: 50px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; font-size: 1.4rem;">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background: #dcfce7; color: #006818; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; font-size: 1.4rem;">
               🛡️
             </div>
             <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem; margin-bottom: 4px;">Reach out to KejaMarket Admin</div>
@@ -3197,7 +3341,7 @@ class NairobiRentalsApp {
             <div style="font-size: 0.72rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
               ${isMe ? 'You' : (m.senderName || 'KejaMarket Admin')} · ${timeStr}
             </div>
-            <div style="max-width: 80%; padding: 10px 14px; border-radius: ${isMe ? '16px 16px 2px 16px' : '16px 16px 16px 2px'}; background: ${isMe ? '#00b53f' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.88rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
+            <div style="max-width: 80%; padding: 10px 14px; border-radius: ${isMe ? '16px 16px 2px 16px' : '16px 16px 16px 2px'}; background: ${isMe ? '#1db010' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.88rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
               ${m.text}
             </div>
           </div>
@@ -3238,15 +3382,15 @@ class NairobiRentalsApp {
           <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
             ${isMe ? 'You' : (m.senderName || 'Landlord')} · ${timeStr}
           </div>
-          <div style="max-width: 82%; padding: 9px 13px; border-radius: ${isMe ? '14px 14px 2px 14px' : '14px 14px 14px 2px'}; background: ${isMe ? '#00b53f' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.86rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
+          <div style="max-width: 82%; padding: 9px 13px; border-radius: ${isMe ? '14px 14px 2px 14px' : '14px 14px 14px 2px'}; background: ${isMe ? '#1db010' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.86rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
             ${m.text}
           </div>
           ${isViewingQuery && !this.isAdminChat ? `
             <div style="max-width: 82%; margin-top: 5px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 9px; padding: 8px 10px; font-size: 0.76rem; color: #166534; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
               <div>
-                <i class="fas fa-calendar-check" style="color: #00b53f;"></i> <strong>Book Official Viewing:</strong> 60s SLA
+                <i class="fas fa-calendar-check" style="color: #1db010;"></i> <strong>Book Official Viewing:</strong> 60s SLA
               </div>
-              <button type="button" onclick="app.triggerViewingFromChat()" style="background: #00b53f; color: white; border: none; border-radius: 6px; padding: 4px 10px; font-weight: 800; font-size: 0.72rem; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,181,63,0.3);">
+              <button type="button" onclick="app.triggerViewingFromChat()" style="background: #1db010; color: white; border: none; border-radius: 6px; padding: 4px 10px; font-weight: 800; font-size: 0.72rem; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,181,63,0.3);">
                 Book (KSh 200)
               </button>
             </div>
@@ -3593,7 +3737,7 @@ class NairobiRentalsApp {
     gridEl.innerHTML = this.marketplaceItems.slice((this.currentPage-1)*this.pageSize, this.currentPage*this.pageSize).map(item => {
       const phone = item.sellerPhone || item.phone || '+254792409540';
       const wa = `https://wa.me/${phone.replace(/\D/g,'')}`;
-      const conditionColor = item.condition === 'new' ? '#16a34a' : item.condition === 'like_new' ? '#15803d' : item.condition === 'good' ? '#b45309' : '#6b7280';
+      const conditionColor = item.condition === 'new' ? '#006818' : item.condition === 'like_new' ? '#15803d' : item.condition === 'good' ? '#b45309' : '#6b7280';
       const conditionLabel = { new:'New', like_new:'Like New', good:'Good', fair:'Fair', poor:'Poor' }[item.condition] || item.condition || '-';
       return `<div class="property-card" style="position:relative;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.08);transition:transform 0.2s;" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform='translateY(0)'">
         <div style="height:160px;background:#f8fafc;display:flex;align-items:center;justify-content:center;position:relative;">
@@ -5136,7 +5280,7 @@ KejaApp.prototype.openMobileAccountModal = function() {
       <div class="mob-account-hero-guest">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
           <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
-            <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#00b53f" stroke="#007728" stroke-width="2.5"/>
+            <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#1db010" stroke="#007728" stroke-width="2.5"/>
             <path d="M38 82V56H58V82H38Z" fill="#fff"/>
             <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2b"/>
             <circle cx="48" cy="21" r="4.5" fill="#fff"/>
@@ -5211,16 +5355,40 @@ KejaApp.prototype.onCountyChange = function(county) {
   const subcountySelect = document.getElementById('filter-subcounty');
   if (!subcountySelect) return;
 
-  const countySubcounties = {
-    nairobi: ['Westlands', 'Kilimani', 'Kileleshwa', 'Lavington', 'Runda', 'Karen', 'Kasarani', 'Roysambu', 'Embakasi', 'Langata', 'Starehe', 'Kibra', 'Dagoretti', 'Parklands', 'Ngara', 'South B', 'South C'],
-    kiambu: ['Ruaka', 'Thika', 'Kiambu Town', 'Kikuyu', 'Ruiru', 'Limuru', 'Juja', 'Githurai'],
-    machakos: ['Mlolongo', 'Syokimau', 'Kitengela', 'Athi River', 'Machakos Town'],
-    kajiado: ['Kitengela', 'Ongata Rongai', 'Ngong', 'Kajiado Town'],
-    mombasa: ['Nyali', 'Bamburi', 'Kizingo', 'Mtwapa', 'Tudor']
-  };
+  const cKey = (county || 'all').toLowerCase().trim();
+  let areas = [];
 
-  const list = countySubcounties[county.toLowerCase()] || countySubcounties.nairobi;
-  subcountySelect.innerHTML = '<option value="all">Sub-county</option>' + list.map(sc => `<option value="${sc.toLowerCase()}">${sc}</option>`).join('');
+  if (window.KENYA_COUNTY_AREAS && window.KENYA_COUNTY_AREAS[cKey]) {
+    areas = window.KENYA_COUNTY_AREAS[cKey].areas.filter(a => a.val).map(a => a.name);
+  } else if (window.KENYA_COUNTY_AREAS && window.KENYA_COUNTY_AREAS.all) {
+    // If county is selected, find all areas belonging to that county
+    areas = window.KENYA_COUNTY_AREAS.all.areas
+      .filter(a => a.val && (cKey === 'all' || (a.county && a.county.toLowerCase() === cKey)))
+      .map(a => a.name);
+  }
+
+  if (!areas.length) {
+    const fallbackMap = {
+      nairobi: ['Westlands', 'Kilimani', 'Kileleshwa', 'Lavington', 'Runda', 'Karen', 'Kasarani', 'Roysambu', 'Embakasi', 'Langata', 'Parklands', 'Ngara', 'South B', 'South C', 'Umoja', 'Pipeline', 'Donholm', 'Dandora', 'Eastleigh', 'Githurai 44'],
+      kiambu: ['Ruaka', 'Thika', 'Kiambu Town', 'Kikuyu', 'Ruiru', 'Limuru', 'Juja', 'Banana', 'Ndenderu', 'Kahawa Sukari', 'Membley'],
+      machakos: ['Syokimau', 'Mlolongo', 'Athi River', 'Katani', 'Kamulu', 'Joska', 'Machakos Town', 'Tala', 'Lukenya'],
+      kajiado: ['Kitengela', 'Ongata Rongai', 'Ngong Town', 'Kiserian', 'Isinya', 'Kajiado Town'],
+      mombasa: ['Nyali', 'Bamburi', 'Shanzu', 'Kizingo', 'Tudor', 'Mtwapa', 'Diani', 'Kilifi Town'],
+      nakuru: ['Milimani', 'Naka', 'Section 58', 'Kiamunyi', 'Naivasha', 'Gilgil', 'Molo', 'Njoro'],
+      kisumu: ['Milimani', 'Riat Hills', 'Tom Mboya', 'Migosi', 'Mamboleo', 'Kondele', 'Kakamega', 'Kisii Town', 'Bungoma'],
+      'uasin-gishu': ['Elgon View', 'Pioneer', 'Kapsoya', 'Annex', 'West Indies', 'Langas', 'Kitale Town']
+    };
+    areas = fallbackMap[cKey] || fallbackMap.nairobi;
+  }
+
+  subcountySelect.innerHTML = '<option value="all">Sub-county / Area</option>' + areas.map(sc => `<option value="${sc.toLowerCase()}">${sc}</option>`).join('');
+  
+  if (county === 'all') {
+    this.selectedLocation = null;
+  } else {
+    this.selectedLocation = { county: county, name: county };
+  }
+  this.currentPage = 1;
   this.applyFilters();
 };
 

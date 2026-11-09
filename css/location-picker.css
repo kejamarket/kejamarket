@@ -66,7 +66,7 @@
 
 .loc-picker-pin-icon {
   font-size: 1.4rem;
-  color: #00b53f;
+  color: #1db010;
   background: #e8f8ee;
   width: 42px;
   height: 42px;
@@ -144,7 +144,7 @@
 }
 
 .loc-picker-search-input:focus {
-  border-color: #00b53f;
+  border-color: #1db010;
   box-shadow: 0 0 0 3px rgba(0, 181, 63, 0.15);
 }
 
@@ -188,7 +188,7 @@
 }
 
 .loc-bc-item {
-  color: #00b53f;
+  color: #1db010;
   cursor: pointer;
   padding: 3px 8px;
   border-radius: 6px;
@@ -269,7 +269,7 @@
 
 .loc-item-card--any:hover {
   background: #dcfce7;
-  border-color: #00b53f;
+  border-color: #1db010;
 }
 
 .loc-card-icon-box {
@@ -287,7 +287,7 @@
 }
 
 .loc-card-icon-box--green {
-  background: #00b53f;
+  background: #1db010;
   color: #ffffff;
 }
 
@@ -332,7 +332,7 @@
 }
 
 .loc-card-badge--any {
-  background: #00b53f;
+  background: #1db010;
   color: #ffffff;
   font-size: 0.72rem;
   font-weight: 700;
@@ -354,19 +354,19 @@
 }
 
 .loc-item-card:hover .loc-drill-btn {
-  background: #00b53f;
+  background: #1db010;
   color: #ffffff;
-  border-color: #00b53f;
+  border-color: #1db010;
 }
 
 .loc-leaf-check {
-  color: #00b53f;
+  color: #1db010;
   font-size: 0.95rem;
   margin-right: 4px;
 }
 
 .loc-select-pill {
-  background: #00b53f;
+  background: #1db010;
   color: #ffffff;
   border: none;
   border-radius: 8px;

@@ -1,5 +1,5 @@
 /**
- * KejaMarket - Jiji-Style Profile & Account Management Engine
+ * KejaMarket - Profile & Account Management Engine
  * Handles user profile dashboard, role-specific menus, dark mode, language switcher,
  * notifications, followers, how-to-post guides, boost explanations, and settings.
  */
@@ -94,7 +94,7 @@ const kejaProfile = (() => {
   }
 
   /**
-   * Build & render the complete Jiji-style rich profile panel
+   * Build & render the complete rich profile panel
    */
   function renderProfileMenu(session) {
     const container = document.getElementById('auth-profile-menu-container');
@@ -165,171 +165,171 @@ const kejaProfile = (() => {
       `;
     }
 
-    // Detailed Jiji-style Menu Items
+    // Detailed Profile Menu Items
     let menuItems = `
-      <div class="jiji-menu-list">
+      <div class="km-profile-menu-list">
     `;
 
     // 1. My Ads / My Listings
     if (isLandlord) {
       menuItems += `
-        <div class="jiji-menu-item" onclick="app.closeModal('modal-auth'); kejaLandlordPortal.openLandlordPortal();">
-          <div class="jiji-item-icon" style="background:#ede9fe; color:#7c3aed;"><i class="fas fa-home"></i></div>
-          <div class="jiji-item-body">
-            <div class="jiji-item-title">My Properties &amp; Listings</div>
-            <div class="jiji-item-subtitle">Manage rentals, availability, inquiries &amp; tenant chats</div>
+        <div class="km-profile-menu-item" onclick="app.closeModal('modal-auth'); kejaLandlordPortal.openLandlordPortal();">
+          <div class="km-profile-item-icon" style="background:#ede9fe; color:#7c3aed;"><i class="fas fa-home"></i></div>
+          <div class="km-profile-item-body">
+            <div class="km-profile-item-title">My Properties &amp; Listings</div>
+            <div class="km-profile-item-subtitle">Manage rentals, availability, inquiries &amp; tenant chats</div>
           </div>
-          <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+          <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
 
-        <div class="jiji-menu-item" onclick="kejaProfile.openHowToPostGuide();">
-          <div class="jiji-item-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fas fa-book-open"></i></div>
-          <div class="jiji-item-body">
-            <div class="jiji-item-title">How to Post &amp; Photography Guide</div>
-            <div class="jiji-item-subtitle">Step-by-step instructions for high tenant responses</div>
+        <div class="km-profile-menu-item" onclick="kejaProfile.openHowToPostGuide();">
+          <div class="km-profile-item-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fas fa-book-open"></i></div>
+          <div class="km-profile-item-body">
+            <div class="km-profile-item-title">How to Post &amp; Photography Guide</div>
+            <div class="km-profile-item-subtitle">Step-by-step instructions for high tenant responses</div>
           </div>
-          <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+          <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
 
-        <div class="jiji-menu-item" onclick="kejaProfile.openBoostGuide();">
-          <div class="jiji-item-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-bolt"></i></div>
-          <div class="jiji-item-body">
-            <div class="jiji-item-title">Boost Listings (Top Ads &amp; Pro)</div>
-            <div class="jiji-item-subtitle">10x visibility, homepage carousel &amp; priority placement</div>
+        <div class="km-profile-menu-item" onclick="kejaProfile.openBoostGuide();">
+          <div class="km-profile-item-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-bolt"></i></div>
+          <div class="km-profile-item-body">
+            <div class="km-profile-item-title">Boost Listings (Top Ads &amp; Pro)</div>
+            <div class="km-profile-item-subtitle">10x visibility, homepage carousel &amp; priority placement</div>
           </div>
-          <span class="jiji-badge-tag" style="background:#f59e0b; color:white;">Hot</span>
-          <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+          <span class="km-profile-badge-tag" style="background:#f59e0b; color:white;">Hot</span>
+          <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
       `;
     } else if (isService) {
       menuItems += `
-        <div class="jiji-menu-item" onclick="app.closeModal('modal-auth'); kejaServicePortal.openServicePortal();">
-          <div class="jiji-item-icon" style="background:#cffafe; color:#0891b2;"><i class="fas fa-tools"></i></div>
-          <div class="jiji-item-body">
-            <div class="jiji-item-title">My Services &amp; Coverage Areas</div>
-            <div class="jiji-item-subtitle">Manage service packages, pricing, estates covered &amp; leads</div>
+        <div class="km-profile-menu-item" onclick="app.closeModal('modal-auth'); kejaServicePortal.openServicePortal();">
+          <div class="km-profile-item-icon" style="background:#cffafe; color:#0891b2;"><i class="fas fa-tools"></i></div>
+          <div class="km-profile-item-body">
+            <div class="km-profile-item-title">My Services &amp; Coverage Areas</div>
+            <div class="km-profile-item-subtitle">Manage service packages, pricing, estates covered &amp; leads</div>
           </div>
-          <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+          <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
 
-        <div class="jiji-menu-item" onclick="kejaProfile.openBoostGuide();">
-          <div class="jiji-item-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-rocket"></i></div>
-          <div class="jiji-item-body">
-            <div class="jiji-item-title">Boost My Service</div>
-            <div class="jiji-item-subtitle">Get featured at top of WiFi, moving &amp; cleaning searches</div>
+        <div class="km-profile-menu-item" onclick="kejaProfile.openBoostGuide();">
+          <div class="km-profile-item-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-rocket"></i></div>
+          <div class="km-profile-item-body">
+            <div class="km-profile-item-title">Boost My Service</div>
+            <div class="km-profile-item-subtitle">Get featured at top of WiFi, moving &amp; cleaning searches</div>
           </div>
-          <span class="jiji-badge-tag" style="background:#f59e0b; color:white;">Boost</span>
-          <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+          <span class="km-profile-badge-tag" style="background:#f59e0b; color:white;">Boost</span>
+          <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
       `;
     } else {
       // Tenant menu
       menuItems += `
-        <div class="jiji-menu-item" onclick="app.closeModal('modal-auth'); app.toggleFavoritesView();">
-          <div class="jiji-item-icon" style="background:#fee2e2; color:#ef4444;"><i class="fas fa-heart"></i></div>
-          <div class="jiji-item-body">
-            <div class="jiji-item-title">Saved Properties &amp; Favorites</div>
-            <div class="jiji-item-subtitle">Quick access to houses you bookmarked</div>
+        <div class="km-profile-menu-item" onclick="app.closeModal('modal-auth'); app.toggleFavoritesView();">
+          <div class="km-profile-item-icon" style="background:#fee2e2; color:#ef4444;"><i class="fas fa-heart"></i></div>
+          <div class="km-profile-item-body">
+            <div class="km-profile-item-title">Saved Properties &amp; Favorites</div>
+            <div class="km-profile-item-subtitle">Quick access to houses you bookmarked</div>
           </div>
-          <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+          <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
 
-        <div class="jiji-menu-item" onclick="kejaProfile.openMakeMoneyInfo();">
-          <div class="jiji-item-icon" style="background:#dcfce7; color:#166534;"><i class="fas fa-hand-holding-usd"></i></div>
-          <div class="jiji-item-body">
-            <div class="jiji-item-title">Make Money on KejaMarket</div>
-            <div class="jiji-item-subtitle">List a spare room, earn agent commission, or offer services</div>
+        <div class="km-profile-menu-item" onclick="kejaProfile.openMakeMoneyInfo();">
+          <div class="km-profile-item-icon" style="background:#dcfce7; color:#166534;"><i class="fas fa-hand-holding-usd"></i></div>
+          <div class="km-profile-item-body">
+            <div class="km-profile-item-title">Make Money on KejaMarket</div>
+            <div class="km-profile-item-subtitle">List a spare room, earn agent commission, or offer services</div>
           </div>
-          <span class="jiji-badge-tag" style="background:#10b981; color:white;">Earn</span>
-          <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+          <span class="km-profile-badge-tag" style="background:#10b981; color:white;">Earn</span>
+          <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
       `;
     }
 
     // Common for ALL users
     menuItems += `
-      <div class="jiji-menu-item" onclick="kejaProfile.openNotificationsModal();">
-        <div class="jiji-item-icon" style="background:#ede9fe; color:#6366f1;"><i class="fas fa-bell"></i></div>
-        <div class="jiji-item-body">
-          <div class="jiji-item-title">Notifications</div>
-          <div class="jiji-item-subtitle">Inquiries, price drops &amp; system announcements</div>
+      <div class="km-profile-menu-item" onclick="kejaProfile.openNotificationsModal();">
+        <div class="km-profile-item-icon" style="background:#ede9fe; color:#6366f1;"><i class="fas fa-bell"></i></div>
+        <div class="km-profile-item-body">
+          <div class="km-profile-item-title">Notifications</div>
+          <div class="km-profile-item-subtitle">Inquiries, price drops &amp; system announcements</div>
         </div>
-        ${unreadCount > 0 ? `<span class="jiji-badge-count">${unreadCount}</span>` : ''}
-        <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+        ${unreadCount > 0 ? `<span class="km-profile-badge-count">${unreadCount}</span>` : ''}
+        <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
       </div>
 
-      <div class="jiji-menu-item" onclick="kejaProfile.openFollowersModal();">
-        <div class="jiji-item-icon" style="background:#e0e7ff; color:#4338ca;"><i class="fas fa-users"></i></div>
-        <div class="jiji-item-body">
-          <div class="jiji-item-title">Followers &amp; Network</div>
-          <div class="jiji-item-subtitle">Connect with trusted landlords, agents &amp; service pros</div>
+      <div class="km-profile-menu-item" onclick="kejaProfile.openFollowersModal();">
+        <div class="km-profile-item-icon" style="background:#e0e7ff; color:#4338ca;"><i class="fas fa-users"></i></div>
+        <div class="km-profile-item-body">
+          <div class="km-profile-item-title">Followers &amp; Network</div>
+          <div class="km-profile-item-subtitle">Connect with trusted landlords, agents &amp; service pros</div>
         </div>
-        <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+        <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
       </div>
 
-      <div class="jiji-menu-item" onclick="kejaProfile.openFeedbackModal();">
-        <div class="jiji-item-icon" style="background:#fef9c3; color:#ca8a04;"><i class="fas fa-star"></i></div>
-        <div class="jiji-item-body">
-          <div class="jiji-item-title">Feedback &amp; Reviews</div>
-          <div class="jiji-item-subtitle">Give feedback or review landlords and estate experiences</div>
+      <div class="km-profile-menu-item" onclick="kejaProfile.openFeedbackModal();">
+        <div class="km-profile-item-icon" style="background:#fef9c3; color:#ca8a04;"><i class="fas fa-star"></i></div>
+        <div class="km-profile-item-body">
+          <div class="km-profile-item-title">Feedback &amp; Reviews</div>
+          <div class="km-profile-item-subtitle">Give feedback or review landlords and estate experiences</div>
         </div>
-        <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+        <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
       </div>
 
-      <div class="jiji-menu-item" onclick="kejaProfile.openFaqModal();">
-        <div class="jiji-item-icon" style="background:#f1f5f9; color:#475569;"><i class="fas fa-question-circle"></i></div>
-        <div class="jiji-item-body">
-          <div class="jiji-item-title">FAQ, Rules &amp; Safety Guidelines</div>
-          <div class="jiji-item-subtitle">Avoid rental scams, deposit guidelines &amp; tenant rights</div>
+      <div class="km-profile-menu-item" onclick="kejaProfile.openFaqModal();">
+        <div class="km-profile-item-icon" style="background:#f1f5f9; color:#475569;"><i class="fas fa-question-circle"></i></div>
+        <div class="km-profile-item-body">
+          <div class="km-profile-item-title">FAQ, Rules &amp; Safety Guidelines</div>
+          <div class="km-profile-item-subtitle">Avoid rental scams, deposit guidelines &amp; tenant rights</div>
         </div>
-        <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+        <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
       </div>
 
       <!-- Settings Block -->
-      <div class="jiji-section-header">Preferences &amp; Settings</div>
+      <div class="km-profile-section-header">Preferences &amp; Settings</div>
 
-      <div class="jiji-settings-box">
+      <div class="km-profile-settings-box">
         <!-- Language Switcher -->
-        <div class="jiji-setting-row">
-          <div class="jiji-setting-label">
+        <div class="km-profile-setting-row">
+          <div class="km-profile-setting-label">
             <i class="fas fa-globe" style="color:#6366f1;"></i> Language / Lugha
           </div>
-          <select id="profile-lang-select" onchange="kejaProfile.setLanguage(this.value)" class="jiji-select-mini">
+          <select id="profile-lang-select" onchange="kejaProfile.setLanguage(this.value)" class="km-profile-select-mini">
             <option value="en">English 🇬🇧</option>
             <option value="sw">Kiswahili 🇰🇪</option>
           </select>
         </div>
 
         <!-- Dark Mode Toggle -->
-        <div class="jiji-setting-row">
-          <div class="jiji-setting-label">
+        <div class="km-profile-setting-row">
+          <div class="km-profile-setting-label">
             <i class="fas fa-moon" style="color:#8b5cf6;"></i> Dark Mode
           </div>
-          <label class="jiji-switch">
+          <label class="km-profile-switch">
             <input type="checkbox" id="profile-theme-toggle" onchange="kejaProfile.toggleTheme(this.checked ? 'dark' : 'light')">
-            <span class="jiji-slider round"></span>
+            <span class="km-profile-slider round"></span>
           </label>
         </div>
 
         <!-- Change Password -->
-        <div class="jiji-setting-row" onclick="kejaProfile.openChangePasswordModal()" style="cursor:pointer;">
-          <div class="jiji-setting-label">
+        <div class="km-profile-setting-row" onclick="kejaProfile.openChangePasswordModal()" style="cursor:pointer;">
+          <div class="km-profile-setting-label">
             <i class="fas fa-lock" style="color:#0284c7;"></i> Change Password
           </div>
-          <div class="jiji-item-arrow"><i class="fas fa-chevron-right"></i></div>
+          <div class="km-profile-item-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
 
         <!-- Delete Account -->
-        <div class="jiji-setting-row" onclick="kejaProfile.openDeleteAccountModal()" style="cursor:pointer;">
-          <div class="jiji-setting-label" style="color:#dc2626;">
+        <div class="km-profile-setting-row" onclick="kejaProfile.openDeleteAccountModal()" style="cursor:pointer;">
+          <div class="km-profile-setting-label" style="color:#dc2626;">
             <i class="fas fa-trash-alt" style="color:#dc2626;"></i> Delete Account
           </div>
-          <div class="jiji-item-arrow" style="color:#dc2626;"><i class="fas fa-chevron-right"></i></div>
+          <div class="km-profile-item-arrow" style="color:#dc2626;"><i class="fas fa-chevron-right"></i></div>
         </div>
       </div>
 
       <!-- Sign Out Button -->
-      <button onclick="kejaAuth.signOut()" class="btn-jiji-signout">
+      <button onclick="kejaAuth.signOut()" class="btn-km-signout">
         <i class="fas fa-sign-out-alt"></i> Sign Out
       </button>
 
@@ -343,7 +343,7 @@ const kejaProfile = (() => {
     `;
 
     container.innerHTML = `
-      <div class="profile-jiji-header">
+      <div class="profile-km-header">
         <div class="profile-avatar-wrap">
           <div id="auth-user-avatar" class="profile-avatar-img"></div>
           <div class="profile-avatar-badge" title="Phone &amp; ID Verified"><i class="fas fa-check"></i></div>

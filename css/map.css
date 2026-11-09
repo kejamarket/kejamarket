@@ -1,11 +1,11 @@
 /* ==========================================================================
    Leaflet Map Custom Styling & Price Badges
-   Nairobi Rentals Live (Jiji Kenya Style)
+   KejaMarket Rentals Live
    ========================================================================== */
 
 /* Custom Price Marker Pin */
 .custom-price-pin {
-  background: #00b53f;
+  background: #1db010;
   color: #ffffff;
   padding: 4px 8px;
   border-radius: 12px;
@@ -31,7 +31,7 @@
   transform: translateX(-50%);
   border-width: 6px 5px 0 5px;
   border-style: solid;
-  border-color: #00b53f transparent transparent transparent;
+  border-color: #1db010 transparent transparent transparent;
 }
 
 .custom-price-pin:hover,
@@ -93,7 +93,7 @@
 .map-popup-price {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #00b53f;
+  color: #1db010;
   margin-bottom: 2px;
 }
 

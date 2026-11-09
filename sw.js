@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v81-performance-optimized';
+const CACHE_NAME = 'kejamarket-v90-full-rebuild-202611100040';
 
 const STATIC_ASSETS = [
   '/',
@@ -9,6 +9,7 @@ const STATIC_ASSETS = [
 
   // CSS Stylesheets
   '/css/style.css',
+  '/css/mobile-layout.css',
   '/css/map.css',
   '/css/monetization.css',
   '/css/verification.css',
@@ -46,6 +47,7 @@ const STATIC_ASSETS = [
   '/vendor/chartjs/chart.min.js',
 
   // Core & Feature JavaScript Files
+  '/js/mobile-layout.js',
   '/js/offline-manager.js',
   '/js/auth.js',
   '/js/reviews.js',
@@ -212,7 +214,31 @@ self.addEventListener('fetch', (event) => {
   }
 
   // 5. Static Assets (CSS, JS, Fonts)
-  // Stale-While-Revalidate with ignoreSearch to handle ?v= query params
+  // For actively updated files or versioned files (?v=), use Network-First to ensure instant updates
+  const isFrequentlyUpdated = url.pathname.includes('mobile-layout') ||
+    url.pathname.includes('locations') ||
+    url.pathname.includes('app.js') ||
+    url.pathname.includes('map.js') ||
+    url.searchParams.has('v');
+
+  if (isFrequentlyUpdated) {
+    event.respondWith(
+      fetch(req)
+        .then((networkRes) => {
+          if (networkRes && networkRes.ok) {
+            const clone = networkRes.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+          }
+          return networkRes;
+        })
+        .catch(async () => {
+          return await caches.match(req) || await caches.match(req, { ignoreSearch: true });
+        })
+    );
+    return;
+  }
+
+  // Stale-While-Revalidate with ignoreSearch for other static assets
   event.respondWith(
     caches.match(req, { ignoreSearch: true }).then((cachedRes) => {
       const fetchPromise = fetch(req)

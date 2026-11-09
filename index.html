@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -14,9 +14,9 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=26.0&t=202610090400" as="style">
-  <link rel="preload" href="js/app.js?v=19.0&t=202610180330" as="script">
-  <link rel="preload" href="js/auth.js?v=5.1&t=202610180330" as="script">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=90.0&t=20261110" as="style">
+  <link rel="preload" href="js/app.js?v=90.0&t=20261110" as="script">
+  <link rel="preload" href="js/auth.js?v=90.0&t=20261110" as="script">
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,22 +24,18 @@
 
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=26.0&t=202610090400">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=90.0&t=20261110">
   
-  <!-- Recently Added Section Styling -->
-  <link rel="stylesheet" href="css/recently-added.css?v=4.2&t=202610180515">
   
   <!-- Hierarchical Location Search Component -->
   <link rel="stylesheet" href="css/location-search.css?v=1.0">
   
-  <!-- Mobile Optimized Layout -->
-  <link rel="stylesheet" href="css/mobile-app.css?v=2.0&t=aggressive-mobile">
-  
-  <!-- KejaMarket PWA & Mobile Journey Layout (16 Screens) -->
-  <link rel="stylesheet" href="css/mobile-layout.css?v=27.0&t=202610182045">
-  
-  <!-- Map Styling (OpenStreetMap Compliant) -->
-  <link rel="stylesheet" href="css/map.css?v=1.0">
+  <!-- Leaflet OpenStreetMap Styles -->
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/map.css?v=2.0">
+
+  <!-- KejaMarket PWA & Mobile Journey Layout -->
+  <link rel="stylesheet" href="css/mobile-layout.css?v=90.0&t=20261110">
   <script>
     // Force mobile layout detection
     (function() {
@@ -49,7 +45,13 @@
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       if (isMobile) {
         document.documentElement.classList.add('mobile-view');
-        document.body.classList.add('mobile-layout');
+        if (document.body) {
+          document.body.classList.add('mobile-layout');
+        } else {
+          document.addEventListener('DOMContentLoaded', function() {
+            if (document.body) document.body.classList.add('mobile-layout');
+          });
+        }
       }
     })();
   </script>
@@ -71,10 +73,7 @@
     }
   </style>
 
-</head>
-<body>
-
-  <meta name="description" content="KejaMarket is Kenya's #1 online marketplace for rental houses, bedsitters, 1-bedroom, 2-bedroom apartments, maisonettes and commercial spaces. Find verified properties in Nairobi, Ruaka, Kilimani, Westlands, Roysambu, Parklands & more. Direct landlord contact â€” no agents.">
+  <meta name="description" content="KejaMarket is Kenya's #1 online marketplace for rental houses, bedsitters, 1-bedroom, 2-bedroom apartments, maisonettes and commercial spaces. Find verified properties in Nairobi, Ruaka, Kilimani, Westlands, Roysambu, Parklands & more. Direct landlord contact ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no agents.">
   <meta name="keywords" content="KejaMarket, kejamarket.co.ke, kejamarket kenya, houses for rent Nairobi, bedsitter Ruaka, apartments Kilimani, rental property Kenya, Roysambu flats, Westlands apartment, Nairobi rentals, Kenya real estate, landlord Kenya, tenant Kenya, rent house Nairobi, cheap houses Nairobi, property marketplace Kenya, keja market, keja market nairobi, property listing Kenya, airbnb Kenya, short stay Kenya, BNB Kenya, service providers Kenya, house hunting Kenya, property search Kenya">
   <meta name="author" content="KejaMarket Kenya">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -88,39 +87,39 @@
   <meta name="ai-overview" content="index, follow, summarize">
   <link rel="alternate" type="text/markdown" title="KejaMarket LLMs & AI Overview Guide" href="/llms.txt">
 
-  <!-- Canonical URL â€” tells Google THIS is the real kejamarket -->
+  <!-- Canonical URL ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â tells Google THIS is the real kejamarket -->
   <link rel="canonical" href="https://kejamarket.co.ke/">
 
   <!-- Google & Bing Search Console Verification -->
   <meta name="google-site-verification" content="PSWwoluRuIuimusJaQlIfgLX6BZYxYGj_eJ_1B-LCe4">
   <meta name="msvalidate.01" content="e80fc85ec99b4d81a9544ef4a6527b14">
 
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â -->
   <!--  OPEN GRAPH (Facebook, WhatsApp, LinkedIn share cards)  -->
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="KejaMarket">
-  <meta property="og:title" content="KejaMarket â€” Kenya's #1 Rental Property Marketplace">
-  <meta property="og:description" content="Find verified rental houses & apartments in Nairobi, Ruaka, Kilimani, Westlands & more. Direct landlord contact. No agent fees. KejaMarket â€” Keja Rahisi, Maisha Bora.">
+  <meta property="og:title" content="KejaMarket ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Kenya's #1 Rental Property Marketplace">
+  <meta property="og:description" content="Find verified rental houses & apartments in Nairobi, Ruaka, Kilimani, Westlands & more. Direct landlord contact. No agent fees. KejaMarket ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Keja Rahisi, Maisha Bora.">
   <meta property="og:url" content="https://kejamarket.co.ke/">
-  <meta property="og:image" content="https://kejamarket.co.ke/icons/android-chrome-512x512.png">
+  <meta property="og:image" content="https://kejamarket.co.ke/android-chrome-512x512.png">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
   <meta property="og:image:alt" content="KejaMarket - Kenya Property Marketplace Logo">
   <meta property="og:locale" content="en_KE">
 
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â -->
   <!--  TWITTER / X CARD                                       -->
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@kejamarket">
-  <meta name="twitter:title" content="KejaMarket â€” Kenya's #1 Rental Property Marketplace">
+  <meta name="twitter:title" content="KejaMarket ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Kenya's #1 Rental Property Marketplace">
   <meta name="twitter:description" content="Find verified rental houses in Nairobi, Ruaka, Kilimani & more. Direct landlord contact. No agent fees.">
-  <meta name="twitter:image" content="https://kejamarket.co.ke/icons/android-chrome-512x512.png">
+  <meta name="twitter:image" content="https://kejamarket.co.ke/android-chrome-512x512.png">
 
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â -->
   <!--  JSON-LD STRUCTURED DATA (Google Knowledge Graph)       -->
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -133,7 +132,7 @@
         "url": "https://kejamarket.co.ke",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://kejamarket.co.ke/icons/android-chrome-512x512.png",
+          "url": "https://kejamarket.co.ke/android-chrome-512x512.png",
           "width": 512,
           "height": 512
         },
@@ -255,19 +254,19 @@
   }
   </script>
 
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â -->
   <!--  PWA MANIFEST & ICONS                                   -->
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!-- ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â -->
   <!-- Favicon & App Icons -->
   <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/icons/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/icons/android-chrome-512x512.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
 
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#16a34a">
+  <meta name="theme-color" content="#006818">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="KejaMarket">
@@ -284,7 +283,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Additional Component CSS -->
-  <link rel="stylesheet" href="css/location-picker.css?v=5.0">
+  <link rel="stylesheet" href="css/location-picker.css?v=82.0&t=all-kenya-locations">
   <link rel="stylesheet" href="css/verification.css?v=5.0">
   <link rel="stylesheet" href="css/communication-system.css?v=5.0">
 </head>
@@ -338,6 +337,18 @@
 
       <!-- Header Actions -->
       <div class="header-actions">
+
+        <!-- WhatsApp Alerts Top Action -->
+        <button type="button" class="btn-top-wa-alerts" onclick="openWhatsAppAlertsWithAuth()" title="Get Free WhatsApp Vacancy Alerts" style="background:#25d366; color:white; border:none; border-radius:8px; padding:7px 12px; font-size:12.5px; font-weight:700; display:inline-flex; align-items:center; gap:6px; cursor:pointer; box-shadow:0 2px 6px rgba(37,211,102,0.3); transition:transform 0.2s;">
+          <i class="fab fa-whatsapp" style="font-size:15px;"></i>
+          <span>WhatsApp Alerts</span>
+        </button>
+
+        <!-- 3-Day House Hunter Button -->
+        <button type="button" class="btn-top-hunter" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" title="Hire a 72-Hour Ground House Hunter" style="background:#006818; color:white; border:none; border-radius:8px; padding:7px 12px; font-size:12.5px; font-weight:700; display:inline-flex; align-items:center; gap:6px; cursor:pointer; transition:transform 0.2s;">
+          <i class="fas fa-search-location"></i>
+          <span>72h Hunter</span>
+        </button>
         
         <!-- Post Property Button -->
         <button class="btn-post-property" onclick="app.openPostPropertyModal && app.openPostPropertyModal(event)">
@@ -453,23 +464,23 @@
         </div>
         <div class="filter-accordion-body" style="display:block;">
           <div class="filter-checklist-box" id="property-type-checklist-container">
-            <!-- Top 5 Visible Property Types -->
+            <!-- Top Visible Property Types -->
+            <label class="filter-check-item property-type-single"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">Single Room</span></label>
+            <label class="filter-check-item property-type-double"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
+            <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
+            <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">1 Bedroom</span></label>
+            <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">2 Bedrooms</span></label>
             <label class="filter-check-item property-type-bnb"><input type="checkbox" class="prop-type-checkbox" value="Bnb (Short Stay)" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-umbrella-beach"></i></span><span class="item-label">Bnb (Short Stay)</span></label>
-            <label class="filter-check-item property-type-single"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FF6D00;"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">Single Room</span></label>
-            <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FF1744;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
-            <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FFD600;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">1 Bedroom</span></label>
-            <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00C853;"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">2 Bedrooms</span></label>
 
             <!-- Remaining Property Types (Expandable via Chevron) -->
             <div id="property-type-more-items" class="property-type-collapsed">
-              <label class="filter-check-item property-type-double"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FF9100;"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
-              <label class="filter-check-item property-type-3bed"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00E5FF;"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">3 Bedrooms</span></label>
-              <label class="filter-check-item property-type-4bed"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #2979FF;"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
-              <label class="filter-check-item property-type-townhouse"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #AA00FF;"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Townhouse</span></label>
-              <label class="filter-check-item property-type-villa"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #FF00A8;"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa</span></label>
-              <label class="filter-check-item property-type-apartment"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #00D4FF;"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">Apartment</span></label>
-              <label class="filter-check-item property-type-bungalow"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #76FF03;"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
-              <label class="filter-check-item property-type-studio"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #F50057;"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio</span></label>
+              <label class="filter-check-item property-type-3bed"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">3 Bedrooms</span></label>
+              <label class="filter-check-item property-type-4bed"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
+              <label class="filter-check-item property-type-apartment"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Apartment / Flats</span></label>
+              <label class="filter-check-item property-type-townhouse"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-monument"></i></span><span class="item-label">Maisonette / Townhouse</span></label>
+              <label class="filter-check-item property-type-villa"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa / Compound</span></label>
+              <label class="filter-check-item property-type-studio"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio Apt</span></label>
+              <label class="filter-check-item property-type-bungalow"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
             </div>
           </div>
           <button type="button" class="btn-toggle-property-types" id="btn-toggle-property-types" onclick="app.togglePropertyTypeExpansion && app.togglePropertyTypeExpansion()" title="Toggle more property types" aria-label="Toggle more property types">
@@ -495,12 +506,67 @@
           <div id="location-search-results" class="location-search-results-dropdown" style="display:none;"></div>
           <div style="display:flex; gap:6px; margin-bottom:8px;">
             <select class="filter-select" id="filter-county" style="flex:1;" onchange="app.onCountyChange && app.onCountyChange(this.value)">
-              <option value="all">County</option>
-              <option value="nairobi" selected>Nairobi</option>
-              <option value="kiambu">Kiambu</option>
-              <option value="machakos">Machakos</option>
-              <option value="kajiado">Kajiado</option>
-              <option value="mombasa">Mombasa</option>
+              <option value="all">All Kenya (47 Counties)</option>
+              <optgroup label="Metropolitan & Priority">
+                <option value="nairobi" selected>Nairobi City</option>
+                <option value="kiambu">Kiambu</option>
+                <option value="machakos">Machakos</option>
+                <option value="kajiado">Kajiado</option>
+                <option value="mombasa">Mombasa</option>
+                <option value="nakuru">Nakuru</option>
+                <option value="kisumu">Kisumu</option>
+                <option value="uasin-gishu">Uasin Gishu (Eldoret)</option>
+              </optgroup>
+              <optgroup label="Coast">
+                <option value="kilifi">Kilifi</option>
+                <option value="kwale">Kwale</option>
+                <option value="lamu">Lamu</option>
+                <option value="taita-taveta">Taita Taveta</option>
+                <option value="tana-river">Tana River</option>
+              </optgroup>
+              <optgroup label="Central & Mount Kenya">
+                <option value="nyeri">Nyeri</option>
+                <option value="muranga">Murang'a</option>
+                <option value="kirinyaga">Kirinyaga</option>
+                <option value="nyandarua">Nyandarua</option>
+                <option value="laikipia">Laikipia</option>
+              </optgroup>
+              <optgroup label="Rift Valley">
+                <option value="baringo">Baringo</option>
+                <option value="bomet">Bomet</option>
+                <option value="elgeyo-marakwet">Elgeyo-Marakwet</option>
+                <option value="kericho">Kericho</option>
+                <option value="nandi">Nandi</option>
+                <option value="narok">Narok</option>
+                <option value="samburu">Samburu</option>
+                <option value="trans-nzoia">Trans Nzoia (Kitale)</option>
+                <option value="turkana">Turkana</option>
+                <option value="west-pokot">West Pokot</option>
+              </optgroup>
+              <optgroup label="Western & Nyanza">
+                <option value="bungoma">Bungoma</option>
+                <option value="busia">Busia</option>
+                <option value="homa-bay">Homa Bay</option>
+                <option value="kakamega">Kakamega</option>
+                <option value="kisii">Kisii</option>
+                <option value="migori">Migori</option>
+                <option value="nyamira">Nyamira</option>
+                <option value="siaya">Siaya</option>
+                <option value="vihiga">Vihiga</option>
+              </optgroup>
+              <optgroup label="Eastern & North Eastern">
+                <option value="embu">Embu</option>
+                <option value="garissa">Garissa</option>
+                <option value="isiolo">Isiolo</option>
+                <option value="kitui">Kitui</option>
+                <option value="machakos">Machakos</option>
+                <option value="makueni">Makueni</option>
+                <option value="mandera">Mandera</option>
+                <option value="marsabit">Marsabit</option>
+                <option value="meru">Meru</option>
+                <option value="tharaka-nithi">Tharaka-Nithi</option>
+                <option value="wajir">Wajir</option>
+              </optgroup>
             </select>
             <select class="filter-select" id="filter-subcounty" style="flex:1;" onchange="app.onSubCountyChange && app.onSubCountyChange(this.value)">
               <option value="all">Sub-county</option>
@@ -1254,7 +1320,7 @@
           </a>
         </div>
         <div style="margin-top:10px; font-size:0.75rem; color:#bbf7d0; font-weight:600; display:flex; align-items:center; gap:5px;">
-          <span style="color:#ef4444;">â¤ï¸</span> Built for a better Kenya
+          <span style="color:#ef4444;">ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â</span> Built for a better Kenya
         </div>
       </div>
 
@@ -1273,7 +1339,7 @@
         <button class="modal-close-btn" onclick="app.closeModal('modal-post-ad')">&times;</button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 0.85rem; color: #475569; margin-bottom: 14px;">Fill in just the basics â€” your listing goes live in under 2 minutes. You can always edit later.</p>
+        <p style="font-size: 0.85rem; color: #475569; margin-bottom: 14px;">Fill in just the basics ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â your listing goes live in under 2 minutes. You can always edit later.</p>
         <form id="post-ad-form">
 
           <!-- STEP 1: Core details -->
@@ -1371,7 +1437,7 @@
 
           <!-- STEP 2B: Video Tours (Max 1 video, max 1.5 mins / 90s duration) -->
           <div class="form-group" style="margin-top: 14px;">
-            <label>Video Tour <span style="font-weight:400; color:#64748b;">(optional â€” max 1 video, up to 1 minute 30 seconds)</span></label>
+            <label>Video Tour <span style="font-weight:400; color:#64748b;">(optional ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â max 1 video, up to 1 minute 30 seconds)</span></label>
             <div class="photo-dropzone" id="video-dropzone" style="background: #faf5ff; border: 2px dashed #c084fc; cursor: pointer; text-align: center; padding: 16px; border-radius: 8px;">
               <i class="fas fa-video" style="font-size: 1.8rem; color: #7c3aed; margin-bottom: 6px;"></i>
               <div style="font-weight: 700; font-size: 0.9rem; color: #581c87;">Tap to upload video tour (Max 1 video)</div>
@@ -1442,7 +1508,7 @@
 
               <div class="form-group">
                 <label>Extra Details</label>
-                <textarea id="post-description" class="form-control" rows="3" placeholder="Anything else tenants should know â€” road access, agent rules, move-in date..."></textarea>
+                <textarea id="post-description" class="form-control" rows="3" placeholder="Anything else tenants should know ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â road access, agent rules, move-in date..."></textarea>
               </div>
 
               <div class="form-group">
@@ -1710,6 +1776,7 @@
 
         <!-- Main Photo Gallery -->
         <div class="detail-gallery-main" id="detail-gallery-main-container" style="border-radius: 14px; overflow: hidden; height: 260px; max-height: 280px; position: relative;">
+          <span class="card-cat-badge" id="detail-modal-cat-badge" style="position: absolute; top: 10px; left: 10px; z-index: 5; padding: 4px 10px; border-radius: 6px; font-size: 0.76rem; font-weight: 800; color: white; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></span>
           <img id="detail-main-photo" src="" alt="Property main view" onclick="app.openLightbox()" style="width: 100%; height: 100%; object-fit: cover;">
           <button type="button" class="gallery-nav-btn prev" onclick="app.prevDetailPhoto(event)" title="Previous photo" aria-label="Previous photo">
             <i class="fas fa-chevron-left"></i>
@@ -1744,13 +1811,44 @@
               <span style="font-weight: 800; font-size: 0.92rem; color: #166534;">Schedule an In-Person Viewing</span>
             </div>
             <div style="font-size: 0.78rem; color: #15803d; margin-top: 2px; line-height: 1.3;">
-              Free to request · 60s Caretaker SLA · Pay KSh 200 platform fee to unlock exact GPS & contact
+              Free to request Ã‚Â· 60s Caretaker SLA Ã‚Â· Pay KSh 200 platform fee to unlock exact GPS & contact
             </div>
           </div>
           <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)"
             style="padding: 9px 16px; font-size: 0.88rem; font-weight: 800; border-radius: 8px; background: #00b53f; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 3px 8px rgba(0,181,63,0.35); flex-shrink: 0;">
             <i class="fas fa-calendar-check"></i> Book Viewing (KSh 200)
           </button>
+        </div>
+
+        <!-- Zero Viewing Fee Guarantee Banner (KejaMarket Trust Seal) -->
+        <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: #006818; color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 0.88rem; color: #166534;"><i class="fas fa-check-circle"></i> 100% Free Viewings Guaranteed</div>
+            <div style="font-size: 0.76rem; color: #15803d; line-height: 1.3;">KejaMarket strictly prohibits viewing fees. Inspect this home free of charge before committing.</div>
+          </div>
+        </div>
+
+        <!-- Transparent Move-In Breakdown (Desktop Modal) -->
+        <div id="detail-desktop-movein-box" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f1f5f9;">
+            <span style="font-size: 0.88rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+              <i class="fas fa-calculator" style="color: #006818;"></i> Transparent Move-In Breakdown
+            </span>
+            <span style="font-size: 0.72rem; font-weight: 800; color: #006818; background: #dcfce7; padding: 2px 8px; border-radius: 10px;">Direct Terms</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.8rem; color: #475569;">
+            <div>1st Month Rent: <strong id="dt-breakdown-rent" style="color: #0f172a;">-</strong></div>
+            <div>Refundable Deposit: <strong id="dt-breakdown-deposit" style="color: #0f172a;">-</strong></div>
+            <div>Water Deposit / Account: <span style="color: #166534; font-weight: 700;">Pre-paid Meter</span></div>
+            <div>Electricity: <span style="color: #166534; font-weight: 700;">Tokens (0 Deposit)</span></div>
+          </div>
+          <div style="margin-top: 8px; padding-top: 6px; border-top: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; font-weight: 900; color: #0f172a;">
+            <span>Estimated Move-In Total:</span>
+            <span id="dt-breakdown-total" style="color: #006818; font-size: 1rem;">-</span>
+          </div>
         </div>
 
         <!-- Specifications Grid -->
@@ -1796,30 +1894,27 @@
           <div id="detail-amenities-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; font-size: 0.82rem;"></div>
         </div>
 
-        <!-- Location & Map Section with Protective GPS Card -->
+        <!-- Location & Map Section with OpenStreetMap Leaflet Canvas -->
         <div id="detail-map-section" style="margin-bottom: 18px;">
-          <h4 style="font-size: 0.92rem; font-weight: 800; color: #0f172a; margin: 0 0 8px 0; display: flex; align-items: center; justify-content: space-between;">
-            <span><i class="fas fa-map-marked-alt" style="color: #00b53f;"></i> Exact GPS Location</span>
-            <span id="detail-gps-badge" style="font-size: 0.74rem; font-weight: 700; color: #64748b;">-</span>
-          </h4>
-
-          <!-- Live Leaflet Map Canvas (Shown ONLY when GPS is unlocked by confirmed booking) -->
-          <div id="detail-property-map" style="display: none; height: 200px; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08);"></div>
-
-          <!-- Presentable GPS Protection Card (Shown for Public Tenants) -->
-          <div id="detail-gps-locked-card" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 12px; padding: 18px; text-align: center; color: white; position: relative; overflow: hidden; box-shadow: 0 4px 14px rgba(15,23,42,0.12);">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(0,181,63,0.18); border: 2px solid #00b53f; color: #4ade80; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 8px;">
-              <i class="fas fa-lock"></i>
-            </div>
-            <h5 style="font-size: 0.96rem; font-weight: 800; color: #ffffff; margin: 0 0 4px 0;">Exact Map Pin & GPS Protected</h5>
-            <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.45; margin: 0 auto 12px auto; max-width: 420px;">
-              General Area: <strong style="color: #4ade80;" id="detail-gps-locked-suburb">Kilimani, Nairobi</strong>. Turn-by-turn Google Maps pin and on-site caretaker contacts are unlocked immediately upon viewing slot confirmation and KSh 200 fee payment.
-            </p>
-            <button type="button" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)"
-              style="background: #00b53f; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 800; font-size: 0.84rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,181,63,0.35);">
-              <i class="fas fa-calendar-check"></i> Book Viewing to Unlock Pin
-            </button>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <h4 style="font-size: 0.95rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 7px;">
+              <i class="fas fa-map-marked-alt" style="color: #006818;"></i> Location & Neighborhood Map
+            </h4>
+            <a id="detail-btn-directions" href="#" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; font-weight: 800; color: #006818; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 4px 10px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+              <i class="fas fa-directions"></i> Get Directions
+            </a>
           </div>
+
+          <!-- Live Leaflet Map Canvas (Always available for tenant confidence) -->
+          <div id="detail-property-map" style="display: block; width: 100%; height: 240px; border-radius: 12px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 1px 4px rgba(0,0,0,0.08); position: relative; z-index: 1;"></div>
+
+          <div style="font-size: 0.75rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+            <i class="fas fa-shield-alt" style="color: #006818;"></i>
+            <span>Neighborhood radius shown. Exact unit gate pin and on-site caretaker contacts are unlocked upon booking.</span>
+          </div>
+
+          <!-- GPS Protection Card (Subtle notice) -->
+          <div id="detail-gps-locked-card" style="display: none;"></div>
         </div>
 
         <!-- Landlord / Agency Contacts Box -->
@@ -1929,6 +2024,22 @@
 
         <!-- Dynamic Verified Services Section -->
         <div id="detail-services-container" style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 18px;"></div>
+
+        <!-- Other Related Houses & Similar Rentals Section (Desktop/Modal View) -->
+        <div id="detail-related-houses-section" style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 18px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <div>
+              <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 7px;">
+                <i class="fas fa-home" style="color: #006818;"></i> Other Related Houses
+              </h4>
+              <div style="font-size: 0.78rem; color: #64748b; margin-top: 2px;" id="detail-related-sub">Similar verified rentals in this estate</div>
+            </div>
+            <button type="button" onclick="app.closeModal('modal-property-detail')" style="font-size: 0.75rem; font-weight: 700; color: #006818; background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 4px 10px; cursor: pointer;">
+              Browse All
+            </button>
+          </div>
+          <div id="detail-related-houses-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;"></div>
+        </div>
 
       </div>
 
@@ -2065,7 +2176,7 @@
           <div>
             <h3 style="font-size: 0.98rem; font-weight: 800; color: white; margin: 0; line-height: 1.2;" id="chat-landlord-title">Landlord</h3>
             <div style="font-size: 0.74rem; color: #94a3b8; display: flex; align-items: center; gap: 5px;" id="chat-property-subtitle">
-              <span>Kilimani</span> • <span style="color: #4ade80;">Replies via KejaMarket</span>
+              <span>Kilimani</span> Ã¢â‚¬Â¢ <span style="color: #4ade80;">Replies via KejaMarket</span>
             </div>
           </div>
         </div>
@@ -2092,7 +2203,7 @@
           </div>
           <div style="min-width: 0;">
             <div style="font-weight: 800; font-size: 0.82rem; color: #166534; line-height: 1.2;">Schedule In-Person Viewing</div>
-            <div style="font-size: 0.72rem; color: #15803d; line-height: 1.25; margin-top: 2px;">Caretaker confirms in 60s · KSh 200 fee unlocks GPS & contact</div>
+            <div style="font-size: 0.72rem; color: #15803d; line-height: 1.25; margin-top: 2px;">Caretaker confirms in 60s Ã‚Â· KSh 200 fee unlocks GPS & contact</div>
           </div>
         </div>
         <button type="button" onclick="app.triggerViewingFromChat()" style="background: #00b53f; color: white; border: none; padding: 7px 12px; border-radius: 7px; font-weight: 800; font-size: 0.76rem; cursor: pointer; white-space: nowrap; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,181,63,0.25);">
@@ -2240,7 +2351,7 @@
   <div class="modal-backdrop" id="modal-mpesa-checkout" style="z-index: 2600;">
     <div class="modal-dialog" style="max-width: 460px;">
       <div class="modal-header" style="background: linear-gradient(135deg, #059669, #00b53f);">
-        <h3 style="color: white; font-size: 1.15rem; font-weight: 800;"><i class="fas fa-university"></i> Lipa Na M-Pesa â€” Paybill</h3>
+        <h3 style="color: white; font-size: 1.15rem; font-weight: 800;"><i class="fas fa-university"></i> Lipa Na M-Pesa ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Paybill</h3>
         <button class="modal-close-btn" onclick="app.closeModal('modal-mpesa-checkout')" style="color: white;">&times;</button>
       </div>
       <div class="modal-body" style="padding: 20px 24px;">
@@ -2333,7 +2444,7 @@
   </div>
 
   <!-- ====================================================================
-       MODAL 8b: WhatsApp Alerts Activated â€” Success Screen
+       MODAL 8b: WhatsApp Alerts Activated ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Success Screen
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-whatsapp-success" style="z-index: 2700;">
     <div class="modal-dialog" style="max-width: 460px;">
@@ -2363,19 +2474,19 @@
           <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #bbf7d0;">
               <span style="color: #6b7280;"><i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Number</span>
-              <strong style="color: #0f172a;" id="wa-success-phone">â€”</strong>
+              <strong style="color: #0f172a;" id="wa-success-phone">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</strong>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #bbf7d0;">
               <span style="color: #6b7280;"><i class="fas fa-home" style="color: #25d366;"></i> House Category</span>
-              <strong style="color: #0f172a;" id="wa-success-category">â€”</strong>
+              <strong style="color: #0f172a;" id="wa-success-category">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</strong>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #bbf7d0;">
               <span style="color: #6b7280;"><i class="fas fa-map-marker-alt" style="color: #25d366;"></i> Preferred Estate</span>
-              <strong style="color: #0f172a;" id="wa-success-estate">â€”</strong>
+              <strong style="color: #0f172a;" id="wa-success-estate">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</strong>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: white; border-radius: 8px; border: 1px solid #bbf7d0;">
               <span style="color: #6b7280;"><i class="fas fa-wallet" style="color: #25d366;"></i> Budget Range</span>
-              <strong style="color: #0f172a;" id="wa-success-budget">â€”</strong>
+              <strong style="color: #0f172a;" id="wa-success-budget">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</strong>
             </div>
           </div>
         </div>
@@ -2383,7 +2494,7 @@
         <!-- Receipt -->
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 20px; font-size: 0.82rem; color: #475569;">
           <i class="fas fa-receipt" style="color: #00b53f;"></i>
-          M-Pesa Receipt: <strong style="font-family: monospace; font-size: 0.9rem; color: #166534;" id="wa-success-receipt">â€”</strong>
+          M-Pesa Receipt: <strong style="font-family: monospace; font-size: 0.9rem; color: #166534;" id="wa-success-receipt">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</strong>
            
         </div>
 
@@ -2394,8 +2505,8 @@
           </div>
           <div style="background: #dcf8c6; border-radius: 10px 10px 10px 0; padding: 10px 14px; font-size: 0.82rem; line-height: 1.6; color: #0f172a; max-width: 85%; box-shadow: 0 1px 2px rgba(0,0,0,0.15);">
             <strong>New Match Found!</strong><br>
-            <span style="color: #075e54; font-weight: 700;">2 Bedroom Â· Kilimani</span><br>
-            KSh 28,000/mo Â· Available Now<br>
+            <span style="color: #075e54; font-weight: 700;">2 Bedroom Ãƒâ€šÃ‚Â· Kilimani</span><br>
+            KSh 28,000/mo Ãƒâ€šÃ‚Â· Available Now<br>
             Kirichwa Rd, Kilimani<br>
             <a href="#" style="color: #0b5cad; font-weight: 700; text-decoration: none;">View &amp; Contact Landlord &rarr;</a>
             <div style="font-size: 0.68rem; color: #8696a0; text-align: right; margin-top: 4px;">KejaMarket.co.ke</div>
@@ -2436,7 +2547,7 @@
           Receive new verified rental listings directly to your WhatsApp as soon as they're posted. Never miss a good house again!
         </p>
         <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 0.85rem; color: #166534;">
-          <strong>Instant Alerts</strong> â€” Unlimited alerts for your preferred estate and budget range.
+          <strong>Instant Alerts</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Unlimited alerts for your preferred estate and budget range.
         </div>
 
         <form id="form-whatsapp-alert-sub">
@@ -2449,6 +2560,7 @@
             <select id="alert-tenant-category" class="form-control" required>
               <option value="Any Category">All Categories</option>
               <option value="Single Room">Single Room</option>
+              <option value="Double Room">Double Room</option>
               <option value="Bedsitter">Bedsitter</option>
               <option value="1 Bedroom">1 Bedroom</option>
               <option value="2 Bedroom">2 Bedroom</option>
@@ -2493,7 +2605,7 @@
                   step="500"
                   style="flex:1; min-width: 0;"
                 >
-                <span style="font-weight:700; color:#6b7280; white-space:nowrap;">â€“</span>
+                <span style="font-weight:700; color:#6b7280; white-space:nowrap;">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“</span>
                 <input
                   type="number"
                   id="alert-tenant-budget-max"
@@ -2761,7 +2873,7 @@
 
 
 
-        <!-- ── RIGHT FORM BODY ─────────────────────────────────────────── -->
+        <!-- Ã¢â€â‚¬Ã¢â€â‚¬ RIGHT FORM BODY Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ -->
         <div class="auth-modal-body">
 
           <!-- Close button -->
@@ -2782,7 +2894,7 @@
             </button>
           </div>
 
-          <!-- ══ SIGN IN PANEL ═══════════════════════════════════════════ -->
+          <!-- Ã¢â€¢ÂÃ¢â€¢Â SIGN IN PANEL Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
           <div id="signin-form" class="auth-panel active">
 
 
@@ -2831,7 +2943,7 @@
             </form>
           </div>
 
-          <!-- ══ SIGN UP PANEL ═══════════════════════════════════════════ -->
+          <!-- Ã¢â€¢ÂÃ¢â€¢Â SIGN UP PANEL Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
           <div id="signup-form" class="auth-panel">
 
 
@@ -2944,7 +3056,7 @@
                 <div class="form-group">
                   <label for="signup-phone">Phone Number</label>
                   <div class="input-group phone-input-group">
-                    <span class="phone-prefix-badge">🇰🇪 +254</span>
+                    <span class="phone-prefix-badge">Ã°Å¸â€¡Â°Ã°Å¸â€¡Âª +254</span>
                     <input type="tel" id="signup-phone" placeholder="712 345 678" autocomplete="tel" required>
                   </div>
                 </div>
@@ -3011,7 +3123,7 @@
             </form>
           </div>
 
-          <!-- ══ FORGOT PASSWORD PANEL ════════════════════════════════════ -->
+          <!-- Ã¢â€¢ÂÃ¢â€¢Â FORGOT PASSWORD PANEL Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
           <div id="forgot-form" class="auth-panel">
             <div class="forgot-header">
               <button type="button" class="back-to-signin-btn" onclick="authModal.switchTab('signin')">
@@ -3734,7 +3846,7 @@
   <link rel='stylesheet' href='css/modal-auth-fixed.css?v=4.0&t=202610180635'>
 
   <!-- ====================================================================
-       MODAL: Fullscreen Image Lightbox (Jiji Style)
+       MODAL: Fullscreen Image Lightbox
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-lightbox" style="background: rgba(0, 0, 0, 0.95); z-index: 3000;">
     <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
@@ -3771,7 +3883,7 @@
       <!-- Dashboard Header -->
       <div class="modal-header ud-header" id="user-dashboard-header" style="background: linear-gradient(135deg, #16a34a, #15803d);">
         <div class="ud-header-brand">
-          <img src="/icons/favicon-32x32.png" alt="KejaMarket" class="ud-header-logo">
+          <img src="/favicon-32x32.png" alt="KejaMarket" class="ud-header-logo">
           <div>
             <div class="ud-header-title">My Dashboard</div>
             <div class="ud-header-sub">KejaMarket Account</div>
@@ -3790,7 +3902,7 @@
 
   <!-- User Dashboard Styles -->
   <style>
-    /* â”€â”€ Dialog shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Dialog shell ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-dialog {
       max-width: 820px;
       width: 95%;
@@ -3803,7 +3915,7 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
 
-    /* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Header ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-header {
       padding: 14px 20px;
       display: flex;
@@ -3833,7 +3945,7 @@
       color: rgba(255,255,255,0.8);
     }
 
-    /* â”€â”€ Nav Tabs Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Nav Tabs Bar ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-nav-tabs-bar {
       display: flex;
       align-items: center;
@@ -3872,7 +3984,7 @@
       border-color: #c7d2fe;
     }
 
-    /* â”€â”€ Body & Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Body & Content ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-body {
       flex: 1;
       overflow-y: auto;
@@ -3922,7 +4034,7 @@
       background: #15803d;
     }
 
-    /* â”€â”€ Filter Pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Filter Pills ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-filter-pills {
       display: flex;
       gap: 6px;
@@ -3947,7 +4059,7 @@
       border-color: #4f46e5;
     }
 
-    /* â”€â”€ Identity row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Identity row ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-identity {
       display: flex;
       align-items: center;
@@ -4021,7 +4133,7 @@
       text-overflow: ellipsis;
     }
 
-    /* â”€â”€ Stats grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Stats grid ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr));
@@ -4063,7 +4175,7 @@
       font-weight: 600;
     }
 
-    /* â”€â”€ Grids & Cards for Items/Properties/Services â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Grids & Cards for Items/Properties/Services ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-items-grid, .ud-properties-grid, .ud-services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
@@ -4171,7 +4283,7 @@
       border-color: #ef4444;
     }
 
-    /* â”€â”€ Team Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Team Grid ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-team-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
@@ -4190,7 +4302,7 @@
     .ud-team-role { font-size: 0.75rem; color: #7c3aed; font-weight: 700; }
     .ud-team-contact { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
 
-    /* â”€â”€ Cards & Forms (Alerts, Settings) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Cards & Forms (Alerts, Settings) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-alerts-card, .ud-settings-card {
       background: white;
       border-radius: 12px;
@@ -4240,7 +4352,7 @@
       font-size: 1rem;
     }
 
-    /* â”€â”€ Section titles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Section titles ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-section-title {
       font-size: 0.78rem;
       font-weight: 700;
@@ -4250,7 +4362,7 @@
       margin-bottom: 8px;
     }
 
-    /* â”€â”€ Quick actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Quick actions ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-actions-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
@@ -4290,7 +4402,7 @@
       font-size: 0.75rem;
     }
 
-    /* â”€â”€ Conversations list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Conversations list ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     .ud-conversations-list {
       display: flex;
       flex-direction: column;
@@ -4313,7 +4425,7 @@
     .ud-conv-time { font-size: 0.72rem; color: #94a3b8; }
     .ud-conv-preview { font-size: 0.78rem; color: #64748b; margin: 2px 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* â”€â”€ Mobile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Mobile ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
     @media (max-width: 600px) {
       .ud-dialog { max-width: 100%; width: 100%; border-radius: 16px 16px 0 0; margin-top: auto; max-height: 94vh; }
       .ud-form-row { grid-template-columns: 1fr; }
@@ -4334,7 +4446,7 @@
           <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;"><i class="fas fa-home" style="color:white;"></i></div>
           <div>
             <h3 style="margin: 0; color: #ffffff; font-size: 1.2rem; font-weight: 800;">My Properties</h3>
-            <div style="font-size: 0.8rem; color: #e9d5ff;">Manage Your Listings Â· Browse Properties Â· Messages</div>
+            <div style="font-size: 0.8rem; color: #e9d5ff;">Manage Your Listings Ãƒâ€šÃ‚Â· Browse Properties Ãƒâ€šÃ‚Â· Messages</div>
           </div>
         </div>
         <button class="modal-close-btn" onclick="app.closeModal('modal-landlord-portal')" style="color: white; font-size: 1.8rem;">&times;</button>
@@ -4388,7 +4500,7 @@
           <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;"><i class="fas fa-home" style="color:white;"></i></div>
           <div>
             <h3 style="margin: 0; color: #ffffff; font-size: 1.2rem; font-weight: 800;">Service Provider Portal</h3>
-            <div style="font-size: 0.8rem; color: #cffafe;">Manage Your Services Â· Browse Opportunities Â· Messages</div>
+            <div style="font-size: 0.8rem; color: #cffafe;">Manage Your Services Ãƒâ€šÃ‚Â· Browse Opportunities Ãƒâ€šÃ‚Â· Messages</div>
           </div>
         </div>
         <button class="modal-close-btn" onclick="app.closeModal('modal-service-portal')" style="color: white; font-size: 1.8rem;">&times;</button>
@@ -4451,17 +4563,17 @@
   <script src="js/offline-manager.js?v=32.0" defer></script>
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
-  <script src="js/app.js?v=19.0&t=202610180330" defer></script>
+  <script src="js/components/location-picker.js?v=82.0&t=all-kenya-locations" defer></script>
+  <script src="js/app.js?v=90.0&t=20261110" defer></script>
   <script src="js/viewing-booking.js?v=1.0&t=20261018" defer></script>
   
-  <!-- KejaMarket PWA & Mobile Journey Controller (16 Screens) -->
-  <script src="js/mobile-layout.js?v=27.0&t=202610182045" defer></script>
+  <!-- KejaMarket PWA & Mobile Journey Controller -->
+  <script src="js/mobile-layout.js?v=90.0&t=20261110" defer></script>
   
   <!-- Secondary Features: Deferred loading -->
   <script src="js/reviews.js?v=4.0&t=202609170130" defer></script>
   <script src="js/comments.js?v=4.0&t=202609170130" defer></script>
   <script src="js/watermark.js?v=1.0&t=202609172330" defer></script>
-  <script src="js/recently-added.js?v=4.1&t=202610180330" defer></script>
   <script src="js/verification.js?v=4.0&t=202609170130" defer></script>
   
   <!-- Portal Features: Load on demand -->
@@ -4481,6 +4593,25 @@
   <script src="js/instagram-integration.js?v=6.0&t=202609171355" defer></script>
   <script src="js/admin.js?v=4.0&t=202609170130" defer></script>
   
+  <!-- GLOBAL SERVICES SHORTCUTS -->
+  <script>
+    window.openWhatsAppAlertsWithAuth = function() {
+      if (window.MobileApp && typeof window.MobileApp.openWhatsAppAlerts === 'function' && document.body.classList.contains('mobile-layout')) {
+        window.MobileApp.openWhatsAppAlerts();
+        return;
+      }
+      if (window.app && typeof window.app.openModal === 'function') {
+        window.app.openModal('modal-whatsapp-alerts');
+        return;
+      }
+      const modal = document.getElementById('modal-whatsapp-alerts');
+      if (modal) {
+        modal.classList.add('open');
+        modal.style.setProperty('display', 'flex', 'important');
+      }
+    };
+  </script>
+
   <!-- MOBILE LAYOUT ENFORCEMENT - Must run after app.js -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -4580,9 +4711,9 @@
              window.navigator.standalone === true;
     }
 
-    // Show PWA install button â€” disabled, browser handles install natively
+    // Show PWA install button ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â disabled, browser handles install natively
     function showPWAButton() {
-      // Button permanently hidden â€” browser's own install prompt handles this
+      // Button permanently hidden ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â browser's own install prompt handles this
     }
 
     // Hide PWA install button
@@ -4646,7 +4777,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=31.0');
+      navigator.serviceWorker.register('/sw.js?v=82.0&t=all-kenya-locations');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->
@@ -4811,10 +4942,10 @@
             </div>
           </div>
           <div class="afford-result-amount-v2" id="afford-range-display-v2">
-            *KSh 15,000 â€“ 18,000
+            *KSh 15,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 18,000
           </div>
           <div class="afford-result-note-v2" id="afford-result-note-v2">
-            Calculated within 25%â€“30% of take-home pay, with room for savings and unexpected emergencies.
+            Calculated within 25%ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“30% of take-home pay, with room for savings and unexpected emergencies.
           </div>
         </div>
 
@@ -4915,10 +5046,10 @@
               Loading property...
             </div>
             <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;" id="similar-preview-sub">
-              Area Â· Category
+              Area Ãƒâ€šÃ‚Â· Category
             </div>
             <div style="font-weight: 800; font-size: 0.95rem; color: #059669; margin-top: 4px;" id="similar-preview-price">
-              KSh â€” / mo
+              KSh ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â / mo
             </div>
           </div>
         </div>
@@ -4987,7 +5118,7 @@
           </div>
           <div>
             <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">Book a Property Viewing</h3>
-            <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #a7f3d0;">60-Second Availability Confirmation • KSh 200 Commitment Fee</p>
+            <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #a7f3d0;">60-Second Availability Confirmation Ã¢â‚¬Â¢ KSh 200 Commitment Fee</p>
           </div>
         </div>
         <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-viewing-booking')" style="color: white; font-size: 1.8rem; background: none; border: none; cursor: pointer; line-height: 1;">&times;</button>
@@ -5011,7 +5142,7 @@
           </div>
           <div>
             <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #ffffff;">Hire a House Hunter</h3>
-            <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #a7f3d0;">3-Day Dedicated Concierge Property Search Â· KSh 2,000</p>
+            <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #a7f3d0;">3-Day Dedicated Concierge Property Search Ãƒâ€šÃ‚Â· KSh 2,000</p>
           </div>
         </div>
         <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-house-hunt')" style="color: white; font-size: 1.8rem;">&times;</button>
@@ -5059,8 +5190,10 @@
             <div>
               <label for="hunt-property-type" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Property Type</label>
               <select id="hunt-property-type" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; font-weight: 600; outline: none;">
-                <option value="Apartment / Flat">Apartment / Flat</option>
+                <option value="Single Room">Single Room</option>
+                <option value="Double Room">Double Room</option>
                 <option value="Bedsitter / Studio">Bedsitter / Studio</option>
+                <option value="Apartment / Flat" selected>Apartment / Flat</option>
                 <option value="Maisonette / Townhouse">Maisonette / Townhouse</option>
                 <option value="Bungalow">Bungalow</option>
                 <option value="Hostel / Student Room">Hostel / Student Room</option>
@@ -5070,6 +5203,7 @@
             <div>
               <label for="hunt-bedrooms" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Bedrooms</label>
               <select id="hunt-bedrooms" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; font-weight: 600; outline: none;">
+                <option value="single">Single Room / Double Room</option>
                 <option value="0">Studio / Bedsitter</option>
                 <option value="1">1 Bedroom</option>
                 <option value="2" selected>2 Bedroom</option>
@@ -5160,7 +5294,7 @@
           </div>
           <div>
             <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">House Hunt Live Tracker</h3>
-            <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #94a3b8;" id="tracker-hunt-id">Hunt ID: â€”</p>
+            <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #94a3b8;" id="tracker-hunt-id">Hunt ID: ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</p>
           </div>
         </div>
         <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-hunt-tracker')" style="color: white; font-size: 1.8rem;">&times;</button>
@@ -5422,14 +5556,17 @@
         <div class="mob-filter-group">
           <label class="mob-fg-label"><i class="fas fa-home"></i> Property Type</label>
           <div class="mob-types-checkbox-grid">
-            <label class="mob-type-chk"><input type="checkbox" value="House" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-home"></i> House</span></label>
-            <label class="mob-type-chk"><input type="checkbox" value="Apartment" checked onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-building"></i> Apartment</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Single Room" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-door-closed"></i> Single Room</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Double Room" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-person-booth"></i> Double Room</span></label>
             <label class="mob-type-chk"><input type="checkbox" value="Bedsitter" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-bed"></i> Bedsitter</span></label>
-            <label class="mob-type-chk"><input type="checkbox" value="Single Room" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-door-open"></i> Single Room</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="1 Bedroom" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-door-open"></i> 1 Bedroom</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="2 Bedrooms" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-home"></i> 2 Bedrooms</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="3 Bedrooms" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-building"></i> 3+ Bedrooms</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="Apartment" checked onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-city"></i> Apartment</span></label>
             <label class="mob-type-chk"><input type="checkbox" value="Studio" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-couch"></i> Studio</span></label>
+            <label class="mob-type-chk"><input type="checkbox" value="House" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-landmark"></i> Maisonette</span></label>
             <label class="mob-type-chk"><input type="checkbox" value="Land" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-map"></i> Land</span></label>
             <label class="mob-type-chk"><input type="checkbox" value="Commercial" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-store"></i> Commercial</span></label>
-            <label class="mob-type-chk"><input type="checkbox" value="Office" onchange="app.onMobileTypeChange(this)"><span><i class="fas fa-briefcase"></i> Office</span></label>
           </div>
         </div>
 
@@ -5600,5 +5737,6 @@
   </div>
 </body>
 </html>>
+
 
 

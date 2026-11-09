@@ -28,17 +28,17 @@ class MapController {
       worldCopyJump: false       // Disable world wrap for better performance
     }).setView(this.nairobiCenter, this.defaultZoom);
 
-    // Use OpenStreetMap tiles with proper attribution and rate limiting
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Use high-performance CartoDB Voyager tiles (crisp real estate maps, no 403 blocks)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      minZoom: 8,  // Minimum zoom to reduce server load
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
-      subdomains: ['a', 'b', 'c'],
+      minZoom: 8,
+      attribution: '© <a href="https://carto.com/">CARTO</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
+      subdomains: ['a', 'b', 'c', 'd'],
       tileSize: 256,
       zoomOffset: 0,
-      detectRetina: true,        // Use retina tiles on high-DPI displays
-      updateWhenZooming: false,  // Reduce tile requests during zoom
-      keepBuffer: 2              // Keep tiles in memory for smoother panning
+      detectRetina: true,
+      updateWhenZooming: false,
+      keepBuffer: 2
     }).addTo(this.fullMap);
 
     this.fullMarkersGroup = L.layerGroup().addTo(this.fullMap);
@@ -54,17 +54,17 @@ class MapController {
       worldCopyJump: false       // Disable world wrap for better performance
     }).setView(this.nairobiCenter, this.defaultZoom);
 
-    // Use OpenStreetMap tiles with proper attribution and rate limiting
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Use high-performance CartoDB Voyager tiles (crisp real estate maps, no 403 blocks)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      minZoom: 8,  // Minimum zoom to reduce server load
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
-      subdomains: ['a', 'b', 'c'],
+      minZoom: 8,
+      attribution: '© <a href="https://carto.com/">CARTO</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
+      subdomains: ['a', 'b', 'c', 'd'],
       tileSize: 256,
       zoomOffset: 0,
-      detectRetina: true,        // Use retina tiles on high-DPI displays
-      updateWhenZooming: false,  // Reduce tile requests during zoom
-      keepBuffer: 2              // Keep tiles in memory for smoother panning
+      detectRetina: true,
+      updateWhenZooming: false,
+      keepBuffer: 2
     }).addTo(this.splitMap);
 
     this.splitMarkersGroup = L.layerGroup().addTo(this.splitMap);

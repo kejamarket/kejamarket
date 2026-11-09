@@ -9,16 +9,13 @@
 -- 1. PROMOTIONS TABLE - RLS POLICIES
 -- ─────────────────────────────────────────────────────────────────────────────────
 
--- Enable RLS
 ALTER TABLE public.promotions ENABLE ROW LEVEL SECURITY;
 
--- Drop existing policies if any
 DROP POLICY IF EXISTS "Allow anonymous read" ON public.promotions;
 DROP POLICY IF EXISTS "Allow authenticated read" ON public.promotions;
 DROP POLICY IF EXISTS "Allow owner/admin write" ON public.promotions;
 DROP POLICY IF EXISTS "Allow admin delete" ON public.promotions;
 
--- READ: Everyone can read active promotions
 CREATE POLICY "Allow public read promotions"
 ON public.promotions FOR SELECT
 USING (status = 'active' OR auth.uid() IS NOT NULL);

@@ -250,7 +250,7 @@ html, body {
 .results-number {
   font-size: 1.5rem !important;
   font-weight: 800 !important;
-  color: #00b53f !important;
+  color: #1db010 !important;
 }
 
 .results-text {
@@ -291,7 +291,7 @@ html, body {
 }
 
 .view-toggle.active {
-  background: #00b53f !important;
+  background: #1db010 !important;
   color: white !important;
 }
 
@@ -321,7 +321,7 @@ html, body {
 .property-price {
   font-size: 1.1rem !important;
   font-weight: 700 !important;
-  color: #00b53f !important;
+  color: #1db010 !important;
   margin-bottom: 12px !important;
 }
 
@@ -342,7 +342,7 @@ html, body {
 .badge-bnb { background: #a855f7 !important; color: white !important; }
 .badge-single { background: #3b82f6 !important; color: white !important; }
 .badge-double { background: #f97316 !important; color: white !important; }
-.badge-bedsitter { background: #00b53f !important; color: white !important; }
+.badge-bedsitter { background: #1db010 !important; color: white !important; }
 .badge-1bed { background: #10b981 !important; color: white !important; }
 .badge-2bed { background: #ef4444 !important; color: white !important; }
 .badge-3bed { background: #8b5cf6 !important; color: white !important; }
@@ -372,7 +372,7 @@ html, body {
 
 .book-now-btn {
   width: 100% !important;
-  background: #00b53f !important;
+  background: #1db010 !important;
   color: white !important;
   border: none !important;
   padding: 8px !important;

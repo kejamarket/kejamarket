@@ -1,23 +1,34 @@
 /* ==========================================================================
-   Nairobi Rentals Live (Jiji Kenya Style Real Estate Platform)
+   KejaMarket Kenya Real Estate Platform
    Main Application Stylesheet
    ========================================================================== */
 
 :root {
+  /* ── KejaMarket Brand Colors (Logo-Exact, extracted from android-chrome-192x192.png) ── */
+  --km-green-dark:    #006818;   /* Outer ring & K letter — dominant logo green */
+  --km-green-bright:  #1db010;   /* Highlights, icons, gradient end */
+  --km-green-deep:    #005a14;   /* Hover & pressed states */
+  --km-green-mid:     #007a1a;   /* Mid-tone, borders */
+  --km-red:           #e81010;   /* Location pin, call buttons */
+  --km-tint:          #f0fff0;   /* Soft green tint background */
+  --km-tint-mid:      #e0f0e0;   /* Chip backgrounds */
+  --km-shadow:        rgba(0, 104, 24, 0.18);
+  --km-shadow-strong: rgba(0, 104, 24, 0.32);
+
   /* ── Brand Colors ─────────────────────────────────────── */
-  --primary-color: #00b53f;          /* KejaMarket Green */
-  --primary-hover: #009634;
-  --primary-light: #e8f8ee;
-  --primary-dark: #007728;
-  --secondary-color: #e62e2d;        /* KejaMarket Red - Sell Item */
+  --primary-color: #006818;          /* KejaMarket Dark Green (logo primary) */
+  --primary-hover: #005a14;
+  --primary-light: #f0fff0;
+  --primary-dark: #005a14;
+  --secondary-color: #e81010;        /* KejaMarket Red - location pin & CTA */
   --secondary-light: #fee2e2;
-  --accent-green: #00b53f;           /* Green - verified badges */
-  --accent-green-light: #dcfce7;
-  --search-blue: #00b53f;            /* Green - search button */
-  --search-blue-hover: #009634;
-  --sms-banner-bg: #007a38;          /* Green - SMS alert banner */
-  --btn-sell-red: #e62e2d;           /* Red - Sell Item button */
-  --btn-sell-hover: #cc2524;
+  --accent-green: #1db010;           /* Green - verified badges, icons */
+  --accent-green-light: #e0f0e0;
+  --search-blue: #006818;            /* Green - search button */
+  --search-blue-hover: #005a14;
+  --sms-banner-bg: #006818;          /* Green - SMS alert banner */
+  --btn-sell-red: #e81010;           /* Red - Sell Item button */
+  --btn-sell-hover: #c50d0d;
   
   /* ── Text Colors ──────────────────────────────────────── */
   --text-primary: #0F172A;           /* Dark navy - main text */
@@ -123,7 +134,7 @@ button, input, select, textarea {
   border-color: var(--primary-color);
 }
 
-/* Header (Jiji Kenya Style) */
+/* Header */
 .site-header {
   background: #ffffff;
   border-bottom: 1px solid var(--border-color);
@@ -445,7 +456,7 @@ button, input, select, textarea {
   width: 44px !important;
   height: 44px !important;
   border-radius: 50% !important;
-  background: linear-gradient(135deg, #064e22, #00b53f) !important;
+  background: linear-gradient(135deg, #064e22, #1db010) !important;
   color: white !important;
   display: flex !important;
   align-items: center !important;
@@ -469,7 +480,7 @@ button, input, select, textarea {
 .profile-role {
   font-size: 0.72rem !important;
   font-weight: 600 !important;
-  color: #00b53f !important;
+  color: #1db010 !important;
   text-transform: capitalize !important;
   background: #f0fdf4 !important;
   padding: 2px 8px !important;
@@ -1130,7 +1141,7 @@ button, input, select, textarea {
 }
 
 .badge-verified-landlord {
-  background: #16a34a;
+  background: #006818;
   color: #fff;
   font-size: 0.68rem;
   font-weight: 700;
@@ -1190,7 +1201,7 @@ button, input, select, textarea {
 .card-price {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #008744;
+  color: #006818;
 }
 
 .card-price span.period {
@@ -1230,7 +1241,7 @@ button, input, select, textarea {
 }
 
 .card-location-row i {
-  color: #00b53f;
+  color: #1db010;
   flex-shrink: 0;
 }
 
@@ -1270,7 +1281,7 @@ button, input, select, textarea {
 
 .btn-card-details,
 .btn-card-details-green {
-  background: #00b53f;
+  background: #1db010;
   border: none;
   color: white;
   padding: 8px 8px;
@@ -1355,7 +1366,7 @@ button, input, select, textarea {
 }
 
 .card-badge-status.verified {
-  background: #00b53f;
+  background: #1db010;
   color: white;
 }
 
@@ -1694,7 +1705,7 @@ button, input, select, textarea {
   margin-bottom: 22px;
 }
 
-/* Detail Modal Jiji-Style Gallery Specifics */
+/* Detail Modal Gallery Specifics */
 .detail-gallery-main {
   height: 200px;
   border-radius: var(--radius-md);
@@ -1941,7 +1952,7 @@ button, input, select, textarea {
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* Mobile Bottom Navigation Bar (Jiji style) */
+/* Mobile Bottom Navigation Bar */
 .mobile-bottom-nav {
   display: none;
   position: fixed;
@@ -1980,7 +1991,7 @@ button, input, select, textarea {
 
 .mobile-nav-item.active,
 .mobile-nav-item:hover {
-  color: #00b53f;
+  color: #1db010;
 }
 
 .mobile-nav-post {
@@ -1992,7 +2003,7 @@ button, input, select, textarea {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #00b53f, #008f32);
+  background: linear-gradient(135deg, #1db010, #008f32);
   color: white;
   display: flex;
   align-items: center;
@@ -2623,13 +2634,13 @@ button, input, select, textarea {
 }
 
 .secondary-nav-item:hover {
-  color: #16a34a;
-  border-bottom-color: #16a34a;
+  color: #006818;
+  border-bottom-color: #006818;
 }
 
 .secondary-nav-item--active {
-  color: #16a34a;
-  border-bottom-color: #16a34a;
+  color: #006818;
+  border-bottom-color: #006818;
   font-weight: 700;
 }
 
@@ -2669,13 +2680,13 @@ button, input, select, textarea {
    ================================================================ */
 .header-search-bar {
   border-radius: 8px;
-  border: 1.5px solid #00b53f;
+  border: 1.5px solid #1db010;
   background: #ffffff;
   overflow: hidden;
 }
 
 .search-submit-btn {
-  background: #00b53f !important;
+  background: #1db010 !important;
   color: white !important;
   border: none;
   padding: 0 18px;
@@ -2727,11 +2738,11 @@ button, input, select, textarea {
 }
 
 .filter-header-title i {
-  color: #00b53f;
+  color: #1db010;
 }
 
 .filter-clear-link {
-  color: #00b53f;
+  color: #1db010;
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
@@ -2772,7 +2783,7 @@ button, input, select, textarea {
 }
 
 .filter-accordion-header .acc-title i {
-  color: #00b53f;
+  color: #1db010;
   font-size: 0.9rem;
   width: 16px;
   text-align: center;
@@ -2822,7 +2833,7 @@ button, input, select, textarea {
 }
 
 .suburb-search-input:focus {
-  border-color: #00b53f;
+  border-color: #1db010;
   background: white;
 }
 
@@ -2849,7 +2860,7 @@ button, input, select, textarea {
 .filter-check-item input[type="checkbox"] {
   width: 14px;
   height: 14px;
-  accent-color: #00b53f;
+  accent-color: #1db010;
   margin-right: 7px;
   cursor: pointer;
   flex-shrink: 0;
@@ -2870,7 +2881,7 @@ button, input, select, textarea {
 .btn-show-more-suburbs {
   background: none;
   border: none;
-  color: #00b53f;
+  color: #1db010;
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
@@ -2902,7 +2913,7 @@ button, input, select, textarea {
 }
 
 .price-box-input:focus {
-  border-color: #00b53f;
+  border-color: #1db010;
 }
 
 .amenities-grid-2col {
@@ -2913,7 +2924,7 @@ button, input, select, textarea {
 
 .btn-apply-filters-main {
   width: 100%;
-  background: #00b53f;
+  background: #1db010;
   color: white;
   border: none;
   padding: 10px 16px;
@@ -3140,7 +3151,7 @@ button, input, select, textarea {
 }
 
 .footer-social-icons a:hover {
-  background: #00b53f;
+  background: #1db010;
 }
 
 .footer-app-badges {
@@ -3216,8 +3227,8 @@ button, input, select, textarea {
 }
 
 .header-search-bar:focus-within {
-  border-color: #008744 !important;
-  box-shadow: 0 0 0 3px rgba(0, 135, 68, 0.10) !important;
+  border-color: #006818 !important;
+  box-shadow: 0 0 0 3px rgba(0, 104, 24, 0.10) !important;
   background: #fff !important;
 }
 
@@ -3233,7 +3244,7 @@ button, input, select, textarea {
 }
 
 .search-submit-btn {
-  background: #008744 !important;
+  background: #006818 !important;
   color: #ffffff !important;
   border: none !important;
   height: 100% !important;
@@ -3298,7 +3309,7 @@ button, input, select, textarea {
 }
 
 .btn-post-ad {
-  background: #008744 !important;
+  background: #006818 !important;
   color: #fff !important;
   border: none !important;
   border-radius: 7px !important;
@@ -3355,18 +3366,18 @@ button, input, select, textarea {
 }
 
 .secondary-nav-item:hover {
-  color: #008744 !important;
+  color: #006818 !important;
   background: #f0fdf4 !important;
 }
 
 .secondary-nav-item--active {
   background: #dcfce7 !important;
-  color: #008744 !important;
+  color: #006818 !important;
   font-weight: 700 !important;
 }
 
 .secondary-nav-item--active i {
-  color: #008744 !important;
+  color: #006818 !important;
 }
 
 /* ── 3. MAIN APP LAYOUT ─────────────────────────────────────────────────── */
@@ -3420,11 +3431,11 @@ button, input, select, textarea {
 }
 
 .filter-header-title i {
-  color: #008744 !important;
+  color: #006818 !important;
 }
 
 .filter-clear-link {
-  color: #008744 !important;
+  color: #006818 !important;
   font-size: 0.75rem !important;
   font-weight: 600 !important;
   background: none !important;
@@ -3450,7 +3461,7 @@ button, input, select, textarea {
 }
 
 .filter-accordion-header .acc-title i {
-  color: #008744 !important;
+  color: #006818 !important;
   margin-right: 5px !important;
 }
 
@@ -3515,7 +3526,7 @@ button, input, select, textarea {
 }
 
 .filter-check-item input[type="checkbox"] {
-  accent-color: #008744 !important;
+  accent-color: #006818 !important;
   margin-right: 6px !important;
   width: 13px !important;
   height: 13px !important;
@@ -3566,7 +3577,7 @@ button, input, select, textarea {
 
 .btn-apply-filters-main {
   width: 100% !important;
-  background: #008744 !important;
+  background: #006818 !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 7px !important;
@@ -3596,7 +3607,7 @@ button, input, select, textarea {
 
 /* ── 6. SMS ALERT BANNER (target: ~110px) ───────────────────────────────── */
 .green-sms-alert-banner {
-  background: linear-gradient(90deg, #0b6623 0%, #15803d 55%, #064e22 100%) !important;
+  background: linear-gradient(90deg, #0b6623 0%, #005a14 55%, #064e22 100%) !important;
   border-radius: 10px !important;
   height: 120px !important;
   min-height: unset !important;
@@ -3711,7 +3722,7 @@ button, input, select, textarea {
 }
 
 .listings-count-summary .highlight {
-  color: #008744 !important;
+  color: #006818 !important;
 }
 
 .right-controls {
@@ -3747,7 +3758,7 @@ button, input, select, textarea {
 
 .btn-view-mode.active {
   background: #ffffff !important;
-  color: #008744 !important;
+  color: #006818 !important;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
 }
 
@@ -3906,7 +3917,7 @@ button, input, select, textarea {
 .card-price {
   font-size: 1rem !important;
   font-weight: 800 !important;
-  color: #008744 !important;
+  color: #006818 !important;
   line-height: 1.2 !important;
 }
 
@@ -3931,7 +3942,7 @@ button, input, select, textarea {
   min-height: 2em !important;
 }
 
-.card-title:hover { color: #008744 !important; }
+.card-title:hover { color: #006818 !important; }
 
 .card-location-row {
   display: flex !important;
@@ -3946,7 +3957,7 @@ button, input, select, textarea {
 }
 
 .card-location-row i {
-  color: #008744 !important;
+  color: #006818 !important;
   font-size: 0.7rem !important;
   flex-shrink: 0 !important;
 }
@@ -3980,7 +3991,7 @@ button, input, select, textarea {
 
 .btn-card-details-green {
   flex: 1 !important;
-  background: #008744 !important;
+  background: #006818 !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 6px !important;
@@ -4070,8 +4081,8 @@ button, input, select, textarea {
 .btn-page:hover:not(.active) { background: #f8fafc !important; border-color: #cbd5e1 !important; }
 
 .btn-page.active {
-  background: #008744 !important;
-  border-color: #008744 !important;
+  background: #006818 !important;
+  border-color: #006818 !important;
   color: #ffffff !important;
   font-weight: 700 !important;
 }
@@ -4142,7 +4153,7 @@ button, input, select, textarea {
   margin-top: 14px !important;
 }
 
-.footer-location-pin i { color: #008744 !important; }
+.footer-location-pin i { color: #006818 !important; }
 
 /* ── 12. RESPONSIVE BREAKPOINTS ─────────────────────────────────────────── */
 @media (max-width: 1400px) {
@@ -4298,7 +4309,7 @@ button, input, select, textarea {
 }
 .admin-social-tab-btn.active {
   color: #0f172a;
-  border-bottom-color: #00b53f;
+  border-bottom-color: #1db010;
 }
 
 
@@ -4653,7 +4664,7 @@ body.kejamarket-offline .post-btn {
   align-items: center;
   gap: 6px;
   background: #f0fdf4;
-  color: #15803d;
+  color: #005a14;
   font-size: 0.78rem;
   font-weight: 700;
   padding: 5px 12px;
@@ -4720,11 +4731,11 @@ body.kejamarket-offline .post-btn {
 }
 
 .seo-location-chip:hover {
-  border-color: #008744;
+  border-color: #006818;
   background: #f0fdf4;
-  color: #008744;
+  color: #006818;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 135, 68, 0.12);
+  box-shadow: 0 4px 10px rgba(0, 104, 24, 0.12);
 }
 
 .seo-location-chip small {
@@ -4778,7 +4789,7 @@ body.kejamarket-offline .post-btn {
 
 .keja-faq-item[open] {
   border-color: #86efac;
-  box-shadow: 0 4px 12px rgba(0, 135, 68, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 104, 24, 0.06);
 }
 
 .keja-faq-question {
@@ -4802,7 +4813,7 @@ body.kejamarket-offline .post-btn {
 
 .keja-faq-item[open] .keja-faq-question {
   background: #f0fdf4;
-  color: #047857;
+  color: #005a14;
 }
 
 .keja-faq-question .faq-icon {
@@ -4813,7 +4824,7 @@ body.kejamarket-offline .post-btn {
 
 .keja-faq-item[open] .faq-icon {
   transform: rotate(180deg);
-  color: #047857;
+  color: #005a14;
 }
 
 .keja-faq-answer {
@@ -4858,7 +4869,7 @@ body {
   display: flex !important;
   align-items: center !important;
   background: #ffffff !important;
-  border: 1.5px solid #008744 !important;
+  border: 1.5px solid #006818 !important;
   border-radius: 24px !important;
   padding: 2px 4px 2px 14px !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
@@ -4867,7 +4878,7 @@ body {
 }
 .header-search-bar:focus-within {
   border-color: #006f37 !important;
-  box-shadow: 0 4px 14px rgba(0, 135, 68, 0.15) !important;
+  box-shadow: 0 4px 14px rgba(0, 104, 24, 0.15) !important;
 }
 .header-search-input-box {
   flex: 1;
@@ -4891,10 +4902,10 @@ body {
   user-select: none;
 }
 .header-location-picker:hover {
-  color: #008744;
+  color: #006818;
 }
 .header-location-picker i.fa-map-marker-alt {
-  color: #008744;
+  color: #006818;
   font-size: 0.85rem;
 }
 .header-location-menu {
@@ -4921,7 +4932,7 @@ body {
 }
 .loc-item:hover {
   background: #f0fdf4;
-  color: #008744;
+  color: #006818;
 }
 
 /* --- Header Post Dropdown --- */
@@ -4933,7 +4944,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #008744;
+  background: #006818;
   color: #ffffff;
   font-size: 0.9rem;
   font-weight: 700;
@@ -4942,12 +4953,12 @@ body {
   padding: 8px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 135, 68, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 104, 24, 0.25);
 }
 .btn-post-dropdown:hover {
   background: #006f37;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 135, 68, 0.35);
+  box-shadow: 0 4px 12px rgba(0, 104, 24, 0.35);
 }
 .btn-post-chevron {
   font-size: 0.7rem;
@@ -5031,7 +5042,7 @@ body {
 .compact-sms-icon {
   width: 42px;
   height: 42px;
-  background: #008744;
+  background: #006818;
   color: #ffffff;
   border-radius: 10px;
   display: flex;
@@ -5039,7 +5050,7 @@ body {
   justify-content: center;
   font-size: 1.2rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 135, 68, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 104, 24, 0.25);
 }
 .compact-sms-text {
   display: flex;
@@ -5052,7 +5063,7 @@ body {
 }
 .compact-sms-title strong {
   font-weight: 800;
-  color: #008744;
+  color: #006818;
 }
 .compact-sms-desc {
   font-size: 0.78rem;
@@ -5067,7 +5078,7 @@ body {
 }
 .compact-sms-price-badge {
   background: #ffffff;
-  color: #008744;
+  color: #006818;
   font-weight: 800;
   font-size: 0.78rem;
   padding: 4px 10px;
@@ -5075,7 +5086,7 @@ body {
   border: 1px solid #bbf7d0;
 }
 .btn-compact-sms-pill {
-  background: #008744;
+  background: #006818;
   color: #ffffff;
   border: none;
   font-weight: 700;
@@ -5087,7 +5098,7 @@ body {
   align-items: center;
   gap: 6px;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 135, 68, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 104, 24, 0.2);
 }
 .btn-compact-sms-pill:hover {
   background: #006f37;
@@ -5140,7 +5151,7 @@ body {
 }
 
 .card-badge-status.available {
-  background: #16a34a !important;
+  background: #006818 !important;
   color: #ffffff !important;
   font-weight: 800 !important;
   font-size: 0.65rem !important;
@@ -5166,7 +5177,7 @@ body {
 }
 .btn-card-details-green {
   flex: 1;
-  background: #008744 !important;
+  background: #006818 !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 8px !important;
@@ -5249,7 +5260,7 @@ body {
   gap: 6px;
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
-  color: #15803d;
+  color: #005a14;
   padding: 6px 12px;
   border-radius: 20px;
   font-weight: 700;
@@ -5270,7 +5281,7 @@ body {
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
 }
 .btn-header-hunt:hover {
-  background: linear-gradient(135deg, #047857, #059669) !important;
+  background: linear-gradient(135deg, #005a14, #059669) !important;
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.45);
 }
 .hunt-pill-badge {
@@ -5535,7 +5546,7 @@ body {
 
 .afford-result-note-v2 {
   font-size: 0.85rem;
-  color: #047857;
+  color: #005a14;
   line-height: 1.5;
 }
 
@@ -5654,7 +5665,7 @@ body {
 }
 
 .afford-btn-primary-v2:hover {
-  background: #047857;
+  background: #005a14;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(5, 150, 105, 0.4);
 }

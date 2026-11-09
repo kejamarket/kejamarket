@@ -301,7 +301,7 @@
   .card-price {
     font-size: 1.1rem !important;
     font-weight: 800 !important;
-    color: #008744 !important;
+    color: #006818 !important;
     margin-bottom: 6px !important;
   }
 
@@ -354,12 +354,12 @@
 
   .mobile-nav-item.active,
   .mobile-nav-item.mobile-nav-item--active {
-    color: #00b53f !important;
+    color: #1db010 !important;
   }
 
   .mobile-nav-item.active i,
   .mobile-nav-item.mobile-nav-item--active i {
-    color: #00b53f !important;
+    color: #1db010 !important;
     transform: scale(1.1) !important;
   }
 
@@ -367,7 +367,7 @@
   .mobile-nav-post-btn {
     width: 56px !important;
     height: 56px !important;
-    background: linear-gradient(135deg, #00b53f, #009634) !important;
+    background: linear-gradient(135deg, #1db010, #009634) !important;
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;

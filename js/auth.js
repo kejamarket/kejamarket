@@ -1315,7 +1315,7 @@ const kejaAuth = (() => {
       return;
     }
 
-    // Build compact profile dropdown content (Jiji-style)
+    // Build compact profile dropdown content
     const content = document.getElementById('profile-dropdown-content');
     if (content) {
       content.innerHTML = `

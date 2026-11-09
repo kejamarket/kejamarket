@@ -486,11 +486,11 @@ class LandlordManager {
           scrollWheelZoom: true     // Allow mouse wheel zoom
         }).setView([this.selectedCoords.lat, this.selectedCoords.lng], 13);
         
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
           maxZoom: 19,
           minZoom: 10,
-          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
-          subdomains: ['a', 'b', 'c'],
+          attribution: '© <a href="https://carto.com/">CARTO</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
+          subdomains: ['a', 'b', 'c', 'd'],
           tileSize: 256,
           detectRetina: true,
           updateWhenZooming: false

@@ -175,9 +175,11 @@ app.use(express.static(__dirname, {
   etag: true,
   lastModified: true,
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.html')) {
-      // HTML: Short cache with stale-while-revalidate for fast loads with instant update pickup
-      res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
+    if (filePath.includes('mobile-layout') || filePath.endsWith('.html') || filePath.includes('locations.js') || filePath.endsWith('sw.js') || filePath.includes('app.js') || filePath.includes('map.js')) {
+      // HTML, Service Worker, Mobile Layout, Map & Locations: Instant zero-cache refresh
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
     } else if (filePath.match(/\.(woff2?|ttf|eot|png|jpe?g|gif|svg|ico|webp)$/i)) {
       // Fonts and images: Immutable long-term caching (30 days) - zero re-download
       res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
@@ -2046,6 +2048,217 @@ app.get('/api/locations/:id/children', cache.middleware(60, 'locations'), async 
   try {
     const children = locationService.getChildren(req.params.id);
     res.json({ success: true, results: children, count: children.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// ── SPEC ENDPOINTS: LOCATION MASTER DATABASE ──────────────────────────────────────
+
+// GET /api/countries — returns Kenya as the country
+app.get('/api/countries', cache.middleware(3600, 'locations:countries'), (req, res) => {
+  res.json({
+    success: true,
+    results: [{ id: 'ke', name: 'Kenya', code: 'KE', dialCode: '+254' }],
+    count: 1
+  });
+});
+
+// GET /api/counties — all 47 Kenya counties
+app.get('/api/counties', cache.middleware(3600, 'locations:counties'), (req, res) => {
+  try {
+    const all = locationService.getAll();
+    const counties = all.filter(l => l.type === 'county')
+      .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || a.name.localeCompare(b.name));
+    res.json({ success: true, results: counties, count: counties.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/counties/:countyId/sub-counties
+app.get('/api/counties/:countyId/sub-counties', cache.middleware(300, 'locations'), async (req, res) => {
+  try {
+    const { countyId } = req.params;
+    const county = locationService.getById(countyId);
+    if (!county) return res.status(404).json({ success: false, message: 'County not found' });
+    // Sub-counties are direct children of county with type sub_county or similar
+    const all = locationService.getAll();
+    const subCounties = all.filter(l =>
+      l.parentId === countyId &&
+      (l.type === 'sub_county' || l.type === 'constituency')
+    ).sort((a, b) => a.name.localeCompare(b.name));
+    res.json({ success: true, county: { id: county.id, name: county.name }, results: subCounties, count: subCounties.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/counties/:countyId/constituencies
+app.get('/api/counties/:countyId/constituencies', cache.middleware(300, 'locations'), async (req, res) => {
+  try {
+    const { countyId } = req.params;
+    const county = locationService.getById(countyId);
+    if (!county) return res.status(404).json({ success: false, message: 'County not found' });
+    const all = locationService.getAll();
+    const constituencies = all.filter(l =>
+      l.parentId === countyId && l.type === 'constituency'
+    ).sort((a, b) => a.name.localeCompare(b.name));
+    res.json({ success: true, county: { id: county.id, name: county.name }, results: constituencies, count: constituencies.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/sub-counties/:subCountyId/wards
+app.get('/api/sub-counties/:subCountyId/wards', cache.middleware(300, 'locations'), async (req, res) => {
+  try {
+    const { subCountyId } = req.params;
+    const subCounty = locationService.getById(subCountyId);
+    if (!subCounty) return res.status(404).json({ success: false, message: 'Sub-county not found' });
+    const all = locationService.getAll();
+    const wards = all.filter(l =>
+      l.parentId === subCountyId && l.type === 'ward'
+    ).sort((a, b) => a.name.localeCompare(b.name));
+    res.json({ success: true, subCounty: { id: subCounty.id, name: subCounty.name }, results: wards, count: wards.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/wards/:wardId
+app.get('/api/wards/:wardId', cache.middleware(300, 'locations'), async (req, res) => {
+  try {
+    const ward = locationService.getById(req.params.wardId);
+    if (!ward || ward.type !== 'ward') return res.status(404).json({ success: false, message: 'Ward not found' });
+    const ancestors = locationService.getAncestors(req.params.wardId);
+    const children = locationService.getChildren(req.params.wardId);
+    res.json({ success: true, ward, ancestors, children, count: children.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/locations/:id/ancestors
+app.get('/api/locations/:id/ancestors', cache.middleware(60, 'locations'), async (req, res) => {
+  try {
+    const loc = locationService.getById(req.params.id);
+    if (!loc) return res.status(404).json({ success: false, message: 'Location not found' });
+    const ancestors = locationService.getAncestors(req.params.id);
+    res.json({ success: true, location: loc, ancestors, count: ancestors.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/locations/:id/breadcrumb
+app.get('/api/locations/:id/breadcrumb', cache.middleware(60, 'locations'), async (req, res) => {
+  try {
+    const loc = locationService.getById(req.params.id);
+    if (!loc) return res.status(404).json({ success: false, message: 'Location not found' });
+    const ancestors = locationService.getAncestors(req.params.id);
+    const breadcrumb = [...ancestors, loc].map(l => ({ id: l.id, name: l.name, type: l.type }));
+    const breadcrumbText = breadcrumb.map(b => b.name).join(' › ');
+    res.json({ success: true, breadcrumb, breadcrumbText, location: loc });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/locations/:id/subdivisions — phases, sections, sub-areas under a location
+app.get('/api/locations/:id/subdivisions', cache.middleware(60, 'locations'), async (req, res) => {
+  try {
+    const loc = locationService.getById(req.params.id);
+    if (!loc) return res.status(404).json({ success: false, message: 'Location not found' });
+    const all = locationService.getAll();
+    // Get all descendants that are phases, sections, blocks
+    const subdivisionTypes = new Set(['phase', 'section', 'block', 'sub_area', 'estate', 'neighbourhood']);
+    function getSubdivisions(parentId, depth = 0) {
+      if (depth > 4) return [];
+      const children = all.filter(l => l.parentId === parentId);
+      const result = [];
+      for (const c of children) {
+        result.push(c);
+        if (subdivisionTypes.has(c.type)) {
+          result.push(...getSubdivisions(c.id, depth + 1));
+        }
+      }
+      return result;
+    }
+    const subdivisions = getSubdivisions(req.params.id);
+    res.json({ success: true, location: loc, subdivisions, count: subdivisions.length });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/location-search?q=&countyId=&subCountyId=&wardId=&locationType=&verifiedOnly=
+app.get('/api/location-search', cache.middleware(30, 'locations'), async (req, res) => {
+  try {
+    const {
+      q = '',
+      countyId,
+      subCountyId,
+      wardId,
+      parentLocationId,
+      locationType,
+      verifiedOnly,
+      limit = 30
+    } = req.query;
+
+    let results = locationService.search(q.trim(), parseInt(limit) || 30);
+
+    // Apply filters
+    if (countyId) {
+      results = results.filter(l => l.county && (
+        l.county.toLowerCase().includes(countyId.toLowerCase()) ||
+        l.countyId === countyId ||
+        // trace ancestors
+        locationService.getAncestors(l.id).some(a => a.id === countyId)
+      ));
+    }
+
+    if (locationType) {
+      const types = locationType.split(',').map(t => t.trim().toLowerCase());
+      results = results.filter(l => types.includes((l.type || '').toLowerCase()));
+    }
+
+    if (verifiedOnly === 'true') {
+      results = results.filter(l => l.verified !== false && l.isVerified !== false);
+    }
+
+    // Build response with breadcrumbs
+    const enriched = results.map(loc => {
+      const ancestors = locationService.getAncestors(loc.id);
+      const breadcrumb = [...ancestors.map(a => a.name), loc.name];
+      const county = ancestors.find(a => a.type === 'county') || (loc.type === 'county' ? loc : null);
+      const subCounty = ancestors.find(a => a.type === 'sub_county');
+      const ward = ancestors.find(a => a.type === 'ward');
+      return {
+        id: loc.id,
+        name: loc.name,
+        type: loc.type,
+        county: county ? county.name : (loc.county || null),
+        subCounty: subCounty ? subCounty.name : (loc.subCounty || null),
+        ward: ward ? ward.name : (loc.ward || null),
+        parentId: loc.parentId || null,
+        breadcrumb,
+        breadcrumbText: breadcrumb.join(' › '),
+        aliases: loc.aliases || [],
+        latitude: loc.latitude || null,
+        longitude: loc.longitude || null,
+        verificationStatus: (loc.verified !== false && loc.isVerified !== false) ? 'verified' : 'unverified',
+        childCount: locationService.getChildren(loc.id).length
+      };
+    });
+
+    res.json({
+      success: true,
+      query: q,
+      results: enriched,
+      count: enriched.length,
+      filters: { countyId, subCountyId, wardId, locationType, verifiedOnly }
+    });
+  } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+});
+
+// GET /api/location-completeness — admin metrics on database coverage
+app.get('/api/location-completeness', cache.middleware(300, 'locations'), async (req, res) => {
+  try {
+    const all = locationService.getAll();
+    const byType = {};
+    all.forEach(l => { byType[l.type] = (byType[l.type] || 0) + 1; });
+    const counties = all.filter(l => l.type === 'county').length;
+    const verified = all.filter(l => l.verified !== false && l.isVerified !== false).length;
+    res.json({
+      success: true,
+      total: all.length,
+      counties: { count: counties, target: 47, complete: counties >= 47 },
+      byType,
+      verified: { count: verified, pct: Math.round(verified / all.length * 100) }
+    });
   } catch (err) { res.status(500).json({ success: false, message: err.message }); }
 });
 
