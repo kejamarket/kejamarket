@@ -671,38 +671,26 @@
     }
   }
 
-  // Load initial demo messages
+  // Load user conversation messages from storage or start clean
   function loadSampleMessages() {
+    try {
+      const savedMsgs = localStorage.getItem('keja_chat_threads');
+      if (savedMsgs) {
+        State.messages = JSON.parse(savedMsgs);
+        return;
+      }
+    } catch (e) {}
+
     State.messages = [
       {
-        id: 'msg-01',
-        senderName: 'James Mwangi',
-        role: 'Landlord · Kileleshwa',
-        avatarText: 'JM',
-        lastMessage: 'Hello, your viewing request for Tuesday has been received!',
-        time: '10:34 AM',
-        unread: true,
-        propertyTitle: '3 Bedroom House in Kileleshwa'
-      },
-      {
-        id: 'msg-02',
-        senderName: 'Property Agent',
-        role: 'Ruaka Environs',
-        avatarText: 'PA',
-        lastMessage: 'Yes, the viewing is confirmed for 2:00 PM.',
-        time: '9:45 AM',
-        unread: false,
-        propertyTitle: '2 Bedroom Apartment, Ruaka'
-      },
-      {
-        id: 'msg-03',
+        id: 'msg-concierge',
         senderName: 'KejaMarket Concierge',
-        role: 'Admin Support',
+        role: 'Verified Support & Caretaker Desk',
         avatarText: 'KM',
-        lastMessage: 'System Notification: Direct landlord contact enabled with 100% scam guarantee.',
-        time: '8:12 AM',
+        lastMessage: 'Karibu KejaMarket! All listings feature free viewings, direct verified landlord contacts, and live GPS map pins.',
+        time: 'Just now',
         unread: false,
-        propertyTitle: 'Platform Verification'
+        propertyTitle: 'KejaMarket Verified Direct'
       }
     ];
   }

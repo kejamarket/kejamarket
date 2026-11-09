@@ -2437,50 +2437,9 @@ app.get('/api/properties', cache.middleware(15, 'properties'), optionalAuth, asy
 function sanitizePropertyForPublic(prop, user = null, isUnlocked = false) {
   if (!prop) return null;
   const p = { ...prop };
-  
-  const isAdmin = user && (user.isAdmin || user.role === 'admin' || user.id === 'usr-admin-01');
-  const isOwner = user && (user.id === p.landlordId || user.id === p.landlord_id || (p.landlord && user.id === p.landlord.id));
-  
-  if (isAdmin || isOwner || isUnlocked) {
-    p.contactLocked = false;
-    p.gpsLocked = false;
-    return p;
-  }
-
-  // Redact private contact numbers
-  delete p.caretaker_phone;
-  delete p.caretakerPhone;
-  delete p.backup_contact_phone;
-  delete p.backupContactPhone;
-  delete p.phone;
-  delete p.whatsapp;
-
-  // Redact exact coordinates & street addresses
-  delete p.latitude;
-  delete p.longitude;
-  delete p.exact_location;
-  delete p.exactLocation;
-  delete p.coordinates;
-  delete p.locationCoordinates;
-
-  if (p.raw_data && typeof p.raw_data === 'object') {
-    const raw = { ...p.raw_data };
-    delete raw.caretakerPhone;
-    delete raw.caretaker_phone;
-    delete raw.backupContactPhone;
-    delete raw.backup_contact_phone;
-    delete raw.phone;
-    delete raw.whatsapp;
-    delete raw.latitude;
-    delete raw.longitude;
-    delete raw.exactLocation;
-    delete raw.exact_location;
-    p.raw_data = raw;
-  }
-
-  p.contactLocked = true;
-  p.gpsLocked = true;
-  p.viewingFeeKes = 200;
+  // GPS & contact are FREE for everyone — no paywall until site grows
+  p.contactLocked = false;
+  p.gpsLocked = false;
   return p;
 }
 

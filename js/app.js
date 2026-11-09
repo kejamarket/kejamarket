@@ -2404,20 +2404,14 @@ class NairobiRentalsApp {
     if (bRentEl) bRentEl.textContent = `KSh ${modalRent.toLocaleString()}`;
     if (bDepEl) bDepEl.textContent = isBnb ? 'KSh 0 (No Deposit)' : `KSh ${modalDeposit.toLocaleString()}`;
     if (bTotEl) bTotEl.textContent = isBnb ? `KSh ${modalRent.toLocaleString()}` : `KSh ${(modalRent + modalDeposit).toLocaleString()}`;
-    // Location & GPS Gating
-    const isLoggedIn = !!(window.kejaAuth && window.kejaAuth.getSession());
+    // Location & GPS (Free to all - no paywall or login gate)
     const locationEl = document.getElementById('detail-modal-location');
     const gpsBadge = document.getElementById('detail-gps-badge');
 
-    if (isLoggedIn) {
-      if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#1db010;"></i> ${p.exactLocation || (p.estateSuburb + ', ' + p.county)}`;
-      if (gpsBadge) gpsBadge.textContent = (p.latitude != null && p.longitude != null)
-        ? `GPS: ${Number(p.latitude).toFixed(5)}, ${Number(p.longitude).toFixed(5)}`
-        : 'GPS: Coordinates not available';
-    } else {
-      if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#1db010;"></i> ${p.estateSuburb}, ${p.county} <span style="font-size:0.75rem; color:#64748b; margin-left:6px;"><i class="fas fa-lock"></i> Exact landmark & pin protected</span>`;
-      if (gpsBadge) gpsBadge.textContent = 'GPS: Protected (Sign in to view)';
-    }
+    if (locationEl) locationEl.innerHTML = `<i class="fas fa-map-marker-alt" style="color:#1db010;"></i> ${p.exactLocation || p.exact_location || (p.estateSuburb + ', ' + p.county)}`;
+    if (gpsBadge) gpsBadge.textContent = (p.latitude != null && p.longitude != null)
+      ? `GPS: ${Number(p.latitude).toFixed(5)}, ${Number(p.longitude).toFixed(5)}`
+      : 'GPS: Pin Live';
     document.getElementById('detail-modal-desc').textContent = p.description;
 
     // Specs
@@ -2629,32 +2623,17 @@ class NairobiRentalsApp {
       }
     }
 
-    const isContactUnlocked = p.contactLocked === false;
-    const isGpsUnlocked = p.gpsLocked === false;
-
-    if (isContactUnlocked && contactPhone) {
-      // Unlocked viewing pass holder or owner/admin: show real phone & enable call
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#1db010;margin-right:5px;"></i><a href="tel:${contactPhone}" style="color:#0f172a;text-decoration:none;font-weight:700;">${contactPhone}</a>`;
-      if (callBtn) {
-        callBtn.href = `tel:${contactPhone}`;
-        callBtn.removeAttribute('onclick');
-        callBtn.style.opacity = '1';
-        callBtn.style.pointerEvents = 'auto';
-        callBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')} (${contactPhone})`;
-      }
-    } else {
-      // Gated: phone locked until viewing slot is confirmed & paid
-      if (phoneDisplay) phoneDisplay.innerHTML = `<i class="fas fa-lock" style="color:#d97706;margin-right:5px;"></i><span style="color:#b45309;font-weight:700;">Contact Protected</span>&nbsp;<a href="#" onclick="event.preventDefault(); KejaViewing.openBookingModal('${p.id}');" style="color:#1db010;text-decoration:underline;font-weight:700;font-size:0.8rem;">Book viewing to unlock</a>`;
-      if (callBtn) {
-        callBtn.href = '#';
-        callBtn.onclick = (e) => {
-          e.preventDefault();
-          KejaViewing.openBookingModal(p.id);
-        };
-        callBtn.style.opacity = '1';
-        callBtn.style.pointerEvents = 'auto';
-        callBtn.innerHTML = `<i class="fas fa-lock"></i> Book Viewing to Call`;
-      }
+    // Direct landlord/host contact - Free & open to all users
+    const phoneToCall = contactPhone || p.phone || p.landlordPhone || p.owner_phone || '+254792409540';
+    if (phoneDisplay) {
+      phoneDisplay.innerHTML = `<i class="fas fa-phone-alt" style="color:#1db010;margin-right:5px;"></i><a href="tel:${phoneToCall}" style="color:#0f172a;text-decoration:none;font-weight:700;">${phoneToCall}</a>`;
+    }
+    if (callBtn) {
+      callBtn.href = `tel:${phoneToCall}`;
+      callBtn.removeAttribute('onclick');
+      callBtn.style.opacity = '1';
+      callBtn.style.pointerEvents = 'auto';
+      callBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')} (${phoneToCall})`;
     }
 
     if (chatBtn) {
@@ -2670,32 +2649,21 @@ class NairobiRentalsApp {
       chatBtn.innerHTML = `<i class="fas fa-comment-dots"></i> Message ${isAgencyListing ? 'Agency' : (isBnb ? 'Host' : 'Landlord')}`;
     }
 
-    // Caretaker Card Population (Gated behind confirmed viewing)
+    // Caretaker Card Population (Always accessible & free to call)
     const caretakerCard = document.getElementById('detail-caretaker-card');
     const caretakerNameEl = document.getElementById('detail-caretaker-name');
     const caretakerCallBtn = document.getElementById('detail-btn-caretaker-call');
+    const caretakerPhoneNum = p.caretakerPhone || p.caretaker_phone || phoneToCall;
 
     if (caretakerCard) {
       caretakerCard.style.display = 'block';
-      if (isContactUnlocked && (p.caretakerPhone || p.caretakerName)) {
-        if (caretakerNameEl) caretakerNameEl.textContent = p.caretakerName || 'Building Caretaker';
-        if (caretakerCallBtn) {
-          caretakerCallBtn.href = `tel:${p.caretakerPhone || ''}`;
-          caretakerCallBtn.removeAttribute('onclick');
-          caretakerCallBtn.style.opacity = '1';
-          caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${p.caretakerPhone || ''})`;
-        }
-      } else {
-        if (caretakerNameEl) caretakerNameEl.textContent = 'On-Site Building Caretaker';
-        if (caretakerCallBtn) {
-          caretakerCallBtn.href = '#';
-          caretakerCallBtn.onclick = (e) => {
-            e.preventDefault();
-            KejaViewing.openBookingModal(p.id);
-          };
-          caretakerCallBtn.style.opacity = '1';
-          caretakerCallBtn.innerHTML = `<i class="fas fa-lock"></i> Book Viewing to Call`;
-        }
+      if (caretakerNameEl) caretakerNameEl.textContent = p.caretakerName || 'Building Caretaker';
+      if (caretakerCallBtn) {
+        caretakerCallBtn.href = `tel:${caretakerPhoneNum}`;
+        caretakerCallBtn.removeAttribute('onclick');
+        caretakerCallBtn.style.opacity = '1';
+        caretakerCallBtn.style.pointerEvents = 'auto';
+        caretakerCallBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Call Caretaker (${caretakerPhoneNum})`;
       }
     }
 
