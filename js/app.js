@@ -4708,6 +4708,71 @@ class NairobiRentalsApp {
     }
   }
 
+  async triggerHuntPaymentPush(huntId) {
+    const id = huntId || this._currentActiveHuntId || localStorage.getItem('keja_active_hunt_id');
+    if (!id) return;
+    const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
+    const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function') ? window.kejaAuth.getSession() : null;
+
+    let phone = (session && session.phone) ? String(session.phone) : '';
+    if (!phone) {
+      phone = prompt('Enter your M-Pesa phone number (e.g. 0712345678):');
+      if (!phone) return;
+    }
+
+    const btn = document.getElementById('btn-hunt-resend-stk');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending STK Prompt...';
+    }
+
+    try {
+      const res = await fetch(`/api/house-hunt/${id}/pay`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ phone })
+      });
+      const data = await res.json();
+      if (data.hasDaraja) {
+        this.showToast(data.message || 'M-Pesa prompt sent to your phone! Enter PIN to activate.', 'info', 8000);
+        this.pollHuntPaymentStatus(id, data.checkoutRequestId);
+      } else {
+        this.showToast(`Pay KSh 2,000 via Paybill ${data.paybill || '4165507'}, Account: ${data.account || 'HOUSEHUNT'}`, 'info', 10000);
+      }
+    } catch (err) {
+      this.showToast('Could not send prompt: ' + err.message, 'error');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-mobile-alt"></i> Send M-Pesa Prompt to My Phone';
+      }
+    }
+  }
+
+  async checkHuntPayment(huntId) {
+    const id = huntId || this._currentActiveHuntId || localStorage.getItem('keja_active_hunt_id');
+    if (!id) return;
+    const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
+    this.showToast('Checking M-Pesa payment status...', 'info');
+    try {
+      const res = await fetch(`/api/house-hunt/${id}/payment-status`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success && data.activated) {
+        this.showToast('🎉 Payment Confirmed! 72-Hour Search is now LIVE.', 'success', 6000);
+        this.openHuntTracker(id);
+      } else {
+        this.showToast('Payment not yet detected. If you just sent money, please wait 30 seconds and check again.', 'info', 6000);
+      }
+    } catch (e) {
+      this.showToast('Could not check payment status.', 'error');
+    }
+  }
+
   async pollHuntPaymentStatus(huntId, checkoutRequestId) {
     const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
     let attempts = 0;
@@ -4770,11 +4835,25 @@ class NairobiRentalsApp {
     if (foundCount) foundCount.textContent = properties.length;
 
     // Start Live Clock
-    if (hunt.expiresAt) {
+    const isPendingPayment = (hunt.status === 'PAYMENT_PENDING' || hunt.payment_status === 'pending' || !hunt.isPaid);
+    const actBox = document.getElementById('hunt-activation-box');
+    if (actBox) {
+      actBox.style.display = isPendingPayment ? 'block' : 'none';
+    }
+
+    if (hunt.expiresAt && !isPendingPayment) {
       this.startHuntCountdown(new Date(hunt.expiresAt).getTime());
     } else {
       const clockDigits = document.getElementById('hunt-clock-digits');
-      if (clockDigits) clockDigits.textContent = '72h : 00m : 00s (Pending Payment)';
+      if (clockDigits) {
+        clockDigits.textContent = isPendingPayment ? '72h : 00m : 00s' : '72h : 00m : 00s';
+      }
+    }
+
+    if (statusDesc) {
+      statusDesc.innerHTML = isPendingPayment
+        ? '<span style="color:#fbbf24; font-weight:800;"><i class="fas fa-exclamation-triangle"></i> Step 1: Complete Activation Below</span><br>Pay KSh 2,000 to dispatch our verified scout to ' + (hunt.preferredLocations || []).join(', ') + ' immediately.'
+        : '<span style="color:#34d399; font-weight:800;"><i class="fas fa-check-circle"></i> Scout Active on the Ground</span><br>Your dedicated scout is physically walking vacancies, inspecting water pressure & electricity tokens in ' + (hunt.preferredLocations || []).join(', ') + '.';
     }
 
     // Update Stepper

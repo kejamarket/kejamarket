@@ -51,12 +51,20 @@ const AdminHunts = (() => {
     content.innerHTML = `
       <div class="dashboard-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
         <div>
+          <a href="/" style="display:inline-flex; align-items:center; gap:6px; color:#006818; text-decoration:none; font-weight:800; font-size:12.5px; margin-bottom:6px; background:#e8f8ee; padding:4px 10px; border-radius:6px;">
+            <i class="fas fa-arrow-left"></i> Back to KejaMarket Home
+          </a>
           <h1 style="font-size:1.6rem; font-weight:800; color:#0f172a; margin:0;"><i class="fas fa-search-location" style="color:#059669;"></i> House Hunt Concierge (3-Day Search)</h1>
           <p style="color:#64748b; font-size:0.88rem; margin:4px 0 0 0;">Manage personalized 72-hour property search requests & physical viewing arrangements.</p>
         </div>
-        <button class="btn-primary" onclick="AdminHunts.loadHouseHunts()" style="display:flex; align-items:center; gap:6px; background:#059669; padding:8px 16px; border-radius:8px; font-weight:700;">
-          <i class="fas fa-sync-alt"></i> Refresh Hunts
-        </button>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a href="/" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:8px; font-weight:700; text-decoration:none; background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; font-size:13px;">
+            <i class="fas fa-home"></i> Back to Site
+          </a>
+          <button class="btn-primary" onclick="AdminHunts.loadHouseHunts()" style="display:flex; align-items:center; gap:6px; background:#059669; padding:8px 16px; border-radius:8px; font-weight:700; border:none; color:white; cursor:pointer;">
+            <i class="fas fa-sync-alt"></i> Refresh Hunts
+          </button>
+        </div>
       </div>
 
       <!-- Stats Bar -->

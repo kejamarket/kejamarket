@@ -997,8 +997,12 @@
       </div>
 
       <!-- Horizontal Category Story Bubbles -->
-      <div class="km-story-categories-wrapper">
-        <div class="km-story-bubbles-scroll">
+      <div class="km-story-categories-wrapper" id="km-story-categories-wrapper">
+        <button type="button" class="km-story-scroll-btn km-story-scroll-prev" id="km-story-prev-btn" onclick="MobileApp.scrollStories(-1)" aria-label="Previous categories" style="display:none;">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="km-story-bubbles-scroll" id="km-story-bubbles-scroll" onscroll="MobileApp.onStoryScroll()">
           <button type="button" class="km-story-bubble ${State.selectedCategory === 'all' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('all')">
             <div class="km-story-icon-ring km-cat-all"><i class="fas fa-border-all"></i></div>
             <span class="km-story-label">All</span>
@@ -1053,6 +1057,10 @@
             <span class="km-story-label">Movers</span>
           </button>
         </div>
+
+        <button type="button" class="km-story-scroll-btn km-story-scroll-next" id="km-story-next-btn" onclick="MobileApp.scrollStories(1)" aria-label="More categories">
+          <i class="fas fa-chevron-right"></i>
+        </button>
       </div>
 
       <!-- 4-Pill Home Services Strip (Non-repeating Home Services) -->
@@ -2776,6 +2784,32 @@
     updateFeedDisplay();
   }
 
+  function scrollStories(dir) {
+    const el = document.getElementById('km-story-bubbles-scroll');
+    if (!el) return;
+    el.scrollBy({ left: dir * 220, behavior: 'smooth' });
+  }
+
+  function onStoryScroll() {
+    const el = document.getElementById('km-story-bubbles-scroll');
+    const prevBtn = document.getElementById('km-story-prev-btn');
+    const nextBtn = document.getElementById('km-story-next-btn');
+    const wrapper = document.getElementById('km-story-categories-wrapper');
+    if (!el) return;
+
+    if (prevBtn) {
+      prevBtn.style.display = el.scrollLeft > 20 ? 'flex' : 'none';
+    }
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const isAtEnd = el.scrollLeft >= maxScroll - 20;
+    if (nextBtn) {
+      nextBtn.style.display = isAtEnd ? 'none' : 'flex';
+    }
+    if (wrapper) {
+      wrapper.classList.toggle('scrolled-end', isAtEnd);
+    }
+  }
+
   function clearSearch() {
     State.searchQuery = '';
     const input = document.getElementById('km-home-search-input');
@@ -3588,6 +3622,8 @@
     toggleFav,
     handleSearch,
     handleLiveSearch,
+    scrollStories,
+    onStoryScroll,
     clearSearch,
     setCategoryChip,
     setSuburbPill,

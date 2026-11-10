@@ -2743,3 +2743,112 @@ body { background: #f7f9fb !important; }
 .btn-toggle-property-types:hover i {
   color: #1db010 !important;
 }
+
+
+/* ====================================================================
+   HOUSE HUNT TRACKER & STEPPER (Mobile & Desktop)
+   ==================================================================== */
+.hunt-tracker-dialog {
+  max-width: 580px !important;
+  width: 95% !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25) !important;
+}
+
+.hunt-timer-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);
+  color: #ffffff;
+  padding: 20px 18px;
+  text-align: center;
+  position: relative;
+}
+
+.hunt-countdown-digits {
+  font-size: 1.9rem;
+  font-weight: 900;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 1.5px;
+  color: #34d399;
+  text-shadow: 0 0 16px rgba(52, 211, 153, 0.4);
+  margin: 8px 0;
+}
+
+.hunt-stepper {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin: 18px 0 22px 0 !important;
+  position: relative !important;
+  width: 100% !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.hunt-stepper::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 18px !important;
+  left: 24px !important;
+  right: 24px !important;
+  height: 3px !important;
+  background: #e2e8f0 !important;
+  z-index: 1 !important;
+}
+
+.hunt-step-node {
+  position: relative !important;
+  z-index: 2 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 5px !important;
+  flex: 1 !important;
+  text-align: center !important;
+}
+
+.hunt-step-circle {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  background: #f1f5f9 !important;
+  border: 2.5px solid #cbd5e1 !important;
+  color: #64748b !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+  font-size: 0.82rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.hunt-step-node.active .hunt-step-circle {
+  background: #006818 !important;
+  border-color: #86efac !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(0, 104, 24, 0.22) !important;
+}
+
+.hunt-step-node.done .hunt-step-circle {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+.hunt-step-label {
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  color: #64748b !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+}
+
+.hunt-step-node.active .hunt-step-label {
+  color: #006818 !important;
+  font-weight: 800 !important;
+}
+
+.hunt-step-node.done .hunt-step-label {
+  color: #0f172a !important;
+}

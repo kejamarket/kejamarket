@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'kejamarket-v94-auth-hunt-fix';
+﻿const CACHE_NAME = 'kejamarket-v95-hunt-clarity-scroll';
 
 const STATIC_ASSETS = [
   '/',
