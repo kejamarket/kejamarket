@@ -2269,6 +2269,18 @@ class NairobiRentalsApp {
   }
 
   async openPropertyDetail(propertyId) {
+    // Gate: viewing property details requires mandatory Sign In / Sign Up
+    if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+      const session = window.kejaAuth.getSession();
+      if (!session) {
+        if (typeof this.showToast === 'function') {
+          this.showToast('Please sign in or create an account to view property details.', 'info');
+        }
+        window.kejaAuth.requireTenantAuth(() => this.openPropertyDetail(propertyId));
+        return;
+      }
+    }
+
     let p = this.properties.find(x => x.id === propertyId);
     if (!p) {
       try {
@@ -3018,6 +3030,14 @@ class NairobiRentalsApp {
   addProperty(newProperty) {
     this.properties.unshift(newProperty);
     this.applyFilters();
+  }
+
+  openAuthModal(initialTab = 'signin') {
+    if (window.kejaAuth && typeof window.kejaAuth.openAuthModal === 'function') {
+      window.kejaAuth.openAuthModal(initialTab === 'login' ? 'signin' : initialTab);
+    } else {
+      this.openModal('modal-auth');
+    }
   }
 
   openModal(modalId) {
@@ -4547,26 +4567,54 @@ class NairobiRentalsApp {
   }
 
   async submitHouseHuntRequest(e) {
-    e.preventDefault();
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
 
     const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function') ? window.kejaAuth.getSession() : null;
     const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
 
     if (!session || !token) {
-      this.showToast('Please sign in first to start a House Hunt.', 'info');
-      this.openAuthModal('login');
+      this.showToast('Please sign in or create an account to start your House Hunt.', 'info');
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        window.kejaAuth.requireTenantAuth(() => {
+          this.submitHouseHuntRequest();
+        });
+      } else if (window.kejaAuth && typeof window.kejaAuth.openAuthModal === 'function') {
+        window.kejaAuth.openAuthModal('signin');
+      } else {
+        this.openModal('modal-auth');
+      }
       return;
     }
 
-    const locationsRaw = document.getElementById('hunt-locations').value.trim();
-    const budgetMin = parseFloat(document.getElementById('hunt-budget-min').value) || 0;
-    const budgetMax = parseFloat(document.getElementById('hunt-budget-max').value) || 0;
-    const propertyType = document.getElementById('hunt-property-type').value;
-    const bedrooms = parseInt(document.getElementById('hunt-bedrooms').value) || 0;
-    const moveInDate = document.getElementById('hunt-movein').value;
+    const locationsInput = document.getElementById('hunt-locations');
+    const locationsRaw = (locationsInput ? locationsInput.value : '').trim();
+    const budgetMin = parseFloat(document.getElementById('hunt-budget-min')?.value) || 0;
+    const budgetMax = parseFloat(document.getElementById('hunt-budget-max')?.value) || 0;
+    const propertyType = document.getElementById('hunt-property-type')?.value || 'Apartment / Flat';
+    const bedroomsVal = document.getElementById('hunt-bedrooms')?.value || '2';
+    const bedrooms = (bedroomsVal === 'single') ? 0 : (parseInt(bedroomsVal, 10) || 0);
+    const moveInDate = document.getElementById('hunt-movein')?.value || '';
     const furnished = document.getElementById('hunt-furnished')?.value || 'unfurnished';
-    const notes = document.getElementById('hunt-notes').value.trim();
-    const phone = document.getElementById('hunt-phone').value.trim();
+    const notes = (document.getElementById('hunt-notes')?.value || '').trim();
+    let phone = (document.getElementById('hunt-phone')?.value || '').trim();
+
+    // Clean and normalize Kenyan phone number
+    if (!phone && session && session.phone) {
+      phone = String(session.phone);
+    }
+    phone = phone.replace(/[^\d]/g, '');
+    if (phone.startsWith('0')) {
+      phone = '254' + phone.substring(1);
+    } else if (phone.startsWith('7') || phone.startsWith('1')) {
+      phone = '254' + phone;
+    } else if (phone.startsWith('254')) {
+      // keep
+    }
+
+    if (!phone || phone.length < 9) {
+      this.showToast('Please provide a valid M-Pesa phone number.', 'error');
+      return;
+    }
 
     const amenities = Array.from(document.querySelectorAll('input[name="hunt-amenity"]:checked')).map(cb => cb.value);
 

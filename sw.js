@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'kejamarket-v93-clean-modals-no-duplicates';
+﻿const CACHE_NAME = 'kejamarket-v94-auth-hunt-fix';
 
 const STATIC_ASSETS = [
   '/',

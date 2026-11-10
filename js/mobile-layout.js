@@ -703,6 +703,19 @@
     }
   }
 
+  // Auth check helper for gating details, photos and bookings
+  function isUserLoggedIn() {
+    try {
+      const session = (window.kejaAuth && typeof window.kejaAuth.getSession === 'function')
+        ? window.kejaAuth.getSession()
+        : JSON.parse(localStorage.getItem('keja_session') || localStorage.getItem('keja_user') || 'null');
+      const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
+      return !!(session && (session.id || session.phone || session.email || token));
+    } catch {
+      return false;
+    }
+  }
+
   // Screen Switcher
   function showScreen(screen, params = {}) {
     State.currentScreen = screen;
@@ -730,9 +743,24 @@
       case 'browse':
         renderBrowseScreen(headerSlot, mainSlot, params);
         break;
-      case 'detail':
-        renderDetailScreen(headerSlot, mainSlot, params.id || params);
+      case 'detail': {
+        const propId = params.id || params;
+        if (!isUserLoggedIn()) {
+          if (window.app && typeof window.app.showToast === 'function') {
+            window.app.showToast('Please sign in or create an account to view full property details.', 'info');
+          }
+          if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+            window.kejaAuth.requireTenantAuth(() => {
+              showScreen('detail', propId);
+            });
+          } else {
+            openSignIn();
+          }
+          return;
+        }
+        renderDetailScreen(headerSlot, mainSlot, propId);
         break;
+      }
       case 'filters':
         renderFiltersScreen(headerSlot, mainSlot);
         break;
@@ -1826,14 +1854,27 @@
     el.addEventListener('touchend', e => {
       const endX = e.changedTouches[0].clientX;
       const diff = endX - startX;
-      if (diff > 40) {
-        // Swipe Right -> Prev photo
-        State.activePhotoIndex = (State.activePhotoIndex - 1 + media.length) % media.length;
-        updateActivePhoto(media);
-      } else if (diff < -40) {
-        // Swipe Left -> Next photo
-        State.activePhotoIndex = (State.activePhotoIndex + 1) % media.length;
-        updateActivePhoto(media);
+      if (Math.abs(diff) > 40) {
+        if (!isUserLoggedIn()) {
+          if (window.app && typeof window.app.showToast === 'function') {
+            window.app.showToast('Please sign in or create an account to browse photos.', 'info');
+          }
+          if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+            window.kejaAuth.requireTenantAuth();
+          } else {
+            openSignIn();
+          }
+          return;
+        }
+        if (diff > 40) {
+          // Swipe Right -> Prev photo
+          State.activePhotoIndex = (State.activePhotoIndex - 1 + media.length) % media.length;
+          updateActivePhoto(media);
+        } else if (diff < -40) {
+          // Swipe Left -> Next photo
+          State.activePhotoIndex = (State.activePhotoIndex + 1) % media.length;
+          updateActivePhoto(media);
+        }
       }
     }, { passive: true });
   }
@@ -2299,29 +2340,31 @@
         </div>
       `;
     } else {
-      // Clean Guest Screen with Real Sign In and Real Sign Up
+      // Clean Auth Screen for Unauthenticated Visitors
       mSlot.innerHTML = `
         <div style="padding-bottom:80px;">
-          <div class="km-profile-header" style="flex-direction:column; align-items:flex-start; gap:12px;">
-            <div style="display:flex; align-items:center; gap:14px; width:100%;">
-              <div class="km-profile-avatar-big" style="background:#f1f5f9; color:#64748b;"><i class="fas fa-user"></i></div>
-              <div>
-                <div class="km-profile-name">Guest User</div>
-                <div class="km-profile-email" style="color:#64748b;">Sign in to access your account</div>
+          <div class="km-profile-header" style="flex-direction:column; align-items:center; text-align:center; gap:12px; background:linear-gradient(135deg, #006818 0%, #004d12 100%); color:#ffffff; padding:22px 18px; border-radius:14px; margin:12px; box-shadow:0 4px 14px rgba(0,104,24,0.22);">
+            <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:22px; color:#ffffff;">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div>
+              <div style="font-size:17px; font-weight:800; color:#ffffff; letter-spacing:-0.3px;">Sign In to KejaMarket</div>
+              <div style="font-size:12px; color:#e2e8f0; line-height:1.4; margin-top:4px; max-width:280px;">
+                Direct landlord contacts, verified houses, free scheduled viewings, and zero broker fees.
               </div>
             </div>
 
-            <div style="width:100%; display:flex; flex-direction:column; gap:8px; margin-top:4px;">
-              <button type="button" class="km-btn-signin" onclick="MobileApp.openSignIn()" style="background:#006818; color:white; border:none; padding:11px 18px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 2px 6px rgba(0,104,24,0.25);">
+            <div style="width:100%; display:flex; flex-direction:column; gap:8px; margin-top:6px;">
+              <button type="button" class="km-btn-signin" onclick="MobileApp.openSignIn()" style="background:#ffffff; color:#006818; border:none; padding:12px 18px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
                 <i class="fas fa-sign-in-alt"></i> Sign In to My Account
               </button>
-              <button type="button" class="km-btn-signup" onclick="MobileApp.openSignUp()" style="background:#ffffff; color:#0f172a; border:1.5px solid #cbd5e1; padding:10px 18px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
-                <i class="fas fa-user-plus" style="color:#006818;"></i> Create Free Account
+              <button type="button" class="km-btn-signup" onclick="MobileApp.openSignUp()" style="background:transparent; color:#ffffff; border:1.5px solid rgba(255,255,255,0.7); padding:11px 18px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
+                <i class="fas fa-user-plus"></i> Create Free Account
               </button>
             </div>
 
-            <div style="font-size:11.5px; color:#166534; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:9px 12px; width:100%; line-height:1.45;">
-              <i class="fas fa-shield-alt" style="color:#006818;"></i> <strong>Real Kenyan Accounts:</strong> Instant SMS OTP verification, direct landlord contacts, and zero broker fees.
+            <div style="font-size:11px; color:#bbf7d0; display:flex; align-items:center; gap:6px; margin-top:4px;">
+              <i class="fas fa-check-circle"></i> Instant SMS OTP verification • 100% Free Tenant Accounts
             </div>
           </div>
 
@@ -3096,6 +3139,17 @@
   }
 
   function switchHeroPhoto(url, current, total, thumbEl) {
+    if (!isUserLoggedIn()) {
+      if (window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast('Please sign in or create an account to view all photos.', 'info');
+      }
+      if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
+        window.kejaAuth.requireTenantAuth();
+      } else {
+        openSignIn();
+      }
+      return;
+    }
     const hero = document.getElementById('km-detail-hero-img');
     const curEl = document.getElementById('km-photo-cur');
     if (hero) hero.src = url;
@@ -3496,17 +3550,21 @@
     if (el) el.classList.add('active');
   }
 
-  function openSignIn() {
-    if (window.kejaAuth && typeof window.kejaAuth.switchTab === 'function') {
-      window.kejaAuth.switchTab('signin');
+  function openSignIn(callback) {
+    if (window.kejaAuth && typeof window.kejaAuth.openAuthModal === 'function') {
+      if (typeof callback === 'function') {
+        window.kejaAuth.requireTenantAuth(callback);
+      } else {
+        window.kejaAuth.openAuthModal('signin');
+      }
     } else if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal('modal-auth');
     }
   }
 
-  function openSignUp() {
-    if (window.kejaAuth && typeof window.kejaAuth.switchTab === 'function') {
-      window.kejaAuth.switchTab('signup');
+  function openSignUp(callback) {
+    if (window.kejaAuth && typeof window.kejaAuth.openAuthModal === 'function') {
+      window.kejaAuth.openAuthModal('signup');
     } else if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal('modal-auth');
     }
