@@ -771,7 +771,7 @@ class AdminPortalEngine {
     let html = '';
 
     if (pending.properties.length === 0 && pending.services.length === 0 && pending.items.length === 0) {
-      html = '<div style="text-align: center; padding: 40px; color: #94a3b8;"><i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 12px; color: #10b981;"></i><p>All listings verified! âœ…</p></div>';
+      html = '<div style="text-align: center; padding: 40px; color: #94a3b8;"><i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 12px; color: #10b981;"></i><p>All listings verified! ✅</p></div>';
     } else {
       html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">';
 

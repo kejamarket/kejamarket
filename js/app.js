@@ -4564,7 +4564,7 @@ class NairobiRentalsApp {
     const propertyType = document.getElementById('hunt-property-type').value;
     const bedrooms = parseInt(document.getElementById('hunt-bedrooms').value) || 0;
     const moveInDate = document.getElementById('hunt-movein').value;
-    const furnished = document.getElementById('hunt-furnished').value;
+    const furnished = document.getElementById('hunt-furnished')?.value || 'unfurnished';
     const notes = document.getElementById('hunt-notes').value.trim();
     const phone = document.getElementById('hunt-phone').value.trim();
 

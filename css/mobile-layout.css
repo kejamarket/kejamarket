@@ -565,6 +565,18 @@ body.mobile-layout > .main-content > #recently-added-section {
   border: 1.5px solid #0284c7;
   box-shadow: 0 3px 8px rgba(2, 132, 199, 0.2);
 }
+.km-serv-cleaning {
+  background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+  color: #a21caf;
+  border: 1.5px solid #c026d3;
+  box-shadow: 0 3px 8px rgba(192, 38, 211, 0.2);
+}
+.km-serv-repairs {
+  background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+  color: #a16207;
+  border: 1.5px solid #ca8a04;
+  box-shadow: 0 3px 8px rgba(202, 138, 4, 0.2);
+}
 
 .km-service-title {
   font-size: 11px;
@@ -2443,6 +2455,20 @@ body.mobile-layout .modal-dialog {
     left: 50% !important;
     transform: translateX(-50%) !important;
     right: auto !important;
+  }
+  body.mobile-layout .modal-backdrop {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+  }
+  body.mobile-layout .modal-dialog {
+    max-width: 440px !important;
+    width: 95% !important;
+    border-radius: 20px !important;
+    max-height: 85vh !important;
+    margin: auto !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4) !important;
   }
 }
 

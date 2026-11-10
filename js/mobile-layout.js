@@ -975,14 +975,7 @@
             <div class="km-story-icon-ring km-cat-all"><i class="fas fa-border-all"></i></div>
             <span class="km-story-label">All</span>
           </button>
-          <button type="button" class="km-story-bubble km-story-special-hunter" onclick="MobileApp.openHouseHunt()">
-            <div class="km-story-icon-ring km-cat-hunter"><i class="fas fa-search-location"></i></div>
-            <span class="km-story-label" style="color:#006818; font-weight:800;">72h Hunter</span>
-          </button>
-          <button type="button" class="km-story-bubble km-story-special-wa" onclick="MobileApp.openWhatsAppAlerts()">
-            <div class="km-story-icon-ring km-cat-wa"><i class="fab fa-whatsapp"></i></div>
-            <span class="km-story-label" style="color:#128c7e; font-weight:800;">WA Alerts</span>
-          </button>
+
           <button type="button" class="km-story-bubble ${State.selectedCategory === 'single-room' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('single-room')">
             <div class="km-story-icon-ring km-cat-single"><i class="fas fa-door-closed"></i></div>
             <span class="km-story-label">Single Room</span>
@@ -1034,32 +1027,8 @@
         </div>
       </div>
 
-      <!-- KejaMarket Hero Value Banner -->
-      <div class="km-hero-promo-banner">
-        <div class="km-promo-content">
-          <div class="km-promo-badge"><i class="fas fa-bolt"></i> 100% DIRECT LANDLORDS</div>
-          <div class="km-promo-title">No Broker Fees &bull; Instant WhatsApp</div>
-          <div class="km-promo-sub">Connect directly with verified landlords across Kenya</div>
-        </div>
-        <button type="button" class="km-promo-btn" onclick="MobileApp.openWhatsAppAlerts()">Get Alerts</button>
-      </div>
-
-      <!-- 4-Pill Services Strip (Kenya SuperApp Standard) -->
+      <!-- 4-Pill Home Services Strip (Non-repeating Home Services) -->
       <div class="km-services-strip">
-        <div class="km-service-tile" onclick="MobileApp.openWhatsAppAlerts()">
-          <div class="km-service-icon-wrap km-serv-wa">
-            <i class="fab fa-whatsapp"></i>
-          </div>
-          <span class="km-service-title">WhatsApp Alerts</span>
-          <span class="km-service-badge km-badge-free">Free</span>
-        </div>
-        <div class="km-service-tile" onclick="MobileApp.openHouseHunt()">
-          <div class="km-service-icon-wrap km-serv-hunt">
-            <i class="fas fa-search-location"></i>
-          </div>
-          <span class="km-service-title">House Hunter</span>
-          <span class="km-service-badge km-badge-72h">72h Hunt</span>
-        </div>
         <div class="km-service-tile" onclick="MobileApp.openMovers()">
           <div class="km-service-icon-wrap km-serv-movers">
             <i class="fas fa-truck-moving"></i>
@@ -1073,6 +1042,20 @@
           </div>
           <span class="km-service-title">WiFi / Fibre</span>
           <span class="km-service-badge km-badge-isp">Setup</span>
+        </div>
+        <div class="km-service-tile" onclick="MobileApp.openCleaning()">
+          <div class="km-service-icon-wrap km-serv-cleaning">
+            <i class="fas fa-broom"></i>
+          </div>
+          <span class="km-service-title">Cleaning</span>
+          <span class="km-service-badge" style="background:#fdf4ff; color:#a21caf;">Hygiene</span>
+        </div>
+        <div class="km-service-tile" onclick="MobileApp.openRepairs()">
+          <div class="km-service-icon-wrap km-serv-repairs">
+            <i class="fas fa-tools"></i>
+          </div>
+          <span class="km-service-title">Repairs</span>
+          <span class="km-service-badge" style="background:#fefce8; color:#a16207;">Handyman</span>
         </div>
       </div>
 
@@ -1576,9 +1559,9 @@
               <div class="km-spec-card-label">Deposit</div>
             </div>
             <div class="km-spec-card">
-              <div class="km-spec-card-icon"><i class="fas fa-couch"></i></div>
-              <div class="km-spec-card-value">${prop.isFurnished ? 'Furnished' : 'Unfurnished'}</div>
-              <div class="km-spec-card-label">Furnishing</div>
+              <div class="km-spec-card-icon"><i class="fas ${prop.isBnb ? 'fa-couch' : 'fa-tint'}"></i></div>
+              <div class="km-spec-card-value">${prop.isBnb ? (prop.isFurnished ? 'Furnished' : 'Equipped') : (prop.waterSupplyType || 'Borehole')}</div>
+              <div class="km-spec-card-label">${prop.isBnb ? 'Furnishing' : 'Water Supply'}</div>
             </div>
             <div class="km-spec-card">
               <div class="km-spec-card-icon"><i class="fas fa-bolt"></i></div>
@@ -3043,6 +3026,25 @@
     }
   }
 
+  
+  function openCleaning() {
+    if (window.app && typeof window.app.filterCategory === 'function') {
+      window.app.filterCategory('Services & Artisans');
+    } else {
+      showScreen('home');
+      setCategoryChip('services');
+    }
+  }
+
+  function openRepairs() {
+    if (window.app && typeof window.app.filterCategory === 'function') {
+      window.app.filterCategory('Services & Artisans');
+    } else {
+      showScreen('home');
+      setCategoryChip('services');
+    }
+  }
+
   function openMovers() {
     if (window.app && typeof window.app.openModal === 'function') {
       window.app.openModal('modal-lead-movers');
@@ -3546,6 +3548,8 @@
     openHouseHunt,
     trackHunt,
     openMovers,
+    openCleaning,
+    openRepairs,
     openFibre,
     chatOnWhatsApp,
     switchHeroPhoto,

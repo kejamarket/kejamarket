@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'kejamarket-v92-free-gps-and-contact-direct';
+﻿const CACHE_NAME = 'kejamarket-v93-clean-modals-no-duplicates';
 
 const STATIC_ASSETS = [
   '/',
@@ -256,5 +256,6 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
 
 
