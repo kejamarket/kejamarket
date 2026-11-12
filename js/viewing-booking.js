@@ -107,7 +107,7 @@ const KejaViewing = {
 
         <div style="background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #d97706; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 0.82rem; color: #92400e;">
           <div style="font-weight: 700; margin-bottom: 2px;"><i class="fas fa-shield-alt"></i> KejaMarket Viewing Assurance</div>
-          Free to request. Property manager confirms within <strong>60 seconds</strong>. Once confirmed, pay only the official <strong>KSh 200 platform fee</strong> via M-Pesa to lock your slot and unlock exact GPS & caretaker contacts.
+          Schedule your free in-person or video inspection. Direct landlord contact and exact location are unlocked with zero fees.
         </div>
 
         <form id="viewing-request-form" onsubmit="KejaViewing.handleFormSubmit(event)">
@@ -277,9 +277,9 @@ const KejaViewing = {
           this.activeRequest = req;
 
           // Transition checks
-          if (req.status === 'slot_confirmed_awaiting_payment') {
+          if (req.status === 'slot_confirmed_awaiting_payment' || req.status === 'slot_confirmed' || req.status === 'confirmed') {
             this.stopPolling();
-            this.renderPaymentView(req);
+            this.renderUnlockedView(req);
           } else if (req.status === 'booking_confirmed' || req.contact_unlocked_at) {
             this.stopPolling();
             this.renderUnlockedView(req);

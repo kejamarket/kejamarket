@@ -362,12 +362,30 @@ class NairobiRentalsApp {
     }
   }
 
+  filterCategory(cat, el) {
+    this.setCategory(cat, el);
+  }
+
   setCategory(categoryName, el) {
     this.activeCategory = categoryName;
     
     // Update horizontal pills active class
-    document.querySelectorAll('.category-pill').forEach(p => {
-      p.classList.toggle('active', p.getAttribute('data-category') === categoryName);
+    document.querySelectorAll('.category-pill, .km-desk-cat-pill').forEach(p => {
+      const isMatch = (categoryName.toLowerCase() === 'all') 
+        ? p.textContent.trim().toLowerCase().includes('all') 
+        : p.textContent.trim().toLowerCase().includes(categoryName.toLowerCase());
+      p.classList.toggle('active', isMatch);
+      if (p.classList.contains('km-desk-cat-pill')) {
+        if (isMatch) {
+          p.style.background = '#006818';
+          p.style.borderColor = '#006818';
+          p.style.color = '#fff';
+        } else {
+          p.style.background = '#f8fafc';
+          p.style.borderColor = '#e2e8f0';
+          p.style.color = '#334155';
+        }
+      }
     });
 
     // Update sidebar list active class
@@ -1591,6 +1609,13 @@ class NairobiRentalsApp {
       // Favorites filter
       if (this.showOnlyFavorites && !this.favorites.has(p.id)) return false;
 
+      // Quick Suburb Filter
+      if (this.selectedSuburb) {
+        const sub = this.selectedSuburb.toLowerCase();
+        const pLoc = ((p.estateSuburb || '') + ' ' + (p.displayLocation || '') + ' ' + (p.locationDisplay || '') + ' ' + (p.title || '') + ' ' + (p.county || '')).toLowerCase();
+        if (!pLoc.includes(sub)) return false;
+      }
+
       // Category filter
       if (this.activeCategory && this.activeCategory !== 'All') {
         const cat = this.activeCategory.toLowerCase();
@@ -1933,6 +1958,11 @@ class NairobiRentalsApp {
             <i class="fas ${badgeIcon}"></i> ${badgeLabel}
           </span>
 
+          <!-- 0 Fee Green Badge -->
+          <span style="position: absolute; top: 7px; right: 38px; background: rgba(0, 104, 24, 0.92); color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 6px; z-index: 2; display: flex; align-items: center; gap: 3px;">
+            <i class="fas fa-check-circle" style="font-size: 9px;"></i> 0 Fee
+          </span>
+
           <!-- Favourite heart on top-right -->
           <button type="button" class="btn-card-fav ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); app.toggleFavorite('${p.id}', event)" title="Save to Favorites" aria-label="Favorite">
             <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i>
@@ -1950,14 +1980,14 @@ class NairobiRentalsApp {
             <span>${locationDisplay}</span>
           </div>
 
-          <!-- Price & Action Row (Reference Match: Price on left, Book Now on right) -->
-          <div class="card-price-action-row">
-            <div class="card-price">
-              KSh ${displayRent.toLocaleString()} <span class="period">/ month</span>
+          <!-- Price & Action Row with Direct WhatsApp -->
+          <div class="card-price-action-row" style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin: 4px 0 6px 0;">
+            <div class="card-price" style="font-size: 1.05rem; font-weight: 800; color: #006818;">
+              KSh ${displayRent.toLocaleString()} <span class="period" style="font-size: 0.72rem; color: #64748b; font-weight: 500;">/ mo</span>
             </div>
-            <button type="button" class="btn-card-book-now" onclick="event.stopPropagation(); app.openPropertyDetail('${p.id}')">
-              <i class="fas fa-calendar-check"></i> Book Now
-            </button>
+            <a href="https://wa.me/${cleanWa}?text=${encodeURIComponent('Hi, I am interested in viewing ' + displayTitle + ' on KejaMarket')}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display: inline-flex; align-items: center; gap: 4px; background: #25d366; color: white; padding: 4px 9px; border-radius: 6px; font-size: 0.74rem; font-weight: 800; text-decoration: none; box-shadow: 0 1px 4px rgba(37,211,102,0.35); flex-shrink: 0;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fab fa-whatsapp" style="font-size: 12px;"></i> WhatsApp
+            </a>
           </div>
 
           <!-- Specs row -->
@@ -1965,16 +1995,16 @@ class NairobiRentalsApp {
             ${specHtml}
           </div>
 
-          <!-- Card Bottom 3-Action Footer (View | Share | Favourite) -->
-          <div class="card-bottom-actions-row">
-            <button type="button" class="cbar-btn" onclick="event.stopPropagation(); app.openPropertyDetail('${p.id}')">
-              <i class="far fa-eye"></i> View
+          <!-- Card Bottom Actions Footer -->
+          <div class="card-bottom-actions-row" style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 6px; margin-top: auto;">
+            <button type="button" class="cbar-btn" onclick="event.stopPropagation(); app.openPropertyDetail('${p.id}')" style="font-weight: 700; color: #006818;">
+              <i class="far fa-eye"></i> Details
+            </button>
+            <button type="button" class="cbar-btn" onclick="event.stopPropagation(); KejaViewing.openBookingModal('${p.id}')" style="color: #0284c7; font-weight: 700;">
+              <i class="fas fa-calendar-check"></i> Free Viewing
             </button>
             <button type="button" class="cbar-btn" onclick="event.stopPropagation(); app.openShareModal('${p.id}', event)">
               <i class="fas fa-share-alt"></i> Share
-            </button>
-            <button type="button" class="cbar-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); app.toggleFavorite('${p.id}', event)">
-              <i class="${isFav ? 'fas fa-heart' : 'far fa-heart'}"></i> Favourite
             </button>
           </div>
         </div>
@@ -3379,7 +3409,7 @@ class NairobiRentalsApp {
                 <i class="fas fa-calendar-check" style="color: #1db010;"></i> <strong>Book Official Viewing:</strong> 60s SLA
               </div>
               <button type="button" onclick="app.triggerViewingFromChat()" style="background: #1db010; color: white; border: none; border-radius: 6px; padding: 4px 10px; font-weight: 800; font-size: 0.72rem; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,181,63,0.3);">
-                Book (KSh 200)
+                Schedule Free Viewing
               </button>
             </div>
           ` : ''}

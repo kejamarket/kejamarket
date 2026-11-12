@@ -41,6 +41,15 @@ class MonetizationEngine {
 
   // Open Checkout for a Specific Item
   openMpesaCheckout(itemType, itemName, amountKes, targetPropertyId = null, prefillPhone = null, autoTrigger = false) {
+    // Only 3-Day House Hunt is monetized on KejaMarket. Everything else is 100% Free!
+    if (itemType !== 'house_hunt' && itemType !== '3_day_hunt' && itemType !== 'concierge_hunt') {
+      if (window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast('Listing, discovering, and viewings on KejaMarket are 100% Free! Zero broker fees.', 'success');
+      } else {
+        alert('Listing and viewings on KejaMarket are 100% Free! No payment required.');
+      }
+      return;
+    }
     this.currentPendingOrder = {
       itemType,
       itemName,

@@ -1315,7 +1315,7 @@ const kejaDashboard = (() => {
               <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
             </summary>
             <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
-              KejaMarket (<strong>kejamarket.co.ke</strong>) is Kenya's verified online rental property marketplace. Tenants browse property photos, rent, deposit, amenities, and general neighborhood areas for free. Once you find a house you like, book a viewing slot through KejaMarket. When the landlord or caretaker confirms the appointment, a KSh 200 commitment fee unlocks exact GPS directions and verified contact details.
+              KejaMarket (<strong>kejamarket.co.ke</strong>) is Kenya's verified online rental property marketplace. Tenants browse property photos, rent, deposit, amenities, and general neighborhood areas for free. Once you find a house you like, book a viewing slot through KejaMarket. When the landlord or caretaker confirms the appointment, verified direct contacts and exact directions are unlocked for free.
             </div>
           </details>
 
@@ -1325,7 +1325,7 @@ const kejaDashboard = (() => {
               <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #16a34a;"></i>
             </summary>
             <div style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
-              Property discovery and browsing are 100% free. Once you choose to book a physical viewing, an official KSh 200 viewing commitment fee is charged only after the property representative confirms availability. This reserves your slot, prevents double bookings, and unlocks direct caretaker contacts and exact GPS. Never pay arbitrary broker or "fuel" fees directly to individuals.
+              Property discovery and browsing are 100% free. Once you choose to book a physical viewing, all scheduled viewings on KejaMarket are 100% free! Direct landlord contacts and directions are unlocked upon confirmation with zero broker commissions. Never pay arbitrary broker or "fuel" fees directly to individuals.
             </div>
           </details>
 

@@ -14,9 +14,9 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=96.0&t=20261112_clean_popups" as="style">
-  <link rel="preload" href="js/app.js?v=96.0&t=20261112_clean_popups" as="script">
-  <link rel="preload" href="js/auth.js?v=96.0&t=20261112_clean_popups" as="script">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=97.0&t=20261113_desktop_polish" as="style">
+  <link rel="preload" href="js/app.js?v=97.0&t=20261113_desktop_polish" as="script">
+  <link rel="preload" href="js/auth.js?v=97.0&t=20261113_desktop_polish" as="script">
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,7 +24,7 @@
 
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=96.0&t=20261112_clean_popups">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=97.0&t=20261113_desktop_polish">
   
   
   <!-- Hierarchical Location Search Component -->
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="css/map.css?v=2.0">
 
   <!-- KejaMarket PWA & Mobile Journey Layout -->
-  <link rel="stylesheet" href="css/mobile-layout.css?v=96.0&t=20261112_clean_popups">
+  <link rel="stylesheet" href="css/mobile-layout.css?v=97.0&t=20261113_desktop_polish">
   <script>
     // Force mobile layout detection
     (function() {
@@ -283,7 +283,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Additional Component CSS -->
-  <link rel="stylesheet" href="css/location-picker.css?v=96.0&t=20261112_clean_popups">
+  <link rel="stylesheet" href="css/location-picker.css?v=97.0&t=20261113_desktop_polish">
   <link rel="stylesheet" href="css/verification.css?v=5.0">
   <link rel="stylesheet" href="css/communication-system.css?v=5.0">
 </head>
@@ -1166,6 +1166,65 @@
 
 
       <!-- Results Header & View Controls (Matches reference image exactly) -->
+      <!-- Desktop Modern App-Style Discovery Bar (Matching Mobile App Quality) -->
+      <div class="desktop-discovery-header" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px 18px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
+        
+        <!-- Category Story Pills (Desktop) -->
+        <div class="desktop-category-stories" style="display: flex; align-items: center; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; scrollbar-width: none;">
+          <button type="button" class="km-desk-cat-pill active" onclick="app.filterCategory('all', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; border: 1.5px solid #006818; background: #006818; color: #fff; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-border-all"></i> All
+          </button>
+          <button type="button" class="km-desk-cat-pill" onclick="app.filterCategory('Single Room', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #334155; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-door-closed" style="color: #0284c7;"></i> Single Room
+          </button>
+          <button type="button" class="km-desk-cat-pill" onclick="app.filterCategory('Double Room', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #334155; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-person-booth" style="color: #ea580c;"></i> Double Room
+          </button>
+          <button type="button" class="km-desk-cat-pill" onclick="app.filterCategory('Bedsitter', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #334155; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-bed" style="color: #10b981;"></i> Bedsitters
+          </button>
+          <button type="button" class="km-desk-cat-pill" onclick="app.filterCategory('1 Bedroom', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #334155; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-door-open" style="color: #059669;"></i> 1 Bed
+          </button>
+          <button type="button" class="km-desk-cat-pill" onclick="app.filterCategory('2 Bedrooms', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #334155; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-home" style="color: #ef4444;"></i> 2 Beds
+          </button>
+          <button type="button" class="km-desk-cat-pill" onclick="app.filterCategory('3 Bedrooms', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #334155; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-building" style="color: #2563eb;"></i> 3+ Beds
+          </button>
+          <button type="button" class="km-desk-cat-pill" onclick="app.filterCategory('Apartment', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #334155; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-city" style="color: #8b5cf6;"></i> Apartments
+          </button>
+          <button type="button" class="km-desk-cat-pill" onclick="app.filterCategory('BnB', this)" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #334155; cursor: pointer; white-space: nowrap; transition: all 0.2s;">
+            <i class="fas fa-umbrella-beach" style="color: #06b6d4;"></i> BnB / Stay
+          </button>
+        </div>
+
+        <!-- Quick Suburb Filter Pills (Desktop) -->
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 6px; overflow-x: auto; flex: 1; scrollbar-width: none;" class="desktop-suburb-pills-bar">
+            <span style="font-size: 0.78rem; font-weight: 800; color: #64748b; white-space: nowrap; margin-right: 2px;">Popular Areas:</span>
+            <button type="button" class="km-suburb-pill active" onclick="app.setQuickSuburbFilter('', this)">All Nairobi</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Ruaka', this)">📍 Ruaka</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Kilimani', this)">📍 Kilimani</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Westlands', this)">📍 Westlands</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Roysambu', this)">📍 Roysambu</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Syokimau', this)">✈️ Syokimau</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Kasarani', this)">📍 Kasarani</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('South B', this)">📍 South B</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Ngong Road', this)">📍 Ngong Rd</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Ongata Rongai', this)">🦁 Rongai</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Kitengela', this)">🦁 Kitengela</button>
+            <button type="button" class="km-suburb-pill" onclick="app.setQuickSuburbFilter('Mlolongo', this)">✈️ Mlolongo</button>
+          </div>
+
+          <!-- Direct Landlord Guarantee Badge -->
+          <div style="display: flex; align-items: center; gap: 6px; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 4px 10px; border-radius: 8px; font-size: 0.76rem; font-weight: 700; color: #166534; white-space: nowrap;">
+            <i class="fas fa-check-circle" style="color: #006818;"></i> 100% Direct Landlords · 0 Broker Fees
+          </div>
+        </div>
+      </div>
+
       <div class="results-header">
         <div class="results-count-section">
           <span class="results-count-text" id="results-count-num">0</span>
@@ -3843,7 +3902,7 @@
 
 
   <!-- Auth Modal Styles - Clean and Fixed -->
-  <link rel='stylesheet' href='css/modal-auth-fixed.css?v=96.0&t=20261112_clean_popups'>
+  <link rel='stylesheet' href='css/modal-auth-fixed.css?v=97.0&t=20261113_desktop_polish'>
 
   <!-- ====================================================================
        MODAL: Fullscreen Image Lightbox
@@ -4547,10 +4606,10 @@
   <script src="js/lazy-load.js" defer></script>
   
   <!-- Data & Core Dependencies (Must load before app.js) -->
-  <script src="db/locations-hierarchy.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/data/locations.js?v=96.0&t=20261112_clean_popups" defer></script>
+  <script src="db/locations-hierarchy.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/data/locations.js?v=97.0&t=20261113_desktop_polish" defer></script>
   <script src="js/data/seedListings.js?v=6.1&t=202610180330" defer></script>
-  <script src="js/location-search.js?v=96.0&t=20261112_clean_popups" defer></script>
+  <script src="js/location-search.js?v=97.0&t=20261113_desktop_polish" defer></script>
 
   <!-- Maps & Leaflet -->
   <script src="vendor/leaflet/leaflet.js" defer></script>
@@ -4563,35 +4622,35 @@
   <script src="js/offline-manager.js?v=32.0" defer></script>
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
-  <script src="js/components/location-picker.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/app.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/viewing-booking.js?v=96.0&t=20261112_clean_popups" defer></script>
+  <script src="js/components/location-picker.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/app.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/viewing-booking.js?v=97.0&t=20261113_desktop_polish" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
-  <script src="js/mobile-layout.js?v=96.0&t=20261112_clean_popups" defer></script>
+  <script src="js/mobile-layout.js?v=97.0&t=20261113_desktop_polish" defer></script>
   
   <!-- Secondary Features: Deferred loading -->
-  <script src="js/reviews.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/comments.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/watermark.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/verification.js?v=96.0&t=20261112_clean_popups" defer></script>
+  <script src="js/reviews.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/comments.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/watermark.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/verification.js?v=97.0&t=20261113_desktop_polish" defer></script>
   
   <!-- Portal Features: Load on demand -->
-  <script src="js/landlord-portal.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/service-portal.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/user-dashboard.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/enhanced-landlord-portal.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/simplified-property-management.js?v=96.0&t=20261112_clean_popups" defer></script>
+  <script src="js/landlord-portal.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/service-portal.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/user-dashboard.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/enhanced-landlord-portal.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/simplified-property-management.js?v=97.0&t=20261113_desktop_polish" defer></script>
   
   <!-- Communication: Load when user interacts -->
-  <script src="js/communication-system.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/messages-interface.js?v=96.0&t=20261112_clean_popups" defer></script>
+  <script src="js/communication-system.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/messages-interface.js?v=97.0&t=20261113_desktop_polish" defer></script>
   
   <!-- Non-essential Features -->
-  <script src="js/botSimulator.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/monetization.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/instagram-integration.js?v=96.0&t=20261112_clean_popups" defer></script>
-  <script src="js/admin.js?v=96.0&t=20261112_clean_popups" defer></script>
+  <script src="js/botSimulator.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/monetization.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/instagram-integration.js?v=97.0&t=20261113_desktop_polish" defer></script>
+  <script src="js/admin.js?v=97.0&t=20261113_desktop_polish" defer></script>
   
   <!-- GLOBAL SERVICES SHORTCUTS -->
   <script>
@@ -4777,7 +4836,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=96.0&t=20261112_clean_popups');
+      navigator.serviceWorker.register('/sw.js?v=97.0&t=20261113_desktop_polish');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->

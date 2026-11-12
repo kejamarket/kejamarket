@@ -2138,9 +2138,8 @@ class PostgreSQLStore {
       return { error: 'unauthorized', message: 'You do not have access to this viewing booking' };
     }
 
-    if (row.booking_status !== 'confirmed' && row.booking_status !== 'completed' && !isAdmin) {
-      return { error: 'payment_required', message: 'Viewing commitment fee must be paid to unlock contact and GPS details' };
-    }
+    // Viewings are 100% free on KejaMarket - unlock immediately
+    // (row.booking_status !== 'confirmed' check bypassed for free viewing experience)
 
     return {
       bookingId: row.booking_id,
