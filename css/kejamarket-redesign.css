@@ -2852,3 +2852,34 @@ body { background: #f7f9fb !important; }
 .hunt-step-node.done .hunt-step-label {
   color: #0f172a !important;
 }
+
+/* Compact, well-proportioned modal sizing for all popups */
+.modal-backdrop {
+  z-index: 99990 !important;
+  padding: 14px !important;
+}
+#modal-auth {
+  z-index: 2000000 !important;
+}
+.modal-dialog {
+  max-width: 480px !important;
+  max-height: 86vh !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3) !important;
+}
+#modal-house-hunt .modal-dialog,
+#modal-whatsapp-alerts .modal-dialog,
+#modal-hunt-tracker .modal-dialog,
+#modal-lead-movers .modal-dialog {
+  max-width: 480px !important;
+  width: 92% !important;
+}
+#modal-property-detail .modal-dialog {
+  max-width: 680px !important;
+}
+.modal-header {
+  padding: 14px 18px !important;
+}
+.modal-body {
+  padding: 16px 18px !important;
+}

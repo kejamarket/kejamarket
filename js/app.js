@@ -110,7 +110,7 @@ class NairobiRentalsApp {
 
   async fetchLiveProperties() {
     try {
-      // 2.5-second timeout — Supabase connection may hang on localhost
+      // 2.5-second timeout - Supabase connection may hang on localhost
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 2500);
       const res = await fetch('/api/properties', { signal: controller.signal });
@@ -244,7 +244,7 @@ class NairobiRentalsApp {
         this.saveFavorites();
       }
     } catch (e) {
-      // Silent — offline fallback to localStorage
+      // Silent - offline fallback to localStorage
     }
   }
 
@@ -286,7 +286,7 @@ class NairobiRentalsApp {
       fetch(`/api/favourites/${encodeURIComponent(propertyId)}`, {
         method,
         headers: { 'Authorization': `Bearer ${token}` }
-      }).catch(() => {}); // Silent — localStorage is fallback
+      }).catch(() => {}); // Silent - localStorage is fallback
     }
   }
 
@@ -2299,7 +2299,7 @@ class NairobiRentalsApp {
     if (!p) return;
     this.normalizeProperty(p);
 
-    // Normalize landlord — API listings may not have a landlord object
+    // Normalize landlord - API listings may not have a landlord object
     if (!p.landlord || typeof p.landlord !== 'object') {
       p.landlord = {
         name: p.landlordName || p.owner_name || 'Landlord',
@@ -2679,7 +2679,7 @@ class NairobiRentalsApp {
       }
     }
 
-    // Google Maps Link + Map visibility — Always visible, showing neighborhood or exact location
+    // Google Maps Link + Map visibility - Always visible, showing neighborhood or exact location
     const directionsBtn = document.getElementById('detail-btn-directions');
     const mapSection = document.getElementById('detail-map-section');
     const mapEl = document.getElementById('detail-property-map');
@@ -2789,11 +2789,11 @@ class NairobiRentalsApp {
       scrollWheelZoom: true
     }).setView([coords.lat, coords.lng], 15);
     
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       minZoom: 5,
-      attribution: '© <a href="https://carto.com/">CARTO</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
-      subdomains: ['a', 'b', 'c', 'd'],
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: ['a', 'b', 'c'],
       tileSize: 256,
       detectRetina: true,
       updateWhenZooming: false
@@ -3481,7 +3481,7 @@ class NairobiRentalsApp {
     }
   }
 
-  // simulateLandlordReply removed — landlords reply manually
+  // simulateLandlordReply removed - landlords reply manually
 
   loadChatMessages() {
     // Load from localStorage as cache first
@@ -3549,7 +3549,7 @@ class NairobiRentalsApp {
           this.renderChatMessages();
         }
       } catch (err) {
-        // Silent fail — polling in background
+        // Silent fail - polling in background
       }
     }, 5000); // Poll every 5 seconds
   }
@@ -4094,7 +4094,7 @@ class NairobiRentalsApp {
   }
 
   // ── SOCIAL SHARING ──────────────────────────────────────────────
-  // All share methods are open to anyone — no auth required to share
+  // All share methods are open to anyone - no auth required to share
   _getShareUrl(propertyId) {
     const base = window.location.origin + window.location.pathname;
     return `${base}?property=${encodeURIComponent(propertyId)}`;
@@ -4104,7 +4104,7 @@ class NairobiRentalsApp {
     if (!p) return 'Check out this property on KejaMarket!';
     const price = p.rentKes ? `KSh ${Number(p.rentKes).toLocaleString()}` : '';
     const loc = p.estateSuburb || p.location || '';
-    return `🏠 ${p.title}${loc ? ' – ' + loc : ''}${price ? ' | ' + price + '/mo' : ''} — Found on KejaMarket!`;
+    return `🏠 ${p.title}${loc ? ' - ' + loc : ''}${price ? ' | ' + price + '/mo' : ''} - Found on KejaMarket!`;
   }
 
   handleCardWhatsApp(propertyId, event) {
@@ -4345,7 +4345,7 @@ class NairobiRentalsApp {
     this._calculatedRentMax = maxRent;
 
     if (rangeDisp) {
-      rangeDisp.textContent = `KSh ${minRent.toLocaleString('en-KE')} — ${maxRent.toLocaleString('en-KE')}`;
+      rangeDisp.textContent = `KSh ${minRent.toLocaleString('en-KE')} - ${maxRent.toLocaleString('en-KE')}`;
     }
 
     // Evaluate Financial Health
@@ -4359,7 +4359,7 @@ class NairobiRentalsApp {
       if (rentRatio <= 0.30 && bufferRatio >= 0.15) {
         badge.className = 'afford-health-pill comfort';
         badge.innerHTML = '<i class="fas fa-shield-alt"></i> Comfort Zone (Safe & Prudent)';
-        if (note) note.textContent = 'Calculated within 25%–30% of take-home pay, with room for savings and unexpected emergencies.';
+        if (note) note.textContent = 'Calculated within 25%-30% of take-home pay, with room for savings and unexpected emergencies.';
       } else if (rentRatio <= 0.38 && bufferRatio >= 0.05) {
         badge.className = 'afford-health-pill stretch';
         badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Stretch Zone (Manageable)';
@@ -4425,7 +4425,7 @@ class NairobiRentalsApp {
       resultsElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    this.showToast(`Showing rentals within KSh ${minRent.toLocaleString()} – ${maxRent.toLocaleString()}/mo`, 'success');
+    this.showToast(`Showing rentals within KSh ${minRent.toLocaleString()} - ${maxRent.toLocaleString()}/mo`, 'success');
   }
 
   // ══════════════════════════════════════════════════════════════════
@@ -4574,9 +4574,16 @@ class NairobiRentalsApp {
 
     if (!session || !token) {
       this.showToast('Please sign in or create an account to start your House Hunt.', 'info');
+      const authM = document.getElementById('modal-auth');
+      if (authM) authM.style.setProperty('z-index', '2000000', 'important');
       if (window.kejaAuth && typeof window.kejaAuth.requireTenantAuth === 'function') {
         window.kejaAuth.requireTenantAuth(() => {
-          this.submitHouseHuntRequest();
+          // Re-submit with filled parameters once authenticated
+          setTimeout(() => {
+            const btn = document.getElementById('btn-submit-hunt');
+            if (btn) btn.click();
+            else this.submitHouseHuntRequest();
+          }, 300);
         });
       } else if (window.kejaAuth && typeof window.kejaAuth.openAuthModal === 'function') {
         window.kejaAuth.openAuthModal('signin');
@@ -5192,7 +5199,7 @@ KejaApp.prototype.shareToSocial = function(platform) {
   const p = this.selectedShareProperty || this.selectedPropertyForDetail;
   const url = p ? `https://kejamarket.co.ke/property/${p.id}` : window.location.href;
   const title = p ? p.title : 'Check out this property on KejaMarket';
-  const text = `${title} — Find your next verified rental on KejaMarket Kenya`;
+  const text = `${title} - Find your next verified rental on KejaMarket Kenya`;
 
   switch(platform) {
     case 'wa':

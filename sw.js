@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'kejamarket-v95-hunt-clarity-scroll';
+﻿const CACHE_NAME = 'kejamarket-v96-desktop-clean';
 
 const STATIC_ASSETS = [
   '/',

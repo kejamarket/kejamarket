@@ -180,6 +180,9 @@ app.use(express.static(__dirname, {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
+      if (filePath.endsWith('.html')) res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      if (filePath.endsWith('.js')) res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      if (filePath.endsWith('.css')) res.setHeader('Content-Type', 'text/css; charset=utf-8');
     } else if (filePath.match(/\.(woff2?|ttf|eot|png|jpe?g|gif|svg|ico|webp)$/i)) {
       // Fonts and images: Immutable long-term caching (30 days) - zero re-download
       res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');

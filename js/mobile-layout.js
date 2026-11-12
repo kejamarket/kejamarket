@@ -80,7 +80,7 @@
       emoji: '🏙️',
       areas: [
         { name: 'All Nairobi', val: 'Nairobi' },
-        // — West Nairobi
+        // - West Nairobi
         { name: 'Westlands', val: 'Westlands', subZones: ['Sarit Centre', 'Rhapta Rd', 'Mpaka Rd', 'Muthithi Rd', 'Parklands Rd'] },
         { name: 'Kilimani', val: 'Kilimani', subZones: ['Yaya Centre', 'Argwings Kodhek', 'Dennis Pritt', 'Wood Avenue', 'Chania Avenue'] },
         { name: 'Kileleshwa', val: 'Kileleshwa', subZones: ['Gatundu Rd', 'Kandara Rd', 'Othaya Rd', 'Siaya Rd'] },
@@ -107,12 +107,12 @@
         { name: 'Woodley', val: 'Woodley', subZones: [] },
         { name: 'Ngumo', val: 'Ngumo', subZones: [] },
         { name: 'Jamhuri', val: 'Jamhuri', subZones: [] },
-        // — South Nairobi
+        // - South Nairobi
         { name: 'South B', val: 'South B', subZones: ['Mariakani', 'Plainsview', 'Golden Gate', 'Balozi', 'Hazina'] },
         { name: 'South C', val: 'South C', subZones: ['Akiba', 'Mugoya', 'Five Star', 'Bellevue'] },
         { name: 'Nairobi West', val: 'Nairobi West', subZones: ['West Shopping Centre', 'Gandhi Hospital Area'] },
         { name: 'Madaraka', val: 'Madaraka', subZones: ['Strathmore Area', 'Madaraka Estate'] },
-        // — CBD & North
+        // - CBD & North
         { name: 'Nairobi CBD', val: 'Nairobi CBD', subZones: ['Tom Mboya St', 'Moi Avenue', 'Kimathi St'] },
         { name: 'Ngara', val: 'Ngara', subZones: ['Fig Tree', 'Chambers Rd', 'Ngara Posta'] },
         { name: 'Pangani', val: 'Pangani', subZones: ['Pangani Girls Area', 'Thika Rd Interchange'] },
@@ -121,7 +121,7 @@
         { name: 'Pumwani', val: 'Pumwani', subZones: [] },
         { name: 'Majengo', val: 'Majengo', subZones: [] },
         { name: 'Gikomba', val: 'Gikomba', subZones: [] },
-        // — Kasarani & North Nairobi
+        // - Kasarani & North Nairobi
         { name: 'Roysambu', val: 'Roysambu', subZones: ['Lumumba Drive', 'TRM Drive', 'Mirema Drive', 'USIU Rd'] },
         { name: 'Kasarani', val: 'Kasarani', subZones: ['Clay City', 'Seasons', 'Hunters', 'Sunton', 'Sportsview', 'Mwiki'] },
         { name: 'Zimmerman', val: 'Zimmerman', subZones: ['Base', 'Kamakis Link', 'Roysambu Border'] },
@@ -139,14 +139,14 @@
         { name: 'Kariobangi North', val: 'Kariobangi North', subZones: [] },
         { name: 'Kariobangi South', val: 'Kariobangi South', subZones: [] },
         { name: 'Korogocho', val: 'Korogocho', subZones: [] },
-        // — East Nairobi
+        // - East Nairobi
         { name: 'Umoja', val: 'Umoja', subZones: ['Umoja I', 'Umoja II', 'Umoja Innercore'] },
         { name: 'Donholm', val: 'Donholm', subZones: ['Phase 1', 'Phase 2', 'Phase 5', 'Greenspan', 'Greenfields'] },
         { name: 'Buruburu', val: 'Buruburu', subZones: ['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4', 'Phase 5'] },
         { name: 'Kayole', val: 'Kayole', subZones: ['Kayole I', 'Kayole II', 'Kayole III'] },
         { name: 'Dandora', val: 'Dandora', subZones: ['Phase I', 'Phase II', 'Phase III', 'Phase IV', 'Phase V'] },
         { name: 'Komarock', val: 'Komarock', subZones: [] },
-        // — South East Nairobi
+        // - South East Nairobi
         { name: 'Embakasi', val: 'Embakasi', subZones: ['Village', 'Nyayo Estate', 'Baraka Estate', 'Tassia'] },
         { name: 'Pipeline', val: 'Pipeline', subZones: ['Stage', 'Plot 10', 'Tumaini Area'] },
         { name: 'Fedha', val: 'Fedha', subZones: ['Fedha Stage', 'Gate B', 'Avenue Park'] },
@@ -533,7 +533,7 @@
         </button>
       </nav>
 
-      <!-- Location Picker Bottom Sheet (Modal) — Hierarchical Kenya Locations -->
+      <!-- Location Picker Bottom Sheet (Modal) - Hierarchical Kenya Locations -->
       <div class="km-bottom-sheet-backdrop" id="km-loc-picker-modal" onclick="if(event.target === this) MobileApp.closeLocationModal()">
         <div class="km-bottom-sheet km-loc-sheet">
           <div class="km-sheet-handle"></div>
@@ -1678,15 +1678,15 @@
             <div class="km-detail-map-header">
               <div>
                 <div class="km-map-title"><i class="fas fa-map-marked-alt" style="color:#006818;"></i> Location & Neighborhood Map</div>
-                <div class="km-map-sub">${prop.estateSuburb || prop.county || coords.areaName || 'Nairobi'} • Neighborhood Radius</div>
+                <div class="km-map-sub">${prop.estateSuburb || prop.county || coords.areaName || 'Nairobi'} • Verified Direct Location</div>
               </div>
               <a href="https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}" target="_blank" rel="noopener noreferrer" class="km-map-dir-btn">
                 <i class="fas fa-directions"></i> Directions
               </a>
             </div>
             <div id="km-mobile-detail-map" class="km-mobile-detail-map"></div>
-            <div class="km-map-footer-note">
-              <i class="fas fa-shield-alt" style="color:#006818;"></i> <strong>KejaMarket Privacy Protection:</strong> Showing ~250m radius neighborhood zone. Exact gate directions & caretaker pin provided upon booking confirmation.
+            <div class="km-map-footer-note" style="color:#006818; font-weight:700; font-size:11.5px; display:flex; align-items:center; gap:6px;">
+              <i class="fas fa-check-circle" style="color:#006818;"></i> 100% Verified Location & Direct Directions
             </div>
           </div>
 
@@ -1810,10 +1810,10 @@
       }).setView([coords.lat, coords.lng], 15);
 
       // High-performance CartoDB Voyager tiles (never blocked with 403 like OSM)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        subdomains: ['a', 'b', 'c', 'd'],
-        attribution: '&copy; OpenStreetMap &copy; CARTO'
+        subdomains: ['a', 'b', 'c'],
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
       // KejaMarket Signature Green Pin
@@ -1940,10 +1940,10 @@
           <div class="km-filter-title">Quick Budget Presets (KSh)</div>
           <div class="km-filter-chip-grid">
             <div class="km-fchip" onclick="MobileApp.setBudgetPreset(0, 5000, this)">Under 5K</div>
-            <div class="km-fchip" onclick="MobileApp.setBudgetPreset(5000, 10000, this)">5K – 10K</div>
-            <div class="km-fchip" onclick="MobileApp.setBudgetPreset(10000, 20000, this)">10K – 20K</div>
-            <div class="km-fchip" onclick="MobileApp.setBudgetPreset(20000, 35000, this)">20K – 35K</div>
-            <div class="km-fchip" onclick="MobileApp.setBudgetPreset(35000, 60000, this)">35K – 60K</div>
+            <div class="km-fchip" onclick="MobileApp.setBudgetPreset(5000, 10000, this)">5K - 10K</div>
+            <div class="km-fchip" onclick="MobileApp.setBudgetPreset(10000, 20000, this)">10K - 20K</div>
+            <div class="km-fchip" onclick="MobileApp.setBudgetPreset(20000, 35000, this)">20K - 35K</div>
+            <div class="km-fchip" onclick="MobileApp.setBudgetPreset(35000, 60000, this)">35K - 60K</div>
             <div class="km-fchip" onclick="MobileApp.setBudgetPreset(60000, 999999, this)">60K+</div>
           </div>
         </div>
@@ -1956,7 +1956,7 @@
           </div>
           <div style="font-size:11px; color:#64748b; margin-bottom:8px;">Select a county/region, then pick your area and sub-zone:</div>
 
-          <!-- County Filter Tabs — All 47 Kenya counties grouped by region -->
+          <!-- County Filter Tabs - All 47 Kenya counties grouped by region -->
           <div class="km-filter-county-tabs" id="km-filter-county-tabs">
             <button type="button" class="km-filter-county-tab ${(!State.activeFilterCounty || State.activeFilterCounty === 'all') ? 'active' : ''}" onclick="MobileApp.switchFilterCounty('all', this)">🇰🇪 All Kenya</button>
             <button type="button" class="km-filter-county-tab ${State.activeFilterCounty === 'nairobi' ? 'active' : ''}" onclick="MobileApp.switchFilterCounty('nairobi', this)">🏙️ Nairobi City</button>
@@ -1999,7 +1999,7 @@
           <div class="km-filter-title">Custom Price Range (KSh)</div>
           <div class="km-range-inputs">
             <input type="number" class="km-range-input" placeholder="Min KSh" id="km-filter-min" value="${State.filters.minPrice || ''}">
-            <span style="color:#94a3b8; font-weight:800;">–</span>
+            <span style="color:#94a3b8; font-weight:800;">-</span>
             <input type="number" class="km-range-input" placeholder="Max KSh" id="km-filter-max" value="${State.filters.maxPrice || ''}">
           </div>
         </div>
@@ -2212,7 +2212,7 @@
         <!-- Description -->
         <p style="font-size:12.5px; color:#64748b; line-height:1.55; margin-bottom:20px; text-align:left;">
           ${isVirtual
-            ? '📹 The caretaker will start a live WhatsApp video call at the scheduled time — you can inspect every room, water pressure, lighting, and ask real-time questions without leaving home.'
+            ? '📹 The caretaker will start a live WhatsApp video call at the scheduled time - you can inspect every room, water pressure, lighting, and ask real-time questions without leaving home.'
             : '🏠 The property manager has been notified via SMS & WhatsApp. You will receive gate directions, caretaker name, and gate pin before your visit. Zero fees required.'}
         </p>
 
@@ -2600,7 +2600,7 @@
 
         <div id="km-afford-result" style="display:none; background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:12px; padding:14px; margin-bottom:18px; text-align:center;">
           <div style="font-size:11.5px; font-weight:800; color:#15803d; margin-bottom:2px;">RECOMMENDED RENT RANGE</div>
-          <div id="km-afford-range" style="font-size:22px; font-weight:900; color:#006818;">KSh 0 – 0</div>
+          <div id="km-afford-range" style="font-size:22px; font-weight:900; color:#006818;">KSh 0 - 0</div>
           <div style="font-size:11px; color:#64748b; margin-top:3px;">Spend between 15% and 30% of gross income on rent</div>
         </div>
 
@@ -3059,7 +3059,7 @@
     if (modal) {
       modal.classList.add('open');
       modal.style.setProperty('display', 'flex', 'important');
-      modal.style.setProperty('z-index', '999999', 'important');
+      modal.style.setProperty('z-index', '99990', 'important');
       modal.scrollTop = 0;
       return;
     }
@@ -3075,7 +3075,7 @@
     if (modal) {
       modal.classList.add('open');
       modal.style.setProperty('display', 'flex', 'important');
-      modal.style.setProperty('z-index', '999999', 'important');
+      modal.style.setProperty('z-index', '99990', 'important');
       modal.scrollTop = 0;
       return;
     }
@@ -3255,7 +3255,7 @@
       }
     }
 
-    // If WhatsApp Video Tour — open WhatsApp call directly
+    // If WhatsApp Video Tour - open WhatsApp call directly
     if (viewingType === 'virtual') {
       const phone = (prop.whatsapp || prop.landlord?.whatsapp || prop.phone || prop.contactPhone || '').replace(/[^0-9]/g, '');
       if (phone) {
@@ -3681,7 +3681,7 @@
       const rangeEl = document.getElementById('km-afford-range');
       const browseBtn = document.getElementById('km-afford-browse-btn');
       if (resultEl) resultEl.style.display = 'block';
-      if (rangeEl) rangeEl.textContent = `KSh ${minRent.toLocaleString()} – ${maxRent.toLocaleString()}`;
+      if (rangeEl) rangeEl.textContent = `KSh ${minRent.toLocaleString()} - ${maxRent.toLocaleString()}`;
       if (browseBtn) browseBtn.style.display = 'block';
       State._affordMax = maxRent;
       State._affordMin = minRent;

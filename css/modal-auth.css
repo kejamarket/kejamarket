@@ -14,7 +14,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2500;
+  z-index: 2000000 !important;
   background: rgba(0, 0, 0, 0.5);
   display: none;
   opacity: 0;
@@ -264,7 +264,7 @@
   color: #9ca3af;
   font-size: 0.9rem;
   pointer-events: none;
-  z-index: 2;
+  z-index: 2000000 !important;
 }
 
 /* Password Toggle */
@@ -277,7 +277,7 @@
   cursor: pointer;
   padding: 0.25rem;
   font-size: 0.9rem;
-  z-index: 2;
+  z-index: 2000000 !important;
 }
 
 /* ============================================================================
@@ -291,7 +291,7 @@
 .phone-prefix {
   position: absolute;
   left: 0.75rem;
-  z-index: 2;
+  z-index: 2000000 !important;
   font-weight: 600;
   color: #374151;
   font-size: 0.85rem;
