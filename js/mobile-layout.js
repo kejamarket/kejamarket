@@ -859,79 +859,50 @@
           <div id="km-loc-default-view">
             <!-- County Filter Tabs -->
             <div class="km-loc-county-tabs">
-              <button type="button" class="km-loc-county-tab active" onclick="MobileApp.switchLocCounty('nairobi', this)">&#127961;&#65039; Nairobi</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kiambu', this)">&#127807; Kiambu</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('machakos', this)">&#9992;&#65039; Machakos</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kajiado', this)">&#129409; Kajiado</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('mombasa', this)">&#127754; Mombasa</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nakuru', this)">&#129705; Nakuru</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kisumu', this)">&#128031; Kisumu</button>
+              <button type="button" class="km-loc-county-tab active" onclick="MobileApp.switchLocCounty('all', this)">&#127472;&#127466; All Kenya</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nairobi', this)">&#127961;&#65039; Nairobi</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kiambu', this)">&#127807; Ruaka &amp; Kiambu</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('machakos', this)">&#9992;&#65039; Syokimau &amp; Machakos</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kajiado', this)">&#129409; Rongai &amp; Kitengela</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('mombasa', this)">&#127754; Mombasa &amp; Coast</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nakuru', this)">&#129705; Nakuru &amp; Naivasha</button>
               <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('uasin_gishu', this)">&#127939; Eldoret</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nyeri', this)">&#127794; Nyeri</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('meru', this)">&#127803; Meru</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('embu', this)">&#127806; Embu</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('muranga', this)">&#127805; Murang'a</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('laikipia', this)">&#129430; Laikipia</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kakamega', this)">&#127795; Kakamega</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('bungoma', this)">&#127804; Bungoma</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('busia', this)">&#127807; Busia</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('siaya', this)">&#127802; Siaya</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('homa_bay', this)">&#128693; Homa Bay</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('migori', this)">&#128031; Migori</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kisii', this)">&#127794; Kisii</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('trans_nzoia', this)">&#127803; Trans Nzoia</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kericho', this)">&#127861; Kericho</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('narok', this)">&#129409; Narok</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nandi', this)">&#127807; Nandi</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('baringo', this)">&#127803; Baringo</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('laikipia', this)">&#129430; Laikipia</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kwale', this)">&#127754; Kwale</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kilifi', this)">&#127754; Kilifi</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('taita_taveta', this)">&#128507; Taita Taveta</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('garissa', this)">&#127964;&#65039; Garissa</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('wajir', this)">&#127964;&#65039; Wajir</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('mandera', this)">&#127964;&#65039; Mandera</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('all', this)">&#127472;&#127466; All Kenya</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kisumu', this)">&#128031; Kisumu</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('laikipia', this)">&#129430; Nanyuki &amp; Mt Kenya</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kakamega', this)">&#127795; Kakamega &amp; Western</button>
             </div>
             <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.4px; margin:10px 14px 6px;">Popular Rental Areas</div>
             <div class="km-sheet-suburb-grid" id="km-sheet-suburb-grid">
-              <div class="km-sheet-loc-item ${!State.filters.location ? 'active' : ''}" onclick="MobileApp.setLocation('')">📍 All Kenya</div>
-              <div class="km-sheet-loc-item ${State.filters.location === 'Nairobi' ? 'active' : ''}" onclick="MobileApp.setLocation('Nairobi')">🏙️ All Nairobi</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Ruaka')">📍 Ruaka</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Roysambu')">📍 Roysambu</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Kasarani')">📍 Kasarani</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Zimmerman')">📍 Zimmerman</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Umoja')">📍 Umoja</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Umoja', ['Umoja 1','Umoja 2','Umoja 3 / Innercore','Umoja Unity','Umoja Market Area'])">📍 Umoja ›</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Pipeline')">📍 Pipeline</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Pipeline', ['Pipeline Stage','Pipeline Tumaini','Pipeline Plot 10','Pipeline Greenwood','Pipeline Survey','Pipeline Phase 1','Pipeline Phase 2'])">📍 Pipeline ›</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Embakasi', ['Embakasi Village','Embakasi North','Embakasi South','Embakasi West','Embakasi Central','Baraka Estate'])">📍 Embakasi ›</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Mlolongo', ['Mlolongo Phase 1','Mlolongo Phase 2','Mlolongo Phase 3 (Weighbridge)','Mlolongo Phase 4','Mlolongo Town Centre'])">📍 Mlolongo ›</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Buruburu', ['Buruburu Phase 1','Buruburu Phase 2','Buruburu Phase 3','Buruburu Phase 4','Buruburu Phase 5'])">📍 Buruburu ›</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Donholm', ['Donholm Phase 1','Donholm Phase 2','Donholm Phase 3','Donholm Phase 4','Donholm Phase 5','Donholm Phase 6','Greenfields','Greenspan'])">📍 Donholm ›</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('South B')">📍 South B</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('South C')">📍 South C</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Kilimani')">📍 Kilimani</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Westlands')">📍 Westlands</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Kileleshwa')">📍 Kileleshwa</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Parklands')">📍 Parklands</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Karen')">📍 Karen</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Ruiru')">🌿 Ruiru</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Juja')">🌿 Juja</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Thika')">🌿 Thika</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Rongai')">🦁 Rongai</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Kitengela')">🦁 Kitengela</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Athi River')">🦁 Athi River</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Ngong')">🦁 Ngong</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Syokimau')">📍 Syokimau</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Mombasa')">🌊 Mombasa</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Nyali')">🌊 Nyali</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Bamburi')">🌊 Bamburi</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Diani')">🌊 Diani</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Kisumu')">🌊 Kisumu</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Nakuru')">🦩 Nakuru</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Naivasha')">🦩 Naivasha</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Eldoret')">🏃 Eldoret</div>
+              <div class="km-sheet-loc-item ${!State.filters.location ? 'active' : ''}" onclick="MobileApp.setLocation('')">&#128205; All Kenya</div>
+              <div class="km-sheet-loc-item ${State.filters.location === 'Nairobi' ? 'active' : ''}" onclick="MobileApp.setLocation('Nairobi')">&#127961;&#65039; All Nairobi</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Ruaka', ['Joyland', 'Two Rivers Area', 'Ruaka Town', 'Banana Rd', 'Gacharage', 'Ruaka Bypass'])">&#127807; Ruaka &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Syokimau', ['Katani Rd', 'Airport Rd', 'Gateway Mall', 'Mwananchi Rd', 'Community Rd'])">&#9992;&#65039; Syokimau &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Ongata Rongai', ['Maasai Lodge', 'Rimpa', 'Kandisi', 'Mayor Rd', 'Laiser Hill', 'Nazarene'])">&#129409; Ongata Rongai &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Kitengela', ['Chuna', 'Yukos', 'Acacia', 'Milimani', 'New Valley', 'Noonkopir'])">&#129409; Kitengela &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Westlands', ['Sarit Centre Area', 'Rhapta Rd', 'Mpaka Rd', 'Muthithi Rd', 'Parklands Rd'])">&#128205; Westlands &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Kilimani', ['Yaya Centre', 'Argwings Kodhek', 'Dennis Pritt', 'Wood Avenue', 'Chania Ave'])">&#128205; Kilimani &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Roysambu', ['Lumumba Drive', 'TRM Drive', 'Mirema Drive', 'USIU Rd'])">&#128205; Roysambu &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Kasarani', ['Clay City', 'Seasons', 'Hunters', 'Sunton', 'Sportsview', 'Mwiki'])">&#128205; Kasarani &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('South B')">&#128205; South B</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('South C')">&#128205; South C</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Umoja', ['Umoja 1','Umoja 2','Umoja 3 / Innercore','Umoja Unity'])">&#128205; Umoja &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Pipeline', ['Pipeline Stage','Pipeline Tumaini','Pipeline Plot 10','Pipeline Greenwood'])">&#128205; Pipeline &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Ruiru', ['Kihunguro', 'Mugutha', 'Kimbo', 'Toll Station', 'Murera', 'Membley'])">&#127807; Ruiru &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Thika', ['Section 9', 'Ngoingwa', 'Landless', 'Makongeni', 'Thika CBD'])">&#127807; Thika &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Juja', ['Juja Farm', 'Juja City', 'Kalimoni', 'Murera'])">&#127807; Juja &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Mlolongo', ['Phase 1', 'Phase 2', 'Phase 3 (Weighbridge)', 'Phase 4', 'Expressway End'])">&#9992;&#65039; Mlolongo &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Athi River', ['Green Park', 'Crystal Rivers', 'Makadara', 'Greatwall Gardens'])">&#9992;&#65039; Athi River &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Ngong', ['Ngong CBD', 'Milele Mall Area', 'Kibiko', 'Matasia', 'Bulbul'])">&#129409; Ngong &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Nyali', ['Nyali Beach', 'Nyali Estate', 'Mkomani', 'Links Rd'])">&#127754; Nyali (Mombasa) &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Bamburi', ['Bamburi Beach', 'Bamburi Estate', 'Shanzu', 'Mtambo'])">&#127754; Bamburi (Mombasa) &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.setLocation('Diani')">&#127754; Diani (Coast)</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Nakuru', ['Nakuru CBD', 'Section 58', 'Milimani Nakuru', 'Shabab', 'Free Area'])">&#129705; Nakuru City &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Naivasha', ['Naivasha CBD', 'Naivasha South Rd', 'Mirera', 'Lake Rd'])">&#129705; Naivasha Town &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Eldoret', ['Uganda Rd', 'Langas', 'Annex', 'Huruma', 'Pioneer', 'Red Hill', 'Kimumu'])">&#127939; Eldoret Town &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Kisumu', ['Kisumu CBD', 'Milimani Kisumu', 'Kondele', 'Mamboleo', 'Lolwe', 'Manyatta'])">&#128031; Kisumu City &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Nanyuki', ['Nanyuki Town', 'Nanyuki Airbase Area', 'Nanyuki CBD'])">&#129430; Nanyuki Town &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Kakamega', ['Kakamega CBD', 'Amalemba', 'Mahiakalo'])">&#127795; Kakamega Town &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Kisii', ['Kisii CBD', 'Jogoo Area', 'Milimani Kisii', 'Daraja Mbili'])">&#127794; Kisii Town &#8250;</div>
             </div>
           </div>
           <!-- Sub-zone Drill-down Panel -->

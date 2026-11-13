@@ -1382,6 +1382,31 @@ class NairobiRentalsApp {
       }).join('');
   }
 
+
+  selectMajorHub(hubKey, btnEl) {
+    document.querySelectorAll('.km-hub-btn').forEach(b => {
+      b.style.background = '#f8fafc';
+      b.style.color = '#334155';
+      b.style.borderColor = '#e2e8f0';
+      b.classList.remove('active');
+    });
+    if (btnEl) {
+      btnEl.style.background = '#006818';
+      btnEl.style.color = '#ffffff';
+      btnEl.style.borderColor = '#006818';
+      btnEl.classList.add('active');
+    }
+    const countySelect = document.getElementById('filter-county');
+    if (countySelect) {
+      // Find matching option in countySelect
+      const normKey = hubKey.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const opt = Array.from(countySelect.options).find(o => o.value.toLowerCase().replace(/[^a-z0-9]/g, '') === normKey);
+      if (opt) countySelect.value = opt.value;
+      else if (hubKey === 'all') countySelect.value = 'all';
+    }
+    this.onCountyChange(hubKey);
+  }
+
   selectDesktopArea(areaName, btnEl) {
     // Toggle active state on chips
     document.querySelectorAll('.km-desk-area-chip').forEach(c => {

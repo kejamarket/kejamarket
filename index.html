@@ -14,9 +14,9 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=98.0&t=20261113_47counties_desktop" as="style">
-  <link rel="preload" href="js/app.js?v=98.0&t=20261113_47counties_desktop" as="script">
-  <link rel="preload" href="js/auth.js?v=98.0&t=20261113_47counties_desktop" as="script">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=99.0&t=20261113_major_towns" as="style">
+  <link rel="preload" href="js/app.js?v=99.0&t=20261113_major_towns" as="script">
+  <link rel="preload" href="js/auth.js?v=99.0&t=20261113_major_towns" as="script">
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,7 +24,7 @@
 
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=98.0&t=20261113_47counties_desktop">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=99.0&t=20261113_major_towns">
   
   
   <!-- Hierarchical Location Search Component -->
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="css/map.css?v=2.0">
 
   <!-- KejaMarket PWA & Mobile Journey Layout -->
-  <link rel="stylesheet" href="css/mobile-layout.css?v=98.0&t=20261113_47counties_desktop">
+  <link rel="stylesheet" href="css/mobile-layout.css?v=99.0&t=20261113_major_towns">
   <script>
     // Force mobile layout detection
     (function() {
@@ -283,7 +283,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Additional Component CSS -->
-  <link rel="stylesheet" href="css/location-picker.css?v=98.0&t=20261113_47counties_desktop">
+  <link rel="stylesheet" href="css/location-picker.css?v=99.0&t=20261113_major_towns">
   <link rel="stylesheet" href="css/verification.css?v=5.0">
   <link rel="stylesheet" href="css/communication-system.css?v=5.0">
 </head>
@@ -496,6 +496,25 @@
           <i class="fas fa-chevron-up acc-icon"></i>
         </div>
         <div class="filter-accordion-body" style="display:block;">
+          
+          <!-- Major Rental Hubs Quick Select -->
+          <div style="margin-bottom:8px;">
+            <div style="font-size:10px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.4px;">Major Rental Hubs:</div>
+            <div style="display:flex; flex-wrap:wrap; gap:4px;">
+              <button type="button" class="km-hub-btn active" onclick="app.selectMajorHub('all', this)" style="padding:3px 8px; font-size:11px; font-weight:700; border-radius:6px; border:1px solid #006818; background:#006818; color:#fff; cursor:pointer;">All Kenya</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('nairobi', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Nairobi</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kiambu', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Ruaka / Kiambu</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('machakos', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Syokimau / Machakos</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kajiado', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Rongai / Kitengela</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('mombasa', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Mombasa / Coast</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('nakuru', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Nakuru / Naivasha</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('uasin_gishu', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Eldoret</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kisumu', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Kisumu</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('laikipia', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Nanyuki / Mt Kenya</button>
+              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kakamega', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Western (Kakamega/Kisii)</button>
+            </div>
+          </div>
+
           <div class="suburb-search-wrapper" style="margin-bottom:8px; position:relative;">
             <i class="fas fa-search"></i>
             <input type="text" id="location-search-input" class="suburb-search-input" placeholder="Search area, estate or neighbourhood" oninput="app.handleLocationSearchInput && app.handleLocationSearchInput(this.value)">
@@ -3903,7 +3922,7 @@
 
 
   <!-- Auth Modal Styles - Clean and Fixed -->
-  <link rel='stylesheet' href='css/modal-auth-fixed.css?v=98.0&t=20261113_47counties_desktop'>
+  <link rel='stylesheet' href='css/modal-auth-fixed.css?v=99.0&t=20261113_major_towns'>
 
   <!-- ====================================================================
        MODAL: Fullscreen Image Lightbox
@@ -4607,10 +4626,10 @@
   <script src="js/lazy-load.js" defer></script>
   
   <!-- Data & Core Dependencies (Must load before app.js) -->
-  <script src="db/locations-hierarchy.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/data/locations.js?v=98.0&t=20261113_47counties_desktop" defer></script>
+  <script src="db/locations-hierarchy.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/data/locations.js?v=99.0&t=20261113_major_towns" defer></script>
   <script src="js/data/seedListings.js?v=6.1&t=202610180330" defer></script>
-  <script src="js/location-search.js?v=98.0&t=20261113_47counties_desktop" defer></script>
+  <script src="js/location-search.js?v=99.0&t=20261113_major_towns" defer></script>
 
   <!-- Maps & Leaflet -->
   <script src="vendor/leaflet/leaflet.js" defer></script>
@@ -4623,35 +4642,35 @@
   <script src="js/offline-manager.js?v=32.0" defer></script>
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
-  <script src="js/components/location-picker.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/app.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/viewing-booking.js?v=98.0&t=20261113_47counties_desktop" defer></script>
+  <script src="js/components/location-picker.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/app.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/viewing-booking.js?v=99.0&t=20261113_major_towns" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
-  <script src="js/mobile-layout.js?v=98.0&t=20261113_47counties_desktop" defer></script>
+  <script src="js/mobile-layout.js?v=99.0&t=20261113_major_towns" defer></script>
   
   <!-- Secondary Features: Deferred loading -->
-  <script src="js/reviews.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/comments.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/watermark.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/verification.js?v=98.0&t=20261113_47counties_desktop" defer></script>
+  <script src="js/reviews.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/comments.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/watermark.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/verification.js?v=99.0&t=20261113_major_towns" defer></script>
   
   <!-- Portal Features: Load on demand -->
-  <script src="js/landlord-portal.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/service-portal.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/user-dashboard.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/enhanced-landlord-portal.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/simplified-property-management.js?v=98.0&t=20261113_47counties_desktop" defer></script>
+  <script src="js/landlord-portal.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/service-portal.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/user-dashboard.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/enhanced-landlord-portal.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/simplified-property-management.js?v=99.0&t=20261113_major_towns" defer></script>
   
   <!-- Communication: Load when user interacts -->
-  <script src="js/communication-system.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/messages-interface.js?v=98.0&t=20261113_47counties_desktop" defer></script>
+  <script src="js/communication-system.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/messages-interface.js?v=99.0&t=20261113_major_towns" defer></script>
   
   <!-- Non-essential Features -->
-  <script src="js/botSimulator.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/monetization.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/instagram-integration.js?v=98.0&t=20261113_47counties_desktop" defer></script>
-  <script src="js/admin.js?v=98.0&t=20261113_47counties_desktop" defer></script>
+  <script src="js/botSimulator.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/monetization.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/instagram-integration.js?v=99.0&t=20261113_major_towns" defer></script>
+  <script src="js/admin.js?v=99.0&t=20261113_major_towns" defer></script>
   
   <!-- GLOBAL SERVICES SHORTCUTS -->
   <script>
@@ -4837,7 +4856,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=98.0&t=20261113_47counties_desktop');
+      navigator.serviceWorker.register('/sw.js?v=99.0&t=20261113_major_towns');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->
