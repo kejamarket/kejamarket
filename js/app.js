@@ -301,7 +301,60 @@ class NairobiRentalsApp {
     ];
   }
 
+  _buildDesktopCountySelector() {
+    // Inject county selector into desktop sidebar if not already present
+    const sidebar = document.getElementById('sidebar-filters');
+    if (!sidebar || document.getElementById('km-desk-county-select')) return;
+    const counties = window.KENYA_COUNTY_AREAS;
+    if (!counties) return;
+    // Build county select options
+    const countyKeys = Object.keys(counties).filter(k => k !== 'all');
+    const opts = countyKeys.map(k => `<option value="${k}">${counties[k].emoji || ''} ${counties[k].name}</option>`).join('');
+    const html = `<div class="km-desk-county-block" style="margin-bottom:12px;">
+      <label style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:5px;">County / Region</label>
+      <select id="km-desk-county-select" style="width:100%;padding:8px 10px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13px;color:#1f2937;background:#fff;cursor:pointer;" onchange="App._onDesktopCountyChange(this.value)">
+        <option value="">All Counties (Kenya)</option>
+        ${opts}
+      </select>
+      <div id="km-desk-area-pills" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"></div>
+    </div>`;
+    // Insert at top of sidebar
+    const firstChild = sidebar.querySelector('.filter-section');
+    if (firstChild) {
+      firstChild.insertAdjacentHTML('beforebegin', html);
+    } else {
+      sidebar.insertAdjacentHTML('afterbegin', html);
+    }
+  }
+
+  _onDesktopCountyChange(countyKey) {
+    const counties = window.KENYA_COUNTY_AREAS;
+    const pillsDiv = document.getElementById('km-desk-area-pills');
+    if (!pillsDiv) return;
+    if (!countyKey || !counties[countyKey]) {
+      pillsDiv.innerHTML = '';
+      this.applyFilters({ location: '' });
+      return;
+    }
+    const county = counties[countyKey];
+    const areas = county.areas || [];
+    // Set location to county name
+    this.applyFilters({ location: county.name });
+    // Show area pills
+    pillsDiv.innerHTML = areas.map(a => 
+      `<button onclick="App._setDesktopArea('${a.val || a.name}')" style="padding:4px 10px;border-radius:20px;border:1.5px solid #e5e7eb;background:#f9fafb;font-size:11px;color:#374151;cursor:pointer;font-weight:600;" class="km-desk-area-pill">${a.name}</button>`
+    ).join('');
+  }
+
+  _setDesktopArea(areaVal) {
+    // Highlight selected area pill
+    document.querySelectorAll('.km-desk-area-pill').forEach(b => { b.style.background='#f9fafb'; b.style.color='#374151'; b.style.borderColor='#e5e7eb'; });
+    event && event.target && (event.target.style.background='#006818', event.target.style.color='#fff', event.target.style.borderColor='#006818');
+    this.applyFilters({ location: areaVal });
+  }
+
   getRegions() {
+
     if (typeof NAIROBI_REGIONS !== 'undefined' && Array.isArray(NAIROBI_REGIONS)) return NAIROBI_REGIONS;
     if (window.NAIROBI_REGIONS && Array.isArray(window.NAIROBI_REGIONS)) return window.NAIROBI_REGIONS;
     return [];
@@ -1238,49 +1291,151 @@ class NairobiRentalsApp {
   }
 
   onCountyChange(countyValue) {
-    if (!countyValue || countyValue === 'all') {
+    const countySelect = document.getElementById('filter-county');
+    const val = countyValue || (countySelect ? countySelect.value : 'all');
+    
+    // Clear previously selected suburb checkboxes
+    if (this.selectedSuburbs) this.selectedSuburbs.clear();
+    
+    if (!val || val === 'all') {
       this.selectedLocation = null;
+      this.activeCounty = null;
+      const bText = document.getElementById('km-desk-breadcrumb-text');
+      if (bText) bText.textContent = 'All Kenya › All Counties';
     } else {
-      // Find county in locations
+      this.activeCounty = val;
+      const normVal = val.toLowerCase().replace(/[^a-z0-9]/g, '');
+      let found = null;
       if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
-        const county = window.KEJA_MASTER_LOCATIONS.find(loc =>
-          loc.type === 'county' && loc.slug === countyValue.toLowerCase()
+        found = window.KEJA_MASTER_LOCATIONS.find(loc =>
+          (loc.type || '').toLowerCase() === 'county' && (
+            (loc.name || '').toLowerCase().replace(/[^a-z0-9]/g, '') === normVal ||
+            (loc.slug || '').toLowerCase().replace(/[^a-z0-9]/g, '') === normVal
+          )
         );
-        if (county) {
-          this.selectedLocation = county;
-        }
       }
+      if (found) {
+        this.selectedLocation = found;
+      } else {
+        const kca = window.KENYA_COUNTY_AREAS;
+        const matchedKey = kca ? Object.keys(kca).find(k => k.toLowerCase().replace(/[^a-z0-9]/g, '') === normVal || (kca[k].name || '').toLowerCase().replace(/[^a-z0-9]/g, '') === normVal) : null;
+        const countyName = (matchedKey && kca[matchedKey].name) ? kca[matchedKey].name : (val.charAt(0).toUpperCase() + val.slice(1));
+        this.selectedLocation = {
+          name: countyName,
+          type: 'COUNTY',
+          county: countyName,
+          fullPath: countyName
+        };
+      }
+      const bText = document.getElementById('km-desk-breadcrumb-text');
+      if (bText) bText.textContent = 'Kenya › ' + (this.selectedLocation.name || val) + ' County';
     }
+
+    // Dynamically update the suburb checklist and area chips for this county
+    this._updateCountyAreaChips(val);
+
     this.currentPage = 1;
     this.applyFilters();
   }
 
-  onSubCountyChange(subCountyValue) {
+  _updateCountyAreaChips(countyValue) {
+    const bar = document.getElementById('km-desk-county-areas-bar');
+    const subcountySelect = document.getElementById('filter-subcounty');
+    if (!bar) return;
+
+    if (!countyValue || countyValue === 'all') {
+      bar.innerHTML = '';
+      if (subcountySelect) {
+        subcountySelect.innerHTML = '<option value="all">All Sub-counties</option>';
+      }
+      return;
+    }
+
+    const normVal = countyValue.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const kca = window.KENYA_COUNTY_AREAS || {};
+    const matchedKey = Object.keys(kca).find(k => k.toLowerCase().replace(/[^a-z0-9]/g, '') === normVal || (kca[k].name || '').toLowerCase().replace(/[^a-z0-9]/g, '') === normVal);
+    
+    let areas = [];
+    if (matchedKey && kca[matchedKey] && kca[matchedKey].areas) {
+      areas = kca[matchedKey].areas.filter(a => a.val !== '');
+    } else if (window.KEJA_MASTER_LOCATIONS) {
+      areas = window.KEJA_MASTER_LOCATIONS.filter(l => 
+        (l.county || '').toLowerCase().replace(/[^a-z0-9]/g, '') === normVal &&
+        (l.type || '').toLowerCase() !== 'county'
+      ).slice(0, 15).map(l => ({ name: l.name, val: l.name }));
+    }
+
+    if (subcountySelect) {
+      subcountySelect.innerHTML = '<option value="all">All ' + (matchedKey ? kca[matchedKey].name : countyValue) + ' Areas</option>' +
+        areas.map(a => '<option value="' + (a.val || a.name) + '">' + a.name + '</option>').join('');
+    }
+
+    if (!areas.length) {
+      bar.innerHTML = '<div style="font-size:11px; color:#94a3b8; padding:4px 0;">All residential areas searchable above</div>';
+      return;
+    }
+
+    bar.innerHTML = '<div style="width:100%; font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase; margin-bottom:2px;">Top ' + (matchedKey ? kca[matchedKey].name : countyValue) + ' Areas:</div>' +
+      areas.map(a => {
+        const aVal = a.val || a.name;
+        return '<button type="button" class="km-desk-area-chip" onclick="app.selectDesktopArea(\'' + aVal.replace(/'/g, "\\'") + '\', this)" style="padding:3px 9px; font-size:11px; font-weight:600; border-radius:14px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer; transition:all 0.15s ease;">' + a.name + '</button>';
+      }).join('');
+  }
+
+  selectDesktopArea(areaName, btnEl) {
+    // Toggle active state on chips
+    document.querySelectorAll('.km-desk-area-chip').forEach(c => {
+      c.style.background = '#f8fafc';
+      c.style.color = '#334155';
+      c.style.borderColor = '#e2e8f0';
+      c.classList.remove('active');
+    });
+
+    if (btnEl) {
+      btnEl.style.background = '#006818';
+      btnEl.style.color = '#ffffff';
+      btnEl.style.borderColor = '#006818';
+      btnEl.classList.add('active');
+    }
+
+    // Sync subcounty dropdown if present
+    const subcountySelect = document.getElementById('filter-subcounty');
+    if (subcountySelect) {
+      subcountySelect.value = areaName;
+    }
+
+    // Set selected location
+    this.selectedLocation = {
+      name: areaName,
+      type: 'AREA',
+      county: this.activeCounty || '',
+      fullPath: (this.activeCounty ? this.activeCounty + ' → ' : '') + areaName
+    };
+
+    const bText = document.getElementById('km-desk-breadcrumb-text');
+    if (bText) {
+      bText.textContent = 'Kenya › ' + (this.activeCounty ? this.activeCounty + ' › ' : '') + areaName;
+    }
+
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+    onSubCountyChange(subCountyValue) {
     if (!subCountyValue || subCountyValue === 'all') {
-      // Reset to county level if one is selected
       const countySelect = document.getElementById('filter-county');
-      if (countySelect && countySelect.value !== 'all') {
+      if (countySelect && countySelect.value && countySelect.value !== 'all') {
         this.onCountyChange(countySelect.value);
       } else {
         this.selectedLocation = null;
+        this.applyFilters();
       }
-    } else {
-      // Find sub-county/area in locations
-      if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
-        const area = window.KEJA_MASTER_LOCATIONS.find(loc =>
-          loc.slug === subCountyValue.toLowerCase() ||
-          loc.name.toLowerCase() === subCountyValue.toLowerCase()
-        );
-        if (area) {
-          this.selectedLocation = area;
-        }
-      }
+      return;
     }
-    this.currentPage = 1;
-    this.applyFilters();
+    this.selectDesktopArea(subCountyValue);
   }
 
-  clearLocationSearch() {
+    clearLocationSearch() {
     const searchInput = document.getElementById('location-search-input');
     const clearBtn = document.getElementById('btn-clear-location-search');
     const resultsDropdown = document.getElementById('location-search-results');
@@ -1990,6 +2145,15 @@ class NairobiRentalsApp {
             </a>
           </div>
 
+          <!-- Feature Badges Pill Row -->
+          <div class="card-features-chips" style="display:flex; flex-wrap:wrap; gap:4px; margin: 4px 0 6px 0;">
+            ${p.waterSupply || (p.features && p.features.includes('Borehole')) ? '<span style="font-size:10px; background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; border-radius:4px; padding:2px 6px; font-weight:600;"><i class="fas fa-tint"></i> 24/7 Water</span>' : ''}
+            ${p.electricityType || (p.features && p.features.includes('Token')) ? '<span style="font-size:10px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; border-radius:4px; padding:2px 6px; font-weight:600;"><i class="fas fa-bolt"></i> Token Meter</span>' : ''}
+            ${p.parking || (p.features && p.features.includes('Parking')) ? '<span style="font-size:10px; background:#faf5ff; color:#7e22ce; border:1px solid #e9d5ff; border-radius:4px; padding:2px 6px; font-weight:600;"><i class="fas fa-parking"></i> Parking</span>' : ''}
+            ${p.balcony || (p.features && p.features.includes('Balcony')) ? '<span style="font-size:10px; background:#fff7ed; color:#c2410c; border:1px solid #ffedd5; border-radius:4px; padding:2px 6px; font-weight:600;"><i class="fas fa-door-open"></i> Balcony</span>' : ''}
+            <span style="font-size:10px; background:#f8fafc; color:#475569; border:1px solid #e2e8f0; border-radius:4px; padding:2px 6px; font-weight:600;"><i class="fas fa-shield-alt" style="color:#006818;"></i> Direct Landlord</span>
+          </div>
+
           <!-- Specs row -->
           <div class="card-specs-row">
             ${specHtml}
@@ -1997,7 +2161,10 @@ class NairobiRentalsApp {
 
           <!-- Card Bottom Actions Footer -->
           <div class="card-bottom-actions-row" style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 6px; margin-top: auto;">
-            <button type="button" class="cbar-btn" onclick="event.stopPropagation(); app.openPropertyDetail('${p.id}')" style="font-weight: 700; color: #006818;">
+            <a href="tel:${cleanWa}" onclick="event.stopPropagation();" class="cbar-btn" style="color: #006818; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 3px;">
+              <i class="fas fa-phone-alt"></i> Call
+            </a>
+            <button type="button" class="cbar-btn" onclick="event.stopPropagation(); app.openPropertyDetail('${p.id}')" style="font-weight: 700; color: #334155;">
               <i class="far fa-eye"></i> Details
             </button>
             <button type="button" class="cbar-btn" onclick="event.stopPropagation(); KejaViewing.openBookingModal('${p.id}')" style="color: #0284c7; font-weight: 700;">

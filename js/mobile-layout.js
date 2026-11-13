@@ -44,332 +44,636 @@
       emoji: '🇰🇪',
       areas: [
         { name: 'All Areas (Kenya)', val: '' },
-        { name: 'Westlands', val: 'Westlands', county: 'Nairobi', subZones: ['Sarit Centre', 'Rhapta Rd', 'Mpaka Rd', 'Muthithi Rd', 'Parklands Rd'] },
-        { name: 'Kilimani', val: 'Kilimani', county: 'Nairobi', subZones: ['Yaya Centre', 'Argwings Kodhek', 'Dennis Pritt', 'Wood Avenue', 'Chania Avenue'] },
-        { name: 'Kileleshwa', val: 'Kileleshwa', county: 'Nairobi', subZones: ['Gatundu Rd', 'Kandara Rd', 'Othaya Rd', 'Siaya Rd'] },
-        { name: 'Roysambu', val: 'Roysambu', county: 'Nairobi', subZones: ['Lumumba Drive', 'TRM Drive', 'Mirema Drive', 'USIU Rd'] },
-        { name: 'Kasarani', val: 'Kasarani', county: 'Nairobi', subZones: ['Clay City', 'Seasons', 'Hunters', 'Sunton', 'Sportsview', 'Mwiki'] },
-        { name: 'Ruaka (Kiambu)', val: 'Ruaka', county: 'Kiambu', subZones: ['Joyland', 'Two Rivers', 'Ruaka Town', 'Banana Rd', 'Gacharage', 'Ruaka Bypass'] },
-        { name: 'Syokimau (Machakos)', val: 'Syokimau', county: 'Machakos', subZones: ['Katani Rd', 'Airport Rd', 'Gateway Mall', 'Mwananchi Rd', 'Community Rd', 'Kiungani Rd'] },
-        { name: 'Mlolongo (Machakos)', val: 'Mlolongo', county: 'Machakos', subZones: ['Phase 1', 'Phase 2', 'Phase 3 (Weighbridge)', 'Phase 4', 'Expressway End'] },
-        { name: 'Ongata Rongai (Kajiado)', val: 'Ongata Rongai', county: 'Kajiado', subZones: ['Maasai Lodge', 'Rimpa', 'Kandisi', 'Mayor Rd', 'Laiser Hill', 'Nazarene'] },
-        { name: 'Kitengela (Kajiado)', val: 'Kitengela', county: 'Kajiado', subZones: ['Chuna', 'Yukos', 'Acacia', 'Milimani', 'New Valley', 'Noonkopir'] },
-        { name: 'Ruiru (Kiambu)', val: 'Ruiru', county: 'Kiambu', subZones: ['Kihunguro', 'Mugutha', 'Kimbo', 'Toll Station', 'Murera', 'Membley'] },
-        { name: 'Thika (Kiambu)', val: 'Thika', county: 'Kiambu', subZones: ['Section 9', 'Ngoingwa', 'Landless', 'Makongeni', 'Thika CBD'] },
-        { name: 'Athi River (Machakos)', val: 'Athi River', county: 'Machakos', subZones: ['Green Park', 'Crystal Rivers', 'Makadara', 'Mavoko Town', 'Greatwall Gardens'] },
-        { name: 'Ngong Town (Kajiado)', val: 'Ngong', county: 'Kajiado', subZones: ['Ngong CBD', 'Milele Mall Area', 'Kibiko', 'Matasia', 'Bulbul'] },
-        { name: 'South B', val: 'South B', county: 'Nairobi', subZones: ['Mariakani', 'Plainsview', 'Golden Gate', 'Balozi', 'Hazina'] },
-        { name: 'South C', val: 'South C', county: 'Nairobi', subZones: ['Akiba', 'Mugoya', 'Five Star', 'Bellevue'] },
-        { name: 'Umoja', val: 'Umoja', county: 'Nairobi', subZones: ['Umoja I', 'Umoja II', 'Umoja Innercore'] },
-        { name: 'Pipeline', val: 'Pipeline', county: 'Nairobi', subZones: ['Stage', 'Plot 10', 'Tumaini Area'] },
-        { name: 'Donholm', val: 'Donholm', county: 'Nairobi', subZones: ['Phase 1', 'Phase 2', 'Greenspan', 'Greenfields'] },
-        { name: 'Dandora', val: 'Dandora', county: 'Nairobi', subZones: ['Phase I', 'Phase II', 'Phase III', 'Phase IV', 'Phase V'] },
-        { name: 'Eastleigh', val: 'Eastleigh', county: 'Nairobi', subZones: ['Section I', 'Section II', 'Section III', 'Section IV', 'Section V', 'California'] },
-        { name: 'Nyali (Mombasa)', val: 'Nyali', county: 'Mombasa', subZones: ['Links Rd', 'Cinemax', 'Beach Rd', 'Nyali Estate', 'Greenwood'] },
-        { name: 'Nakuru City', val: 'Nakuru', county: 'Nakuru', subZones: ['Milimani', 'Naka', 'Section 58', 'Kiamunyi'] },
-        { name: 'Kisumu City', val: 'Kisumu', county: 'Kisumu', subZones: ['Milimani', 'Riat Hills', 'Tom Mboya', 'Migosi'] },
-        { name: 'Eldoret City', val: 'Eldoret', county: 'Uasin Gishu', subZones: ['Elgon View', 'Pioneer', 'Kapsoya', 'Annex'] },
-        { name: 'Meru Town', val: 'Meru', county: 'Meru', subZones: ['Makutano', 'Gatunga', 'Gitimene'] },
-        { name: 'Embu Town', val: 'Embu', county: 'Embu', subZones: ['Embu CBD', 'Kamiu'] },
-        { name: 'Nyeri Town', val: 'Nyeri', county: 'Nyeri', subZones: ['Nyeri CBD', 'Ruring\'u', 'Kamakwa'] },
-        { name: 'Nanyuki Town', val: 'Nanyuki', county: 'Laikipia', subZones: ['Baraka', 'Lewa Gate', 'Nanyuki CBD'] }
+        { name: 'Westlands', val: 'Westlands', county: 'Nairobi' },
+        { name: 'Kilimani', val: 'Kilimani', county: 'Nairobi' },
+        { name: 'Kasarani', val: 'Kasarani', county: 'Nairobi' },
+        { name: 'Ruaka', val: 'Ruaka', county: 'Kiambu' },
+        { name: 'Rongai', val: 'Ongata Rongai', county: 'Kajiado' },
+        { name: 'Kitengela', val: 'Kitengela', county: 'Kajiado' },
+        { name: 'Thika', val: 'Thika', county: 'Kiambu' },
+        { name: 'Nyali', val: 'Nyali', county: 'Mombasa' },
+        { name: 'Eldoret', val: 'Eldoret', county: 'Uasin Gishu' },
+        { name: 'Kisumu', val: 'Kisumu', county: 'Kisumu' },
+        { name: 'Nakuru', val: 'Nakuru', county: 'Nakuru' },
+        { name: 'Mombasa', val: 'Mombasa', county: 'Mombasa' },
+        { name: 'Naivasha', val: 'Naivasha', county: 'Nakuru' },
+        { name: 'Diani', val: 'Diani', county: 'Kwale' },
+        { name: 'Nanyuki', val: 'Nanyuki', county: 'Laikipia' },
+        { name: 'Meru Town', val: 'Meru Town', county: 'Meru' },
+        { name: 'Nyeri Town', val: 'Nyeri Town', county: 'Nyeri' },
       ]
     },
     nairobi: {
-      name: 'Nairobi City',
+      name: 'Nairobi',
       emoji: '🏙️',
       areas: [
         { name: 'All Nairobi', val: 'Nairobi' },
-        // - West Nairobi
-        { name: 'Westlands', val: 'Westlands', subZones: ['Sarit Centre', 'Rhapta Rd', 'Mpaka Rd', 'Muthithi Rd', 'Parklands Rd'] },
-        { name: 'Kilimani', val: 'Kilimani', subZones: ['Yaya Centre', 'Argwings Kodhek', 'Dennis Pritt', 'Wood Avenue', 'Chania Avenue'] },
+        { name: 'Westlands', val: 'Westlands', subZones: ['Sarit Centre Area', 'Rhapta Rd', 'Mpaka Rd', 'Muthithi Rd', 'Parklands Rd'] },
+        { name: 'Kilimani', val: 'Kilimani', subZones: ['Yaya Centre', 'Argwings Kodhek', 'Dennis Pritt Rd', 'Wood Avenue', 'Chania Avenue'] },
         { name: 'Kileleshwa', val: 'Kileleshwa', subZones: ['Gatundu Rd', 'Kandara Rd', 'Othaya Rd', 'Siaya Rd'] },
-        { name: 'Lavington', val: 'Lavington', subZones: ['James Gichuru', 'Amboseli', 'Valley Arcade', 'Kabarsiran'] },
-        { name: 'Parklands', val: 'Parklands', subZones: ['1st Parklands', '2nd Parklands', '3rd Parklands', '4th Parklands', '5th Parklands', 'City Park'] },
-        { name: 'Spring Valley', val: 'Spring Valley', subZones: [] },
-        { name: 'Riverside', val: 'Riverside', subZones: ['Riverside Drive', 'Riverside Square'] },
-        { name: 'Loresho', val: 'Loresho', subZones: ['Loresho Ridge', 'Loresho South'] },
-        { name: 'Kitisuru', val: 'Kitisuru', subZones: ['Old Kitisuru', 'New Kitisuru'] },
-        { name: 'Runda', val: 'Runda', subZones: ['Runda Mimosa', 'Runda Evergreen', 'Runda Water'] },
-        { name: 'Muthaiga', val: 'Muthaiga', subZones: ['Old Muthaiga', 'Muthaiga North'] },
-        { name: 'Hurlingham', val: 'Hurlingham', subZones: ['Argwings Kodhek Link', 'Olenguruone'] },
-        { name: 'Upper Hill', val: 'Upper Hill', subZones: [] },
-        { name: 'Ngong Road', val: 'Ngong Road', subZones: ['Adams Arcade', 'Junction Mall', 'Dagoretti Corner'] },
-        { name: 'Karen', val: 'Karen', subZones: ['Hardy', 'Karen Triangle', 'Mbagathi', 'Windy Ridge', 'Bogani'] },
-        { name: 'Lang\'ata', val: 'Lang\'ata', subZones: ['Dam Estate', 'Ngei', 'Otiende', 'Southlands'] },
-        { name: 'Lower Kabete', val: 'Lower Kabete', subZones: ['Waiyaki Way', 'Regen'] },
-        { name: 'Mountain View', val: 'Mountain View', subZones: [] },
-        { name: 'Kangemi', val: 'Kangemi', subZones: ['Kawangware Stage', 'Kangemi Market'] },
-        { name: 'Kawangware', val: 'Kawangware', subZones: ['45', 'Kawangware Stage', 'Regen'] },
-        { name: 'Riruta', val: 'Riruta', subZones: ['Riruta Satellite'] },
-        { name: 'Dagoretti', val: 'Dagoretti', subZones: ['Dagoretti Corner', 'Dagoretti Market'] },
-        { name: 'Kibera', val: 'Kibera', subZones: ['Laini Saba', 'Gatwekera', 'Olympic', 'Karanja', 'Ayany'] },
-        { name: 'Woodley', val: 'Woodley', subZones: [] },
-        { name: 'Ngumo', val: 'Ngumo', subZones: [] },
-        { name: 'Jamhuri', val: 'Jamhuri', subZones: [] },
-        // - South Nairobi
-        { name: 'South B', val: 'South B', subZones: ['Mariakani', 'Plainsview', 'Golden Gate', 'Balozi', 'Hazina'] },
-        { name: 'South C', val: 'South C', subZones: ['Akiba', 'Mugoya', 'Five Star', 'Bellevue'] },
-        { name: 'Nairobi West', val: 'Nairobi West', subZones: ['West Shopping Centre', 'Gandhi Hospital Area'] },
-        { name: 'Madaraka', val: 'Madaraka', subZones: ['Strathmore Area', 'Madaraka Estate'] },
-        // - CBD & North
-        { name: 'Nairobi CBD', val: 'Nairobi CBD', subZones: ['Tom Mboya St', 'Moi Avenue', 'Kimathi St'] },
-        { name: 'Ngara', val: 'Ngara', subZones: ['Fig Tree', 'Chambers Rd', 'Ngara Posta'] },
-        { name: 'Pangani', val: 'Pangani', subZones: ['Pangani Girls Area', 'Thika Rd Interchange'] },
-        { name: 'Eastleigh', val: 'Eastleigh', subZones: ['Section I', 'Section II', 'Section III', 'Section IV', 'Section V', 'California'] },
-        { name: 'Shauri Moyo', val: 'Shauri Moyo', subZones: [] },
-        { name: 'Pumwani', val: 'Pumwani', subZones: [] },
-        { name: 'Majengo', val: 'Majengo', subZones: [] },
-        { name: 'Gikomba', val: 'Gikomba', subZones: [] },
-        // - Kasarani & North Nairobi
+        { name: 'Parklands', val: 'Parklands', subZones: ['1st Parklands', '2nd Parklands', '3rd Parklands', 'Ojijo Rd', 'Limuru Rd'] },
+        { name: 'Karen', val: 'Karen', subZones: ['Karen C', 'Karen B', 'Karen Hardy', 'Langata', 'Bogani Rd'] },
+        { name: 'Lavington', val: 'Lavington', subZones: ['Valley Arcade', 'James Gichuru Rd', 'Ring Rd Lavington'] },
+        { name: 'Upperhill', val: 'Upper Hill', subZones: ['Hospital Rd', 'Elgeyo Marakwet Rd', 'Mara Rd', 'Ralph Bunche Rd'] },
         { name: 'Roysambu', val: 'Roysambu', subZones: ['Lumumba Drive', 'TRM Drive', 'Mirema Drive', 'USIU Rd'] },
         { name: 'Kasarani', val: 'Kasarani', subZones: ['Clay City', 'Seasons', 'Hunters', 'Sunton', 'Sportsview', 'Mwiki'] },
-        { name: 'Zimmerman', val: 'Zimmerman', subZones: ['Base', 'Kamakis Link', 'Roysambu Border'] },
-        { name: 'Githurai 44', val: 'Githurai 44', subZones: ['Jacaranda Area', 'Stage 44'] },
-        { name: 'Githurai 45', val: 'Githurai 45', subZones: [] },
-        { name: 'Kahawa West', val: 'Kahawa West', subZones: ['Kongo', 'Soweto Area', 'Bima'] },
-        { name: 'Kahawa Sukari', val: 'Kahawa Sukari', subZones: ['1st South Ave', 'Quickmart Area'] },
-        { name: 'Kahawa Wendani', val: 'Kahawa Wendani', subZones: ['Magunas Area', 'Matatu Stage'] },
-        { name: 'Mwiki', val: 'Mwiki', subZones: [] },
-        { name: 'Sunton', val: 'Sunton', subZones: [] },
-        { name: 'Baba Dogo', val: 'Baba Dogo', subZones: [] },
-        { name: 'Lucky Summer', val: 'Lucky Summer', subZones: [] },
-        { name: 'Mathare', val: 'Mathare', subZones: [] },
-        { name: 'Huruma', val: 'Huruma', subZones: [] },
-        { name: 'Kariobangi North', val: 'Kariobangi North', subZones: [] },
-        { name: 'Kariobangi South', val: 'Kariobangi South', subZones: [] },
-        { name: 'Korogocho', val: 'Korogocho', subZones: [] },
-        // - East Nairobi
-        { name: 'Umoja', val: 'Umoja', subZones: ['Umoja I', 'Umoja II', 'Umoja Innercore'] },
-        { name: 'Donholm', val: 'Donholm', subZones: ['Phase 1', 'Phase 2', 'Phase 5', 'Greenspan', 'Greenfields'] },
-        { name: 'Buruburu', val: 'Buruburu', subZones: ['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4', 'Phase 5'] },
-        { name: 'Kayole', val: 'Kayole', subZones: ['Kayole I', 'Kayole II', 'Kayole III'] },
-        { name: 'Dandora', val: 'Dandora', subZones: ['Phase I', 'Phase II', 'Phase III', 'Phase IV', 'Phase V'] },
-        { name: 'Komarock', val: 'Komarock', subZones: [] },
-        // - South East Nairobi
-        { name: 'Embakasi', val: 'Embakasi', subZones: ['Village', 'Nyayo Estate', 'Baraka Estate', 'Tassia'] },
-        { name: 'Pipeline', val: 'Pipeline', subZones: ['Stage', 'Plot 10', 'Tumaini Area'] },
-        { name: 'Fedha', val: 'Fedha', subZones: ['Fedha Stage', 'Gate B', 'Avenue Park'] },
-        { name: 'Tassia', val: 'Tassia', subZones: [] },
-        { name: 'Nyayo Estate', val: 'Nyayo Estate', subZones: [] },
-        { name: 'Utawala', val: 'Utawala', subZones: [] },
-        { name: 'Ruai', val: 'Ruai', subZones: [] },
-        { name: 'Njiru', val: 'Njiru', subZones: [] },
-        { name: 'Mihang\'o', val: 'Mihango', subZones: [] },
-        { name: 'Imara Daima', val: 'Imara Daima', subZones: [] },
-        { name: 'Mukuru kwa Njenga', val: 'Mukuru kwa Njenga', subZones: [] },
-        { name: 'Mukuru kwa Reuben', val: 'Mukuru kwa Reuben', subZones: [] },
-        { name: 'Industrial Area', val: 'Industrial Area', subZones: [] }
+        { name: 'Zimmerman', val: 'Zimmerman', subZones: ['Zimmerman A', 'Zimmerman B', 'Zimmerman C'] },
+        { name: 'Ruaraka', val: 'Ruaraka', subZones: ['Thika Road Mall Area', 'Githurai 44', 'Githurai 45', 'Lucky Summer'] },
+        { name: 'Embakasi', val: 'Embakasi', subZones: ['Embakasi Village', 'Embakasi North', 'Embakasi South', 'Embakasi West', 'Embakasi Central', 'Baraka Estate'] },
+        { name: 'Donholm', val: 'Donholm', subZones: ['Phase 1', 'Phase 2', 'Phase 3', 'Greenspan', 'Greenfields'] },
+        { name: 'Buruburu', val: 'Buruburu', subZones: ['Buruburu Phase 1', 'Buruburu Phase 2', 'Buruburu Phase 3', 'Buruburu Phase 4', 'Buruburu Phase 5'] },
+        { name: 'Umoja', val: 'Umoja', subZones: ['Umoja I', 'Umoja II', 'Umoja Innercore', 'Umoja Unity'] },
+        { name: 'Pipeline', val: 'Pipeline', subZones: ['Pipeline Stage', 'Pipeline Tumaini', 'Pipeline Plot 10', 'Pipeline Greenwood', 'Pipeline Phase 1', 'Pipeline Phase 2'] },
+        { name: 'South B', val: 'South B', subZones: ['Mariakani', 'Plainsview', 'Golden Gate', 'Balozi', 'Hazina'] },
+        { name: 'South C', val: 'South C', subZones: ['Akiba', 'Mugoya', 'Five Star', 'Bellevue'] },
+        { name: 'Langata', val: 'Langata', subZones: ['Langata South Rd', 'Mugumoini', 'Nyayo Estate', 'Nairobi West'] },
+        { name: 'Eastleigh', val: 'Eastleigh', subZones: ['1st Avenue', '2nd Avenue', '3rd Avenue', 'Section 1', 'Section 2', 'Section 3'] },
+        { name: 'Kayole', val: 'Kayole', subZones: ['Kayole 1', 'Kayole 2', 'Kayole Spine', 'Kayole Junction'] },
+        { name: 'Githurai', val: 'Githurai', subZones: ['Githurai 44', 'Githurai 45', 'Kamiti Rd'] },
+        { name: 'Dandora', val: 'Dandora', subZones: ['Dandora Phase 1', 'Dandora Phase 2', 'Dandora Phase 3', 'Dandora Phase 4'] },
+        { name: 'Kariobangi', val: 'Kariobangi', subZones: ['Kariobangi North', 'Kariobangi South', 'Kariobangi Light Industries'] },
+        { name: 'Rongai (Nairobi)', val: 'Rongai', subZones: ['Rongai Town', 'Nkoroi', 'Rimpa', 'Kandisi', 'Posta'] },
+        { name: 'Kabete', val: 'Kabete', subZones: ['Lower Kabete', 'Upper Kabete', 'Waiyaki Way'] },
+        { name: 'Dagoretti', val: 'Dagoretti', subZones: ['Kawangware', 'Madaraka', 'Waithaka', 'Riruta'] },
+        { name: 'Mathare', val: 'Mathare', subZones: ['Mathare North', 'Mathare 4A', 'Mabatini'] },
+        { name: 'Mukuru', val: 'Mukuru', subZones: ['Mukuru kwa Njenga', 'Mukuru kwa Ruben', 'Mukuru Viwandani'] },
+        { name: 'Komarock', val: 'Komarock', subZones: ['Komarock Phase 1', 'Komarock Phase 2', 'Komarock Phase 3'] },
+        { name: 'Fedha', val: 'Fedha', subZones: ['Fedha Estate', 'Innercore'] },
+        { name: 'Njiru', val: 'Njiru', subZones: ['Njiru Town', 'Kamulu', 'Joska'] },
+        { name: 'Ruai', val: 'Ruai', subZones: ['Ruai Phase 1', 'Ruai Town'] },
+        { name: 'CBD', val: 'Nairobi CBD', subZones: ['Tom Mboya St', 'Moi Avenue', 'Kenyatta Ave', 'River Rd', 'Ronald Ngala St'] },
       ]
     },
     kiambu: {
-      name: 'Kiambu County',
+      name: 'Kiambu',
       emoji: '🌿',
       areas: [
         { name: 'All Kiambu', val: 'Kiambu' },
-        { name: 'Ruaka', val: 'Ruaka', subZones: ['Joyland', 'Two Rivers', 'Ruaka Town', 'Banana Rd', 'Gacharage', 'Ruaka Bypass'] },
-        { name: 'Kikuyu', val: 'Kikuyu', subZones: ['Kikuyu Town', 'Thogoto', 'Ondiri', 'Kidfarmaco', 'Gitaru Rd'] },
+        { name: 'Ruaka', val: 'Ruaka', subZones: ['Joyland', 'Two Rivers Area', 'Ruaka Town', 'Banana Rd', 'Gacharage', 'Ruaka Bypass'] },
         { name: 'Ruiru', val: 'Ruiru', subZones: ['Kihunguro', 'Mugutha', 'Kimbo', 'Toll Station', 'Murera', 'Membley'] },
-        { name: 'Thika', val: 'Thika', subZones: ['Section 9', 'Ngoingwa', 'Landless', 'Makongeni', 'Thika CBD'] },
-        { name: 'Juja', val: 'Juja', subZones: ['Juja Town', 'Gachororo', 'Juja South Estate', 'Mastore', 'Highpoint'] },
-        { name: 'Ndenderu', val: 'Ndenderu', subZones: ['Ndenderu Junction', 'Posta Area'] },
-        { name: 'Banana / Karuri', val: 'Banana', subZones: ['Banana Hill', 'Karuri Town', 'Muchatha'] },
-        { name: 'Kahawa Sukari', val: 'Kahawa Sukari', subZones: ['1st South Ave', 'Quickmart Area', 'Bypass Link'] },
-        { name: 'Kahawa Wendani', val: 'Kahawa Wendani', subZones: ['Magunas Area', 'Matatu Stage'] },
-        { name: 'Kiambu Road', val: 'Kiambu Road', subZones: ['Fourways Junction', 'Edenville', 'Thindigua', 'Mugumo'] },
-        { name: 'Gitaru', val: 'Gitaru', subZones: ['Southern Bypass Interchange', 'Rungiri'] },
-        { name: 'Wangige', val: 'Wangige', subZones: ['Wangige Market', 'King\'eero'] },
-        { name: 'Limuru', val: 'Limuru', subZones: ['Limuru Town', 'Tigoni', 'Kabuku'] },
-        { name: 'Kabete', val: 'Kabete', subZones: ['Lower Kabete', 'Upper Kabete', 'Uthiru'] },
-        { name: 'Githunguri', val: 'Githunguri', subZones: ['Githunguri CBD', 'Dairy Area'] },
-        { name: 'Kiambu Town', val: 'Kiambu Town', subZones: ['Kiambu CBD', 'County HQ Area'] },
-        { name: 'Tatu City', val: 'Tatu City', subZones: ['Gate 1', 'Gate 2', 'Residential Zone'] },
-        { name: 'Zambezi', val: 'Zambezi', subZones: ['Zambezi Estate', 'Regen Link'] },
-        { name: 'Kinoo', val: 'Kinoo', subZones: ['Kinoo Market', 'Waiyaki Way Link'] },
-        { name: 'Ridgeways', val: 'Ridgeways', subZones: ['Ridgeways Mall Area'] }
+        { name: 'Thika', val: 'Thika', subZones: ['Section 9', 'Ngoingwa', 'Landless', 'Makongeni', 'Thika CBD', 'Kamenu', 'Gatuanyaga'] },
+        { name: 'Juja', val: 'Juja', subZones: ['Juja Farm', 'Juja City', 'Kalimoni', 'Murera', 'Survey'] },
+        { name: 'Kiambu Town', val: 'Kiambu Town', subZones: ['Kiambu CBD', 'Kiambu Rd', 'Thika Rd Bypass Area'] },
+        { name: 'Githunguri', val: 'Githunguri', subZones: ['Githunguri Town', 'Komothai'] },
+        { name: 'Kabete', val: 'Kabete', subZones: ['Lower Kabete', 'Upper Kabete', 'Mountain View'] },
+        { name: 'Lari / Uplands', val: 'Uplands', subZones: ['Uplands Town', 'Lari'] },
+        { name: 'Gatundu', val: 'Gatundu', subZones: ['Gatundu Town', 'Gatundu South'] },
+        { name: 'Githiga', val: 'Githiga' },
+        { name: 'Karuri', val: 'Karuri', subZones: ['Karuri Town', 'Muchatha'] },
+        { name: 'Kikuyu Town', val: 'Kikuyu', subZones: ['Kikuyu CBD', 'Zambezi', 'Kinoo'] },
+        { name: 'Limuru', val: 'Limuru', subZones: ['Limuru Town', 'Tigoni', 'Limuru CBD'] },
+        { name: 'Sigona', val: 'Sigona' },
+        { name: 'Banana', val: 'Banana', subZones: ['Banana Hill', 'Banana Rd'] },
       ]
     },
     machakos: {
-      name: 'Machakos County',
+      name: 'Machakos',
       emoji: '✈️',
       areas: [
         { name: 'All Machakos', val: 'Machakos' },
-        { name: 'Syokimau', val: 'Syokimau', subZones: ['Katani Rd', 'Airport Rd', 'Gateway Mall', 'Mwananchi Rd', 'Community Rd', 'Kiungani Rd'] },
-        { name: 'Mlolongo', val: 'Mlolongo', subZones: ['Phase 1', 'Phase 2', 'Phase 3 (Weighbridge)', 'Phase 4', 'Expressway End'] },
-        { name: 'Athi River', val: 'Athi River', subZones: ['Green Park', 'Crystal Rivers', 'Makadara', 'Mavoko Town', 'Greatwall Gardens'] },
-        { name: 'Katani', val: 'Katani', subZones: ['Katani Shopping Centre', 'Shengli Rd'] },
-        { name: 'Kamulu', val: 'Kamulu', subZones: ['Kamulu Town', 'Stage 26'] },
-        { name: 'Joska', val: 'Joska', subZones: ['Joska Town', 'KBC Road'] },
-        { name: 'Malaa', val: 'Malaa', subZones: [] },
-        { name: 'Machakos Town', val: 'Machakos Town', subZones: ['Machakos CBD', 'Kalama', 'Mumbuni', 'Katoloni'] },
-        { name: 'Kangundo', val: 'Kangundo', subZones: ['Kangundo Town'] },
-        { name: 'Tala', val: 'Tala', subZones: ['Tala Market', 'Tala Bypass'] },
-        { name: 'Lukenya', val: 'Lukenya', subZones: ['Daystar University Area', 'Lukenya Hills'] },
-        { name: 'Mitaboni', val: 'Mitaboni', subZones: [] },
-        { name: 'Yatta', val: 'Yatta', subZones: [] }
+        { name: 'Syokimau', val: 'Syokimau', subZones: ['Katani Rd', 'Airport Rd', 'Gateway Mall Area', 'Mwananchi Rd', 'Community Rd', 'Kiungani Rd'] },
+        { name: 'Mlolongo', val: 'Mlolongo', subZones: ['Phase 1', 'Phase 2', 'Phase 3 (Weighbridge)', 'Phase 4', 'Expressway End', 'Mlolongo Town'] },
+        { name: 'Athi River', val: 'Athi River', subZones: ['Green Park', 'Crystal Rivers', 'Makadara', 'Mavoko Town', 'Greatwall Gardens', 'Bondeni', 'Highway'] },
+        { name: 'Machakos Town', val: 'Machakos Town', subZones: ['Machakos CBD', 'Machakos Kalimoni', 'Kalawa Rd'] },
+        { name: 'Katani', val: 'Katani', subZones: ['Katani Road', 'Katani Estate'] },
+        { name: 'Kangundo', val: 'Kangundo', subZones: ['Kangundo Town', 'Tala', 'Matuu'] },
+        { name: 'Mwala', val: 'Mwala' },
+        { name: 'Konza City', val: 'Konza' },
+        { name: 'Mutituni', val: 'Mutituni' },
       ]
     },
     kajiado: {
-      name: 'Kajiado County',
+      name: 'Kajiado',
       emoji: '🦁',
       areas: [
         { name: 'All Kajiado', val: 'Kajiado' },
-        { name: 'Ongata Rongai', val: 'Ongata Rongai', subZones: ['Maasai Lodge', 'Tuskys Area', 'Rimpa', 'Kandisi', 'Mayor Rd', 'Laiser Hill', 'Nazarene Area'] },
-        { name: 'Kitengela', val: 'Kitengela', subZones: ['Chuna', 'Yukos', 'Acacia', 'Milimani', 'New Valley', 'Noonkopir', 'Deliverance Area'] },
-        { name: 'Ngong Town', val: 'Ngong', subZones: ['Ngong CBD', 'Milele Mall Area', 'Kibiko', 'Oloolua', 'Juanco', 'Matasia', 'Bulbul'] },
-        { name: 'Kiserian', val: 'Kiserian', subZones: ['Kiserian CBD', 'Pipeline Rd', 'Oloosirkon'] },
-        { name: 'Isinya', val: 'Isinya', subZones: ['Isinya CBD', 'Kajiado Link'] },
-        { name: 'Kajiado Town', val: 'Kajiado Town', subZones: ['Kajiado CBD', 'County Offices'] },
-        { name: 'Namanga', val: 'Namanga', subZones: [] },
-        { name: 'Loitokitok', val: 'Loitokitok', subZones: [] }
+        { name: 'Ongata Rongai', val: 'Ongata Rongai', subZones: ['Maasai Lodge', 'Rimpa', 'Kandisi', 'Mayor Rd', 'Laiser Hill', 'Nazarene', 'Posta'] },
+        { name: 'Kitengela', val: 'Kitengela', subZones: ['Chuna', 'Yukos', 'Acacia', 'Milimani', 'New Valley', 'Noonkopir', 'Kipeto', 'Red Hill (Kitengela)'] },
+        { name: 'Ngong', val: 'Ngong', subZones: ['Ngong CBD', 'Kibiko', 'Matasia', 'Bulbul', 'Ngong Hills Area'] },
+        { name: 'Kiserian', val: 'Kiserian', subZones: ['Kiserian Market', 'Kiserian Phase', 'Kiserian Rd'] },
+        { name: 'Kajiado Town', val: 'Kajiado Town', subZones: ['Kajiado CBD', 'Kajiado Mkt Area'] },
+        { name: 'Namanga', val: 'Namanga' },
+        { name: 'Loitokitok', val: 'Loitokitok' },
+        { name: 'Olkejuado', val: 'Olkejuado' },
+        { name: 'Kimana', val: 'Kimana' },
+        { name: 'Illasit', val: 'Illasit' },
       ]
     },
     mombasa: {
-      name: 'Mombasa & Coast',
+      name: 'Mombasa',
       emoji: '🌊',
       areas: [
-        { name: 'All Coast', val: 'Mombasa' },
-        { name: 'Nyali', val: 'Nyali', subZones: ['Links Rd', 'Cinemax', 'Beach Rd', 'Nyali Estate', 'Greenwood'] },
-        { name: 'Bamburi', val: 'Bamburi', subZones: ['Bamburi Mtambo', 'Fisheries', 'Vescon', 'Mwisho wa Lami'] },
-        { name: 'Shanzu', val: 'Shanzu', subZones: ['Shanzu Beach', 'Serena Rd', 'Go-Kart Area'] },
-        { name: 'Kisauni', val: 'Kisauni', subZones: [] },
-        { name: 'Likoni', val: 'Likoni', subZones: [] },
-        { name: 'Changamwe', val: 'Changamwe', subZones: [] },
-        { name: 'Kizingo', val: 'Kizingo', subZones: ['State House Rd', 'Lighthouse Area'] },
-        { name: 'Tudor', val: 'Tudor', subZones: ['Technical University Area', 'Tudor Creek', 'Tudor 4'] },
-        { name: 'Old Town Mombasa', val: 'Old Town Mombasa', subZones: [] },
-        { name: 'Mtwapa (Kilifi)', val: 'Mtwapa', subZones: ['Mtwapa Creek', 'Moorings Area', 'Posta'] },
-        { name: 'Diani (Kwale)', val: 'Diani', subZones: ['Diani Beach Rd', 'Ukunda', 'Kongo Mosque Area'] },
-        { name: 'Kilifi Town', val: 'Kilifi', subZones: ['Pwani University Area', 'Bofa Beach', 'Mnarani'] },
-        { name: 'Malindi', val: 'Malindi', subZones: ['Casuarina', 'Malindi CBD', 'Mtangani'] },
-        { name: 'Watamu', val: 'Watamu', subZones: [] },
-        { name: 'Mariakani', val: 'Mariakani', subZones: [] },
-        { name: 'Voi (Taita Taveta)', val: 'Voi', subZones: [] },
-        { name: 'Lamu', val: 'Lamu', subZones: ['Lamu Town', 'Shela'] }
+        { name: 'All Mombasa', val: 'Mombasa' },
+        { name: 'Nyali', val: 'Nyali', subZones: ['Nyali Estate', 'Nyali Beach', 'Mkomani', 'Kongowea', "Ziwa La Ng'ombe", 'Bombolulu'] },
+        { name: 'Bamburi', val: 'Bamburi', subZones: ['Bamburi Beach', 'Bamburi Estate', 'Shanzu', 'Mtopanga'] },
+        { name: 'Mombasa CBD', val: 'Mombasa CBD', subZones: ['Moi Ave', 'Old Town', 'Ganjoni', 'Tudor', 'Majengo'] },
+        { name: 'Likoni', val: 'Likoni', subZones: ['Likoni Ferry Area', 'Shika Adabu', 'Bofu', 'Mtongwe'] },
+        { name: 'Kisauni', val: 'Kisauni', subZones: ['Kisauni Estate', 'Mishomoroni', 'Junda', 'Mlaleo'] },
+        { name: 'Changamwe', val: 'Changamwe', subZones: ['Port Reitz', 'Changamwe Estate', 'Miritini', 'Chaani'] },
+        { name: 'Diani (Kwale)', val: 'Diani', subZones: ['Diani Beach Rd', 'Ukunda', 'Galu Beach'] },
+        { name: 'Mariakani (Kilifi)', val: 'Mariakani', subZones: ['Mariakani Town', 'Mariakani Estate'] },
+        { name: 'Mtwapa', val: 'Mtwapa', subZones: ['Mtwapa Town', 'Mtwapa Creek'] },
+        { name: 'Malindi', val: 'Malindi', subZones: ['Malindi Town', 'Malindi Beach', 'Watamu'] },
+        { name: 'Voi (Taita Taveta)', val: 'Voi', subZones: ['Voi Town', 'Voi CBD'] },
       ]
     },
     nakuru: {
-      name: 'Nakuru & Rift Valley',
+      name: 'Nakuru',
       emoji: '🦩',
       areas: [
-        { name: 'All Nakuru / Rift Valley', val: 'Nakuru' },
-        { name: 'Milimani (Nakuru)', val: 'Milimani', subZones: ['Upper Milimani', 'Lower Milimani'] },
-        { name: 'Naka', val: 'Naka', subZones: ['Naka Estate', 'Hyrax Hill Area'] },
-        { name: 'Section 58', val: 'Section 58', subZones: ['Section 58 Shopping Centre'] },
-        { name: 'Kiamunyi', val: 'Kiamunyi', subZones: ['Olive Inn', 'Mercy Njeri'] },
-        { name: 'Free Area', val: 'Free Area', subZones: ['Free Area Stage', 'Midland'] },
-        { name: 'Lanet', val: 'Lanet', subZones: ['Lanet Barracks Area', 'Umoja Lanet'] },
-        { name: 'Naivasha', val: 'Naivasha', subZones: ['Naivasha Town', 'Lake View', 'Moi South Lake Rd', 'Kongoni'] },
-        { name: 'Gilgil', val: 'Gilgil', subZones: ['Gilgil Town', 'Kekopey'] },
+        { name: 'All Nakuru', val: 'Nakuru' },
+        { name: 'Nakuru Town', val: 'Nakuru Town', subZones: ['Nakuru CBD', 'Section 58', 'Shabab', 'Free Area', 'Flamingo', 'Bondeni'] },
+        { name: 'Milimani (Nakuru)', val: 'Milimani', subZones: ['Milimani Estate', 'Nakuru GK Area'] },
+        { name: 'Naivasha', val: 'Naivasha', subZones: ['Naivasha CBD', 'Naivasha South Rd', 'Mirera', 'Lake Rd'] },
+        { name: 'Gilgil', val: 'Gilgil', subZones: ['Gilgil Town', 'Gilgil Military Rd'] },
         { name: 'Molo', val: 'Molo', subZones: ['Molo Town'] },
-        { name: 'Njoro', val: 'Njoro', subZones: ['Egerton University Area'] },
-        { name: 'Kericho', val: 'Kericho', subZones: ['Kericho Town', 'Tea Hotel Area', 'Litein'] },
-        { name: 'Bomet', val: 'Bomet', subZones: ['Bomet CBD', 'Sotik'] },
-        { name: 'Narok', val: 'Narok', subZones: ['Narok Town', 'Kilgoris'] },
-        { name: 'Baringo', val: 'Baringo', subZones: ['Kabarnet', 'Marigat', 'Eldama Ravine'] },
-        { name: 'Laikipia', val: 'Laikipia', subZones: ['Rumuruti', 'Nanyuki'] }
+        { name: 'Njoro', val: 'Njoro', subZones: ['Njoro Town', 'Egerton University Area'] },
+        { name: 'Eldama Ravine', val: 'Eldama Ravine' },
+        { name: 'Subukia', val: 'Subukia' },
+        { name: 'Rongai (Nakuru)', val: 'Rongai Nakuru', subZones: ['Rongai Town Nakuru', 'Solai'] },
+        { name: 'Kabarak', val: 'Kabarak' },
       ]
     },
     kisumu: {
-      name: 'Kisumu & Western Kenya',
+      name: 'Kisumu',
       emoji: '🐟',
       areas: [
-        { name: 'All Western Kenya', val: 'Kisumu' },
-        { name: 'Milimani (Kisumu)', val: 'Milimani', subZones: ['Milimani West', 'State Lodge Area'] },
-        { name: 'Riat Hills', val: 'Riat', subZones: ['Riat View', 'Airport Ridge'] },
-        { name: 'Tom Mboya Estate', val: 'Tom Mboya', subZones: ['Tom Mboya Estate', 'Makasembo'] },
-        { name: 'Migosi', val: 'Migosi', subZones: ['Carwash Area', 'Stage 2'] },
-        { name: 'Mamboleo', val: 'Mamboleo', subZones: ['Showground Area', 'Mamboleo Junction'] },
-        { name: 'Kondele', val: 'Kondele', subZones: ['Kondele CBD', 'Kibuye Border'] },
-        { name: 'Nyalenda', val: 'Nyalenda', subZones: [] },
-        { name: 'Manyatta', val: 'Manyatta', subZones: [] },
-        { name: 'Ahero', val: 'Ahero', subZones: [] },
-        { name: 'Maseno', val: 'Maseno', subZones: ['Maseno University Area'] },
-        { name: 'Muhoroni', val: 'Muhoroni', subZones: [] },
-        { name: 'Homa Bay', val: 'Homa Bay', subZones: ['Homa Bay Town', 'Mbita', 'Oyugis', 'Kendu Bay'] },
-        { name: 'Migori', val: 'Migori', subZones: ['Migori Town', 'Awendo', 'Rongo'] },
-        { name: 'Kisii Town', val: 'Kisii', subZones: ['Jogoo Area', 'Milimani (Kisii)', 'Nyamataro', 'Ogembo', 'Keroka'] },
-        { name: 'Nyamira', val: 'Nyamira', subZones: ['Nyamira Town', 'Keroka'] },
-        { name: 'Siaya', val: 'Siaya', subZones: ['Siaya Town', 'Bondo', 'Ugunja', 'Yala'] },
-        { name: 'Kakamega', val: 'Kakamega', subZones: ['Amalemba', 'Lurambi', 'Milimani (Kakamega)', 'Mumias', 'Butere'] },
-        { name: 'Vihiga', val: 'Vihiga', subZones: ['Mbale', 'Luanda', 'Chavakali'] },
-        { name: 'Bungoma', val: 'Bungoma', subZones: ['Kanduyi', 'Bungoma CBD', 'Webuye', 'Kimilili'] },
-        { name: 'Busia', val: 'Busia', subZones: ['Busia Town', 'Malaba', 'Nambale'] }
+        { name: 'All Kisumu', val: 'Kisumu' },
+        { name: 'Kisumu CBD', val: 'Kisumu CBD', subZones: ['Oginga Odinga St', 'Jomo Kenyatta Highway', 'Lake Rd', 'Kisumu Market Area'] },
+        { name: 'Milimani (Kisumu)', val: 'Milimani Kisumu', subZones: ['Milimani Estate', 'Milimani Rd'] },
+        { name: 'Mamboleo', val: 'Mamboleo', subZones: ['Mamboleo Estate', 'Mamboleo Mkt Area'] },
+        { name: 'Kondele', val: 'Kondele', subZones: ['Kondele Estate', 'Kondele Mkt'] },
+        { name: 'Nyalenda', val: 'Nyalenda', subZones: ['Nyalenda A', 'Nyalenda B'] },
+        { name: 'Manyatta', val: 'Manyatta', subZones: ['Manyatta A', 'Manyatta B'] },
+        { name: 'Lolwe', val: 'Lolwe' },
+        { name: 'Bonde La Amani', val: 'Bonde La Amani' },
+        { name: 'Kasule', val: 'Kasule' },
+        { name: 'Nyamasaria', val: 'Nyamasaria' },
+        { name: 'Tom Mboya Estate', val: 'Tom Mboya' },
+        { name: 'Riat Hills', val: 'Riat Hills', subZones: ['Riat Hills Estate'] },
+        { name: 'Dunga', val: 'Dunga', subZones: ['Dunga Beach Rd'] },
       ]
     },
-    eldoret: {
-      name: 'Eldoret & North Rift',
+    uasin_gishu: {
+      name: 'Eldoret / Uasin Gishu',
       emoji: '🏃',
       areas: [
-        { name: 'All North Rift', val: 'Eldoret' },
-        { name: 'Elgon View', val: 'Elgon View', subZones: ['Upper Elgon View', 'Lower Elgon View'] },
-        { name: 'Pioneer', val: 'Pioneer', subZones: ['Pioneer Estate', 'Langas Link'] },
-        { name: 'Kapsoya', val: 'Kapsoya', subZones: ['Upper Kapsoya', 'Munster Area'] },
-        { name: 'Annex', val: 'Annex', subZones: ['Moi University Law Campus Area'] },
-        { name: 'West Indies', val: 'West Indies', subZones: ['Golf Club Area'] },
-        { name: 'Langas', val: 'Langas', subZones: ['Kisumu Ndogo', 'Kipkenyo Link'] },
-        { name: 'Huruma (Eldoret)', val: 'Huruma Eldoret', subZones: [] },
-        { name: 'Burnt Forest', val: 'Burnt Forest', subZones: [] },
-        { name: 'Turbo', val: 'Turbo', subZones: [] },
-        { name: 'Kitale (Trans Nzoia)', val: 'Kitale', subZones: ['Milimani (Kitale)', 'Section 6', 'Kiminini'] },
-        { name: 'Kapsabet (Nandi)', val: 'Kapsabet', subZones: ['Nandi Hills'] },
-        { name: 'Iten (Elgeyo-Marakwet)', val: 'Iten', subZones: [] },
-        { name: 'Kapenguria (West Pokot)', val: 'Kapenguria', subZones: [] },
-        { name: 'Lodwar (Turkana)', val: 'Lodwar', subZones: ['Kakuma'] },
-        { name: 'Maralal (Samburu)', val: 'Maralal', subZones: [] }
+        { name: 'All Eldoret', val: 'Eldoret' },
+        { name: 'Eldoret Town Centre', val: 'Eldoret Town Centre', subZones: ['Uganda Rd', 'Kenyatta St', 'Nandi Rd', 'Oginga Odinga Rd (Eldoret)'] },
+        { name: 'Langas', val: 'Langas', subZones: ['Langas Estate', 'Langas Phase 1', 'Langas Phase 2', 'Langas Phase 3'] },
+        { name: 'Huruma Estate (Eldoret)', val: 'Huruma Estate Eldoret', subZones: ['Huruma A', 'Huruma B'] },
+        { name: 'Annex', val: 'Annex Eldoret', subZones: ['Annex Estate Eldoret'] },
+        { name: 'Pioneer Estate', val: 'Pioneer Estate', subZones: ['Pioneer 1', 'Pioneer 2'] },
+        { name: 'West Indies', val: 'West Indies Eldoret' },
+        { name: 'Red Hill (Eldoret)', val: 'Red Hill Eldoret' },
+        { name: 'Kimumu', val: 'Kimumu' },
+        { name: 'Kapsabet', val: 'Kapsabet', subZones: ['Kapsabet Town', 'Kapsabet Estate'] },
+        { name: 'Turbo', val: 'Turbo' },
+        { name: 'Burnt Forest', val: 'Burnt Forest' },
+        { name: 'Eldoret Airport Area', val: 'Eldoret Airport' },
       ]
     },
-    eastern: {
-      name: 'Eastern Kenya',
-      emoji: '🌄',
+    nyeri: {
+      name: 'Nyeri',
+      emoji: '🌲',
       areas: [
-        { name: 'All Eastern Kenya', val: 'Eastern' },
-        { name: 'Meru Town', val: 'Meru', subZones: ['Makutano', 'Gatunga', 'Gitimene'] },
-        { name: 'Nkubu (Meru)', val: 'Nkubu', subZones: [] },
-        { name: 'Maua (Meru)', val: 'Maua', subZones: [] },
-        { name: 'Chuka (Tharaka-Nithi)', val: 'Chuka', subZones: [] },
-        { name: 'Embu Town', val: 'Embu', subZones: ['Embu CBD', 'Kamiu'] },
-        { name: 'Runyenjes (Embu)', val: 'Runyenjes', subZones: [] },
-        { name: 'Kitui Town', val: 'Kitui', subZones: ['Kitui CBD', 'Miambani'] },
-        { name: 'Mwingi (Kitui)', val: 'Mwingi', subZones: [] },
-        { name: 'Wote (Makueni)', val: 'Wote', subZones: [] },
-        { name: 'Sultan Hamud (Makueni)', val: 'Sultan Hamud', subZones: [] },
-        { name: 'Isiolo Town', val: 'Isiolo', subZones: [] },
-        { name: 'Marsabit Town', val: 'Marsabit', subZones: [] },
-        { name: 'Moyale (Marsabit)', val: 'Moyale', subZones: [] },
-        { name: 'Garissa Town', val: 'Garissa', subZones: [] },
-        { name: 'Dadaab (Garissa)', val: 'Dadaab', subZones: [] },
-        { name: 'Wajir Town', val: 'Wajir', subZones: [] },
-        { name: 'Mandera Town', val: 'Mandera', subZones: [] }
+        { name: 'All Nyeri', val: 'Nyeri' },
+        { name: 'Nyeri Town', val: 'Nyeri Town', subZones: ['Nyeri CBD', "Ruring'u", 'Thunguma', 'Mahiga'] },
+        { name: 'Karatina', val: 'Karatina', subZones: ['Karatina Town', 'Karatina Market Area'] },
+        { name: 'Othaya', val: 'Othaya', subZones: ['Othaya Town'] },
+        { name: 'Mukurwe-ini', val: 'Mukurwe-ini' },
+        { name: 'Tetu', val: 'Tetu' },
+        { name: 'Kieni', val: 'Kieni' },
+        { name: 'Mathira', val: 'Mathira' },
+        { name: 'Nyahururu', val: 'Nyahururu', subZones: ['Nyahururu Town', 'Thomson Falls Area'] },
       ]
     },
-    central: {
-      name: 'Central Kenya',
-      emoji: '🏔️',
+    meru: {
+      name: 'Meru',
+      emoji: '🌻',
       areas: [
-        { name: 'All Central Kenya', val: 'Central' },
-        { name: 'Nyeri Town', val: 'Nyeri', subZones: ['Nyeri CBD', 'Ruring\'u', 'Kamakwa'] },
-        { name: 'Karatina (Nyeri)', val: 'Karatina', subZones: [] },
-        { name: 'Othaya (Nyeri)', val: 'Othaya', subZones: [] },
-        { name: 'Nanyuki (Laikipia)', val: 'Nanyuki', subZones: ['Baraka', 'Lewa Gate', 'Nanyuki CBD'] },
-        { name: 'Nyahururu (Nyandarua)', val: 'Nyahururu', subZones: [] },
-        { name: 'Ol Kalou (Nyandarua)', val: 'Ol Kalou', subZones: [] },
-        { name: 'Murang\'a Town', val: 'Muranga', subZones: ['Murang\'a CBD', 'Makongeni'] },
-        { name: 'Kenol (Murang\'a)', val: 'Kenol', subZones: [] },
-        { name: 'Maragua (Murang\'a)', val: 'Maragua', subZones: [] },
-        { name: 'Kerugoya (Kirinyaga)', val: 'Kerugoya', subZones: [] },
-        { name: 'Wang\'uru (Kirinyaga)', val: 'Wanguru', subZones: [] }
+        { name: 'All Meru', val: 'Meru' },
+        { name: 'Meru Town', val: 'Meru Town', subZones: ['Meru CBD', 'Meru Market Area', 'Makutano', 'Gakoromone'] },
+        { name: 'Nkubu', val: 'Nkubu', subZones: ['Nkubu Town'] },
+        { name: 'Maua', val: 'Maua', subZones: ['Maua Town'] },
+        { name: 'Chuka', val: 'Chuka', subZones: ['Chuka Town', 'Chuka University Area'] },
+        { name: 'Tigania', val: 'Tigania' },
+        { name: 'Igembe', val: 'Igembe' },
       ]
-    }
+    },
+    embu: {
+      name: 'Embu',
+      emoji: '🌾',
+      areas: [
+        { name: 'All Embu', val: 'Embu' },
+        { name: 'Embu Town', val: 'Embu Town', subZones: ['Embu CBD', 'Embu Market', 'Kyeni', 'Nginda'] },
+        { name: 'Runyenjes', val: 'Runyenjes', subZones: ['Runyenjes Town'] },
+        { name: 'Siakago', val: 'Siakago' },
+        { name: 'Manyatta', val: 'Manyatta Embu' },
+      ]
+    },
+    kirinyaga: {
+      name: 'Kirinyaga',
+      emoji: '🌺',
+      areas: [
+        { name: 'All Kirinyaga', val: 'Kirinyaga' },
+        { name: 'Kerugoya', val: 'Kerugoya', subZones: ['Kerugoya Town', 'Kutus'] },
+        { name: "Wang'uru", val: "Wang'uru" },
+        { name: 'Sagana', val: 'Sagana', subZones: ['Sagana Town', 'Kagio'] },
+        { name: 'Wanguru', val: 'Wanguru' },
+      ]
+    },
+    muranga: {
+      name: "Murang'a",
+      emoji: '🌽',
+      areas: [
+        { name: "All Murang'a", val: "Murang'a" },
+        { name: "Murang'a Town", val: "Murang'a Town", subZones: ["Murang'a CBD", 'Maragua', 'Kenol'] },
+        { name: 'Kenol', val: 'Kenol', subZones: ['Kenol Town', 'Makuyu'] },
+        { name: 'Maragua', val: 'Maragua' },
+        { name: 'Kigumo', val: 'Kigumo' },
+        { name: 'Kangema', val: 'Kangema' },
+        { name: 'Saba Saba', val: 'Saba Saba' },
+      ]
+    },
+    laikipia: {
+      name: 'Laikipia',
+      emoji: '🦘',
+      areas: [
+        { name: 'All Laikipia', val: 'Laikipia' },
+        { name: 'Nanyuki', val: 'Nanyuki', subZones: ['Nanyuki Town', 'Nanyuki Airbase Area', 'Nanyuki CBD'] },
+        { name: 'Rumuruti', val: 'Rumuruti', subZones: ['Rumuruti Town'] },
+        { name: 'Doldol', val: 'Doldol' },
+        { name: 'Nyahururu', val: 'Nyahururu' },
+      ]
+    },
+    kakamega: {
+      name: 'Kakamega',
+      emoji: '🌳',
+      areas: [
+        { name: 'All Kakamega', val: 'Kakamega' },
+        { name: 'Kakamega Town', val: 'Kakamega Town', subZones: ['Kakamega CBD', 'Amalemba', 'Mahiakalo', 'Lubunu'] },
+        { name: 'Mumias', val: 'Mumias', subZones: ['Mumias Town', 'Mumias Sugar Belt Area'] },
+        { name: 'Butere', val: 'Butere' },
+        { name: 'Malava', val: 'Malava' },
+        { name: 'Lugari', val: 'Lugari' },
+        { name: 'Khwisero', val: 'Khwisero' },
+      ]
+    },
+    bungoma: {
+      name: 'Bungoma',
+      emoji: '🌼',
+      areas: [
+        { name: 'All Bungoma', val: 'Bungoma' },
+        { name: 'Bungoma Town', val: 'Bungoma Town', subZones: ['Bungoma CBD', 'Khalaba', 'Musikoma'] },
+        { name: 'Webuye', val: 'Webuye', subZones: ['Webuye Town', 'Webuye Estate'] },
+        { name: 'Kimilili', val: 'Kimilili' },
+        { name: 'Chwele', val: 'Chwele' },
+        { name: 'Sirisia', val: 'Sirisia' },
+      ]
+    },
+    busia: {
+      name: 'Busia',
+      emoji: '🌿',
+      areas: [
+        { name: 'All Busia', val: 'Busia' },
+        { name: 'Busia Town', val: 'Busia Town', subZones: ['Busia CBD', 'Busia Border Area'] },
+        { name: 'Malaba', val: 'Malaba', subZones: ['Malaba Border Town'] },
+        { name: 'Nambale', val: 'Nambale' },
+        { name: 'Port Victoria', val: 'Port Victoria' },
+      ]
+    },
+    siaya: {
+      name: 'Siaya',
+      emoji: '🌺',
+      areas: [
+        { name: 'All Siaya', val: 'Siaya' },
+        { name: 'Siaya Town', val: 'Siaya Town', subZones: ['Siaya CBD', 'Railway Area (Siaya)'] },
+        { name: 'Bondo', val: 'Bondo', subZones: ['Bondo Town', 'Bondo Market'] },
+        { name: 'Ugunja', val: 'Ugunja' },
+        { name: 'Yala', val: 'Yala' },
+        { name: 'Rarieda', val: 'Rarieda' },
+      ]
+    },
+    homa_bay: {
+      name: 'Homa Bay',
+      emoji: '🚵',
+      areas: [
+        { name: 'All Homa Bay', val: 'Homa Bay' },
+        { name: 'Homa Bay Town', val: 'Homa Bay Town', subZones: ['Homa Bay CBD', 'Homa Bay Market', 'Lake Victoria Area'] },
+        { name: 'Mbita', val: 'Mbita', subZones: ['Mbita Point', 'Rusinga Island'] },
+        { name: 'Oyugis', val: 'Oyugis' },
+        { name: 'Kendu Bay', val: 'Kendu Bay' },
+        { name: 'Ndhiwa', val: 'Ndhiwa' },
+      ]
+    },
+    migori: {
+      name: 'Migori',
+      emoji: '🐟',
+      areas: [
+        { name: 'All Migori', val: 'Migori' },
+        { name: 'Migori Town', val: 'Migori Town', subZones: ['Migori CBD', 'Migori Market Area'] },
+        { name: 'Awendo', val: 'Awendo', subZones: ['Awendo Town'] },
+        { name: 'Rongo', val: 'Rongo', subZones: ['Rongo Town'] },
+        { name: 'Uriri', val: 'Uriri' },
+        { name: 'Suna Ragana', val: 'Suna Ragana' },
+      ]
+    },
+    kisii: {
+      name: 'Kisii',
+      emoji: '🌲',
+      areas: [
+        { name: 'All Kisii', val: 'Kisii' },
+        { name: 'Kisii Town', val: 'Kisii Town', subZones: ['Kisii CBD', 'Jogoo Area', 'Milimani (Kisii)', 'Daraja Mbili', 'Nyanchwa'] },
+        { name: 'Ogembo', val: 'Ogembo' },
+        { name: 'Keroka', val: 'Keroka' },
+        { name: 'Suneka', val: 'Suneka' },
+        { name: 'Tabaka', val: 'Tabaka' },
+      ]
+    },
+    trans_nzoia: {
+      name: 'Trans Nzoia',
+      emoji: '🌻',
+      areas: [
+        { name: 'All Trans Nzoia', val: 'Trans Nzoia' },
+        { name: 'Kitale', val: 'Kitale', subZones: ['Kitale CBD', 'Kitale Estate', "Moi's Bridge Area"] },
+        { name: 'Kiminini', val: 'Kiminini' },
+        { name: 'Endebess', val: 'Endebess' },
+      ]
+    },
+    kericho: {
+      name: 'Kericho',
+      emoji: '🍵',
+      areas: [
+        { name: 'All Kericho', val: 'Kericho' },
+        { name: 'Kericho Town', val: 'Kericho Town', subZones: ['Kericho CBD', 'Brooke Bond Area', 'Kericho Green Hotel Area'] },
+        { name: 'Litein', val: 'Litein', subZones: ['Litein Town'] },
+        { name: 'Londiani', val: 'Londiani' },
+      ]
+    },
+    bomet: {
+      name: 'Bomet',
+      emoji: '🌻',
+      areas: [
+        { name: 'All Bomet', val: 'Bomet' },
+        { name: 'Bomet Town', val: 'Bomet Town', subZones: ['Bomet CBD', 'Sigor'] },
+        { name: 'Sotik', val: 'Sotik' },
+        { name: 'Longisa', val: 'Longisa' },
+      ]
+    },
+    narok: {
+      name: 'Narok',
+      emoji: '🦁',
+      areas: [
+        { name: 'All Narok', val: 'Narok' },
+        { name: 'Narok Town', val: 'Narok Town', subZones: ['Narok CBD', 'Narok Market Area'] },
+        { name: 'Kilgoris', val: 'Kilgoris' },
+        { name: 'Ololulunga', val: 'Ololulunga' },
+      ]
+    },
+    nandi: {
+      name: 'Nandi',
+      emoji: '🌿',
+      areas: [
+        { name: 'All Nandi', val: 'Nandi' },
+        { name: 'Kapsabet', val: 'Kapsabet', subZones: ['Kapsabet CBD', 'Kapsabet County Hospital Area'] },
+        { name: 'Nandi Hills', val: 'Nandi Hills' },
+        { name: 'Eldoret (Nandi)', val: 'Nandi Eldoret Area' },
+      ]
+    },
+    baringo: {
+      name: 'Baringo',
+      emoji: '🌻',
+      areas: [
+        { name: 'All Baringo', val: 'Baringo' },
+        { name: 'Kabarnet', val: 'Kabarnet', subZones: ['Kabarnet Town', 'County Govt Area'] },
+        { name: 'Marigat', val: 'Marigat' },
+        { name: 'Eldama Ravine', val: 'Eldama Ravine', subZones: ['Eldama Ravine Town'] },
+        { name: 'Mogotio', val: 'Mogotio' },
+      ]
+    },
+    elgeyo_marakwet: {
+      name: 'Elgeyo-Marakwet',
+      emoji: '⛰️',
+      areas: [
+        { name: 'All Elgeyo-Marakwet', val: 'Elgeyo-Marakwet' },
+        { name: 'Iten', val: 'Iten', subZones: ['Iten Town', 'Iten Athletics Training Area'] },
+        { name: 'Chesoi', val: 'Chesoi' },
+        { name: 'Tambach', val: 'Tambach' },
+      ]
+    },
+    west_pokot: {
+      name: 'West Pokot',
+      emoji: '⛰️',
+      areas: [
+        { name: 'All West Pokot', val: 'West Pokot' },
+        { name: 'Kapenguria', val: 'Kapenguria', subZones: ['Kapenguria CBD', 'Kapenguria County Offices Area'] },
+        { name: 'Sigor', val: 'Sigor' },
+      ]
+    },
+    samburu: {
+      name: 'Samburu',
+      emoji: '🦘',
+      areas: [
+        { name: 'All Samburu', val: 'Samburu' },
+        { name: 'Maralal', val: 'Maralal', subZones: ['Maralal Town', 'Maralal Market Area'] },
+        { name: 'Baragoi', val: 'Baragoi' },
+      ]
+    },
+    turkana: {
+      name: 'Turkana',
+      emoji: '🏜️',
+      areas: [
+        { name: 'All Turkana', val: 'Turkana' },
+        { name: 'Lodwar', val: 'Lodwar', subZones: ['Lodwar Town', 'Lodwar CBD', 'Naikir'] },
+        { name: 'Kakuma', val: 'Kakuma', subZones: ['Kakuma Town', 'Kakuma Refugee Camp Area'] },
+        { name: 'Lokichoggio', val: 'Lokichoggio' },
+        { name: 'Lokichar', val: 'Lokichar' },
+      ]
+    },
+    marsabit: {
+      name: 'Marsabit',
+      emoji: '🏜️',
+      areas: [
+        { name: 'All Marsabit', val: 'Marsabit' },
+        { name: 'Marsabit Town', val: 'Marsabit Town', subZones: ['Marsabit CBD', 'Marsabit Stage Area'] },
+        { name: 'Moyale', val: 'Moyale', subZones: ['Moyale Town', 'Moyale Border Area'] },
+        { name: 'Loiyangalani', val: 'Loiyangalani' },
+        { name: 'Laisamis', val: 'Laisamis' },
+      ]
+    },
+    isiolo: {
+      name: 'Isiolo',
+      emoji: '🏜️',
+      areas: [
+        { name: 'All Isiolo', val: 'Isiolo' },
+        { name: 'Isiolo Town', val: 'Isiolo Town', subZones: ['Isiolo CBD', 'Isiolo Market', 'Bula Pesa', 'Roba Dede'] },
+        { name: 'Merti', val: 'Merti' },
+        { name: 'Modogashe', val: 'Modogashe' },
+      ]
+    },
+    tharaka_nithi: {
+      name: 'Tharaka-Nithi',
+      emoji: '🌲',
+      areas: [
+        { name: 'All Tharaka-Nithi', val: 'Tharaka-Nithi' },
+        { name: 'Chuka', val: 'Chuka', subZones: ['Chuka Town', 'Chuka University Area', 'Mitunguu'] },
+        { name: 'Marimanti', val: 'Marimanti' },
+        { name: 'Kathwana', val: 'Kathwana' },
+      ]
+    },
+    kitui: {
+      name: 'Kitui',
+      emoji: '🌻',
+      areas: [
+        { name: 'All Kitui', val: 'Kitui' },
+        { name: 'Kitui Town', val: 'Kitui Town', subZones: ['Kitui CBD', 'Kitui Market Area', 'Kyangwithya'] },
+        { name: 'Mwingi', val: 'Mwingi', subZones: ['Mwingi Town', 'Mwingi Market'] },
+        { name: 'Mutomo', val: 'Mutomo' },
+        { name: 'Zombe', val: 'Zombe' },
+      ]
+    },
+    makueni: {
+      name: 'Makueni',
+      emoji: '🌻',
+      areas: [
+        { name: 'All Makueni', val: 'Makueni' },
+        { name: 'Wote', val: 'Wote', subZones: ['Wote Town', 'Makueni County HQ Area'] },
+        { name: 'Sultan Hamud', val: 'Sultan Hamud', subZones: ['Sultan Hamud Town', 'Sultan Hamud Stage'] },
+        { name: 'Emali', val: 'Emali', subZones: ['Emali Town'] },
+        { name: 'Mtito Andei', val: 'Mtito Andei' },
+      ]
+    },
+    nyandarua: {
+      name: 'Nyandarua',
+      emoji: '🌲',
+      areas: [
+        { name: 'All Nyandarua', val: 'Nyandarua' },
+        { name: 'Ol Kalou', val: 'Ol Kalou', subZones: ['Ol Kalou Town', 'Ol Kalou Market Area'] },
+        { name: 'Nyahururu', val: 'Nyahururu', subZones: ['Nyahururu Town', 'Thomson Falls Area'] },
+        { name: 'Engineer', val: 'Engineer' },
+        { name: 'Njabini', val: 'Njabini' },
+      ]
+    },
+    kwale: {
+      name: 'Kwale',
+      emoji: '🌊',
+      areas: [
+        { name: 'All Kwale', val: 'Kwale' },
+        { name: 'Diani', val: 'Diani', subZones: ['Diani Beach Rd', 'Galu Beach', 'Ukunda Stage', 'Diani Beach'] },
+        { name: 'Ukunda', val: 'Ukunda', subZones: ['Ukunda Town', 'Ukunda Market'] },
+        { name: 'Msambweni', val: 'Msambweni' },
+        { name: 'Kwale Town', val: 'Kwale Town' },
+        { name: 'Shimba Hills Area', val: 'Shimba Hills' },
+      ]
+    },
+    kilifi: {
+      name: 'Kilifi',
+      emoji: '🌊',
+      areas: [
+        { name: 'All Kilifi', val: 'Kilifi' },
+        { name: 'Kilifi Town', val: 'Kilifi Town', subZones: ['Kilifi CBD', 'Kilifi Creek Area', 'Bofa Rd'] },
+        { name: 'Malindi', val: 'Malindi', subZones: ['Malindi Town', 'Malindi CBD', 'Shella', 'Watamu Rd'] },
+        { name: 'Watamu', val: 'Watamu', subZones: ['Watamu Beach', 'Watamu Village'] },
+        { name: 'Mtwapa', val: 'Mtwapa', subZones: ['Mtwapa Town', 'Mtwapa Rd', 'Mtwapa Creek'] },
+        { name: 'Mariakani', val: 'Mariakani', subZones: ['Mariakani Town', 'Mariakani Market'] },
+      ]
+    },
+    taita_taveta: {
+      name: 'Taita Taveta',
+      emoji: '🗻',
+      areas: [
+        { name: 'All Taita Taveta', val: 'Taita Taveta' },
+        { name: 'Voi', val: 'Voi', subZones: ['Voi Town', 'Voi Market Area', 'Sagala'] },
+        { name: 'Taveta', val: 'Taveta', subZones: ['Taveta Town', 'Taveta Border'] },
+        { name: 'Wundanyi', val: 'Wundanyi', subZones: ['Wundanyi Town'] },
+        { name: 'Mwatate', val: 'Mwatate' },
+      ]
+    },
+    tana_river: {
+      name: 'Tana River',
+      emoji: '🏜️',
+      areas: [
+        { name: 'All Tana River', val: 'Tana River' },
+        { name: 'Hola', val: 'Hola', subZones: ['Hola Town', 'Hola Market Area'] },
+        { name: 'Garsen', val: 'Garsen', subZones: ['Garsen Town'] },
+        { name: 'Bura', val: 'Bura' },
+      ]
+    },
+    lamu: {
+      name: 'Lamu',
+      emoji: '⛵',
+      areas: [
+        { name: 'All Lamu', val: 'Lamu' },
+        { name: 'Lamu Town', val: 'Lamu Town', subZones: ['Lamu Old Town (UNESCO)', 'Shela', 'Mkomani (Lamu)'] },
+        { name: 'Mpeketoni', val: 'Mpeketoni', subZones: ['Mpeketoni Town'] },
+        { name: 'Hindi', val: 'Hindi' },
+        { name: 'Mokowe', val: 'Mokowe' },
+      ]
+    },
+    garissa: {
+      name: 'Garissa',
+      emoji: '🏜️',
+      areas: [
+        { name: 'All Garissa', val: 'Garissa' },
+        { name: 'Garissa Town', val: 'Garissa Town', subZones: ['Garissa CBD', 'Garissa Township', 'Garissa Iftin', 'Borehole Area (Garissa)'] },
+        { name: 'Dadaab', val: 'Dadaab' },
+        { name: 'Hulugho', val: 'Hulugho' },
+        { name: 'Modogashe', val: 'Modogashe' },
+      ]
+    },
+    wajir: {
+      name: 'Wajir',
+      emoji: '🏜️',
+      areas: [
+        { name: 'All Wajir', val: 'Wajir' },
+        { name: 'Wajir Town', val: 'Wajir Town', subZones: ['Wajir CBD', 'Wajir Market Area', 'Wajir East Area'] },
+        { name: 'Habaswein', val: 'Habaswein' },
+        { name: 'Eldas', val: 'Eldas' },
+      ]
+    },
+    mandera: {
+      name: 'Mandera',
+      emoji: '🏜️',
+      areas: [
+        { name: 'All Mandera', val: 'Mandera' },
+        { name: 'Mandera Town', val: 'Mandera Town', subZones: ['Mandera CBD', 'Mandera Liboi Rd', 'Mandera Border Area'] },
+        { name: 'El Wak', val: 'El Wak' },
+        { name: 'Rhamu', val: 'Rhamu' },
+        { name: 'Takaba', val: 'Takaba' },
+        { name: 'Lafey', val: 'Lafey' },
+      ]
+    },
+    vihiga: {
+      name: 'Vihiga',
+      emoji: '🌿',
+      areas: [
+        { name: 'All Vihiga', val: 'Vihiga' },
+        { name: 'Vihiga Town', val: 'Vihiga Town', subZones: ['Vihiga CBD', 'Vihiga Market Area'] },
+        { name: 'Mbale', val: 'Mbale', subZones: ['Mbale Town', 'Mbale Market'] },
+        { name: 'Luanda', val: 'Luanda' },
+        { name: 'Chavakali', val: 'Chavakali' },
+        { name: 'Hamisi', val: 'Hamisi' },
+      ]
+    },
+    nyamira: {
+      name: 'Nyamira',
+      emoji: '🌲',
+      areas: [
+        { name: 'All Nyamira', val: 'Nyamira' },
+        { name: 'Nyamira Town', val: 'Nyamira Town', subZones: ['Nyamira CBD', 'Nyamira Market Area'] },
+        { name: 'Keroka', val: 'Keroka' },
+        { name: 'Manga', val: 'Manga' },
+      ]
+    },
   };
-
   // Expose KENYA_COUNTY_AREAS globally for desktop layout, location picker & filters
   if (typeof window !== 'undefined') {
     window.KENYA_COUNTY_AREAS = KENYA_COUNTY_AREAS;
   }
 
   function renderFilterAreaChips(countyId) {
-    const county = KENYA_COUNTY_AREAS[countyId] || KENYA_COUNTY_AREAS.all;
+    const county = KENYA_COUNTY_AREAS[countyId] || KENYA_COUNTY_AREAS[countyId === 'eldoret' ? 'uasin_gishu' : countyId] || KENYA_COUNTY_AREAS.all;
     const curLoc = (State.filters.location || '').toLowerCase().trim();
 
     return county.areas.map(a => {
@@ -555,15 +859,39 @@
           <div id="km-loc-default-view">
             <!-- County Filter Tabs -->
             <div class="km-loc-county-tabs">
-              <button type="button" class="km-loc-county-tab active" onclick="MobileApp.switchLocCounty('nairobi', this)">🏙️ Nairobi</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kiambu', this)">🌿 Kiambu</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('machakos', this)">✈️ Machakos</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kajiado', this)">🦁 Kajiado</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('mombasa', this)">🌊 Mombasa</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nakuru', this)">🦩 Nakuru</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kisumu', this)">🐟 Kisumu</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('eldoret', this)">🏃 Eldoret</button>
-              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('all', this)">🇰🇪 All Kenya</button>
+              <button type="button" class="km-loc-county-tab active" onclick="MobileApp.switchLocCounty('nairobi', this)">&#127961;&#65039; Nairobi</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kiambu', this)">&#127807; Kiambu</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('machakos', this)">&#9992;&#65039; Machakos</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kajiado', this)">&#129409; Kajiado</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('mombasa', this)">&#127754; Mombasa</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nakuru', this)">&#129705; Nakuru</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kisumu', this)">&#128031; Kisumu</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('uasin_gishu', this)">&#127939; Eldoret</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nyeri', this)">&#127794; Nyeri</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('meru', this)">&#127803; Meru</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('embu', this)">&#127806; Embu</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('muranga', this)">&#127805; Murang'a</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('laikipia', this)">&#129430; Laikipia</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kakamega', this)">&#127795; Kakamega</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('bungoma', this)">&#127804; Bungoma</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('busia', this)">&#127807; Busia</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('siaya', this)">&#127802; Siaya</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('homa_bay', this)">&#128693; Homa Bay</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('migori', this)">&#128031; Migori</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kisii', this)">&#127794; Kisii</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('trans_nzoia', this)">&#127803; Trans Nzoia</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kericho', this)">&#127861; Kericho</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('narok', this)">&#129409; Narok</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('nandi', this)">&#127807; Nandi</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('baringo', this)">&#127803; Baringo</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('laikipia', this)">&#129430; Laikipia</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kwale', this)">&#127754; Kwale</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('kilifi', this)">&#127754; Kilifi</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('taita_taveta', this)">&#128507; Taita Taveta</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('garissa', this)">&#127964;&#65039; Garissa</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('wajir', this)">&#127964;&#65039; Wajir</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('mandera', this)">&#127964;&#65039; Mandera</button>
+              <button type="button" class="km-loc-county-tab" onclick="MobileApp.switchLocCounty('all', this)">&#127472;&#127466; All Kenya</button>
             </div>
             <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.4px; margin:10px 14px 6px;">Popular Rental Areas</div>
             <div class="km-sheet-suburb-grid" id="km-sheet-suburb-grid">

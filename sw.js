@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'kejamarket-v97-free-and-desktop-polish';
+﻿const CACHE_NAME = 'kejamarket-v98-all-47-counties-desktop';
 
 const STATIC_ASSETS = [
   '/',
