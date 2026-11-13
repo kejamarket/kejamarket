@@ -1878,6 +1878,85 @@
       </div>
     </div>
   </div>
+
+  <!-- ====================================================================
+       MODAL: Report a Vacancy (Keja Scout) - For Tenants & Community
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-report-vacancy" style="display:none; align-items:center; justify-content:center; z-index:99990;">
+    <div class="modal-dialog" style="max-width: 520px; width: 94%; max-height: 90vh; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 25px 60px rgba(0,0,0,0.4);">
+      <div class="modal-header" style="background: linear-gradient(135deg, #006818 0%, #15803d 100%); color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 17px;">
+            <i class="fas fa-search-location"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 15.5px; font-weight: 800; color: white;">Report a Vacant House</h3>
+            <span style="font-size: 11px; opacity: 0.9; font-weight: 500;">Keja Scout Community Tip-Off</span>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="app.closeModal('modal-report-vacancy')" style="color: white; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px 18px; overflow-y: auto;">
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 11px 13px; margin-bottom: 14px; font-size: 12px; color: #166534; line-height: 1.45;">
+          <i class="fas fa-info-circle" style="color: #15803d; font-size: 13px;"></i>
+          <strong>Know an empty house?</strong> Spotted a vacant flat in your plot or saw a "TO LET" signboard on a gate? Tip us off! Our team will contact the caretaker to onboard it.
+        </div>
+
+        <form id="form-report-vacancy" onsubmit="app.submitVacancyReport(event)">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label style="font-weight: 700; font-size: 12px; color: #0f172a; margin-bottom: 4px; display: block;">Building / Apartment Name *</label>
+            <input type="text" id="rep-building-name" class="form-control" placeholder="e.g. Silver Heights, Sunrise Flats, Plot 42" required style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px;">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+            <div class="form-group">
+              <label style="font-weight: 700; font-size: 12px; color: #0f172a; margin-bottom: 4px; display: block;">Estate / Town *</label>
+              <input type="text" id="rep-estate" class="form-control" placeholder="e.g. Ruaka, Roysambu" required style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px;">
+            </div>
+            <div class="form-group">
+              <label style="font-weight: 700; font-size: 12px; color: #0f172a; margin-bottom: 4px; display: block;">Unit Type *</label>
+              <select id="rep-unit-type" class="form-control" required style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; background: white;">
+                <option value="Bedsitter">Bedsitter</option>
+                <option value="Single Room">Single Room</option>
+                <option value="Double Room">Double Room</option>
+                <option value="1 Bedroom">1 Bedroom</option>
+                <option value="2 Bedroom">2 Bedroom</option>
+                <option value="3+ Bedroom">3+ Bedroom</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Commercial / Shop">Commercial / Shop</option>
+                <option value="Multiple Units Vacant">Multiple Units Vacant</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+            <div class="form-group">
+              <label style="font-weight: 700; font-size: 12px; color: #0f172a; margin-bottom: 4px; display: block;">Caretaker Phone on Gate</label>
+              <input type="tel" id="rep-caretaker-phone" class="form-control" placeholder="e.g. 0712 345 678" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px;">
+            </div>
+            <div class="form-group">
+              <label style="font-weight: 700; font-size: 12px; color: #0f172a; margin-bottom: 4px; display: block;">Approx. Rent (KES)</label>
+              <input type="number" id="rep-approx-rent" class="form-control" placeholder="e.g. 14000" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px;">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label style="font-weight: 700; font-size: 12px; color: #0f172a; margin-bottom: 4px; display: block;">Landmark or Extra Details</label>
+            <textarea id="rep-notes" class="form-control" rows="2" placeholder="e.g. Opposite Quickmart, 3rd floor flat, ready for immediate move-in" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px;"></textarea>
+          </div>
+
+          <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px;">
+            <button type="button" class="btn-secondary" onclick="app.closeModal('modal-report-vacancy')" style="padding: 9px 16px; border-radius: 10px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: 600; cursor: pointer; font-size: 12.5px;">Cancel</button>
+            <button type="submit" id="btn-submit-vacancy-report" class="btn-primary" style="padding: 9px 20px; border-radius: 10px; background: #006818; color: white; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 13px;">
+              <i class="fas fa-paper-plane"></i> Submit Tip-Off
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="modal-property-detail">
     <div class="modal-dialog" style="max-width: 660px; width: 94%; max-height: 88vh; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
       <div class="modal-header" style="padding: 12px 18px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">

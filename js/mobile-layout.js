@@ -3277,6 +3277,19 @@
           <i class="fas fa-chevron-right" style="color:#ea580c; font-size:13px;"></i>
         </div>
 
+        
+        <!-- Option 2: Report a Vacant House (Keja Scout - Open to ALL Tenants!) -->
+        <div onclick="MobileApp.closeTenantBlockedModal(); MobileApp.openReportVacancy();" style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:12px; margin-bottom:12px; text-align:left; cursor:pointer; display:flex; align-items:center; gap:12px; transition:transform 0.15s;" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">
+          <div style="width:42px; height:42px; border-radius:12px; background:#006818; color:white; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">
+            <i class="fas fa-search-location"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:800; font-size:13.5px; color:#14532d;">Report a Vacant House (Keja Scout)</div>
+            <div style="font-size:11.5px; color:#15803d; margin-top:2px;">Know an empty house in your plot or gate To-Let sign? Tip us off!</div>
+          </div>
+          <i class="fas fa-chevron-right" style="color:#006818; font-size:13px;"></i>
+        </div>
+
         <!-- Option 2: Post House Listing (Landlords Only) -->
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:12px; text-align:left;">
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
@@ -3451,6 +3464,25 @@
 
   
   // Open Sell Used Item Modal (Available to Tenants & Landlords)
+  
+  // Open Report a Vacancy Modal (Keja Scout - Open to all tenants and residents)
+  function openReportVacancy() {
+    const modal = document.getElementById('modal-report-vacancy');
+    if (modal) {
+      modal.classList.add('open');
+      modal.style.setProperty('display', 'flex', 'important');
+      modal.style.setProperty('z-index', '99990', 'important');
+      modal.scrollTop = 0;
+      try {
+        if (typeof window.history !== 'undefined') {
+          window.history.pushState({ kmType: 'modal', modalId: 'modal-report-vacancy' }, '', '#report-vacancy');
+        }
+      } catch (e) {}
+    } else if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-report-vacancy');
+    }
+  }
+
   function openPostMarketplace() {
     const session = getUserSession();
     if (!session) {
@@ -4367,6 +4399,7 @@
     showTenantBlockedModal,
     closeTenantBlockedModal,
     upgradeToLandlord,
+    openReportVacancy,
     openPostMarketplace,
     loadMarketplaceItems,
     chatMarketplaceSeller,

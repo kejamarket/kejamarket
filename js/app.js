@@ -5746,3 +5746,67 @@ KejaApp.prototype.filterSuburbChecklist = function(term) {
     item.style.display = (!term || text.includes(term)) ? 'flex' : 'none';
   });
 };
+
+
+KejaApp.prototype.openReportVacancyModal = function() {
+  this.openModal('modal-report-vacancy');
+};
+
+KejaApp.prototype.submitVacancyReport = async function(event) {
+  if (event) event.preventDefault();
+  const buildingName = document.getElementById('rep-building-name')?.value?.trim();
+  const estate = document.getElementById('rep-estate')?.value?.trim();
+  const unitType = document.getElementById('rep-unit-type')?.value;
+  const caretakerPhone = document.getElementById('rep-caretaker-phone')?.value?.trim();
+  const approxRent = document.getElementById('rep-approx-rent')?.value;
+  const notes = document.getElementById('rep-notes')?.value?.trim();
+
+  if (!buildingName || !estate) {
+    if (typeof this.showToast === 'function') this.showToast('Please provide building name and estate', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btn-submit-vacancy-report');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+  }
+
+  try {
+    const token = window.kejaAuth ? window.kejaAuth.getToken() : null;
+    const res = await fetch('/api/leads/vacancy-report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({
+        buildingName,
+        estate,
+        unitType,
+        caretakerPhone,
+        approxRent,
+        notes
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      if (typeof this.showToast === 'function') {
+        this.showToast('🎉 Asante! Vacancy tip-off received. Team is verifying with the caretaker.', 'success');
+      }
+      document.getElementById('form-report-vacancy')?.reset();
+      this.closeModal('modal-report-vacancy');
+      return;
+    }
+    throw new Error(data.message || 'Failed to submit report');
+  } catch (err) {
+    if (typeof this.showToast === 'function') {
+      this.showToast(err.message || 'Error submitting report', 'error');
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Tip-Off';
+    }
+  }
+};

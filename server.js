@@ -3153,6 +3153,70 @@ app.post('/api/alerts/similar', async (req, res) => {
 });
 
 // POST /api/leads/movers
+
+// POST /api/leads/vacancy-report (Tenants & residents report vacant houses / To-Let signboards)
+app.post('/api/leads/vacancy-report', optionalAuth, async (req, res) => {
+  try {
+    const { buildingName, estate, county, unitType, approxRent, caretakerPhone, notes } = req.body;
+    if (!buildingName || !estate) {
+      return res.status(400).json({ success: false, message: 'Building name and estate are required.' });
+    }
+
+    const reportId = 'scout-' + Date.now();
+    const reporterName = req.user ? req.user.name : (req.body.reporterName || 'Keja Scout Resident');
+    const reporterPhone = req.user ? req.user.phone : (req.body.reporterPhone || '');
+    const reporterId = req.user ? req.user.id : null;
+
+    const report = {
+      id: reportId,
+      buildingName,
+      estate,
+      county: county || 'Nairobi',
+      unitType: unitType || 'Bedsitter',
+      approxRent: approxRent ? parseInt(approxRent) : null,
+      caretakerPhone: caretakerPhone ? caretakerPhone.trim() : null,
+      notes: notes ? notes.trim() : '',
+      reporterId,
+      reporterName,
+      reporterPhone,
+      status: 'pending_verification',
+      createdAt: new Date().toISOString()
+    };
+
+    if (!store.data) store.data = {};
+    if (!store.data.vacancy_reports) store.data.vacancy_reports = [];
+    store.data.vacancy_reports.unshift(report);
+
+    // Acknowledge if phone is available
+    if (reporterPhone) {
+      try {
+        sendRealSMS(
+          reporterPhone,
+          `[KejaMarket Scout] Asante ${reporterName.split(' ')[0]}! We received your vacancy report for ${buildingName}, ${estate}. Our verification team is contacting the caretaker.`
+        );
+      } catch (_) {}
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Asante! Vacancy tip-off received. KejaMarket team is following up with the caretaker.',
+      reportId
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/vacancy-reports
+app.get('/api/admin/vacancy-reports', requireAuth, async (req, res) => {
+  try {
+    const reports = (store.data && store.data.vacancy_reports) || [];
+    res.json({ success: true, count: reports.length, reports });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 app.post('/api/leads/movers', async (req, res) => {
   try {
     const { name, phone, from, to, size, partner } = req.body;
