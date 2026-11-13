@@ -5672,6 +5672,28 @@ KejaApp.prototype.openMobileAccountModal = function() {
 
 KejaApp.prototype.openPostPropertyModal = function(event) {
   if (event) event.stopPropagation();
+  const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
+  if (!session) {
+    if (window.kejaAuth) {
+      window.kejaAuth.switchTab('signin');
+      window.kejaAuth.setRole('landlord', 'signin');
+      window.kejaAuth.openAuthModal('signin');
+      if (typeof this.showToast === 'function') {
+        this.showToast('Please sign in to a Landlord or Agent account to list a property.', 'info');
+      }
+    }
+    return;
+  }
+  const role = (session.role || '').toLowerCase();
+  const isAdmin = Boolean(session.isAdmin || session.is_admin || role === 'admin' || session.id === 'usr-admin-01');
+  if ((role === 'tenant' || role === 'buyer') && !isAdmin) {
+    if (window.MobileApp && typeof window.MobileApp.showTenantBlockedModal === 'function') {
+      window.MobileApp.showTenantBlockedModal();
+    } else if (typeof this.showToast === 'function') {
+      this.showToast('Tenants cannot post property listings. Only Landlords & Agents can list properties.', 'warning');
+    }
+    return;
+  }
   this.openModal('modal-post-ad');
 };
 

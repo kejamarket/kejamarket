@@ -766,6 +766,11 @@
       showScreen('detail', sharedPropId);
     } else {
       showScreen('home');
+      try {
+        if (typeof window !== 'undefined' && window.history && !window.location.hash) {
+          window.history.replaceState({ kmType: 'screen', screen: 'home' }, '', '#home');
+        }
+      } catch (e) {}
     }
 
     // Handle resize
@@ -1015,10 +1020,16 @@
     }
   }
 
-  // Screen Switcher
-  function showScreen(screen, params = {}) {
+  // Screen Switcher with History State Support
+  function showScreen(screen, params = {}, isBackNav = false) {
+    if (!isBackNav && typeof window !== 'undefined' && window.history && screen !== State.currentScreen) {
+      try {
+        const hash = '#' + screen + (params && (params.id || typeof params === 'string') ? ('?id=' + (params.id || params)) : '');
+        window.history.pushState({ kmType: 'screen', screen, params }, '', hash);
+      } catch (e) {}
+    }
     State.currentScreen = screen;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Update bottom nav active state
     document.querySelectorAll('.km-nav-tab').forEach(t => {
@@ -1804,7 +1815,7 @@
     // Header Slot
     hSlot.innerHTML = `
       <div class="km-screen-header">
-        <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-arrow-left"></i></button>
+        <button type="button" class="back-btn" onclick="MobileApp.goBack()"><i class="fas fa-arrow-left"></i></button>
         <span class="screen-title">${prop.title}</span>
         <div style="display:flex; gap:6px;">
           <button type="button" class="back-btn" onclick="MobileApp.toggleFav('${prop.id}', this)"><i class="${isFav ? 'fas' : 'far'} fa-heart" style="${isFav ? 'color:#ef4444;' : ''}"></i></button>
@@ -2206,7 +2217,7 @@
   function renderFiltersScreen(hSlot, mSlot) {
     hSlot.innerHTML = `
       <div class="km-screen-header">
-        <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-times"></i></button>
+        <button type="button" class="back-btn" onclick="MobileApp.goBack()"><i class="fas fa-times"></i></button>
         <span class="screen-title">Filter Properties</span>
         <button type="button" class="header-action" onclick="MobileApp.resetFilters()">Reset</button>
       </div>
@@ -2464,7 +2475,7 @@
 
     hSlot.innerHTML = `
       <div class="km-screen-header">
-        <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-times"></i></button>
+        <button type="button" class="back-btn" onclick="MobileApp.goBack()"><i class="fas fa-times"></i></button>
         <span class="screen-title">${isVirtual ? 'Video Tour Scheduled' : 'Viewing Requested'}</span>
         <div style="width:36px;"></div>
       </div>
@@ -2585,11 +2596,19 @@
               </div>
             ` : ''}
 
-            <div class="km-profile-item" onclick="MobileApp.openPostAd()">
-              <div class="km-profile-item-icon" style="background:#e8f8ee; color:#006818;"><i class="fas fa-plus-circle"></i></div>
-              <div class="km-profile-item-title">Post a Property for Free</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
+            ${(session.role === 'tenant' || session.role === 'buyer') ? `
+              <div class="km-profile-item" onclick="MobileApp.openPostAd()">
+                <div class="km-profile-item-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-exchange-alt"></i></div>
+                <div class="km-profile-item-title">Become a Landlord / List Property</div>
+                <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+              </div>
+            ` : `
+              <div class="km-profile-item" onclick="MobileApp.openPostAd()">
+                <div class="km-profile-item-icon" style="background:#e8f8ee; color:#006818;"><i class="fas fa-plus-circle"></i></div>
+                <div class="km-profile-item-title">Post a Property for Free</div>
+                <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+              </div>
+            `}
 
             <div class="km-profile-item" onclick="MobileApp.showScreen('favorites')">
               <div class="km-profile-item-icon"><i class="fas fa-heart"></i></div>
@@ -2734,7 +2753,7 @@
 
     hSlot.innerHTML = `
       <div class="km-screen-header">
-        <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-arrow-left"></i></button>
+        <button type="button" class="back-btn" onclick="MobileApp.goBack()"><i class="fas fa-arrow-left"></i></button>
         <span class="screen-title">Saved Listings (${favProps.length})</span>
         <div style="width:36px;"></div>
       </div>
@@ -2761,7 +2780,7 @@
   function renderMessagesScreen(hSlot, mSlot) {
     hSlot.innerHTML = `
       <div class="km-screen-header">
-        <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-arrow-left"></i></button>
+        <button type="button" class="back-btn" onclick="MobileApp.goBack()"><i class="fas fa-arrow-left"></i></button>
         <span class="screen-title">Messages & Chats</span>
         <div style="width:36px;"></div>
       </div>
@@ -2878,7 +2897,7 @@
   function renderAffordabilityScreen(hSlot, mSlot) {
     hSlot.innerHTML = `
       <div class="km-screen-header">
-        <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-arrow-left"></i></button>
+        <button type="button" class="back-btn" onclick="MobileApp.goBack()"><i class="fas fa-arrow-left"></i></button>
         <span class="screen-title">Budget Calculator</span>
         <div style="width:36px;"></div>
       </div>
@@ -2913,7 +2932,7 @@
   function renderSmartHuntScreen(hSlot, mSlot) {
     hSlot.innerHTML = `
       <div class="km-screen-header">
-        <button type="button" class="back-btn" onclick="MobileApp.showScreen('home')"><i class="fas fa-arrow-left"></i></button>
+        <button type="button" class="back-btn" onclick="MobileApp.goBack()"><i class="fas fa-arrow-left"></i></button>
         <span class="screen-title">Hire a House Hunter</span>
         <div style="width:36px;"></div>
       </div>
@@ -2986,7 +3005,7 @@
   function renderMyRequestsScreen(hSlot, mSlot) {
     hSlot.innerHTML = `
       <div class="km-screen-header">
-        <button type="button" class="back-btn" onclick="MobileApp.showScreen('profile')"><i class="fas fa-arrow-left"></i></button>
+        <button type="button" class="back-btn" onclick="MobileApp.goBack()"><i class="fas fa-arrow-left"></i></button>
         <span class="screen-title">My Viewings</span>
         <div style="width:36px;"></div>
       </div>
@@ -3178,14 +3197,239 @@
     updateFeedDisplay();
   }
 
-  function openLocationModal() {
-    const modal = document.getElementById('km-loc-picker-modal');
-    if (modal) modal.classList.add('open');
+  
+  // Helper: Get active authenticated session
+  function getUserSession() {
+    try {
+      if (typeof window !== 'undefined' && window.kejaAuth && typeof window.kejaAuth.getSession === 'function') {
+        const s = window.kejaAuth.getSession();
+        if (s) return s;
+      }
+      if (typeof localStorage !== 'undefined') {
+        return JSON.parse(localStorage.getItem('keja_session') || localStorage.getItem('keja_user') || 'null');
+      }
+      return null;
+    } catch {
+      return null;
+    }
   }
 
-  function closeLocationModal() {
+  // Tenant blocked modal: Explain role boundary & offer 1-tap upgrade to Landlord
+  function showTenantBlockedModal() {
+    let modal = document.getElementById('km-tenant-post-blocked-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'km-tenant-post-blocked-modal';
+      modal.className = 'modal km-custom-modal open';
+      modal.style.cssText = 'position:fixed; inset:0; z-index:999999; background:rgba(0,0,0,0.65); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; padding:16px;';
+      document.body.appendChild(modal);
+    } else {
+      modal.classList.add('open');
+      modal.style.setProperty('display', 'flex', 'important');
+    }
+
+    modal.innerHTML = `
+      <div style="background:white; border-radius:20px; max-width:400px; width:100%; padding:24px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); text-align:center; position:relative; animation:kmPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+        <button type="button" onclick="MobileApp.closeTenantBlockedModal()" style="position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:50%; border:none; background:#f1f5f9; color:#64748b; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+          <i class="fas fa-times"></i>
+        </button>
+        <div style="width:68px; height:68px; border-radius:50%; background:#fef2f2; color:#dc2626; display:inline-flex; align-items:center; justify-content:center; font-size:30px; margin-bottom:14px; box-shadow:0 4px 12px rgba(220,38,38,0.15);">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <h3 style="margin:0 0 8px 0; font-size:19px; font-weight:800; color:#0f172a; font-family:'Poppins',sans-serif;">Landlords Only</h3>
+        <p style="margin:0 0 16px 0; font-size:13.5px; color:#475569; line-height:1.55;">
+          You are currently signed in as a <strong>Tenant</strong>. Tenants cannot post rental houses on KejaMarket. Only verified <strong>Landlords & Property Agents</strong> can post properties.
+        </p>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; margin-bottom:20px; text-align:left; font-size:12.5px; color:#334155;">
+          <div style="font-weight:700; color:#0f172a; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+            <i class="fas fa-home" style="color:#006818;"></i> Do you have a house to rent out?
+          </div>
+          <div>Switch your account to a <strong>Landlord Account</strong> with one tap to begin listing.</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:9px;">
+          <button type="button" id="km-btn-upgrade-landlord" onclick="MobileApp.upgradeToLandlord()" style="background:#006818; color:white; border:none; border-radius:12px; padding:13px 18px; font-weight:700; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(0,104,24,0.3);">
+            <i class="fas fa-exchange-alt"></i> Switch to Landlord Account
+          </button>
+          <button type="button" onclick="MobileApp.closeTenantBlockedModal()" style="background:transparent; border:1px solid #cbd5e1; color:#64748b; border-radius:12px; padding:11px 18px; font-weight:600; font-size:13px; cursor:pointer;">
+            Cancel & Stay Tenant
+          </button>
+        </div>
+      </div>
+    `;
+
+    try {
+      if (typeof window !== 'undefined' && window.history) {
+        window.history.pushState({ kmType: 'modal', modalId: 'km-tenant-post-blocked-modal' }, '', '#landlord-required');
+      }
+    } catch (e) {}
+  }
+
+  function closeTenantBlockedModal(fromPopState = false) {
+    const modal = document.getElementById('km-tenant-post-blocked-modal');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.style.setProperty('display', 'none', 'important');
+    }
+    if (!fromPopState && typeof window !== 'undefined' && window.history && window.history.state && window.history.state.modalId === 'km-tenant-post-blocked-modal') {
+      try { window.history.back(); } catch (e) {}
+    }
+  }
+
+  async function upgradeToLandlord() {
+    const btn = document.getElementById('km-btn-upgrade-landlord');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Switching to Landlord...';
+    }
+
+    try {
+      const token = (typeof localStorage !== 'undefined') ? (localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token')) : '';
+      const res = await fetch('/api/user/upgrade-to-landlord', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? ('Bearer ' + token) : ''
+        }
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        let session = getUserSession() || {};
+        session.role = 'landlord';
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('keja_session', JSON.stringify(session));
+          localStorage.setItem('keja_user', JSON.stringify(session));
+        }
+        if (typeof window !== 'undefined' && window.kejaAuth && typeof window.kejaAuth.saveSession === 'function') {
+          window.kejaAuth.saveSession(session, token);
+        }
+        closeTenantBlockedModal();
+        if (typeof window !== 'undefined' && window.app && typeof window.app.showToast === 'function') {
+          window.app.showToast('🎉 Switched to Landlord Account! You can now post properties.', 'success');
+        }
+        if (State.currentScreen === 'profile') {
+          showScreen('profile');
+        }
+        setTimeout(() => openPostAd(), 300);
+        return;
+      }
+      throw new Error(data.message || 'Failed to switch to landlord');
+    } catch (err) {
+      if (typeof window !== 'undefined' && window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast(err.message || 'Error upgrading account', 'error');
+      }
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-exchange-alt"></i> Switch to Landlord Account';
+      }
+    }
+  }
+
+  // Close all open modals / bottom sheets
+  function closeAllModals() {
+    if (typeof document === 'undefined') return false;
+    let closed = false;
+    const locModal = document.getElementById('km-loc-picker-modal');
+    if (locModal && locModal.classList.contains('open')) {
+      locModal.classList.remove('open');
+      closed = true;
+    }
+    const tenantModal = document.getElementById('km-tenant-post-blocked-modal');
+    if (tenantModal && tenantModal.style.display !== 'none' && tenantModal.classList.contains('open')) {
+      tenantModal.classList.remove('open');
+      tenantModal.style.setProperty('display', 'none', 'important');
+      closed = true;
+    }
+    const openModals = document.querySelectorAll('.modal-backdrop.open, .modal.open, [id^="modal-"][style*="display: flex"]');
+    openModals.forEach(m => {
+      m.classList.remove('open');
+      m.style.setProperty('display', 'none', 'important');
+      closed = true;
+    });
+    return closed;
+  }
+
+  // Back button handler (both hardware back and in-app back buttons)
+  function goBack() {
+    if (closeAllModals()) {
+      return;
+    }
+    if (State.currentScreen && State.currentScreen !== 'home') {
+      if (typeof window !== 'undefined' && window.history && window.history.length > 1) {
+        window.history.back();
+      } else {
+        showScreen('home', {}, true);
+      }
+    }
+  }
+
+  // Global popstate event listener for hardware / gesture back button
+  let lastBackPressTime = 0;
+  if (typeof window !== 'undefined') {
+    window.addEventListener('popstate', (e) => {
+      // 1. If any modal is open, close modal and stay on current screen
+      if (closeAllModals()) {
+        return;
+      }
+
+      // 2. If history state has a screen, switch to it
+      if (e.state && e.state.kmType === 'screen' && e.state.screen) {
+        showScreen(e.state.screen, e.state.params || {}, true);
+        return;
+      }
+
+      // 3. Check window location hash
+      const hash = (window.location.hash || '').replace(/^#/, '');
+      if (hash && !hash.startsWith('location') && !hash.startsWith('modal') && !hash.startsWith('landlord')) {
+        const [screenName, qStr] = hash.split('?');
+        if (screenName && screenName !== State.currentScreen) {
+          let p = {};
+          if (qStr) {
+            const sp = new URLSearchParams(qStr);
+            p.id = sp.get('id');
+          }
+          showScreen(screenName, p, true);
+          return;
+        }
+      }
+
+      // 4. Fallback: if not on home, return to home
+      if (State.currentScreen && State.currentScreen !== 'home') {
+        showScreen('home', {}, true);
+        return;
+      }
+
+      // 5. If already on home screen, prevent accidental app closure
+      const now = Date.now();
+      if (now - lastBackPressTime > 2500) {
+        lastBackPressTime = now;
+        try {
+          window.history.pushState({ kmType: 'screen', screen: 'home' }, '', '#home');
+        } catch (err) {}
+        if (window.app && typeof window.app.showToast === 'function') {
+          window.app.showToast('Press back again to exit', 'info');
+        }
+      }
+    });
+  }
+
+  function openLocationModal() {
+    const modal = document.getElementById('km-loc-picker-modal');
+    if (modal) {
+      modal.classList.add('open');
+      try {
+        if (typeof window !== 'undefined' && window.history) {
+          window.history.pushState({ kmType: 'modal', modalId: 'km-loc-picker-modal' }, '', '#locations');
+        }
+      } catch (e) {}
+    }
+  }
+
+  function closeLocationModal(fromPopState = false) {
     const modal = document.getElementById('km-loc-picker-modal');
     if (modal) modal.classList.remove('open');
+    if (!fromPopState && typeof window !== 'undefined' && window.history && window.history.state && window.history.state.modalId === 'km-loc-picker-modal') {
+      try { window.history.back(); } catch (e) {}
+    }
   }
 
   function setLocation(loc) {
@@ -3446,6 +3690,30 @@
   }
 
   function openPostAd() {
+    const session = getUserSession();
+    if (!session) {
+      if (window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast('Please sign in or register as a Landlord to post properties.', 'info');
+      }
+      if (window.kejaAuth && typeof window.kejaAuth.openAuthModal === 'function') {
+        window.kejaAuth.switchTab('signin');
+        window.kejaAuth.setRole('landlord', 'signin');
+        window.kejaAuth.openAuthModal('signin');
+      } else {
+        openSignIn();
+      }
+      return;
+    }
+
+    const role = (session.role || '').toLowerCase();
+    const isAdmin = Boolean(session.isAdmin || session.is_admin || role === 'admin' || session.id === 'usr-admin-01');
+
+    // TENANT ROLE CHECK: Tenants cannot post properties
+    if ((role === 'tenant' || role === 'buyer') && !isAdmin) {
+      showTenantBlockedModal();
+      return;
+    }
+
     // 1. Try to open native post ad modal
     const postModal = document.getElementById('modal-post-ad');
     if (postModal) {
@@ -3937,6 +4205,12 @@
     showLocSubZones,
     hideLocSubZones,
     openPostAd,
+    goBack,
+    getUserSession,
+    showTenantBlockedModal,
+    closeTenantBlockedModal,
+    upgradeToLandlord,
+    closeAllModals,
     openWhatsAppAlerts,
     openHouseHunt,
     trackHunt,

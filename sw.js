@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'kejamarket-v99-major-residential-towns';
+﻿const CACHE_NAME = 'kejamarket-v100-tenant-roles-backbutton';
 
 const STATIC_ASSETS = [
   '/',

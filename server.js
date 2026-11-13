@@ -2477,8 +2477,41 @@ app.get('/api/properties/:id', optionalAuth, async (req, res) => {
 });
 
 // POST /api/properties (Landlords, Agencies & Ingestion engine create new listings)
-app.post('/api/properties', optionalAuth, async (req, res) => {
+
+// POST /api/user/upgrade-to-landlord — Allows a tenant account to switch to landlord role
+app.post('/api/user/upgrade-to-landlord', requireAuth, async (req, res) => {
   try {
+    const userId = req.user.id;
+    if (store.updateUser) {
+      await store.updateUser(userId, { role: 'landlord' });
+    }
+    const updatedUser = await store.getUserById(userId);
+    res.json({
+      success: true,
+      message: 'Your account has been upgraded to Landlord. You can now list properties!',
+      user: {
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        role: 'landlord'
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message || 'Failed to switch role' });
+  }
+});
+
+app.post('/api/properties', requireAuth, async (req, res) => {
+  try {
+    // Role check: Tenants CANNOT post property listings
+    if (req.user && (req.user.role === 'tenant' || req.user.role === 'buyer')) {
+      return res.status(403).json({
+        success: false,
+        message: 'Tenants cannot post property listings. Only verified Landlords, Agencies, and Agents can post listings. Please switch or register as a Landlord.'
+      });
+    }
+
     const data = req.body;
     if (!data.title || !data.rentKes || !data.category) {
       return res.status(400).json({ success: false, message: 'Title, category, and monthly rent are required.' });
