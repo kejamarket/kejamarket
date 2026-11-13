@@ -2978,3 +2978,12 @@ body { background: #f7f9fb !important; }
 .card-price-action-row a:hover {
   filter: brightness(1.06);
 }
+
+/* Used Items / Marketplace Story Bubble Tint */
+.km-cat-marketplace {
+  background: #fff7ed !important;
+  color: #ea580c !important;
+}
+.km-cat-marketplace i {
+  color: #ea580c !important;
+}

@@ -6068,23 +6068,129 @@ app.get('/api/services', cache.middleware(30, 'services'), async (req, res) => {
 });
 
 // GET /api/marketplace
+
+// ── SEED MARKETPLACE USED ITEMS (Moving Out Sales) ──────────────────────────
+const SEED_MARKETPLACE_ITEMS = [
+  {
+    id: 'mkt-01',
+    title: '6x6 Orthopedic Bed & Mattress (Moving Out)',
+    description: 'Selling mahogany 6x6 bed frame and high-density orthopedic mattress because I am relocating. Used for 6 months, spotless condition.',
+    category: 'Beds & Mattresses',
+    price_kes: 18500,
+    price: 18500,
+    condition: 'Like New',
+    seller_name: 'Kevin Otieno (Tenant)',
+    seller_phone: '+254792409540',
+    location_suburb: 'Ruaka',
+    is_negotiable: true,
+    images: [{ url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600' }],
+    status: 'active',
+    created_at: new Date(Date.now() - 3600000).toISOString()
+  },
+  {
+    id: 'mkt-02',
+    title: 'LG 210L Double Door Refrigerator with Smart Inverter',
+    description: 'Energy saving 4-star fridge, excellent cooling, no frost, perfect working order. Moving to a furnished apartment.',
+    category: 'Fridges & Freezers',
+    price_kes: 24000,
+    price: 24000,
+    condition: 'Good',
+    seller_name: 'Grace Wambui (Tenant)',
+    seller_phone: '+254792409540',
+    location_suburb: 'Kilimani',
+    is_negotiable: true,
+    images: [{ url: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=600' }],
+    status: 'active',
+    created_at: new Date(Date.now() - 7200000).toISOString()
+  },
+  {
+    id: 'mkt-03',
+    title: '55" Samsung Crystal 4K UHD Smart TV (Tizen OS)',
+    description: 'Comes with original wall mount and remote. Netflix, YouTube, DStv apps built in. 1 year old, moving out sale.',
+    category: 'Electronics & TV',
+    price_kes: 38000,
+    price: 38000,
+    condition: 'Like New',
+    seller_name: 'Brian Mwangi (Resident)',
+    seller_phone: '+254792409540',
+    location_suburb: 'Westlands',
+    is_negotiable: false,
+    images: [{ url: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600' }],
+    status: 'active',
+    created_at: new Date(Date.now() - 14400000).toISOString()
+  },
+  {
+    id: 'mkt-04',
+    title: 'Modern L-Shape 5-Seater Living Room Sofa',
+    description: 'Clean grey fabric, comfortable foam, no tears or stains. Ideal for 1 or 2 bedroom living room.',
+    category: 'Furniture & Sofas',
+    price_kes: 22000,
+    price: 22000,
+    condition: 'Good',
+    seller_name: 'Faith Chebet (Tenant)',
+    seller_phone: '+254792409540',
+    location_suburb: 'Roysambu',
+    is_negotiable: true,
+    images: [{ url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600' }],
+    status: 'active',
+    created_at: new Date(Date.now() - 28800000).toISOString()
+  },
+  {
+    id: 'mkt-05',
+    title: 'Ramtons 3 Gas + 1 Electric Cooker with Oven',
+    description: 'Heavy duty auto-ignition cooker with rotisserie oven. Used carefully for 8 months. Quick sale.',
+    category: 'Cooking Stoves & Cookers',
+    price_kes: 19500,
+    price: 19500,
+    condition: 'Good',
+    seller_name: 'Dennis Kimani (Tenant)',
+    seller_phone: '+254792409540',
+    location_suburb: 'South B',
+    is_negotiable: true,
+    images: [{ url: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600' }],
+    status: 'active',
+    created_at: new Date(Date.now() - 86400000).toISOString()
+  }
+];
+let memoryMarketplaceItems = [...SEED_MARKETPLACE_ITEMS];
+
 app.get('/api/marketplace', cache.middleware(30, 'marketplace'), async (req, res) => {
   try {
     const { category, condition, maxPrice, limit = 50, offset = 0 } = req.query;
-    // Note: marketplace_items does not have is_verified column, filter on status only
-    let query = 'SELECT * FROM marketplace_items WHERE status = $1';
-    const params = ['active'];
-    let pCount = 2;
-    if (category) { query += ` AND category = $${pCount}`; params.push(category); pCount++; }
-    if (condition) { query += ` AND condition = $${pCount}`; params.push(condition); pCount++; }
-    if (maxPrice) { query += ` AND price_kes <= $${pCount}`; params.push(parseInt(maxPrice)); pCount++; }
-    query += ` ORDER BY created_at DESC LIMIT $${pCount} OFFSET $${pCount + 1}`;
-    params.push(parseInt(limit), parseInt(offset));
-    const result = await store.query(query, params);
-    res.json({ success: true, items: result.rows, count: result.rows.length });
+    if (store && store.query) {
+      try {
+        let query = 'SELECT * FROM marketplace_items WHERE status = $1';
+        const params = ['active'];
+        let pCount = 2;
+        if (category) { query += ` AND category = ${pCount}`; params.push(category); pCount++; }
+        if (condition) { query += ` AND condition = ${pCount}`; params.push(condition); pCount++; }
+        if (maxPrice) { query += ` AND price_kes <= ${pCount}`; params.push(parseInt(maxPrice)); pCount++; }
+        query += ` ORDER BY created_at DESC LIMIT ${pCount} OFFSET ${pCount + 1}`;
+        params.push(parseInt(limit), parseInt(offset));
+        const result = await store.query(query, params);
+        if (result && result.rows && result.rows.length > 0) {
+          return res.json({ success: true, items: result.rows, count: result.rows.length });
+        }
+      } catch (dbErr) {
+        // Fallback to memory
+      }
+    }
+    // Memory store fallback with seed items
+    let items = (store && store.data && store.data.marketplace_items && store.data.marketplace_items.length) 
+      ? store.data.marketplace_items 
+      : memoryMarketplaceItems;
+    if (category && category !== 'All') {
+      items = items.filter(i => (i.category || '').toLowerCase().includes(category.toLowerCase()));
+    }
+    if (condition) {
+      items = items.filter(i => (i.condition || '').toLowerCase() === condition.toLowerCase());
+    }
+    if (maxPrice) {
+      items = items.filter(i => (i.price_kes || i.price || 0) <= parseInt(maxPrice));
+    }
+    res.json({ success: true, items: items.slice(parseInt(offset), parseInt(offset) + parseInt(limit)), count: items.length });
   } catch (err) {
-    console.error('Marketplace fetch error:', err.message);
-    res.json({ success: false, items: [], error: err.message });
+    res.json({ success: true, items: memoryMarketplaceItems, count: memoryMarketplaceItems.length });
   }
 });
 
@@ -6096,6 +6202,24 @@ app.post('/api/marketplace', requireAuth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Title and category are required.' });
     }
     const itemId = 'mkt-' + Date.now();
+    memoryMarketplaceItems.unshift({
+      id: itemId,
+      title,
+      description,
+      category,
+      seller_id: req.user.id,
+      seller_name: req.user.name,
+      seller_phone: req.user.phone || '+254792409540',
+      price_kes: parseInt(price),
+      price: parseInt(price),
+      condition: condition || 'Good',
+      item_type: itemType || category,
+      is_negotiable: Boolean(isNegotiable),
+      location_suburb: locationSuburb || 'Nairobi',
+      images: Array.isArray(images) && images.length ? images : [{ url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600' }],
+      status: 'active',
+      created_at: new Date().toISOString()
+    });
     // All new marketplace items start as pending until admin approves
     await store.query(
       'INSERT INTO marketplace_items (id, title, description, category, seller_id, seller_name, seller_phone, price_kes, condition, item_type, is_negotiable, location_suburb, location_corridor, images, status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)',

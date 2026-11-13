@@ -755,6 +755,7 @@
 
     // Fetch initial property data
     await loadProperties();
+    loadMarketplaceItems();
 
     // Load sample messages
     loadSampleMessages();
@@ -1350,6 +1351,10 @@
             <div class="km-story-icon-ring km-cat-bnb"><i class="fas fa-umbrella-beach"></i></div>
             <span class="km-story-label">BnB / Stay</span>
           </button>
+          <button type="button" class="km-story-bubble ${State.selectedCategory === 'marketplace' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('marketplace')">
+            <div class="km-story-icon-ring km-cat-marketplace"><i class="fas fa-couch"></i></div>
+            <span class="km-story-label">Used Items</span>
+          </button>
           <button type="button" class="km-story-bubble ${State.selectedCategory === 'mansion' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('mansion')">
             <div class="km-story-icon-ring km-cat-mansion"><i class="fas fa-monument"></i></div>
             <span class="km-story-label">Maisonettes</span>
@@ -1459,8 +1464,29 @@
         </div>
       </div>
 
+      <!-- Marketplace Moving Out Sale Banner (Only when Used Items is selected) -->
+      ${State.selectedCategory === 'marketplace' ? `
+        <div style="margin:0 14px 12px; background:linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border:1.5px dashed #f97316; border-radius:14px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+          <div>
+            <div style="font-weight:800; font-size:13px; color:#9a3412; display:flex; align-items:center; gap:6px;">
+              <i class="fas fa-couch" style="color:#ea580c;"></i> Moving Out Sale?
+            </div>
+            <div style="font-size:11.5px; color:#c2410c; margin-top:2px;">
+              Tenants & residents can post used furniture & items for free!
+            </div>
+          </div>
+          <button type="button" onclick="MobileApp.openPostMarketplace()" style="background:#ea580c; color:white; border:none; border-radius:8px; padding:7px 12px; font-weight:800; font-size:12px; cursor:pointer; flex-shrink:0; box-shadow:0 2px 6px rgba(234,88,12,0.35);">
+            <i class="fas fa-plus"></i> Sell Item
+          </button>
+        </div>
+      ` : ''}
+
       <!-- Listings Feed: 2-Column Grid or 1-Column List -->
-      ${State.viewMode === 'grid' ? `
+      ${State.selectedCategory === 'marketplace' ? `
+        <div class="km-property-grid">
+          ${renderMarketplaceGridHtml(State.marketplaceItems || [])}
+        </div>
+      ` : (State.viewMode === 'grid' ? `
         <div class="km-property-grid">
           ${renderPropertyGridHtml(displayProps)}
         </div>
@@ -1468,7 +1494,7 @@
         <div class="km-property-list">
           ${renderPropertyListHtml(displayProps)}
         </div>
-      `}
+      `)}
     `;
   }
 
@@ -3229,34 +3255,45 @@
     }
 
     modal.innerHTML = `
-      <div style="background:white; border-radius:20px; max-width:400px; width:100%; padding:24px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); text-align:center; position:relative; animation:kmPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
-        <button type="button" onclick="MobileApp.closeTenantBlockedModal()" style="position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:50%; border:none; background:#f1f5f9; color:#64748b; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+      <div style="background:white; border-radius:20px; max-width:400px; width:100%; padding:22px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); text-align:center; position:relative; animation:kmPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+        <button type="button" onclick="MobileApp.closeTenantBlockedModal()" style="position:absolute; top:14px; right:14px; width:30px; height:30px; border-radius:50%; border:none; background:#f1f5f9; color:#64748b; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
           <i class="fas fa-times"></i>
         </button>
-        <div style="width:68px; height:68px; border-radius:50%; background:#fef2f2; color:#dc2626; display:inline-flex; align-items:center; justify-content:center; font-size:30px; margin-bottom:14px; box-shadow:0 4px 12px rgba(220,38,38,0.15);">
-          <i class="fas fa-user-shield"></i>
-        </div>
-        <h3 style="margin:0 0 8px 0; font-size:19px; font-weight:800; color:#0f172a; font-family:'Poppins',sans-serif;">Landlords Only</h3>
-        <p style="margin:0 0 16px 0; font-size:13.5px; color:#475569; line-height:1.55;">
-          You are currently signed in as a <strong>Tenant</strong>. Tenants cannot post rental houses on KejaMarket. Only verified <strong>Landlords & Property Agents</strong> can post properties.
+        <div style="font-size:28px; color:#006818; margin-bottom:6px;"><i class="fas fa-bullhorn"></i></div>
+        <h3 style="margin:0 0 6px 0; font-size:18px; font-weight:800; color:#0f172a; font-family:'Poppins',sans-serif;">What would you like to post?</h3>
+        <p style="margin:0 0 16px 0; font-size:12.5px; color:#64748b; line-height:1.5;">
+          You are signed in as a <strong>Tenant</strong>. Tenants can post used household items for free!
         </p>
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; margin-bottom:20px; text-align:left; font-size:12.5px; color:#334155;">
-          <div style="font-weight:700; color:#0f172a; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-            <i class="fas fa-home" style="color:#006818;"></i> Do you have a house to rent out?
+
+        <!-- Option 1: Sell Used Item (Open to ALL Tenants!) -->
+        <div onclick="MobileApp.closeTenantBlockedModal(); MobileApp.openPostMarketplace();" style="background:#fff7ed; border:1.5px solid #fdba74; border-radius:14px; padding:12px; margin-bottom:12px; text-align:left; cursor:pointer; display:flex; align-items:center; gap:12px; transition:transform 0.15s;" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">
+          <div style="width:42px; height:42px; border-radius:12px; background:#ea580c; color:white; display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0;">
+            <i class="fas fa-shopping-bag"></i>
           </div>
-          <div>Switch your account to a <strong>Landlord Account</strong> with one tap to begin listing.</div>
+          <div style="flex:1;">
+            <div style="font-weight:800; font-size:13.5px; color:#9a3412;">Sell Used Item (Moving Sale)</div>
+            <div style="font-size:11.5px; color:#c2410c; margin-top:2px;">Bed, sofa, fridge, cooker, TV & furniture. 100% Free!</div>
+          </div>
+          <i class="fas fa-chevron-right" style="color:#ea580c; font-size:13px;"></i>
         </div>
-        <div style="display:flex; flex-direction:column; gap:9px;">
-          <button type="button" id="km-btn-upgrade-landlord" onclick="MobileApp.upgradeToLandlord()" style="background:#006818; color:white; border:none; border-radius:12px; padding:13px 18px; font-weight:700; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(0,104,24,0.3);">
-            <i class="fas fa-exchange-alt"></i> Switch to Landlord Account
-          </button>
-          <button type="button" onclick="MobileApp.closeTenantBlockedModal()" style="background:transparent; border:1px solid #cbd5e1; color:#64748b; border-radius:12px; padding:11px 18px; font-weight:600; font-size:13px; cursor:pointer;">
-            Cancel & Stay Tenant
+
+        <!-- Option 2: Post House Listing (Landlords Only) -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:12px; text-align:left;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+            <div style="width:36px; height:36px; border-radius:10px; background:#f1f5f9; color:#006818; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;">
+              <i class="fas fa-home"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:700; font-size:12.5px; color:#0f172a;">List a Rental House</div>
+              <div style="font-size:11px; color:#64748b;">Requires a Landlord or Agent account.</div>
+            </div>
+          </div>
+          <button type="button" id="km-btn-upgrade-landlord" onclick="MobileApp.upgradeToLandlord()" style="width:100%; background:#006818; color:white; border:none; border-radius:10px; padding:9px 12px; font-weight:700; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+            <i class="fas fa-exchange-alt"></i> Switch to Landlord to Post Houses
           </button>
         </div>
       </div>
     `;
-
     try {
       if (typeof window !== 'undefined' && window.history) {
         window.history.pushState({ kmType: 'modal', modalId: 'km-tenant-post-blocked-modal' }, '', '#landlord-required');
@@ -3410,6 +3447,126 @@
         }
       }
     });
+  }
+
+  
+  // Open Sell Used Item Modal (Available to Tenants & Landlords)
+  function openPostMarketplace() {
+    const session = getUserSession();
+    if (!session) {
+      if (typeof window.app !== 'undefined' && typeof window.app.showToast === 'function') {
+        window.app.showToast('Please sign in or register to sell a used item.', 'info');
+      }
+      openSignIn();
+      return;
+    }
+
+    const modal = document.getElementById('modal-post-marketplace');
+    if (modal) {
+      modal.classList.add('open');
+      modal.style.setProperty('display', 'flex', 'important');
+      modal.style.setProperty('z-index', '99990', 'important');
+      modal.scrollTop = 0;
+      try {
+        if (typeof window.history !== 'undefined') {
+          window.history.pushState({ kmType: 'modal', modalId: 'modal-post-marketplace' }, '', '#sell-used-item');
+        }
+      } catch (e) {}
+    } else {
+      window.open('https://wa.me/254792409540?text=Hello%20KejaMarket,%20I%20would%20like%20to%20sell%20a%20used%20household%20item', '_blank');
+    }
+  }
+
+  // Fetch Marketplace Items from API
+  async function loadMarketplaceItems() {
+    try {
+      if (typeof window === 'undefined' || typeof fetch !== 'function') return;
+      const res = await fetch('/api/marketplace');
+      if (res.ok) {
+        const data = await res.json();
+        State.marketplaceItems = data.items || [];
+      }
+    } catch (err) {
+      // Offline or relative fetch in non-browser context
+    }
+  }
+
+  // Chat with Seller on WhatsApp
+  function chatMarketplaceSeller(itemId) {
+    const item = (State.marketplaceItems || []).find(i => String(i.id) === String(itemId));
+    const phone = (item && (item.seller_phone || item.sellerPhone || item.phone)) || '+254792409540';
+    const cleanPhone = phone.replace(/[^0-9]/g, '');
+    const title = item ? item.title : 'used item';
+    const price = item ? ('KSh ' + (item.price_kes || item.price || '').toLocaleString()) : '';
+    const text = encodeURIComponent(`Hi, I saw your used item on KejaMarket Marketplace: ${title} (${price}). Is it still available for purchase?`);
+    window.open(`https://wa.me/${cleanPhone}?text=${text}`, '_blank');
+  }
+
+  // Render Used Items in 2-Column Mobile Grid
+  function renderMarketplaceGridHtml(items) {
+    if (!items || !items.length) {
+      return `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 16px; background: white; border-radius: 16px; margin: 10px 0; border: 1px dashed #cbd5e1;">
+          <div style="font-size: 38px; color: #ea580c; margin-bottom: 8px;"><i class="fas fa-couch"></i></div>
+          <div style="font-weight: 800; font-size: 15px; color: #0f172a;">No Used Items Listed Yet</div>
+          <div style="font-size: 12.5px; color: #64748b; margin-top: 4px; margin-bottom: 14px;">Moving out? Be the first to post your used furniture or household items!</div>
+          <button type="button" onclick="MobileApp.openPostMarketplace()" style="background: #ea580c; color: white; border: none; border-radius: 10px; padding: 9px 18px; font-weight: 700; font-size: 13px; cursor: pointer;">
+            <i class="fas fa-plus"></i> Post Used Item for Free
+          </button>
+        </div>
+      `;
+    }
+
+    return items.map(item => {
+      let imgUrl = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600';
+      if (item.images && Array.isArray(item.images) && item.images.length) {
+        imgUrl = item.images[0].url || item.images[0] || imgUrl;
+      } else if (typeof item.images === 'string' && item.images.startsWith('http')) {
+        imgUrl = item.images;
+      }
+      const price = item.price_kes || item.price || 0;
+      const cond = item.condition || 'Good';
+      const condBg = cond.toLowerCase().includes('like new') ? '#dcfce7' : (cond.toLowerCase().includes('good') ? '#fef3c7' : '#f1f5f9');
+      const condColor = cond.toLowerCase().includes('like new') ? '#15803d' : (cond.toLowerCase().includes('good') ? '#b45309' : '#475569');
+      const sellerPhone = (item.seller_phone || item.sellerPhone || item.phone || '+254792409540').replace(/[^0-9]/g, '');
+
+      return `
+        <div class="km-property-card" style="border:1px solid #fed7aa; box-shadow:0 2px 10px rgba(249,115,22,0.08); background:#fff; border-radius:14px; overflow:hidden;">
+          <div class="km-card-media-wrap" style="position:relative; height:135px; background:#fff7ed;">
+            <img src="${imgUrl}" alt="${item.title}" class="km-card-img" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600'">
+            <div class="km-card-price-chip" style="position:absolute; bottom:8px; left:8px; background:#006818; color:white; font-size:12px; font-weight:800; padding:3px 8px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.25);">
+              KSh ${Number(price).toLocaleString()}
+            </div>
+            <div style="position:absolute; top:8px; left:8px; display:flex; flex-direction:column; gap:4px;">
+              <span style="background:${condBg}; color:${condColor}; font-size:9.5px; font-weight:800; padding:2px 7px; border-radius:10px; box-shadow:0 1px 4px rgba(0,0,0,0.15);">
+                ${cond}
+              </span>
+              ${item.is_negotiable ? `<span style="background:#fef3c7; color:#92400e; font-size:9px; font-weight:800; padding:1px 6px; border-radius:8px;">Negotiable</span>` : ''}
+            </div>
+          </div>
+          <div class="km-card-info" style="padding:10px 10px 8px;">
+            <div style="font-size:10.5px; font-weight:700; color:#ea580c; margin-bottom:2px; display:flex; align-items:center; gap:4px;">
+              <i class="fas fa-tag"></i> ${item.category || 'Household Item'}
+            </div>
+            <div class="km-card-title" style="font-size:12.5px; font-weight:700; color:#0f172a; line-height:1.3; min-height:33px; margin-bottom:5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+              ${item.title}
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; color:#64748b; margin-bottom:8px;">
+              <span><i class="fas fa-map-marker-alt" style="color:#ea580c;"></i> ${item.location_suburb || item.location || 'Nairobi'}</span>
+              <span><i class="fas fa-user-check" style="color:#006818;"></i> ${item.seller_name ? item.seller_name.split(' ')[0] : 'Resident'}</span>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="km-card-wa-btn" onclick="MobileApp.chatMarketplaceSeller('${item.id}')" style="flex:1; height:33px; border-radius:8px; font-size:11.5px; font-weight:700; background:#25D366; color:white; border:none; display:flex; align-items:center; justify-content:center; gap:5px; cursor:pointer;">
+                <i class="fab fa-whatsapp"></i> Chat
+              </button>
+              <a href="tel:${sellerPhone}" class="km-card-call-btn" style="width:33px; height:33px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; color:#0f172a; text-decoration:none;">
+                <i class="fas fa-phone-alt" style="font-size:11.5px;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   function openLocationModal() {
@@ -4210,6 +4367,9 @@
     showTenantBlockedModal,
     closeTenantBlockedModal,
     upgradeToLandlord,
+    openPostMarketplace,
+    loadMarketplaceItems,
+    chatMarketplaceSeller,
     closeAllModals,
     openWhatsAppAlerts,
     openHouseHunt,

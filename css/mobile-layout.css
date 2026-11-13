@@ -2946,3 +2946,12 @@ body.mobile-layout .modal-dialog {
 .hunt-step-node.done .hunt-step-label {
   color: #0f172a !important;
 }
+
+/* Used Items / Marketplace Story Bubble Tint */
+.km-cat-marketplace {
+  background: #fff7ed !important;
+  color: #ea580c !important;
+}
+.km-cat-marketplace i {
+  color: #ea580c !important;
+}
