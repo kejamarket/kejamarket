@@ -1328,84 +1328,835 @@
     </section>
   </main>
 
-  <!-- Site Footer -->
-  <footer class="keja-site-footer">
-    <div class="keja-footer-container">
+  <!-- ====================================================================
+     JIJI-STYLE COMPREHENSIVE FOOTER & SUPPORT SUITE (DESKTOP & PWA)
+     ==================================================================== -->
+<style>
+  /* Jiji-Style Footer Styles */
+  .keja-site-footer {
+    background: #062b1a;
+    color: #cbd5e1;
+    margin-top: 36px;
+    font-size: 0.86rem;
+    position: relative;
+    border-top: 3px solid #00b53f;
+  }
+  @media (max-width: 768px) {
+    .keja-site-footer {
+      padding-bottom: 96px !important; /* Prevent overlap with mobile bottom nav bar */
+    }
+  }
 
-      <!-- Brand -->
-      <div class="footer-col-brand">
-        <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
-          <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#00b53f" stroke="#007728" stroke-width="2.5" stroke-linejoin="round"/>
-            <path d="M38 82V56H58V82H38Z" fill="#fff"/>
-            <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2b"/>
-            <circle cx="48" cy="21" r="4.5" fill="#fff"/>
-          </svg>
-          <span style="font-size:1.25rem; font-weight:900; color:#fff; letter-spacing:-0.5px; font-family:'Poppins',sans-serif;">Keja<span style="color:#e52b2b;">Market</span></span>
+  /* 1. Top Hotline & Support Strip */
+  .keja-footer-topbar {
+    background: #042013;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 20px;
+  }
+  .keja-footer-topbar-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    align-items: center;
+  }
+  .keja-topbar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .keja-topbar-item i {
+    font-size: 1.5rem;
+    color: #22c55e;
+    flex-shrink: 0;
+  }
+  .keja-topbar-item strong {
+    display: block;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+  .keja-topbar-item a, .keja-topbar-item span {
+    color: #a7f3d0;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .keja-topbar-item a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+  @media (max-width: 1024px) {
+    .keja-footer-topbar-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+  }
+  @media (max-width: 580px) {
+    .keja-footer-topbar {
+      display: none; /* Replaced by Mobile Support Hub on phones */
+    }
+  }
+
+  /* 2. Mobile PWA Quick Support Hub */
+  .keja-footer-mobile-support-hub {
+    display: none;
+    background: #052617;
+    padding: 18px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  @media (max-width: 580px) {
+    .keja-footer-mobile-support-hub {
+      display: block;
+    }
+  }
+  .keja-mob-hub-title {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .keja-mob-hub-title i {
+    color: #22c55e;
+  }
+  .keja-mob-hub-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .keja-mob-hub-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 4px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: transform 0.15s;
+  }
+  .keja-mob-hub-btn:active {
+    transform: scale(0.96);
+  }
+  .keja-mob-hub-btn i {
+    font-size: 1.25rem;
+  }
+  .hub-btn-wa     { background: #25d366; }
+  .hub-btn-call   { background: #0284c7; }
+  .hub-btn-safety { background: #d97706; }
+  .hub-btn-faq    { background: #7c3aed; }
+
+  /* 3. Main Multi-Column Footer Grid */
+  .keja-footer-container {
+    max-width: 1400px;
+    width: 95%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1.1fr 1.1fr 1fr 1.3fr;
+    gap: 28px;
+    padding: 36px 0 28px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  @media (max-width: 1100px) {
+    .keja-footer-container {
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 24px;
+    }
+  }
+  @media (max-width: 768px) {
+    .keja-footer-container {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 24px 0 20px;
+    }
+  }
+  @media (max-width: 520px) {
+    .keja-footer-container {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+  }
+
+  .footer-col-title {
+    color: #ffffff;
+    font-size: 0.96rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-col-title::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 24px;
+    background: #00b53f;
+    border-radius: 2px;
+  }
+  .footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-links-list a, .footer-links-list button {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.82rem;
+    background: none;
+    border: none;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.15s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .footer-links-list a:hover, .footer-links-list button:hover {
+    color: #34d399;
+    transform: translateX(3px);
+  }
+
+  .footer-trust-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 0 16px;
+  }
+  .trust-pill {
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    color: #86efac;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .footer-social-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .footer-social-icons a {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .footer-social-icons a:hover {
+    background: #00b53f;
+    transform: translateY(-2px);
+  }
+
+  .footer-pwa-install-btn {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 10px rgba(5,150,105,0.3);
+    transition: all 0.2s;
+  }
+  .footer-pwa-install-btn:hover {
+    background: #047857;
+    transform: translateY(-1px);
+  }
+
+  .footer-hours-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.75rem;
+    color: #cbd5e1;
+    margin-top: 10px;
+    line-height: 1.45;
+  }
+
+  /* 4. Popular Locations Directory Strip */
+  .keja-footer-locations-strip {
+    background: #041f12;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .locations-strip-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: #64748b;
+  }
+  .locations-label {
+    color: #a7f3d0;
+    font-weight: 800;
+    margin-right: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .locations-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.15s;
+    display: inline-block;
+    padding: 1px 4px;
+  }
+  .locations-links a:hover {
+    color: #34d399;
+    text-decoration: underline;
+  }
+
+  /* 5. Warning & Anti-Fraud Notice Bar */
+  .keja-footer-warning-banner {
+    background: rgba(245, 158, 11, 0.08);
+    border-top: 1px solid rgba(245, 158, 11, 0.2);
+    border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+    padding: 12px 20px;
+  }
+  .warning-banner-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.8rem;
+    color: #fde68a;
+    line-height: 1.45;
+  }
+  .warning-banner-inner strong {
+    color: #fbbf24;
+  }
+
+  /* 6. Bottom Copyright */
+  .keja-footer-bottom {
+    background: #03180e;
+    padding: 16px 20px;
+    font-size: 0.76rem;
+    color: #64748b;
+  }
+  .keja-footer-bottom-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .keja-footer-bottom-inner p {
+    margin: 0;
+  }
+  .bottom-legal-links {
+    display: flex;
+    gap: 14px;
+  }
+  .bottom-legal-links a, .bottom-legal-links button {
+    color: #94a3b8;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.76rem;
+  }
+  .bottom-legal-links a:hover, .bottom-legal-links button:hover {
+    color: #34d399;
+  }
+
+  /* Support Modals Base Style */
+  .keja-support-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(2px);
+  }
+  .keja-support-dialog {
+    background: #ffffff;
+    border-radius: 18px;
+    max-width: 620px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+  .keja-support-header {
+    background: #062b1a;
+    color: #ffffff;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .keja-support-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .keja-support-header button {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+  .keja-support-body {
+    padding: 22px;
+    overflow-y: auto;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #334155;
+  }
+</style>
+
+<!-- Site Footer -->
+<footer class="keja-site-footer">
+
+  <!-- 1. Top Hotline & Support Strip -->
+  <div class="keja-footer-topbar">
+    <div class="keja-footer-topbar-inner">
+      <div class="keja-topbar-item">
+        <i class="fas fa-headset"></i>
+        <div>
+          <strong>Support Hotline:</strong>
+          <a href="tel:+254792409540">+254 792 409 540</a>
         </div>
-        <p style="margin:0 0 10px 0; font-size:0.75rem; color:#d1fae5; line-height:1.4;">Find your next place. Find what you need.</p>
-        <div class="footer-social-icons">
-          <a href="https://facebook.com/kejamarket" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://twitter.com/kejamarket" target="_blank" title="X / Twitter"><i class="fab fa-x-twitter"></i></a>
-          <a href="https://linkedin.com/company/kejamarket" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://youtube.com/@kejamarket" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-        </div>
-        <p style="font-size:0.68rem; color:#a7f3d0; margin-top:12px;">&copy; 2026 KejaMarket. All rights reserved.</p>
       </div>
-
-      <!-- Quick Links -->
-      <div>
-        <div class="footer-col-title">Quick Links</div>
-        <ul class="footer-links-list">
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('All'); return false;">Home</a></li>
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Rentals'); return false;">Rentals</a></li>
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Apartments'); return false;">Apartments</a></li>
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Selling'); return false;">Selling Homes</a></li>
-          <li><a href="#" onclick="app.switchFilterTab('properties'); app.setCategory('Land'); return false;">Land</a></li>
-        </ul>
-      </div>
-
-      <!-- Company -->
-      <div>
-        <div class="footer-col-title">Company</div>
-        <ul class="footer-links-list">
-          <li><a href="#" onclick="return false;">About KejaMarket</a></li>
-          <li><a href="#" onclick="return false;">How It Works</a></li>
-          <li><a href="/privacy-policy">Privacy</a></li>
-          <li><a href="/terms">Terms</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact Us -->
-      <div>
-        <div class="footer-col-title">Contact Us</div>
-        <ul class="footer-links-list footer-contact-list">
-          <li><a href="tel:+254792409540"><i class="fas fa-phone-alt"></i> +254 792 409 540</a></li>
-          <li><a href="mailto:support@kejamarket.co.ke"><i class="fas fa-envelope"></i> support@kejamarket.co.ke</a></li>
-          <li><span><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</span></li>
-        </ul>
-      </div>
-
-      <!-- Download Our App -->
-      <div>
-        <div class="footer-col-title">Download Our App</div>
-        <div class="footer-app-badges">
-          <a href="#" onclick="return false;" class="footer-app-btn">
-            <i class="fab fa-google-play"></i>
-            <span><small>GET IT ON</small>Google Play</span>
-          </a>
-          <a href="#" onclick="return false;" class="footer-app-btn">
-            <i class="fab fa-apple"></i>
-            <span><small>Download on the</small>App Store</span>
-          </a>
-        </div>
-        <div style="margin-top:10px; font-size:0.75rem; color:#bbf7d0; font-weight:600; display:flex; align-items:center; gap:5px;">
-          <span style="color:#ef4444;"></span> Built for a better Kenya
+      <div class="keja-topbar-item">
+        <i class="fab fa-whatsapp"></i>
+        <div>
+          <strong>WhatsApp Concierge:</strong>
+          <a href="https://wa.me/254792409540?text=Hello%20KejaMarket%20Support%2C%20I%20need%20assistance" target="_blank">Chat with Ground Team</a>
         </div>
       </div>
-
+      <div class="keja-topbar-item">
+        <i class="fas fa-shield-alt"></i>
+        <div>
+          <strong>Safety & Escrow:</strong>
+          <span>Verified Landlords & Free Scam Check</span>
+        </div>
+      </div>
+      <div class="keja-topbar-item">
+        <i class="fas fa-envelope-open-text"></i>
+        <div>
+          <strong>Email Desk:</strong>
+          <a href="mailto:support@kejamarket.co.ke">support@kejamarket.co.ke</a>
+        </div>
+      </div>
     </div>
-  </footer>
+  </div>
+
+  <!-- 2. Mobile/PWA Quick Support Hub (Always easily accessible on phones) -->
+  <div class="keja-footer-mobile-support-hub">
+    <div class="keja-mob-hub-title"><i class="fas fa-life-ring"></i> Need Help with KejaMarket?</div>
+    <div class="keja-mob-hub-grid">
+      <a href="https://wa.me/254792409540?text=Hello%20KejaMarket%20Support%2C%20I%20need%20assistance" target="_blank" class="keja-mob-hub-btn hub-btn-wa">
+        <i class="fab fa-whatsapp"></i>
+        <span>WhatsApp</span>
+      </a>
+      <a href="tel:+254792409540" class="keja-mob-hub-btn hub-btn-call">
+        <i class="fas fa-phone-alt"></i>
+        <span>Call Us</span>
+      </a>
+      <button type="button" onclick="kejaOpenSupportModal('safety')" class="keja-mob-hub-btn hub-btn-safety">
+        <i class="fas fa-user-shield"></i>
+        <span>Safety</span>
+      </button>
+      <button type="button" onclick="kejaOpenSupportModal('faq')" class="keja-mob-hub-btn hub-btn-faq">
+        <i class="fas fa-question-circle"></i>
+        <span>FAQs</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Main Multi-Column Footer Grid -->
+  <div class="keja-footer-container">
+    
+    <!-- Col 1: Brand & Ground Network -->
+    <div class="footer-col-brand">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+        <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M48 18L16 45H27V82H69V45H80L48 18Z" fill="#00b53f" stroke="#007728" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M38 82V56H58V82H38Z" fill="#fff"/>
+          <path d="M48 10C42 10 37 15 37 21C37 29 48 39 48 39C48 39 59 29 59 21C59 15 54 10 48 10Z" fill="#e52b2b"/>
+          <circle cx="48" cy="21" r="4.5" fill="#fff"/>
+        </svg>
+        <span style="font-size:1.35rem; font-weight:900; color:#fff; letter-spacing:-0.5px; font-family:'Poppins',sans-serif;">Keja<span style="color:#e52b2b;">Market</span></span>
+      </div>
+      <p style="margin:0 0 12px 0; font-size:0.8rem; color:#d1fae5; line-height:1.45;">Kenya's #1 Real Estate, Rental Concierge & Classifieds Platform. Verified vacancies, physically inspected homes, and direct landlord connections.</p>
+      
+      <div class="footer-trust-pills">
+        <span class="trust-pill"><i class="fas fa-check-circle"></i> Verified Landlords</span>
+        <span class="trust-pill"><i class="fas fa-bolt"></i> 72h Ground Scouts</span>
+        <span class="trust-pill"><i class="fas fa-lock"></i> Protected Viewings</span>
+      </div>
+
+      <div class="footer-social-icons">
+        <a href="https://wa.me/254792409540" target="_blank" title="WhatsApp Channel" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://facebook.com/kejamarket" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com/kejamarket" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@kejamarket" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://twitter.com/kejamarket" target="_blank" title="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://youtube.com/@kejamarket" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Col 2: About & Network -->
+    <div>
+      <div class="footer-col-title">About KejaMarket</div>
+      <ul class="footer-links-list">
+        <li><button type="button" onclick="kejaOpenSupportModal('about')">About Us</button></li>
+        <li><button type="button" onclick="app.openHouseHuntModal && app.openHouseHuntModal()">3-Day Smart House Hunt</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('scouts')">Our Ground Scouts Network</button></li>
+        <li><button type="button" onclick="app.openModal && app.openModal('modal-scout-tip')">Tip-off a Vacant House (Earn)</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('landlord')">For Landlords & Property Managers</button></li>
+        <li><button type="button" onclick="app.openModal && app.openModal('modal-post-ad')">+ Post a Free Rental Listing</button></li>
+      </ul>
+    </div>
+
+    <!-- Col 3: Support & Safety (Jiji-style) -->
+    <div>
+      <div class="footer-col-title">Support & Safety</div>
+      <ul class="footer-links-list">
+        <li><button type="button" onclick="kejaOpenSupportModal('safety')" style="color:#fde047; font-weight:800;"><i class="fas fa-shield-alt" style="margin-right:4px;"></i> Safety Tips & Scam Guide</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('faq')">Frequently Asked Questions</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('contact')">Contact Support Team</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('disputes')">Viewing & Payment Protection</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('report')">Report Suspicious Listing</button></li>
+        <li><a href="https://wa.me/254792409540?text=I%20want%20to%20report%20a%20scam%20or%20issue" target="_blank">Instant Fraud Desk (WhatsApp)</a></li>
+      </ul>
+    </div>
+
+    <!-- Col 4: Legal & Policies -->
+    <div>
+      <div class="footer-col-title">Legal & Policies</div>
+      <ul class="footer-links-list">
+        <li><button type="button" onclick="kejaOpenSupportModal('terms')">Terms & Conditions</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('privacy')">Privacy Policy</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('billing')">Billing & Escrow Policy</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('cookie')">Cookie Preferences</button></li>
+        <li><button type="button" onclick="kejaOpenSupportModal('copyright')">Copyright Infringement Policy</button></li>
+      </ul>
+    </div>
+
+    <!-- Col 5: App, Towns & Hours -->
+    <div>
+      <div class="footer-col-title">KejaMarket App & Desk</div>
+      <p style="font-size:0.75rem; color:#94a3b8; margin:0 0 10px 0;">Install the fast, offline-ready progressive web app on your phone:</p>
+      <button type="button" class="footer-pwa-install-btn" onclick="kejaTriggerPWAInstall()">
+        <i class="fas fa-mobile-alt"></i> Install Web App (PWA)
+      </button>
+      <div class="footer-app-badges" style="margin-top:10px;">
+        <button type="button" onclick="kejaTriggerPWAInstall()" class="footer-app-btn" style="border:none; cursor:pointer;">
+          <i class="fab fa-google-play"></i>
+          <span><small>AVAILABLE ON</small>Android PWA</span>
+        </button>
+        <button type="button" onclick="kejaTriggerPWAInstall()" class="footer-app-btn" style="border:none; cursor:pointer;">
+          <i class="fab fa-apple"></i>
+          <span><small>ADD TO HOME</small>iPhone / iPad</span>
+        </button>
+      </div>
+      <div class="footer-hours-box">
+        <div><i class="far fa-clock"></i> <strong>Support Hours:</strong></div>
+        <div>Mon – Sat: 8:00 AM – 8:00 PM</div>
+        <div>Sunday: 10:00 AM – 4:00 PM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Popular Locations Directory Strip (SEO & Quick Access like Jiji) -->
+  <div class="keja-footer-locations-strip">
+    <div class="locations-strip-inner">
+      <span class="locations-label"><i class="fas fa-map-marker-alt"></i> Popular Locations:</span>
+      <span class="locations-links">
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Nairobi', null)">Nairobi</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Kilimani', null)">Kilimani</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Westlands', null)">Westlands</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Ruaka', null)">Ruaka</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Kiambu Road', null)">Kiambu Road</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Syokimau', null)">Syokimau</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Mlolongo', null)">Mlolongo</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Roysambu', null)">Roysambu</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Kasarani', null)">Kasarani</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Ongata Rongai', null)">Rongai</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Kitengela', null)">Kitengela</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Ruiru', null)">Ruiru</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Thika', null)">Thika</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Mombasa', null)">Mombasa & Coast</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Nakuru', null)">Nakuru</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Eldoret', null)">Eldoret</a> ·
+        <a href="javascript:void(0)" onclick="app.setQuickSuburbFilter && app.setQuickSuburbFilter('Kisumu', null)">Kisumu</a>
+      </span>
+    </div>
+  </div>
+
+  <!-- 5. Warning & Anti-Fraud Notice Bar (Like Jiji) -->
+  <div class="keja-footer-warning-banner">
+    <div class="warning-banner-inner">
+      <i class="fas fa-exclamation-triangle" style="color:#f59e0b; font-size:1.1rem; flex-shrink:0;"></i>
+      <span><strong>Safety Notice:</strong> Never send advance rent, commitment fees, or viewing deposits via personal M-Pesa to any unverified agent or landlord before viewing the unit physically. KejaMarket provides verified ground team inspections to protect your money.</span>
+    </div>
+  </div>
+
+  <!-- 6. Bottom Copyright -->
+  <div class="keja-footer-bottom">
+    <div class="keja-footer-bottom-inner">
+      <p>&copy; 2026 KejaMarket.co.ke. All rights reserved. Kenya's #1 Real Estate & Concierge Marketplace.</p>
+      <div class="bottom-legal-links">
+        <button type="button" onclick="kejaOpenSupportModal('terms')">Terms</button>
+        <button type="button" onclick="kejaOpenSupportModal('privacy')">Privacy</button>
+        <button type="button" onclick="kejaOpenSupportModal('safety')">Safety Tips</button>
+        <button type="button" onclick="kejaOpenSupportModal('contact')">Support</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ====================================================================
+     INTERACTIVE JIJI-GRADE SUPPORT MODALS SUITE
+     ==================================================================== -->
+
+<!-- Modal: Safety Tips & Anti-Fraud Guide -->
+<div class="keja-support-modal" id="modal-support-safety">
+  <div class="keja-support-dialog">
+    <div class="keja-support-header" style="background:#b45309;">
+      <h3><i class="fas fa-user-shield"></i> KejaMarket Safety Tips & Scam Guide</h3>
+      <button type="button" onclick="kejaCloseSupportModal('safety')">&times;</button>
+    </div>
+    <div class="keja-support-body">
+      <div style="background:#fef3c7; border:1px solid #fde68a; border-radius:12px; padding:14px; margin-bottom:16px; color:#92400e; font-weight:700;">
+        <i class="fas fa-exclamation-circle"></i> Protect yourself from online rental scams in Kenya. Read these 5 golden rules before making any commitments.
+      </div>
+      <div style="display:grid; gap:14px;">
+        <div style="border-left:4px solid #10b981; padding-left:12px;">
+          <h4 style="margin:0 0 4px; color:#0f172a; font-size:0.95rem;">1. Never Send Advance Money via Personal M-Pesa</h4>
+          <p style="margin:0; font-size:0.85rem; color:#64748b;">Do not send "booking fees", "holding deposits", or fuel refunds to personal phone numbers before you step inside the house.</p>
+        </div>
+        <div style="border-left:4px solid #10b981; padding-left:12px;">
+          <h4 style="margin:0 0 4px; color:#0f172a; font-size:0.95rem;">2. Meet in Person with the Caretaker or Landlord</h4>
+          <p style="margin:0; font-size:0.85rem; color:#64748b;">Inspect water taps, token electricity meters, security, and compound cleanliness during daylight hours.</p>
+        </div>
+        <div style="border-left:4px solid #10b981; padding-left:12px;">
+          <h4 style="margin:0 0 4px; color:#0f172a; font-size:0.95rem;">3. Use the KejaMarket Verified Badge</h4>
+          <p style="margin:0; font-size:0.85rem; color:#64748b;">Listings with the green Verified checkmark have had caretaker contacts and titles checked by our ground team.</p>
+        </div>
+        <div style="border-left:4px solid #10b981; padding-left:12px;">
+          <h4 style="margin:0 0 4px; color:#0f172a; font-size:0.95rem;">4. Beware of "Too Good to Be True" Rent Prices</h4>
+          <p style="margin:0; font-size:0.85rem; color:#64748b;">A 2-bedroom apartment in Kilimani listed for KSh 12,000 is almost certainly a scam attempting to collect advance holding fees.</p>
+        </div>
+        <div style="border-left:4px solid #10b981; padding-left:12px;">
+          <h4 style="margin:0 0 4px; color:#0f172a; font-size:0.95rem;">5. Use our 72-Hour Smart House Hunt Concierge</h4>
+          <p style="margin:0; font-size:0.85rem; color:#64748b;">If you are busy or relocating, let our vetted Ground Scouts do the legwork and physically accompany you to viewings.</p>
+        </div>
+      </div>
+      <div style="margin-top:20px; display:flex; gap:10px;">
+        <a href="https://wa.me/254792409540?text=I%20want%20to%20report%20a%20suspicious%20listing" target="_blank" style="flex:1; background:#ef4444; color:#fff; text-decoration:none; padding:11px; border-radius:10px; font-weight:700; text-align:center; font-size:0.85rem;">
+          <i class="fas fa-flag"></i> Report Suspicious Listing
+        </a>
+        <button type="button" onclick="kejaCloseSupportModal('safety')" style="flex:1; background:#f1f5f9; color:#334155; border:none; padding:11px; border-radius:10px; font-weight:700; cursor:pointer;">
+          Got it
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: FAQ & Help Center -->
+<div class="keja-support-modal" id="modal-support-faq">
+  <div class="keja-support-dialog">
+    <div class="keja-support-header" style="background:#6d28d9;">
+      <h3><i class="fas fa-question-circle"></i> KejaMarket Help & FAQ Desk</h3>
+      <button type="button" onclick="kejaCloseSupportModal('faq')">&times;</button>
+    </div>
+    <div class="keja-support-body">
+      <div style="display:grid; gap:14px;">
+        <details style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px;" open>
+          <summary style="font-weight:800; color:#0f172a; cursor:pointer;">How do I search and filter rentals?</summary>
+          <p style="margin:8px 0 0; font-size:0.85rem; color:#64748b;">Use the top search bar to type an estate or suburb (e.g. Ruaka, Kilimani, Roysambu). You can filter by bedroom type (Single Room, Bedsitter, 1 Bed, 2 Beds) and price range.</p>
+        </details>
+        <details style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px;">
+          <summary style="font-weight:800; color:#0f172a; cursor:pointer;">What is the 3-Day Smart House Hunt?</summary>
+          <p style="margin:8px 0 0; font-size:0.85rem; color:#64748b;">Our ground concierge service where dedicated field scouts search the physical area for verified vacant houses based on your exact budget and requirements within 72 hours.</p>
+        </details>
+        <details style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px;">
+          <summary style="font-weight:800; color:#0f172a; cursor:pointer;">How do I contact a landlord or agent?</summary>
+          <p style="margin:8px 0 0; font-size:0.85rem; color:#64748b;">Each property listing features direct Call and WhatsApp buttons linking you instantly to the caretaker or landlord with the property reference pre-filled.</p>
+        </details>
+        <details style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px;">
+          <summary style="font-weight:800; color:#0f172a; cursor:pointer;">How can I post my property as a landlord?</summary>
+          <p style="margin:8px 0 0; font-size:0.85rem; color:#64748b;">Click "+ Post Property" in the top navigation or footer. You can upload photos, specify location, rent, amenities, and reach thousands of verified tenants immediately.</p>
+        </details>
+      </div>
+      <div style="margin-top:20px; text-align:center;">
+        <a href="https://wa.me/254792409540?text=Hi%2C%20I%20have%20a%20question%20not%20covered%20in%20the%20FAQ" target="_blank" style="background:#25d366; color:#fff; text-decoration:none; padding:11px 20px; border-radius:10px; font-weight:800; font-size:0.88rem; display:inline-flex; align-items:center; gap:8px;">
+          <i class="fab fa-whatsapp"></i> Still need help? Chat with Support
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Contact Us & Official Desk -->
+<div class="keja-support-modal" id="modal-support-contact">
+  <div class="keja-support-dialog">
+    <div class="keja-support-header" style="background:#0284c7;">
+      <h3><i class="fas fa-headset"></i> Contact KejaMarket Support</h3>
+      <button type="button" onclick="kejaCloseSupportModal('contact')">&times;</button>
+    </div>
+    <div class="keja-support-body">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px;">
+        <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:12px; padding:14px; text-align:center;">
+          <i class="fas fa-phone-alt" style="font-size:1.6rem; color:#0284c7; margin-bottom:6px;"></i>
+          <div style="font-size:0.75rem; color:#0369a1; font-weight:700;">Direct Phone</div>
+          <a href="tel:+254792409540" style="font-size:0.95rem; font-weight:800; color:#0c4a6e; text-decoration:none;">+254 792 409 540</a>
+        </div>
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:14px; text-align:center;">
+          <i class="fab fa-whatsapp" style="font-size:1.6rem; color:#22c55e; margin-bottom:6px;"></i>
+          <div style="font-size:0.75rem; color:#15803d; font-weight:700;">WhatsApp Desk</div>
+          <a href="https://wa.me/254792409540?text=Hello%20KejaMarket%20Support" target="_blank" style="font-size:0.95rem; font-weight:800; color:#14532d; text-decoration:none;">Start Chat</a>
+        </div>
+      </div>
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px; font-weight:800; color:#0f172a;">
+          <i class="fas fa-envelope" style="color:#0284c7;"></i> Email Support Desk
+        </div>
+        <div style="font-size:0.85rem; color:#64748b;"><a href="mailto:support@kejamarket.co.ke" style="color:#0284c7; font-weight:700;">support@kejamarket.co.ke</a> · Response time within 30 mins</div>
+      </div>
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px; font-weight:800; color:#0f172a;">
+          <i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> Nairobi Headquarters
+        </div>
+        <div style="font-size:0.85rem; color:#64748b;">Nairobi, Kenya · Field hubs covering Ruaka, Kilimani, Westlands, Mombasa Rd & Thika Rd</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: About Us & Ground Scouts -->
+<div class="keja-support-modal" id="modal-support-about">
+  <div class="keja-support-dialog">
+    <div class="keja-support-header" style="background:#059669;">
+      <h3><i class="fas fa-home"></i> About KejaMarket</h3>
+      <button type="button" onclick="kejaCloseSupportModal('about')">&times;</button>
+    </div>
+    <div class="keja-support-body">
+      <h4 style="margin:0 0 8px; color:#0f172a; font-size:1.05rem;">Reinventing How Kenya Finds Housing</h4>
+      <p style="margin:0 0 14px; font-size:0.86rem; color:#475569; line-height:1.5;">KejaMarket is Kenya's verified real estate, rental concierge, and classifieds ecosystem. We eliminate rogue middlemen, hidden viewing fees, and misleading advertisements by deploying technology and active field scouts to inspect properties on the ground.</p>
+      
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:14px; margin-bottom:14px;">
+        <div style="font-weight:800; color:#15803d; margin-bottom:4px;"><i class="fas fa-binoculars"></i> The Ground Scouts Network</div>
+        <p style="margin:0; font-size:0.82rem; color:#166534;">Our vetted scouts live and operate in specific neighborhoods across Nairobi, Kiambu, Mombasa, Nakuru, and Kisumu. They physically visit vacant houses, confirm caretaker legitimacy, and assist tenants with rapid 72-hour searches.</p>
+      </div>
+
+      <button type="button" onclick="kejaCloseSupportModal('about')" style="width:100%; background:#059669; color:#fff; border:none; padding:11px; border-radius:10px; font-weight:700; cursor:pointer;">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Legal & Terms -->
+<div class="keja-support-modal" id="modal-support-terms">
+  <div class="keja-support-dialog">
+    <div class="keja-support-header" style="background:#1e293b;">
+      <h3><i class="fas fa-file-contract"></i> Terms, Privacy & Escrow Policy</h3>
+      <button type="button" onclick="kejaCloseSupportModal('terms')">&times;</button>
+    </div>
+    <div class="keja-support-body">
+      <h4 style="margin:0 0 6px; color:#0f172a; font-size:0.95rem;">1. Marketplace & Listing Verification</h4>
+      <p style="margin:0 0 12px; font-size:0.82rem; color:#64748b;">KejaMarket acts as an aggregator and concierge facilitator connecting verified property owners, caretakers, and property seekers across Kenya.</p>
+      
+      <h4 style="margin:0 0 6px; color:#0f172a; font-size:0.95rem;">2. Viewing & Concierge Payments</h4>
+      <p style="margin:0 0 12px; font-size:0.82rem; color:#64748b;">All automated payments made on KejaMarket (STK Push) are receipted. If a viewing arrangement is cancelled or a scout fails to locate matching units within the 72-hour window, the customer is entitled to a prompt review or refund under our billing protection policy.</p>
+
+      <h4 style="margin:0 0 6px; color:#0f172a; font-size:0.95rem;">3. Data Privacy & Consumer Protection</h4>
+      <p style="margin:0 0 16px; font-size:0.82rem; color:#64748b;">We respect your privacy under the Kenya Data Protection Act 2019. Phone numbers and communications are secured and only shared with verified landlords upon viewing booking.</p>
+
+      <button type="button" onclick="kejaCloseSupportModal('terms')" style="width:100%; background:#1e293b; color:#fff; border:none; padding:11px; border-radius:10px; font-weight:700; cursor:pointer;">
+        Understood
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function kejaOpenSupportModal(type) {
+    document.querySelectorAll('.keja-support-modal').forEach(m => m.style.display = 'none');
+    let target = document.getElementById('modal-support-' + type);
+    if (!target) {
+      if (['scouts', 'landlord'].includes(type)) target = document.getElementById('modal-support-about');
+      else if (['privacy', 'billing', 'cookie', 'copyright', 'disputes'].includes(type)) target = document.getElementById('modal-support-terms');
+      else if (type === 'report') target = document.getElementById('modal-support-safety');
+      else target = document.getElementById('modal-support-contact');
+    }
+    if (target) target.style.display = 'flex';
+  }
+  function kejaCloseSupportModal(type) {
+    if (type) {
+      const modal = document.getElementById('modal-support-' + type);
+      if (modal) modal.style.display = 'none';
+    } else {
+      document.querySelectorAll('.keja-support-modal').forEach(m => m.style.display = 'none');
+    }
+  }
+  function kejaTriggerPWAInstall() {
+    if (window.deferredPrompt) {
+      window.deferredPrompt.prompt();
+      window.deferredPrompt.userChoice.then(() => { window.deferredPrompt = null; });
+    } else {
+      alert('📲 Install KejaMarket on your phone:\n\n🤖 Android: Tap browser menu (⋮) -> "Install App" or "Add to Home Screen".\n\n🍏 iPhone: Tap Safari Share button (⬆️) -> "Add to Home Screen".');
+    }
+  }
+</script>
 
   <!-- Float Share Panel removed -->
 
@@ -4936,7 +5687,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=103.0&t=20261114_scouts_dispatch');
+      navigator.serviceWorker.register('/sw.js?v=104.0_jiji_support');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->
