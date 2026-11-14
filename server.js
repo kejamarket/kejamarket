@@ -5525,9 +5525,302 @@ app.post('/api/admin/transactions/:id/refund', requireAuth, async (req, res) => 
     
     if (store.isConnected && store.query) {
       await store.query('UPDATE transactions SET status = $1, raw_data = raw_data || $2 WHERE id = $3', ['REFUNDED', JSON.stringify({ refundReason: reason, refundedAt: new Date().toISOString(), refundedBy: req.user.id }), id]);
+    } else if (store.data && store.data.transactions) {
+      const tx = store.data.transactions.find(t => t.id === id);
+      if (tx) { tx.status = 'REFUNDED'; tx.refundReason = reason; }
+      await store.save();
     }
     await logAdminAction(req.user, 'REFUNDED_TRANSACTION', 'transaction', id, id, {}, { status: 'REFUNDED', reason }, reason, req);
     res.json({ success: true, message: `Transaction ${id} marked as refunded.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/admin/transactions/:id — update transaction status (COMPLETED, FAILED, PENDING)
+app.put('/api/admin/transactions/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    const { status, note } = req.body;
+    if (!status) return res.status(400).json({ success: false, message: 'Status is required' });
+
+    const newStatus = status.toUpperCase();
+    if (store.isConnected && store.query) {
+      await store.query('UPDATE transactions SET status = $1, raw_data = raw_data || $2 WHERE id = $3', [newStatus, JSON.stringify({ adminUpdatedBy: req.user.id, adminNote: note || '', updatedAt: new Date().toISOString() }), id]);
+    } else if (store.data && store.data.transactions) {
+      const tx = store.data.transactions.find(t => t.id === id);
+      if (tx) { tx.status = newStatus; tx.adminNote = note; }
+      await store.save();
+    }
+
+    // If marked COMPLETED, activate associated house hunt if any
+    try {
+      if (newStatus === 'COMPLETED') {
+        if (store.isConnected && store.query) {
+          await store.query(`UPDATE house_hunts SET status='ACTIVE', payment_status='PAID' WHERE id=$1 OR checkout_request_id=$1`, [id]);
+        }
+      }
+    } catch (_) {}
+
+    res.json({ success: true, message: `Transaction ${id} updated to ${newStatus}` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/transactions/:id — delete transaction record
+app.delete('/api/admin/transactions/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    if (store.isConnected && store.query) {
+      await store.query('DELETE FROM transactions WHERE id = $1', [id]);
+    }
+    if (store.data && store.data.transactions) {
+      store.data.transactions = store.data.transactions.filter(t => t.id !== id);
+      await store.save();
+    }
+    res.json({ success: true, message: `Transaction ${id} deleted successfully.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/transactions/bulk-delete — bulk delete transactions
+app.post('/api/admin/transactions/bulk-delete', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { transactionIds } = req.body;
+    if (!Array.isArray(transactionIds) || !transactionIds.length) {
+      return res.status(400).json({ success: false, message: 'No transaction IDs provided.' });
+    }
+    if (store.isConnected && store.query) {
+      await store.query('DELETE FROM transactions WHERE id = ANY($1)', [transactionIds]);
+    }
+    if (store.data && store.data.transactions) {
+      const idSet = new Set(transactionIds);
+      store.data.transactions = store.data.transactions.filter(t => !idSet.has(t.id));
+      await store.save();
+    }
+    res.json({ success: true, message: `Successfully deleted ${transactionIds.length} transactions.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/transactions/bulk-confirm — bulk confirm transactions
+app.post('/api/admin/transactions/bulk-confirm', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { transactionIds } = req.body;
+    if (!Array.isArray(transactionIds) || !transactionIds.length) {
+      return res.status(400).json({ success: false, message: 'No transaction IDs provided.' });
+    }
+    if (store.isConnected && store.query) {
+      await store.query(`UPDATE transactions SET status = 'COMPLETED', raw_data = raw_data || $1 WHERE id = ANY($2)`, [JSON.stringify({ bulkConfirmedBy: req.user.id, confirmedAt: new Date().toISOString() }), transactionIds]);
+    }
+    if (store.data && store.data.transactions) {
+      const idSet = new Set(transactionIds);
+      store.data.transactions.forEach(t => {
+        if (idSet.has(t.id)) t.status = 'COMPLETED';
+      });
+      await store.save();
+    }
+    res.json({ success: true, message: `Successfully confirmed ${transactionIds.length} transactions.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/properties/:id — admin delete property
+app.delete('/api/admin/properties/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    await store.deleteProperty(id);
+    res.json({ success: true, message: `Property ${id} deleted successfully.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/properties/bulk-delete — bulk delete properties
+app.post('/api/admin/properties/bulk-delete', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { propertyIds } = req.body;
+    if (!Array.isArray(propertyIds) || !propertyIds.length) {
+      return res.status(400).json({ success: false, message: 'No property IDs provided.' });
+    }
+    for (const pid of propertyIds) {
+      await store.deleteProperty(pid);
+    }
+    res.json({ success: true, message: `Successfully deleted ${propertyIds.length} properties.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/properties/bulk-approve — bulk approve properties
+app.post('/api/admin/properties/bulk-approve', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { propertyIds } = req.body;
+    if (!Array.isArray(propertyIds) || !propertyIds.length) {
+      return res.status(400).json({ success: false, message: 'No property IDs provided.' });
+    }
+    if (store.isConnected && store.query) {
+      await store.query(`UPDATE properties SET status = 'approved', is_verified = true, verified_at = NOW() WHERE id = ANY($1)`, [propertyIds]);
+    }
+    if (store.data && store.data.properties) {
+      const idSet = new Set(propertyIds);
+      store.data.properties.forEach(p => {
+        if (idSet.has(p.id)) { p.status = 'approved'; p.isVerified = true; }
+      });
+      await store.save();
+    }
+    res.json({ success: true, message: `Successfully approved ${propertyIds.length} properties.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/users/bulk-delete — bulk delete user accounts
+app.post('/api/admin/users/bulk-delete', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { userIds } = req.body;
+    if (!Array.isArray(userIds) || !userIds.length) {
+      return res.status(400).json({ success: false, message: 'No user IDs provided.' });
+    }
+    const safeUserIds = userIds.filter(uid => uid !== req.user.id);
+    for (const uid of safeUserIds) {
+      if (store.isConnected && store.query) {
+        await store.query('DELETE FROM properties WHERE landlord_id = $1', [uid]);
+        await store.query('DELETE FROM services WHERE provider_id = $1', [uid]);
+        await store.query('DELETE FROM marketplace_items WHERE seller_id = $1', [uid]);
+        await store.query('DELETE FROM users WHERE id = $1', [uid]);
+      }
+      if (store.data) {
+        if (store.data.properties) store.data.properties = store.data.properties.filter(p => p.userId !== uid && p.landlordId !== uid);
+        if (store.data.services) store.data.services = store.data.services.filter(s => s.providerId !== uid);
+        if (store.data.marketplace) store.data.marketplace = store.data.marketplace.filter(m => m.sellerId !== uid);
+        if (store.data.users) store.data.users = store.data.users.filter(u => u.id !== uid);
+      }
+    }
+    if (store.data) await store.save();
+    res.json({ success: true, message: `Successfully deleted ${safeUserIds.length} user accounts.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/inquiries/bulk-delete — bulk delete messages/inquiries
+app.post('/api/admin/inquiries/bulk-delete', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { inquiryIds } = req.body;
+    if (!Array.isArray(inquiryIds) || !inquiryIds.length) {
+      return res.status(400).json({ success: false, message: 'No inquiry IDs provided.' });
+    }
+    if (store.isConnected && store.query) {
+      try { await store.query('DELETE FROM messages WHERE id = ANY($1)', [inquiryIds]); } catch (_) {}
+    }
+    if (store.data && store.data.inquiries) {
+      const idSet = new Set(inquiryIds.map(String));
+      store.data.inquiries = store.data.inquiries.filter(i => !idSet.has(String(i.id)));
+    }
+    if (store.fallbackStore?.data?.inquiries) {
+      const idSet = new Set(inquiryIds.map(String));
+      store.fallbackStore.data.inquiries = store.fallbackStore.data.inquiries.filter(i => !idSet.has(String(i.id)));
+    }
+    res.json({ success: true, message: `Successfully deleted ${inquiryIds.length} inquiries.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/inquiries/:id/mark-read — mark inquiry as read
+app.post('/api/admin/inquiries/:id/mark-read', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    if (store.isConnected && store.query) {
+      try { await store.query('UPDATE messages SET is_read = true WHERE id = $1', [id]); } catch (_) {}
+    }
+    if (store.data && store.data.inquiries) {
+      const inq = store.data.inquiries.find(i => String(i.id) === String(id));
+      if (inq) inq.isRead = true;
+    }
+    res.json({ success: true, message: 'Marked as read' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/house-hunts/:id — delete a house hunt
+app.delete('/api/admin/house-hunts/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    if (typeof store.deleteHouseHunt === 'function') {
+      await store.deleteHouseHunt(id);
+    } else {
+      if (store.isConnected && store.query) {
+        await store.query('DELETE FROM house_hunts WHERE id = $1', [id]);
+      }
+      if (store.data?.houseHunts) {
+        store.data.houseHunts = store.data.houseHunts.filter(h => h.id !== id);
+      }
+    }
+    res.json({ success: true, message: `House hunt ${id} deleted successfully.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/house-hunts/bulk-delete — bulk delete house hunts
+app.post('/api/admin/house-hunts/bulk-delete', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { huntIds } = req.body;
+    if (!Array.isArray(huntIds) || !huntIds.length) {
+      return res.status(400).json({ success: false, message: 'No hunt IDs provided.' });
+    }
+    for (const hid of huntIds) {
+      if (typeof store.deleteHouseHunt === 'function') {
+        await store.deleteHouseHunt(hid);
+      } else if (store.isConnected && store.query) {
+        await store.query('DELETE FROM house_hunts WHERE id = $1', [hid]);
+      }
+    }
+    res.json({ success: true, message: `Successfully deleted ${huntIds.length} house hunts.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/house-hunts/:id/activate — activate hunt & mark as paid
+app.post('/api/admin/house-hunts/:id/activate', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    const now = new Date();
+    const expiry = new Date(now.getTime() + 72 * 3600 * 1000);
+    const updates = {
+      status: 'ACTIVE',
+      payment_status: 'PAID',
+      paidAt: now.toISOString(),
+      expiresAt: expiry.toISOString(),
+      activeExpiresAt: expiry.toISOString()
+    };
+    if (typeof store.updateHouseHunt === 'function') {
+      await store.updateHouseHunt(id, updates);
+    } else if (store.isConnected && store.query) {
+      await store.query(`UPDATE house_hunts SET status='ACTIVE', payment_status='PAID', updated_at=NOW() WHERE id=$1`, [id]);
+    }
+    res.json({ success: true, message: `House hunt ${id} activated (72-hour search started).` });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

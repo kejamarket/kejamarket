@@ -827,10 +827,28 @@ const AdminCore = (() => {
     }
 
     container.innerHTML = `
+      <div id="prop-bulk-bar" style="display:none; background:#ecfdf5; border:1.5px solid #10b981; border-radius:10px; padding:12px 18px; margin-bottom:16px; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(16,185,129,0.12);">
+        <div style="font-weight:700; color:#065f46; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-home" style="font-size:1.1rem;"></i>
+          <span><span id="prop-selected-count" style="font-size:1.1rem; font-weight:900;">0</span> properties selected</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-action btn-approve" onclick="AdminCore.bulkApproveProps()" style="padding:7px 14px; font-weight:800; border-radius:7px;">
+            <i class="fas fa-check"></i> Approve Selected
+          </button>
+          <button class="btn-action btn-delete" onclick="AdminCore.bulkDeleteProps()" style="padding:7px 14px; font-weight:800; border-radius:7px;">
+            <i class="fas fa-trash-alt"></i> Delete Selected
+          </button>
+        </div>
+      </div>
+
       <div class="table-container">
         <table class="admin-table">
           <thead>
             <tr>
+              <th style="width:40px; text-align:center;">
+                <input type="checkbox" id="prop-select-all" onchange="AdminCore.toggleSelectAllProps(this)" style="width:17px; height:17px; cursor:pointer;">
+              </th>
               <th>Property</th>
               <th>Rent / Month</th>
               <th>Location</th>
@@ -845,9 +863,14 @@ const AdminCore = (() => {
               const isLive = p.is_verified || p.isVerified || p.status === 'approved';
               return `
               <tr>
+                <td style="text-align:center;">
+                  <input type="checkbox" class="prop-row-cb" value="${p.id}" onchange="AdminCore.updatePropBulkBar()" style="width:17px; height:17px; cursor:pointer;">
+                </td>
                 <td>
-                  <strong>${escapeHtml(p.title || 'Untitled')}</strong><br>
-                  <small style="color:#64748b;">ID: ${p.id} &bull; Landlord: ${escapeHtml(p.landlordName || p.landlord_id || 'Owner')}</small>
+                  <div onclick="AdminVerification.viewDetails('property', '${p.id}')" style="cursor:pointer;" title="Click to view full property details, photos and contact">
+                    <strong style="color:#0f172a; text-decoration:underline dotted;">${escapeHtml(p.title || 'Untitled')}</strong><br>
+                    <small style="color:#64748b;">ID: ${p.id} &bull; Landlord: ${escapeHtml(p.landlordName || p.landlord_id || 'Owner')}</small>
+                  </div>
                 </td>
                 <td><strong>KSh ${rent.toLocaleString()}</strong></td>
                 <td>${escapeHtml(p.estateSuburb || p.estate_suburb || p.county || 'Nairobi')}</td>
@@ -864,12 +887,13 @@ const AdminCore = (() => {
                   ` : '<span style="color:#10b981; font-size:0.78rem; font-weight:700;"><i class="fas fa-check"></i> Passed</span>'}
                 </td>
                 <td>
-                  <div style="display:flex; gap:6px;">
-                    <button class="btn-action" onclick="AdminVerification.viewDetails('property', '${p.id}')" title="Review Details"><i class="fas fa-eye"></i></button>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <button class="btn-action" onclick="AdminVerification.viewDetails('property', '${p.id}')" title="Review Full Details & Photos"><i class="fas fa-eye"></i></button>
                     ${!isLive ? `
-                      <button class="btn-action btn-approve" onclick="AdminVerification.quickApprove('property', '${p.id}', '${escapeHtml(p.title || '')}')" title="Approve"><i class="fas fa-check"></i></button>
+                      <button class="btn-action btn-approve" onclick="AdminVerification.quickApprove('property', '${p.id}', '${escapeHtml(p.title || '')}')" title="Approve Listing"><i class="fas fa-check"></i></button>
                     ` : ''}
                     <button class="btn-action btn-delete" onclick="AdminVerification.quickReject('property', '${p.id}', '${escapeHtml(p.title || '')}')" title="Reject / Suspend"><i class="fas fa-times"></i></button>
+                    <button class="btn-action btn-delete" onclick="AdminCore.deleteProperty('${p.id}', '${escapeHtml(p.title || '')}')" title="Permanently Delete Property" style="background:#fee2e2; color:#dc2626;"><i class="fas fa-trash-alt"></i></button>
                   </div>
                 </td>
               </tr>
@@ -1191,17 +1215,35 @@ const AdminCore = (() => {
       }
 
       tContainer.innerHTML = `
+        <div id="txn-bulk-bar" style="display:none; background:#ecfdf5; border:1.5px solid #10b981; border-radius:10px; padding:12px 18px; margin-bottom:16px; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(16,185,129,0.12);">
+          <div style="font-weight:700; color:#065f46; display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-wallet" style="font-size:1.1rem;"></i>
+            <span><span id="txn-selected-count" style="font-size:1.1rem; font-weight:900;">0</span> transactions selected</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-action btn-approve" onclick="AdminCore.bulkConfirmTxns()" style="padding:7px 14px; font-weight:800; border-radius:7px;">
+              <i class="fas fa-check"></i> Mark Selected Confirmed
+            </button>
+            <button class="btn-action btn-delete" onclick="AdminCore.bulkDeleteTxns()" style="padding:7px 14px; font-weight:800; border-radius:7px;">
+              <i class="fas fa-trash-alt"></i> Delete Selected
+            </button>
+          </div>
+        </div>
+
         <div class="table-container">
           <table class="admin-table">
             <thead>
               <tr>
+                <th style="width:40px; text-align:center;">
+                  <input type="checkbox" id="txn-select-all" onchange="AdminCore.toggleSelectAllTxns(this)" style="width:17px; height:17px; cursor:pointer;">
+                </th>
                 <th>Receipt / M-Pesa Ref</th>
                 <th>User / Phone</th>
                 <th>Type</th>
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Date</th>
-                <th>Actions</th>
+                <th style="min-width:180px;">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -1210,7 +1252,14 @@ const AdminCore = (() => {
                 const isRefunded = (t.status || '').toUpperCase() === 'REFUNDED';
                 return `
                 <tr>
-                  <td><code>${t.mpesa_receipt_number || t.mpesaReceipt || t.id}</code></td>
+                  <td style="text-align:center;">
+                    <input type="checkbox" class="txn-row-cb" value="${t.id}" onchange="AdminCore.updateTxnBulkBar()" style="width:17px; height:17px; cursor:pointer;">
+                  </td>
+                  <td>
+                    <code style="cursor:pointer; color:#00b53f; font-weight:700;" onclick="AdminCore.viewTransactionReceipt('${t.id}')" title="Click to view full receipt">
+                      ${t.mpesa_receipt_number || t.mpesaReceipt || t.id}
+                    </code>
+                  </td>
                   <td>${escapeHtml(t.user_name || t.userName || 'User')}<br><small style="color:#64748b;">${t.phone || '-'}</small></td>
                   <td><span style="font-size:0.8rem; background:#f1f5f9; padding:2px 8px; border-radius:12px; font-weight:700;">${escapeHtml(t.type || 'Listing Fee')}</span></td>
                   <td><strong>KSh ${Number(t.amount_kes || t.amount || 0).toLocaleString()}</strong></td>
@@ -1221,9 +1270,26 @@ const AdminCore = (() => {
                   </td>
                   <td>${formatDate(t.created_at)}</td>
                   <td>
-                    ${isSuccess ? `
-                      <button class="btn-action btn-delete" onclick="AdminCore.promptRefund('${t.id}')" title="Issue Refund"><i class="fas fa-undo"></i> Refund</button>
-                    ` : '<span style="color:#94a3b8; font-size:0.8rem;">-</span>'}
+                    <div style="display:flex; gap:5px; align-items:center; flex-wrap:nowrap;">
+                      <button class="btn-action" onclick="AdminCore.viewTransactionReceipt('${t.id}')" title="View Full Receipt" style="background:#f1f5f9; color:#334155;">
+                        <i class="fas fa-receipt"></i>
+                      </button>
+                      ${!isSuccess ? `
+                        <button class="btn-action btn-approve" onclick="AdminCore.confirmTransaction('${t.id}')" title="Mark Confirmed / Paid">
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn-action btn-delete" onclick="AdminCore.failTransaction('${t.id}')" title="Mark Failed">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      ` : `
+                        <button class="btn-action" onclick="AdminCore.promptRefund('${t.id}')" title="Issue Refund" style="background:#fef3c7; color:#b45309;">
+                          <i class="fas fa-undo"></i>
+                        </button>
+                      `}
+                      <button class="btn-action btn-delete" onclick="AdminCore.deleteTransaction('${t.id}')" title="Delete Transaction Record">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               `}).join('')}
@@ -2129,24 +2195,43 @@ const AdminCore = (() => {
       }
 
       container.innerHTML = `
+        <div id="inq-bulk-bar" style="display:none; background:#fee2e2; border:1.5px solid #ef4444; border-radius:10px; padding:12px 18px; margin-bottom:16px; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(239,68,68,0.12);">
+          <div style="font-weight:700; color:#991b1b; display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-comments" style="font-size:1.1rem;"></i>
+            <span><span id="inq-selected-count" style="font-size:1.1rem; font-weight:900;">0</span> inquiries selected</span>
+          </div>
+          <div>
+            <button class="btn-danger" onclick="AdminCore.bulkDeleteInquiries()" style="background:#dc2626; color:white; font-weight:800; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fas fa-trash-alt"></i> Delete Selected Inquiries
+            </button>
+          </div>
+        </div>
+
         <div class="table-container" style="background:#fff; border-radius:14px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
           <table class="admin-table" style="width:100%; border-collapse:collapse;">
             <thead>
               <tr style="background:#f8fafc; border-bottom:1.5px solid #e2e8f0; text-align:left; font-size:0.78rem; text-transform:uppercase; color:#64748b;">
+                <th style="padding:12px 10px; width:40px; text-align:center;">
+                  <input type="checkbox" id="inq-select-all" onchange="AdminCore.toggleSelectAllInquiries(this)" style="width:17px; height:17px; cursor:pointer;">
+                </th>
                 <th style="padding:12px 16px;">Tenant (Seeker)</th>
                 <th style="padding:12px 16px;">Target Landlord</th>
                 <th style="padding:12px 16px;">Property Listing</th>
                 <th style="padding:12px 16px;">Message</th>
                 <th style="padding:12px 16px;">Date & Time</th>
-                <th style="padding:12px 16px;">Actions</th>
+                <th style="padding:12px 16px; min-width:140px;">Actions</th>
               </tr>
             </thead>
             <tbody>
               ${inqs.map(i => {
                 const phone = i.phone || '';
                 const cleanPhone = phone.replace(/[^0-9]/g, '');
+                const isUnread = !i.isRead && !i.is_read;
                 return `
-                  <tr style="border-bottom:1px solid #f1f5f9; font-size:0.86rem;">
+                  <tr style="border-bottom:1px solid #f1f5f9; font-size:0.86rem; background:${isUnread ? '#f0fdf4' : 'transparent'};">
+                    <td style="padding:12px 10px; text-align:center;">
+                      <input type="checkbox" class="inq-row-cb" value="${i.id}" onchange="AdminCore.updateInqBulkBar()" style="width:17px; height:17px; cursor:pointer;">
+                    </td>
                     <td style="padding:12px 16px;">
                       <div style="font-weight:800; color:#0f172a;">${escapeHtml(i.name || 'Tenant')}</div>
                       ${phone ? `
@@ -2166,8 +2251,9 @@ const AdminCore = (() => {
                       <div style="font-weight:800; color:#0f172a; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(i.propertyTitle || 'General')}</div>
                       <small style="color:#64748b;"><i class="fas fa-map-marker-alt" style="color:#00b53f;"></i> ${escapeHtml(i.estateSuburb || 'Nairobi')}</small>
                     </td>
-                    <td style="padding:12px 16px; max-width:280px;">
+                    <td style="padding:12px 16px; max-width:280px; cursor:pointer;" onclick="AdminCore.viewInquiry('${i.id}')" title="Click to open full conversation thread">
                       <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:8px 12px; font-size:0.83rem; color:#1e293b; line-height:1.4;">
+                        ${isUnread ? '<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#00b53f; margin-right:5px;"></span>' : ''}
                         ${escapeHtml(i.message || '')}
                       </div>
                     </td>
@@ -2175,9 +2261,12 @@ const AdminCore = (() => {
                       ${formatDate(i.createdAt)}
                     </td>
                     <td style="padding:12px 16px;">
-                      <div style="display:flex; gap:6px;">
-                        <button class="btn-action btn-primary" onclick="AdminCore.viewInquiry('${i.id}')" title="Reply to Tenant" style="padding:6px 10px; font-size:0.8rem; border-radius:6px; background:#00b53f; color:white; border:none; cursor:pointer; font-weight:700;">
-                          <i class="fas fa-reply"></i> Reply
+                      <div style="display:flex; gap:6px; align-items:center;">
+                        <button class="btn-action btn-primary" onclick="AdminCore.viewInquiry('${i.id}')" title="Open Thread & Reply" style="padding:6px 10px; font-size:0.8rem; border-radius:6px; background:#00b53f; color:white; border:none; cursor:pointer; font-weight:700;">
+                          <i class="fas fa-comments"></i> Open
+                        </button>
+                        <button class="btn-action btn-delete" onclick="AdminCore.deleteInquiry('${i.id}')" title="Delete Message" style="padding:6px 10px; font-size:0.8rem; border-radius:6px; background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; cursor:pointer;">
+                          <i class="fas fa-trash-alt"></i>
                         </button>
                       </div>
                     </td>
@@ -2592,6 +2681,14 @@ const AdminCore = (() => {
 
   // View and reply to inquiry
   async function viewInquiry(id) {
+    // Mark as read automatically when opened
+    try {
+      fetch(`${API_BASE}/api/admin/inquiries/${id}/mark-read`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      }).catch(() => {});
+    } catch (_) {}
+
     const res = await fetch(`${API_BASE}/api/admin/inquiries`, {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
     });
@@ -2606,29 +2703,41 @@ const AdminCore = (() => {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
-      <div class="modal-content" style="max-width:600px;">
-        <div class="modal-header">
-          <h2><i class="fas fa-envelope"></i> Reply to Inquiry</h2>
+      <div class="modal-content" style="max-width:650px; border-radius:14px; overflow:hidden;">
+        <div class="modal-header" style="background:#0f172a; color:#fff; padding:16px 20px; display:flex; justify-content:space-between; align-items:center;">
+          <h2 style="font-size:1.1rem; margin:0; display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-comments" style="color:#00b53f;"></i> Tenant ↔ Landlord Conversation
+          </h2>
           <button class="modal-close" onclick="this.closest('.modal-overlay').remove()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="modal-body">
-          <div style="background:#f8fafc;padding:14px;border-radius:8px;margin-bottom:16px;">
-            <div style="font-weight:700;margin-bottom:8px;">From: ${escapeHtml(inquiry.name || 'Anonymous')}</div>
-            <div style="font-size:0.85rem;color:#64748b;margin-bottom:4px;">Phone: ${inquiry.phone || inquiry.email || '-'}</div>
-            <div style="font-size:0.85rem;color:#64748b;margin-bottom:8px;">Property: ${escapeHtml(inquiry.propertyTitle || 'General')}</div>
-            <div style="font-weight:600;margin-top:12px;">Message:</div>
-            <div style="margin-top:6px;">${escapeHtml(inquiry.message || '')}</div>
+        <div class="modal-body" style="padding:22px;">
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:10px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <div><strong>From:</strong> ${escapeHtml(inquiry.name || 'Anonymous Tenant')}</div>
+              <div style="color:#00b53f; font-weight:700;"><a href="tel:${inquiry.phone || ''}" style="color:inherit; text-decoration:none;"><i class="fas fa-phone-alt"></i> ${inquiry.phone || '-'}</a></div>
+            </div>
+            <div style="font-size:0.85rem; color:#64748b; margin-bottom:6px;"><strong>Target Landlord:</strong> ${escapeHtml(inquiry.recipientName || 'Landlord / Manager')}</div>
+            <div style="font-size:0.85rem; color:#64748b; margin-bottom:12px;"><strong>Property:</strong> ${escapeHtml(inquiry.propertyTitle || 'General')}</div>
+            <div style="font-weight:700; color:#0f172a; margin-bottom:6px;">Message Thread:</div>
+            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:12px; font-size:0.88rem; color:#1e293b; line-height:1.5;">
+              ${escapeHtml(inquiry.message || '')}
+            </div>
           </div>
           <div class="form-group">
-            <label>Your Reply *</label>
-            <textarea id="inquiry-reply-text" class="form-control" rows="5" placeholder="Type your reply here..."></textarea>
+            <label style="font-weight:700; color:#0f172a; margin-bottom:6px; display:block;">Admin Direct Reply / Concierge Assistance</label>
+            <textarea id="inquiry-reply-text" class="form-control" rows="4" placeholder="Type your reply to send via SMS / In-App Message to the seeker..."></textarea>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
-          <button class="btn-primary" onclick="AdminCore.sendInquiryReply('${id}')">
-            <i class="fas fa-paper-plane"></i> Send Reply
+        <div class="modal-footer" style="padding:14px 20px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+          <button class="btn-danger" onclick="AdminCore.deleteInquiry('${id}'); this.closest('.modal-overlay').remove();" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:700;">
+            <i class="fas fa-trash-alt"></i> Delete Message
           </button>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Close</button>
+            <button class="btn-primary" onclick="AdminCore.sendInquiryReply('${id}')" style="background:#00b53f; color:white; border:none; padding:8px 18px; border-radius:8px; font-weight:800; cursor:pointer;">
+              <i class="fas fa-paper-plane"></i> Send Reply
+            </button>
+          </div>
         </div>
       </div>
     `;
@@ -2655,7 +2764,7 @@ const AdminCore = (() => {
 
       if (!res.ok) throw new Error('Failed to send reply');
 
-      document.querySelector('.modal-overlay').remove();
+      document.querySelector('.modal-overlay')?.remove();
       showToast('Reply sent successfully!', 'success');
       await loadInquiriesModule();
     } catch (err) {
@@ -2682,6 +2791,257 @@ const AdminCore = (() => {
     }
   }
 
+  // --- PROPERTIES MULTI-SELECT & BULK ACTIONS ---
+  function toggleSelectAllProps(masterCb) {
+    document.querySelectorAll('.prop-row-cb').forEach(cb => cb.checked = masterCb.checked);
+    updatePropBulkBar();
+  }
+
+  function updatePropBulkBar() {
+    const cbs = document.querySelectorAll('.prop-row-cb:checked');
+    const bar = document.getElementById('prop-bulk-bar');
+    const cnt = document.getElementById('prop-selected-count');
+    if (!bar) return;
+    if (cbs.length > 0) {
+      bar.style.display = 'flex';
+      if (cnt) cnt.textContent = cbs.length;
+    } else {
+      bar.style.display = 'none';
+      const m = document.getElementById('prop-select-all');
+      if (m) m.checked = false;
+    }
+  }
+
+  async function bulkApproveProps() {
+    const cbs = Array.from(document.querySelectorAll('.prop-row-cb:checked'));
+    if (!cbs.length) return;
+    const propertyIds = cbs.map(cb => cb.value);
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/properties/bulk-approve`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ propertyIds })
+      });
+      const data = await res.json();
+      showToast(data.message || `Approved ${propertyIds.length} properties`, 'success');
+      await loadPropertiesModule('all');
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  async function bulkDeleteProps() {
+    const cbs = Array.from(document.querySelectorAll('.prop-row-cb:checked'));
+    if (!cbs.length) return;
+    const propertyIds = cbs.map(cb => cb.value);
+    if (!confirm(`⚠️ Delete ${propertyIds.length} properties permanently?`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/properties/bulk-delete`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ propertyIds })
+      });
+      const data = await res.json();
+      showToast(data.message || `Deleted ${propertyIds.length} properties`, 'success');
+      await loadPropertiesModule('all');
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  async function deleteProperty(id, title) {
+    if (!confirm(`⚠️ Delete Property\n\nAre you sure you want to permanently delete "${title || id}"?`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/properties/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      showToast('Property deleted successfully', 'success');
+      await loadPropertiesModule('all');
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  // --- INQUIRIES MULTI-SELECT & BULK ACTIONS ---
+  function toggleSelectAllInquiries(masterCb) {
+    document.querySelectorAll('.inq-row-cb').forEach(cb => cb.checked = masterCb.checked);
+    updateInqBulkBar();
+  }
+
+  function updateInqBulkBar() {
+    const cbs = document.querySelectorAll('.inq-row-cb:checked');
+    const bar = document.getElementById('inq-bulk-bar');
+    const cnt = document.getElementById('inq-selected-count');
+    if (!bar) return;
+    if (cbs.length > 0) {
+      bar.style.display = 'flex';
+      if (cnt) cnt.textContent = cbs.length;
+    } else {
+      bar.style.display = 'none';
+      const m = document.getElementById('inq-select-all');
+      if (m) m.checked = false;
+    }
+  }
+
+  async function bulkDeleteInquiries() {
+    const cbs = Array.from(document.querySelectorAll('.inq-row-cb:checked'));
+    if (!cbs.length) return;
+    const inquiryIds = cbs.map(cb => cb.value);
+    if (!confirm(`⚠️ Delete ${inquiryIds.length} inquiries permanently?`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/inquiries/bulk-delete`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inquiryIds })
+      });
+      const data = await res.json();
+      showToast(data.message || `Deleted ${inquiryIds.length} inquiries`, 'success');
+      await loadInquiriesModule();
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  // --- TRANSACTIONS MULTI-SELECT & ACTION POWERS ---
+  function toggleSelectAllTxns(masterCb) {
+    document.querySelectorAll('.txn-row-cb').forEach(cb => cb.checked = masterCb.checked);
+    updateTxnBulkBar();
+  }
+
+  function updateTxnBulkBar() {
+    const cbs = document.querySelectorAll('.txn-row-cb:checked');
+    const bar = document.getElementById('txn-bulk-bar');
+    const cnt = document.getElementById('txn-selected-count');
+    if (!bar) return;
+    if (cbs.length > 0) {
+      bar.style.display = 'flex';
+      if (cnt) cnt.textContent = cbs.length;
+    } else {
+      bar.style.display = 'none';
+      const m = document.getElementById('txn-select-all');
+      if (m) m.checked = false;
+    }
+  }
+
+  async function bulkConfirmTxns() {
+    const cbs = Array.from(document.querySelectorAll('.txn-row-cb:checked'));
+    if (!cbs.length) return;
+    const transactionIds = cbs.map(cb => cb.value);
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/transactions/bulk-confirm`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transactionIds })
+      });
+      const data = await res.json();
+      showToast(data.message || `Confirmed ${transactionIds.length} transactions`, 'success');
+      await loadFinanceModule();
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  async function bulkDeleteTxns() {
+    const cbs = Array.from(document.querySelectorAll('.txn-row-cb:checked'));
+    if (!cbs.length) return;
+    const transactionIds = cbs.map(cb => cb.value);
+    if (!confirm(`⚠️ Delete ${transactionIds.length} transactions permanently?`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/transactions/bulk-delete`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transactionIds })
+      });
+      const data = await res.json();
+      showToast(data.message || `Deleted ${transactionIds.length} transactions`, 'success');
+      await loadFinanceModule();
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  async function confirmTransaction(id) {
+    if (!confirm('Mark transaction as COMPLETED / Confirmed?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/transactions/${id}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'COMPLETED', note: 'Admin verified manual payment' })
+      });
+      const data = await res.json();
+      showToast('Transaction confirmed!', 'success');
+      await loadFinanceModule();
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  async function failTransaction(id) {
+    if (!confirm('Mark transaction as FAILED?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/transactions/${id}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'FAILED', note: 'Admin marked payment failed' })
+      });
+      const data = await res.json();
+      showToast('Transaction marked failed', 'success');
+      await loadFinanceModule();
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  async function deleteTransaction(id) {
+    if (!confirm('Delete this transaction record?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/transactions/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      showToast('Transaction deleted', 'success');
+      await loadFinanceModule();
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
+  async function viewTransactionReceipt(id) {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/transactions`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      const t = (data.transactions || []).find(x => x.id === id);
+      if (!t) return alert('Transaction not found');
+
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay';
+      modal.innerHTML = `
+        <div class="modal-content" style="max-width:550px; border-radius:14px; overflow:hidden;">
+          <div class="modal-header" style="background:#0f172a; color:#fff; padding:16px 20px; display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+              <i class="fas fa-receipt" style="color:#10b981;"></i> Transaction Receipt
+            </h3>
+            <button class="modal-close" style="background:transparent; border:none; color:#94a3b8; font-size:1.4rem; cursor:pointer;" onclick="this.closest('.modal-overlay').remove()">&times;</button>
+          </div>
+          <div class="modal-body" style="padding:22px; font-size:0.9rem;">
+            <div style="text-align:center; padding:18px 0; border-bottom:1.5px dashed #cbd5e1; margin-bottom:18px;">
+              <div style="font-size:0.8rem; font-weight:700; color:#64748b; text-transform:uppercase;">Amount Paid</div>
+              <div style="font-size:2rem; font-weight:900; color:#00b53f; margin-top:4px;">KSh ${Number(t.amount_kes || t.amount || 0).toLocaleString()}</div>
+              <div style="margin-top:6px;"><span class="status-badge status-${(t.status||'').toLowerCase()}">${t.status || 'PENDING'}</span></div>
+            </div>
+            <div style="display:grid; grid-template-columns:130px 1fr; gap:10px; line-height:1.5;">
+              <div style="font-weight:700; color:#64748b;">Receipt / Ref:</div>
+              <div style="font-weight:800; color:#0f172a; font-family:monospace;">${t.mpesa_receipt_number || t.mpesaReceipt || t.id}</div>
+              <div style="font-weight:700; color:#64748b;">Customer:</div>
+              <div>${escapeHtml(t.user_name || t.userName || 'Customer')} (${t.phone || '-'})</div>
+              <div style="font-weight:700; color:#64748b;">Service Type:</div>
+              <div style="font-weight:700; color:#4338ca;">${escapeHtml(t.type || 'Listing Fee')}</div>
+              <div style="font-weight:700; color:#64748b;">Date & Time:</div>
+              <div>${formatDate(t.created_at)}</div>
+              ${t.property_id ? `<div style="font-weight:700; color:#64748b;">Property:</div><div>#${t.property_id}</div>` : ''}
+              ${t.hunt_id ? `<div style="font-weight:700; color:#64748b;">House Hunt:</div><div>#${t.hunt_id}</div>` : ''}
+            </div>
+          </div>
+          <div class="modal-footer" style="padding:14px 20px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; justify-content:space-between;">
+            <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Close</button>
+            <div style="display:flex; gap:8px;">
+              <button class="btn-action btn-approve" onclick="AdminCore.confirmTransaction('${t.id}'); this.closest('.modal-overlay').remove();"><i class="fas fa-check"></i> Confirm</button>
+              <button class="btn-action btn-delete" onclick="AdminCore.deleteTransaction('${t.id}'); this.closest('.modal-overlay').remove();"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    } catch (e) { alert('Error: ' + e.message); }
+  }
+
   return {
     init,
     navigate,
@@ -2706,6 +3066,22 @@ const AdminCore = (() => {
     sendInquiryReply,
     deleteInquiry,
     loadInquiries: loadInquiriesModule,
+    toggleSelectAllProps,
+    updatePropBulkBar,
+    bulkApproveProps,
+    bulkDeleteProps,
+    deleteProperty,
+    toggleSelectAllInquiries,
+    updateInqBulkBar,
+    bulkDeleteInquiries,
+    toggleSelectAllTxns,
+    updateTxnBulkBar,
+    bulkConfirmTxns,
+    bulkDeleteTxns,
+    confirmTransaction,
+    failTransaction,
+    deleteTransaction,
+    viewTransactionReceipt,
     state
   };
 })();

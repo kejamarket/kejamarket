@@ -80,6 +80,18 @@ const AdminUsers = (() => {
     }
 
     usersContent.innerHTML = `
+      <div id="user-bulk-bar" style="display:none; background:#fef2f2; border:1.5px solid #ef4444; border-radius:10px; padding:12px 18px; margin-bottom:16px; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(239,68,68,0.15);">
+        <div style="font-weight:700; color:#991b1b; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-users-slash" style="font-size:1.1rem;"></i>
+          <span><span id="user-selected-count" style="font-size:1.1rem; font-weight:900;">0</span> user accounts selected</span>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-danger" onclick="AdminUsers.bulkDeleteUsers()" style="background:#dc2626; color:white; font-weight:800; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+            <i class="fas fa-trash-alt"></i> Delete Selected Accounts
+          </button>
+        </div>
+      </div>
+
       <div class="module-actions">
         <div class="search-bar">
           <i class="fas fa-search"></i>
@@ -99,31 +111,39 @@ const AdminUsers = (() => {
         <table class="admin-table">
           <thead>
             <tr>
+              <th style="width: 40px; text-align: center;">
+                <input type="checkbox" id="user-select-all" onchange="AdminUsers.toggleSelectAll(this)" style="width: 17px; height: 17px; cursor: pointer;">
+              </th>
               <th>User</th>
               <th>Contact</th>
               <th>Role</th>
               <th>Status</th>
               <th>Properties</th>
               <th>Joined</th>
-              <th>Actions</th>
+              <th style="min-width: 170px;">Actions</th>
             </tr>
           </thead>
           <tbody>
             ${users.map(user => `
               <tr>
+                <td style="text-align: center;">
+                  <input type="checkbox" class="user-row-cb" value="${user.id}" onchange="AdminUsers.updateBulkBar()" style="width: 17px; height: 17px; cursor: pointer;">
+                </td>
                 <td>
                   <div class="user-info" onclick="AdminUsers.viewUserDetail('${user.id}')" style="cursor: pointer;">
                     <div class="user-avatar" style="background: ${getRoleColor(user.role)}">${getInitials(user.name)}</div>
                     <div>
-                      <div class="user-name">${escapeHtml(user.name)}</div>
-                      <div class="user-id">#${user.id.slice(0, 8)}</div>
+                      <div class="user-name" style="font-weight: 700; color: #0f172a;">${escapeHtml(user.name)}</div>
+                      <div class="user-id" style="color: #64748b; font-size: 0.78rem;">#${user.id.slice(0, 8)}</div>
                     </div>
                   </div>
                 </td>
                 <td>
                   <div style="font-size: 0.85rem;">
-                    <div style="margin-bottom: 4px;">${user.email || '-'}</div>
-                    <div style="color: #64748b;">${user.phone}</div>
+                    <div style="margin-bottom: 4px; color: #334155;">${user.email || '-'}</div>
+                    <div style="color: #00b53f; font-weight: 700;">
+                      <a href="tel:${user.phone}" style="color:inherit; text-decoration:none;"><i class="fas fa-phone-alt"></i> ${user.phone}</a>
+                    </div>
                   </div>
                 </td>
                 <td><span class="badge badge-${user.role}">${formatRole(user.role)}</span></td>
@@ -131,8 +151,8 @@ const AdminUsers = (() => {
                 <td><span style="font-weight: 600;">${user.propertyCount || 0}</span></td>
                 <td style="font-size: 0.85rem; color: #64748b;">${formatDate(user.createdAt)}</td>
                 <td>
-                  <div class="action-buttons-group">
-                    <button class="btn-icon" onclick="AdminUsers.viewUserDetail('${user.id}')" title="View Details">
+                  <div class="action-buttons-group" style="display: flex; gap: 4px; align-items: center; flex-wrap: nowrap;">
+                    <button class="btn-icon" onclick="AdminUsers.viewUserDetail('${user.id}')" title="View Profile">
                       <i class="fas fa-eye"></i>
                     </button>
                     <button class="btn-icon" onclick="AdminUsers.editUser('${user.id}')" title="Edit">
@@ -140,14 +160,11 @@ const AdminUsers = (() => {
                     </button>
                     ${!user.isBanned ? `
                       <button class="btn-icon btn-warning" onclick="AdminUsers.showSuspendModal('${user.id}', '${escapeHtml(user.name)}')" title="Suspend">
-                        <i class="fas fa-ban"></i>
+                        <i class="fas fa-pause"></i>
                       </button>
                     ` : ''}
-                    <button class="btn-icon btn-danger" onclick="AdminUsers.showBanModal('${user.id}', '${escapeHtml(user.name)}')" title="${user.isBanned ? 'Unban' : 'Ban'}">
-                      <i class="fas fa-${user.isBanned ? 'check' : 'user-slash'}"></i>
-                    </button>
-                    <button class="btn-icon btn-danger" onclick="AdminUsers.showDeleteModal('${user.id}', '${escapeHtml(user.name)}')" title="Delete Permanently">
-                      <i class="fas fa-trash"></i>
+                    <button class="btn-icon btn-danger" onclick="AdminUsers.quickDeleteUser('${user.id}', '${escapeHtml(user.name)}')" title="Delete Account" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5;">
+                      <i class="fas fa-trash-alt"></i>
                     </button>
                   </div>
                 </td>
@@ -977,8 +994,85 @@ const AdminUsers = (() => {
   }
 
   function showToast(message, type = 'info') {
-    // Temporary alert - will be replaced with proper toast
-    alert(message);
+    if (window.showToast) {
+      window.showToast(message, type);
+    } else {
+      alert(message);
+    }
+  }
+
+  // Multi-Select & Bulk Actions for Users
+  function toggleSelectAll(masterCb) {
+    const cbs = document.querySelectorAll('.user-row-cb');
+    cbs.forEach(cb => cb.checked = masterCb.checked);
+    updateBulkBar();
+  }
+
+  function updateBulkBar() {
+    const cbs = document.querySelectorAll('.user-row-cb:checked');
+    const bulkBar = document.getElementById('user-bulk-bar');
+    const countEl = document.getElementById('user-selected-count');
+    if (!bulkBar) return;
+    if (cbs.length > 0) {
+      bulkBar.style.display = 'flex';
+      if (countEl) countEl.textContent = cbs.length;
+    } else {
+      bulkBar.style.display = 'none';
+      const masterCb = document.getElementById('user-select-all');
+      if (masterCb) masterCb.checked = false;
+    }
+  }
+
+  async function bulkDeleteUsers() {
+    const cbs = Array.from(document.querySelectorAll('.user-row-cb:checked'));
+    if (!cbs.length) return;
+    const userIds = cbs.map(cb => cb.value);
+    
+    if (!confirm(`⚠️ PERMANENT BULK DELETE\n\nAre you sure you want to permanently delete all ${userIds.length} selected user accounts?\n\nThis will remove their profiles, properties, inquiries, and all associated data.`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/users/bulk-delete`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userIds })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to delete users');
+
+      showToast(data.message || `Deleted ${userIds.length} users`, 'success');
+      await loadUsers();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  async function quickDeleteUser(userId, userName) {
+    if (!confirm(`⚠️ Delete User Account\n\nAre you sure you want to permanently delete "${userName}"?\n\nThis will remove all listings and data for this account.`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ reason: 'Admin direct deletion', deletedBy: 'admin' })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to delete user');
+
+      showToast(`User account deleted`, 'success');
+      await loadUsers();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
   }
 
   // Public API
@@ -997,7 +1091,11 @@ const AdminUsers = (() => {
     showDeleteModal,
     confirmDeleteUser,
     exportUsers,
-    showAddUserModal
+    showAddUserModal,
+    toggleSelectAll,
+    updateBulkBar,
+    bulkDeleteUsers,
+    quickDeleteUser
   };
 })();
 

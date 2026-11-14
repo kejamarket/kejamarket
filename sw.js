@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v100-tenant-roles-backbutton';
+const CACHE_NAME = 'kejamarket-v102-desktop-listings-fix-admin-enhancements';
 
 const STATIC_ASSETS = [
   '/',

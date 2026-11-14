@@ -96,12 +96,28 @@ const AdminHunts = (() => {
         <button class="btn-filter-pill" data-hunt-filter="COMPLETED" onclick="AdminHunts.filterHunts('COMPLETED')">Completed</button>
       </div>
 
+      <!-- Bulk Action Bar -->
+      <div id="hunt-bulk-bar" style="display:none; background:#ecfdf5; border:1.5px solid #059669; border-radius:10px; padding:12px 18px; margin-bottom:16px; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(5,150,105,0.12);">
+        <div style="font-weight:700; color:#065f46; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-tasks" style="font-size:1.1rem;"></i>
+          <span><span id="hunt-selected-count" style="font-size:1.1rem; font-weight:900;">0</span> house hunts selected</span>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-danger" onclick="AdminHunts.bulkDeleteHunts()" style="background:#dc2626; color:white; font-weight:800; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+            <i class="fas fa-trash-alt"></i> Delete Selected Hunts
+          </button>
+        </div>
+      </div>
+
       <!-- Table Container -->
       <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; overflow:hidden; box-shadow:0 4px 15px -3px rgba(0,0,0,0.05);">
         <div style="overflow-x:auto;">
           <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.88rem;">
             <thead>
               <tr style="background:#f8fafc; border-bottom:1.5px solid #e2e8f0; color:#475569; font-weight:800; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px;">
+                <th style="padding:14px 10px; width:40px; text-align:center;">
+                  <input type="checkbox" id="hunt-select-all" onchange="AdminHunts.toggleSelectAll(this)" style="width:17px; height:17px; cursor:pointer;">
+                </th>
                 <th style="padding:14px 18px;">Customer</th>
                 <th style="padding:14px 18px;">Locations & Budget</th>
                 <th style="padding:14px 18px;">Status</th>
@@ -177,7 +193,7 @@ const AdminHunts = (() => {
     if (!hunts.length) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="6" style="padding:36px; text-align:center; color:#64748b;">
+          <td colspan="7" style="padding:36px; text-align:center; color:#64748b;">
             <i class="fas fa-search-location" style="font-size:2rem; color:#cbd5e1; margin-bottom:8px;"></i>
             <div>No House Hunts matching this filter.</div>
           </td>
@@ -190,12 +206,17 @@ const AdminHunts = (() => {
       const locs = Array.isArray(h.preferredLocations) ? h.preferredLocations.join(', ') : (h.preferredLocations || 'Any');
       const budget = `KSh ${formatPrice(h.budgetMin)} – ${formatPrice(h.budgetMax)}`;
       const customer = h.customerName || h.customerId || 'Customer';
+      const cleanPhone = (h.customerPhone || '').replace(/[^0-9]/g, '');
       const phone = h.customerPhone ? `<a href="tel:${h.customerPhone}" style="color:#059669; text-decoration:none; font-weight:700;"><i class="fas fa-phone-alt"></i> +${h.customerPhone}</a>` : '—';
       const propsCount = h.propertiesFound || 0;
       const viewingsCount = h.viewingsArranged || 0;
+      const isPaid = h.paymentStatus === 'SUCCESS' || h.paymentStatus === 'PAID';
 
       return `
         <tr style="border-bottom:1px solid #f1f5f9; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+          <td style="padding:14px 10px; text-align:center;">
+            <input type="checkbox" class="hunt-row-cb" value="${h.id}" onchange="AdminHunts.updateBulkBar()" style="width:17px; height:17px; cursor:pointer;">
+          </td>
           <td style="padding:14px 18px;">
             <div style="font-weight:800; color:#0f172a;">${customer}</div>
             <div style="font-size:0.78rem; color:#64748b; margin-top:3px;">${phone}</div>
@@ -208,7 +229,7 @@ const AdminHunts = (() => {
           </td>
           <td style="padding:14px 18px;">
             ${getStatusBadge(h.status)}
-            ${h.paymentStatus === 'SUCCESS' ? '<span style="display:block; margin-top:4px; font-size:0.72rem; color:#059669; font-weight:700;"><i class="fas fa-check-circle"></i> Paid KSh 2,000</span>' : '<span style="display:block; margin-top:4px; font-size:0.72rem; color:#d97706; font-weight:700;">Unpaid</span>'}
+            ${isPaid ? '<span style="display:block; margin-top:4px; font-size:0.72rem; color:#059669; font-weight:700;"><i class="fas fa-check-circle"></i> Paid KSh 2,000</span>' : '<span style="display:block; margin-top:4px; font-size:0.72rem; color:#d97706; font-weight:700;">Payment Pending</span>'}
           </td>
           <td style="padding:14px 18px;">
             ${formatRemaining(h.timeRemainingMs)}
@@ -218,9 +239,24 @@ const AdminHunts = (() => {
             <div style="font-size:0.78rem; color:#d97706; font-weight:700;"><i class="fas fa-calendar-check"></i> ${viewingsCount} viewings</div>
           </td>
           <td style="padding:14px 18px; text-align:right;">
-            <button class="btn-primary" onclick="AdminHunts.openManageModal('${h.id}')" style="padding:7px 14px; font-size:0.82rem; font-weight:800; border-radius:8px; background:#0f172a; border:none; color:white; cursor:pointer;">
-              <i class="fas fa-tasks"></i> Manage
-            </button>
+            <div style="display:inline-flex; gap:6px; align-items:center; justify-content:flex-end;">
+              <button class="btn-primary" onclick="AdminHunts.openManageModal('${h.id}')" title="Manage Hunt & Assign Properties" style="padding:7px 12px; font-size:0.8rem; font-weight:800; border-radius:7px; background:#0f172a; border:none; color:white; cursor:pointer;">
+                <i class="fas fa-tasks"></i> Manage
+              </button>
+              ${!isPaid ? `
+                <button onclick="AdminHunts.activateHunt('${h.id}')" title="Activate 72h Search & Mark as Paid" style="padding:7px 10px; font-size:0.78rem; font-weight:800; border-radius:7px; background:#dcfce7; color:#15803d; border:1px solid #86efac; cursor:pointer;">
+                  <i class="fas fa-bolt"></i> Activate
+                </button>
+              ` : ''}
+              ${cleanPhone ? `
+                <a href="https://wa.me/${cleanPhone.startsWith('0') ? '254' + cleanPhone.slice(1) : cleanPhone}" target="_blank" title="WhatsApp Customer" style="padding:6px 9px; font-size:0.82rem; border-radius:7px; background:#25d366; color:white; text-decoration:none; display:inline-flex; align-items:center;">
+                  <i class="fab fa-whatsapp"></i>
+                </a>
+              ` : ''}
+              <button onclick="AdminHunts.deleteHunt('${h.id}')" title="Delete Hunt" style="padding:7px 10px; font-size:0.8rem; border-radius:7px; background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; cursor:pointer;">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
           </td>
         </tr>
       `;
@@ -525,6 +561,93 @@ const AdminHunts = (() => {
     }
   }
 
+  // Multi-Select & Bulk Actions for Hunts
+  function toggleSelectAll(masterCb) {
+    const cbs = document.querySelectorAll('.hunt-row-cb');
+    cbs.forEach(cb => cb.checked = masterCb.checked);
+    updateBulkBar();
+  }
+
+  function updateBulkBar() {
+    const cbs = document.querySelectorAll('.hunt-row-cb:checked');
+    const bulkBar = document.getElementById('hunt-bulk-bar');
+    const countEl = document.getElementById('hunt-selected-count');
+    if (!bulkBar) return;
+    if (cbs.length > 0) {
+      bulkBar.style.display = 'flex';
+      if (countEl) countEl.textContent = cbs.length;
+    } else {
+      bulkBar.style.display = 'none';
+      const masterCb = document.getElementById('hunt-select-all');
+      if (masterCb) masterCb.checked = false;
+    }
+  }
+
+  async function bulkDeleteHunts() {
+    const cbs = Array.from(document.querySelectorAll('.hunt-row-cb:checked'));
+    if (!cbs.length) return;
+    const huntIds = cbs.map(cb => cb.value);
+
+    if (!confirm(`⚠️ Delete ${huntIds.length} House Hunts?\n\nThis will permanently delete the selected hunt requests.`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/admin/house-hunts/bulk-delete', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${getToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ huntIds })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to delete hunts');
+      alert(data.message || 'Hunts deleted successfully');
+      await loadHouseHunts();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  async function activateHunt(huntId) {
+    if (!confirm('⚡ Activate 72-Hour Search?\n\nThis will mark the hunt as PAID and start the 72-hour countdown timer for ground concierge.')) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/admin/house-hunts/${huntId}/activate`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${getToken()}` }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to activate hunt');
+      alert(data.message || 'Hunt activated successfully!');
+      await loadHouseHunts();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  async function deleteHunt(huntId) {
+    if (!confirm('⚠️ Delete House Hunt?\n\nAre you sure you want to permanently delete this house hunt request?')) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/admin/house-hunts/${huntId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${getToken()}` }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to delete hunt');
+      alert(data.message || 'Hunt deleted successfully');
+      await loadHouseHunts();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
   return {
     loadHouseHunts,
     filterHunts,
@@ -533,7 +656,12 @@ const AdminHunts = (() => {
     attachProperty,
     updatePropStatus,
     removeProp,
-    sendMessage
+    sendMessage,
+    toggleSelectAll,
+    updateBulkBar,
+    bulkDeleteHunts,
+    activateHunt,
+    deleteHunt
   };
 })();
 

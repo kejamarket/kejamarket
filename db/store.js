@@ -414,6 +414,15 @@ class Store {
     return true;
   }
 
+  deleteHouseHunt(id) {
+    if (!this.data.houseHunts) return false;
+    const index = this.data.houseHunts.findIndex(h => h.id === id);
+    if (index === -1) return false;
+    this.data.houseHunts.splice(index, 1);
+    this.save();
+    return true;
+  }
+
   boostProperty(propertyId, boostType = 'top_ad') {
     const prop = this.getPropertyById(propertyId);
     if (prop) {

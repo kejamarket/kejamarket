@@ -2068,6 +2068,10 @@ class NairobiRentalsApp {
     const beds = p.bedrooms ?? 1;
     const baths = p.bathrooms ?? 1;
 
+    // Contact WhatsApp / Phone
+    const rawPhone = p.landlord?.whatsapp || p.landlord?.phone || p.landlordPhone || p.owner_phone || p.contactPhone || p.phone || '0792409540';
+    const cleanWa = String(rawPhone).replace(/\D/g, '').replace(/^0/, '254');
+
     // Category badge color & icon mapping matching Desktop Reference Screenshot
     let badgeColor = p.badgeColor || '#1db010';
     let badgeLabel = p.badgeLabel || p.category || 'Apartment';

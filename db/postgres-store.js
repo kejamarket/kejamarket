@@ -1655,6 +1655,19 @@ class PostgreSQLStore {
     return r;
   }
 
+  async deleteHouseHunt(id) {
+    if (!this.isConnected) {
+      if (this.fallbackStore && typeof this.fallbackStore.deleteHouseHunt === 'function') {
+        return this.fallbackStore.deleteHouseHunt(id);
+      }
+      return false;
+    }
+    await this.query('DELETE FROM house_hunt_properties WHERE hunt_id = $1', [id]);
+    await this.query('DELETE FROM messages WHERE house_hunt_id = $1', [id]);
+    const r = await this.query('DELETE FROM house_hunts WHERE id = $1', [id]);
+    return r.rowCount > 0;
+  }
+
   async saveHuntMessage(msg) {
     if (!this.isConnected) return this.saveMessage({ ...msg, huntId: msg.huntId });
     const id = 'msg-hh-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
