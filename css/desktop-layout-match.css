@@ -353,3 +353,5 @@
   }
   
 }
+/* Force hide total count */
+#results-count-num, .results-count-text, .results-number { display: none !important; }

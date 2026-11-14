@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v106-footer-logo-redesign';
+const CACHE_NAME = 'kejamarket-v107-toolbar-redesign-no-count';
 
 const STATIC_ASSETS = [
   '/',
