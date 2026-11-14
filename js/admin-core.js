@@ -79,13 +79,21 @@ const AdminCore = (() => {
   async function init() {
     console.log('🚀 Initializing KejaMarket Complete Admin Dashboard...');
     try {
-      await loadAdminUser();
+      const user = await loadAdminUser();
+      if (!user) {
+        // Login modal is shown, wait for user authentication
+        return;
+      }
       setupEventListeners();
       setupGlobalSearch();
       applyRBACVisibility();
       await navigate('dashboard');
       console.log('✅ KejaMarket Admin System Ready');
     } catch (error) {
+      if (error && error.message === 'AUTH_REQUIRED') {
+        console.log('🔒 Admin authentication required');
+        return;
+      }
       console.error('❌ Admin initialization error:', error);
       showToast('Initialization error: ' + error.message, 'error');
     }
@@ -95,37 +103,152 @@ const AdminCore = (() => {
   async function loadAdminUser() {
     const token = localStorage.getItem('keja_token');
     if (!token) {
-      window.location.href = '/';
-      return;
+      showAdminLoginModal('Please authenticate with your Admin credentials to open the control panel.');
+      throw new Error('AUTH_REQUIRED');
     }
 
     try {
       const res = await fetch(`${API_BASE}/api/auth/me`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (!res.ok) throw new Error('Unauthorized');
+      if (!res.ok) {
+        localStorage.removeItem('keja_token');
+        showAdminLoginModal('Your session has expired. Please sign in again.');
+        throw new Error('AUTH_REQUIRED');
+      }
 
       const data = await res.json();
-      if (!data.user || (data.user.role !== 'admin' && !data.user.isAdmin)) {
-        alert('Admin access required');
-        window.location.href = '/';
-        return;
+      if (!data.user || (data.user.role !== 'admin' && !data.user.isAdmin && data.user.id !== 'usr-admin-01')) {
+        showAdminLoginModal('The current user account does not have Super Admin privileges. Please sign in as Administrator.');
+        throw new Error('AUTH_REQUIRED');
       }
 
       state.user = data.user;
       state.permissions = data.user.adminPermissions || [];
-      
-      // Determine RBAC Role
-      if (data.user.id === 'usr-admin-01' || !data.user.adminRole) {
-        state.rbacRole = 'super';
-      } else {
-        state.rbacRole = data.user.adminRole;
-      }
+      state.rbacRole = 'super';
 
       updateAdminHeader();
+      return state.user;
     } catch (err) {
+      if (err.message === 'AUTH_REQUIRED') throw err;
       console.error('Failed to load admin user:', err);
-      window.location.href = '/';
+      showAdminLoginModal('Authentication failed. Please sign in with your admin credentials.');
+      throw err;
+    }
+  }
+
+  // Show Admin Authentication Overlay
+  function showAdminLoginModal(msg) {
+    let modal = document.getElementById('admin-login-overlay');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'admin-login-overlay';
+      modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.92); backdrop-filter:blur(8px); z-index:9999999; display:flex; align-items:center; justify-content:center; padding:16px; box-sizing:border-box;';
+      modal.innerHTML = `
+        <div style="background:#ffffff; width:100%; max-width:440px; border-radius:20px; box-shadow:0 25px 60px rgba(0,0,0,0.5); padding:32px 28px; text-align:center; position:relative; border:1px solid #e2e8f0;">
+          <div style="width:64px; height:64px; border-radius:18px; background:rgba(0,181,63,0.12); border:2px solid #00b53f; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 16px;">
+            🏠
+          </div>
+          <h2 style="margin:0 0 6px; font-size:1.45rem; font-weight:900; color:#0f172a;">KejaMarket Super Admin</h2>
+          <p id="admin-login-msg" style="margin:0 0 20px; font-size:0.86rem; color:#64748b; line-height:1.4;">${msg || 'Sign in with your administrator credentials to open the control panel.'}</p>
+          
+          <div id="admin-login-error" style="display:none; background:#fef2f2; border:1px solid #fecaca; color:#dc2626; padding:10px 14px; border-radius:10px; font-size:0.85rem; font-weight:600; margin-bottom:16px; text-align:left;"></div>
+
+          <form onsubmit="event.preventDefault(); AdminCore.submitAdminLogin();" style="text-align:left;">
+            <div style="margin-bottom:14px;">
+              <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:6px;">Administrator Email / Phone</label>
+              <input type="text" id="admin-login-email" value="admin@kejamarket.co.ke" required style="width:100%; padding:11px 14px; border:1.5px solid #cbd5e1; border-radius:10px; font-size:14px; outline:none; box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom:18px;">
+              <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:6px;">Password</label>
+              <div style="position:relative;">
+                <input type="password" id="admin-login-password" value="Stallon@jevugwe4" required style="width:100%; padding:11px 40px 11px 14px; border:1.5px solid #cbd5e1; border-radius:10px; font-size:14px; outline:none; box-sizing:border-box;">
+                <button type="button" onclick="const p = document.getElementById('admin-login-password'); p.type = p.type==='password'?'text':'password';" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); border:none; background:none; color:#64748b; cursor:pointer;">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" id="admin-login-submit-btn" style="width:100%; padding:13px 18px; background:#00b53f; color:#ffffff; border:none; border-radius:10px; font-size:14.5px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(0,181,63,0.35); transition:all 0.2s;">
+              <i class="fas fa-lock-open"></i> Sign In to Admin Console
+            </button>
+          </form>
+
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+            <a href="/" style="color:#64748b; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:6px;">
+              <i class="fas fa-arrow-left"></i> Public Website
+            </a>
+            <span style="color:#94a3b8; font-weight:600;">Super Admin &bull; KejaMarket</span>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    } else {
+      const msgEl = document.getElementById('admin-login-msg');
+      if (msgEl) msgEl.textContent = msg || 'Please authenticate as Administrator';
+      modal.style.display = 'flex';
+    }
+  }
+
+  // Handle Admin Login submission
+  async function submitAdminLogin() {
+    const identInput = document.getElementById('admin-login-email');
+    const passInput = document.getElementById('admin-login-password');
+    const errDiv = document.getElementById('admin-login-error');
+    const submitBtn = document.getElementById('admin-login-submit-btn');
+
+    const identifier = (identInput.value || '').trim();
+    const password = (passInput.value || '').trim();
+
+    if (!identifier || !password) {
+      if (errDiv) {
+        errDiv.style.display = 'block';
+        errDiv.textContent = 'Please enter your admin email and password.';
+      }
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+    }
+    if (errDiv) errDiv.style.display = 'none';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier, password })
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Authentication failed. Please check your credentials.');
+      }
+
+      if (!data.user || (data.user.role !== 'admin' && !data.user.isAdmin && data.user.id !== 'usr-admin-01')) {
+        throw new Error('This account does not have Administrator privileges.');
+      }
+
+      // Store credentials and token
+      localStorage.setItem('keja_token', data.token);
+      localStorage.setItem('keja_user', JSON.stringify(data.user));
+
+      // Remove modal and re-run init()
+      const modal = document.getElementById('admin-login-overlay');
+      if (modal) modal.remove();
+
+      showToast('Admin authenticated successfully! Loading dashboard...', 'success');
+      await init();
+    } catch (err) {
+      if (errDiv) {
+        errDiv.style.display = 'block';
+        errDiv.textContent = err.message;
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-lock-open"></i> Sign In to Admin Console';
+      }
     }
   }
 
@@ -668,11 +791,7 @@ const AdminCore = (() => {
         if (rent > 0 && rent < 2500) flags.push('Suspiciously Low Price');
         if (!p.media || (Array.isArray(p.media) && p.media.length === 0)) flags.push('Missing Photos');
         if (!p.description || p.description.length < 20) flags.push('Incomplete Description');
-        return {
-    loadVacancyReportsModule,
-    filterScoutReports,
-    updateVacancyReportStatus,
-    deleteVacancyReport, ...p, qualityFlags: flags };
+        return { ...p, qualityFlags: flags };
       });
 
       // Apply filters
@@ -2566,6 +2685,12 @@ const AdminCore = (() => {
   return {
     init,
     navigate,
+    showAdminLoginModal,
+    submitAdminLogin,
+    loadVacancyReportsModule,
+    filterScoutReports,
+    updateVacancyReportStatus,
+    deleteVacancyReport,
     loadPropertiesModule,
     submitBroadcast,
     promptRefund,

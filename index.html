@@ -947,327 +947,274 @@
         </button>
       </div>
 
-      <!-- Desktop Feature Cards Strip - Service Banners -->
+            <!-- Desktop Feature Cards Strip - Circular Card Style -->
       <div class="keja-feature-strip desktop-only-feature-strip">
-        
-        <!-- Banner 1: 3-Day Smart House Hunt -->
-        <div class="service-banner service-banner-green" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
-          <div class="service-banner-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 3L4 9V21H20V9L12 3Z" fill="white"/>
-            </svg>
+
+        <!-- Card 1: 3-Day Smart House Hunt -->
+        <div class="km-feature-card km-feat-hunt" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
+          <div class="km-feat-circle km-feat-circle-green">
+            <i class="fas fa-search-location"></i>
           </div>
-          <div class="service-banner-content">
-            <h3 class="service-banner-title">3-Day Smart House Hunt</h3>
-            <p class="service-banner-text">Can't find a house? Let our verified ground team inspect & match results in 72 hours</p>
-            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openHouseHuntModal && app.openHouseHuntModal()">Start Hunt &rarr;</button>
+          <div class="km-feat-body">
+            <div class="km-feat-title">3-Day Smart Hunt</div>
+            <div class="km-feat-sub">Ground team finds you a home in 72 hours</div>
+            <span class="km-feat-pill km-feat-pill-green">Start Hunt &rarr;</span>
           </div>
-          <div class="service-banner-image">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=180&h=120&fit=crop&crop=faces" alt="Professional woman" />
-          </div>
+          <div class="km-feat-corner-emoji">&#127968;</div>
         </div>
 
-        <!-- Banner 2: What Can I Afford? -->
-        <div class="service-banner service-banner-purple" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
-          <div class="service-banner-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="7" width="18" height="11" rx="2" stroke="white" stroke-width="2" fill="none"/>
-              <line x1="3" y1="11" x2="21" y2="11" stroke="white" stroke-width="2"/>
-            </svg>
+        <!-- Card 2: What Can I Afford? -->
+        <div class="km-feature-card km-feat-afford" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
+          <div class="km-feat-circle km-feat-circle-purple">
+            <i class="fas fa-calculator"></i>
           </div>
-          <div class="service-banner-content">
-            <h3 class="service-banner-title">What Can I Afford?</h3>
-            <p class="service-banner-text">Avoid rent stress. Calculate your safe rent income instantly.</p>
-            <button class="service-banner-btn" onclick="event.stopPropagation(); app.openAffordabilityCalculator && app.openAffordabilityCalculator()">Calculate &rarr;</button>
+          <div class="km-feat-body">
+            <div class="km-feat-title">What Can I Afford?</div>
+            <div class="km-feat-sub">Know your safe rent based on income</div>
+            <span class="km-feat-pill km-feat-pill-purple">Calculate &rarr;</span>
           </div>
-          <div class="service-banner-image">
-            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=180&h=120&fit=crop" alt="Houses with calculator" />
-          </div>
+          <div class="km-feat-corner-emoji">&#128176;</div>
         </div>
 
-        <!-- Banner 3: Instant Vacancy Alerts -->
-        <div class="service-banner service-banner-pink" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()" role="button" tabindex="0">
-          <div class="service-banner-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C10.9 2 10 2.9 10 4V4.29C7.03 5.17 5 7.9 5 11V17L3 19V20H21V19L19 17V11C19 7.9 16.97 5.17 14 4.29V4C14 2.9 13.1 2 12 2Z" fill="white"/>
-              <path d="M12 23C13.1 23 14 22.1 14 21H10C10 22.1 10.9 23 12 23Z" fill="white"/>
-            </svg>
+        <!-- Card 3: Instant Vacancy Alerts -->
+        <div class="km-feature-card km-feat-alerts" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()" role="button" tabindex="0">
+          <div class="km-feat-circle km-feat-circle-whatsapp">
+            <i class="fab fa-whatsapp"></i>
           </div>
-          <div class="service-banner-content">
-            <h3 class="service-banner-title">Instant Vacancy Alerts</h3>
-            <p class="service-banner-text">Hot rentals in Ruaka, Roysambu & Kilimani get taken fast. Get an instant SMS or WhatsApp alert</p>
-            <button class="service-banner-btn" onclick="event.stopPropagation(); openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()">Get Alerts &rarr;</button>
+          <div class="km-feat-body">
+            <div class="km-feat-title">Vacancy Alerts</div>
+            <div class="km-feat-sub">Instant SMS/WhatsApp when units open up</div>
+            <span class="km-feat-pill km-feat-pill-whatsapp">Get Alerts &rarr;</span>
           </div>
-          <div class="service-banner-image">
-            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=180&h=120&fit=crop" alt="WhatsApp on phone" />
-          </div>
+          <div class="km-feat-corner-emoji">&#128276;</div>
         </div>
 
       </div>
 
-      <!-- Service Banners Styles -->
+      <!-- Feature Cards Circular Styles -->
       <style>
         .keja-feature-strip {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 10px;
-          margin-bottom: 20px;
+          margin-bottom: 16px;
           padding: 0 16px;
         }
-
-        .service-banner {
+        .km-feature-card {
           display: flex;
           align-items: center;
-          gap: 10px;
-          padding: 10px 12px;
-          border-radius: 8px;
+          gap: 12px;
+          padding: 12px 14px;
+          border-radius: 18px;
           position: relative;
           overflow: hidden;
-          transition: transform 0.3s, box-shadow 0.3s;
+          transition: transform 0.2s, box-shadow 0.2s;
           cursor: pointer;
-          min-height: 75px;
+          min-height: 72px;
+          border: 1.5px solid transparent;
         }
-
-        .service-banner:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        .km-feature-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.13);
         }
+        .km-feat-hunt   { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-color: #6ee7b7; }
+        .km-feat-afford { background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); border-color: #c4b5fd; }
+        .km-feat-alerts { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: #86efac; }
 
-        .service-banner-green {
-          background: linear-gradient(135deg, #d4f4dd 0%, #a7f3d0 100%);
-        }
-
-        .service-banner-purple {
-          background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
-        }
-
-        .service-banner-pink {
-          background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-        }
-
-        .service-banner-icon {
-          width: 36px;
-          height: 36px;
-          border-radius: 7px;
+        .km-feat-circle {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
+          font-size: 20px;
           flex-shrink: 0;
+          box-shadow: 0 4px 14px rgba(0,0,0,0.18);
         }
+        .km-feat-circle-green    { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .km-feat-circle-purple   { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .km-feat-circle-whatsapp { background: linear-gradient(135deg, #25d366, #128c7e); color: white; }
 
-        .service-banner-green .service-banner-icon {
-          background: #10b981;
+        .km-feat-body { flex: 1; min-width: 0; }
+        .km-feat-title { font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 2px; line-height: 1.2; }
+        .km-feat-sub   { font-size: 0.63rem; color: #475569; line-height: 1.3; margin-bottom: 6px;
+                         display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .km-feat-pill  {
+          display: inline-block; padding: 3px 10px; border-radius: 20px;
+          font-size: 0.6rem; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase;
         }
+        .km-feat-pill-green    { background: #10b981; color: white; }
+        .km-feat-pill-purple   { background: #8b5cf6; color: white; }
+        .km-feat-pill-whatsapp { background: #25d366; color: white; }
 
-        .service-banner-purple .service-banner-icon {
-          background: #8b5cf6;
+        .km-feat-corner-emoji {
+          position: absolute; bottom: 6px; right: 10px;
+          font-size: 26px; opacity: 0.16; line-height: 1; pointer-events: none;
         }
-
-        .service-banner-pink .service-banner-icon {
-          background: #ec4899;
-        }
-
-        .service-banner-icon svg {
-          width: 18px;
-          height: 18px;
-        }
-
-        .service-banner-content {
-          flex: 1;
-          min-width: 0;
-        }
-
-        .service-banner-title {
-          font-size: 0.85rem;
-          font-weight: 700;
-          color: #1f2937;
-          margin: 0 0 3px 0;
-          line-height: 1.2;
-        }
-
-        .service-banner-text {
-          font-size: 0.65rem;
-          color: #4b5563;
-          margin: 0 0 6px 0;
-          line-height: 1.3;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-
-        .service-banner-btn {
-          padding: 4px 10px;
-          border: none;
-          border-radius: 4px;
-          font-size: 0.65rem;
-          font-weight: 600;
-          color: #ffffff;
-          cursor: pointer;
-          transition: all 0.2s;
-          display: inline-block;
-        }
-
-        .service-banner-green .service-banner-btn {
-          background: #10b981;
-        }
-
-        .service-banner-green .service-banner-btn:hover {
-          background: #059669;
-        }
-
-        .service-banner-purple .service-banner-btn {
-          background: #8b5cf6;
-        }
-
-        .service-banner-purple .service-banner-btn:hover {
-          background: #7c3aed;
-        }
-
-        .service-banner-pink .service-banner-btn {
-          background: #ec4899;
-        }
-
-        .service-banner-pink .service-banner-btn:hover {
-          background: #db2777;
-        }
-
-        .service-banner-image {
-          width: 80px;
-          height: 60px;
-          flex-shrink: 0;
-          border-radius: 5px;
-          overflow: hidden;
-        }
-
-        .service-banner-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        @media (max-width: 1200px) {
-          .keja-feature-strip {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-
-        @media (max-width: 768px) {
-          .keja-feature-strip {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            padding: 0 12px;
-          }
-
-          .service-banner {
-            padding: 8px 10px;
-            gap: 8px;
-          }
-
-          .service-banner-icon {
-            width: 32px;
-            height: 32px;
-          }
-
-          .service-banner-title {
-            font-size: 0.8rem;
-          }
-
-          .service-banner-text {
-            font-size: 0.6rem;
-          }
-
-          .service-banner-image {
-            width: 70px;
-            height: 55px;
-          }
-        }
+        @media (max-width: 1100px) { .keja-feature-strip { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 700px)  { .keja-feature-strip { grid-template-columns: 1fr; gap: 8px; padding: 0 12px; } }
       </style>
-
 
       <!-- Results Header & View Controls (Matches reference image exactly) -->
       <!-- Desktop Modern App-Style Discovery Bar (Matching Mobile App Quality) -->
       <div class="desktop-discovery-header" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px 20px 14px; margin-bottom: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
         
-        <!-- Category Story Bubbles (Exact Mobile App Design) -->
-        <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 12px;">
-          <div class="km-desk-story-scroll" style="display:flex; align-items:flex-start; gap:16px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;">
-            <button type="button" class="km-story-bubble active" onclick="app.filterCategory('all', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-all" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e8f8ee; color:#006818; box-shadow: 0 0 0 2.5px #006818, 0 4px 12px rgba(0,104,24,0.35);"><i class="fas fa-border-all"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:900; color:#006818; margin-top:6px; text-align:center;">All</span>
-            </button>
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('Single Room', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-single" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e0f2fe; color:#0284c7;"><i class="fas fa-door-closed"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Single Room</span>
-            </button>
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('Double Room', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-double" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#ffedd5; color:#ea580c;"><i class="fas fa-person-booth"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Double Room</span>
-            </button>
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('Bedsitter', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-bedsitters" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e8f8ee; color:#1db010;"><i class="fas fa-bed"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Bedsitters</span>
-            </button>
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('1 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-1bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#ecfdf5; color:#10b981;"><i class="fas fa-door-open"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">1 Bed</span>
-            </button>
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('2 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-2bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fef2f2; color:#ef4444;"><i class="fas fa-home"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">2 Beds</span>
-            </button>
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('3 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-3bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#f5f3ff; color:#8b5cf6;"><i class="fas fa-building"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">3+ Beds</span>
-            </button>
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('Apartment', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-apartments" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fffbeb; color:#f59e0b;"><i class="fas fa-city"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Apartments</span>
-            </button>
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('BnB', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-bnb" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#faf5ff; color:#a855f7;"><i class="fas fa-key"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">BnB / Stays</span>
-            </button>
+        <!-- 3 Main Category Tabs: Rentals | Services | Used Items | Land -->
+        <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 14px;">
 
-            <button type="button" class="km-story-bubble" onclick="app.filterCategory('Marketplace', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-              <div class="km-story-icon-ring km-cat-marketplace" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fff7ed; color:#ea580c;"><i class="fas fa-couch"></i></div>
-              <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Used Items</span>
+          <!-- Main 4 category tabs -->
+          <div class="km-main-tabs" id="km-main-category-tabs" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+            <button class="km-main-tab km-tab-active" onclick="kmSwitchMainTab('rentals', this)" style="">
+              <i class="fas fa-building"></i> Rentals
+            </button>
+            <button class="km-main-tab" onclick="kmSwitchMainTab('services', this)" style="">
+              <i class="fas fa-tools"></i> Services
+            </button>
+            <button class="km-main-tab" onclick="kmSwitchMainTab('useditems', this)" style="">
+              <i class="fas fa-couch"></i> Used Items
+            </button>
+            <button class="km-main-tab" onclick="kmSwitchMainTab('land', this)" style="">
+              <i class="fas fa-tree"></i> Land
             </button>
           </div>
+
+          <style>
+            .km-main-tab {
+              display: inline-flex; align-items: center; gap: 7px;
+              padding: 8px 18px; border-radius: 50px;
+              font-size: 0.84rem; font-weight: 800; cursor: pointer;
+              border: 2px solid #e2e8f0; background: #fff; color: #475569;
+              transition: all 0.2s; white-space: nowrap;
+            }
+            .km-main-tab:hover { border-color: #00b53f; color: #00b53f; }
+            .km-main-tab.km-tab-active { background: #00b53f; border-color: #00b53f; color: #fff; box-shadow: 0 4px 14px rgba(0,181,63,0.3); }
+            .km-tab-panel { display: none; }
+            .km-tab-panel.km-panel-active { display: block; }
+          </style>
+
+          <!-- RENTALS sub-bubbles -->
+          <div class="km-tab-panel km-panel-active" id="km-panel-rentals">
+            <div class="km-desk-story-scroll" style="display:flex; align-items:flex-start; gap:16px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;">
+              <button type="button" class="km-story-bubble active" onclick="app.filterCategory('all', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-all" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e8f8ee; color:#006818; box-shadow: 0 0 0 2.5px #006818, 0 4px 12px rgba(0,104,24,0.35);"><i class="fas fa-border-all"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:900; color:#006818; margin-top:6px; text-align:center;">All</span>
+              </button>
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Single Room', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-single" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e0f2fe; color:#0284c7;"><i class="fas fa-door-closed"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Single Room</span>
+              </button>
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Double Room', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-double" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#ffedd5; color:#ea580c;"><i class="fas fa-person-booth"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Double Room</span>
+              </button>
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Bedsitter', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-bedsitters" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e8f8ee; color:#1db010;"><i class="fas fa-bed"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Bedsitters</span>
+              </button>
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('1 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-1bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#ecfdf5; color:#10b981;"><i class="fas fa-door-open"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">1 Bed</span>
+              </button>
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('2 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-2bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fef2f2; color:#ef4444;"><i class="fas fa-home"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">2 Beds</span>
+              </button>
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('3 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-3bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#f5f3ff; color:#8b5cf6;"><i class="fas fa-building"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">3+ Beds</span>
+              </button>
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Apartment', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-apartments" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fffbeb; color:#f59e0b;"><i class="fas fa-city"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Apartments</span>
+              </button>
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('BnB', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div class="km-story-icon-ring km-cat-bnb" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#faf5ff; color:#a855f7;"><i class="fas fa-key"></i></div>
+                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">BnB / Stays</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- SERVICES panel (Movers, WiFi, Cleaning, Repairs) -->
+          <div class="km-tab-panel" id="km-panel-services">
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin:4px 0;">
+              <div class="km-service-tile" onclick="app.openModal('modal-lead-movers')" style="background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:12px 8px 10px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all 0.2s;">
+                <div style="width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; background:#ffedd5; color:#ea580c; margin-bottom:7px; box-shadow:0 3px 10px rgba(234,88,12,0.2);">
+                  <i class="fas fa-truck-moving"></i>
+                </div>
+                <span style="font-size:12.5px; font-weight:800; color:#1e293b; margin-bottom:3px;">Movers</span>
+                <span style="font-size:9px; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:5px; background:#fff7ed; color:#c2410c;">QUOTES</span>
+              </div>
+              <div class="km-service-tile" onclick="app.openModal('modal-lead-fibre')" style="background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:12px 8px 10px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all 0.2s;">
+                <div style="width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; background:#e0f2fe; color:#0284c7; margin-bottom:7px; box-shadow:0 3px 10px rgba(2,132,199,0.2);">
+                  <i class="fas fa-wifi"></i>
+                </div>
+                <span style="font-size:12.5px; font-weight:800; color:#1e293b; margin-bottom:3px;">WiFi / Fibre</span>
+                <span style="font-size:9px; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:5px; background:#f0f9ff; color:#0369a1;">SETUP</span>
+              </div>
+              <div class="km-service-tile" onclick="app.openModal('modal-lead-cleaning')" style="background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:12px 8px 10px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all 0.2s;">
+                <div style="width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; background:#fdf4ff; color:#a21caf; margin-bottom:7px; box-shadow:0 3px 10px rgba(162,28,175,0.2);">
+                  <i class="fas fa-broom"></i>
+                </div>
+                <span style="font-size:12.5px; font-weight:800; color:#1e293b; margin-bottom:3px;">Cleaning</span>
+                <span style="font-size:9px; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:5px; background:#fdf4ff; color:#a21caf;">HYGIENE</span>
+              </div>
+              <div class="km-service-tile" onclick="app.openModal('modal-lead-repairs')" style="background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:12px 8px 10px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all 0.2s;">
+                <div style="width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; background:#fefce8; color:#a16207; margin-bottom:7px; box-shadow:0 3px 10px rgba(161,98,7,0.2);">
+                  <i class="fas fa-tools"></i>
+                </div>
+                <span style="font-size:12.5px; font-weight:800; color:#1e293b; margin-bottom:3px;">Repairs</span>
+                <span style="font-size:9px; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:5px; background:#fefce8; color:#a16207;">HANDYMAN</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- USED ITEMS panel -->
+          <div class="km-tab-panel" id="km-panel-useditems">
+            <div style="display:flex; align-items:center; gap:14px; padding:8px 0;">
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Marketplace', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fff7ed; color:#ea580c; box-shadow:0 0 0 2.5px #ea580c;"><i class="fas fa-couch"></i></div>
+                <span style="font-size:11.5px; font-weight:800; color:#ea580c; margin-top:6px; text-align:center;">All Items</span>
+              </button>
+              <div style="font-size:13px; color:#475569; line-height:1.5;">
+                <div style="font-weight:700; color:#0f172a; margin-bottom:2px;">Moving Sale &amp; Used Items</div>
+                <div style="font-size:12px;">Furniture, appliances, electronics &amp; more from tenants moving out.</div>
+                <button onclick="app.filterCategory('Marketplace', null)" style="margin-top:6px; padding:5px 14px; background:#ea580c; color:#fff; border:none; border-radius:20px; font-size:11px; font-weight:800; cursor:pointer;">Browse Items &rarr;</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- LAND panel -->
+          <div class="km-tab-panel" id="km-panel-land">
+            <div style="display:flex; align-items:center; gap:14px; padding:8px 0;">
+              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Land', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
+                <div style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#f0fdf4; color:#15803d; box-shadow:0 0 0 2.5px #15803d;"><i class="fas fa-tree"></i></div>
+                <span style="font-size:11.5px; font-weight:800; color:#15803d; margin-top:6px; text-align:center;">All Land</span>
+              </button>
+              <div style="font-size:13px; color:#475569; line-height:1.5;">
+                <div style="font-weight:700; color:#0f172a; margin-bottom:2px;">Land for Sale &amp; Development</div>
+                <div style="font-size:12px;">Plots, acres &amp; development land across Kenya.</div>
+                <button onclick="app.filterCategory('Land', null)" style="margin-top:6px; padding:5px 14px; background:#15803d; color:#fff; border:none; border-radius:20px; font-size:11px; font-weight:800; cursor:pointer;">Browse Land &rarr;</button>
+              </div>
+            </div>
+          </div>
+
         </div>
-
-        <!-- Clean 4-Pill Services Strip (Exact Mobile App Design) -->
-        <div class="km-desk-services-strip" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin: 12px 0 14px;">
-          <div class="km-service-tile" onclick="app.openModal('modal-lead-movers')" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:10px 8px 8px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all 0.2s;">
-            <div class="km-service-icon-wrap km-serv-movers" style="width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#ffedd5; color:#ea580c; margin-bottom:6px;">
-              <i class="fas fa-truck-moving"></i>
-            </div>
-            <span class="km-service-title" style="font-size:12px; font-weight:700; color:#1e293b; margin-bottom:2px;">Movers</span>
-            <span class="km-service-badge km-badge-quote" style="font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; padding:2px 6px; border-radius:4px; background:#fff7ed; color:#c2410c;">QUOTES</span>
-          </div>
-          <div class="km-service-tile" onclick="app.openModal('modal-lead-fibre')" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:10px 8px 8px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all 0.2s;">
-            <div class="km-service-icon-wrap km-serv-wifi" style="width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e0f2fe; color:#0284c7; margin-bottom:6px;">
-              <i class="fas fa-wifi"></i>
-            </div>
-            <span class="km-service-title" style="font-size:12px; font-weight:700; color:#1e293b; margin-bottom:2px;">WiFi / Fibre</span>
-            <span class="km-service-badge km-badge-isp" style="font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; padding:2px 6px; border-radius:4px; background:#f0f9ff; color:#0369a1;">SETUP</span>
-          </div>
-          <div class="km-service-tile" onclick="app.openModal('modal-lead-cleaning')" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:10px 8px 8px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all 0.2s;">
-            <div class="km-service-icon-wrap km-serv-cleaning" style="width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fdf4ff; color:#a21caf; margin-bottom:6px;">
-              <i class="fas fa-broom"></i>
-            </div>
-            <span class="km-service-title" style="font-size:12px; font-weight:700; color:#1e293b; margin-bottom:2px;">Cleaning</span>
-            <span class="km-service-badge" style="font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; padding:2px 6px; border-radius:4px; background:#fdf4ff; color:#a21caf;">HYGIENE</span>
-          </div>
-          <div class="km-service-tile" onclick="app.openModal('modal-lead-repairs')" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:10px 8px 8px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all 0.2s;">
-            <div class="km-service-icon-wrap km-serv-repairs" style="width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fefce8; color:#a16207; margin-bottom:6px;">
-              <i class="fas fa-tools"></i>
-            </div>
-            <span class="km-service-title" style="font-size:12px; font-weight:700; color:#1e293b; margin-bottom:2px;">Repairs</span>
-            <span class="km-service-badge" style="font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; padding:2px 6px; border-radius:4px; background:#fefce8; color:#a16207;">HANDYMAN</span>
-          </div>
-        </div>
-
+        <script>
+          function kmSwitchMainTab(tab, btn) {
+            // Update button styles
+            document.querySelectorAll('.km-main-tab').forEach(b => b.classList.remove('km-tab-active'));
+            if (btn) btn.classList.add('km-tab-active');
+            // Show/hide panels
+            document.querySelectorAll('.km-tab-panel').forEach(p => p.classList.remove('km-panel-active'));
+            const panel = document.getElementById('km-panel-' + tab);
+            if (panel) panel.classList.add('km-panel-active');
+            // Filter category
+            if (tab === 'rentals') { if(app && app.setCategory) app.setCategory('All'); }
+            else if (tab === 'land') { if(app && app.filterCategory) app.filterCategory('Land', null); }
+            else if (tab === 'useditems') { if(app && app.filterCategory) app.filterCategory('Marketplace', null); }
+          }
+        </script>
         <!-- Major Towns Quick Filter Pills Bar -->
         <div class="desktop-suburb-pills-row" style="display:flex; align-items:center; gap:6px; overflow-x:auto; padding-top:6px; scrollbar-width:thin;">
           <span style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.4px; white-space:nowrap; margin-right:4px;"><i class="fas fa-map-marked-alt" style="color:#006818;"></i> Major Towns:</span>

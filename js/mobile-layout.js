@@ -1307,108 +1307,159 @@
         </div>
       </div>
 
-      <!-- Horizontal Category Story Bubbles -->
-      <div class="km-story-categories-wrapper" id="km-story-categories-wrapper">
-        <button type="button" class="km-story-scroll-btn km-story-scroll-prev" id="km-story-prev-btn" onclick="MobileApp.scrollStories(-1)" aria-label="Previous categories" style="display:none;">
-          <i class="fas fa-chevron-left"></i>
+      <!-- Mobile Main Category Tabs: Rentals | Services | Used Items | Land -->
+      <div class="km-mob-main-tabs" id="km-mob-main-tabs">
+        <button class="km-mob-tab km-mob-tab-active" onclick="kmMobTab('rentals',this)">
+          <i class="fas fa-building"></i> Rentals
         </button>
-
-        <div class="km-story-bubbles-scroll" id="km-story-bubbles-scroll" onscroll="MobileApp.onStoryScroll()">
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'all' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('all')">
-            <div class="km-story-icon-ring km-cat-all"><i class="fas fa-border-all"></i></div>
-            <span class="km-story-label">All</span>
-          </button>
-
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'single-room' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('single-room')">
-            <div class="km-story-icon-ring km-cat-single"><i class="fas fa-door-closed"></i></div>
-            <span class="km-story-label">Single Room</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'double-room' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('double-room')">
-            <div class="km-story-icon-ring km-cat-double"><i class="fas fa-person-booth"></i></div>
-            <span class="km-story-label">Double Room</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'bedsitters' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('bedsitters')">
-            <div class="km-story-icon-ring km-cat-bedsitters"><i class="fas fa-bed"></i></div>
-            <span class="km-story-label">Bedsitters</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === '1-bedroom' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('1-bedroom')">
-            <div class="km-story-icon-ring km-cat-1bed"><i class="fas fa-door-open"></i></div>
-            <span class="km-story-label">1 Bed</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === '2-bedroom' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('2-bedroom')">
-            <div class="km-story-icon-ring km-cat-2bed"><i class="fas fa-home"></i></div>
-            <span class="km-story-label">2 Beds</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === '3-bedroom' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('3-bedroom')">
-            <div class="km-story-icon-ring km-cat-3bed"><i class="fas fa-building"></i></div>
-            <span class="km-story-label">3+ Beds</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'apartments' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('apartments')">
-            <div class="km-story-icon-ring km-cat-apartments"><i class="fas fa-city"></i></div>
-            <span class="km-story-label">Apartments</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'bnb' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('bnb')">
-            <div class="km-story-icon-ring km-cat-bnb"><i class="fas fa-umbrella-beach"></i></div>
-            <span class="km-story-label">BnB / Stay</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'marketplace' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('marketplace')">
-            <div class="km-story-icon-ring km-cat-marketplace"><i class="fas fa-couch"></i></div>
-            <span class="km-story-label">Used Items</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'mansion' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('mansion')">
-            <div class="km-story-icon-ring km-cat-mansion"><i class="fas fa-monument"></i></div>
-            <span class="km-story-label">Maisonettes</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'land' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('land')">
-            <div class="km-story-icon-ring km-cat-land"><i class="fas fa-map-marked-alt"></i></div>
-            <span class="km-story-label">Land & Plots</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'commercial' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('commercial')">
-            <div class="km-story-icon-ring km-cat-commercial"><i class="fas fa-store"></i></div>
-            <span class="km-story-label">Commercial</span>
-          </button>
-          <button type="button" class="km-story-bubble ${State.selectedCategory === 'services' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('services')">
-            <div class="km-story-icon-ring km-cat-services"><i class="fas fa-truck-moving"></i></div>
-            <span class="km-story-label">Movers</span>
-          </button>
-        </div>
-
-        <button type="button" class="km-story-scroll-btn km-story-scroll-next" id="km-story-next-btn" onclick="MobileApp.scrollStories(1)" aria-label="More categories">
-          <i class="fas fa-chevron-right"></i>
+        <button class="km-mob-tab" onclick="kmMobTab('services',this)">
+          <i class="fas fa-tools"></i> Services
+        </button>
+        <button class="km-mob-tab" onclick="kmMobTab('useditems',this)">
+          <i class="fas fa-couch"></i> Used Items
+        </button>
+        <button class="km-mob-tab" onclick="kmMobTab('land',this)">
+          <i class="fas fa-tree"></i> Land
         </button>
       </div>
 
-      <!-- 4-Pill Home Services Strip (Non-repeating Home Services) -->
-      <div class="km-services-strip">
-        <div class="km-service-tile" onclick="MobileApp.openMovers()">
-          <div class="km-service-icon-wrap km-serv-movers">
-            <i class="fas fa-truck-moving"></i>
+      <style>
+        .km-mob-main-tabs { display:flex; gap:6px; padding:10px 14px 4px; overflow-x:auto; scrollbar-width:none; }
+        .km-mob-tab {
+          display:inline-flex; align-items:center; gap:5px; padding:7px 14px;
+          border-radius:50px; font-size:12.5px; font-weight:800; cursor:pointer;
+          border:2px solid #e2e8f0; background:#fff; color:#475569;
+          white-space:nowrap; flex-shrink:0; transition:all 0.2s;
+        }
+        .km-mob-tab.km-mob-tab-active { background:#00b53f; border-color:#00b53f; color:#fff; box-shadow:0 3px 10px rgba(0,181,63,0.3); }
+        .km-mob-panel { display:none; }
+        .km-mob-panel.km-mob-panel-active { display:block; }
+      </style>
+
+      <!-- Rentals panel: story bubbles -->
+      <div class="km-mob-panel km-mob-panel-active" id="km-mob-panel-rentals">
+        <!-- Horizontal Category Story Bubbles -->
+        <div class="km-story-categories-wrapper" id="km-story-categories-wrapper">
+          <button type="button" class="km-story-scroll-btn km-story-scroll-prev" id="km-story-prev-btn" onclick="MobileApp.scrollStories(-1)" aria-label="Previous categories" style="display:none;">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+
+          <div class="km-story-bubbles-scroll" id="km-story-bubbles-scroll" onscroll="MobileApp.onStoryScroll()">
+            <button type="button" class="km-story-bubble ${State.selectedCategory === 'all' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('all')">
+              <div class="km-story-icon-ring km-cat-all"><i class="fas fa-border-all"></i></div>
+              <span class="km-story-label">All</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === 'single-room' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('single-room')">
+              <div class="km-story-icon-ring km-cat-single"><i class="fas fa-door-closed"></i></div>
+              <span class="km-story-label">Single Room</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === 'double-room' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('double-room')">
+              <div class="km-story-icon-ring km-cat-double"><i class="fas fa-person-booth"></i></div>
+              <span class="km-story-label">Double Room</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === 'bedsitters' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('bedsitters')">
+              <div class="km-story-icon-ring km-cat-bedsitters"><i class="fas fa-bed"></i></div>
+              <span class="km-story-label">Bedsitters</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === '1-bedroom' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('1-bedroom')">
+              <div class="km-story-icon-ring km-cat-1bed"><i class="fas fa-door-open"></i></div>
+              <span class="km-story-label">1 Bed</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === '2-bedroom' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('2-bedroom')">
+              <div class="km-story-icon-ring km-cat-2bed"><i class="fas fa-home"></i></div>
+              <span class="km-story-label">2 Beds</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === '3-bedroom' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('3-bedroom')">
+              <div class="km-story-icon-ring km-cat-3bed"><i class="fas fa-building"></i></div>
+              <span class="km-story-label">3+ Beds</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === 'apartments' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('apartments')">
+              <div class="km-story-icon-ring km-cat-apartments"><i class="fas fa-city"></i></div>
+              <span class="km-story-label">Apartments</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === 'bnb' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('bnb')">
+              <div class="km-story-icon-ring km-cat-bnb"><i class="fas fa-umbrella-beach"></i></div>
+              <span class="km-story-label">BnB / Stay</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === 'mansion' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('mansion')">
+              <div class="km-story-icon-ring km-cat-mansion"><i class="fas fa-monument"></i></div>
+              <span class="km-story-label">Maisonettes</span>
+            </button>
+            <button type="button" class="km-story-bubble ${State.selectedCategory === 'commercial' ? 'active' : ''}" onclick="MobileApp.setCategoryChip('commercial')">
+              <div class="km-story-icon-ring km-cat-commercial"><i class="fas fa-store"></i></div>
+              <span class="km-story-label">Commercial</span>
+            </button>
           </div>
-          <span class="km-service-title">Movers</span>
-          <span class="km-service-badge km-badge-quote">Quotes</span>
-        </div>
-        <div class="km-service-tile" onclick="MobileApp.openFibre()">
-          <div class="km-service-icon-wrap km-serv-wifi">
-            <i class="fas fa-wifi"></i>
-          </div>
-          <span class="km-service-title">WiFi / Fibre</span>
-          <span class="km-service-badge km-badge-isp">Setup</span>
-        </div>
-        <div class="km-service-tile" onclick="MobileApp.openCleaning()">
-          <div class="km-service-icon-wrap km-serv-cleaning">
-            <i class="fas fa-broom"></i>
-          </div>
-          <span class="km-service-title">Cleaning</span>
-          <span class="km-service-badge" style="background:#fdf4ff; color:#a21caf;">Hygiene</span>
-        </div>
-        <div class="km-service-tile" onclick="MobileApp.openRepairs()">
-          <div class="km-service-icon-wrap km-serv-repairs">
-            <i class="fas fa-tools"></i>
-          </div>
-          <span class="km-service-title">Repairs</span>
-          <span class="km-service-badge" style="background:#fefce8; color:#a16207;">Handyman</span>
+
+          <button type="button" class="km-story-scroll-btn km-story-scroll-next" id="km-story-next-btn" onclick="MobileApp.scrollStories(1)" aria-label="More categories">
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </div>
+
+      <!-- Services panel -->
+      <div class="km-mob-panel" id="km-mob-panel-services">
+        <div class="km-services-strip" style="margin-top:10px;">
+          <div class="km-service-tile" onclick="MobileApp.openMovers()">
+            <div class="km-service-icon-wrap km-serv-movers"><i class="fas fa-truck-moving"></i></div>
+            <span class="km-service-title">Movers</span>
+            <span class="km-service-badge km-badge-quote">Quotes</span>
+          </div>
+          <div class="km-service-tile" onclick="MobileApp.openFibre()">
+            <div class="km-service-icon-wrap km-serv-wifi"><i class="fas fa-wifi"></i></div>
+            <span class="km-service-title">WiFi / Fibre</span>
+            <span class="km-service-badge km-badge-isp">Setup</span>
+          </div>
+          <div class="km-service-tile" onclick="MobileApp.openCleaning()">
+            <div class="km-service-icon-wrap km-serv-cleaning"><i class="fas fa-broom"></i></div>
+            <span class="km-service-title">Cleaning</span>
+            <span class="km-service-badge" style="background:#fdf4ff;color:#a21caf;">Hygiene</span>
+          </div>
+          <div class="km-service-tile" onclick="MobileApp.openRepairs()">
+            <div class="km-service-icon-wrap km-serv-repairs"><i class="fas fa-tools"></i></div>
+            <span class="km-service-title">Repairs</span>
+            <span class="km-service-badge" style="background:#fefce8;color:#a16207;">Handyman</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Used Items panel -->
+      <div class="km-mob-panel" id="km-mob-panel-useditems">
+        <div style="padding:12px 14px 6px; display:flex; align-items:center; gap:14px;">
+          <div class="km-story-icon-ring km-cat-marketplace" style="width:52px; height:52px; flex-shrink:0; cursor:pointer;" onclick="MobileApp.setCategoryChip('marketplace')">
+            <i class="fas fa-couch"></i>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:800; color:#0f172a;">Moving Sale &amp; Used Items</div>
+            <div style="font-size:12px; color:#64748b; margin-top:2px;">Furniture, appliances &amp; more from tenants</div>
+            <button onclick="MobileApp.setCategoryChip('marketplace')" style="margin-top:7px; padding:5px 14px; background:#ea580c; color:#fff; border:none; border-radius:20px; font-size:11.5px; font-weight:800; cursor:pointer;">Browse Items &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Land panel -->
+      <div class="km-mob-panel" id="km-mob-panel-land">
+        <div style="padding:12px 14px 6px; display:flex; align-items:center; gap:14px;">
+          <div style="width:52px; height:52px; border-radius:50%; background:#f0fdf4; color:#15803d; display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; box-shadow:0 0 0 2.5px #15803d;">
+            <i class="fas fa-tree"></i>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:800; color:#0f172a;">Land for Sale &amp; Development</div>
+            <div style="font-size:12px; color:#64748b; margin-top:2px;">Plots, acres &amp; development land across Kenya</div>
+            <button onclick="MobileApp.setCategoryChip('land')" style="margin-top:7px; padding:5px 14px; background:#15803d; color:#fff; border:none; border-radius:20px; font-size:11.5px; font-weight:800; cursor:pointer;">Browse Land &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        function kmMobTab(tab, btn) {
+          document.querySelectorAll('.km-mob-tab').forEach(b => b.classList.remove('km-mob-tab-active'));
+          if (btn) btn.classList.add('km-mob-tab-active');
+          document.querySelectorAll('.km-mob-panel').forEach(p => p.classList.remove('km-mob-panel-active'));
+          const panel = document.getElementById('km-mob-panel-' + tab);
+          if (panel) panel.classList.add('km-mob-panel-active');
+        }
+      </script>
 
       <!-- Nairobi Quick Suburb Filter Pills -->
       <div class="km-suburb-pills-bar">
