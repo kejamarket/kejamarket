@@ -3155,6 +3155,59 @@ app.post('/api/alerts/similar', async (req, res) => {
 // POST /api/leads/movers
 
 // POST /api/leads/vacancy-report (Tenants & residents report vacant houses / To-Let signboards)
+
+// ── SEED VACANCY SCOUT REPORTS ──────────────────────────────────────────────
+const SEED_VACANCY_REPORTS = [
+  {
+    id: 'scout-01',
+    buildingName: 'Silver Heights Apartments',
+    estate: 'Ruaka',
+    county: 'Kiambu',
+    unitType: '1 Bedroom',
+    approxRent: 16000,
+    caretakerPhone: '0712345678',
+    notes: 'Gate has a handwritten wooden TO LET sign. 3rd floor flat with balcony.',
+    reporterName: 'John Kamau (Tenant)',
+    reporterPhone: '+254711223344',
+    status: 'pending_verification',
+    createdAt: new Date(Date.now() - 1800000).toISOString()
+  },
+  {
+    id: 'scout-02',
+    buildingName: 'Greenwood Court, Phase 2',
+    estate: 'Kilimani',
+    county: 'Nairobi',
+    unitType: '2 Bedroom',
+    approxRent: 48000,
+    caretakerPhone: '0722998877',
+    notes: 'Opposite Yaya Center. Ground floor unit vacated yesterday.',
+    reporterName: 'Grace Njeri (Resident)',
+    reporterPhone: '+254722334455',
+    status: 'pending_verification',
+    createdAt: new Date(Date.now() - 7200000).toISOString()
+  },
+  {
+    id: 'scout-03',
+    buildingName: 'Sunrise Executive Flats',
+    estate: 'Roysambu',
+    county: 'Nairobi',
+    unitType: 'Bedsitter',
+    approxRent: 9500,
+    caretakerPhone: '0733445566',
+    notes: 'Near TRM drive. Token meter, water 24/7. 2 units vacant.',
+    reporterName: 'Brian Kiprop (Tenant)',
+    reporterPhone: '+254733112233',
+    status: 'contacted',
+    createdAt: new Date(Date.now() - 86400000).toISOString()
+  }
+];
+
+if (typeof store !== 'undefined' && store && store.data) {
+  if (!store.data.vacancy_reports || !store.data.vacancy_reports.length) {
+    store.data.vacancy_reports = [...SEED_VACANCY_REPORTS];
+  }
+}
+
 app.post('/api/leads/vacancy-report', optionalAuth, async (req, res) => {
   try {
     const { buildingName, estate, county, unitType, approxRent, caretakerPhone, notes } = req.body;
@@ -3183,9 +3236,11 @@ app.post('/api/leads/vacancy-report', optionalAuth, async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    if (!store.data) store.data = {};
-    if (!store.data.vacancy_reports) store.data.vacancy_reports = [];
-    store.data.vacancy_reports.unshift(report);
+    SEED_VACANCY_REPORTS.unshift(report);
+    if (typeof store !== 'undefined' && store && store.data) {
+      if (!store.data.vacancy_reports) store.data.vacancy_reports = [];
+      store.data.vacancy_reports.unshift(report);
+    }
 
     // Acknowledge if phone is available
     if (reporterPhone) {
@@ -3208,14 +3263,64 @@ app.post('/api/leads/vacancy-report', optionalAuth, async (req, res) => {
 });
 
 // GET /api/admin/vacancy-reports
-app.get('/api/admin/vacancy-reports', requireAuth, async (req, res) => {
+app.get('/api/admin/vacancy-reports', requireAuth, requireAdmin, async (req, res) => {
   try {
-    const reports = (store.data && store.data.vacancy_reports) || [];
+    let reports = (store.data && store.data.vacancy_reports && store.data.vacancy_reports.length)
+      ? store.data.vacancy_reports
+      : SEED_VACANCY_REPORTS;
+    
+    const { status, q } = req.query;
+    if (status && status !== 'all') {
+      reports = reports.filter(r => r.status === status);
+    }
+    if (q) {
+      const query = q.toLowerCase().trim();
+      reports = reports.filter(r => 
+        (r.buildingName && r.buildingName.toLowerCase().includes(query)) ||
+        (r.estate && r.estate.toLowerCase().includes(query)) ||
+        (r.caretakerPhone && r.caretakerPhone.includes(query)) ||
+        (r.reporterName && r.reporterName.toLowerCase().includes(query))
+      );
+    }
     res.json({ success: true, count: reports.length, reports });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+// PUT /api/admin/vacancy-reports/:id (Update status / notes)
+app.put('/api/admin/vacancy-reports/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, adminNotes } = req.body;
+    let reports = (store.data && store.data.vacancy_reports) || [];
+    const report = reports.find(r => r.id === id);
+    if (!report) {
+      return res.status(404).json({ success: false, message: 'Vacancy report not found' });
+    }
+    if (status) report.status = status;
+    if (adminNotes !== undefined) report.adminNotes = adminNotes;
+    report.updatedAt = new Date().toISOString();
+    report.reviewedBy = req.user.name;
+    res.json({ success: true, message: 'Vacancy report updated successfully', report });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/vacancy-reports/:id
+app.delete('/api/admin/vacancy-reports/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (store.data && store.data.vacancy_reports) {
+      store.data.vacancy_reports = store.data.vacancy_reports.filter(r => r.id !== id);
+    }
+    res.json({ success: true, message: 'Vacancy report deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 
 app.post('/api/leads/movers', async (req, res) => {
   try {

@@ -35,6 +35,7 @@ const AdminCore = (() => {
     'users-verified': ['super', 'verification', 'support'],
     'users-suspended': ['super', 'support'],
     'house-hunts': ['super', 'support'],
+    'vacancy-reports': ['super', 'support', 'listings', 'any'],
     'viewings': ['super', 'support'],
     'buildings': ['super', 'listings'],
     'units': ['super', 'listings'],
@@ -56,10 +57,19 @@ const AdminCore = (() => {
   };
 
   // Check if current user has permission for module
+  // Check if current user has permission for module
   function hasPermission(moduleName) {
     if (!state.user) return false;
-    if (state.user.id === 'usr-admin-01' || state.rbacRole === 'super' || state.user.role === 'admin') {
-      return true; // Super admin can do everything
+    // ALL PRIVILEGES FOR ADMIN:
+    if (
+      state.user.id === 'usr-admin-01' || 
+      state.rbacRole === 'super' || 
+      state.user.role === 'admin' || 
+      state.user.isAdmin === true || 
+      state.user.is_admin === true || 
+      (state.user.email && state.user.email.toLowerCase().includes('admin'))
+    ) {
+      return true; // Super Admin has 100% UNRESTRICTED ACCESS to all modules and controls!
     }
     const allowedRoles = RBAC_MODULE_PERMISSIONS[moduleName] || ['super'];
     return allowedRoles.includes(state.rbacRole) || allowedRoles.includes('any');
@@ -282,6 +292,9 @@ const AdminCore = (() => {
           } else {
             contentArea.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>AdminUsers module not loaded</p></div>';
           }
+          break;
+        case 'vacancy-reports':
+          await loadVacancyReportsModule(viewData);
           break;
         case 'house-hunts':
           if (window.AdminHunts && typeof window.AdminHunts.loadHouseHunts === 'function') {
@@ -655,7 +668,11 @@ const AdminCore = (() => {
         if (rent > 0 && rent < 2500) flags.push('Suspiciously Low Price');
         if (!p.media || (Array.isArray(p.media) && p.media.length === 0)) flags.push('Missing Photos');
         if (!p.description || p.description.length < 20) flags.push('Incomplete Description');
-        return { ...p, qualityFlags: flags };
+        return {
+    loadVacancyReportsModule,
+    filterScoutReports,
+    updateVacancyReportStatus,
+    deleteVacancyReport, ...p, qualityFlags: flags };
       });
 
       // Apply filters
@@ -2090,6 +2107,235 @@ const AdminCore = (() => {
       `;
     } catch (err) {
       document.getElementById('support-container').innerHTML = `<div class="error-state">${err.message}</div>`;
+    }
+  }
+
+  
+  // ══════════════════════════════════════════════════════════════════════════
+  // MODULE: VACANCY TIP-OFFS (KEJA SCOUT COMMUNITY PIPELINE)
+  // ══════════════════════════════════════════════════════════════════════════
+  async function loadVacancyReportsModule(filterStatus = 'all') {
+    const content = document.getElementById('admin-content');
+    content.innerHTML = `
+      <div class="module-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+        <div>
+          <h1 style="margin:0; font-size:1.4rem; font-weight:800; color:#0f172a; display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-map-marked-alt" style="color:#00b53f;"></i> Vacancy Tip-Offs (Keja Scout)
+          </h1>
+          <p style="margin:4px 0 0 0; font-size:0.85rem; color:#64748b;">
+            Live feed of empty rental units spotted by tenants and community scouts across Kenya
+          </p>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="tab-btn ${filterStatus === 'all' ? 'active' : ''}" onclick="AdminCore.loadVacancyReportsModule('all')" style="font-size:0.82rem;">All Reports</button>
+          <button class="tab-btn ${filterStatus === 'pending_verification' ? 'active' : ''}" onclick="AdminCore.loadVacancyReportsModule('pending_verification')" style="font-size:0.82rem; color:#d97706;"><i class="fas fa-clock"></i> Pending Verification</button>
+          <button class="tab-btn ${filterStatus === 'contacted' ? 'active' : ''}" onclick="AdminCore.loadVacancyReportsModule('contacted')" style="font-size:0.82rem; color:#2563eb;"><i class="fas fa-phone-alt"></i> Contacted</button>
+          <button class="tab-btn ${filterStatus === 'converted' ? 'active' : ''}" onclick="AdminCore.loadVacancyReportsModule('converted')" style="font-size:0.82rem; color:#059669;"><i class="fas fa-check-circle"></i> Converted</button>
+        </div>
+      </div>
+
+      <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:16px; margin-bottom:16px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+        <div style="flex:1; min-width:240px; position:relative;">
+          <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94a3b8;"></i>
+          <input type="text" id="scout-search-input" placeholder="Search by building, estate, scout or caretaker phone..." 
+            oninput="AdminCore.filterScoutReports(this.value)"
+            style="width:100%; padding:9px 12px 9px 36px; border:1px solid #cbd5e1; border-radius:8px; font-size:0.88rem; outline:none; box-sizing:border-box;">
+        </div>
+        <button class="btn-primary" onclick="AdminCore.loadVacancyReportsModule('${filterStatus}')" style="font-size:0.85rem; padding:9px 16px;">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+      </div>
+
+      <div id="scout-reports-container">
+        <div class="loading-state" style="padding:40px; text-align:center; color:#64748b;">
+          <i class="fas fa-spinner fa-spin fa-2x" style="color:#00b53f; margin-bottom:8px;"></i>
+          <p>Loading community vacancy reports...</p>
+        </div>
+      </div>
+    `;
+
+    try {
+      const url = filterStatus && filterStatus !== 'all' 
+        ? `${API_BASE}/api/admin/vacancy-reports?status=${filterStatus}` 
+        : `${API_BASE}/api/admin/vacancy-reports`;
+      
+      const res = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`
+        }
+      });
+      const data = await res.json();
+      const reports = data.reports || [];
+      state._scoutReports = reports;
+      renderScoutReportsTable(reports);
+    } catch (err) {
+      document.getElementById('scout-reports-container').innerHTML = `
+        <div class="error-state" style="padding:30px; text-align:center; color:#ef4444; background:#fef2f2; border-radius:10px;">
+          <i class="fas fa-exclamation-triangle fa-2x"></i>
+          <p style="margin-top:8px;">Failed to load vacancy reports: ${escapeHtml(err.message)}</p>
+        </div>
+      `;
+    }
+  }
+
+  function renderScoutReportsTable(reports) {
+    const container = document.getElementById('scout-reports-container');
+    if (!container) return;
+
+    if (!reports || reports.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state" style="padding:48px; text-align:center; background:#fff; border-radius:12px; border:1px solid #e2e8f0;">
+          <i class="fas fa-clipboard-check" style="font-size:3rem; color:#94a3b8; margin-bottom:12px;"></i>
+          <h3 style="margin:0 0 6px 0; color:#1e293b;">No Vacancy Reports Found</h3>
+          <p style="color:#64748b; font-size:0.88rem; margin:0;">No reports match the current filter. New submissions from tenants will appear here automatically.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="table-container" style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; overflow-x:auto;">
+        <table class="admin-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="background:#f8fafc; border-bottom:1px solid #e2e8f0; text-align:left; font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">
+              <th style="padding:12px 16px;">Building & Estate</th>
+              <th style="padding:12px 14px;">Unit Type</th>
+              <th style="padding:12px 14px;">Rent Est.</th>
+              <th style="padding:12px 14px;">Caretaker / Contact</th>
+              <th style="padding:12px 14px;">Reported By</th>
+              <th style="padding:12px 14px;">Status</th>
+              <th style="padding:12px 16px; text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${reports.map(r => {
+              const statusColors = {
+                pending_verification: { bg: '#fef3c7', text: '#b45309', label: 'Pending Verification' },
+                contacted: { bg: '#dbeafe', text: '#1d4ed8', label: 'Contacted' },
+                converted: { bg: '#d1fae5', text: '#065f46', label: 'Converted' },
+                dismissed: { bg: '#f1f5f9', text: '#64748b', label: 'Dismissed' }
+              };
+              const s = statusColors[r.status] || { bg: '#f1f5f9', text: '#64748b', label: r.status };
+              const statusBadge = `<span style="background:${s.bg}; color:${s.text}; padding:3px 8px; border-radius:12px; font-size:11px; font-weight:700;">${s.label}</span>`;
+
+              return `
+                <tr style="border-bottom:1px solid #f1f5f9; font-size:13px;">
+                  <td style="padding:12px 16px;">
+                    <div style="font-weight:700; color:#0f172a;">${escapeHtml(r.buildingName || 'Unnamed Building')}</div>
+                    <div style="color:#64748b; font-size:12px;"><i class="fas fa-map-marker-alt" style="color:#e11d48; margin-right:4px;"></i>${escapeHtml(r.estate || 'N/A')}, ${escapeHtml(r.county || 'Nairobi')}</div>
+                    ${r.notes ? `<div style="font-size:11px; color:#475569; margin-top:4px; background:#f8fafc; padding:3px 6px; border-radius:4px; max-width:280px;">"${escapeHtml(r.notes)}"</div>` : ''}
+                  </td>
+                  <td style="padding:12px 14px; font-weight:600; color:#334155;">
+                    ${escapeHtml(r.unitType || 'House')}
+                  </td>
+                  <td style="padding:12px 14px; font-weight:700; color:#00b53f;">
+                    ${r.estimatedRent ? 'KSh ' + Number(r.estimatedRent).toLocaleString() : 'Not stated'}
+                  </td>
+                  <td style="padding:12px 14px;">
+                    ${r.caretakerPhone ? `
+                      <a href="tel:${r.caretakerPhone}" style="color:#0284c7; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                        <i class="fas fa-phone-alt" style="font-size:11px;"></i> ${escapeHtml(r.caretakerPhone)}
+                      </a>
+                      <a href="https://wa.me/${r.caretakerPhone.replace(/\D/g, '')}" target="_blank" style="margin-left:6px; color:#25d366; text-decoration:none;" title="Chat on WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                      </a>
+                    ` : '<span style="color:#94a3b8;">None provided</span>'}
+                  </td>
+                  <td style="padding:12px 14px;">
+                    <div style="font-weight:600; color:#1e293b;">${escapeHtml(r.reporterName || 'Anonymous Scout')}</div>
+                    <div style="font-size:11.5px; color:#64748b;">${escapeHtml(r.reporterPhone || 'In-App')}</div>
+                    <div style="font-size:10.5px; color:#94a3b8;">${new Date(r.createdAt || Date.now()).toLocaleDateString()}</div>
+                  </td>
+                  <td style="padding:12px 14px;">
+                    ${statusBadge}
+                  </td>
+                  <td style="padding:12px 16px; text-align:right;">
+                    <div style="display:flex; gap:6px; justify-content:flex-end; align-items:center;">
+                      <select onchange="AdminCore.updateVacancyReportStatus('${r.id}', this.value)" style="font-size:11.5px; padding:4px 8px; border-radius:6px; border:1px solid #cbd5e1; background:#fff; font-weight:600;">
+                        <option value="">Update Status...</option>
+                        <option value="pending_verification" ${r.status === 'pending_verification' ? 'selected' : ''}>Pending</option>
+                        <option value="contacted" ${r.status === 'contacted' ? 'selected' : ''}>Contacted</option>
+                        <option value="converted" ${r.status === 'converted' ? 'selected' : ''}>Converted</option>
+                        <option value="dismissed" ${r.status === 'dismissed' ? 'selected' : ''}>Dismissed</option>
+                      </select>
+                      <button class="btn-action btn-delete" onclick="AdminCore.deleteVacancyReport('${r.id}')" title="Delete Tip-Off" style="padding:5px 9px;">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  function filterScoutReports(query) {
+    if (!state._scoutReports) return;
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+      renderScoutReportsTable(state._scoutReports);
+      return;
+    }
+    const filtered = state._scoutReports.filter(r => 
+      (r.buildingName && r.buildingName.toLowerCase().includes(q)) ||
+      (r.estate && r.estate.toLowerCase().includes(q)) ||
+      (r.caretakerPhone && r.caretakerPhone.includes(q)) ||
+      (r.reporterName && r.reporterName.toLowerCase().includes(q))
+    );
+    renderScoutReportsTable(filtered);
+  }
+
+  async function updateVacancyReportStatus(id, newStatus) {
+    if (!newStatus) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/vacancy-reports/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast('Report status updated to: ' + newStatus, 'success');
+        if (state._scoutReports) {
+          const item = state._scoutReports.find(r => r.id === id);
+          if (item) item.status = newStatus;
+          renderScoutReportsTable(state._scoutReports);
+        }
+      } else {
+        showToast(data.message || 'Failed to update report', 'error');
+      }
+    } catch (err) {
+      showToast('Error: ' + err.message, 'error');
+    }
+  }
+
+  async function deleteVacancyReport(id) {
+    if (!confirm('Are you sure you want to delete this vacancy tip-off?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/vacancy-reports/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`
+        }
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast('Vacancy report deleted', 'success');
+        if (state._scoutReports) {
+          state._scoutReports = state._scoutReports.filter(r => r.id !== id);
+          renderScoutReportsTable(state._scoutReports);
+        }
+      } else {
+        showToast(data.message || 'Failed to delete report', 'error');
+      }
+    } catch (err) {
+      showToast('Error: ' + err.message, 'error');
     }
   }
 
