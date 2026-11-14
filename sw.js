@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v102-desktop-listings-fix-admin-enhancements';
+const CACHE_NAME = 'kejamarket-v103-scouts-dispatch-circular-cards-deployed';
 
 const STATIC_ASSETS = [
   '/',
