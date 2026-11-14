@@ -419,6 +419,9 @@ const AdminCore = (() => {
         case 'vacancy-reports':
           await loadVacancyReportsModule(viewData);
           break;
+        case 'scouts':
+          await loadScoutsModule(viewData);
+          break;
         case 'house-hunts':
           if (window.AdminHunts && typeof window.AdminHunts.loadHouseHunts === 'function') {
             await window.AdminHunts.loadHouseHunts(viewData);
@@ -3042,6 +3045,391 @@ const AdminCore = (() => {
     } catch (e) { alert('Error: ' + e.message); }
   }
 
+  // ============================================================
+  // FIELD SCOUTS & DISPATCH MODULE
+  // ============================================================
+  async function loadScoutsModule(viewData) {
+    const container = document.getElementById('adminContent') || document.getElementById('admin-content') || document.querySelector('.admin-main') || document.querySelector('main');
+    if (!container) return;
+    container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:200px;"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#059669;"></i></div>`;
+
+    let scouts = [], dispatches = [];
+    try {
+      const tok = getToken ? getToken() : (localStorage.getItem('adminToken') || localStorage.getItem('authToken'));
+      const [sRes, dRes] = await Promise.all([
+        fetch('/api/admin/scouts', { headers: { 'Authorization': `Bearer ${tok}` } }),
+        fetch('/api/admin/scouts/dispatches', { headers: { 'Authorization': `Bearer ${tok}` } })
+      ]);
+      if (sRes.ok) scouts = (await sRes.json()).scouts || [];
+      if (dRes.ok) dispatches = (await dRes.json()).dispatches || [];
+    } catch (e) { console.error('Scouts load error:', e); }
+
+    const activeScouts = scouts.filter(s => s.status === 'active').length;
+    const totalDispatches = dispatches.length;
+    const inProgress = dispatches.filter(d => d.status === 'DISPATCHED' || d.status === 'SEARCHING').length;
+
+    container.innerHTML = `
+      <div style="padding:24px;">
+        <!-- Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <h2 style="margin:0;font-size:1.6rem;font-weight:800;color:#1e293b;">
+              <i class="fas fa-binoculars" style="color:#059669;margin-right:10px;"></i>Field Scouts & Dispatch Engine
+            </h2>
+            <p style="margin:4px 0 0;color:#64748b;font-size:0.9rem;">Manage ground-team scouts · Auto-dispatch house hunts · Track field operations</p>
+          </div>
+          <button onclick="AdminCore.openAddScoutModal()" style="background:linear-gradient(135deg,#059669,#047857);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:0.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;">
+            <i class="fas fa-plus"></i> Add New Scout
+          </button>
+        </div>
+
+        <!-- Stats Row -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:28px;">
+          <div style="background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid #059669;">
+            <div style="font-size:2rem;font-weight:800;color:#059669;">${scouts.length}</div>
+            <div style="font-size:0.85rem;color:#64748b;margin-top:4px;font-weight:600;">Total Scouts</div>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid #22c55e;">
+            <div style="font-size:2rem;font-weight:800;color:#22c55e;">${activeScouts}</div>
+            <div style="font-size:0.85rem;color:#64748b;margin-top:4px;font-weight:600;">Active Scouts</div>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid #f59e0b;">
+            <div style="font-size:2rem;font-weight:800;color:#f59e0b;">${inProgress}</div>
+            <div style="font-size:0.85rem;color:#64748b;margin-top:4px;font-weight:600;">Hunts In Progress</div>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid #6366f1;">
+            <div style="font-size:2rem;font-weight:800;color:#6366f1;">${totalDispatches}</div>
+            <div style="font-size:0.85rem;color:#64748b;margin-top:4px;font-weight:600;">Total Dispatches</div>
+          </div>
+        </div>
+
+        <!-- Scouts Table -->
+        <div style="background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden;margin-bottom:32px;">
+          <div style="padding:18px 24px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;">
+            <h3 style="margin:0;font-size:1.1rem;font-weight:700;color:#1e293b;"><i class="fas fa-users" style="color:#059669;margin-right:8px;"></i>Scout Roster</h3>
+            <span style="background:#dcfce7;color:#15803d;border-radius:20px;padding:4px 14px;font-size:0.82rem;font-weight:700;">${activeScouts} Active</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;min-width:700px;">
+              <thead>
+                <tr style="background:#f8fafc;">
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Scout</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Contact</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Primary Area</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Coverage Zones</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Hunts Done</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Status</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="scoutsTableBody">
+                ${scouts.length === 0 ? `<tr><td colspan="7" style="text-align:center;padding:40px;color:#94a3b8;"><i class="fas fa-binoculars" style="font-size:2rem;display:block;margin-bottom:12px;"></i>No scouts registered yet. Add your first scout!</td></tr>` :
+                  scouts.map(scout => `
+                    <tr style="border-top:1px solid #f1f5f9;transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background=''">
+                      <td style="padding:14px 16px;">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                          <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#059669,#047857);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;flex-shrink:0;">
+                            ${(scout.name||'?').charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div style="font-weight:700;color:#1e293b;">${scout.name||'—'}</div>
+                            <div style="font-size:0.78rem;color:#94a3b8;">${scout.id}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="padding:14px 16px;">
+                        <a href="tel:${scout.phone}" style="display:block;color:#0369a1;font-weight:600;text-decoration:none;font-size:0.88rem;"><i class="fas fa-phone" style="margin-right:5px;"></i>${scout.phone||'—'}</a>
+                        ${scout.whatsapp ? `<a href="https://wa.me/${(scout.whatsapp||'').replace(/\D/g,'')}" target="_blank" style="color:#22c55e;font-size:0.82rem;text-decoration:none;"><i class="fab fa-whatsapp" style="margin-right:4px;"></i>WhatsApp</a>` : ''}
+                      </td>
+                      <td style="padding:14px 16px;">
+                        <span style="font-weight:600;color:#1e293b;">${scout.primaryArea||'—'}</span>
+                      </td>
+                      <td style="padding:14px 16px;max-width:200px;">
+                        <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                          ${(scout.coverageAreas||[]).map(a=>`<span style="background:#eff6ff;color:#1d4ed8;border-radius:12px;padding:2px 10px;font-size:0.76rem;font-weight:600;">${a}</span>`).join('')}
+                        </div>
+                      </td>
+                      <td style="padding:14px 16px;">
+                        <div style="font-weight:700;color:#059669;font-size:1.1rem;">${scout.completedHunts||0}</div>
+                        <div style="font-size:0.76rem;color:#94a3b8;">completed</div>
+                      </td>
+                      <td style="padding:14px 16px;">
+                        <span style="background:${scout.status==='active'?'#dcfce7':'#fee2e2'};color:${scout.status==='active'?'#15803d':'#dc2626'};border-radius:20px;padding:4px 12px;font-size:0.8rem;font-weight:700;text-transform:uppercase;">
+                          ${scout.status||'unknown'}
+                        </span>
+                      </td>
+                      <td style="padding:14px 16px;">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                          <button onclick="AdminCore.openEditScoutModal('${scout.id}')" title="Edit Scout" style="background:#eff6ff;color:#1d4ed8;border:none;border-radius:7px;padding:7px 10px;cursor:pointer;font-size:0.82rem;font-weight:600;">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button onclick="AdminCore.openManualDispatchModal('${scout.id}','${(scout.name||'').replace(/'/g,"\\'")}','${scout.primaryArea||''}')" title="Manually Dispatch" style="background:#fefce8;color:#a16207;border:none;border-radius:7px;padding:7px 10px;cursor:pointer;font-size:0.82rem;font-weight:600;">
+                            <i class="fas fa-paper-plane"></i>
+                          </button>
+                          <button onclick="AdminCore.removeScout('${scout.id}','${(scout.name||'').replace(/'/g,"\\'")}',this)" title="Remove Scout" style="background:#fee2e2;color:#dc2626;border:none;border-radius:7px;padding:7px 10px;cursor:pointer;font-size:0.82rem;font-weight:600;">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Dispatch Logs -->
+        <div style="background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden;">
+          <div style="padding:18px 24px;border-bottom:1px solid #f1f5f9;">
+            <h3 style="margin:0;font-size:1.1rem;font-weight:700;color:#1e293b;"><i class="fas fa-history" style="color:#6366f1;margin-right:8px;"></i>Recent Dispatch Logs</h3>
+          </div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;min-width:600px;">
+              <thead>
+                <tr style="background:#f8fafc;">
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;">Hunt Ref</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;">Scout</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;">Customer</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;">Area</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;">Dispatched</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;">Status</th>
+                  <th style="text-align:left;padding:12px 16px;font-size:0.8rem;color:#64748b;font-weight:700;text-transform:uppercase;">WhatsApp</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${dispatches.length === 0 ? `<tr><td colspan="7" style="text-align:center;padding:40px;color:#94a3b8;"><i class="fas fa-paper-plane" style="font-size:2rem;display:block;margin-bottom:12px;"></i>No dispatches yet. Activate a house hunt to auto-dispatch!</td></tr>` :
+                  dispatches.slice(0,30).map(d => {
+                    const dispDate = d.dispatchedAt ? new Date(d.dispatchedAt).toLocaleString('en-KE',{dateStyle:'short',timeStyle:'short'}) : '—';
+                    const statusColor = d.status==='COMPLETED'?'#15803d':d.status==='SEARCHING'?'#b45309':'#64748b';
+                    const statusBg = d.status==='COMPLETED'?'#dcfce7':d.status==='SEARCHING'?'#fef3c7':'#f1f5f9';
+                    return `<tr style="border-top:1px solid #f1f5f9;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background=''">
+                      <td style="padding:12px 16px;font-weight:700;color:#1e293b;font-size:0.85rem;">${(d.huntId||'').slice(-10)||'—'}</td>
+                      <td style="padding:12px 16px;">
+                        <div style="font-weight:600;color:#1e293b;font-size:0.88rem;">${d.scoutName||'—'}</div>
+                        <div style="font-size:0.76rem;color:#94a3b8;">${d.scoutPhone||''}</div>
+                      </td>
+                      <td style="padding:12px 16px;font-size:0.85rem;color:#475569;">${d.customerName||d.customerPhone||'—'}</td>
+                      <td style="padding:12px 16px;font-size:0.85rem;color:#475569;">${d.targetArea||d.area||'—'}</td>
+                      <td style="padding:12px 16px;font-size:0.82rem;color:#64748b;">${dispDate}</td>
+                      <td style="padding:12px 16px;"><span style="background:${statusBg};color:${statusColor};border-radius:20px;padding:3px 12px;font-size:0.78rem;font-weight:700;">${d.status||'—'}</span></td>
+                      <td style="padding:12px 16px;">
+                        ${d.whatsappUrl ? `<a href="${d.whatsappUrl}" target="_blank" style="background:#25d366;color:#fff;border-radius:8px;padding:6px 12px;font-size:0.8rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fab fa-whatsapp"></i> Open</a>` : '<span style="color:#cbd5e1;font-size:0.82rem;">—</span>'}
+                      </td>
+                    </tr>`;
+                  }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Hidden: store scouts for modals -->
+        <script id="scoutsDataStore" type="application/json">${JSON.stringify(scouts)}</script>
+      </div>
+
+      <!-- Add/Edit Scout Modal -->
+      <div id="scoutModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;">
+        <div style="background:#fff;border-radius:18px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+          <div style="padding:22px 24px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;">
+            <h3 id="scoutModalTitle" style="margin:0;font-size:1.15rem;font-weight:800;color:#1e293b;">Add New Scout</h3>
+            <button onclick="AdminCore.closeScoutModal()" style="background:#f1f5f9;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:1.1rem;color:#64748b;">&times;</button>
+          </div>
+          <form id="scoutForm" onsubmit="AdminCore.saveScout(event)" style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+            <input type="hidden" id="scoutEditId" value="">
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Full Name *</label>
+              <input id="scoutName" type="text" required placeholder="e.g. Brian Mwangi" style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:0.95rem;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e2e8f0'">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <label style="font-size:0.85rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Phone *</label>
+                <input id="scoutPhone" type="tel" required placeholder="0712345678" style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:0.95rem;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e2e8f0'">
+              </div>
+              <div>
+                <label style="font-size:0.85rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">WhatsApp</label>
+                <input id="scoutWhatsapp" type="tel" placeholder="0712345678" style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:0.95rem;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e2e8f0'">
+              </div>
+            </div>
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Email</label>
+              <input id="scoutEmail" type="email" placeholder="scout@email.com" style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:0.95rem;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e2e8f0'">
+            </div>
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Primary Area *</label>
+              <input id="scoutPrimaryArea" type="text" required placeholder="e.g. Ruaka / Kiambu" style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:0.95rem;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e2e8f0'">
+            </div>
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Coverage Areas <span style="color:#94a3b8;font-weight:400;">(comma-separated)</span></label>
+              <input id="scoutCoverage" type="text" placeholder="Ruaka, Kiambu, Ridgeways, Githurai" style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:0.95rem;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e2e8f0'">
+            </div>
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Status</label>
+              <select id="scoutStatus" style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:0.95rem;box-sizing:border-box;outline:none;background:#fff;">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="on-leave">On Leave</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:12px;padding-top:8px;">
+              <button type="button" onclick="AdminCore.closeScoutModal()" style="flex:1;background:#f1f5f9;color:#374151;border:none;border-radius:10px;padding:12px;font-size:0.95rem;font-weight:700;cursor:pointer;">Cancel</button>
+              <button type="submit" id="scoutSaveBtn" style="flex:2;background:linear-gradient(135deg,#059669,#047857);color:#fff;border:none;border-radius:10px;padding:12px;font-size:0.95rem;font-weight:700;cursor:pointer;">
+                <i class="fas fa-save" style="margin-right:6px;"></i>Save Scout
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Manual Dispatch Modal -->
+      <div id="dispatchModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:16px;">
+        <div style="background:#fff;border-radius:18px;width:100%;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+          <div style="padding:22px 24px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;">
+            <h3 style="margin:0;font-size:1.1rem;font-weight:800;color:#1e293b;"><i class="fas fa-paper-plane" style="color:#f59e0b;margin-right:8px;"></i>Manual Dispatch</h3>
+            <button onclick="AdminCore.closeDispatchModal()" style="background:#f1f5f9;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:1.1rem;color:#64748b;">&times;</button>
+          </div>
+          <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+            <div id="dispatchScoutInfo" style="background:#f0fdf4;border-radius:10px;padding:12px 16px;border:1px solid #bbf7d0;font-weight:600;color:#15803d;"></div>
+            <div>
+              <label style="font-size:0.85rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Hunt ID or Reference *</label>
+              <input id="dispatchHuntId" type="text" placeholder="e.g. hh-1794438479837-697" style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;padding:10px 14px;font-size:0.9rem;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f59e0b'" onblur="this.style.borderColor='#e2e8f0'">
+            </div>
+            <input type="hidden" id="dispatchScoutId" value="">
+            <div style="display:flex;gap:12px;">
+              <button onclick="AdminCore.closeDispatchModal()" style="flex:1;background:#f1f5f9;color:#374151;border:none;border-radius:10px;padding:12px;font-weight:700;cursor:pointer;">Cancel</button>
+              <button onclick="AdminCore.submitManualDispatch()" style="flex:2;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;">
+                <i class="fas fa-paper-plane"></i> Dispatch Scout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function openAddScoutModal() {
+    const modal = document.getElementById('scoutModal');
+    if (!modal) return;
+    document.getElementById('scoutModalTitle').textContent = 'Add New Scout';
+    document.getElementById('scoutEditId').value = '';
+    document.getElementById('scoutName').value = '';
+    document.getElementById('scoutPhone').value = '';
+    document.getElementById('scoutWhatsapp').value = '';
+    document.getElementById('scoutEmail').value = '';
+    document.getElementById('scoutPrimaryArea').value = '';
+    document.getElementById('scoutCoverage').value = '';
+    document.getElementById('scoutStatus').value = 'active';
+    modal.style.display = 'flex';
+  }
+
+  function openEditScoutModal(scoutId) {
+    const dataEl = document.getElementById('scoutsDataStore');
+    if (!dataEl) return;
+    let scouts = [];
+    try { scouts = JSON.parse(dataEl.textContent); } catch(e) {}
+    const scout = scouts.find(s => s.id === scoutId);
+    if (!scout) return alert('Scout not found');
+    const modal = document.getElementById('scoutModal');
+    document.getElementById('scoutModalTitle').textContent = 'Edit Scout — ' + scout.name;
+    document.getElementById('scoutEditId').value = scout.id;
+    document.getElementById('scoutName').value = scout.name || '';
+    document.getElementById('scoutPhone').value = scout.phone || '';
+    document.getElementById('scoutWhatsapp').value = scout.whatsapp || '';
+    document.getElementById('scoutEmail').value = scout.email || '';
+    document.getElementById('scoutPrimaryArea').value = scout.primaryArea || '';
+    document.getElementById('scoutCoverage').value = (scout.coverageAreas||[]).join(', ');
+    document.getElementById('scoutStatus').value = scout.status || 'active';
+    modal.style.display = 'flex';
+  }
+
+  function closeScoutModal() {
+    const modal = document.getElementById('scoutModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  async function saveScout(event) {
+    event.preventDefault();
+    const btn = document.getElementById('scoutSaveBtn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    const editId = document.getElementById('scoutEditId').value;
+    const payload = {
+      name: document.getElementById('scoutName').value.trim(),
+      phone: document.getElementById('scoutPhone').value.trim(),
+      whatsapp: document.getElementById('scoutWhatsapp').value.trim() || document.getElementById('scoutPhone').value.trim(),
+      email: document.getElementById('scoutEmail').value.trim(),
+      primaryArea: document.getElementById('scoutPrimaryArea').value.trim(),
+      coverageAreas: document.getElementById('scoutCoverage').value.split(',').map(s=>s.trim()).filter(Boolean),
+      status: document.getElementById('scoutStatus').value
+    };
+    try {
+      const tok = getToken ? getToken() : localStorage.getItem('adminToken');
+      const url = editId ? `/api/admin/scouts/${editId}` : '/api/admin/scouts';
+      const method = editId ? 'PUT' : 'POST';
+      const res = await fetch(url, {
+        method, headers: { 'Authorization': `Bearer ${tok}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to save');
+      closeScoutModal();
+      await loadScoutsModule();
+    } catch(e) {
+      alert('Error: ' + e.message);
+      btn.disabled = false; btn.textContent = 'Save Scout';
+    }
+  }
+
+  async function removeScout(scoutId, scoutName, btnEl) {
+    if (!confirm(`⚠️ Remove Scout\n\nRemove "${scoutName}" from the roster?\n\nThis action cannot be undone.`)) return;
+    btnEl.disabled = true;
+    try {
+      const tok = getToken ? getToken() : localStorage.getItem('adminToken');
+      const res = await fetch(`/api/admin/scouts/${scoutId}`, {
+        method: 'DELETE', headers: { 'Authorization': `Bearer ${tok}` }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to remove');
+      await loadScoutsModule();
+    } catch(e) {
+      alert('Error: ' + e.message);
+      btnEl.disabled = false;
+    }
+  }
+
+  function openManualDispatchModal(scoutId, scoutName, primaryArea) {
+    const modal = document.getElementById('dispatchModal');
+    if (!modal) return;
+    document.getElementById('dispatchScoutId').value = scoutId;
+    document.getElementById('dispatchScoutInfo').innerHTML = `<i class="fas fa-user-circle" style="margin-right:7px;"></i>Dispatching: <strong>${scoutName}</strong> &nbsp;·&nbsp; ${primaryArea}`;
+    document.getElementById('dispatchHuntId').value = '';
+    modal.style.display = 'flex';
+  }
+
+  function closeDispatchModal() {
+    const modal = document.getElementById('dispatchModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  async function submitManualDispatch() {
+    const scoutId = document.getElementById('dispatchScoutId').value;
+    const huntId = document.getElementById('dispatchHuntId').value.trim();
+    if (!huntId) return alert('Please enter a Hunt ID');
+    try {
+      const tok = getToken ? getToken() : localStorage.getItem('adminToken');
+      const res = await fetch(`/api/admin/house-hunts/${huntId}/dispatch-scout`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${tok}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scoutId })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Dispatch failed');
+      closeDispatchModal();
+      alert(`✅ Scout Dispatched!\n\n${data.message || 'Scout has been notified via SMS.'}\n${data.whatsappUrl ? '\nOpen WhatsApp to send full task packet.' : ''}`);
+      if (data.whatsappUrl) window.open(data.whatsappUrl, '_blank');
+      await loadScoutsModule();
+    } catch(e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
   return {
     init,
     navigate,
@@ -3082,6 +3470,15 @@ const AdminCore = (() => {
     failTransaction,
     deleteTransaction,
     viewTransactionReceipt,
+    loadScoutsModule,
+    openAddScoutModal,
+    openEditScoutModal,
+    closeScoutModal,
+    saveScout,
+    removeScout,
+    openManualDispatchModal,
+    closeDispatchModal,
+    submitManualDispatch,
     state
   };
 })();

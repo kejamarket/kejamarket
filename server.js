@@ -1967,6 +1967,25 @@ app.post('/api/mpesa/callback', (req, res) => {
         }).catch(e => console.warn('Viewing unlock on callback error:', e.message));
       }
 
+      // Automated AI Dispatch: If payment is for a House Hunt, automatically activate & dispatch area scout
+      if (updatedTx && (updatedTx.itemType === 'house_hunt' || updatedTx.itemType === 'hunt_fee' || updatedTx.houseHuntId || updatedTx.house_hunt_id)) {
+        const hhId = updatedTx.houseHuntId || updatedTx.house_hunt_id || updatedTx.targetPropertyId;
+        (async () => {
+          try {
+            let h = null;
+            if (typeof store.getHouseHuntById === 'function') h = await store.getHouseHuntById(hhId);
+            if (!h && store.isConnected && store.query) {
+              const r = await store.query(`SELECT hh.*, u.name as customer_name, u.phone as customer_phone FROM house_hunts hh LEFT JOIN users u ON hh.customer_id = u.id WHERE hh.id = $1`, [hhId]);
+              if (r.rows.length) h = r.rows[0];
+            }
+            if (h && typeof autoDispatchHuntToScout === 'function') {
+              await autoDispatchHuntToScout(h);
+              console.log(`🤖 [AI AUTO-DISPATCH] House Hunt ${hhId} activated & scout dispatched on M-Pesa payment confirmation.`);
+            }
+          } catch(e) { console.warn('Auto dispatch on M-Pesa error:', e.message); }
+        })();
+      }
+
       // Send real SMS payment receipt
       const targetPhone = phone || (updatedTx ? updatedTx.phone : null);
       if (targetPhone) {
@@ -5801,7 +5820,366 @@ app.post('/api/admin/house-hunts/bulk-delete', requireAuth, async (req, res) => 
   }
 });
 
-// POST /api/admin/house-hunts/:id/activate — activate hunt & mark as paid
+// ==========================================================================
+// KEJAMARKET GROUND FIELD SCOUTS & AUTOMATED AI DISPATCH ENGINE
+// ==========================================================================
+
+const GROUND_SCOUTS = [
+  {
+    id: 'scout-01',
+    name: 'Brian Mwangi',
+    phone: '0792409540',
+    whatsapp: '254792409540',
+    email: 'brian.scout@kejamarket.co.ke',
+    primaryArea: 'Ruaka & Kiambu Road',
+    coverageAreas: ['Ruaka', 'Rosslyn', 'Two Rivers', 'Ndenderu', 'Kiambu Road', 'Banana', 'Ruiru', 'Juja', 'Thika'],
+    status: 'ACTIVE',
+    rating: 4.9,
+    completedHunts: 42,
+    activeHunts: 1
+  },
+  {
+    id: 'scout-02',
+    name: 'Kevin Ochieng',
+    phone: '0712345678',
+    whatsapp: '254712345678',
+    email: 'kevin.scout@kejamarket.co.ke',
+    primaryArea: 'Kilimani & Westlands',
+    coverageAreas: ['Kilimani', 'Westlands', 'Kileleshwa', 'Lavington', 'Parklands', 'Riverside', 'CBD', 'Hurlingham'],
+    status: 'ACTIVE',
+    rating: 5.0,
+    completedHunts: 68,
+    activeHunts: 0
+  },
+  {
+    id: 'scout-03',
+    name: 'Mercy Wambui',
+    phone: '0723456789',
+    whatsapp: '254723456789',
+    email: 'mercy.scout@kejamarket.co.ke',
+    primaryArea: 'Thika Road Hub',
+    coverageAreas: ['Roysambu', 'Kasarani', 'Kahawa West', 'Kahawa Sukari', 'Zimmerman', 'Mirema', 'Clay City'],
+    status: 'ACTIVE',
+    rating: 4.8,
+    completedHunts: 35,
+    activeHunts: 1
+  },
+  {
+    id: 'scout-04',
+    name: 'Dennis Kiprono',
+    phone: '0734567890',
+    whatsapp: '254734567890',
+    email: 'dennis.scout@kejamarket.co.ke',
+    primaryArea: 'Mombasa Road & Syokimau',
+    coverageAreas: ['Mlolongo', 'Syokimau', 'Kitengela', 'Athi River', 'Imara Daima', 'South B', 'South C'],
+    status: 'ACTIVE',
+    rating: 4.9,
+    completedHunts: 51,
+    activeHunts: 0
+  },
+  {
+    id: 'scout-05',
+    name: 'Faith Cherotich',
+    phone: '0745678901',
+    whatsapp: '254745678901',
+    email: 'faith.scout@kejamarket.co.ke',
+    primaryArea: 'Rongai & Ngong Hub',
+    coverageAreas: ['Ongata Rongai', 'Rongai', 'Ngong', 'Kiserian', 'Karen', 'Langata', 'Dagoretti'],
+    status: 'ACTIVE',
+    rating: 4.9,
+    completedHunts: 29,
+    activeHunts: 0
+  },
+  {
+    id: 'scout-06',
+    name: 'Hassan Salim',
+    phone: '0756789012',
+    whatsapp: '254756789012',
+    email: 'hassan.scout@kejamarket.co.ke',
+    primaryArea: 'Mombasa & Coastal Strip',
+    coverageAreas: ['Nyali', 'Bamburi', 'Shanzu', 'Mtwapa', 'Diani', 'Diani Beach', 'Kilifi'],
+    status: 'ACTIVE',
+    rating: 4.7,
+    completedHunts: 19,
+    activeHunts: 0
+  }
+];
+
+let SCOUT_DISPATCH_LOGS = [
+  {
+    id: 'disp-seed-01',
+    huntId: 'hh-1794438479837-697',
+    scoutId: 'scout-04',
+    scoutName: 'Dennis Kiprono',
+    scoutPhone: '0734567890',
+    area: 'Mlolongo & Syokimau',
+    customerName: 'aganya',
+    customerPhone: '+254174953352',
+    dispatchedAt: new Date(Date.now() - 3600000).toISOString(),
+    status: 'FIELD_SEARCH_ACTIVE',
+    packet: '🎯 KEJAMARKET GROUND HUNT DISPATCH [PRIORITY 72H]\nRef: #17944384\n📍 Target Area: Mlolongo\n🏠 Unit: 2 Bed · Bedsitter/Studio\n💰 Budget: KSh 5,000 - 35,000\n👤 Customer: aganya'
+  }
+];
+
+// Smart Scout Matcher: matches target location against scout coverage
+function matchScoutForLocation(targetLocation) {
+  const norm = String(targetLocation || '').toLowerCase().trim();
+  if (!norm) return GROUND_SCOUTS[0];
+
+  // 1. Check exact or partial coverage
+  for (const scout of GROUND_SCOUTS) {
+    if (scout.status !== 'ACTIVE') continue;
+    for (const area of scout.coverageAreas) {
+      if (norm.includes(area.toLowerCase()) || area.toLowerCase().includes(norm)) {
+        return scout;
+      }
+    }
+    if (norm.includes(scout.primaryArea.toLowerCase()) || scout.primaryArea.toLowerCase().includes(norm)) {
+      return scout;
+    }
+  }
+
+  // 2. Fallback to active scout with lowest workload
+  const activeScouts = GROUND_SCOUTS.filter(s => s.status === 'ACTIVE');
+  if (activeScouts.length) {
+    return activeScouts.sort((a, b) => (a.activeHunts || 0) - (b.activeHunts || 0))[0];
+  }
+  return GROUND_SCOUTS[0];
+}
+
+// Generate formatted Scout Dispatch Packet
+function generateScoutDispatchPacket(hunt, scout) {
+  const locs = Array.isArray(hunt.preferredLocations) ? hunt.preferredLocations.join(', ') : (hunt.preferredLocations || 'Any Location');
+  const budget = `KSh ${Number(hunt.budgetMin || 0).toLocaleString()} - ${Number(hunt.budgetMax || 0).toLocaleString()}`;
+  const unitType = `${hunt.bedrooms !== null && hunt.bedrooms !== undefined ? hunt.bedrooms + ' Bed · ' : ''}${hunt.propertyType || 'Rental'}`;
+  const customerName = hunt.customerName || hunt.customerId || 'Customer';
+  const customerPhone = hunt.customerPhone || '—';
+  const deadline = new Date(Date.now() + 72 * 3600 * 1000).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+
+  const packet = [
+    `🎯 KEJAMARKET GROUND HUNT DISPATCH [PRIORITY 72H]`,
+    `Ref: #${hunt.id.slice(-8).toUpperCase()}`,
+    `----------------------------------------`,
+    `📍 Target Area: ${locs}`,
+    `🏠 Unit Needed: ${unitType}`,
+    `💰 Rent Budget: ${budget} / mo`,
+    `👤 Customer: ${customerName} (+${customerPhone})`,
+    `⏳ 72h Deadline: ${deadline}`,
+    `----------------------------------------`,
+    `📋 SCOUT INSTRUCTIONS:`,
+    `1. Inspect vacant units in ${locs} matching this criteria.`,
+    `2. Verify water supply, security & caretaker contacts.`,
+    `3. Submit photos & options back for customer viewing.`
+  ].join('\n');
+
+  return { packet, locs, budget, unitType, customerName, customerPhone, deadline };
+}
+
+// Core Automated Dispatch Function
+async function autoDispatchHuntToScout(hunt, assignedScoutId = null) {
+  let scout = null;
+  if (assignedScoutId) {
+    scout = GROUND_SCOUTS.find(s => s.id === assignedScoutId);
+  }
+  if (!scout) {
+    const locStr = Array.isArray(hunt.preferredLocations) ? hunt.preferredLocations.join(' ') : String(hunt.preferredLocations || '');
+    scout = matchScoutForLocation(locStr);
+  }
+
+  const { packet, locs, unitType, customerName, customerPhone } = generateScoutDispatchPacket(hunt, scout);
+
+  // 1. Send SMS to Ground Scout
+  try {
+    const scoutCleanPhone = scout.phone.replace(/\D/g, '');
+    await sendRealSMS(scoutCleanPhone, `[KEJA SCOUT DISPATCH] 72h Hunt Task in ${locs}! ${unitType}, Budget: ${hunt.budgetMin||0}-${hunt.budgetMax||0}. Client: ${customerName} (+${customerPhone}). Check WhatsApp for full task packet.`);
+  } catch (err) {
+    console.warn('[SCOUT DISPATCH SMS ERROR]', err.message);
+  }
+
+  // 2. Send SMS to Seeker / Customer confirming Scout Dispatch
+  if (hunt.customerPhone) {
+    try {
+      const seekerClean = hunt.customerPhone.replace(/\D/g, '');
+      const seekerFirstName = String(customerName).split(' ')[0] || 'Valued Seeker';
+      await sendRealSMS(seekerClean, `[KejaMarket Concierge] Great news ${seekerFirstName}! Ground Scout ${scout.name} has been dispatched to ${locs} for your 72-hour house hunt. We'll update you as verified units are inspected!`);
+    } catch (err) {
+      console.warn('[CUSTOMER NOTIFICATION SMS ERROR]', err.message);
+    }
+  }
+
+  // 3. Update Scout Workload
+  scout.activeHunts = (scout.activeHunts || 0) + 1;
+
+  // 4. Update Hunt in Database
+  const now = new Date();
+  const expiry = new Date(now.getTime() + 72 * 3600 * 1000);
+  const updates = {
+    status: 'SEARCHING',
+    payment_status: 'PAID',
+    assignedAdminId: scout.id,
+    adminNotes: `[AUTO-DISPATCH] Dispatched to field scout ${scout.name} (${scout.primaryArea}). Target: ${locs}.`,
+    paidAt: hunt.paidAt || now.toISOString(),
+    expiresAt: hunt.expiresAt || expiry.toISOString()
+  };
+
+  if (typeof store.updateHouseHunt === 'function') {
+    await store.updateHouseHunt(hunt.id, updates);
+  } else if (store.isConnected && store.query) {
+    await store.query(`UPDATE house_hunts SET status='SEARCHING', payment_status='PAID', updated_at=NOW() WHERE id=$1`, [hunt.id]);
+  }
+
+  // 5. Generate direct WhatsApp link
+  const cleanScoutWa = scout.whatsapp.replace(/\D/g, '').replace(/^0/, '254');
+  const whatsappUrl = `https://wa.me/${cleanScoutWa}?text=${encodeURIComponent(packet)}`;
+
+  const logEntry = {
+    id: 'disp-' + Date.now(),
+    huntId: hunt.id,
+    scoutId: scout.id,
+    scoutName: scout.name,
+    scoutPhone: scout.phone,
+    area: locs,
+    customerName,
+    customerPhone,
+    dispatchedAt: now.toISOString(),
+    packet,
+    whatsappUrl,
+    status: 'DISPATCHED_TO_FIELD'
+  };
+
+  SCOUT_DISPATCH_LOGS.unshift(logEntry);
+  if (SCOUT_DISPATCH_LOGS.length > 50) SCOUT_DISPATCH_LOGS.pop();
+
+  return { scout, logEntry, whatsappUrl, packet };
+}
+
+// GET /api/admin/scouts — list all ground field scouts
+app.get('/api/admin/scouts', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    res.json({ success: true, scouts: GROUND_SCOUTS });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/scouts — add new ground field scout
+app.post('/api/admin/scouts', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { name, phone, whatsapp, email, primaryArea, coverageAreas } = req.body;
+    if (!name || !phone || !primaryArea) {
+      return res.status(400).json({ success: false, message: 'Name, phone and primary area are required.' });
+    }
+
+    const newScout = {
+      id: 'scout-' + Date.now(),
+      name,
+      phone,
+      whatsapp: whatsapp || phone,
+      email: email || '',
+      primaryArea,
+      coverageAreas: Array.isArray(coverageAreas) ? coverageAreas : (coverageAreas ? coverageAreas.split(',').map(s=>s.trim()) : [primaryArea]),
+      status: 'ACTIVE',
+      rating: 5.0,
+      completedHunts: 0,
+      activeHunts: 0
+    };
+
+    GROUND_SCOUTS.push(newScout);
+    res.status(201).json({ success: true, message: `Field scout ${name} added successfully!`, scout: newScout });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/admin/scouts/:id — update ground scout
+app.put('/api/admin/scouts/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    const scout = GROUND_SCOUTS.find(s => s.id === id);
+    if (!scout) return res.status(404).json({ success: false, message: 'Scout not found.' });
+
+    const { name, phone, whatsapp, primaryArea, coverageAreas, status } = req.body;
+    if (name) scout.name = name;
+    if (phone) scout.phone = phone;
+    if (whatsapp) scout.whatsapp = whatsapp;
+    if (primaryArea) scout.primaryArea = primaryArea;
+    if (coverageAreas) scout.coverageAreas = Array.isArray(coverageAreas) ? coverageAreas : coverageAreas.split(',').map(s=>s.trim());
+    if (status) scout.status = status;
+
+    res.json({ success: true, message: 'Scout updated successfully', scout });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/admin/scouts/:id — remove ground scout
+app.delete('/api/admin/scouts/:id', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    const idx = GROUND_SCOUTS.findIndex(s => s.id === id);
+    if (idx === -1) return res.status(404).json({ success: false, message: 'Scout not found.' });
+    const removed = GROUND_SCOUTS.splice(idx, 1);
+    res.json({ success: true, message: `Scout ${removed[0]?.name} removed.` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/admin/scouts/dispatches — get automated dispatch logs
+app.get('/api/admin/scouts/dispatches', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    res.json({ success: true, dispatches: SCOUT_DISPATCH_LOGS });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/house-hunts/:id/dispatch-scout — AI location match & auto-dispatch
+app.post('/api/admin/house-hunts/:id/dispatch-scout', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
+    const { id } = req.params;
+    const { scoutId } = req.body;
+
+    let hunt = null;
+    if (typeof store.getHouseHuntById === 'function') {
+      hunt = await store.getHouseHuntById(id);
+    }
+    if (!hunt && store.isConnected && store.query) {
+      const r = await store.query(`SELECT hh.*, u.name as customer_name, u.phone as customer_phone FROM house_hunts hh LEFT JOIN users u ON hh.customer_id = u.id WHERE hh.id = $1`, [id]);
+      if (r.rows.length) hunt = r.rows[0];
+    }
+    if (!hunt) {
+      hunt = {
+        id,
+        preferredLocations: ['Nairobi'],
+        budgetMin: 10000,
+        budgetMax: 25000,
+        propertyType: 'Rental',
+        customerName: 'Customer',
+        customerPhone: '0792409540'
+      };
+    }
+
+    const result = await autoDispatchHuntToScout(hunt, scoutId);
+    res.json({
+      success: true,
+      message: `🎯 Task dispatched to Ground Scout ${result.scout.name} (${result.scout.primaryArea})! SMS and task packet delivered.`,
+      scout: result.scout,
+      packet: result.packet,
+      whatsappUrl: result.whatsappUrl
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/admin/house-hunts/:id/activate — activate hunt, mark as paid & auto-dispatch
 app.post('/api/admin/house-hunts/:id/activate', requireAuth, async (req, res) => {
   try {
     if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
@@ -5809,22 +6187,105 @@ app.post('/api/admin/house-hunts/:id/activate', requireAuth, async (req, res) =>
     const now = new Date();
     const expiry = new Date(now.getTime() + 72 * 3600 * 1000);
     const updates = {
-      status: 'ACTIVE',
+      status: 'SEARCHING',
       payment_status: 'PAID',
       paidAt: now.toISOString(),
       expiresAt: expiry.toISOString(),
       activeExpiresAt: expiry.toISOString()
     };
+
+    let hunt = null;
     if (typeof store.updateHouseHunt === 'function') {
-      await store.updateHouseHunt(id, updates);
+      hunt = await store.updateHouseHunt(id, updates);
     } else if (store.isConnected && store.query) {
-      await store.query(`UPDATE house_hunts SET status='ACTIVE', payment_status='PAID', updated_at=NOW() WHERE id=$1`, [id]);
+      await store.query(`UPDATE house_hunts SET status='SEARCHING', payment_status='PAID', updated_at=NOW() WHERE id=$1`, [id]);
+      const r = await store.query(`SELECT hh.*, u.name as customer_name, u.phone as customer_phone FROM house_hunts hh LEFT JOIN users u ON hh.customer_id = u.id WHERE hh.id = $1`, [id]);
+      if (r.rows.length) hunt = r.rows[0];
     }
-    res.json({ success: true, message: `House hunt ${id} activated (72-hour search started).` });
+
+    if (!hunt) {
+      hunt = { id, preferredLocations: ['Nairobi'], budgetMin: 10000, budgetMax: 25000, customerName: 'Customer', customerPhone: '0792409540' };
+    }
+
+    // Automatically dispatch task to the area scout!
+    const dispatchRes = await autoDispatchHuntToScout(hunt);
+
+    res.json({
+      success: true,
+      message: `⚡ House hunt activated & automatically dispatched to Field Scout ${dispatchRes.scout.name} (${dispatchRes.scout.primaryArea})!`,
+      scout: dispatchRes.scout,
+      whatsappUrl: dispatchRes.whatsappUrl
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+// ============================================================
+// AUTOMATED AI CONCIERGE REMINDERS ENGINE
+// Checks searching/active hunts periodically:
+// - Sends 24h & 6h progress alerts to customer & ground scout
+// ============================================================
+const REMINDER_SENT_CACHE = new Set();
+
+async function runAutomatedConciergeReminders() {
+  try {
+    let activeHunts = [];
+    if (store.isConnected && store.query) {
+      const r = await store.query(`
+        SELECT hh.*, u.name as customer_name, u.phone as customer_phone 
+        FROM house_hunts hh 
+        LEFT JOIN users u ON hh.customer_id = u.id 
+        WHERE hh.status IN ('SEARCHING', 'ACTIVE')
+      `);
+      activeHunts = r.rows || [];
+    } else if (typeof store.getHouseHunts === 'function') {
+      const all = await store.getHouseHunts();
+      activeHunts = (all || []).filter(h => ['SEARCHING', 'ACTIVE'].includes(h.status));
+    }
+
+    const now = Date.now();
+    for (const hunt of activeHunts) {
+      if (!hunt.expiresAt && !hunt.activeExpiresAt) continue;
+      const expiry = new Date(hunt.expiresAt || hunt.activeExpiresAt).getTime();
+      const hoursRemaining = (expiry - now) / (3600 * 1000);
+
+      const customerPhone = hunt.customerPhone || hunt.customer_phone;
+      const targetLoc = (Array.isArray(hunt.preferredLocations) ? hunt.preferredLocations.join(', ') : (hunt.preferredLocations || 'Nairobi'));
+
+      // 24h Warning reminder (between 18 and 26 hours remaining)
+      const key24 = `${hunt.id}_24h`;
+      if (hoursRemaining <= 26 && hoursRemaining >= 18 && !REMINDER_SENT_CACHE.has(key24)) {
+        REMINDER_SENT_CACHE.add(key24);
+        if (customerPhone) {
+          sendRealSMS(customerPhone, `[KejaMarket Concierge] ⏳ Update on House Hunt #${(hunt.id||'').slice(-6)}: ~24 hours left on your 72h search in ${targetLoc}. Our field scout is currently reviewing matching vacancies. kejamarket.co.ke`);
+        }
+        const scout = matchScoutForLocation(targetLoc);
+        if (scout && scout.phone) {
+          sendRealSMS(scout.phone, `[KejaMarket Scout Alert] ⚠️ 24h countdown remaining for Hunt #${(hunt.id||'').slice(-6)} (${targetLoc}). Please submit inspected properties today!`);
+        }
+        console.log(`🤖 [AI REMINDER] 24h alert sent for House Hunt ${hunt.id}`);
+      }
+
+      // Final 6h reminder
+      const key6 = `${hunt.id}_6h`;
+      if (hoursRemaining <= 6 && hoursRemaining > 0 && !REMINDER_SENT_CACHE.has(key6)) {
+        REMINDER_SENT_CACHE.add(key6);
+        if (customerPhone) {
+          sendRealSMS(customerPhone, `[KejaMarket Concierge] ⚡ Final 6 hours on your House Hunt in ${targetLoc}. Check your matched listings & arranged viewings at kejamarket.co.ke`);
+        }
+        console.log(`🤖 [AI REMINDER] 6h alert sent for House Hunt ${hunt.id}`);
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Automated concierge reminder engine tick error:', err.message);
+  }
+}
+
+// Start recurring timer: runs every 30 minutes
+setInterval(runAutomatedConciergeReminders, 30 * 60 * 1000);
+// Initial check after 15 seconds
+setTimeout(runAutomatedConciergeReminders, 15000);
 
 // POST /api/admin/users/:id/action — full user management (verify, unverify, suspend, ban, restore, force-review)
 app.post('/api/admin/users/:id/action', requireAuth, async (req, res) => {

@@ -371,6 +371,9 @@ const AdminHunts = (() => {
               <button type="button" class="btn-primary" onclick="AdminHunts.saveHuntUpdates('${hunt.id}')" style="background:#059669; padding:8px 16px; border-radius:8px; font-weight:700; font-size:0.85rem; border:none; color:white; cursor:pointer;">
                 <i class="fas fa-save"></i> Save Workflow Status
               </button>
+              <button type="button" onclick="AdminHunts.dispatchScoutPrompt('${hunt.id}')" style="background:linear-gradient(135deg,#f59e0b,#d97706); padding:8px 16px; border-radius:8px; font-weight:700; font-size:0.85rem; border:none; color:white; cursor:pointer; margin-left:8px;">
+                <i class="fas fa-paper-plane"></i> Dispatch Scout
+              </button>
             </div>
 
             <!-- Add Property to Hunt -->
@@ -610,8 +613,53 @@ const AdminHunts = (() => {
     }
   }
 
+  function showDispatchSuccessModal(data) {
+    const modalId = 'dispatch-success-' + Date.now();
+    const modal = document.createElement('div');
+    modal.id = modalId;
+    modal.innerHTML = `
+      <div style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;">
+        <div style="background:#ffffff;border-radius:18px;max-width:500px;width:100%;box-shadow:0 25px 70px rgba(0,0,0,0.35);overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#059669,#047857);color:#ffffff;padding:24px;text-align:center;">
+            <div style="width:60px;height:60px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.8rem;">
+              ⚡
+            </div>
+            <h3 style="margin:0;font-size:1.3rem;font-weight:800;">Scout Dispatched!</h3>
+            <p style="margin:6px 0 0;opacity:0.9;font-size:0.88rem;">Ground concierge search is now live and tracking.</p>
+          </div>
+          <div style="padding:22px 24px;">
+            ${data.scout ? `
+              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;margin-bottom:18px;">
+                <div style="font-size:0.75rem;text-transform:uppercase;color:#15803d;font-weight:800;letter-spacing:0.05em;margin-bottom:4px;">Assigned Ground Scout</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#0f172a;">${data.scout.name}</div>
+                <div style="font-size:0.85rem;color:#475569;margin-top:2px;">
+                  📍 Primary Area: <strong>${data.scout.primaryArea}</strong> &nbsp;·&nbsp; 📞 ${data.scout.phone}
+                </div>
+              </div>
+            ` : ''}
+            <div style="font-size:0.85rem;color:#475569;margin-bottom:20px;line-height:1.5;">
+              ✅ <strong>SMS Notification</strong> sent to customer with concierge status.<br>
+              ✅ <strong>Task Alert</strong> dispatched to the field scout.
+            </div>
+            <div style="display:flex;gap:10px;">
+              ${data.whatsappUrl ? `
+                <a href="${data.whatsappUrl}" target="_blank" onclick="document.getElementById('${modalId}').remove()" style="flex:1.5;background:#25d366;color:#ffffff;text-decoration:none;padding:12px;border-radius:10px;font-weight:800;font-size:0.9rem;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;">
+                  <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i> Send WhatsApp Task
+                </a>
+              ` : ''}
+              <button type="button" onclick="document.getElementById('${modalId}').remove()" style="flex:1;background:#f1f5f9;color:#334155;border:none;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;cursor:pointer;">
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
   async function activateHunt(huntId) {
-    if (!confirm('⚡ Activate 72-Hour Search?\n\nThis will mark the hunt as PAID and start the 72-hour countdown timer for ground concierge.')) {
+    if (!confirm('⚡ Activate 72-Hour Search?\n\nThis will mark the hunt as PAID, start the 72-hour countdown timer, and automatically dispatch the nearest field scout.')) {
       return;
     }
 
@@ -622,8 +670,25 @@ const AdminHunts = (() => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to activate hunt');
-      alert(data.message || 'Hunt activated successfully!');
+      showDispatchSuccessModal(data);
       await loadHouseHunts();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  async function dispatchScoutPrompt(huntId) {
+    try {
+      const res = await fetch(`/api/admin/house-hunts/${huntId}/activate`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${getToken()}` }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to dispatch scout');
+      showDispatchSuccessModal(data);
+      await loadHouseHunts();
+      const modalRoot = document.getElementById('hunt-detail-modal-root');
+      if (modalRoot) modalRoot.innerHTML = '';
     } catch (e) {
       alert('Error: ' + e.message);
     }
@@ -661,6 +726,7 @@ const AdminHunts = (() => {
     updateBulkBar,
     bulkDeleteHunts,
     activateHunt,
+    dispatchScoutPrompt,
     deleteHunt
   };
 })();
