@@ -1149,6 +1149,20 @@ class NairobiRentalsApp {
     if (numEl) {
       numEl.textContent = count.toLocaleString();
     }
+
+    const locTextEl = document.querySelector('.results-location-text');
+    if (locTextEl) {
+      const locName = this.selectedSuburb || 'Nairobi & Environs';
+      if (this.currentFilterMode === 'services') {
+        locTextEl.innerHTML = `Verified Service Providers in <span id="results-count-loc">${locName}</span>`;
+      } else if (this.currentFilterMode === 'marketplace') {
+        locTextEl.innerHTML = `Used Items & Moving Sale in <span id="results-count-loc">${locName}</span>`;
+      } else if (this.activeCategory === 'Land') {
+        locTextEl.innerHTML = `Plots & Land for Sale in <span id="results-count-loc">${locName}</span>`;
+      } else {
+        locTextEl.innerHTML = `Properties in <span id="results-count-loc">${locName}</span>`;
+      }
+    }
   }
 
   resetFilters() {
@@ -3885,37 +3899,61 @@ class NairobiRentalsApp {
 
     this.filteredProperties = filteredServices;
     this.renderListingsSummary();
+    this.updateResultsCountDisplay();
     const gridEl = document.getElementById('property-grid');
     if (!gridEl) return;
     if (filteredServices.length === 0) {
-      gridEl.innerHTML = `<div class="empty-state-box"><i class="fas fa-tools"></i><h3>No Services Found</h3><p>No service providers match your criteria. Try a different category or location.</p></div>`;
+      gridEl.innerHTML = `<div class="empty-state-box" style="text-align:center;padding:48px 20px;grid-column:1/-1;"><i class="fas fa-tools" style="font-size:3rem;color:#cbd5e1;margin-bottom:12px;display:block;"></i><h3 style="font-size:1.2rem;font-weight:800;color:#1e293b;margin:0 0 6px;">No Services Found</h3><p style="color:#64748b;font-size:0.9rem;margin:0;">No verified service providers currently match your location filter. Try selecting "All Areas".</p></div>`;
       return;
     }
     gridEl.innerHTML = filteredServices.slice((this.currentPage-1)*this.pageSize, this.currentPage*this.pageSize).map(s => {
-      const phone = s.phone || '+254792409540';
-      const wa = `https://wa.me/${phone.replace(/\D/g,'')}`;
-      const img = (s.images && s.images[0]) ? s.images[0] : '/icons/placeholder.png';
-      const catNames = { plumbing:'Plumbing',electrical:'Electrical',cleaning:'Cleaning',painting:'Painting',pest_control:'Pest Control',carpentry:'Carpentry',security:'Security',caretaking:'Caretaking',moving:'Moving Services',laundry:'Laundry',garbage:'Garbage Collection',gas:'Gas Refills',water:'Water Delivery' };
-      const catLabel = catNames[s.category] || s.category || 'Service';
-      return `<div class="property-card" style="position:relative;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.08);transition:transform 0.2s;" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform='translateY(0)'">
-        <div style="height:160px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-          ${ s.images && s.images[0] ? `<img src="${s.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-tools" style="color:rgba(255,255,255,0.6);"></i>' }
-        </div>
-        <div style="padding:14px 14px 10px;">
-          <div style="font-weight:700;font-size:1rem;color:#1e1b4b;margin-bottom:4px;">${s.businessName || s.providerName || 'Service Provider'}</div>
-          <div style="font-size:0.8rem;color:#7c3aed;font-weight:600;margin-bottom:6px;"><i class="fas fa-tools"></i> ${catLabel}</div>
-          ${s.description ? `<div style="font-size:0.82rem;color:#64748b;margin-bottom:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${s.description}</div>` : ''}
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
-            ${s.serviceAreas || s.location ? `<span style="font-size:0.78rem;color:#64748b;"><i class="fas fa-map-marker-alt"></i> ${s.serviceAreas || s.location}</span>` : ''}
-            ${s.price ? `<span style="font-size:0.88rem;font-weight:700;color:#10b981;">KSh ${Number(s.price).toLocaleString()}</span>` : ''}
+      const phone = s.provider_phone || s.phone || '+254792409540';
+      const cleanWa = String(phone).replace(/\D/g,'');
+      const wa = `https://wa.me/${cleanWa.startsWith('0') ? '254' + cleanWa.slice(1) : cleanWa}?text=Hello%20${encodeURIComponent(s.title || s.provider_name || s.businessName || 'Service Provider')}%2C%20I%20found%20your%20service%20on%20KejaMarket`;
+      const img = (s.images && s.images[0]) ? s.images[0] : (s.photos && s.photos[0]) ? s.photos[0] : null;
+      const catNames = { plumbing:'Plumbing', electrical:'Electrical', cleaning:'Cleaning', painting:'Painting', pest_control:'Pest Control', carpentry:'Carpentry', security:'Security', caretaking:'Caretaking', moving:'Moving Services', laundry:'Laundry', repairs:'Repairs & Handyman', wifi:'WiFi / Fibre' };
+      const catKey = s.service_type || s.category || 'service';
+      const catLabel = catNames[catKey] || s.title || 'Verified Service';
+      const title = s.title || s.businessName || s.provider_name || 'Verified Service Provider';
+      const rating = s.provider_rating || s.rating || '4.9';
+      const reviews = s.review_count || 12;
+      const priceStr = s.price_min ? `From KSh ${Number(s.price_min).toLocaleString()}` : (s.price ? `KSh ${Number(s.price).toLocaleString()}` : 'Free Quote');
+
+      return `
+        <div class="property-card km-service-card" style="border-radius:16px; overflow:hidden; background:#fff; box-shadow:0 3px 14px rgba(0,0,0,0.06); border:1px solid #e2e8f0; display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s;" onmouseenter="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)'" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='0 3px 14px rgba(0,0,0,0.06)'">
+          <div style="height:170px; background:linear-gradient(135deg,#059669,#047857); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+            ${img ? `<img src="${img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` : ''}
+            <div style="display:${img ? 'none' : 'flex'}; align-items:center; justify-content:center; width:100%; height:100%; color:rgba(255,255,255,0.7); font-size:3.5rem;">
+              <i class="fas fa-tools"></i>
+            </div>
+            <span style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.65); backdrop-filter:blur(4px); color:#fff; font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:20px;">
+              <i class="fas fa-check-circle" style="color:#22c55e;"></i> Verified Service
+            </span>
+            <span style="position:absolute; bottom:12px; right:12px; background:#fff; color:#0f172a; font-size:0.8rem; font-weight:800; padding:4px 10px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+              ⭐ ${rating} <small style="color:#64748b;">(${reviews})</small>
+            </span>
           </div>
-          <div style="display:flex;gap:6px;margin-top:8px;">
-            <a href="tel:${phone}" style="flex:1;text-align:center;padding:7px;background:#f0fdf4;color:#166534;border-radius:8px;font-size:0.78rem;font-weight:600;text-decoration:none;"><i class="fas fa-phone"></i> Call</a>
-            <a href="${wa}" target="_blank" style="flex:1;text-align:center;padding:7px;background:#dcfce7;color:#15803d;border-radius:8px;font-size:0.78rem;font-weight:600;text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-            <button onclick="PropertyCommunication && PropertyCommunication.requestService('${s.id}','${(s.businessName||'').replace(/'/g,'')}')" style="flex:1;padding:7px;background:#ede9fe;color:#7c3aed;border:none;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;"><i class="fas fa-paper-plane"></i> Request</button>
+          <div style="padding:16px; flex:1; display:flex; flex-direction:column;">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:#059669; font-weight:800; letter-spacing:0.4px; margin-bottom:4px;">${catLabel}</div>
+            <h4 style="margin:0 0 6px; font-size:1.05rem; font-weight:800; color:#0f172a; line-height:1.3;">${title}</h4>
+            <p style="margin:0 0 10px; font-size:0.82rem; color:#64748b; line-height:1.45; flex:1; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+              ${s.description || 'Professional home and commercial services. Timely delivery and verified quality guaranteed.'}
+            </p>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-top:8px; border-top:1px solid #f1f5f9;">
+              <span style="font-size:0.78rem; color:#64748b;"><i class="fas fa-map-marker-alt" style="color:#059669;"></i> ${s.coverage_area || s.serviceAreas || s.location || 'Nairobi Metropolitan'}</span>
+              <span style="font-size:0.95rem; font-weight:800; color:#059669;">${priceStr}</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <a href="tel:${phone}" style="flex:1; background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; text-decoration:none; padding:9px; border-radius:9px; font-weight:700; font-size:0.82rem; text-align:center; display:flex; align-items:center; justify-content:center; gap:5px;">
+                <i class="fas fa-phone-alt"></i> Call
+              </a>
+              <a href="${wa}" target="_blank" style="flex:1.5; background:#25d366; color:#fff; text-decoration:none; padding:9px; border-radius:9px; font-weight:800; font-size:0.82rem; text-align:center; display:flex; align-items:center; justify-content:center; gap:5px;">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+              </a>
+            </div>
           </div>
         </div>
-      </div>`;
+      `;
     }).join('');
   }
 
@@ -3942,6 +3980,7 @@ class NairobiRentalsApp {
 
     this.filteredProperties = this.marketplaceItems;
     this.renderListingsSummary();
+    this.updateResultsCountDisplay();
     const gridEl = document.getElementById('property-grid');
     if (!gridEl) return;
     if (!this.marketplaceItems.length) {

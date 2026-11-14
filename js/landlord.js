@@ -682,8 +682,10 @@ class LandlordManager {
         corridorId: suburbObj.corridorId,
         estateSuburb: suburb,
         exactLocation: suburb + ', Nairobi Metro Area',
-        latitude: this.selectedCoords.lat,
-        longitude: this.selectedCoords.lng,
+        latitude: parseFloat(document.getElementById('post-lat')?.value) || this.selectedCoords.lat,
+        longitude: parseFloat(document.getElementById('post-lng')?.value) || this.selectedCoords.lng,
+        locationAccuracy: parseFloat(document.getElementById('post-loc-accuracy')?.value) || null,
+        hasLiveLocation: Boolean(document.getElementById('post-lat')?.value),
         
         // NEW: Hierarchical location fields
         locationHierarchyId: locationHierarchyId,

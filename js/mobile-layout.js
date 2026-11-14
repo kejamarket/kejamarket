@@ -33,7 +33,9 @@
     countdownTarget: null,
     countdownInterval: null,
     selectedViewingType: 'physical',
-    selectedViewingTime: '10:00 AM'
+    selectedViewingTime: '10:00 AM',
+    services: [],
+    marketplaceItems: []
   };
 
   // Comprehensive Kenya Counties & Residential Areas Master Database for Filters
@@ -756,6 +758,7 @@
     // Fetch initial property data
     await loadProperties();
     loadMarketplaceItems();
+      loadServicesItems();
 
     // Load sample messages
     loadSampleMessages();
@@ -1458,6 +1461,16 @@
           document.querySelectorAll('.km-mob-panel').forEach(p => p.classList.remove('km-mob-panel-active'));
           const panel = document.getElementById('km-mob-panel-' + tab);
           if (panel) panel.classList.add('km-mob-panel-active');
+
+          if (tab === 'services') {
+            if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('services');
+          } else if (tab === 'useditems') {
+            if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('marketplace');
+          } else if (tab === 'land') {
+            if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('land');
+          } else if (tab === 'rentals') {
+            if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('all');
+          }
         }
       </script>
 
@@ -1533,7 +1546,11 @@
       ` : ''}
 
       <!-- Listings Feed: 2-Column Grid or 1-Column List -->
-      ${State.selectedCategory === 'marketplace' ? `
+      ${State.selectedCategory === 'services' ? `
+        <div class="km-property-grid">
+          ${renderServicesGridHtml(State.services || [])}
+        </div>
+      ` : State.selectedCategory === 'marketplace' ? `
         <div class="km-property-grid">
           ${renderMarketplaceGridHtml(State.marketplaceItems || [])}
         </div>
@@ -3241,6 +3258,14 @@
     document.querySelectorAll('.km-story-bubble').forEach(b => {
       b.classList.remove('active');
     });
+    if (cat === 'marketplace' && (!State.marketplaceItems || State.marketplaceItems.length === 0)) {
+      loadMarketplaceItems().then(() => showScreen('home'));
+      return;
+    }
+    if (cat === 'services' && (!State.services || State.services.length === 0)) {
+      loadServicesItems().then(() => showScreen('home'));
+      return;
+    }
     showScreen('home');
   }
 
@@ -3643,6 +3668,63 @@
                 <i class="fab fa-whatsapp"></i> Chat
               </button>
               <a href="tel:${sellerPhone}" class="km-card-call-btn" style="width:33px; height:33px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; color:#0f172a; text-decoration:none;">
+                <i class="fas fa-phone-alt" style="font-size:11.5px;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function loadServicesItems() {
+    try {
+      const res = await fetch('/api/services');
+      if (res.ok) {
+        const data = await res.json();
+        State.services = data.services || [];
+      }
+    } catch (err) {
+      State.services = [];
+    }
+  }
+
+  function renderServicesGridHtml(services) {
+    if (!services || !services.length) {
+      return `
+        <div style="grid-column:1/-1; text-align:center; padding:40px 16px; background:white; border-radius:16px; border:1px dashed #cbd5e1;">
+          <div style="font-size:38px; color:#7c3aed; margin-bottom:8px;"><i class="fas fa-tools"></i></div>
+          <div style="font-weight:800; font-size:15px; color:#0f172a;">No Services Found</div>
+          <div style="font-size:12.5px; color:#64748b; margin-top:4px;">Try a different area or category.</div>
+        </div>
+      `;
+    }
+    return services.map(s => {
+      const phone = s.provider_phone || s.phone || '+254792409540';
+      const cleanPhone = phone.replace(/\D/g, '');
+      const wa = `https://wa.me/${cleanPhone.startsWith('0') ? '254' + cleanPhone.slice(1) : cleanPhone}`;
+      const img = (s.images && s.images[0]) ? (s.images[0].url || s.images[0]) : null;
+      const catNames = { cleaning:'Cleaning', moving:'Moving', repairs:'Repairs', wifi:'WiFi/Fibre', plumbing:'Plumbing', electrical:'Electrical', painting:'Painting', pest_control:'Pest Control', security:'Security' };
+      const catLabel = catNames[s.service_type] || s.title || 'Service';
+      const priceStr = s.price_min ? `From KSh ${Number(s.price_min).toLocaleString()}` : 'Free Quote';
+      return `
+        <div class="km-property-card" style="border:1px solid #ddd6fe; border-radius:14px; overflow:hidden; background:#fff;">
+          <div style="height:120px; background:linear-gradient(135deg,#059669,#047857); position:relative; display:flex; align-items:center; justify-content:center;">
+            ${img ? `<img src="${img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">` : '<i class="fas fa-tools" style="font-size:2.5rem; color:rgba(255,255,255,0.7);"></i>'}
+            <span style="position:absolute; top:8px; left:8px; background:rgba(0,0,0,0.6); color:#fff; font-size:9.5px; font-weight:800; padding:3px 8px; border-radius:20px;">
+              <i class="fas fa-check-circle" style="color:#22c55e;"></i> Verified
+            </span>
+          </div>
+          <div style="padding:10px;">
+            <div style="font-size:10px; color:#059669; font-weight:800; text-transform:uppercase; margin-bottom:2px;">${catLabel}</div>
+            <div style="font-size:12.5px; font-weight:800; color:#0f172a; margin-bottom:4px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${s.title || s.provider_name || 'Service Provider'}</div>
+            <div style="font-size:10px; color:#64748b; margin-bottom:6px;">⭐ ${s.provider_rating || '4.9'} · ${s.coverage_area || 'Nairobi'}</div>
+            <div style="font-size:11.5px; font-weight:800; color:#059669; margin-bottom:8px;">${priceStr}</div>
+            <div style="display:flex; gap:6px;">
+              <a href="${wa}" target="_blank" style="flex:1.5; background:#25d366; color:#fff; border-radius:8px; padding:7px; text-align:center; text-decoration:none; font-size:11.5px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:4px;">
+                <i class="fab fa-whatsapp"></i> Chat
+              </a>
+              <a href="tel:${phone}" style="width:33px; height:33px; background:#f1f5f9; border-radius:8px; display:flex; align-items:center; justify-content:center; text-decoration:none; color:#0f172a; flex-shrink:0;">
                 <i class="fas fa-phone-alt" style="font-size:11.5px;"></i>
               </a>
             </div>

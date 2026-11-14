@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=100.0&t=20261114_tenant_rbac_backbutton" as="style">
-  <link rel="preload" href="js/app.js?v=102.0&t=20261114_desktop_listings_and_admin" as="script">
+  <link rel="preload" href="js/app.js?v=105.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -1209,10 +1209,34 @@
             document.querySelectorAll('.km-tab-panel').forEach(p => p.classList.remove('km-panel-active'));
             const panel = document.getElementById('km-panel-' + tab);
             if (panel) panel.classList.add('km-panel-active');
-            // Filter category
-            if (tab === 'rentals') { if(app && app.setCategory) app.setCategory('All'); }
-            else if (tab === 'land') { if(app && app.filterCategory) app.filterCategory('Land', null); }
-            else if (tab === 'useditems') { if(app && app.filterCategory) app.filterCategory('Marketplace', null); }
+
+            if (tab === 'services') {
+              if (window.app && typeof window.app.switchFilterTab === 'function') {
+                window.app.switchFilterTab('services');
+              }
+            } else if (tab === 'useditems') {
+              if (window.app && typeof window.app.switchFilterTab === 'function') {
+                window.app.switchFilterTab('marketplace');
+              }
+            } else if (tab === 'land') {
+              if (window.app) {
+                if (window.app.currentFilterMode !== 'properties' && typeof window.app.switchFilterTab === 'function') {
+                  window.app.switchFilterTab('properties');
+                }
+                if (typeof window.app.setCategory === 'function') {
+                  window.app.setCategory('Land');
+                }
+              }
+            } else if (tab === 'rentals') {
+              if (window.app) {
+                if (window.app.currentFilterMode !== 'properties' && typeof window.app.switchFilterTab === 'function') {
+                  window.app.switchFilterTab('properties');
+                }
+                if (typeof window.app.setCategory === 'function') {
+                  window.app.setCategory('All');
+                }
+              }
+            }
           }
         </script>
         <!-- Major Towns Quick Filter Pills Bar -->
@@ -2217,13 +2241,34 @@
           </div>
 
           <div class="form-grid-2">
-            <div class="form-group">
-              <label>Estate / Area / Suburb * <small style="color: #64748b;">(Start typing...)</small></label>
-              <input type="text" id="post-suburb-search" class="form-control" placeholder="Type estate name (e.g. Ruaka, Kilimani, Mlolongo...)" autocomplete="off" required>
+            <div class="form-group" style="position: relative;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <label style="margin: 0; font-weight: 700;">Estate / Area / Suburb *</label>
+                <button type="button" id="btn-use-live-location" onclick="captureLiveListingLocation()" style="background: #f0fdf4; border: 1.5px solid #86efac; color: #15803d; border-radius: 8px; padding: 4px 10px; font-size: 0.74rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all 0.2s;">
+                  <i class="fas fa-crosshairs"></i> Use Live GPS Location
+                </button>
+              </div>
+              <input type="text" id="post-suburb-search" class="form-control" placeholder="Type estate name or tap 'Use Live GPS'..." autocomplete="off" required>
+              <input type="hidden" id="post-lat" name="latitude">
+              <input type="hidden" id="post-lng" name="longitude">
+              <input type="hidden" id="post-loc-accuracy" name="locationAccuracy">
               <input type="hidden" id="post-location-hierarchy-id" name="locationHierarchyId">
               <input type="hidden" id="post-location-path-ids" name="locationPathIds">
               <input type="hidden" id="post-location-full-path" name="locationFullPath">
               <div id="location-search-container"></div>
+              
+              <!-- Live GPS Status Pill -->
+              <div id="post-live-location-badge" style="display: none; margin-top: 6px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px 12px; font-size: 0.78rem; color: #166534; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <i class="fas fa-map-pin" style="color: #15803d; font-size: 1rem;"></i>
+                  <div>
+                    <strong id="live-loc-name">Live GPS Captured</strong>
+                    <div id="live-loc-coords" style="font-size: 0.7rem; color: #64748b;">-1.2921, 36.8219 (±15m)</div>
+                  </div>
+                </div>
+                <button type="button" onclick="clearLiveListingLocation()" style="background: none; border: none; color: #dc2626; font-size: 0.8rem; cursor: pointer; font-weight: 700;">&times; Clear</button>
+              </div>
+
               <!-- Legacy fallback -->
               <select id="post-suburb" class="form-control" style="display: none;"></select>
               <div id="suburb-suggestions" style="position: absolute; background: white; border: 1px solid #e2e8f0; border-radius: 8px; max-height: 200px; overflow-y: auto; width: 100%; z-index: 1000; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
@@ -5467,18 +5512,18 @@
   <script src="js/map.js?v=6.1&t=202610180330" defer></script>
 
   <!-- Landlord & Management (Must load before app.init) -->
-  <script src="js/landlord.js?v=7.1&t=202610180330" defer></script>
+  <script src="js/landlord.js?v=105.0" defer></script>
 
   <!-- Critical: Core functionality & Auth -->
   <script src="js/offline-manager.js?v=32.0" defer></script>
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/components/location-picker.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
-  <script src="js/app.js?v=102.0&t=20261114_desktop_listings_and_admin" defer></script>
+  <script src="js/app.js?v=105.0" defer></script>
   <script src="js/viewing-booking.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
-  <script src="js/mobile-layout.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
+  <script src="js/mobile-layout.js?v=105.0" defer></script>
   
   <!-- Secondary Features: Deferred loading -->
   <script src="js/reviews.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
@@ -5687,7 +5732,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=104.0_jiji_support');
+      navigator.serviceWorker.register('/sw.js?v=105.0');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->
@@ -6689,6 +6734,98 @@
       </div>
     </div>
   </div>
+
+<script>
+window.captureLiveListingLocation = function() {
+  const btn = document.getElementById('btn-use-live-location');
+  const badge = document.getElementById('post-live-location-badge');
+  const searchInput = document.getElementById('post-suburb-search');
+  const latInput = document.getElementById('post-lat');
+  const lngInput = document.getElementById('post-lng');
+  const accInput = document.getElementById('post-loc-accuracy');
+  const nameEl = document.getElementById('live-loc-name');
+  const coordsEl = document.getElementById('live-loc-coords');
+
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser.');
+    return;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting GPS...';
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const accuracy = Math.round(position.coords.accuracy || 10);
+
+      if (latInput) latInput.value = lat;
+      if (lngInput) lngInput.value = lng;
+      if (accInput) accInput.value = accuracy;
+
+      if (window.landlordManager) {
+        window.landlordManager.selectedCoords = { lat, lng };
+      }
+
+      let detectedArea = 'Nairobi Metro';
+      try {
+        const revRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (revRes.ok) {
+          const revData = await revRes.json();
+          const addr = revData.address || {};
+          detectedArea = addr.suburb || addr.neighbourhood || addr.residential || addr.quarter || addr.city_district || addr.town || addr.city || 'Nairobi';
+        }
+      } catch (e) {
+        console.warn('Reverse geocode error:', e);
+      }
+
+      if (searchInput) searchInput.value = detectedArea;
+      if (nameEl) nameEl.textContent = '📍 ' + detectedArea + ' (Live GPS Locked)';
+      if (coordsEl) coordsEl.textContent = lat.toFixed(4) + ', ' + lng.toFixed(4) + ' (±' + accuracy + 'm accuracy)';
+      if (badge) badge.style.display = 'flex';
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle" style="color:#15803d;"></i> GPS Locked';
+        btn.style.background = '#dcfce7';
+        btn.style.borderColor = '#4ade80';
+      }
+    },
+    (err) => {
+      console.warn('Geolocation error:', err);
+      let msg = 'Could not retrieve your live location. Please ensure location permissions are enabled.';
+      if (err.code === 1) msg = 'Location permission denied. Please allow location access in your browser settings.';
+      alert(msg);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-crosshairs"></i> Use Live GPS Location';
+      }
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
+};
+
+window.clearLiveListingLocation = function() {
+  const badge = document.getElementById('post-live-location-badge');
+  const latInput = document.getElementById('post-lat');
+  const lngInput = document.getElementById('post-lng');
+  const btn = document.getElementById('btn-use-live-location');
+  if (latInput) latInput.value = '';
+  if (lngInput) lngInput.value = '';
+  if (badge) badge.style.display = 'none';
+  if (btn) {
+    btn.innerHTML = '<i class="fas fa-crosshairs"></i> Use Live GPS Location';
+    btn.style.background = '#f0fdf4';
+    btn.style.borderColor = '#86efac';
+  }
+};
+</script>
+
 </body>
 </html>>
 

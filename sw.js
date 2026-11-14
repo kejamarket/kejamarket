@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v104-jiji-support-footer-suite';
+const CACHE_NAME = 'kejamarket-v105-services-tabs-gps';
 
 const STATIC_ASSETS = [
   '/',
