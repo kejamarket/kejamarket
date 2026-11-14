@@ -1,6 +1,6 @@
 /* ==========================================================================
    KejaMarket Homepage — 100% Reference Match
-   Poppins font | #1db010 green | #e52b2b red | #0d2f2f teal footer
+   Poppins font | #22c55e green | #e52b2b red | #0d2f2f teal footer
    ========================================================================== */
 
 /* ── FONT ──────────────────────────────────────────────────────────────────── */
@@ -21,7 +21,7 @@ button, input, select, textarea,
 
 /* ── CSS VARIABLES ─────────────────────────────────────────────────────────── */
 :root {
-  --g:    #1db010;
+  --g:    #22c55e;
   --gd:   #009634;
   --gl:   #e8f8ee;
   --r:    #e52b2b;
@@ -213,7 +213,7 @@ button, input, select, textarea,
 }
 
 .gallery-nav-btn:hover {
-  background: #1db010 !important;
+  background: #22c55e !important;
   border-color: #ffffff !important;
   transform: translateY(-50%) scale(1.08) !important;
 }
@@ -266,7 +266,7 @@ button, input, select, textarea,
 }
 
 .gallery-fullscreen-btn:hover {
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
 }
 
@@ -322,7 +322,7 @@ button, input, select, textarea,
 }
 
 .detail-thumb.active {
-  border-color: #1db010 !important;
+  border-color: #22c55e !important;
   box-shadow: 0 0 0 2px rgba(0, 181, 63, 0.35) !important;
   transform: scale(1.04) !important;
 }
@@ -682,7 +682,7 @@ body { background: #f7f9fb !important; }
   border-radius: var(--r-lg); padding: 10px 14px;
   display: flex; align-items: center; gap: 10px; min-height: 74px; overflow: hidden;
 }
-.kfc--green  { background: linear-gradient(135deg,#1db010,#009634); color:#fff; }
+.kfc--green  { background: linear-gradient(135deg,#22c55e,#009634); color:#fff; }
 .kfc--purple { background: linear-gradient(135deg,#7c3aed,#6d28d9); color:#fff; }
 .kfc--pink   { background: linear-gradient(135deg,#e91e8c,#c2185b); color:#fff; }
 .kfc-text { flex:1; min-width:0; }
@@ -1087,7 +1087,7 @@ body { background: #f7f9fb !important; }
 }
 .km-feature-card:hover {
   transform: translateY(-2px);
-  border-color: #1db010;
+  border-color: #22c55e;
   box-shadow: 0 6px 16px rgba(0,181,63,0.12);
 }
 .km-fc-icon {
@@ -1095,7 +1095,7 @@ body { background: #f7f9fb !important; }
   height: 38px;
   border-radius: 50%;
   background: #e8f8ee;
-  color: #1db010;
+  color: #22c55e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1103,7 +1103,7 @@ body { background: #f7f9fb !important; }
   flex-shrink: 0;
 }
 .km-fc-icon i {
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-size: 1.05rem !important;
 }
 .km-fc-text {
@@ -1136,7 +1136,7 @@ body { background: #f7f9fb !important; }
 }
 .km-feature-card:hover .km-fc-arrow {
   transform: translateX(3px);
-  color: #1db010;
+  color: #22c55e;
 }
 .km-fc--hunt {
   background: #f0fdf4;
@@ -1144,7 +1144,7 @@ body { background: #f7f9fb !important; }
   flex: 1.35;
 }
 .km-fc-cta-btn {
-  background: #1db010;
+  background: #22c55e;
   color: #ffffff;
   border: none;
   border-radius: 20px;
@@ -1215,7 +1215,7 @@ body { background: #f7f9fb !important; }
   gap: 6px !important;
 }
 .btn-card-book-now {
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 6px !important;
@@ -1257,7 +1257,7 @@ body { background: #f7f9fb !important; }
   gap: 4px !important;
 }
 .card-specs-row span i {
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-size: 0.72rem !important;
 }
 .card-bottom-actions-row {
@@ -1286,7 +1286,7 @@ body { background: #f7f9fb !important; }
   border-right: 1px solid #e2e8f0 !important;
 }
 .cbar-btn:hover {
-  color: #1db010 !important;
+  color: #22c55e !important;
   background: #e8f8ee !important;
 }
 .cbar-btn.active {
@@ -1346,12 +1346,12 @@ body { background: #f7f9fb !important; }
   margin-bottom: 3px !important;
 }
 .km-share-loc i {
-  color: #1db010 !important;
+  color: #22c55e !important;
 }
 .km-share-price {
   font-size: 0.88rem !important;
   font-weight: 800 !important;
-  color: #1db010 !important;
+  color: #22c55e !important;
 }
 .km-share-specs {
   font-size: 0.68rem !important;
@@ -1424,7 +1424,7 @@ body { background: #f7f9fb !important; }
   font-family: monospace !important;
 }
 .km-share-copy-btn {
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 8px !important;
@@ -1471,7 +1471,7 @@ body { background: #f7f9fb !important; }
 }
 .km-sm-btn:hover {
   background: #ffffff;
-  border-color: #1db010;
+  border-color: #22c55e;
 }
 
 /* ── 4. MOBILE FULL-SCREEN SHEETS ──────────────────────────────────────────── */
@@ -1512,7 +1512,7 @@ body { background: #f7f9fb !important; }
   border: none;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #1db010;
+  color: #22c55e;
   cursor: pointer;
 }
 .mob-filter-group {
@@ -1549,7 +1549,7 @@ body { background: #f7f9fb !important; }
 }
 .mob-chip {
   background: #e8f8ee;
-  color: #1db010;
+  color: #22c55e;
   border: 1px solid #bbf7d0;
   border-radius: 20px;
   padding: 4px 10px;
@@ -1596,8 +1596,8 @@ body { background: #f7f9fb !important; }
 }
 .mob-rs-pill.active {
   background: #e8f8ee;
-  border-color: #1db010;
-  color: #1db010;
+  border-color: #22c55e;
+  color: #22c55e;
 }
 .mob-filter-footer {
   padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
@@ -1623,8 +1623,8 @@ body { background: #f7f9fb !important; }
   cursor: pointer;
 }
 .mob-stab.active {
-  color: #1db010;
-  border-bottom-color: #1db010;
+  color: #22c55e;
+  border-bottom-color: #22c55e;
 }
 .mob-saved-card {
   display: flex;
@@ -1650,7 +1650,7 @@ body { background: #f7f9fb !important; }
 }
 .mob-sc-badge {
   background: #e8f8ee;
-  color: #1db010;
+  color: #22c55e;
   font-size: 0.62rem;
   font-weight: 800;
   padding: 2px 6px;
@@ -1670,7 +1670,7 @@ body { background: #f7f9fb !important; }
 .mob-sc-price {
   font-size: 0.84rem;
   font-weight: 800;
-  color: #1db010;
+  color: #22c55e;
 }
 .mob-sc-specs {
   font-size: 0.7rem;
@@ -1794,16 +1794,16 @@ body { background: #f7f9fb !important; }
   color: #64748b !important;
 }
 .mobile-nav-item--active, .mobile-nav-item.active {
-  color: #1db010 !important;
+  color: #22c55e !important;
 }
 .mobile-nav-item--active i, .mobile-nav-item.active i {
-  color: #1db010 !important;
+  color: #22c55e !important;
 }
 .mobile-nav-post-btn {
   width: 44px !important;
   height: 44px !important;
   border-radius: 50% !important;
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
   display: flex !important;
   align-items: center !important;
@@ -1899,7 +1899,7 @@ body { background: #f7f9fb !important; }
 }
 .footer-app-btn:hover {
   background: #021407 !important;
-  border-color: #1db010 !important;
+  border-color: #22c55e !important;
 }
 .footer-app-btn i {
   font-size: 1.1rem !important;
@@ -1946,7 +1946,7 @@ body { background: #f7f9fb !important; }
 
 /* ── HEADER RIGHT ACTION BUTTONS (Exact Match to Reference Screenshot) ────── */
 .btn-header-post-property {
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 24px !important;
@@ -1989,7 +1989,7 @@ body { background: #f7f9fb !important; }
 }
 .btn-header-circle-action:hover {
   background: #e8f8ee !important;
-  border-color: #1db010 !important;
+  border-color: #22c55e !important;
 }
 
 .btn-header-circle-action i {
@@ -2030,7 +2030,7 @@ body { background: #f7f9fb !important; }
   margin-left: 4px !important; /* Extra separation from other icons */
 }
 .btn-header-account-pill:hover {
-  border-color: #1db010 !important;
+  border-color: #22c55e !important;
   background: #f8fafb !important;
 }
 .header-account-avatar {
@@ -2062,7 +2062,7 @@ body { background: #f7f9fb !important; }
 
 /* ── SECONDARY NAV ACTIVE PILL ─────────────────────────────────────────────── */
 .secondary-nav-item--active {
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
   border-radius: 20px !important;
   padding: 5px 16px !important;
@@ -2103,7 +2103,7 @@ body { background: #f7f9fb !important; }
   min-height: 64px !important;
 }
 .km-feature-card:hover {
-  border-color: #1db010 !important;
+  border-color: #22c55e !important;
   box-shadow: 0 4px 14px rgba(0,181,63,0.12) !important;
 }
 .km-fc-icon {
@@ -2111,11 +2111,11 @@ body { background: #f7f9fb !important; }
   height: 36px !important;
   border-radius: 50% !important;
   background: #e8f8ee !important;
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-size: 1rem !important;
 }
 .km-fc-icon i {
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-size: 1rem !important;
 }
 .km-fc-title {
@@ -2136,7 +2136,7 @@ body { background: #f7f9fb !important; }
   border-color: #bbf7d0 !important;
 }
 .km-fc-cta-btn {
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
   border-radius: 16px !important;
   padding: 4px 10px !important;
@@ -2170,7 +2170,7 @@ body { background: #f7f9fb !important; }
 .filter-clear-link {
   font-size: 0.78rem !important;
   font-weight: 700 !important;
-  color: #1db010 !important;
+  color: #22c55e !important;
   background: none !important;
   border: none !important;
   cursor: pointer !important;
@@ -2203,17 +2203,17 @@ body { background: #f7f9fb !important; }
   width: 15px !important;
   height: 15px !important;
   border-radius: 3px !important;
-  accent-color: #1db010 !important;
+  accent-color: #22c55e !important;
   cursor: pointer !important;
 }
 .filter-check-item .item-icon {
   width: 16px !important;
   text-align: center !important;
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-size: 0.76rem !important;
 }
 .filter-check-item .item-icon i {
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-size: 0.76rem !important;
 }
 .filter-select {
@@ -2229,7 +2229,7 @@ body { background: #f7f9fb !important; }
 }
 .btn-apply-filters-main {
   width: 100% !important;
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 8px !important;
@@ -2261,7 +2261,7 @@ body { background: #f7f9fb !important; }
   color: #0f172a !important;
 }
 .btn-view-mode.active {
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
 }
 .btn-view-mode.active i {
@@ -2358,7 +2358,7 @@ body { background: #f7f9fb !important; }
   cursor: pointer !important;
 }
 .card-title:hover {
-  color: #1db010 !important;
+  color: #22c55e !important;
 }
 .card-location-row {
   font-size: 0.72rem !important;
@@ -2369,7 +2369,7 @@ body { background: #f7f9fb !important; }
   margin-bottom: 8px !important;
 }
 .card-location-row i {
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-size: 0.72rem !important;
 }
 .card-price-action-row {
@@ -2381,7 +2381,7 @@ body { background: #f7f9fb !important; }
 .card-price {
   font-size: 0.98rem !important;
   font-weight: 800 !important;
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-family: 'Poppins', sans-serif !important;
 }
 .card-price .period {
@@ -2390,7 +2390,7 @@ body { background: #f7f9fb !important; }
   color: #64748b !important;
 }
 .btn-card-book-now {
-  background: #1db010 !important;
+  background: #22c55e !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 6px !important;
@@ -2423,7 +2423,7 @@ body { background: #f7f9fb !important; }
   gap: 4px !important;
 }
 .card-specs-row span i {
-  color: #1db010 !important;
+  color: #22c55e !important;
   font-size: 0.72rem !important;
 }
 .card-bottom-actions-row {
@@ -2451,7 +2451,7 @@ body { background: #f7f9fb !important; }
   border-right: 1px solid #e2e8f0 !important;
 }
 .cbar-btn:hover {
-  color: #1db010 !important;
+  color: #22c55e !important;
   background: #e8f8ee !important;
 }
 .cbar-btn.active {
@@ -2731,7 +2731,7 @@ body { background: #f7f9fb !important; }
 
 .btn-toggle-property-types:hover {
   background: #f0fdf4 !important;
-  border-color: #1db010 !important;
+  border-color: #22c55e !important;
 }
 
 .btn-toggle-property-types i {
@@ -2741,7 +2741,7 @@ body { background: #f7f9fb !important; }
 }
 
 .btn-toggle-property-types:hover i {
-  color: #1db010 !important;
+  color: #22c55e !important;
 }
 
 

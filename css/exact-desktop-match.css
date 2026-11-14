@@ -64,7 +64,7 @@ body {
   letter-spacing: -0.5px;
 }
 
-.brand-text-group .keja-green { color: #1db010; }
+.brand-text-group .keja-green { color: #22c55e; }
 .brand-text-group .keja-red { color: #e52b2d; }
 
 .brand-text-group span:last-child {
@@ -126,7 +126,7 @@ body {
   height: 40px;
   border-radius: 20px;
   border: none;
-  background: #1db010;
+  background: #22c55e;
   color: white;
   cursor: pointer;
   display: flex;
@@ -144,7 +144,7 @@ body {
 }
 
 .btn-header-post-property {
-  background: #1db010;
+  background: #22c55e;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -202,7 +202,7 @@ body {
 .header-account-avatar {
   width: 24px;
   height: 24px;
-  background: #1db010;
+  background: #22c55e;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -242,12 +242,12 @@ body {
 }
 
 .secondary-nav-item:hover {
-  color: #1db010;
+  color: #22c55e;
 }
 
 .secondary-nav-item--active {
-  color: #1db010;
-  border-bottom-color: #1db010;
+  color: #22c55e;
+  border-bottom-color: #22c55e;
   font-weight: 600;
 }
 
@@ -278,7 +278,7 @@ body {
 }
 
 .hero-content h1 .text-green {
-  color: #1db010;
+  color: #22c55e;
 }
 
 .hero-features {
@@ -378,7 +378,7 @@ body {
 }
 
 .filter-clear {
-  color: #1db010;
+  color: #22c55e;
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 600;
@@ -414,7 +414,7 @@ body {
 .property-type-item input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #1db010;
+  accent-color: #22c55e;
 }
 
 .property-type-icon {
@@ -439,7 +439,7 @@ body {
 }
 
 .filter-input:focus {
-  border-color: #1db010;
+  border-color: #22c55e;
   box-shadow: 0 0 0 3px rgba(0, 181, 63, 0.1);
 }
 
@@ -461,7 +461,7 @@ body {
 
 .apply-filters-btn {
   width: 100%;
-  background: #1db010;
+  background: #22c55e;
   color: white;
   border: none;
   padding: 12px;
@@ -501,7 +501,7 @@ body {
 .results-number {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #1db010;
+  color: #22c55e;
 }
 
 .results-text {
@@ -541,7 +541,7 @@ body {
 }
 
 .view-toggle.active {
-  background: #1db010;
+  background: #22c55e;
   color: white;
 }
 
@@ -608,7 +608,7 @@ body {
 .badge-bnb { background: #a855f7; color: white; }
 .badge-single { background: #3b82f6; color: white; }
 .badge-double { background: #f97316; color: white; }
-.badge-bedsitter { background: #1db010; color: white; }
+.badge-bedsitter { background: #22c55e; color: white; }
 .badge-2bed { background: #ef4444; color: white; }
 .badge-3bed { background: #8b5cf6; color: white; }
 .badge-4bed { background: #ec4899; color: white; }
@@ -661,7 +661,7 @@ body {
 .property-price {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #1db010;
+  color: #22c55e;
   margin-bottom: 12px;
 }
 
@@ -676,7 +676,7 @@ body {
 
 .book-now-btn {
   width: 100%;
-  background: #1db010;
+  background: #22c55e;
   color: white;
   border: none;
   padding: 8px;
@@ -705,7 +705,7 @@ body {
 }
 
 .action-btn:hover {
-  color: #1db010;
+  color: #22c55e;
 }
 
 /* ==========================================================================
@@ -735,14 +735,14 @@ body {
 }
 
 .pagination-btn:hover {
-  border-color: #1db010;
-  color: #1db010;
+  border-color: #22c55e;
+  color: #22c55e;
 }
 
 .pagination-btn.active {
-  background: #1db010;
+  background: #22c55e;
   color: white;
-  border-color: #1db010;
+  border-color: #22c55e;
 }
 
 .pagination-info {

@@ -85,7 +85,7 @@
   .results-count-text {
     font-size: 1.25rem !important;
     font-weight: 700 !important;
-    color: #1db010 !important;
+    color: #22c55e !important;
   }
 
   .results-location-text {
@@ -118,7 +118,7 @@
   }
 
   .view-toggle-btn.active {
-    background: #1db010 !important;
+    background: #22c55e !important;
     color: #ffffff !important;
   }
 
@@ -158,7 +158,7 @@
   .property-card:hover {
     transform: translateY(-2px) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-    border-color: #1db010 !important;
+    border-color: #22c55e !important;
   }
 
   /* Property card media */
@@ -191,7 +191,7 @@
   .card-price {
     font-size: 1.1rem !important;
     font-weight: 700 !important;
-    color: #1db010 !important;
+    color: #22c55e !important;
     margin: 0 0 4px 0 !important;
   }
 
