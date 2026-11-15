@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v116-desktop-pwa-detail-parity-inapp-call';
+const CACHE_NAME = 'kejamarket-v117-all-subzones-social-share-deeplink';
 
 const STATIC_ASSETS = [
   '/',
@@ -49,6 +49,7 @@ const STATIC_ASSETS = [
   // Core & Feature JavaScript Files
   '/js/desk-detail-modal.js',
   '/js/in-app-call.js',
+  '/js/share-card.js',
   '/js/mobile-layout.js',
   '/js/offline-manager.js',
   '/js/auth.js',

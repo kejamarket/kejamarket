@@ -1605,16 +1605,34 @@ class NairobiRentalsApp {
       bText.textContent = 'Kenya › ' + (this.activeCounty ? this.activeCounty + ' › ' : '') + areaName;
     }
 
-    // Hierarchical Sub-Zones / Phases Lookup (e.g. Mlolongo -> Phase 1, Phase 2, Katangaita)
+    // Hierarchical Sub-Zones / Phases Lookup (Kasarani, Umoja, South B, South C, Eastleigh, Juja, Mlolongo, etc.)
     const kca = window.KENYA_COUNTY_AREAS || {};
     let matchedAreaObj = null;
+
+    // Search specific counties first (skipping 'all') to find rich subzones
     for (const cKey in kca) {
+      if (cKey === 'all') continue;
       if (kca[cKey].areas) {
         const found = kca[cKey].areas.find(a => 
-          (a.val && a.val.toLowerCase() === areaName.toLowerCase()) || 
-          (a.name && a.name.toLowerCase() === areaName.toLowerCase())
+          ((a.val && a.val.toLowerCase() === areaName.toLowerCase()) || 
+           (a.name && a.name.toLowerCase() === areaName.toLowerCase()) ||
+           (displayName && a.name && a.name.toLowerCase() === displayName.toLowerCase())) &&
+          a.subZones && a.subZones.length > 0
         );
         if (found) { matchedAreaObj = found; break; }
+      }
+    }
+
+    // Fallback if not found with subzones
+    if (!matchedAreaObj) {
+      for (const cKey in kca) {
+        if (kca[cKey].areas) {
+          const found = kca[cKey].areas.find(a => 
+            (a.val && a.val.toLowerCase() === areaName.toLowerCase()) || 
+            (a.name && a.name.toLowerCase() === areaName.toLowerCase())
+          );
+          if (found) { matchedAreaObj = found; break; }
+        }
       }
     }
 

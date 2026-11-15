@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=116.0" as="script">
+  <link rel="preload" href="js/app.js?v=117.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -3476,8 +3476,13 @@
         <button type="button" onclick="app.closeModal('modal-property-detail')" style="background:#f1f5f9; border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#0f172a; font-size:14px; transition:background 0.15s;" title="Close">
           <i class="fas fa-arrow-left"></i>
         </button>
-        <span id="km-desk-detail-title-text" style="font-weight:800; font-size:14px; color:#0f172a; max-width:70%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Property Details</span>
-        <button type="button" onclick="app.closeModal('modal-property-detail')" style="background:#f1f5f9; border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#64748b; font-size:18px; line-height:1; transition:background 0.15s;" title="Close">&times;</button>
+        <span id="km-desk-detail-title-text" style="font-weight:800; font-size:14px; color:#0f172a; max-width:65%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Property Details</span>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button type="button" id="km-desk-detail-share-btn" onclick="app.openShareModal(app.selectedPropertyForDetail?.id)" style="background:#f1f5f9; border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#0f172a; font-size:14px; transition:background 0.15s;" title="Share Listing on Social Media">
+            <i class="fas fa-share-alt"></i>
+          </button>
+          <button type="button" onclick="app.closeModal('modal-property-detail')" style="background:#f1f5f9; border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#64748b; font-size:18px; line-height:1; transition:background 0.15s;" title="Close">&times;</button>
+        </div>
       </div>
       <!-- PWA-style Scrollable Content Area -->
       <div class="modal-body" id="km-desk-detail-body-slot" style="padding:0; overflow-y:auto; flex:1; scroll-behavior:smooth;">
@@ -6570,13 +6575,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script src="js/desk-detail-modal.js?v=116.0"></script>
-  <script src="js/in-app-call.js?v=116.0"></script>
-  <script src="js/app.js?v=116.0" defer></script>
+<script src="js/desk-detail-modal.js?v=117.0"></script>
+  <script src="js/in-app-call.js?v=117.0"></script>
+  <script src="js/share-card.js?v=117.0"></script>
+  <script src="js/app.js?v=117.0" defer></script>
   <script src="js/viewing-booking.js?v=115.0" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
-  <script src="js/mobile-layout.js?v=116.0" defer></script>
+  <script src="js/mobile-layout.js?v=117.0" defer></script>
   
   <!-- Secondary Features: Deferred loading -->
   <script src="js/reviews.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>

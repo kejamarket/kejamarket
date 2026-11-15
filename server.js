@@ -168,6 +168,87 @@ app.use((req, res, next) => {
   next();
 });
 
+// ── RICH SOCIAL MEDIA PREVIEW & DEEP LINK HANDLER (FB, Instagram, TikTok, WhatsApp, X) ──
+const { SEED_PROPERTIES } = require('./js/data/seedListings');
+
+async function getPropertyForPreview(id) {
+  if (!id) return null;
+  try {
+    if (store && store.getPropertyById) {
+      const p = await store.getPropertyById(id);
+      if (p) return p;
+    }
+  } catch (_) {}
+  if (SEED_PROPERTIES && Array.isArray(SEED_PROPERTIES)) {
+    const found = SEED_PROPERTIES.find(p => p.id === id);
+    if (found) return found;
+  }
+  return null;
+}
+
+function renderHtmlWithOgTags(html, p) {
+  const rentVal = Number(p.rentKes || p.price || 0).toLocaleString();
+  const period = p.rentPeriod || (p.isBnb ? 'night' : 'month');
+  const loc = (p.exactLocation || p.estateSuburb || p.county || 'Nairobi') + ', Nairobi / Machakos / Kajiado';
+  const beds = p.bedrooms ?? 0;
+  const baths = p.bathrooms ?? 1;
+  const specs = `${beds} Bed · ${baths} Bath · WiFi · Parking`;
+  const title = `${p.title || 'bedsitter'} | KejaMarket`;
+  const desc = `📍 ${loc} • KSh ${rentVal} / ${period} • ${specs}. 100% Free Viewings & Direct Landlord on KejaMarket.`;
+  const img = (p.media && p.media[0] && (p.media[0].url || p.media[0])) 
+    || (p.photos && p.photos[0] && (p.photos[0].url || p.photos[0]))
+    || p.thumbnail 
+    || 'https://kejamarket.co.ke/android-chrome-512x512.png';
+  const url = `https://kejamarket.co.ke/?prop=${encodeURIComponent(p.id)}`;
+
+  let out = html;
+  out = out.replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}">`);
+  out = out.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${desc.replace(/"/g, '&quot;')}">`);
+  out = out.replace(/<meta property="og:image" content="[^"]*">/, `<meta property="og:image" content="${img}">`);
+  out = out.replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${url}">`);
+  out = out.replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}">`);
+  out = out.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${desc.replace(/"/g, '&quot;')}">`);
+  out = out.replace(/<meta name="twitter:image" content="[^"]*">/, `<meta name="twitter:image" content="${img}">`);
+
+  return out;
+}
+
+// Deep link route /p/:id (clean social media shares)
+app.get(['/p/:id', '/property/:id'], async (req, res, next) => {
+  const propId = req.params.id;
+  if (!propId) return next();
+  try {
+    const prop = await getPropertyForPreview(propId);
+    if (prop) {
+      const rawHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+      const enrichedHtml = renderHtmlWithOgTags(rawHtml, prop);
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      return res.type('html').send(enrichedHtml);
+    }
+  } catch (err) {
+    console.error('Error generating social preview:', err);
+  }
+  next();
+});
+
+// Deep link query param handler /?prop=xyz or /?property=xyz
+app.get('/', async (req, res, next) => {
+  const propId = req.query.prop || req.query.property || req.query.p;
+  if (!propId) return next();
+  try {
+    const prop = await getPropertyForPreview(propId);
+    if (prop) {
+      const rawHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+      const enrichedHtml = renderHtmlWithOgTags(rawHtml, prop);
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      return res.type('html').send(enrichedHtml);
+    }
+  } catch (err) {
+    console.error('Error generating social preview for query param:', err);
+  }
+  next();
+});
+
 // Serve static frontend files (HTML, CSS, JS, icons)
 // â”€â”€ AGGRESSIVE STATIC ASSET CACHING FOR 10,000+ USERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.use(express.static(__dirname, {

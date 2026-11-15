@@ -4239,6 +4239,10 @@
 
   function shareProperty(propId) {
     const prop = State.properties.find(p => p.id === propId) || State.selectedProperty;
+    if (window.KMShareCard) {
+      window.KMShareCard.open(prop || propId);
+      return;
+    }
     const url = window.location.origin + '/?prop=' + (prop ? prop.id : '');
     if (navigator.share) {
       navigator.share({

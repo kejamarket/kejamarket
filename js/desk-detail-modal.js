@@ -213,6 +213,7 @@
         '<button type="button" class="km-comm-hub-btn km-comm-call km-desk-inapp-call-btn" title="HD In-App Voice Call"><i class="fas fa-phone-alt"></i><span>In-App Call</span></button>',
         '<a href="tel:', phone, '" class="km-comm-hub-btn km-comm-call" style="background:#f8fafc; color:#475569;" title="Direct GSM Call"><i class="fas fa-sim-card"></i><span>Direct Phone</span></a>',
         '<button type="button" class="km-comm-hub-btn km-comm-view km-desk-walkin-btn2"><i class="fas fa-calendar-check"></i><span>Book Viewing</span></button>',
+        '<button type="button" class="km-comm-hub-btn km-comm-share km-desk-share-hub-btn" style="background:#f0fdf4; border:1px solid #86efac; color:#006818;" title="Share Listing"><i class="fas fa-share-alt"></i><span>Share House</span></button>',
         '</div></div>',
 
         // SAFETY TIPS
@@ -282,6 +283,14 @@
       var chatBtn = modalEl.querySelector('.km-desk-chat-btn');
       if (chatBtn && typeof openChatFn === 'function') {
         chatBtn.addEventListener('click', openChatFn);
+      }
+
+      // Share button in comm hub
+      var shareHubBtn = modalEl.querySelector('.km-desk-share-hub-btn');
+      if (shareHubBtn) {
+        shareHubBtn.addEventListener('click', function() {
+          if (window.KMShareCard) window.KMShareCard.open(p);
+        });
       }
 
       // In-App Call button
