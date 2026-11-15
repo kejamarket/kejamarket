@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v110-hide-modals-desktop-trust';
+const CACHE_NAME = 'kejamarket-v111-redesigned-spacious-sidebar';
 
 const STATIC_ASSETS = [
   '/',

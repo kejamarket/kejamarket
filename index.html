@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=110.0" as="script">
+  <link rel="preload" href="js/app.js?v=111.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -430,6 +430,362 @@
     }
   }
 
+
+  /* ════════════════════════════════════════════════════════════════
+     REDESIGNED MODERN SIDEBAR (Spacious, Clean, Jiji/BuyRentKenya Grade)
+     ════════════════════════════════════════════════════════════════ */
+  .main-app-layout {
+    display: grid !important;
+    grid-template-columns: 260px minmax(0, 1fr) !important;
+    gap: 20px !important;
+    max-width: 1480px !important;
+    width: 100% !important;
+    margin: 12px auto 0 !important;
+    padding: 0 16px 40px 16px !important;
+    align-items: start !important;
+    box-sizing: border-box !important;
+  }
+
+  .sidebar-filters.km-sidebar-redesigned {
+    width: 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05) !important;
+    position: sticky !important;
+    top: 76px !important;
+    max-height: calc(100vh - 90px) !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin !important;
+    box-sizing: border-box !important;
+  }
+
+  .sidebar-filters::-webkit-scrollbar {
+    width: 4px;
+  }
+  .sidebar-filters::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  /* Header */
+  .km-sb-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 12px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+  }
+  .km-sb-title {
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  .km-sb-clear-btn {
+    background: #f1f5f9 !important;
+    border: none !important;
+    color: #64748b !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    padding: 4px 10px !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
+  .km-sb-clear-btn:hover {
+    background: #fee2e2 !important;
+    color: #ef4444 !important;
+  }
+
+  /* Sections */
+  .km-sb-section {
+    margin-bottom: 12px !important;
+    background: #f8fafc !important;
+    border: 1px solid #f1f5f9 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+  }
+  .km-sb-sec-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 12px !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    background: #ffffff !important;
+    transition: background 0.15s ease !important;
+  }
+  .km-sb-sec-header:hover {
+    background: #f8fafc !important;
+  }
+  .km-sb-sec-title {
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    color: #1e293b !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+  }
+  .km-sb-chevron {
+    font-size: 0.75rem !important;
+    color: #94a3b8 !important;
+    transition: transform 0.2s ease !important;
+  }
+
+  .km-sb-sec-body {
+    padding: 10px 12px 12px !important;
+    border-top: 1px solid #f1f5f9 !important;
+    background: #ffffff !important;
+  }
+
+  /* Inputs & Selects */
+  .km-sb-search-wrap {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  .km-sb-search-icon {
+    position: absolute !important;
+    left: 10px !important;
+    color: #94a3b8 !important;
+    font-size: 0.8rem !important;
+    pointer-events: none !important;
+  }
+  .km-sb-input {
+    width: 100% !important;
+    height: 34px !important;
+    padding: 0 28px 0 30px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.15s !important;
+  }
+  .km-sb-input:focus {
+    border-color: #22c55e !important;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.15) !important;
+  }
+  .km-sb-clear-input {
+    position: absolute !important;
+    right: 8px !important;
+    background: none !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    font-size: 0.75rem !important;
+    cursor: pointer !important;
+    padding: 4px !important;
+  }
+
+  .km-sb-select {
+    width: 100% !important;
+    height: 34px !important;
+    padding: 0 10px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    background: #ffffff !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    transition: border-color 0.15s !important;
+  }
+  .km-sb-select:focus {
+    border-color: #22c55e !important;
+  }
+
+  /* Hubs Chips */
+  .km-sb-hubs-chips {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+  .km-sb-hubs-chips button {
+    padding: 3px 8px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    color: #475569 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    line-height: 1.2 !important;
+  }
+  .km-sb-hubs-chips button:hover {
+    border-color: #22c55e !important;
+    color: #047857 !important;
+  }
+  .km-sb-hubs-chips button.active {
+    background: #006818 !important;
+    color: #ffffff !important;
+    border-color: #006818 !important;
+  }
+
+  /* Checklist items */
+  .km-sb-checklist {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+  }
+  .km-sb-check-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 5px 6px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: background 0.12s ease !important;
+    user-select: none !important;
+  }
+  .km-sb-check-item:hover {
+    background: #f1f5f9 !important;
+  }
+  .km-sb-check-item input[type="checkbox"] {
+    accent-color: #22c55e !important;
+    width: 15px !important;
+    height: 15px !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+  }
+  .km-sb-check-icon {
+    font-size: 0.85rem !important;
+    width: 18px !important;
+    text-align: center !important;
+  }
+  .km-sb-check-label {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+    flex: 1 !important;
+  }
+
+  .km-sb-more-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    padding: 6px 4px !important;
+    background: none !important;
+    border: none !important;
+    color: #047857 !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    margin-top: 4px !important;
+    border-top: 1px dashed #e2e8f0 !important;
+  }
+
+  /* Segmented Beds Selector */
+  .km-sb-segmented-beds {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    background: #f1f5f9 !important;
+    border-radius: 8px !important;
+    padding: 2px !important;
+    gap: 2px !important;
+  }
+  .km-bed-pill {
+    padding: 6px 0 !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 6px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    transition: all 0.15s ease !important;
+    line-height: 1 !important;
+  }
+  .km-bed-pill:hover {
+    color: #0f172a !important;
+  }
+  .km-bed-pill.active {
+    background: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(34, 197, 94, 0.35) !important;
+  }
+
+  /* Amenities Chips Grid */
+  .km-sb-amenities-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+  .km-sb-chip-check {
+    cursor: pointer !important;
+    user-select: none !important;
+  }
+  .km-sb-chip-check input {
+    display: none !important;
+  }
+  .km-sb-chip-check span {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 6px 8px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    transition: all 0.15s ease !important;
+  }
+  .km-sb-chip-check span i {
+    font-size: 0.78rem !important;
+    color: #94a3b8 !important;
+  }
+  .km-sb-chip-check input:checked + span {
+    background: #e8f8ee !important;
+    border-color: #22c55e !important;
+    color: #047857 !important;
+    font-weight: 700 !important;
+  }
+  .km-sb-chip-check input:checked + span i {
+    color: #22c55e !important;
+  }
+
+  /* Big Apply Filters Button */
+  .km-sb-apply-btn {
+    width: 100% !important;
+    height: 40px !important;
+    background: #22c55e !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin-top: 14px !important;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35) !important;
+    transition: all 0.2s ease !important;
+  }
+  .km-sb-apply-btn:hover {
+    background: #16a34a !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45) !important;
+  }
+
 </style>
 
   <meta name="description" content="KejaMarket is Kenya's #1 online marketplace for rental houses, bedsitters, 1-bedroom, 2-bedroom apartments, maisonettes and commercial spaces. Find verified properties in Nairobi, Ruaka, Kilimani, Westlands, Roysambu, Parklands & more. Direct landlord contact  &mdash;  no agents.">
@@ -801,403 +1157,320 @@
   <main class="main-app-layout" id="main-app-layout">
 
     <!-- Left Sidebar: Accordion Filter Panel (Matches reference image) -->
-    <aside class="sidebar-filters" id="sidebar-filters" aria-label="Filters">
-      <div class="filter-header-main">
-        <div class="filter-header-title"><i class="fas fa-home" style="color:#00b53f; margin-right:4px;"></i> <span id="filter-header-category">Property</span> Filters</div>
-        <button type="button" class="filter-clear-link" onclick="app.resetFilters()">Clear All</button>
+    <aside class="sidebar-filters km-sidebar-redesigned" id="sidebar-filters" aria-label="Filters">
+      
+      <!-- Sidebar Header -->
+      <div class="km-sb-header">
+        <div class="km-sb-title">
+          <i class="fas fa-sliders-h" style="color:#22c55e;"></i>
+          <span><span id="filter-header-category">Property</span> Filters</span>
+        </div>
+        <button type="button" class="km-sb-clear-btn" onclick="app.resetFilters()" title="Reset all filters">
+          <i class="fas fa-undo-alt"></i> Clear All
+        </button>
       </div>
 
       <!-- PROPERTIES FILTERS (Default View) -->
       <div id="filters-properties-container" class="filters-tab-container">
 
-      <!-- Section 1: Property Type (13 exact items with icons) -->
-      <div class="filter-accordion-section open" id="filter-sec-type">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-type')">
-          <span class="acc-title"><i class="fas fa-home"></i> Property Type</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body" style="display:block;">
-          <div class="filter-checklist-box" id="property-type-checklist-container">
-            <!-- Top Visible Property Types -->
-            <label class="filter-check-item property-type-single"><input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-door-closed"></i></span><span class="item-label">Single Room</span></label>
-            <label class="filter-check-item property-type-double"><input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-person-booth"></i></span><span class="item-label">Double Room</span></label>
-            <label class="filter-check-item property-type-bedsitter"><input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-bed"></i></span><span class="item-label">Bedsitter</span></label>
-            <label class="filter-check-item property-type-1bed"><input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-door-open"></i></span><span class="item-label">1 Bedroom</span></label>
-            <label class="filter-check-item property-type-2bed"><input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-home"></i></span><span class="item-label">2 Bedrooms</span></label>
-            <label class="filter-check-item property-type-bnb"><input type="checkbox" class="prop-type-checkbox" value="Bnb (Short Stay)" onchange="app.onPropertyTypeCheckboxChange(this)"><span class="item-icon"><i class="fas fa-umbrella-beach"></i></span><span class="item-label">Bnb (Short Stay)</span></label>
-
-            <!-- Remaining Property Types (Expandable via Chevron) -->
-            <div id="property-type-more-items" class="property-type-collapsed">
-              <label class="filter-check-item property-type-3bed"><input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-building"></i></span><span class="item-label">3 Bedrooms</span></label>
-              <label class="filter-check-item property-type-4bed"><input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-star"></i></span><span class="item-label">4+ Bedrooms</span></label>
-              <label class="filter-check-item property-type-apartment"><input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-city"></i></span><span class="item-label">Apartment / Flats</span></label>
-              <label class="filter-check-item property-type-townhouse"><input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-monument"></i></span><span class="item-label">Maisonette / Townhouse</span></label>
-              <label class="filter-check-item property-type-villa"><input type="checkbox" class="prop-type-checkbox" value="Villa" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-tree"></i></span><span class="item-label">Villa / Compound</span></label>
-              <label class="filter-check-item property-type-studio"><input type="checkbox" class="prop-type-checkbox" value="Studio" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Studio Apt</span></label>
-              <label class="filter-check-item property-type-bungalow"><input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)" style="accent-color: #006818;"><span class="item-icon"><i class="fas fa-warehouse"></i></span><span class="item-label">Bungalow</span></label>
-            </div>
+        <!-- 1. LOCATION SECTION -->
+        <div class="km-sb-section">
+          <div class="km-sb-sec-header" onclick="app.toggleFilterSection('filter-sec-location')">
+            <span class="km-sb-sec-title"><i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> Location</span>
+            <i class="fas fa-chevron-up km-sb-chevron" id="chevron-filter-sec-location"></i>
           </div>
-          <button type="button" class="btn-toggle-property-types" id="btn-toggle-property-types" onclick="app.togglePropertyTypeExpansion && app.togglePropertyTypeExpansion()" title="Toggle more property types" aria-label="Toggle more property types">
-            <i id="property-type-toggle-icon" class="fas fa-chevron-down acc-icon"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Section 2: Location (Search field + County + Sub-county) -->
-      <div class="filter-accordion-section open" id="filter-sec-location">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-location')">
-          <span class="acc-title"><i class="fas fa-map-marker-alt" style="color:#e52b2b;"></i> Location</span>
-          <i class="fas fa-chevron-up acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body" style="display:block;">
-          
-          <!-- Major Rental Hubs Quick Select -->
-          <div style="margin-bottom:8px;">
-            <div style="font-size:10px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.4px;">Major Rental Hubs:</div>
-            <div style="display:flex; flex-wrap:wrap; gap:4px;">
-              <button type="button" class="km-hub-btn active" onclick="app.selectMajorHub('all', this)" style="padding:3px 8px; font-size:11px; font-weight:700; border-radius:6px; border:1px solid #006818; background:#006818; color:#fff; cursor:pointer;">All Kenya</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('nairobi', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Nairobi</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kiambu', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Ruaka / Kiambu</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('machakos', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Syokimau / Machakos</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kajiado', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Rongai / Kitengela</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('mombasa', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Mombasa / Coast</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('nakuru', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Nakuru / Naivasha</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('uasin_gishu', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Eldoret</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kisumu', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Kisumu</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('laikipia', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Nanyuki / Mt Kenya</button>
-              <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kakamega', this)" style="padding:3px 8px; font-size:11px; font-weight:600; border-radius:6px; border:1px solid #e2e8f0; background:#f8fafc; color:#334155; cursor:pointer;">Western (Kakamega/Kisii)</button>
+          <div class="km-sb-sec-body" id="filter-sec-location" style="display:block;">
+            
+            <!-- Suburb search input -->
+            <div class="km-sb-search-wrap">
+              <i class="fas fa-search km-sb-search-icon"></i>
+              <input type="text" id="location-search-input" class="km-sb-input" placeholder="Search estate, suburb (e.g. Ruaka)" oninput="app.handleLocationSearchInput && app.handleLocationSearchInput(this.value)">
+              <button type="button" id="btn-clear-location-search" class="km-sb-clear-input" style="display:none;" onclick="app.clearLocationSearch && app.clearLocationSearch()">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
-          </div>
+            <div id="location-search-results" class="location-search-results-dropdown" style="display:none;"></div>
 
-          <div class="suburb-search-wrapper" style="margin-bottom:8px; position:relative;">
-            <i class="fas fa-search"></i>
-            <input type="text" id="location-search-input" class="suburb-search-input" placeholder="Search area, estate or neighbourhood" oninput="app.handleLocationSearchInput && app.handleLocationSearchInput(this.value)">
-            <button type="button" id="btn-clear-location-search" class="btn-clear-location-search" style="display:none;" onclick="app.clearLocationSearch && app.clearLocationSearch()" title="Clear and reset">
-              <i class="fas fa-times"></i>
+            <!-- County Select -->
+            <div style="margin-top:8px;">
+              <select class="km-sb-select" id="filter-county" onchange="app.onCountyChange && app.onCountyChange(this.value)">
+                <option value="all">All Kenya (47 Counties)</option>
+                <optgroup label="Metropolitan & Priority">
+                  <option value="nairobi" selected>Nairobi City</option>
+                  <option value="kiambu">Kiambu (Ruaka, Thika, Kikuyu)</option>
+                  <option value="machakos">Machakos (Syokimau, Athi River)</option>
+                  <option value="kajiado">Kajiado (Kitengela, Rongai)</option>
+                  <option value="mombasa">Mombasa & Coast</option>
+                  <option value="nakuru">Nakuru & Naivasha</option>
+                  <option value="kisumu">Kisumu City</option>
+                  <option value="uasin-gishu">Uasin Gishu (Eldoret)</option>
+                </optgroup>
+                <optgroup label="Other Counties">
+                  <option value="nyeri">Nyeri</option>
+                  <option value="kilifi">Kilifi (Malindi, Diani)</option>
+                  <option value="laikipia">Laikipia (Nanyuki)</option>
+                  <option value="kakamega">Kakamega</option>
+                  <option value="kisii">Kisii</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Sub-county Select -->
+            <div style="margin-top:6px;">
+              <select class="km-sb-select" id="filter-subcounty" onchange="app.onSubCountyChange && app.onSubCountyChange(this.value)">
+                <option value="all">All Sub-counties / Areas</option>
+                <option value="westlands">Westlands</option>
+                <option value="kilimani">Kilimani</option>
+                <option value="kileleshwa">Kileleshwa</option>
+                <option value="lavington">Lavington</option>
+                <option value="ruaka">Ruaka</option>
+                <option value="roysambu">Roysambu</option>
+                <option value="kasarani">Kasarani</option>
+                <option value="runda">Runda</option>
+                <option value="karen">Karen</option>
+                <option value="syokimau">Syokimau</option>
+                <option value="mlolongo">Mlolongo</option>
+                <option value="kitengela">Kitengela</option>
+                <option value="langata">Langata</option>
+                <option value="south-b">South B / South C</option>
+              </select>
+            </div>
+
+            <!-- Top Hubs Pill Chips -->
+            <div style="margin-top:10px;">
+              <div style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; margin-bottom:5px; letter-spacing:0.5px;">Top Hubs:</div>
+              <div class="km-sb-hubs-chips">
+                <button type="button" class="km-hub-btn active" onclick="app.selectMajorHub('all', this)">All Kenya</button>
+                <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('nairobi', this)">Nairobi</button>
+                <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kiambu', this)">Ruaka</button>
+                <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('machakos', this)">Syokimau</button>
+                <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('kajiado', this)">Rongai</button>
+                <button type="button" class="km-hub-btn" onclick="app.selectMajorHub('mombasa', this)">Mombasa</button>
+              </div>
+            </div>
+
+            <div id="km-desk-county-areas-bar" class="km-desk-county-areas-bar" style="display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; max-height:120px; overflow-y:auto;"></div>
+            <select class="filter-select" id="filter-corridor" style="display:none;"><option value="all">Nairobi &amp; Environs</option></select>
+            <div class="suburb-checklist-box" id="suburb-checklist-container" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- 2. PROPERTY TYPE SECTION -->
+        <div class="km-sb-section">
+          <div class="km-sb-sec-header" onclick="app.toggleFilterSection('filter-sec-type')">
+            <span class="km-sb-sec-title"><i class="fas fa-home" style="color:#059669;"></i> Property Type</span>
+            <i class="fas fa-chevron-up km-sb-chevron" id="chevron-filter-sec-type"></i>
+          </div>
+          <div class="km-sb-sec-body" id="filter-sec-type" style="display:block;">
+            <div class="km-sb-checklist" id="property-type-checklist-container">
+              <label class="km-sb-check-item">
+                <input type="checkbox" class="prop-type-checkbox" value="Single Room" onchange="app.onPropertyTypeCheckboxChange(this)">
+                <span class="km-sb-check-box"></span>
+                <span class="km-sb-check-icon"><i class="fas fa-door-closed" style="color:#0284c7;"></i></span>
+                <span class="km-sb-check-label">Single Room</span>
+              </label>
+              <label class="km-sb-check-item">
+                <input type="checkbox" class="prop-type-checkbox" value="Double Room" onchange="app.onPropertyTypeCheckboxChange(this)">
+                <span class="km-sb-check-box"></span>
+                <span class="km-sb-check-icon"><i class="fas fa-person-booth" style="color:#ea580c;"></i></span>
+                <span class="km-sb-check-label">Double Room</span>
+              </label>
+              <label class="km-sb-check-item">
+                <input type="checkbox" class="prop-type-checkbox" value="Bedsitter" onchange="app.onPropertyTypeCheckboxChange(this)">
+                <span class="km-sb-check-box"></span>
+                <span class="km-sb-check-icon"><i class="fas fa-bed" style="color:#16a34a;"></i></span>
+                <span class="km-sb-check-label">Bedsitter</span>
+              </label>
+              <label class="km-sb-check-item">
+                <input type="checkbox" class="prop-type-checkbox" value="1 Bedroom" onchange="app.onPropertyTypeCheckboxChange(this)">
+                <span class="km-sb-check-box"></span>
+                <span class="km-sb-check-icon"><i class="fas fa-door-open" style="color:#10b981;"></i></span>
+                <span class="km-sb-check-label">1 Bedroom</span>
+              </label>
+              <label class="km-sb-check-item">
+                <input type="checkbox" class="prop-type-checkbox" value="2 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)">
+                <span class="km-sb-check-box"></span>
+                <span class="km-sb-check-icon"><i class="fas fa-home" style="color:#ef4444;"></i></span>
+                <span class="km-sb-check-label">2 Bedrooms</span>
+              </label>
+              <label class="km-sb-check-item">
+                <input type="checkbox" class="prop-type-checkbox" value="Bnb (Short Stay)" onchange="app.onPropertyTypeCheckboxChange(this)">
+                <span class="km-sb-check-box"></span>
+                <span class="km-sb-check-icon"><i class="fas fa-umbrella-beach" style="color:#a855f7;"></i></span>
+                <span class="km-sb-check-label">BnB (Short Stay)</span>
+              </label>
+
+              <!-- Expandable More Types -->
+              <div id="property-type-more-items" class="property-type-collapsed" style="display:none; flex-direction:column; gap:4px; margin-top:4px;">
+                <label class="km-sb-check-item">
+                  <input type="checkbox" class="prop-type-checkbox" value="3 Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)">
+                  <span class="km-sb-check-box"></span>
+                  <span class="km-sb-check-icon"><i class="fas fa-building" style="color:#8b5cf6;"></i></span>
+                  <span class="km-sb-check-label">3 Bedrooms</span>
+                </label>
+                <label class="km-sb-check-item">
+                  <input type="checkbox" class="prop-type-checkbox" value="4+ Bedrooms" onchange="app.onPropertyTypeCheckboxChange(this)">
+                  <span class="km-sb-check-box"></span>
+                  <span class="km-sb-check-icon"><i class="fas fa-star" style="color:#f59e0b;"></i></span>
+                  <span class="km-sb-check-label">4+ Bedrooms</span>
+                </label>
+                <label class="km-sb-check-item">
+                  <input type="checkbox" class="prop-type-checkbox" value="Apartment" onchange="app.onPropertyTypeCheckboxChange(this)">
+                  <span class="km-sb-check-box"></span>
+                  <span class="km-sb-check-icon"><i class="fas fa-city" style="color:#0ea5e9;"></i></span>
+                  <span class="km-sb-check-label">Apartment / Flats</span>
+                </label>
+                <label class="km-sb-check-item">
+                  <input type="checkbox" class="prop-type-checkbox" value="Townhouse" onchange="app.onPropertyTypeCheckboxChange(this)">
+                  <span class="km-sb-check-box"></span>
+                  <span class="km-sb-check-icon"><i class="fas fa-monument" style="color:#6366f1;"></i></span>
+                  <span class="km-sb-check-label">Maisonette / Townhouse</span>
+                </label>
+                <label class="km-sb-check-item">
+                  <input type="checkbox" class="prop-type-checkbox" value="Bungalow" onchange="app.onPropertyTypeCheckboxChange(this)">
+                  <span class="km-sb-check-box"></span>
+                  <span class="km-sb-check-icon"><i class="fas fa-warehouse" style="color:#64748b;"></i></span>
+                  <span class="km-sb-check-label">Bungalow</span>
+                </label>
+              </div>
+            </div>
+            
+            <button type="button" class="km-sb-more-btn" onclick="app.togglePropertyTypeExpansion && app.togglePropertyTypeExpansion()">
+              <span id="property-type-toggle-text">More Property Types</span>
+              <i id="property-type-toggle-icon" class="fas fa-chevron-down"></i>
             </button>
           </div>
-          <div id="location-search-results" class="location-search-results-dropdown" style="display:none;"></div>
-          <div style="display:flex; gap:6px; margin-bottom:8px;">
-            <select class="filter-select" id="filter-county" style="flex:1;" onchange="app.onCountyChange && app.onCountyChange(this.value)">
-              <option value="all">All Kenya (47 Counties)</option>
-              <optgroup label="Metropolitan & Priority">
-                <option value="nairobi" selected>Nairobi City</option>
-                <option value="kiambu">Kiambu</option>
-                <option value="machakos">Machakos</option>
-                <option value="kajiado">Kajiado</option>
-                <option value="mombasa">Mombasa</option>
-                <option value="nakuru">Nakuru</option>
-                <option value="kisumu">Kisumu</option>
-                <option value="uasin-gishu">Uasin Gishu (Eldoret)</option>
-              </optgroup>
-              <optgroup label="Coast">
-                <option value="kilifi">Kilifi</option>
-                <option value="kwale">Kwale</option>
-                <option value="lamu">Lamu</option>
-                <option value="taita-taveta">Taita Taveta</option>
-                <option value="tana-river">Tana River</option>
-              </optgroup>
-              <optgroup label="Central & Mount Kenya">
-                <option value="nyeri">Nyeri</option>
-                <option value="muranga">Murang'a</option>
-                <option value="kirinyaga">Kirinyaga</option>
-                <option value="nyandarua">Nyandarua</option>
-                <option value="laikipia">Laikipia</option>
-              </optgroup>
-              <optgroup label="Rift Valley">
-                <option value="baringo">Baringo</option>
-                <option value="bomet">Bomet</option>
-                <option value="elgeyo-marakwet">Elgeyo-Marakwet</option>
-                <option value="kericho">Kericho</option>
-                <option value="nandi">Nandi</option>
-                <option value="narok">Narok</option>
-                <option value="samburu">Samburu</option>
-                <option value="trans-nzoia">Trans Nzoia (Kitale)</option>
-                <option value="turkana">Turkana</option>
-                <option value="west-pokot">West Pokot</option>
-              </optgroup>
-              <optgroup label="Western & Nyanza">
-                <option value="bungoma">Bungoma</option>
-                <option value="busia">Busia</option>
-                <option value="homa-bay">Homa Bay</option>
-                <option value="kakamega">Kakamega</option>
-                <option value="kisii">Kisii</option>
-                <option value="migori">Migori</option>
-                <option value="nyamira">Nyamira</option>
-                <option value="siaya">Siaya</option>
-                <option value="vihiga">Vihiga</option>
-              </optgroup>
-              <optgroup label="Eastern & North Eastern">
-                <option value="embu">Embu</option>
-                <option value="garissa">Garissa</option>
-                <option value="isiolo">Isiolo</option>
-                <option value="kitui">Kitui</option>
-                <option value="machakos">Machakos</option>
-                <option value="makueni">Makueni</option>
-                <option value="mandera">Mandera</option>
-                <option value="marsabit">Marsabit</option>
-                <option value="meru">Meru</option>
-                <option value="tharaka-nithi">Tharaka-Nithi</option>
-                <option value="wajir">Wajir</option>
-              </optgroup>
-            </select>
-            <select class="filter-select" id="filter-subcounty" style="flex:1;" onchange="app.onSubCountyChange && app.onSubCountyChange(this.value)">
-              <option value="all">Sub-county</option>
-              <option value="westlands">Westlands</option>
-              <option value="kilimani">Kilimani</option>
-              <option value="kileleshwa">Kileleshwa</option>
-              <option value="lavington">Lavington</option>
-              <option value="runda">Runda</option>
-              <option value="karen">Karen</option>
-              <option value="kasarani">Kasarani</option>
-              <option value="roysambu">Roysambu</option>
-              <option value="ruaka">Ruaka</option>
-              <option value="kitengela">Kitengela</option>
-              <option value="mlolongo">Mlolongo</option>
-              <option value="syokimau">Syokimau</option>
-              <option value="nyayo">Nyayo Estate</option>
-              <option value="embakasi">Embakasi</option>
-              <option value="langata">Langata</option>
-              <option value="starehe">Starehe</option>
-              <option value="kibra">Kibra</option>
-              <option value="dagoretti">Dagoretti</option>
-            </select>
+        </div>
+
+        <!-- 3. PRICE RANGE SECTION -->
+        <div class="km-sb-section">
+          <div class="km-sb-sec-header" onclick="app.toggleFilterSection('filter-sec-price')">
+            <span class="km-sb-sec-title"><i class="fas fa-tag" style="color:#22c55e;"></i> Price Range (KSh)</span>
+            <i class="fas fa-chevron-down km-sb-chevron" id="chevron-filter-sec-price"></i>
           </div>
-          <div id="km-desk-county-areas-bar" class="km-desk-county-areas-bar" style="display:flex; flex-wrap:wrap; gap:5px; margin: 8px 0; max-height:160px; overflow-y:auto; padding:2px 0;"></div>
-          <select class="filter-select" id="filter-corridor" style="display:none;"><option value="all">Nairobi &amp; Environs</option></select>
-          <div class="suburb-checklist-box" id="suburb-checklist-container" style="display:none;"></div>
-        </div>
-      </div>
-
-      <!-- Section 3: Price Range (KSh) -->
-      <div class="filter-accordion-section collapsed" id="filter-sec-price">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-price')">
-          <span class="acc-title"><i class="fas fa-tag" style="color:#00b53f;"></i> Price Range (KSh)</span>
-          <i class="fas fa-chevron-down acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body" style="display:none;">
-          <div style="display:flex; gap:6px; align-items:center;">
-            <select class="filter-select" id="price-min-select" style="flex:1;" onchange="if(document.getElementById('price-min-input')) document.getElementById('price-min-input').value=this.value; app.applyFilters && app.applyFilters()">
-              <option value="0">Min</option>
-              <option value="5000">KSh 5,000</option>
-              <option value="10000">KSh 10,000</option>
-              <option value="15000">KSh 15,000</option>
-              <option value="25000">KSh 25,000</option>
-              <option value="40000">KSh 40,000</option>
-              <option value="60000">KSh 60,000</option>
-              <option value="100000">KSh 100,000</option>
-            </select>
-            <select class="filter-select" id="price-max-select" style="flex:1;" onchange="if(document.getElementById('price-max-input')) document.getElementById('price-max-input').value=this.value; app.applyFilters && app.applyFilters()">
-              <option value="500000">Max</option>
-              <option value="15000">KSh 15,000</option>
-              <option value="25000">KSh 25,000</option>
-              <option value="40000">KSh 40,000</option>
-              <option value="60000">KSh 60,000</option>
-              <option value="100000">KSh 100,000</option>
-              <option value="200000">KSh 200,000</option>
-              <option value="500000">KSh 500,000+</option>
-            </select>
-          </div>
-          <input type="hidden" id="price-min-input" value="0">
-          <input type="hidden" id="price-max-input" value="500000">
-        </div>
-      </div>
-
-      <!-- Section 4: Bedrooms -->
-      <div class="filter-accordion-section collapsed" id="filter-sec-beds">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-beds')">
-          <span class="acc-title"><i class="fas fa-bed"></i> Bedrooms</span>
-          <i class="fas fa-chevron-down acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body" style="display:none;">
-          <select class="filter-select" id="filter-bedrooms" onchange="app.applyFilters && app.applyFilters()">
-            <option value="any">Any</option>
-            <option value="0">Studio / Bedsitter</option>
-            <option value="1">1 Bedroom</option>
-            <option value="2">2 Bedrooms</option>
-            <option value="3">3 Bedrooms</option>
-            <option value="4">4+ Bedrooms</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Section 5: Bathrooms -->
-      <div class="filter-accordion-section collapsed" id="filter-sec-baths">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-baths')">
-          <span class="acc-title"><i class="fas fa-bath"></i> Bathrooms</span>
-          <i class="fas fa-chevron-down acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body" style="display:none;">
-          <select class="filter-select" id="filter-bathrooms" onchange="app.applyFilters && app.applyFilters()">
-            <option value="any">Any</option>
-            <option value="1">1 Bathroom</option>
-            <option value="2">2 Bathrooms</option>
-            <option value="3">3+ Bathrooms</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Section 6: Furnishing -->
-      <div class="filter-accordion-section collapsed" id="filter-sec-furnishing">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-furnishing')">
-          <span class="acc-title"><i class="fas fa-couch"></i> Furnishing</span>
-          <i class="fas fa-chevron-down acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body" style="display:none;">
-          <select class="filter-select" id="filter-furnishing" onchange="app.applyFilters && app.applyFilters()">
-            <option value="any">Any</option>
-            <option value="furnished">Furnished</option>
-            <option value="unfurnished">Unfurnished</option>
-            <option value="semi-furnished">Semi-Furnished</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Section 7: Amenities -->
-      <div class="filter-accordion-section collapsed" id="filter-sec-amenities">
-        <div class="filter-accordion-header" onclick="app.toggleFilterSection('filter-sec-amenities')">
-          <span class="acc-title"><i class="fas fa-star" style="color:#f59e0b;"></i> Amenities</span>
-          <i class="fas fa-chevron-down acc-icon"></i>
-        </div>
-        <div class="filter-accordion-body" style="display:none;">
-          <div style="font-size:0.75rem; color:#64748b; margin-bottom:6px;">AC, Parking, WiFi, Gym...</div>
-          <div class="amenities-grid-2col">
-            <label class="filter-check-item"><input type="checkbox" id="filter-wifi"><span>WiFi</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-parking"><span>Parking</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-pool"><span>Swimming Pool</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-gym"><span>Gym</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-cctv"><span>Security</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-borehole"><span>Water Supply</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-tokens"><span>Electricity</span></label>
-            <label class="filter-check-item"><input type="checkbox" id="filter-furnished-chk"><span>Furnished</span></label>
+          <div class="km-sb-sec-body" id="filter-sec-price" style="display:none;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div>
+                <label style="font-size:10px; font-weight:700; color:#64748b; margin-bottom:3px; display:block;">Min KSh</label>
+                <select class="km-sb-select" id="price-min-select" onchange="if(document.getElementById('price-min-input')) document.getElementById('price-min-input').value=this.value; app.applyFilters && app.applyFilters()">
+                  <option value="0">Any Min</option>
+                  <option value="5000">KSh 5,000</option>
+                  <option value="10000">KSh 10,000</option>
+                  <option value="15000">KSh 15,000</option>
+                  <option value="25000">KSh 25,000</option>
+                  <option value="40000">KSh 40,000</option>
+                  <option value="60000">KSh 60,000</option>
+                  <option value="100000">KSh 100,000</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:10px; font-weight:700; color:#64748b; margin-bottom:3px; display:block;">Max KSh</label>
+                <select class="km-sb-select" id="price-max-select" onchange="if(document.getElementById('price-max-input')) document.getElementById('price-max-input').value=this.value; app.applyFilters && app.applyFilters()">
+                  <option value="500000">Any Max</option>
+                  <option value="15000">KSh 15,000</option>
+                  <option value="25000">KSh 25,000</option>
+                  <option value="40000">KSh 40,000</option>
+                  <option value="60000">KSh 60,000</option>
+                  <option value="100000">KSh 100,000</option>
+                  <option value="200000">KSh 200,000</option>
+                  <option value="500000">KSh 500,000+</option>
+                </select>
+              </div>
+            </div>
+            <input type="hidden" id="price-min-input" value="0">
+            <input type="hidden" id="price-max-input" value="500000">
           </div>
         </div>
-      </div>
 
-      <!-- Big Apply Filters Button -->
-      <button type="button" class="btn-apply-filters-main" onclick="app.applyFilters()">
-        <i class="fas fa-filter"></i> Apply Filters
-      </button>
+        <!-- 4. BEDROOMS SECTION (Modern Segmented Pills) -->
+        <div class="km-sb-section">
+          <div class="km-sb-sec-header" onclick="app.toggleFilterSection('filter-sec-beds')">
+            <span class="km-sb-sec-title"><i class="fas fa-bed" style="color:#0284c7;"></i> Bedrooms</span>
+            <i class="fas fa-chevron-down km-sb-chevron" id="chevron-filter-sec-beds"></i>
+          </div>
+          <div class="km-sb-sec-body" id="filter-sec-beds" style="display:none;">
+            <div class="km-sb-segmented-beds">
+              <button type="button" class="km-bed-pill active" onclick="app.setBedroomsFilter('any', this)">Any</button>
+              <button type="button" class="km-bed-pill" onclick="app.setBedroomsFilter('0', this)">Bedsitter</button>
+              <button type="button" class="km-bed-pill" onclick="app.setBedroomsFilter('1', this)">1</button>
+              <button type="button" class="km-bed-pill" onclick="app.setBedroomsFilter('2', this)">2</button>
+              <button type="button" class="km-bed-pill" onclick="app.setBedroomsFilter('3', this)">3</button>
+              <button type="button" class="km-bed-pill" onclick="app.setBedroomsFilter('4', this)">4+</button>
+            </div>
+            <select class="filter-select" id="filter-bedrooms" style="display:none;" onchange="app.applyFilters && app.applyFilters()">
+              <option value="any">Any</option>
+              <option value="0">Studio / Bedsitter</option>
+              <option value="1">1 Bedroom</option>
+              <option value="2">2 Bedrooms</option>
+              <option value="3">3 Bedrooms</option>
+              <option value="4">4+ Bedrooms</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 5. AMENITIES SECTION -->
+        <div class="km-sb-section">
+          <div class="km-sb-sec-header" onclick="app.toggleFilterSection('filter-sec-amenities')">
+            <span class="km-sb-sec-title"><i class="fas fa-check-circle" style="color:#10b981;"></i> Amenities</span>
+            <i class="fas fa-chevron-down km-sb-chevron" id="chevron-filter-sec-amenities"></i>
+          </div>
+          <div class="km-sb-sec-body" id="filter-sec-amenities" style="display:none;">
+            <div class="km-sb-amenities-grid">
+              <label class="km-sb-chip-check"><input type="checkbox" id="filter-wifi"><span><i class="fas fa-wifi"></i> WiFi</span></label>
+              <label class="km-sb-chip-check"><input type="checkbox" id="filter-parking"><span><i class="fas fa-parking"></i> Parking</span></label>
+              <label class="km-sb-chip-check"><input type="checkbox" id="filter-borehole"><span><i class="fas fa-water"></i> Water</span></label>
+              <label class="km-sb-chip-check"><input type="checkbox" id="filter-tokens"><span><i class="fas fa-bolt"></i> Tokens</span></label>
+              <label class="km-sb-chip-check"><input type="checkbox" id="filter-cctv"><span><i class="fas fa-shield-alt"></i> Security</span></label>
+              <label class="km-sb-chip-check"><input type="checkbox" id="filter-pool"><span><i class="fas fa-swimming-pool"></i> Pool</span></label>
+              <label class="km-sb-chip-check"><input type="checkbox" id="filter-gym"><span><i class="fas fa-dumbbell"></i> Gym</span></label>
+              <label class="km-sb-chip-check"><input type="checkbox" id="filter-furnished-chk"><span><i class="fas fa-couch"></i> Furnished</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Apply Button -->
+        <button type="button" class="km-sb-apply-btn" onclick="app.applyFilters()">
+          <i class="fas fa-search"></i> Apply Filters
+        </button>
 
       </div>
       <!-- END PROPERTIES FILTERS -->
 
       <!-- SERVICES FILTERS -->
       <div id="filters-services-container" class="filters-tab-container" style="display:none;">
-        
-        <!-- Service Category -->
-        <div class="filter-accordion-section open">
-          <div class="filter-accordion-header" onclick="app.toggleFilterSection(this.parentElement)">
-            <span class="acc-title"><i class="fas fa-tools" style="color:#7c3aed;"></i> Service Type</span>
-            <i class="fas fa-chevron-up acc-icon"></i>
+        <div class="km-sb-section">
+          <div class="km-sb-sec-header">
+            <span class="km-sb-sec-title"><i class="fas fa-tools" style="color:#7c3aed;"></i> Service Type</span>
           </div>
-          <div class="filter-accordion-body" style="display:block;">
-            <div class="filter-checklist-box">
-              <label class="filter-check-item"><input type="checkbox" value="Plumbing"><span class="item-icon"><i class="fas fa-wrench"></i></span><span class="item-label">Plumbing</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Electrical"><span class="item-icon"><i class="fas fa-bolt"></i></span><span class="item-label">Electrical</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Cleaning"><span class="item-icon"><i class="fas fa-broom"></i></span><span class="item-label">Cleaning</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Moving"><span class="item-icon"><i class="fas fa-truck"></i></span><span class="item-label">Moving & Relocation</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Painting"><span class="item-icon"><i class="fas fa-paint-roller"></i></span><span class="item-label">Painting</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Carpentry"><span class="item-icon"><i class="fas fa-hammer"></i></span><span class="item-label">Carpentry</span></label>
+          <div class="km-sb-sec-body" style="display:block;">
+            <div class="km-sb-checklist">
+              <label class="km-sb-check-item"><input type="checkbox" value="Plumbing"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Plumbing</span></label>
+              <label class="km-sb-check-item"><input type="checkbox" value="Electrical"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Electrical</span></label>
+              <label class="km-sb-check-item"><input type="checkbox" value="Cleaning"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Cleaning</span></label>
+              <label class="km-sb-check-item"><input type="checkbox" value="Moving"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Moving & Relocation</span></label>
+              <label class="km-sb-check-item"><input type="checkbox" value="Painting"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Painting</span></label>
             </div>
           </div>
         </div>
-
-        <!-- Location -->
-        <div class="filter-accordion-section open">
-          <div class="filter-accordion-header" onclick="app.toggleFilterSection(this.parentElement)">
-            <span class="acc-title"><i class="fas fa-map-marker-alt" style="color:#e52b2b;"></i> Location</span>
-            <i class="fas fa-chevron-up acc-icon"></i>
-          </div>
-          <div class="filter-accordion-body" style="display:block;">
-            <select class="filter-select">
-              <option value="all">All Nairobi & Environs</option>
-              <option value="nairobi">Nairobi</option>
-              <option value="kiambu">Kiambu</option>
-              <option value="machakos">Machakos</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="button" class="btn-apply-filters-main" onclick="app.applyFilters()">
-          <i class="fas fa-filter"></i> Apply Filters
-        </button>
-
       </div>
-      <!-- END SERVICES FILTERS -->
 
       <!-- MARKETPLACE (USED ITEMS) FILTERS -->
       <div id="filters-marketplace-container" class="filters-tab-container" style="display:none;">
-        
-        <!-- Item Category -->
-        <div class="filter-accordion-section open">
-          <div class="filter-accordion-header" onclick="app.toggleFilterSection(this.parentElement)">
-            <span class="acc-title"><i class="fas fa-tags" style="color:#f59e0b;"></i> Item Category</span>
-            <i class="fas fa-chevron-up acc-icon"></i>
+        <div class="km-sb-section">
+          <div class="km-sb-sec-header">
+            <span class="km-sb-sec-title"><i class="fas fa-tags" style="color:#f59e0b;"></i> Item Category</span>
           </div>
-          <div class="filter-accordion-body" style="display:block;">
-            <div class="filter-checklist-box">
-              <label class="filter-check-item"><input type="checkbox" value="Furniture"><span class="item-icon"><i class="fas fa-couch"></i></span><span class="item-label">Furniture</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Electronics"><span class="item-icon"><i class="fas fa-tv"></i></span><span class="item-label">Electronics</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Appliances"><span class="item-icon"><i class="fas fa-blender"></i></span><span class="item-label">Appliances</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Vehicles"><span class="item-icon"><i class="fas fa-car"></i></span><span class="item-label">Vehicles</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Books"><span class="item-icon"><i class="fas fa-book"></i></span><span class="item-label">Books</span></label>
-              <label class="filter-check-item"><input type="checkbox" value="Clothing"><span class="item-icon"><i class="fas fa-tshirt"></i></span><span class="item-label">Clothing</span></label>
+          <div class="km-sb-sec-body" style="display:block;">
+            <div class="km-sb-checklist">
+              <label class="km-sb-check-item"><input type="checkbox" value="Furniture"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Furniture</span></label>
+              <label class="km-sb-check-item"><input type="checkbox" value="Electronics"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Electronics</span></label>
+              <label class="km-sb-check-item"><input type="checkbox" value="Appliances"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Appliances</span></label>
+              <label class="km-sb-check-item"><input type="checkbox" value="Vehicles"><span class="km-sb-check-box"></span><span class="km-sb-check-label">Vehicles</span></label>
             </div>
           </div>
         </div>
-
-        <!-- Price Range -->
-        <div class="filter-accordion-section collapsed">
-          <div class="filter-accordion-header" onclick="app.toggleFilterSection(this.parentElement)">
-            <span class="acc-title"><i class="fas fa-tag" style="color:#00b53f;"></i> Price Range</span>
-            <i class="fas fa-chevron-down acc-icon"></i>
-          </div>
-          <div class="filter-accordion-body" style="display:none;">
-            <div style="display:flex; gap:6px;">
-              <select class="filter-select" style="flex:1;">
-                <option value="0">Min</option>
-                <option value="1000">KSh 1,000</option>
-                <option value="5000">KSh 5,000</option>
-                <option value="10000">KSh 10,000</option>
-              </select>
-              <select class="filter-select" style="flex:1;">
-                <option value="1000000">Max</option>
-                <option value="50000">KSh 50,000</option>
-                <option value="100000">KSh 100,000</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <button type="button" class="btn-apply-filters-main" onclick="app.applyFilters()">
-          <i class="fas fa-filter"></i> Apply Filters
-        </button>
-
       </div>
-      <!-- END MARKETPLACE FILTERS -->
 
-      <!-- Compatibility fallback inputs for JS dependencies -->
-      <div style="display: none;">
-        <select id="filter-suburb"><option value="all">All</option></select>
-        <input type="range" id="price-slider" min="5000" max="200000" value="200000">
-        <input type="checkbox" id="filter-council">
-        <input type="checkbox" id="filter-balcony">
-        <input type="checkbox" id="filter-fence">
-        <input type="checkbox" id="filter-internet">
-        <input type="checkbox" id="filter-tiles">
-        <input type="checkbox" id="filter-ensuite">
-        <input type="checkbox" id="filter-hide-taken">
-        <button id="tab-btn-properties"></button>
-        <button id="tab-btn-services"></button>
-        <button id="tab-btn-marketplace"></button>
-        <div id="acc-body-properties"></div>
-        <div id="acc-body-services"></div>
-        <div id="acc-body-marketplace"></div>
-        <div id="sidebar-properties-filters"></div>
-        <div id="sidebar-services-filters"></div>
-        <div id="sidebar-category-list"></div>
-      </div>
     </aside>
 
     <!-- Main Content Area: View Mode, Listings Grid, Interactive Map -->
@@ -5635,7 +5908,7 @@
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/components/location-picker.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
-  <script src="js/app.js?v=110.0" defer></script>
+  <script src="js/app.js?v=111.0" defer></script>
   <script src="js/viewing-booking.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
@@ -5848,7 +6121,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=110.0');
+      navigator.serviceWorker.register('/sw.js?v=111.0');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->

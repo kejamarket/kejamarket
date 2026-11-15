@@ -419,6 +419,17 @@ class NairobiRentalsApp {
     this.setCategory(cat, el);
   }
 
+  setBedroomsFilter(bedsVal, btnEl) {
+    const sel = document.getElementById('filter-bedrooms');
+    if (sel) sel.value = bedsVal;
+
+    document.querySelectorAll('.km-bed-pill').forEach(b => {
+      b.classList.toggle('active', b === btnEl);
+    });
+
+    this.applyFilters();
+  }
+
   setQuickSuburbFilter(suburbName, btnEl) {
     this.selectedSuburb = (suburbName || '').trim();
     
