@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v113-comprehensive-locations';
+const CACHE_NAME = 'kejamarket-v114-working-grid-list-map';
 
 const STATIC_ASSETS = [
   '/',

@@ -1162,52 +1162,75 @@ class NairobiRentalsApp {
   }
 
   setViewMode(mode) {
-    // Gate: interactive map/split view requires login
-    if ((mode === 'map' || mode === 'split') && !(window.kejaAuth && window.kejaAuth.getSession())) {
-      window.kejaAuth.requireTenantAuth(() => this.setViewMode(mode));
-      return;
-    }
     this.currentViewMode = mode;
 
-    // Toggle button active states
-    document.querySelectorAll('.btn-view-mode').forEach(b => {
-      if (b.getAttribute('data-view') === mode) {
-        b.classList.add('active');
-      } else {
-        b.classList.remove('active');
-      }
+    // Toggle button active states for all toolbar view buttons
+    document.querySelectorAll('.view-toggle-btn, .btn-view-mode').forEach(b => {
+      const bView = b.getAttribute('data-view');
+      b.classList.toggle('active', bView === mode);
     });
 
-    // Toggle container visibilities
     const gridContainer = document.getElementById('view-grid-container');
+    const propertyGrid = document.getElementById('property-grid');
     const splitContainer = document.getElementById('view-split-container');
     const mapContainer = document.getElementById('view-map-container');
 
-    if (gridContainer) {
-      gridContainer.classList.toggle('hidden', mode !== 'grid');
-      gridContainer.style.setProperty('display', mode === 'grid' ? 'block' : 'none', 'important');
-    }
-    if (splitContainer) {
-      splitContainer.classList.toggle('hidden', mode !== 'split');
-      splitContainer.style.setProperty('display', mode === 'split' ? 'block' : 'none', 'important');
-    }
-    if (mapContainer) {
-      mapContainer.classList.toggle('hidden', mode !== 'map');
-      mapContainer.style.setProperty('display', mode === 'map' ? 'block' : 'none', 'important');
-    }
-
-    if (mode === 'split') {
-      this.renderSplitView();
-    }
-
-    if (mode === 'map' || mode === 'split') {
+    if (mode === 'grid' || mode === 'list') {
+      if (gridContainer) {
+        gridContainer.classList.remove('hidden');
+        gridContainer.style.setProperty('display', 'block', 'important');
+      }
+      if (propertyGrid) {
+        propertyGrid.classList.toggle('km-list-view', mode === 'list');
+      }
+      if (splitContainer) {
+        splitContainer.classList.add('hidden');
+        splitContainer.style.setProperty('display', 'none', 'important');
+      }
+      if (mapContainer) {
+        mapContainer.classList.add('hidden');
+        mapContainer.style.setProperty('display', 'none', 'important');
+      }
+    } else if (mode === 'map') {
+      if (gridContainer) {
+        gridContainer.classList.add('hidden');
+        gridContainer.style.setProperty('display', 'none', 'important');
+      }
+      if (splitContainer) {
+        splitContainer.classList.add('hidden');
+        splitContainer.style.setProperty('display', 'none', 'important');
+      }
+      if (mapContainer) {
+        mapContainer.classList.remove('hidden');
+        mapContainer.style.setProperty('display', 'block', 'important');
+      }
       if (window.mapController) {
         window.mapController.init();
         setTimeout(() => {
           if (window.mapController.fullMap) window.mapController.fullMap.invalidateSize();
+          window.mapController.renderPins(this.filteredProperties || this.properties || []);
+        }, 150);
+      }
+    } else if (mode === 'split') {
+      if (gridContainer) {
+        gridContainer.classList.add('hidden');
+        gridContainer.style.setProperty('display', 'none', 'important');
+      }
+      if (mapContainer) {
+        mapContainer.classList.add('hidden');
+        mapContainer.style.setProperty('display', 'none', 'important');
+      }
+      if (splitContainer) {
+        splitContainer.classList.remove('hidden');
+        splitContainer.style.setProperty('display', 'block', 'important');
+        this.renderSplitView();
+      }
+      if (window.mapController) {
+        window.mapController.init();
+        setTimeout(() => {
           if (window.mapController.splitMap) window.mapController.splitMap.invalidateSize();
-          window.mapController.renderPins(this.filteredProperties || []);
-        }, 300);
+          window.mapController.renderPins(this.filteredProperties || this.properties || []);
+        }, 150);
       }
     }
   }
@@ -5878,41 +5901,16 @@ KejaApp.prototype.openPostPropertyModal = function(event) {
 };
 
 KejaApp.prototype.onCountyChange = function(county) {
-  const subcountySelect = document.getElementById('filter-subcounty');
-  if (!subcountySelect) return;
-
   const cKey = (county || 'all').toLowerCase().trim();
-  let areas = [];
-
-  if (window.KENYA_COUNTY_AREAS && window.KENYA_COUNTY_AREAS[cKey]) {
-    areas = window.KENYA_COUNTY_AREAS[cKey].areas.filter(a => a.val).map(a => a.name);
-  } else if (window.KENYA_COUNTY_AREAS && window.KENYA_COUNTY_AREAS.all) {
-    // If county is selected, find all areas belonging to that county
-    areas = window.KENYA_COUNTY_AREAS.all.areas
-      .filter(a => a.val && (cKey === 'all' || (a.county && a.county.toLowerCase() === cKey)))
-      .map(a => a.name);
+  if (typeof window.kmUpdateSubCountySelect === 'function') {
+    window.kmUpdateSubCountySelect(cKey);
   }
-
-  if (!areas.length) {
-    const fallbackMap = {
-      nairobi: ['Westlands', 'Kilimani', 'Kileleshwa', 'Lavington', 'Runda', 'Karen', 'Kasarani', 'Roysambu', 'Embakasi', 'Langata', 'Parklands', 'Ngara', 'South B', 'South C', 'Umoja', 'Pipeline', 'Donholm', 'Dandora', 'Eastleigh', 'Githurai 44'],
-      kiambu: ['Ruaka', 'Thika', 'Kiambu Town', 'Kikuyu', 'Ruiru', 'Limuru', 'Juja', 'Banana', 'Ndenderu', 'Kahawa Sukari', 'Membley'],
-      machakos: ['Syokimau', 'Mlolongo', 'Athi River', 'Katani', 'Kamulu', 'Joska', 'Machakos Town', 'Tala', 'Lukenya'],
-      kajiado: ['Kitengela', 'Ongata Rongai', 'Ngong Town', 'Kiserian', 'Isinya', 'Kajiado Town'],
-      mombasa: ['Nyali', 'Bamburi', 'Shanzu', 'Kizingo', 'Tudor', 'Mtwapa', 'Diani', 'Kilifi Town'],
-      nakuru: ['Milimani', 'Naka', 'Section 58', 'Kiamunyi', 'Naivasha', 'Gilgil', 'Molo', 'Njoro'],
-      kisumu: ['Milimani', 'Riat Hills', 'Tom Mboya', 'Migosi', 'Mamboleo', 'Kondele', 'Kakamega', 'Kisii Town', 'Bungoma'],
-      'uasin-gishu': ['Elgon View', 'Pioneer', 'Kapsoya', 'Annex', 'West Indies', 'Langas', 'Kitale Town']
-    };
-    areas = fallbackMap[cKey] || fallbackMap.nairobi;
-  }
-
-  subcountySelect.innerHTML = '<option value="all">Sub-county / Area</option>' + areas.map(sc => `<option value="${sc.toLowerCase()}">${sc}</option>`).join('');
-  
   if (county === 'all') {
     this.selectedLocation = null;
+    this.activeCounty = null;
   } else {
-    this.selectedLocation = { county: county, name: county };
+    this.activeCounty = county;
+    this.selectedLocation = { county: county, name: county, type: 'COUNTY' };
   }
   this.currentPage = 1;
   this.applyFilters();
