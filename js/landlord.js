@@ -41,14 +41,56 @@ class LandlordManager {
     if (!searchInput || !suggestionsDiv) return;
 
     const getSuburbs = () => {
-      if (typeof ALL_SUBURBS !== 'undefined' && Array.isArray(ALL_SUBURBS) && ALL_SUBURBS.length > 0) return ALL_SUBURBS;
-      if (window.ALL_SUBURBS && Array.isArray(window.ALL_SUBURBS) && window.ALL_SUBURBS.length > 0) return window.ALL_SUBURBS;
-      if (typeof NAIROBI_REGIONS !== 'undefined' && Array.isArray(NAIROBI_REGIONS)) {
-        const list = [];
-        NAIROBI_REGIONS.forEach(r => (r.suburbs || []).forEach(s => list.push({ name: s, county: r.county || 'Nairobi', corridorId: r.corridorId, lat: r.lat || -1.286389, lng: r.lng || 36.817223 })));
-        return list;
+      const list = [];
+      const seen = new Set();
+
+      const addSuburb = (name, county = 'Nairobi', pathString = '', lat = -1.286389, lng = 36.817223) => {
+        if (!name) return;
+        const key = (name + '|' + county).toLowerCase();
+        if (seen.has(key)) return;
+        seen.add(key);
+        list.push({ name, county, pathString, lat, lng });
+      };
+
+      // 1. Kenya County Areas & Wards/Phases (all 4 counties)
+      const countyData = window.KENYA_COUNTY_AREAS || (typeof KENYA_COUNTY_AREAS !== 'undefined' ? KENYA_COUNTY_AREAS : null);
+      if (countyData && typeof countyData === 'object') {
+        Object.keys(countyData).forEach(countyKey => {
+          const cObj = countyData[countyKey];
+          const countyTitle = cObj.title || countyKey;
+          const areas = cObj.areas || {};
+          Object.keys(areas).forEach(areaName => {
+            addSuburb(areaName, countyTitle, `${areaName}, ${countyTitle}`);
+            const subZones = areas[areaName] || [];
+            if (Array.isArray(subZones)) {
+              subZones.forEach(sub => {
+                if (sub && !sub.startsWith('All ')) {
+                  addSuburb(`${areaName} - ${sub}`, countyTitle, `${sub}, ${areaName}, ${countyTitle}`);
+                }
+              });
+            }
+          });
+        });
       }
-      return [];
+
+      // 2. ALL_SUBURBS array
+      const globalSuburbs = (typeof ALL_SUBURBS !== 'undefined' && Array.isArray(ALL_SUBURBS)) ? ALL_SUBURBS : (window.ALL_SUBURBS || []);
+      globalSuburbs.forEach(s => {
+        if (typeof s === 'string') {
+          addSuburb(s, 'Nairobi');
+        } else if (s && s.name) {
+          addSuburb(s.name, s.county || 'Nairobi', s.pathString || '', s.lat || s.latitude, s.lng || s.longitude);
+        }
+      });
+
+      // 3. NAIROBI_REGIONS fallback
+      if (typeof NAIROBI_REGIONS !== 'undefined' && Array.isArray(NAIROBI_REGIONS)) {
+        NAIROBI_REGIONS.forEach(r => {
+          (r.suburbs || []).forEach(s => addSuburb(s, r.county || 'Nairobi', '', r.lat, r.lng));
+        });
+      }
+
+      return list;
     };
 
     const renderItems = (items) => {
@@ -144,13 +186,29 @@ class LandlordManager {
     const searchInput = document.getElementById('post-suburb-search');
     const suggestionsDiv = document.getElementById('suburb-suggestions');
     const hiddenSelect = document.getElementById('post-suburb');
+    const latInput = document.getElementById('post-lat');
+    const lngInput = document.getElementById('post-lng');
+    const badge = document.getElementById('post-live-location-badge');
+    const nameEl = document.getElementById('live-loc-name');
+    const coordsEl = document.getElementById('live-loc-coords');
 
-    if (searchInput) searchInput.value = `${name} (${county})`;
+    if (searchInput) searchInput.value = name;
     if (suggestionsDiv) suggestionsDiv.style.display = 'none';
     
     // Store selected suburb data
-    this.selectedSuburb = { name, lat, lng, county, corridorId };
-    this.updatePostMapLocation(lat, lng);
+    this.selectedSuburb = { name, lat: lat || -1.286389, lng: lng || 36.817223, county: county || 'Nairobi', corridorId: corridorId || '' };
+    this.selectedCoords = { lat: this.selectedSuburb.lat, lng: this.selectedSuburb.lng };
+
+    if (latInput) latInput.value = this.selectedCoords.lat;
+    if (lngInput) lngInput.value = this.selectedCoords.lng;
+
+    if (nameEl) nameEl.textContent = `📍 ${name} (${county || 'Selected'} ✓)`;
+    if (coordsEl) coordsEl.textContent = `${this.selectedCoords.lat.toFixed(4)}, ${this.selectedCoords.lng.toFixed(4)}`;
+    if (badge) badge.style.display = 'flex';
+
+    if (typeof this.updatePostMapLocation === 'function') {
+      this.updatePostMapLocation(this.selectedCoords.lat, this.selectedCoords.lng);
+    }
 
     // Update hidden select for form submission
     if (hiddenSelect) {
@@ -265,88 +323,221 @@ class LandlordManager {
   setupDropzone() {
     const dropzone = document.getElementById('photo-dropzone');
     const fileInput = document.getElementById('post-photos-input');
-    const previewGrid = document.getElementById('post-photos-preview');
 
-    if (!dropzone || !fileInput) return;
+    if (!fileInput) return;
 
-    dropzone.addEventListener('click', () => fileInput.click());
+    if (dropzone) {
+      dropzone.onclick = (e) => {
+        // Direct click trigger
+        if (e.target !== fileInput) {
+          fileInput.click();
+        }
+      };
 
-    dropzone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropzone.style.borderColor = '#00b53f';
-    });
+      dropzone.ondragover = (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      };
 
-    dropzone.addEventListener('dragleave', () => {
-      dropzone.style.borderColor = '#cbd5e1';
-    });
+      dropzone.ondragleave = () => {
+        dropzone.classList.remove('dragover');
+      };
 
-    dropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropzone.style.borderColor = '#cbd5e1';
-      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        this.handleFiles(e.dataTransfer.files);
-      }
-    });
+      dropzone.ondrop = (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          this.handleFiles(e.dataTransfer.files);
+        }
+      };
+    }
 
-    fileInput.addEventListener('change', (e) => {
+    fileInput.onchange = (e) => {
       if (e.target.files && e.target.files.length > 0) {
         this.handleFiles(e.target.files);
+        fileInput.value = ''; // Reset so picking the same files or re-selecting works every time
       }
-    });
+    };
   }
 
   setupVideoDropzone() {
     const videoDropzone = document.getElementById('video-dropzone');
     const videoInput = document.getElementById('post-videos-input');
 
-    if (!videoDropzone || !videoInput) return;
+    if (!videoInput) return;
 
-    videoDropzone.addEventListener('click', () => videoInput.click());
+    if (videoDropzone) {
+      videoDropzone.onclick = (e) => {
+        if (e.target !== videoInput) {
+          videoInput.click();
+        }
+      };
 
-    videoDropzone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      videoDropzone.style.borderColor = '#7c3aed';
-    });
+      videoDropzone.ondragover = (e) => {
+        e.preventDefault();
+        videoDropzone.style.borderColor = '#7c3aed';
+      };
 
-    videoDropzone.addEventListener('dragleave', () => {
-      videoDropzone.style.borderColor = '#c084fc';
-    });
+      videoDropzone.ondragleave = () => {
+        videoDropzone.style.borderColor = '#c084fc';
+      };
 
-    videoDropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      videoDropzone.style.borderColor = '#c084fc';
-      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        this.handleVideoFiles(e.dataTransfer.files);
-      }
-    });
+      videoDropzone.ondrop = (e) => {
+        e.preventDefault();
+        videoDropzone.style.borderColor = '#c084fc';
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          this.handleVideoFiles(e.dataTransfer.files);
+        }
+      };
+    }
 
-    videoInput.addEventListener('change', (e) => {
+    videoInput.onchange = (e) => {
       if (e.target.files && e.target.files.length > 0) {
         this.handleVideoFiles(e.target.files);
+        videoInput.value = '';
       }
-    });
+    };
   }
 
-  handleFiles(files) {
+  async handleFiles(files) {
     const previewGrid = document.getElementById('post-photos-preview');
     if (!previewGrid) return;
 
-    Array.from(files).slice(0, 16).forEach(file => {
+    const remainingSlots = 5 - this.uploadedImages.length;
+    if (remainingSlots <= 0) {
+      if (window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast('Maximum 5 photos allowed. Remove a photo to add another.', 'info');
+      }
+      return;
+    }
+
+    const filesToProcess = Array.from(files)
+      .filter(f => f.type.startsWith('image/') || /\.(jpe?g|png|webp)$/i.test(f.name))
+      .slice(0, remainingSlots);
+
+    if (filesToProcess.length === 0) {
+      if (window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast('Please select valid photos (JPG, PNG, WebP).', 'warning');
+      }
+      return;
+    }
+
+    const dropzone = document.getElementById('photo-dropzone');
+    if (dropzone) dropzone.style.opacity = '0.6';
+
+    for (const file of filesToProcess) {
+      try {
+        const compressedDataUrl = await this.compressAndWatermarkImage(file, 1280, 0.82);
+        if (this.uploadedImages.length < 5) {
+          this.uploadedImages.push(compressedDataUrl);
+          this.renderPhotoPreviews();
+        }
+      } catch (err) {
+        console.warn('Image processing fallback:', err);
+        const rawUrl = await this.fileToDataUrl(file);
+        if (this.uploadedImages.length < 5) {
+          this.uploadedImages.push(rawUrl);
+          this.renderPhotoPreviews();
+        }
+      }
+    }
+
+    if (dropzone) dropzone.style.opacity = '1';
+
+    if (window.app && typeof window.app.showToast === 'function') {
+      window.app.showToast(`📸 ${this.uploadedImages.length} of 5 photos added!`, 'success');
+    }
+  }
+
+  fileToDataUrl(file) {
+    return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onload = async (e) => {
-        const rawUrl = e.target.result;
-        let finalUrl = rawUrl;
-        if (window.kejaWatermark && typeof window.kejaWatermark.applyWatermarkToImage === 'function') {
-          try {
-            finalUrl = await window.kejaWatermark.applyWatermarkToImage(rawUrl);
-          } catch (err) {
-            console.warn('Watermark processing failed, using raw image:', err);
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+    });
+  }
+
+  compressAndWatermarkImage(file, maxDimension = 1280, quality = 0.82) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+      
+      img.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        let w = img.naturalWidth || img.width || 800;
+        let h = img.naturalHeight || img.height || 600;
+
+        if (w > maxDimension || h > maxDimension) {
+          if (w > h) {
+            h = Math.round((h * maxDimension) / w);
+            w = maxDimension;
+          } else {
+            w = Math.round((w * maxDimension) / h);
+            h = maxDimension;
           }
         }
-        this.uploadedImages.push(finalUrl);
-        this.renderPhotoPreviews();
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          const r = new FileReader();
+          r.onload = e => resolve(e.target.result);
+          r.readAsDataURL(file);
+          return;
+        }
+
+        // Draw image resized
+        ctx.drawImage(img, 0, 0, w, h);
+
+        // Watermark: bottom-right pill
+        const text = 'kejamarket.co.ke';
+        const fontSize = Math.max(13, Math.round(w * 0.024));
+        ctx.font = `bold ${fontSize}px 'Plus Jakarta Sans', -apple-system, sans-serif`;
+        const textMetrics = ctx.measureText(text);
+        const padX = fontSize * 0.8;
+        const padY = fontSize * 0.4;
+        const pillW = textMetrics.width + padX * 2 + fontSize;
+        const pillH = fontSize + padY * 2;
+        const pillX = w - pillW - 14;
+        const pillY = h - pillH - 14;
+
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.82)';
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(pillX, pillY, pillW, pillH, 8);
+        } else {
+          ctx.rect(pillX, pillY, pillW, pillH);
+        }
+        ctx.fill();
+
+        // Green dot
+        ctx.fillStyle = '#22c55e';
+        ctx.beginPath();
+        ctx.arc(pillX + padX, pillY + pillH / 2, fontSize * 0.25, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Text
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, pillX + padX + fontSize * 0.6, pillY + pillH / 2);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl);
       };
-      reader.readAsDataURL(file);
+
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        const r = new FileReader();
+        r.onload = e => resolve(e.target.result);
+        r.onerror = e => reject(e);
+        r.readAsDataURL(file);
+      };
+
+      img.src = objectUrl;
     });
   }
 
@@ -358,8 +549,8 @@ class LandlordManager {
     }
 
     videoFiles.forEach(file => {
-      if (this.uploadedVideos.length >= 2) {
-        if (window.app) window.app.showToast('Maximum 2 video tours allowed per listing.', 'info');
+      if (this.uploadedVideos.length >= 1) {
+        if (window.app) window.app.showToast('Maximum 1 video tour allowed per listing.', 'info');
         return;
       }
 
@@ -367,7 +558,6 @@ class LandlordManager {
         if (window.app) window.app.showToast(`⚠️ Video is ${(file.size / (1024*1024)).toFixed(1)}MB. Max recommended is 80MB.`, 'warning');
       }
 
-      // Check video duration (max 1m 30s / 90 seconds)
       const videoEl = document.createElement('video');
       videoEl.preload = 'metadata';
       const blobUrl = URL.createObjectURL(file);
@@ -377,11 +567,11 @@ class LandlordManager {
         URL.revokeObjectURL(blobUrl);
         const duration = videoEl.duration;
 
-        if (duration > 91) { // 1m 30s + 1s tolerance
+        if (duration > 91) {
           const mins = Math.floor(duration / 60);
           const secs = Math.floor(duration % 60);
           if (window.app) {
-            window.app.showToast(`❌ Video exceeds max duration! Allowed: 1 min 30 sec (1m 30s). Uploaded: ${mins}m ${secs}s.`, 'error');
+            window.app.showToast(`❌ Video exceeds max duration! Allowed: 1m 30s. Uploaded: ${mins}m ${secs}s.`, 'error');
           }
           return;
         }
@@ -389,22 +579,16 @@ class LandlordManager {
         const reader = new FileReader();
         reader.onload = async (e) => {
           const videoDataUrl = e.target.result;
-          let posterUrl = '';
-          if (window.kejaWatermark && typeof window.kejaWatermark.generateVideoPoster === 'function') {
-            try {
-              posterUrl = await window.kejaWatermark.generateVideoPoster(file);
-            } catch (err) {}
-          }
           this.uploadedVideos.push({
             url: videoDataUrl,
             file: file,
             duration: Math.round(duration),
             name: file.name,
-            poster: posterUrl
+            poster: ''
           });
           this.renderVideoPreviews();
           if (window.app) {
-            window.app.showToast(`🎥 Video tour added (${Math.round(duration)}s) with kejamarket.co.ke watermark!`, 'success');
+            window.app.showToast(`🎥 Video tour attached (${Math.round(duration)}s)!`, 'success');
           }
         };
         reader.readAsDataURL(file);
@@ -412,7 +596,6 @@ class LandlordManager {
 
       videoEl.onerror = () => {
         URL.revokeObjectURL(blobUrl);
-        // Fallback: attach file directly
         this.uploadedVideos.push({
           url: URL.createObjectURL(file),
           file: file,
@@ -421,39 +604,69 @@ class LandlordManager {
           poster: ''
         });
         this.renderVideoPreviews();
-        if (window.app) window.app.showToast(`🎥 Video tour attached (${file.name})!`, 'success');
       };
     });
   }
 
   renderPhotoPreviews() {
     const previewGrid = document.getElementById('post-photos-preview');
+    const countEl = document.getElementById('post-photos-count');
     if (!previewGrid) return;
 
-    previewGrid.innerHTML = this.uploadedImages.map((url, idx) => `
-      <div class="photo-preview-item" style="position:relative; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; height:80px;">
-        <img src="${url}" alt="Upload preview ${idx+1}" style="width:100%; height:100%; object-fit:cover;">
-        <span class="watermark-tag" style="position:absolute; bottom:2px; left:2px; background:rgba(15,23,42,0.85); color:#fff; font-size:0.58rem; font-weight:700; padding:1px 4px; border-radius:3px; border:1px solid rgba(0,181,63,0.8);">
-          <i class="fas fa-shield-alt" style="color:#00b53f;"></i> kejamarket.co.ke
-        </span>
-        <button type="button" onclick="landlordManager.removePhoto(${idx})" style="position:absolute; top:2px; right:2px; background:rgba(239,68,68,0.85); color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:0.65rem; cursor:pointer; display:flex; align-items:center; justify-content:center;">&times;</button>
+    if (countEl) {
+      countEl.textContent = `${this.uploadedImages.length} / 5 photos`;
+      countEl.style.color = this.uploadedImages.length > 0 ? '#15803d' : '#64748b';
+    }
+
+    if (this.uploadedImages.length === 0) {
+      previewGrid.innerHTML = '';
+      previewGrid.style.display = 'none';
+      return;
+    }
+
+    previewGrid.style.display = 'grid';
+
+    let html = this.uploadedImages.map((url, idx) => `
+      <div class="photo-preview-item" style="position:relative; border-radius:10px; overflow:hidden; border:2px solid ${idx === 0 ? '#22c55e' : '#e2e8f0'}; height:90px; background:#f8fafc; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+        <img src="${url}" alt="Listing photo ${idx+1}" style="width:100%; height:100%; object-fit:cover; display:block;">
+        ${idx === 0 ? `
+          <span style="position:absolute; top:4px; left:4px; background:#16a34a; color:#fff; font-size:0.62rem; font-weight:800; padding:2px 6px; border-radius:4px; box-shadow:0 1px 3px rgba(0,0,0,0.3); display:inline-flex; align-items:center; gap:3px;">
+            <i class="fas fa-star" style="font-size:0.55rem;"></i> Cover Photo
+          </span>
+        ` : ''}
+        <button type="button" onclick="landlordManager.removePhoto(${idx})" title="Delete photo" aria-label="Delete photo" style="position:absolute; top:4px; right:4px; background:rgba(220,38,38,0.92); color:white; border:none; border-radius:50%; width:24px; height:24px; font-size:0.75rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 4px rgba(0,0,0,0.3); transition:transform 0.15s;">
+          <i class="fas fa-trash-alt" style="font-size:0.65rem;"></i>
+        </button>
       </div>
     `).join('');
+
+    if (this.uploadedImages.length < 5) {
+      html += `
+        <label for="post-photos-input" class="photo-preview-add-tile" style="border:2px dashed #cbd5e1; border-radius:10px; height:90px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; cursor:pointer; background:#f8fafc; color:#64748b; transition:all 0.15s;" onmouseover="this.style.borderColor='#22c55e';this.style.color='#16a34a';" onmouseout="this.style.borderColor='#cbd5e1';this.style.color='#64748b';">
+          <i class="fas fa-plus-circle" style="font-size:1.3rem;"></i>
+          <span style="font-size:0.72rem; font-weight:700;">+ Add Photo</span>
+        </label>
+      `;
+    }
+
+    previewGrid.innerHTML = html;
   }
 
   renderVideoPreviews() {
     const previewGrid = document.getElementById('post-videos-preview');
     if (!previewGrid) return;
 
+    if (this.uploadedVideos.length === 0) {
+      previewGrid.innerHTML = '';
+      return;
+    }
+
     previewGrid.innerHTML = this.uploadedVideos.map((v, idx) => {
       const mins = Math.floor(v.duration / 60);
       const secs = (v.duration % 60).toString().padStart(2, '0');
       return `
         <div class="video-preview-item" style="position:relative; border-radius:8px; overflow:hidden; border:2px solid #c084fc; width:140px; height:90px; background:#000;">
-          <video src="${v.url}" ${v.poster ? `poster="${v.poster}"` : ''} controlsList="nodownload" oncontextmenu="return false;" style="width:100%; height:100%; object-fit:cover;" muted></video>
-          <span class="watermark-tag" style="position:absolute; top:3px; left:3px; background:rgba(15,23,42,0.85); color:#fff; font-size:0.58rem; font-weight:700; padding:1px 4px; border-radius:3px; border:1px solid rgba(0,181,63,0.8); z-index:4;">
-            <span style="display:inline-block; width:5px; height:5px; border-radius:50%; background:#00b53f; margin-right:3px;"></span>kejamarket.co.ke
-          </span>
+          <video src="${v.url}" controlsList="nodownload" oncontextmenu="return false;" style="width:100%; height:100%; object-fit:cover;" muted></video>
           <span style="position:absolute; bottom:4px; left:4px; background:rgba(124,58,237,0.85); color:#fff; font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:4px; display:flex; align-items:center; gap:4px; z-index:4;">
             <i class="fas fa-play" style="font-size:0.55rem;"></i> ${mins}:${secs}
           </span>
@@ -464,13 +677,23 @@ class LandlordManager {
   }
 
   removePhoto(index) {
-    this.uploadedImages.splice(index, 1);
-    this.renderPhotoPreviews();
+    if (index >= 0 && index < this.uploadedImages.length) {
+      this.uploadedImages.splice(index, 1);
+      this.renderPhotoPreviews();
+      if (window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast('Photo removed', 'info');
+      }
+    }
   }
 
   removeVideo(index) {
-    this.uploadedVideos.splice(index, 1);
-    this.renderVideoPreviews();
+    if (index >= 0 && index < this.uploadedVideos.length) {
+      this.uploadedVideos.splice(index, 1);
+      this.renderVideoPreviews();
+      if (window.app && typeof window.app.showToast === 'function') {
+        window.app.showToast('Video removed', 'info');
+      }
+    }
   }
 
   initPostMap() {

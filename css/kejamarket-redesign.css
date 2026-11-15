@@ -3017,3 +3017,286 @@ body { background: #f7f9fb !important; }
 .km-cat-marketplace i {
   color: #ea580c !important;
 }
+
+/* ==========================================================================
+   KejaMarket Post Ad Redesign & Universal Overflow Prevention
+   ========================================================================== */
+
+/* ── Global Horizontal Overflow Prevention (Desktop & Mobile PWA) ── */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Hide scrollbars on horizontal carousel rows while keeping smooth scroll */
+.major-towns-bar,
+.sub-zones-bar,
+.km-story-bubbles,
+.photo-preview-grid,
+.km-desk-areas-row,
+#quick-filter-scroll,
+.results-controls,
+[style*="overflow-x:auto"],
+[style*="overflow-x: auto"] {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.major-towns-bar::-webkit-scrollbar,
+.sub-zones-bar::-webkit-scrollbar,
+.km-story-bubbles::-webkit-scrollbar,
+.photo-preview-grid::-webkit-scrollbar,
+.km-desk-areas-row::-webkit-scrollbar,
+#quick-filter-scroll::-webkit-scrollbar,
+.results-controls::-webkit-scrollbar,
+[style*="overflow-x:auto"]::-webkit-scrollbar,
+[style*="overflow-x: auto"]::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ── Modernized Post Property Modal Wizard (Jiji / Jumia Deals Inspired) ── */
+#modal-post-ad {
+  overflow-x: hidden !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  backdrop-filter: blur(4px) !important;
+  z-index: 999999 !important;
+}
+
+#modal-post-ad .modal-dialog {
+  max-width: 680px !important;
+  width: 95% !important;
+  margin: 20px auto !important;
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.25) !important;
+  overflow: hidden !important;
+  border: 1px solid #e2e8f0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: calc(100vh - 40px) !important;
+}
+
+#modal-post-ad .modal-header {
+  padding: 16px 20px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-shrink: 0 !important;
+}
+
+#modal-post-ad .modal-header h3 {
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+}
+
+#modal-post-ad .zero-fee-pill {
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  background: #dcfce7 !important;
+  color: #15803d !important;
+  padding: 2px 8px !important;
+  border-radius: 999px !important;
+  border: 1px solid #86efac !important;
+}
+
+#modal-post-ad .modal-body {
+  padding: 18px 20px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  flex: 1 1 auto !important;
+  background: #f8fafc !important;
+  box-sizing: border-box !important;
+}
+
+/* Post Ad Step Cards */
+.post-step-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 14px !important;
+  padding: 16px !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+  box-sizing: border-box !important;
+}
+
+.post-step-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-bottom: 14px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.post-step-badge {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: #00b53f !important;
+  color: #ffffff !important;
+  font-size: 0.8rem !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.post-step-title {
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  margin: 0 !important;
+}
+
+.post-step-subtitle {
+  font-size: 0.76rem !important;
+  color: #64748b !important;
+  margin: 0 !important;
+}
+
+/* Photo Dropzone Styling */
+.photo-dropzone-modern {
+  border: 2px dashed #86efac !important;
+  background: #f0fdf4 !important;
+  border-radius: 12px !important;
+  padding: 20px 14px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  position: relative !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.photo-dropzone-modern:hover,
+.photo-dropzone-modern.dragover {
+  border-color: #22c55e !important;
+  background: #dcfce7 !important;
+  transform: translateY(-1px) !important;
+}
+
+.photo-dropzone-modern .photo-icon-circle {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.4rem !important;
+  color: #16a34a !important;
+  margin-bottom: 4px !important;
+}
+
+.photo-dropzone-modern .photo-title {
+  font-weight: 800 !important;
+  font-size: 0.92rem !important;
+  color: #0f172a !important;
+}
+
+.photo-dropzone-modern .photo-sub {
+  font-size: 0.76rem !important;
+  color: #64748b !important;
+}
+
+.km-btn-browse-photos {
+  background: #00b53f !important;
+  color: #ffffff !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-top: 6px !important;
+  box-shadow: 0 2px 6px rgba(0, 181, 63, 0.3) !important;
+}
+
+/* Photo Preview Grid */
+#post-photos-preview {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+  gap: 10px !important;
+  margin-top: 12px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Modal Footer */
+#modal-post-ad .modal-footer {
+  padding: 14px 20px !important;
+  background: #ffffff !important;
+  border-top: 1px solid #f1f5f9 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-shrink: 0 !important;
+  gap: 12px !important;
+  box-sizing: border-box !important;
+}
+
+.km-post-submit-btn {
+  background: #00b53f !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 181, 63, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+
+.km-post-submit-btn:hover {
+  background: #009634 !important;
+  transform: translateY(-1px) !important;
+}
+
+@media (max-width: 640px) {
+  #modal-post-ad .form-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  #modal-post-ad .modal-dialog {
+    width: 96% !important;
+    margin: 8px auto !important;
+    max-height: calc(100vh - 16px) !important;
+    border-radius: 12px !important;
+  }
+  #modal-post-ad .modal-body {
+    padding: 12px 14px !important;
+  }
+  .post-step-card {
+    padding: 12px !important;
+    margin-bottom: 12px !important;
+  }
+}

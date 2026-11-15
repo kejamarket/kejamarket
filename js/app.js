@@ -3763,8 +3763,19 @@ class NairobiRentalsApp {
       modal.scrollTop = 0;
       const body = modal.querySelector('.modal-body');
       if (body) body.scrollTop = 0;
-      if (modalId === 'modal-post-ad' && window.landlordManager && typeof window.landlordManager.initPostMap === 'function') {
-        window.landlordManager.initPostMap();
+      if (modalId === 'modal-post-ad' && window.landlordManager) {
+        if (typeof window.landlordManager.setupDropzone === 'function') {
+          window.landlordManager.setupDropzone();
+        }
+        if (typeof window.landlordManager.renderPhotoPreviews === 'function') {
+          window.landlordManager.renderPhotoPreviews();
+        }
+        if (typeof window.landlordManager.setupSuburbAutocomplete === 'function') {
+          window.landlordManager.setupSuburbAutocomplete();
+        }
+        if (typeof window.landlordManager.initPostMap === 'function') {
+          window.landlordManager.initPostMap();
+        }
       }
     }
   }
