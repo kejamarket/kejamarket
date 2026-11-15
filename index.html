@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=111.0" as="script">
+  <link rel="preload" href="js/app.js?v=112.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -1194,24 +1194,10 @@
             <!-- County Select -->
             <div style="margin-top:8px;">
               <select class="km-sb-select" id="filter-county" onchange="app.onCountyChange && app.onCountyChange(this.value)">
-                <option value="all">All Kenya (47 Counties)</option>
-                <optgroup label="Metropolitan & Priority">
-                  <option value="nairobi" selected>Nairobi City</option>
-                  <option value="kiambu">Kiambu (Ruaka, Thika, Kikuyu)</option>
-                  <option value="machakos">Machakos (Syokimau, Athi River)</option>
-                  <option value="kajiado">Kajiado (Kitengela, Rongai)</option>
-                  <option value="mombasa">Mombasa & Coast</option>
-                  <option value="nakuru">Nakuru & Naivasha</option>
-                  <option value="kisumu">Kisumu City</option>
-                  <option value="uasin-gishu">Uasin Gishu (Eldoret)</option>
-                </optgroup>
-                <optgroup label="Other Counties">
-                  <option value="nyeri">Nyeri</option>
-                  <option value="kilifi">Kilifi (Malindi, Diani)</option>
-                  <option value="laikipia">Laikipia (Nanyuki)</option>
-                  <option value="kakamega">Kakamega</option>
-                  <option value="kisii">Kisii</option>
-                </optgroup>
+                <option value="nairobi" selected>Nairobi City</option>
+                <option value="kiambu">Kiambu (Ruaka, Thika, Kikuyu)</option>
+                <option value="machakos">Machakos (Syokimau, Athi River)</option>
+                <option value="kajiado">Kajiado (Kitengela, Rongai)</option>
               </select>
             </div>
 
@@ -5908,7 +5894,7 @@
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/components/location-picker.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
-  <script src="js/app.js?v=111.0" defer></script>
+  <script src="js/app.js?v=112.0" defer></script>
   <script src="js/viewing-booking.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
@@ -6121,7 +6107,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=111.0');
+      navigator.serviceWorker.register('/sw.js?v=112.0');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->

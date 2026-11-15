@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v111-redesigned-spacious-sidebar';
+const CACHE_NAME = 'kejamarket-v112-nairobi-only-counties';
 
 const STATIC_ASSETS = [
   '/',
