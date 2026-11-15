@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=114.0" as="script">
+  <link rel="preload" href="js/app.js?v=115.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -892,6 +892,126 @@
     width: 100% !important;
     height: 100% !important;
     min-height: 550px !important;
+  }
+
+
+  /* ════════════════════════════════════════════════════════════════
+     INSPECTION MODE SELECTOR & TIME CHIPS (Walk-In vs Live Video Tour)
+     ════════════════════════════════════════════════════════════════ */
+  .km-viewing-type-selector {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+  .km-viewing-type-btn {
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 12px 10px !important;
+    background: #f8fafc !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 3px !important;
+    user-select: none !important;
+  }
+  .km-viewing-type-btn i {
+    font-size: 1.4rem !important;
+    margin-bottom: 2px !important;
+    color: #64748b !important;
+    transition: color 0.2s ease !important;
+  }
+  .km-viewing-type-btn strong {
+    font-size: 0.88rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+  }
+  .km-viewing-type-btn span {
+    font-size: 0.72rem !important;
+    color: #64748b !important;
+    font-weight: 500 !important;
+  }
+  .km-viewing-type-btn:hover {
+    border-color: #22c55e !important;
+    background: #f0fdf4 !important;
+  }
+  .km-viewing-type-btn.active {
+    border-color: #22c55e !important;
+    background: #e8f8ee !important;
+    box-shadow: 0 0 0 1px #22c55e, 0 4px 12px rgba(34, 197, 94, 0.15) !important;
+  }
+  .km-viewing-type-btn.active i {
+    color: #22c55e !important;
+  }
+  .km-viewing-type-btn.active strong {
+    color: #047857 !important;
+  }
+
+  .km-filter-chip-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+  .km-fchip {
+    padding: 8px 6px !important;
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #f8fafc !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    user-select: none !important;
+  }
+  .km-fchip:hover {
+    border-color: #22c55e !important;
+    color: #047857 !important;
+  }
+  .km-fchip.active {
+    background: #22c55e !important;
+    color: #ffffff !important;
+    border-color: #22c55e !important;
+    box-shadow: 0 1px 3px rgba(34, 197, 94, 0.35) !important;
+  }
+
+  .km-zero-viewing-fee-card {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    background: linear-gradient(135deg, #f0fdf4, #e8fbf0) !important;
+    border: 1px solid #86efac !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+  }
+  .km-zero-fee-icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    background: #22c55e !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.1rem !important;
+    flex-shrink: 0 !important;
+  }
+  .km-zero-fee-content {
+    flex: 1 !important;
+  }
+  .km-zero-fee-title {
+    font-size: 0.88rem !important;
+    font-weight: 800 !important;
+    color: #14532d !important;
+    margin-bottom: 2px !important;
+  }
+  .km-zero-fee-sub {
+    font-size: 0.78rem !important;
+    color: #166534 !important;
+    line-height: 1.4 !important;
   }
 
 </style>
@@ -3408,9 +3528,11 @@
               Free to request  &middot;  60s Caretaker SLA  &middot;  100% Free Viewing Request &middot; Instant Caretaker Confirmation
             </div>
           </div>
-          <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)"
-            style="padding: 9px 16px; font-size: 0.88rem; font-weight: 800; border-radius: 8px; background: #00b53f; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 3px 8px rgba(0,181,63,0.35); flex-shrink: 0;">
-            <i class="fas fa-calendar-check"></i> Schedule Free Viewing
+          <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, 'physical')" style="padding: 8px 13px; font-size: 0.82rem; font-weight: 800; border-radius: 8px; background: #006818; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(0,104,24,0.35);">
+            <i class="fas fa-walking"></i> Walk-In
+          </button>
+          <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, 'virtual')" style="padding: 8px 13px; font-size: 0.82rem; font-weight: 800; border-radius: 8px; background: #25D366; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(37,211,102,0.35);">
+            <i class="fab fa-whatsapp"></i> Video Tour
           </button>
         </div>
 
@@ -3442,6 +3564,22 @@
           <div style="margin-top: 8px; padding-top: 6px; border-top: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; font-weight: 900; color: #0f172a;">
             <span>Estimated Move-In Total:</span>
             <span id="dt-breakdown-total" style="color: #006818; font-size: 1rem;">-</span>
+          </div>
+        </div>
+
+        
+        <!-- Verified Living Quality & Utilities Checklist (PWA Parity) -->
+        <div class="km-utility-card" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; margin-bottom:14px;">
+          <h4 style="font-size:0.92rem; font-weight:800; color:#0f172a; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;">
+            <i class="fas fa-check-double" style="color:#006818;"></i> Verified Living Quality & Utilities
+          </h4>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-tint" style="color:#0284c7; width:16px;"></i> <div><strong>24/7 Water Supply</strong><div style="font-size:0.72rem; color:#64748b;">Borehole + Council backup</div></div></div>
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-bolt" style="color:#f59e0b; width:16px;"></i> <div><strong>Private KPLC Token</strong><div style="font-size:0.72rem; color:#64748b;">Direct paybill, private meter</div></div></div>
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-wifi" style="color:#8b5cf6; width:16px;"></i> <div><strong>High-Speed Fibre</strong><div style="font-size:0.72rem; color:#64748b;">Safaricom & Faiba ready</div></div></div>
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-car" style="color:#10b981; width:16px;"></i> <div><strong>Secure Parking</strong><div style="font-size:0.72rem; color:#64748b;">Free dedicated slot inside gate</div></div></div>
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-shield-alt" style="color:#006818; width:16px;"></i> <div><strong>Estate Security</strong><div style="font-size:0.72rem; color:#64748b;">CCTV + Electric perimeter</div></div></div>
+            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-trash-alt" style="color:#64748b; width:16px;"></i> <div><strong>Garbage Collection</strong><div style="font-size:0.72rem; color:#64748b;">Included in service charge</div></div></div>
           </div>
         </div>
 
@@ -3526,8 +3664,11 @@
               <div style="font-size: 0.88rem; font-weight: 700; margin-top: 4px; color: #0f172a;" id="detail-landlord-phone-display">-</div>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-              <button id="detail-btn-book-viewing" class="btn-primary" style="padding: 9px 18px; font-size: 0.88rem; border-radius: 8px; background: #00b53f; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 7px; color: white; box-shadow: 0 2px 8px rgba(0,181,63,0.3);" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)">
-                <i class="fas fa-calendar-check"></i> Schedule Free Viewing
+              <button type="button" class="btn-primary" style="padding: 9px 15px; font-size: 0.84rem; border-radius: 8px; background: #006818; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; color: white; box-shadow: 0 2px 8px rgba(0,104,24,0.35);" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, 'physical')">
+                <i class="fas fa-walking"></i> In-Person Walk-In
+              </button>
+              <button type="button" class="btn-primary" style="padding: 9px 15px; font-size: 0.84rem; border-radius: 8px; background: #25D366; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; color: white; box-shadow: 0 2px 8px rgba(37,211,102,0.35);" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, 'virtual')">
+                <i class="fab fa-whatsapp"></i> Live Video Tour
               </button>
               <button id="detail-btn-inbox-chat" class="btn-secondary" style="padding: 9px 15px; font-size: 0.86rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1.5px solid #cbd5e1; background: white;" onclick="app.openChatForCurrentProperty()">
                 <i class="fas fa-comment-dots"></i> Message Landlord
@@ -6730,8 +6871,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script src="js/app.js?v=114.0" defer></script>
-  <script src="js/viewing-booking.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
+<script src="js/app.js?v=115.0" defer></script>
+  <script src="js/viewing-booking.js?v=115.0" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
   <script src="js/mobile-layout.js?v=106.0" defer></script>
@@ -6943,7 +7084,7 @@ document.addEventListener('DOMContentLoaded', function() {
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=114.0');
+      navigator.serviceWorker.register('/sw.js?v=115.0');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->
@@ -7283,8 +7424,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <i class="fas fa-calendar-alt"></i>
           </div>
           <div>
-            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">Book a Property Viewing</h3>
-            <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #a7f3d0;">60-Second Availability Confirmation  &bull;  KSh 200 Commitment Fee</p>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">Schedule Free Property Viewing</h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #a7f3d0;">100% Free Inspection &bull; In-Person Walk-In or Live Video Tour</p>
           </div>
         </div>
         <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-viewing-booking')" style="color: white; font-size: 1.8rem; background: none; border: none; cursor: pointer; line-height: 1;">&times;</button>
