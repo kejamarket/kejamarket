@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v119-real-logo-no-loop';
+const CACHE_NAME = 'kejamarket-v120-clean';
 
 const STATIC_ASSETS = [
   '/',
@@ -47,7 +47,6 @@ const STATIC_ASSETS = [
   '/vendor/chartjs/chart.min.js',
 
   // Core & Feature JavaScript Files
-  '/js/kejamarket-3d-loader.js',
   '/js/desk-detail-modal.js',
   '/js/in-app-call.js',
   '/js/share-card.js',
@@ -156,7 +155,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // 3. Navigation requests (HTML pages)
-  // Try network first, intercept Render cold-boot "SERVICE WAKING UP" terminal screens, falling back to cached 3D app shell
+  // Try network first, intercept Render cold-boot "SERVICE WAKING UP" terminal screens, falling back to cached app shell
   if (req.mode === 'navigate' || (req.headers.get('accept') && req.headers.get('accept').includes('text/html'))) {
     event.respondWith(
       fetch(req)
@@ -184,7 +183,7 @@ self.addEventListener('fetch', (event) => {
             }
           }
 
-          // Fallback to cached app shell (index.html with 3D preloader)
+          // Fallback to cached app shell (index.html )
           const appShell = await caches.match('/index.html', { ignoreSearch: true }) || await caches.match('/', { ignoreSearch: true });
           if (appShell) return appShell;
 
@@ -243,7 +242,7 @@ self.addEventListener('fetch', (event) => {
 
   // 5. Static Assets (CSS, JS, Fonts)
   // For actively updated files or versioned files (?v=), use Network-First to ensure instant updates
-  const isFrequentlyUpdated = url.pathname.includes('kejamarket-3d-loader') ||
+  const isFrequentlyUpdated =
     url.pathname.includes('mobile-layout') ||
     url.pathname.includes('locations') ||
     url.pathname.includes('app.js') ||
