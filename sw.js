@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v118-3d-loader-anti-sleep';
+const CACHE_NAME = 'kejamarket-v119-real-logo-no-loop';
 
 const STATIC_ASSETS = [
   '/',
