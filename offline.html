@@ -143,9 +143,30 @@
 </head>
 <body>
   <div class="offline-card">
-    <div class="icon-wrapper">
-      <i class="fas fa-wifi-slash"></i>
+    <!-- 3D KejaMarket House -->
+    <div style="perspective: 800px; width: 140px; height: 120px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+      <div style="position: relative; width: 100px; height: 100px; transform-style: preserve-3d; animation: km3dFloatOffline 3.8s ease-in-out infinite alternate;">
+        <div style="position: absolute; width: 70px; height: 50px; bottom: 15px; left: 15px; transform-style: preserve-3d;">
+          <!-- Front Wall -->
+          <div style="position: absolute; width: 70px; height: 50px; transform: translateZ(35px); background: linear-gradient(135deg, #00b53f, #008a2e); border: 1px solid rgba(255,255,255,0.25); border-radius: 3px; overflow: hidden;">
+            <div style="position: absolute; bottom: 0; left: 10px; width: 16px; height: 30px; background: linear-gradient(180deg, #fef08a, #f59e0b); border-radius: 3px 3px 0 0; box-shadow: 0 0 10px rgba(245, 158, 11, 0.8);"></div>
+            <div style="position: absolute; top: 10px; right: 10px; width: 22px; height: 20px; background: linear-gradient(135deg, #e0f2fe, #38bdf8); border-radius: 3px; border: 1px solid white;"></div>
+          </div>
+          <!-- Side Wall -->
+          <div style="position: absolute; width: 70px; height: 50px; transform: rotateY(90deg) translateZ(35px); background: #006818; border-radius: 3px;"></div>
+          <!-- Roof -->
+          <div style="position: absolute; top: -16px; left: -2px; width: 44px; height: 76px; background: linear-gradient(135deg, #334155, #0f172a); transform: rotateY(90deg) rotateX(34deg) translateZ(-6px) translateY(-10px); border: 1px solid rgba(255,255,255,0.15);"></div>
+          <div style="position: absolute; top: -16px; right: -2px; width: 44px; height: 76px; background: linear-gradient(135deg, #1e293b, #020617); transform: rotateY(90deg) rotateX(-34deg) translateZ(38px) translateY(-10px); border: 1px solid rgba(255,255,255,0.15);"></div>
+        </div>
+        <div style="position: absolute; bottom: 0px; left: 10px; width: 80px; height: 16px; border-radius: 50%; background: radial-gradient(ellipse, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 70%);"></div>
+      </div>
     </div>
+    <style>
+      @keyframes km3dFloatOffline {
+        0% { transform: translateY(0px) rotateX(16deg) rotateY(-24deg); }
+        100% { transform: translateY(-10px) rotateX(12deg) rotateY(-14deg); }
+      }
+    </style>
     <div class="brand-tag">KejaMarket Kenya</div>
     <h1>You're Currently Offline</h1>
     <p>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v117-all-subzones-social-share-deeplink';
+const CACHE_NAME = 'kejamarket-v118-3d-loader-anti-sleep';
 
 const STATIC_ASSETS = [
   '/',
@@ -47,6 +47,7 @@ const STATIC_ASSETS = [
   '/vendor/chartjs/chart.min.js',
 
   // Core & Feature JavaScript Files
+  '/js/kejamarket-3d-loader.js',
   '/js/desk-detail-modal.js',
   '/js/in-app-call.js',
   '/js/share-card.js',
@@ -155,24 +156,48 @@ self.addEventListener('fetch', (event) => {
   }
 
   // 3. Navigation requests (HTML pages)
-  // Try network first, falling back to cached index.html or offline.html
+  // Try network first, intercept Render cold-boot "SERVICE WAKING UP" terminal screens, falling back to cached 3D app shell
   if (req.mode === 'navigate' || (req.headers.get('accept') && req.headers.get('accept').includes('text/html'))) {
     event.respondWith(
       fetch(req)
-        .then((networkRes) => {
+        .then(async (networkRes) => {
           if (networkRes && networkRes.ok) {
-            const clone = networkRes.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+            try {
+              const textCheck = await networkRes.clone().text();
+              // Intercept Render waking up screen so user sees KejaMarket 3D Preloader instead of black screen
+              if (
+                textCheck.includes('SERVICE WAKING UP') ||
+                textCheck.includes('INCOMING HTTP REQUEST DETECTED') ||
+                textCheck.includes('Render - Application Loading') ||
+                (textCheck.includes('Render') && textCheck.includes('waking up'))
+              ) {
+                console.warn('[SW] Render cold boot waking up page detected! Intercepting with KejaMarket 3D Preloader shell.');
+                const cachedShell = await caches.match('/index.html', { ignoreSearch: true }) || await caches.match('/', { ignoreSearch: true });
+                if (cachedShell) return cachedShell;
+              } else {
+                const clone = networkRes.clone();
+                caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+                return networkRes;
+              }
+            } catch (err) {
+              return networkRes;
+            }
           }
-          return networkRes;
+
+          // Fallback to cached app shell (index.html with 3D preloader)
+          const appShell = await caches.match('/index.html', { ignoreSearch: true }) || await caches.match('/', { ignoreSearch: true });
+          if (appShell) return appShell;
+
+          const offlinePage = await caches.match('/offline.html', { ignoreSearch: true });
+          return offlinePage || new Response('Connecting to KejaMarket...', { status: 200, headers: { 'Content-Type': 'text/html' } });
         })
         .catch(async () => {
-          // Check if the specific page was cached
+          // Check if specific page was cached
           const cachedPage = await caches.match(req, { ignoreSearch: true });
           if (cachedPage) return cachedPage;
 
-          // Otherwise, serve cached root app shell (index.html)
-          const appShell = await caches.match('/', { ignoreSearch: true }) || await caches.match('/index.html', { ignoreSearch: true });
+          // Otherwise serve cached root app shell (index.html)
+          const appShell = await caches.match('/index.html', { ignoreSearch: true }) || await caches.match('/', { ignoreSearch: true });
           if (appShell) return appShell;
 
           // Ultimate fallback to offline.html
@@ -218,7 +243,8 @@ self.addEventListener('fetch', (event) => {
 
   // 5. Static Assets (CSS, JS, Fonts)
   // For actively updated files or versioned files (?v=), use Network-First to ensure instant updates
-  const isFrequentlyUpdated = url.pathname.includes('mobile-layout') ||
+  const isFrequentlyUpdated = url.pathname.includes('kejamarket-3d-loader') ||
+    url.pathname.includes('mobile-layout') ||
     url.pathname.includes('locations') ||
     url.pathname.includes('app.js') ||
     url.pathname.includes('map.js') ||

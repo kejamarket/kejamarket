@@ -8618,6 +8618,23 @@ async function startServer() {
     console.log(`🔗 Web Application: http://localhost:${PORT}`);
     console.log(`📱 M-Pesa Daraja: ${MPESA_ENV.toUpperCase()} (${hasDarajaCredentials() ? 'Credentials Active' : 'Sandbox Ready'})`);
 
+    // ─── Render Free Tier Anti-Sleep Keep-Alive ───
+    // Render free-tier spins down after 15 min of idle. Pinging /api/health every 12 mins keeps it warm.
+    const KEEP_ALIVE_URL = process.env.RENDER_EXTERNAL_URL || 'https://kejamarket.co.ke';
+    if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
+      console.log(`⏰ Anti-Sleep Keep-Alive initialized for ${KEEP_ALIVE_URL} (interval: 12 min)`);
+      setInterval(async () => {
+        try {
+          const res = await fetch(`${KEEP_ALIVE_URL}/api/health`, {
+            headers: { 'User-Agent': 'KejaMarket-KeepAlive/1.0' }
+          });
+          console.log(`[KeepAlive] Ping to ${KEEP_ALIVE_URL}/api/health: ${res.status}`);
+        } catch (e) {
+          console.warn('[KeepAlive] Self-ping notice:', e.message);
+        }
+      }, 12 * 60 * 1000);
+    }
+
   });
 
   server.on('clientError', (err, socket) => {

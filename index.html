@@ -1229,8 +1229,311 @@
   <link rel="stylesheet" href="css/location-picker.css?v=100.0&t=20261114_tenant_rbac_backbutton">
   <link rel="stylesheet" href="css/verification.css?v=5.0">
   <link rel="stylesheet" href="css/communication-system.css?v=5.0">
+  <!-- KejaMarket 3D Preloader & Cold-Boot Controller -->
+  <script src="js/kejamarket-3d-loader.js?v=118.0"></script>
 </head>
 <body>
+
+  <!-- KejaMarket 3D Logo Preloader & Render Cold-Boot Interceptor -->
+  <style id="km-3d-loader-styles">
+    #km-3d-loader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100vh;
+      background: radial-gradient(circle at 50% 32%, #064e3b 0%, #022c22 45%, #030712 100%);
+      z-index: 9999999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+      user-select: none;
+      transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .km-3d-fadeout {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+    .km-3d-stage {
+      perspective: 1100px;
+      width: 220px;
+      height: 190px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .km-3d-house-wrapper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      transform-style: preserve-3d;
+      animation: km3dFloat 3.8s ease-in-out infinite alternate;
+    }
+    @keyframes km3dFloat {
+      0% {
+        transform: translateY(0px) rotateX(16deg) rotateY(-24deg);
+      }
+      100% {
+        transform: translateY(-16px) rotateX(12deg) rotateY(-14deg);
+      }
+    }
+    .km-3d-cube {
+      position: absolute;
+      width: 100px;
+      height: 70px;
+      bottom: 20px;
+      left: 20px;
+      transform-style: preserve-3d;
+    }
+    .km-wall {
+      position: absolute;
+      width: 100px;
+      height: 70px;
+      box-sizing: border-box;
+    }
+    .km-wall-front {
+      transform: translateZ(50px);
+      background: linear-gradient(135deg, #00b53f 0%, #008a2e 100%);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
+    }
+    .km-door {
+      position: absolute;
+      bottom: 0;
+      left: 14px;
+      width: 24px;
+      height: 42px;
+      background: linear-gradient(180deg, #fef08a 0%, #f59e0b 100%);
+      border-radius: 4px 4px 0 0;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.8), inset 0 0 4px rgba(0,0,0,0.2);
+    }
+    .km-door-knob {
+      position: absolute;
+      right: 3px;
+      top: 22px;
+      width: 4px;
+      height: 4px;
+      background: #78350f;
+      border-radius: 50%;
+    }
+    .km-window {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 32px;
+      height: 30px;
+      background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 100%);
+      border-radius: 4px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.6);
+    }
+    .km-window::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 14px; bottom: 0; width: 2px;
+      background: #ffffff;
+    }
+    .km-window::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 13px; right: 0; height: 2px;
+      background: #ffffff;
+    }
+    .km-wall-right {
+      transform: rotateY(90deg) translateZ(50px);
+      background: linear-gradient(135deg, #007421 0%, #004d16 100%);
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+    }
+    .km-wall-back {
+      transform: rotateY(180deg) translateZ(50px);
+      background: #004514;
+    }
+    .km-wall-left {
+      transform: rotateY(-90deg) translateZ(50px);
+      background: #009333;
+    }
+    .km-roof-left {
+      position: absolute;
+      top: -24px;
+      left: -4px;
+      width: 62px;
+      height: 108px;
+      background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
+      transform: rotateY(90deg) rotateX(34deg) translateZ(-8px) translateY(-14px);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .km-roof-right {
+      position: absolute;
+      top: -24px;
+      right: -4px;
+      width: 62px;
+      height: 108px;
+      background: linear-gradient(135deg, #1e293b 0%, #020617 100%);
+      transform: rotateY(90deg) rotateX(-34deg) translateZ(54px) translateY(-14px);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .km-chimney {
+      position: absolute;
+      top: -30px;
+      right: 28px;
+      width: 14px;
+      height: 28px;
+      background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+      border-radius: 2px 2px 0 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transform: translateZ(10px);
+    }
+    .km-3d-shadow {
+      position: absolute;
+      bottom: -6px;
+      left: 15px;
+      width: 110px;
+      height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 70%);
+      animation: km3dShadowPulse 3.8s ease-in-out infinite alternate;
+    }
+    @keyframes km3dShadowPulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(0.75); opacity: 0.45; }
+    }
+    .km-3d-brand {
+      margin-top: 10px;
+    }
+    .km-3d-title {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      margin: 0 0 6px 0;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #a7f3d0 45%, #22c55e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 14px rgba(34, 197, 94, 0.4));
+    }
+    .km-3d-tagline {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .km-3d-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: 99px;
+      color: #4ade80;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .km-3d-progress-track {
+      width: 270px;
+      max-width: 82vw;
+      height: 6px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 20px auto 12px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    #km-3d-progress-fill {
+      width: 25%;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e 0%, #10b981 50%, #4ade80 100%);
+      box-shadow: 0 0 12px #22c55e;
+      border-radius: 99px;
+      transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #km-3d-loader-status {
+      color: #f1f5f9;
+      font-size: 13.5px;
+      font-weight: 600;
+      min-height: 22px;
+      max-width: 360px;
+      margin: 0 auto;
+      transition: opacity 0.2s ease;
+    }
+    #km-3d-skip-btn {
+      display: none;
+      margin-top: 16px;
+      padding: 8px 20px;
+      background: rgba(255,255,255,0.1);
+      color: #e2e8f0;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+    #km-3d-skip-btn:hover {
+      background: rgba(255,255,255,0.2);
+      color: #ffffff;
+      border-color: rgba(255,255,255,0.4);
+      transform: translateY(-1px);
+    }
+  </style>
+
+  <div id="km-3d-loader" role="status" aria-live="polite">
+    <div class="km-3d-stage">
+      <div class="km-3d-house-wrapper">
+        <div class="km-3d-cube">
+          <div class="km-wall km-wall-front">
+            <div class="km-door"><div class="km-door-knob"></div></div>
+            <div class="km-window"></div>
+          </div>
+          <div class="km-wall km-wall-right"></div>
+          <div class="km-wall km-wall-back"></div>
+          <div class="km-wall km-wall-left"></div>
+          <div class="km-roof-left"></div>
+          <div class="km-roof-right"></div>
+          <div class="km-chimney"></div>
+        </div>
+        <div class="km-3d-shadow"></div>
+      </div>
+    </div>
+
+    <div class="km-3d-brand">
+      <h1 class="km-3d-title">KejaMarket</h1>
+      <div class="km-3d-tagline">
+        <span class="km-3d-pill"><i class="fas fa-shield-alt"></i> Verified Listings</span>
+        <span>·</span>
+        <span>0% Broker Fees</span>
+      </div>
+    </div>
+
+    <div class="km-3d-progress-track">
+      <div id="km-3d-progress-fill"></div>
+    </div>
+
+    <div id="km-3d-loader-status">🚀 Initializing KejaMarket Cloud Server...</div>
+
+    <button type="button" id="km-3d-skip-btn" onclick="if(window.KM3DLoader) window.KM3DLoader.dismiss(true);">
+      Skip to Browse <i class="fas fa-arrow-right" style="margin-left: 5px;"></i>
+    </button>
+  </div>
+
 
   <!-- Page content will be recreated to match reference exactly -->
 
@@ -6791,7 +7094,17 @@ document.addEventListener('DOMContentLoaded', function() {
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=115.0');
+      navigator.serviceWorker.register('/sw.js?v=118.0').then(function(reg) {
+        reg.update();
+      });
+      // Prevent stale cache locking: when a new SW takes over, reload to ensure latest model
+      var refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function() {
+        if (!refreshing) {
+          refreshing = true;
+          window.location.reload();
+        }
+      });
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->

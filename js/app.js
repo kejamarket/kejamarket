@@ -166,6 +166,9 @@ class NairobiRentalsApp {
           this.properties = [...kmRefSeed, ...this.properties.filter(p => !refIds.has(p.id))];
 
           console.log('Loaded real properties from API + reference cards:', this.properties.length);
+          if (window.KM3DLoader && typeof window.KM3DLoader.dismiss === 'function') {
+            window.KM3DLoader.dismiss();
+          }
           
           // Initialize Recently Added section with fresh data
           if (window.KejaRecentlyAdded && window.KejaRecentlyAdded.refresh) {
