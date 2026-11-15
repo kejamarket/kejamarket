@@ -420,7 +420,8 @@ class NairobiRentalsApp {
   }
 
   setCategory(categoryName, el) {
-    this.activeCategory = categoryName;
+    const normCat = (categoryName || 'All').trim();
+    this.activeCategory = (normCat.toLowerCase() === 'all') ? 'All' : normCat;
 
     // 1. Update km-story-bubble active state (Bedsitter, Single Room, etc.)
     document.querySelectorAll('.km-story-bubble').forEach(b => {
@@ -1888,8 +1889,9 @@ class NairobiRentalsApp {
       }
 
       // Category filter - STRICTLY MATCH ONLY SELECTED TYPE
-      if (this.activeCategory && this.activeCategory !== 'All') {
-        const cat = this.activeCategory.toLowerCase().trim();
+      const currentCat = (this.activeCategory || 'All').trim().toLowerCase();
+      if (currentCat && currentCat !== 'all') {
+        const cat = currentCat;
         const pCat = (p.category || '').toLowerCase().trim();
         const pTitle = (p.title || '').toLowerCase().trim();
         const pType = (p.type || p.propertyType || '').toLowerCase().trim();

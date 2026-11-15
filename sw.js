@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v108-strict-category-filter-bubbles';
+const CACHE_NAME = 'kejamarket-v109-fix-all-category-4cols';
 
 const STATIC_ASSETS = [
   '/',

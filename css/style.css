@@ -4179,7 +4179,7 @@ button, input, select, textarea {
     gap: 12px !important;
   }
   .property-listings-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 }
 

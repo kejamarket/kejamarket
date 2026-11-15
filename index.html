@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=108.0" as="script">
+  <link rel="preload" href="js/app.js?v=109.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -252,6 +252,19 @@
   .km-story-bubble.active .km-story-label {
     color: #047857 !important;
     font-weight: 900 !important;
+  }
+
+
+  /* ENFORCE 4 COLUMNS ON DESKTOP PROPERTY GRID */
+  @media (min-width: 861px) {
+    .property-listings-grid,
+    .property-grid,
+    #property-grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      gap: 16px !important;
+      width: 100% !important;
+    }
   }
 
 </style>
@@ -5447,7 +5460,7 @@
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/components/location-picker.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
-  <script src="js/app.js?v=108.0" defer></script>
+  <script src="js/app.js?v=109.0" defer></script>
   <script src="js/viewing-booking.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
@@ -5660,7 +5673,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=108.0');
+      navigator.serviceWorker.register('/sw.js?v=109.0');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->
