@@ -1025,6 +1025,13 @@ class NairobiRentalsApp {
   }
 
    setupEventListeners() {
+    // Close sidebar location search results when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.km-sb-search-wrap')) {
+        const dd = document.getElementById('location-search-results');
+        if (dd) dd.style.display = 'none';
+      }
+    });
     // Search form in header
     const searchForm = document.getElementById('header-search-form');
     const searchInput = document.getElementById('header-search-input');
@@ -1363,76 +1370,214 @@ class NairobiRentalsApp {
     const resultsDropdown = document.getElementById('location-search-results');
     if (!resultsDropdown) return;
 
-    const q = query.toLowerCase().trim();
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+      resultsDropdown.style.display = 'none';
+      resultsDropdown.innerHTML = '';
+      return;
+    }
+
     const results = [];
+    const seen = new Set();
 
-    // Search in KEJA_MASTER_LOCATIONS with hierarchy
+    // 1. Search in KENYA_COUNTY_AREAS (all 47 counties, areas, and rich subZones/phases)
+    const kca = window.KENYA_COUNTY_AREAS || {};
+    for (const [cKey, cObj] of Object.entries(kca)) {
+      if (cKey === 'all' || !cObj || !Array.isArray(cObj.areas)) continue;
+      const countyName = cObj.name || cKey;
+
+      // County name match
+      if (countyName.toLowerCase().includes(q)) {
+        const k = 'county:' + cKey;
+        if (!seen.has(k)) {
+          seen.add(k);
+          results.push({
+            name: countyName + ' County',
+            val: countyName,
+            type: 'county',
+            typeLabel: 'County',
+            county: countyName,
+            countyKey: cKey,
+            fullPath: `${countyName} County`,
+            icon: 'fas fa-city'
+          });
+        }
+      }
+
+      for (const area of cObj.areas) {
+        if (!area || !area.val) continue;
+        const areaName = area.name || area.val;
+        const areaMatches = areaName.toLowerCase().includes(q) || (area.val && area.val.toLowerCase().includes(q));
+
+        if (areaMatches) {
+          const k = 'area:' + areaName + ':' + countyName;
+          if (!seen.has(k)) {
+            seen.add(k);
+            results.push({
+              name: areaName,
+              val: area.val,
+              type: 'area',
+              typeLabel: 'Town / Subcounty',
+              county: countyName,
+              countyKey: cKey,
+              fullPath: `${areaName}, ${countyName} County`,
+              subZonesCount: area.subZones ? area.subZones.length : 0,
+              icon: 'fas fa-map-marker-alt'
+            });
+          }
+        }
+
+        // Subzones / Phases of this area (e.g. Katangaita, Phase 1, Phase 2, etc.)
+        if (area.subZones && Array.isArray(area.subZones)) {
+          for (const sz of area.subZones) {
+            if (!sz) continue;
+            const szMatches = sz.toLowerCase().includes(q) || (areaMatches && q.length >= 2);
+            if (szMatches) {
+              const k = 'subzone:' + sz + ':' + areaName + ':' + countyName;
+              if (!seen.has(k)) {
+                seen.add(k);
+                results.push({
+                  name: sz,
+                  val: sz,
+                  type: 'subzone',
+                  typeLabel: 'Phase / Estate',
+                  parentArea: areaName,
+                  county: countyName,
+                  countyKey: cKey,
+                  fullPath: `${sz} (${areaName}, ${countyName})`,
+                  icon: 'fas fa-layer-group'
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 2. Also search in KEJA_MASTER_LOCATIONS if available
     if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
-      const matches = window.KEJA_MASTER_LOCATIONS.filter(loc =>
-        (loc.name && loc.name.toLowerCase().includes(q)) ||
-        (loc.fullPath && loc.fullPath.toLowerCase().includes(q)) ||
-        (loc.aliases && Array.isArray(loc.aliases) && loc.aliases.some(a => a.toLowerCase().includes(q)))
-      ).slice(0, 8);
-
-      matches.forEach(loc => {
-        results.push({
-          id: loc.id,
-          name: loc.name,
-          fullPath: loc.fullPath || loc.name,
-          type: loc.type
-        });
+      window.KEJA_MASTER_LOCATIONS.forEach(loc => {
+        if (!loc || !loc.name) return;
+        const matches = loc.name.toLowerCase().includes(q) || (loc.fullPath && loc.fullPath.toLowerCase().includes(q));
+        if (matches) {
+          const k = 'loc:' + loc.name;
+          if (!seen.has(k)) {
+            seen.add(k);
+            results.push({
+              name: loc.name,
+              val: loc.name,
+              type: loc.type === 'subzone' ? 'subzone' : 'area',
+              typeLabel: loc.type === 'subzone' ? 'Phase / Estate' : 'Area',
+              county: loc.county || '',
+              fullPath: loc.fullPath || loc.name,
+              icon: loc.type === 'subzone' ? 'fas fa-layer-group' : 'fas fa-map-marker-alt'
+            });
+          }
+        }
       });
     }
 
+    // Sort: prefix matches first, then areas before subzones, then alphabetical
+    results.sort((a, b) => {
+      const aStarts = a.name.toLowerCase().startsWith(q);
+      const bStarts = b.name.toLowerCase().startsWith(q);
+      if (aStarts && !bStarts) return -1;
+      if (!aStarts && bStarts) return 1;
+
+      if (a.type === 'area' && b.type === 'subzone') return -1;
+      if (a.type === 'subzone' && b.type === 'area') return 1;
+
+      return a.name.localeCompare(b.name);
+    });
+
     if (results.length === 0) {
       resultsDropdown.innerHTML = `
-        <div style="padding:10px; text-align:center; color:#64748b; font-size:0.8rem;">
-          No locations found for "${this.escapeHtml(query)}"
+        <div style="padding:16px 12px; text-align:center; color:#64748b; font-size:0.82rem;">
+          <i class="fas fa-search-location" style="font-size:1.4rem; color:#94a3b8; margin-bottom:6px; display:block;"></i>
+          No estates or towns found matching "<strong>${this.escapeHtml(query)}</strong>"
+          <div style="font-size:0.74rem; color:#94a3b8; margin-top:4px;">Try searching by town (e.g. Mlolongo, Ruaka, Kasarani) or county</div>
         </div>
       `;
     } else {
-      resultsDropdown.innerHTML = results.map(loc => `
-        <div class="location-search-result-item" onclick="app.selectSidebarLocation('${this.escapeHtml(loc.name).replace(/'/g, "\\'")}')">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <i class="fas fa-map-marker-alt" style="color:#1db010; font-size:0.85rem;"></i>
-            <div style="flex:1; min-width:0;">
-              <div style="font-weight:700; font-size:0.8rem; color:#0f172a;">
-                ${this.highlightMatch(loc.name, query)}
-              </div>
-              ${loc.fullPath && loc.fullPath !== loc.name ? `
-                <div style="font-size:0.7rem; color:#64748b; margin-top:1px;">
-                  <i class="fas fa-arrow-right" style="font-size:0.6rem; margin-right:3px;"></i>
-                  ${this.highlightMatch(loc.fullPath, query)}
-                </div>
-              ` : ''}
-            </div>
-          </div>
+      const displayResults = results.slice(0, 35);
+      resultsDropdown.innerHTML = `
+        <div style="padding:6px 10px 4px; font-size:10px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center;">
+          <span>Found ${results.length} locations</span>
+          <span style="color:#00b53f;">Select to filter</span>
         </div>
-      `).join('');
+        ${displayResults.map(loc => {
+          const badgeClass = loc.type === 'subzone' ? 'km-loc-badge-subzone' : (loc.type === 'county' ? 'km-loc-badge-county' : 'km-loc-badge-area');
+          const badgeText = loc.typeLabel || 'Location';
+          const iconColor = loc.type === 'subzone' ? '#d97706' : (loc.type === 'county' ? '#0284c7' : '#00b53f');
+          const safeName = this.escapeHtml(loc.name).replace(/'/g, "\\'");
+          const safeType = (loc.type || '').replace(/'/g, "\\'");
+          const safeParent = (loc.parentArea || '').replace(/'/g, "\\'");
+          const safeCounty = (loc.countyKey || '').replace(/'/g, "\\'");
+
+          return `
+            <div class="location-search-result-item" onclick="app.selectSidebarLocation('${safeName}', '${safeType}', '${safeParent}', '${safeCounty}')">
+              <div style="display:flex; align-items:center; gap:9px; flex:1; min-width:0;">
+                <div style="width:26px; height:26px; border-radius:6px; background:#f8fafc; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <i class="${loc.icon || 'fas fa-map-marker-alt'}" style="color:${iconColor}; font-size:0.85rem;"></i>
+                </div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-weight:700; font-size:0.82rem; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    ${this.highlightMatch(loc.name, query)}
+                  </div>
+                  <div style="font-size:0.71rem; color:#64748b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    ${this.highlightMatch(loc.fullPath || loc.name, query)}
+                  </div>
+                </div>
+              </div>
+              <span class="km-loc-badge ${badgeClass}">${badgeText}</span>
+            </div>
+          `;
+        }).join('')}
+      `;
     }
 
     resultsDropdown.style.display = 'block';
   }
 
-  selectSidebarLocation(locationName) {
+  selectSidebarLocation(locationName, type, parentArea, countyKey) {
     const searchInput = document.getElementById('location-search-input');
     const resultsDropdown = document.getElementById('location-search-results');
     
     if (searchInput) searchInput.value = locationName;
     if (resultsDropdown) resultsDropdown.style.display = 'none';
-    
-    // Find the location object from KEJA_MASTER_LOCATIONS
-    if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
-      const location = window.KEJA_MASTER_LOCATIONS.find(loc => 
-        loc.name.toLowerCase() === locationName.toLowerCase()
-      );
-      if (location) {
-        this.selectedLocation = location;
+
+    // 1. If countyKey provided, sync county dropdown
+    if (countyKey) {
+      const countySelect = document.getElementById('filter-county');
+      if (countySelect && countySelect.value !== countyKey) {
+        countySelect.value = countyKey;
+        if (typeof window.kmUpdateSubCountySelect === 'function') {
+          window.kmUpdateSubCountySelect(countyKey);
+        }
       }
     }
-    
-    // Apply location filter
-    this.searchQuery = locationName;
+
+    // 2. Handle subzone vs area vs county
+    if (type === 'subzone' && parentArea) {
+      if (typeof this.selectDesktopArea === 'function') {
+        this.selectDesktopArea(parentArea, parentArea);
+      }
+      if (typeof this.selectDesktopSubZone === 'function') {
+        this.selectDesktopSubZone(locationName, parentArea);
+      }
+      this.searchQuery = locationName;
+    } else if (type === 'area' || !type) {
+      if (typeof this.selectDesktopArea === 'function') {
+        this.selectDesktopArea(locationName, locationName);
+      }
+      this.searchQuery = locationName;
+    } else if (type === 'county') {
+      if (countyKey && typeof this.onCountyChange === 'function') {
+        this.onCountyChange(countyKey);
+      }
+      this.searchQuery = locationName;
+    }
+
     this.currentPage = 1;
     this.applyFilters();
   }
@@ -1762,37 +1907,74 @@ class NairobiRentalsApp {
     const q = query.toLowerCase().trim();
     const suggestions = [];
 
-    // 1. Check Master Hierarchical Locations (All 166 locations with full hierarchy)
-    if (window.kejaLocationPicker && typeof window.kejaLocationPicker.searchLocations === 'function') {
-      const locMatches = window.kejaLocationPicker.searchLocations(q, 8);
-      locMatches.forEach(loc => {
-        const typeLabel = window.kejaLocationPicker.formatTypeBadge(loc.type) || 'Location';
-        suggestions.push({
-          type: 'location',
-          id: loc.id,
-          text: loc.name,
-          fullPath: loc.fullPath || loc.pathString || loc.name,
-          icon: window.kejaLocationPicker.getTypeIcon(loc.type),
-          category: typeLabel
-        });
-      });
-    } else if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
-      // Fallback to flat locations if hierarchical system not loaded
-      const locMatches = window.KEJA_MASTER_LOCATIONS.filter(l => 
-        (l.name && l.name.toLowerCase().includes(q)) || 
-        (l.fullPath && l.fullPath.toLowerCase().includes(q)) ||
-        (l.pathString && l.pathString.toLowerCase().includes(q)) ||
-        (l.aliases && Array.isArray(l.aliases) && l.aliases.some(a => a.toLowerCase().includes(q)))
-      ).slice(0, 8);
-      locMatches.forEach(loc => {
-        suggestions.push({
-          type: 'location',
-          id: loc.id,
-          text: loc.name,
-          fullPath: loc.fullPath || loc.pathString || loc.name,
-          icon: 'fas fa-map-marker-alt',
-          category: loc.type || 'Location'
-        });
+    // 1. Search in KENYA_COUNTY_AREAS (all rich subzones, estates, and areas)
+    const kca = window.KENYA_COUNTY_AREAS || {};
+    const seenH = new Set();
+
+    for (const [cKey, cObj] of Object.entries(kca)) {
+      if (cKey === 'all' || !cObj || !Array.isArray(cObj.areas)) continue;
+      const countyName = cObj.name || cKey;
+
+      for (const area of cObj.areas) {
+        if (!area || !area.val) continue;
+        const areaName = area.name || area.val;
+
+        // Area match
+        if (areaName.toLowerCase().includes(q)) {
+          const k = 'h_area:' + areaName;
+          if (!seenH.has(k)) {
+            seenH.add(k);
+            suggestions.push({
+              type: 'location',
+              id: area.val,
+              text: areaName,
+              fullPath: `${areaName}, ${countyName}`,
+              icon: 'fas fa-map-marker-alt',
+              category: 'Town / Subcounty'
+            });
+          }
+        }
+
+        // Subzone matches
+        if (area.subZones && Array.isArray(area.subZones)) {
+          for (const sz of area.subZones) {
+            if (sz && (sz.toLowerCase().includes(q) || (areaName.toLowerCase().includes(q) && q.length >= 3))) {
+              const k = 'h_sz:' + sz;
+              if (!seenH.has(k)) {
+                seenH.add(k);
+                suggestions.push({
+                  type: 'location',
+                  id: sz,
+                  text: sz,
+                  fullPath: `${sz} (${areaName}, ${countyName})`,
+                  icon: 'fas fa-layer-group',
+                  category: 'Phase / Estate'
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 2. Fallback to Master Hierarchical Locations if needed
+    if (window.KEJA_MASTER_LOCATIONS && Array.isArray(window.KEJA_MASTER_LOCATIONS)) {
+      window.KEJA_MASTER_LOCATIONS.forEach(l => {
+        if (!l || !l.name) return;
+        if (l.name.toLowerCase().includes(q) || (l.fullPath && l.fullPath.toLowerCase().includes(q))) {
+          const k = 'h_loc:' + l.name;
+          if (!seenH.has(k)) {
+            seenH.add(k);
+            suggestions.push({
+              type: 'location',
+              id: l.id || l.name,
+              text: l.name,
+              fullPath: l.fullPath || l.name,
+              icon: 'fas fa-map-marker-alt',
+              category: l.type || 'Location'
+            });
+          }
+        }
       });
     }
 
