@@ -419,6 +419,27 @@ class NairobiRentalsApp {
     this.setCategory(cat, el);
   }
 
+  setQuickSuburbFilter(suburbName, btnEl) {
+    this.selectedSuburb = (suburbName || '').trim();
+    
+    // Update active visual style on .km-suburb-pill
+    document.querySelectorAll('.km-suburb-pill').forEach(pill => {
+      let isMatch = false;
+      if (btnEl && (pill === btnEl || pill.contains(btnEl))) {
+        isMatch = true;
+      } else if (!suburbName) {
+        isMatch = pill.textContent.trim().toLowerCase().includes('all');
+      } else {
+        isMatch = pill.textContent.trim().toLowerCase().includes(suburbName.toLowerCase());
+      }
+      pill.classList.toggle('active', isMatch);
+    });
+
+    this.currentPage = 1;
+    this.applyFilters();
+    this.updateResultsCountDisplay();
+  }
+
   setCategory(categoryName, el) {
     const normCat = (categoryName || 'All').trim();
     this.activeCategory = (normCat.toLowerCase() === 'all') ? 'All' : normCat;

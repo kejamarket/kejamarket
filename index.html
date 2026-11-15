@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=109.0" as="script">
+  <link rel="preload" href="js/app.js?v=110.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -264,6 +264,169 @@
       grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
       gap: 16px !important;
       width: 100% !important;
+    }
+  }
+
+
+  /* ════════════════════════════════════════════════════════════════
+     SUPPORT MODAL OVERLAY STYLES (Fixed, Popup Only, Never Inline)
+     ════════════════════════════════════════════════════════════════ */
+  .keja-support-modal {
+    display: none !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(4px) !important;
+    z-index: 99999 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+  .keja-support-modal.open {
+    display: flex !important;
+  }
+  .keja-support-dialog {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    max-width: 600px !important;
+    width: 100% !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35) !important;
+    position: relative !important;
+    animation: kmModalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  @keyframes kmModalPop {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .keja-support-header {
+    padding: 16px 20px !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+  }
+  .keja-support-header h3 {
+    margin: 0 !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  .keja-support-header button {
+    background: none !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 1.6rem !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    padding: 0 4px !important;
+  }
+  .keja-support-body {
+    padding: 20px !important;
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+    color: #334155 !important;
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     MAJOR TOWNS / SUBURB PILLS ACTIVE STYLING
+     ════════════════════════════════════════════════════════════════ */
+  .km-suburb-pill {
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    color: #475569 !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    line-height: 1 !important;
+  }
+  .km-suburb-pill:hover {
+    border-color: #22c55e !important;
+    color: #047857 !important;
+  }
+  .km-suburb-pill.active {
+    background: #22c55e !important;
+    color: #ffffff !important;
+    border-color: #22c55e !important;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.35) !important;
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     DESKTOP TRUST & VALUE STRIP (Exceeding BuyRentKenya & Property24)
+     ════════════════════════════════════════════════════════════════ */
+  .km-market-trust-strip {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px !important;
+    margin: 16px 0 18px 0 !important;
+    width: 100% !important;
+  }
+  .km-trust-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s !important;
+    cursor: default !important;
+  }
+  .km-trust-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+    border-color: #22c55e !important;
+  }
+  .km-trust-icon-box {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.1rem !important;
+    flex-shrink: 0 !important;
+  }
+  .km-trust-text {
+    display: flex !important;
+    flex-direction: column !important;
+    line-height: 1.25 !important;
+  }
+  .km-trust-text strong {
+    font-size: 0.8rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+  }
+  .km-trust-text span {
+    font-size: 0.68rem !important;
+    color: #64748b !important;
+    margin-top: 2px !important;
+  }
+  @media (max-width: 1100px) {
+    .km-market-trust-strip {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+  @media (max-width: 700px) {
+    .km-market-trust-strip {
+      display: none !important;
     }
   }
 
@@ -1928,7 +2091,7 @@
      ==================================================================== -->
 
 <!-- Modal: Safety Tips & Anti-Fraud Guide -->
-<div class="keja-support-modal" id="modal-support-safety">
+<div class="keja-support-modal" id="modal-support-safety" style="display:none !important;">
   <div class="keja-support-dialog">
     <div class="keja-support-header" style="background:#b45309;">
       <h3><i class="fas fa-user-shield"></i> KejaMarket Safety Tips & Scam Guide</h3>
@@ -1973,7 +2136,7 @@
 </div>
 
 <!-- Modal: FAQ & Help Center -->
-<div class="keja-support-modal" id="modal-support-faq">
+<div class="keja-support-modal" id="modal-support-faq" style="display:none !important;">
   <div class="keja-support-dialog">
     <div class="keja-support-header" style="background:#6d28d9;">
       <h3><i class="fas fa-question-circle"></i> KejaMarket Help & FAQ Desk</h3>
@@ -2008,7 +2171,7 @@
 </div>
 
 <!-- Modal: Contact Us & Official Desk -->
-<div class="keja-support-modal" id="modal-support-contact">
+<div class="keja-support-modal" id="modal-support-contact" style="display:none !important;">
   <div class="keja-support-dialog">
     <div class="keja-support-header" style="background:#0284c7;">
       <h3><i class="fas fa-headset"></i> Contact KejaMarket Support</h3>
@@ -2044,7 +2207,7 @@
 </div>
 
 <!-- Modal: About Us & Ground Scouts -->
-<div class="keja-support-modal" id="modal-support-about">
+<div class="keja-support-modal" id="modal-support-about" style="display:none !important;">
   <div class="keja-support-dialog">
     <div class="keja-support-header" style="background:#059669;">
       <h3><i class="fas fa-home"></i> About KejaMarket</h3>
@@ -2067,7 +2230,7 @@
 </div>
 
 <!-- Modal: Legal & Terms -->
-<div class="keja-support-modal" id="modal-support-terms">
+<div class="keja-support-modal" id="modal-support-terms" style="display:none !important;">
   <div class="keja-support-dialog">
     <div class="keja-support-header" style="background:#1e293b;">
       <h3><i class="fas fa-file-contract"></i> Terms, Privacy & Escrow Policy</h3>
@@ -2092,7 +2255,10 @@
 
 <script>
   function kejaOpenSupportModal(type) {
-    document.querySelectorAll('.keja-support-modal').forEach(m => m.style.display = 'none');
+    document.querySelectorAll('.keja-support-modal').forEach(m => {
+      m.style.setProperty('display', 'none', 'important');
+      m.classList.remove('open');
+    });
     let target = document.getElementById('modal-support-' + type);
     if (!target) {
       if (['scouts', 'landlord'].includes(type)) target = document.getElementById('modal-support-about');
@@ -2100,14 +2266,23 @@
       else if (type === 'report') target = document.getElementById('modal-support-safety');
       else target = document.getElementById('modal-support-contact');
     }
-    if (target) target.style.display = 'flex';
+    if (target) {
+      target.style.setProperty('display', 'flex', 'important');
+      target.classList.add('open');
+    }
   }
   function kejaCloseSupportModal(type) {
     if (type) {
       const modal = document.getElementById('modal-support-' + type);
-      if (modal) modal.style.display = 'none';
+      if (modal) {
+        modal.style.setProperty('display', 'none', 'important');
+        modal.classList.remove('open');
+      }
     } else {
-      document.querySelectorAll('.keja-support-modal').forEach(m => m.style.display = 'none');
+      document.querySelectorAll('.keja-support-modal').forEach(m => {
+        m.style.setProperty('display', 'none', 'important');
+        m.classList.remove('open');
+      });
     }
   }
   function kejaTriggerPWAInstall() {
@@ -5460,7 +5635,7 @@
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/components/location-picker.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
-  <script src="js/app.js?v=109.0" defer></script>
+  <script src="js/app.js?v=110.0" defer></script>
   <script src="js/viewing-booking.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
@@ -5673,7 +5848,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=109.0');
+      navigator.serviceWorker.register('/sw.js?v=110.0');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->

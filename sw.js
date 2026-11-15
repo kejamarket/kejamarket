@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v109-fix-all-category-4cols';
+const CACHE_NAME = 'kejamarket-v110-hide-modals-desktop-trust';
 
 const STATIC_ASSETS = [
   '/',
