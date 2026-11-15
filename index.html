@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=112.0" as="script">
+  <link rel="preload" href="js/app.js?v=113.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -1204,21 +1204,180 @@
             <!-- Sub-county Select -->
             <div style="margin-top:6px;">
               <select class="km-sb-select" id="filter-subcounty" onchange="app.onSubCountyChange && app.onSubCountyChange(this.value)">
-                <option value="all">All Sub-counties / Areas</option>
-                <option value="westlands">Westlands</option>
-                <option value="kilimani">Kilimani</option>
-                <option value="kileleshwa">Kileleshwa</option>
-                <option value="lavington">Lavington</option>
-                <option value="ruaka">Ruaka</option>
-                <option value="roysambu">Roysambu</option>
-                <option value="kasarani">Kasarani</option>
-                <option value="runda">Runda</option>
-                <option value="karen">Karen</option>
-                <option value="syokimau">Syokimau</option>
-                <option value="mlolongo">Mlolongo</option>
-                <option value="kitengela">Kitengela</option>
-                <option value="langata">Langata</option>
-                <option value="south-b">South B / South C</option>
+<option value="all">All Areas in Nairobi City</option>
+                <optgroup label="🏙️ Central / Upmarket">
+                  <option value="westlands">Westlands</option>
+                  <option value="parklands">Parklands</option>
+                  <option value="highridge">Highridge</option>
+                  <option value="spring-valley">Spring Valley</option>
+                  <option value="riverside">Riverside</option>
+                  <option value="kyuna">Kyuna</option>
+                  <option value="loresho">Loresho</option>
+                  <option value="loresho-ridge">Loresho Ridge</option>
+                  <option value="mountain-view">Mountain View</option>
+                  <option value="kitisuru">Kitisuru</option>
+                  <option value="thigiri">Thigiri</option>
+                  <option value="lakeview">Lakeview</option>
+                  <option value="muthaiga">Muthaiga</option>
+                  <option value="runda">Runda</option>
+                  <option value="gigiri">Gigiri</option>
+                  <option value="un-village">UN Village</option>
+                  <option value="ridgeways">Ridgeways</option>
+                  <option value="garden-estate">Garden Estate</option>
+                  <option value="karura">Karura</option>
+                </optgroup>
+                <optgroup label="🌿 Kilimani / Lavington / Kileleshwa">
+                  <option value="kilimani">Kilimani</option>
+                  <option value="kileleshwa">Kileleshwa</option>
+                  <option value="lavington">Lavington</option>
+                  <option value="hurlingham">Hurlingham</option>
+                  <option value="muthangari">Muthangari</option>
+                  <option value="valley-arcade">Valley Arcade</option>
+                  <option value="adams-arcade">Adams Arcade</option>
+                  <option value="prestige">Prestige</option>
+                  <option value="oloolua">Oloolua</option>
+                  <option value="dennis-pritt-road-area">Dennis Pritt Road Area</option>
+                  <option value="valley-road">Valley Road</option>
+                </optgroup>
+                <optgroup label="🌳 Karen / Langata / South">
+                  <option value="karen">Karen</option>
+                  <option value="karen-hardy">Karen Hardy</option>
+                  <option value="karen-c">Karen C</option>
+                  <option value="karen-plains">Karen Plains</option>
+                  <option value="miotoni">Miotoni</option>
+                  <option value="windy-ridge">Windy Ridge</option>
+                  <option value="kerarapon">Kerarapon</option>
+                  <option value="langata">Langata</option>
+                  <option value="lang-ata-west">Lang'ata West</option>
+                  <option value="nairobi-west">Nairobi West</option>
+                  <option value="south-b">South B</option>
+                  <option value="south-c">South C</option>
+                  <option value="mugumo-ini">Mugumo-ini</option>
+                  <option value="otiende-estate">Otiende Estate</option>
+                  <option value="nyayo-highrise">Nyayo Highrise</option>
+                  <option value="madaraka-estate">Madaraka Estate</option>
+                  <option value="southlands">Southlands</option>
+                  <option value="freedom-heights">Freedom Heights</option>
+                  <option value="wilson-airport-area">Wilson Airport Area</option>
+                  <option value="kibiko">Kibiko</option>
+                </optgroup>
+                <optgroup label="🏘️ Dagoretti / Uthiru">
+                  <option value="dagoretti">Dagoretti</option>
+                  <option value="kawangware">Kawangware</option>
+                  <option value="riruta">Riruta</option>
+                  <option value="riruta-satellite">Riruta Satellite</option>
+                  <option value="uthiru">Uthiru</option>
+                  <option value="ruthimitu">Ruthimitu</option>
+                  <option value="waithaka">Waithaka</option>
+                  <option value="mutuini">Mutuini</option>
+                  <option value="ngando">Ngando</option>
+                  <option value="gatina">Gatina</option>
+                  <option value="kabiro">Kabiro</option>
+                  <option value="kinoo-87">Kinoo 87</option>
+                  <option value="dagoretti-market-area">Dagoretti Market Area</option>
+                </optgroup>
+                <optgroup label="🏢 Kasarani / Thika Road">
+                  <option value="kasarani">Kasarani</option>
+                  <option value="clay-city">Clay City</option>
+                  <option value="mwiki">Mwiki</option>
+                  <option value="sunton">Sunton</option>
+                  <option value="seasons">Seasons</option>
+                  <option value="hunters">Hunters</option>
+                  <option value="roysambu">Roysambu</option>
+                  <option value="zimmerman">Zimmerman</option>
+                  <option value="kahawa-west">Kahawa West</option>
+                  <option value="kahawa-station">Kahawa Station</option>
+                  <option value="githurai-44">Githurai 44</option>
+                  <option value="githurai-45">Githurai 45</option>
+                  <option value="lucky-summer">Lucky Summer</option>
+                  <option value="thome">Thome</option>
+                  <option value="marurui">Marurui</option>
+                  <option value="drive-in">Drive In</option>
+                  <option value="allsopps">Allsopps</option>
+                  <option value="safari-park">Safari Park</option>
+                  <option value="ruai">Ruai</option>
+                  <option value="njiru">Njiru</option>
+                </optgroup>
+                <optgroup label="🌆 Ruaraka / Eastleigh / Mathare">
+                  <option value="ruaraka">Ruaraka</option>
+                  <option value="baba-dogo">Baba Dogo</option>
+                  <option value="utalii">Utalii</option>
+                  <option value="mathare-north">Mathare North</option>
+                  <option value="korogocho">Korogocho</option>
+                  <option value="babadogo">Babadogo</option>
+                  <option value="eastleigh">Eastleigh</option>
+                  <option value="eastleigh-north">Eastleigh North</option>
+                  <option value="eastleigh-south">Eastleigh South</option>
+                  <option value="california">California</option>
+                  <option value="airbase">Airbase</option>
+                  <option value="pumwani">Pumwani</option>
+                  <option value="shauri-moyo">Shauri Moyo</option>
+                  <option value="gikomba">Gikomba</option>
+                  <option value="mathare">Mathare</option>
+                  <option value="huruma">Huruma</option>
+                  <option value="mabatini">Mabatini</option>
+                  <option value="mlango-kubwa">Mlango Kubwa</option>
+                  <option value="kiamaiko">Kiamaiko</option>
+                </optgroup>
+                <optgroup label="🏙️ CBD / Ngara / Starehe">
+                  <option value="nairobi-cbd">Nairobi CBD</option>
+                  <option value="ngara">Ngara</option>
+                  <option value="pangani">Pangani</option>
+                  <option value="ziwani">Ziwani</option>
+                  <option value="kariokor">Kariokor</option>
+                  <option value="landimawe">Landimawe</option>
+                  <option value="south-b">South B</option>
+                  <option value="bellevue">Bellevue</option>
+                  <option value="nairobi-central">Nairobi Central</option>
+                </optgroup>
+                <optgroup label="🏘️ Embakasi / South East">
+                  <option value="embakasi">Embakasi</option>
+                  <option value="utawala">Utawala</option>
+                  <option value="mihango">Mihango</option>
+                  <option value="fedha">Fedha</option>
+                  <option value="tassia">Tassia</option>
+                  <option value="nyayo-estate">Nyayo Estate</option>
+                  <option value="pipeline">Pipeline</option>
+                  <option value="imara-daima">Imara Daima</option>
+                  <option value="mukuru-kwa-njenga">Mukuru kwa Njenga</option>
+                  <option value="mukuru-kwa-reuben">Mukuru kwa Reuben</option>
+                  <option value="kware">Kware</option>
+                  <option value="kayole">Kayole</option>
+                  <option value="komarock">Komarock</option>
+                  <option value="matopeni">Matopeni</option>
+                  <option value="saika">Saika</option>
+                  <option value="kariobangi-south">Kariobangi South</option>
+                  <option value="mowlem">Mowlem</option>
+                  <option value="umoja-i">Umoja I</option>
+                  <option value="umoja-ii">Umoja II</option>
+                  <option value="umoja-iii">Umoja III</option>
+                  <option value="donholm">Donholm</option>
+                  <option value="buruburu">Buruburu</option>
+                  <option value="buruburu-phase-1">Buruburu Phase 1</option>
+                  <option value="buruburu-phase-2">Buruburu Phase 2</option>
+                  <option value="buruburu-phase-3">Buruburu Phase 3</option>
+                  <option value="buruburu-phase-4">Buruburu Phase 4</option>
+                  <option value="buruburu-phase-5">Buruburu Phase 5</option>
+                  <option value="jericho">Jericho</option>
+                  <option value="maringo">Maringo</option>
+                  <option value="ofafa">Ofafa</option>
+                  <option value="makongeni">Makongeni</option>
+                  <option value="viwandani">Viwandani</option>
+                  <option value="harambee">Harambee</option>
+                  <option value="lumumba">Lumumba</option>
+                  <option value="hamza">Hamza</option>
+                  <option value="dandora">Dandora</option>
+                </optgroup>
+                <optgroup label="🏘️ Kibra / Woodley / Olympic">
+                  <option value="kibra">Kibra</option>
+                  <option value="woodley-estate">Woodley Estate</option>
+                  <option value="olympic">Olympic</option>
+                  <option value="ayany">Ayany</option>
+                  <option value="laini-saba">Laini Saba</option>
+                  <option value="lindi">Lindi</option>
+                  <option value="makina">Makina</option>
+                  <option value="sarang-ombe">Sarang'ombe</option>
+                </optgroup>
               </select>
             </div>
 
@@ -5894,7 +6053,576 @@
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/components/location-picker.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
-  <script src="js/app.js?v=112.0" defer></script>
+  
+<script>
+/* ── KejaMarket Comprehensive Location Data ── */
+window.KM_LOCATION_DATA = {
+  "nairobi": {
+    "label": "Nairobi City",
+    "groups": [
+      {
+        "label": "🏙️ Central / Upmarket",
+        "areas": [
+          "Westlands",
+          "Parklands",
+          "Highridge",
+          "Spring Valley",
+          "Riverside",
+          "Kyuna",
+          "Loresho",
+          "Loresho Ridge",
+          "Mountain View",
+          "Kitisuru",
+          "Thigiri",
+          "Lakeview",
+          "Muthaiga",
+          "Runda",
+          "Gigiri",
+          "UN Village",
+          "Ridgeways",
+          "Garden Estate",
+          "Karura"
+        ]
+      },
+      {
+        "label": "🌿 Kilimani / Lavington / Kileleshwa",
+        "areas": [
+          "Kilimani",
+          "Kileleshwa",
+          "Lavington",
+          "Hurlingham",
+          "Muthangari",
+          "Valley Arcade",
+          "Adams Arcade",
+          "Prestige",
+          "Oloolua",
+          "Dennis Pritt Road Area",
+          "Valley Road"
+        ]
+      },
+      {
+        "label": "🌳 Karen / Langata / South",
+        "areas": [
+          "Karen",
+          "Karen Hardy",
+          "Karen C",
+          "Karen Plains",
+          "Miotoni",
+          "Windy Ridge",
+          "Kerarapon",
+          "Langata",
+          "Lang'ata West",
+          "Nairobi West",
+          "South B",
+          "South C",
+          "Mugumo-ini",
+          "Otiende Estate",
+          "Nyayo Highrise",
+          "Madaraka Estate",
+          "Southlands",
+          "Freedom Heights",
+          "Wilson Airport Area",
+          "Kibiko"
+        ]
+      },
+      {
+        "label": "🏘️ Dagoretti / Uthiru",
+        "areas": [
+          "Dagoretti",
+          "Kawangware",
+          "Riruta",
+          "Riruta Satellite",
+          "Uthiru",
+          "Ruthimitu",
+          "Waithaka",
+          "Mutuini",
+          "Ngando",
+          "Gatina",
+          "Kabiro",
+          "Kinoo 87",
+          "Dagoretti Market Area"
+        ]
+      },
+      {
+        "label": "🏢 Kasarani / Thika Road",
+        "areas": [
+          "Kasarani",
+          "Clay City",
+          "Mwiki",
+          "Sunton",
+          "Seasons",
+          "Hunters",
+          "Roysambu",
+          "Zimmerman",
+          "Kahawa West",
+          "Kahawa Station",
+          "Githurai 44",
+          "Githurai 45",
+          "Lucky Summer",
+          "Thome",
+          "Marurui",
+          "Drive In",
+          "Allsopps",
+          "Safari Park",
+          "Ruai",
+          "Njiru"
+        ]
+      },
+      {
+        "label": "🌆 Ruaraka / Eastleigh / Mathare",
+        "areas": [
+          "Ruaraka",
+          "Baba Dogo",
+          "Utalii",
+          "Mathare North",
+          "Korogocho",
+          "Babadogo",
+          "Eastleigh",
+          "Eastleigh North",
+          "Eastleigh South",
+          "California",
+          "Airbase",
+          "Pumwani",
+          "Shauri Moyo",
+          "Gikomba",
+          "Mathare",
+          "Huruma",
+          "Mabatini",
+          "Mlango Kubwa",
+          "Kiamaiko"
+        ]
+      },
+      {
+        "label": "🏙️ CBD / Ngara / Starehe",
+        "areas": [
+          "Nairobi CBD",
+          "Ngara",
+          "Pangani",
+          "Ziwani",
+          "Kariokor",
+          "Landimawe",
+          "South B",
+          "Bellevue",
+          "Nairobi Central"
+        ]
+      },
+      {
+        "label": "🏘️ Embakasi / South East",
+        "areas": [
+          "Embakasi",
+          "Utawala",
+          "Mihango",
+          "Fedha",
+          "Tassia",
+          "Nyayo Estate",
+          "Pipeline",
+          "Imara Daima",
+          "Mukuru kwa Njenga",
+          "Mukuru kwa Reuben",
+          "Kware",
+          "Kayole",
+          "Komarock",
+          "Matopeni",
+          "Saika",
+          "Kariobangi South",
+          "Mowlem",
+          "Umoja I",
+          "Umoja II",
+          "Umoja III",
+          "Donholm",
+          "Buruburu",
+          "Buruburu Phase 1",
+          "Buruburu Phase 2",
+          "Buruburu Phase 3",
+          "Buruburu Phase 4",
+          "Buruburu Phase 5",
+          "Jericho",
+          "Maringo",
+          "Ofafa",
+          "Makongeni",
+          "Viwandani",
+          "Harambee",
+          "Lumumba",
+          "Hamza",
+          "Dandora"
+        ]
+      },
+      {
+        "label": "🏘️ Kibra / Woodley / Olympic",
+        "areas": [
+          "Kibra",
+          "Woodley Estate",
+          "Olympic",
+          "Ayany",
+          "Laini Saba",
+          "Lindi",
+          "Makina",
+          "Sarang'ombe"
+        ]
+      }
+    ]
+  },
+  "kiambu": {
+    "label": "Kiambu (Ruaka / Thika / Kikuyu)",
+    "groups": [
+      {
+        "label": "🌿 Ruaka / Kiambaa",
+        "areas": [
+          "Ruaka",
+          "Muchatha",
+          "Ndenderu",
+          "Banana Hill",
+          "Karuri",
+          "Kihara",
+          "Gachie",
+          "Cianda",
+          "Runda Mumwe",
+          "Two Rivers Area"
+        ]
+      },
+      {
+        "label": "🏙️ Thika Town",
+        "areas": [
+          "Thika Town",
+          "Landless",
+          "Section 9",
+          "Makongeni",
+          "Munyu",
+          "Kiganjo",
+          "Ngoingwa",
+          "Pilot",
+          "Starehe Thika",
+          "Gatuanyaga",
+          "Chania",
+          "Hospital Estate",
+          "Oakland",
+          "Kamenu"
+        ]
+      },
+      {
+        "label": "🏘️ Ruiru / Githurai",
+        "areas": [
+          "Ruiru Town",
+          "Kahawa Sukari",
+          "Kahawa Wendani",
+          "Kenyatta Road",
+          "Tatu City",
+          "Mwiki",
+          "Membley",
+          "Gitothua",
+          "Murera",
+          "Ruiru Kimbo",
+          "Kiuu",
+          "Mwihoko"
+        ]
+      },
+      {
+        "label": "🌾 Juja / JKUAT",
+        "areas": [
+          "Juja Town",
+          "JKUAT Area",
+          "Kalimoni",
+          "Gachororo",
+          "Witeithie",
+          "Theta",
+          "Murera",
+          "Highpoint"
+        ]
+      },
+      {
+        "label": "🌳 Kikuyu / Kinoo / Sigona",
+        "areas": [
+          "Kikuyu Town",
+          "Kinoo",
+          "Sigona",
+          "Thogoto",
+          "Gitaru",
+          "Karai",
+          "Nachu",
+          "Zambezi",
+          "Wangige",
+          "Kidfam"
+        ]
+      },
+      {
+        "label": "🏘️ Kiambu Town / Thindigua",
+        "areas": [
+          "Kiambu Town",
+          "Thindigua",
+          "Kiamumbi",
+          "Riabai",
+          "Ndumberi",
+          "Kirigiti",
+          "Ting'ang'a",
+          "Fourways Junction",
+          "Palm Valley"
+        ]
+      },
+      {
+        "label": "🌿 Kabete / Uthiru",
+        "areas": [
+          "Kabete",
+          "Lower Kabete",
+          "Uthiru",
+          "Muguga",
+          "Nyadhuna",
+          "Gitaru",
+          "Kinoo 87",
+          "Uthiru Genesis"
+        ]
+      },
+      {
+        "label": "🌲 Limuru / Tigoni",
+        "areas": [
+          "Limuru Town",
+          "Tigoni",
+          "Ngecha",
+          "Bibirioni",
+          "Rironi",
+          "Ndeiya",
+          "Kamirithu",
+          "Kiroe",
+          "Kimende"
+        ]
+      },
+      {
+        "label": "🏘️ Githunguri / Lari",
+        "areas": [
+          "Githunguri Town",
+          "Ikinu",
+          "Ngewa",
+          "Githiga",
+          "Komothai",
+          "Kagwe",
+          "Lari",
+          "Kijabe",
+          "Kinale",
+          "Uplands",
+          "Kirenga",
+          "Nyanduma"
+        ]
+      },
+      {
+        "label": "🌾 Gatundu",
+        "areas": [
+          "Gatundu Town",
+          "Mang'u",
+          "Kamwangi",
+          "Gituamba",
+          "Githobokoni",
+          "Kiamwangi",
+          "Kiganjo Gatundu",
+          "Ndarugu",
+          "Ngenda",
+          "Mutomo"
+        ]
+      }
+    ]
+  },
+  "machakos": {
+    "label": "Machakos (Syokimau / Athi River)",
+    "groups": [
+      {
+        "label": "🏙️ Syokimau / Mlolongo",
+        "areas": [
+          "Syokimau",
+          "Mlolongo",
+          "Great Wall Gardens",
+          "Crystal Rivers",
+          "Greenpark Estate",
+          "Kings Court",
+          "Signature Estate",
+          "Kaptei",
+          "Mason",
+          "Gateway Mall Area",
+          "Syokimau Railway Station Area",
+          "EPZ Syokimau",
+          "Kasina",
+          "Sabaki",
+          "Slota",
+          "Tuskys Area Mlolongo"
+        ]
+      },
+      {
+        "label": "🏭 Athi River Town",
+        "areas": [
+          "Athi River",
+          "Athi River Town Centre",
+          "Sholinke",
+          "Hillview",
+          "KMC Quarters",
+          "Boma Yangu Mavoko",
+          "Navahi",
+          "Texas",
+          "Jua Kali",
+          "Jerusalem",
+          "Sofia",
+          "Old Town Athi River",
+          "Cement Factory Area"
+        ]
+      },
+      {
+        "label": "🌾 Katani / Muthwani",
+        "areas": [
+          "Katani",
+          "Katani Scheme",
+          "St. Jude",
+          "Utafiti",
+          "Bone Valley",
+          "Muthwani",
+          "Kikesa"
+        ]
+      },
+      {
+        "label": "🌾 Kinanie / Mathatani",
+        "areas": [
+          "Kinanie",
+          "Mathatani",
+          "New Valley Kinanie",
+          "Lukenya Area"
+        ]
+      },
+      {
+        "label": "🏙️ Machakos Town",
+        "areas": [
+          "Machakos Town",
+          "Mavoloni",
+          "Machakos CBD",
+          "Kalama",
+          "Kola",
+          "Muvuti",
+          "Mua Hills Area"
+        ]
+      },
+      {
+        "label": "🌾 Kangundo / Matungulu",
+        "areas": [
+          "Kangundo",
+          "Matungulu",
+          "Joska",
+          "Malaa",
+          "Tala",
+          "Yatta"
+        ]
+      }
+    ]
+  },
+  "kajiado": {
+    "label": "Kajiado (Kitengela / Rongai)",
+    "groups": [
+      {
+        "label": "🏙️ Kitengela",
+        "areas": [
+          "Kitengela",
+          "Kitengela Town",
+          "Milimani Kitengela",
+          "EPZ Kitengela",
+          "Acacia Kitengela",
+          "Chuna Estate",
+          "NYS Kitengela",
+          "New Valley Kitengela",
+          "Noonkopir",
+          "Safaricom Estate Kitengela",
+          "Reno Kitengela",
+          "Oloosirkon",
+          "Sholinke Kitengela",
+          "Isinya",
+          "Kisaju",
+          "Oltuoto"
+        ]
+      },
+      {
+        "label": "🏘️ Ongata Rongai",
+        "areas": [
+          "Rongai",
+          "Ongata Rongai",
+          "Kandisi",
+          "Nkaimurunya",
+          "Rimpa",
+          "Olekasasi",
+          "Tuala",
+          "Maasai Lodge Area",
+          "Nakuru Road Rongai",
+          "Rongai Town Centre",
+          "Kware Rongai"
+        ]
+      },
+      {
+        "label": "🌿 Ngong / Kibiko",
+        "areas": [
+          "Ngong",
+          "Ngong Town",
+          "Matasia",
+          "Kibiko",
+          "Kerarapon Ngong",
+          "Gataka",
+          "Oloolua Ngong",
+          "Bulbul",
+          "Kona Baridi",
+          "Laiser Hill",
+          "Enkasiti"
+        ]
+      },
+      {
+        "label": "🌲 Kiserian / Olkeri",
+        "areas": [
+          "Kiserian",
+          "Olkeri",
+          "Bogani",
+          "Cycad",
+          "Karen Border Areas"
+        ]
+      },
+      {
+        "label": "🏙️ Kajiado Town / Central",
+        "areas": [
+          "Kajiado Town",
+          "Dalalekutuk",
+          "Ildamat",
+          "Purko",
+          "Matapato"
+        ]
+      }
+    ]
+  }
+};
+
+window.kmUpdateSubCountySelect = function(countyKey) {
+  const sel = document.getElementById('filter-subcounty');
+  if (!sel) return;
+  const county = window.KM_LOCATION_DATA[countyKey];
+  if (!county) {
+    sel.innerHTML = '<option value="all">All Areas</option>';
+    return;
+  }
+  let html = '<option value="all">All Areas in ' + county.label + '</option>';
+  for (const group of county.groups) {
+    html += '<optgroup label="' + group.label + '">';
+    for (const area of group.areas) {
+      const val = area.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      html += '<option value="' + val + '">' + area + '</option>';
+    }
+    html += '</optgroup>';
+  }
+  sel.innerHTML = html;
+  // Reset sub-county filter
+  if (window.app && app.applyFilters) app.applyFilters();
+};
+
+// Hook into county change
+document.addEventListener('DOMContentLoaded', function() {
+  const countySel = document.getElementById('filter-county');
+  if (countySel) {
+    countySel.addEventListener('change', function() {
+      window.kmUpdateSubCountySelect(this.value);
+    });
+    // Init with default
+    window.kmUpdateSubCountySelect(countySel.value || 'nairobi');
+  }
+});
+</script>
+
+<script src="js/app.js?v=113.0" defer></script>
   <script src="js/viewing-booking.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
@@ -6107,7 +6835,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=112.0');
+      navigator.serviceWorker.register('/sw.js?v=113.0');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->

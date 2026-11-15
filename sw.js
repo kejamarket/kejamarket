@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v112-nairobi-only-counties';
+const CACHE_NAME = 'kejamarket-v113-comprehensive-locations';
 
 const STATIC_ASSETS = [
   '/',

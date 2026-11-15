@@ -1553,12 +1553,28 @@ class NairobiRentalsApp {
       subcountySelect.value = areaName;
     }
 
+    // Resolve display name from slug via KM_LOCATION_DATA
+    let displayName = areaName;
+    if (window.KM_LOCATION_DATA) {
+      const countyKey = (document.getElementById('filter-county') || {}).value || 'nairobi';
+      const countyData = window.KM_LOCATION_DATA[countyKey];
+      if (countyData) {
+        for (const group of countyData.groups) {
+          const found = group.areas.find(a => {
+            const slug = a.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            return slug === areaName || a.toLowerCase() === areaName.toLowerCase();
+          });
+          if (found) { displayName = found; break; }
+        }
+      }
+    }
+
     // Set selected location
     this.selectedLocation = {
-      name: areaName,
+      name: displayName,
       type: 'AREA',
       county: this.activeCounty || '',
-      fullPath: (this.activeCounty ? this.activeCounty + ' → ' : '') + areaName
+      fullPath: (this.activeCounty ? this.activeCounty + ' → ' : '') + displayName
     };
 
     const bText = document.getElementById('km-desk-breadcrumb-text');
