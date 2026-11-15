@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=115.0" as="script">
+  <link rel="preload" href="js/app.js?v=116.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -1623,6 +1623,13 @@
             </div>
 
             <div id="km-desk-county-areas-bar" class="km-desk-county-areas-bar" style="display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; max-height:120px; overflow-y:auto;"></div>
+            <!-- Dynamic Desktop Hierarchical Sub-Zones & Phases Bar (e.g. Mlolongo Phase 1-4, Katangaita) -->
+            <div id="km-desk-subzones-wrapper" style="display:none; width:100%; margin-top:8px; padding-top:8px; border-top:1px dashed #cbd5e1;">
+              <div id="km-desk-subzones-header" style="font-size:10px; font-weight:800; color:#006818; text-transform:uppercase; margin-bottom:5px; display:flex; align-items:center; gap:5px;">
+                <i class="fas fa-layer-group"></i> <span>Zones &amp; Phases:</span>
+              </div>
+              <div id="km-desk-subzones-bar" style="display:flex; flex-wrap:wrap; gap:4px; max-height:110px; overflow-y:auto;"></div>
+            </div>
             <select class="filter-select" id="filter-corridor" style="display:none;"><option value="all">Nairobi &amp; Environs</option></select>
             <div class="suburb-checklist-box" id="suburb-checklist-container" style="display:none;"></div>
           </div>
@@ -3459,341 +3466,23 @@
     </div>
   </div>
 
-  <div class="modal-backdrop" id="modal-property-detail">
-    <div class="modal-dialog" style="max-width: 660px; width: 94%; max-height: 88vh; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
-      <div class="modal-header" style="padding: 12px 18px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
-        <h3 id="detail-modal-title" style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 82%;">Property Details</h3>
-        <button class="modal-close-btn" onclick="app.closeModal('modal-property-detail')" style="border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border: none; font-size: 1.1rem; cursor: pointer; color: #64748b;">&times;</button>
+    <!-- ============================================================ -->
+  <!-- DESKTOP PROPERTY DETAIL MODAL (100% PWA SCREEN PARITY)       -->
+  <!-- ============================================================ -->
+  <div class="modal-backdrop" id="modal-property-detail" style="display:none; z-index:9999; background:rgba(15,23,42,0.65); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:16px;">
+    <div class="modal-dialog km-desk-detail-dialog" style="max-width:640px; width:100%; max-height:92vh; border-radius:18px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 25px 60px -15px rgba(0,0,0,0.4); background:#ffffff; position:relative;">
+      <!-- PWA-style Top Navigation Header -->
+      <div id="km-desk-detail-header-slot" style="position:sticky; top:0; z-index:50; background:#ffffff; border-bottom:1px solid #e2e8f0; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+        <button type="button" onclick="app.closeModal('modal-property-detail')" style="background:#f1f5f9; border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#0f172a; font-size:14px; transition:background 0.15s;" title="Close">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <span id="km-desk-detail-title-text" style="font-weight:800; font-size:14px; color:#0f172a; max-width:70%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Property Details</span>
+        <button type="button" onclick="app.closeModal('modal-property-detail')" style="background:#f1f5f9; border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#64748b; font-size:18px; line-height:1; transition:background 0.15s;" title="Close">&times;</button>
       </div>
-      <div class="modal-body" style="padding: 16px 20px 20px 20px; overflow-y: auto;">
-        
-        <!-- Property Status Alert Banner & Landlord Control Bar -->
-        <div id="detail-taken-banner" style="display: none; background: #fef2f2; border: 1.5px solid #fca5a5; color: #991b1b; padding: 12px 16px; border-radius: 10px; margin-bottom: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-          <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.9rem;">
-            <span style="background: #dc2626; color: white; padding: 2px 7px; border-radius: 5px; font-size: 0.72rem; font-weight: 800;">JUST RENTED OUT</span>
-            <span>This house has been rented out!</span>
-          </div>
-          <button type="button" class="btn-notify-similar" id="btn-detail-notify-similar" onclick="app.openSimilarAlertModal(app.currentPropertyId)" style="background: #0f172a; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer;">
-            <i class="fas fa-bell" style="color: #f59e0b;"></i> Notify Similar
-          </button>
-        </div>
-
-        <div id="detail-landlord-status-bar" style="display: none; background: #f8fafc; border: 1.5px dashed #0284c7; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-          <div style="font-size: 0.82rem; color: #0f172a; font-weight: 700;">
-            <i class="fas fa-shield-alt" style="color: #0284c7;"></i> Landlord Controls:
-            <span id="detail-status-pill" style="margin-left: 6px; padding: 2px 8px; border-radius: 5px; font-weight: 800; font-size: 0.74rem; background: #dcfce7; color: #166534;">VACANT / AVAILABLE</span>
-          </div>
-          <button id="btn-toggle-taken-status" type="button" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; font-weight: 700; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 5px;" onclick="app.toggleCurrentPropertyTakenStatus()">
-            <i class="fas fa-tag"></i> Mark Occupied
-          </button>
-        </div>
-
-        <!-- Main Photo Gallery -->
-        <div class="detail-gallery-main" id="detail-gallery-main-container" style="border-radius: 14px; overflow: hidden; height: 260px; max-height: 280px; position: relative;">
-          <span class="card-cat-badge" id="detail-modal-cat-badge" style="position: absolute; top: 10px; left: 10px; z-index: 5; padding: 4px 10px; border-radius: 6px; font-size: 0.76rem; font-weight: 800; color: white; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></span>
-          <img id="detail-main-photo" src="" alt="Property main view" onclick="app.openLightbox()" style="width: 100%; height: 100%; object-fit: cover;">
-          <button type="button" class="gallery-nav-btn prev" onclick="app.prevDetailPhoto(event)" title="Previous photo" aria-label="Previous photo">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <button type="button" class="gallery-nav-btn next" onclick="app.nextDetailPhoto(event)" title="Next photo" aria-label="Next photo">
-            <i class="fas fa-chevron-right"></i>
-          </button>
-          <div class="gallery-counter-badge" id="detail-photo-counter" style="position: absolute; bottom: 10px; right: 10px; background: rgba(15,23,42,0.75); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
-            <i class="fas fa-camera"></i> <span id="detail-photo-index">1</span> / <span id="detail-photo-total">1</span>
-          </div>
-          <button type="button" class="gallery-fullscreen-btn" onclick="app.openLightbox(event)" title="View Fullscreen Photo" aria-label="Fullscreen" style="position: absolute; top: 10px; right: 10px; background: rgba(15,23,42,0.6); color: white; border: none; border-radius: 6px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-            <i class="fas fa-expand"></i>
-          </button>
-        </div>
-        <div class="detail-thumbs-strip" id="detail-thumbs-container" style="margin-top: 8px;"></div>
-        <div id="detail-videos-container" style="display:none; margin: 10px 0;"></div>
-
-        <!-- Price & Location Overview -->
-        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin: 12px 0 8px 0; gap: 8px;">
-          <div>
-            <div style="font-size: 1.45rem; font-weight: 900; color: #00b53f; line-height: 1.2;" id="detail-modal-price">KSh 0 / month</div>
-            <div style="font-size: 0.8rem; color: #64748b;" id="detail-modal-deposit">Deposit: KSh 0</div>
-          </div>
-          <div style="font-size: 0.88rem; color: #334155; font-weight: 700;" id="detail-modal-location"></div>
-        </div>
-
-        <!-- High-Conversion Viewing Booking Callout Banner (PROMINENT CTA) -->
-        <div style="background: linear-gradient(135deg, #f0fdf4, #e8fbf0); border: 1.5px solid #86efac; border-radius: 12px; padding: 12px 14px; margin: 12px 0 16px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 6px rgba(0,181,63,0.12);">
-          <div style="min-width: 220px; flex: 1;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span style="background: #00b53f; color: white; padding: 2px 7px; border-radius: 4px; font-size: 0.7rem; font-weight: 800;">VERIFIED VIEWING</span>
-              <span style="font-weight: 800; font-size: 0.92rem; color: #166534;">Schedule an In-Person Viewing</span>
-            </div>
-            <div style="font-size: 0.78rem; color: #15803d; margin-top: 2px; line-height: 1.3;">
-              Free to request  &middot;  60s Caretaker SLA  &middot;  100% Free Viewing Request &middot; Instant Caretaker Confirmation
-            </div>
-          </div>
-          <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, 'physical')" style="padding: 8px 13px; font-size: 0.82rem; font-weight: 800; border-radius: 8px; background: #006818; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(0,104,24,0.35);">
-            <i class="fas fa-walking"></i> Walk-In
-          </button>
-          <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, 'virtual')" style="padding: 8px 13px; font-size: 0.82rem; font-weight: 800; border-radius: 8px; background: #25D366; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(37,211,102,0.35);">
-            <i class="fab fa-whatsapp"></i> Video Tour
-          </button>
-        </div>
-
-        <!-- Zero Viewing Fee Guarantee Banner (KejaMarket Trust Seal) -->
-        <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
-          <div style="width: 32px; height: 32px; border-radius: 50%; background: #006818; color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;">
-            <i class="fas fa-shield-alt"></i>
-          </div>
-          <div>
-            <div style="font-weight: 800; font-size: 0.88rem; color: #166534;"><i class="fas fa-check-circle"></i> 100% Free Viewings Guaranteed</div>
-            <div style="font-size: 0.76rem; color: #15803d; line-height: 1.3;">KejaMarket strictly prohibits viewing fees. Inspect this home free of charge before committing.</div>
-          </div>
-        </div>
-
-        <!-- Transparent Move-In Breakdown (Desktop Modal) -->
-        <div id="detail-desktop-movein-box" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f1f5f9;">
-            <span style="font-size: 0.88rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
-              <i class="fas fa-calculator" style="color: #006818;"></i> Transparent Move-In Breakdown
-            </span>
-            <span style="font-size: 0.72rem; font-weight: 800; color: #006818; background: #dcfce7; padding: 2px 8px; border-radius: 10px;">Direct Terms</span>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.8rem; color: #475569;">
-            <div>1st Month Rent: <strong id="dt-breakdown-rent" style="color: #0f172a;">-</strong></div>
-            <div>Refundable Deposit: <strong id="dt-breakdown-deposit" style="color: #0f172a;">-</strong></div>
-            <div>Water Deposit / Account: <span style="color: #166534; font-weight: 700;">Pre-paid Meter</span></div>
-            <div>Electricity: <span style="color: #166534; font-weight: 700;">Tokens (0 Deposit)</span></div>
-          </div>
-          <div style="margin-top: 8px; padding-top: 6px; border-top: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; font-weight: 900; color: #0f172a;">
-            <span>Estimated Move-In Total:</span>
-            <span id="dt-breakdown-total" style="color: #006818; font-size: 1rem;">-</span>
-          </div>
-        </div>
-
-        
-        <!-- Verified Living Quality & Utilities Checklist (PWA Parity) -->
-        <div class="km-utility-card" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; margin-bottom:14px;">
-          <h4 style="font-size:0.92rem; font-weight:800; color:#0f172a; margin:0 0 10px 0; display:flex; align-items:center; gap:6px;">
-            <i class="fas fa-check-double" style="color:#006818;"></i> Verified Living Quality & Utilities
-          </h4>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-tint" style="color:#0284c7; width:16px;"></i> <div><strong>24/7 Water Supply</strong><div style="font-size:0.72rem; color:#64748b;">Borehole + Council backup</div></div></div>
-            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-bolt" style="color:#f59e0b; width:16px;"></i> <div><strong>Private KPLC Token</strong><div style="font-size:0.72rem; color:#64748b;">Direct paybill, private meter</div></div></div>
-            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-wifi" style="color:#8b5cf6; width:16px;"></i> <div><strong>High-Speed Fibre</strong><div style="font-size:0.72rem; color:#64748b;">Safaricom & Faiba ready</div></div></div>
-            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-car" style="color:#10b981; width:16px;"></i> <div><strong>Secure Parking</strong><div style="font-size:0.72rem; color:#64748b;">Free dedicated slot inside gate</div></div></div>
-            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-shield-alt" style="color:#006818; width:16px;"></i> <div><strong>Estate Security</strong><div style="font-size:0.72rem; color:#64748b;">CCTV + Electric perimeter</div></div></div>
-            <div style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#334155;"><i class="fas fa-trash-alt" style="color:#64748b; width:16px;"></i> <div><strong>Garbage Collection</strong><div style="font-size:0.72rem; color:#64748b;">Included in service charge</div></div></div>
-          </div>
-        </div>
-
-        <!-- Specifications Grid -->
-        <div class="detail-specs-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
-          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
-            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">House Type</span>
-            <span class="spec-value" id="spec-category" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
-          </div>
-          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
-            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Bedrooms</span>
-            <span class="spec-value" id="spec-bedrooms" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
-          </div>
-          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
-            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Water Supply</span>
-            <span class="spec-value" id="spec-water" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
-          </div>
-          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
-            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Electricity</span>
-            <span class="spec-value" id="spec-electricity" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
-          </div>
-          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
-            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Listing Source</span>
-            <span class="spec-value" id="spec-source" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
-          </div>
-          <div class="spec-item" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px;">
-            <span class="spec-label" style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Verification</span>
-            <span class="spec-value" id="spec-verified" style="font-size: 0.86rem; font-weight: 800; color: #0f172a;">-</span>
-          </div>
-        </div>
-
-        <!-- Description -->
-        <div style="margin-bottom: 14px;">
-          <h4 style="font-size: 0.92rem; font-weight: 800; color: #0f172a; margin: 0 0 4px 0;">Description</h4>
-          <p id="detail-modal-desc" style="font-size: 0.85rem; color: #475569; line-height: 1.55; margin: 0;"></p>
-        </div>
-        
-        <!-- Enhanced Property Information Container -->
-        <div id="enhanced-property-info-container"></div>
-
-        <!-- Amenities -->
-        <div style="margin-bottom: 16px;">
-          <h4 style="font-size: 0.92rem; font-weight: 800; color: #0f172a; margin: 0 0 8px 0;">Amenities & Features</h4>
-          <div id="detail-amenities-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; font-size: 0.82rem;"></div>
-        </div>
-
-        <!-- Location & Map Section with OpenStreetMap Leaflet Canvas -->
-        <div id="detail-map-section" style="margin-bottom: 18px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-            <h4 style="font-size: 0.95rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 7px;">
-              <i class="fas fa-map-marked-alt" style="color: #006818;"></i> Location & Neighborhood Map
-            </h4>
-            <a id="detail-btn-directions" href="#" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; font-weight: 800; color: #006818; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 4px 10px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
-              <i class="fas fa-directions"></i> Get Directions
-            </a>
-          </div>
-
-          <!-- Live Leaflet Map Canvas (Always available for tenant confidence) -->
-          <div id="detail-property-map" style="display: block; width: 100%; height: 240px; border-radius: 12px; overflow: hidden; border: 1px solid #cbd5e1; box-shadow: 0 1px 4px rgba(0,0,0,0.08); position: relative; z-index: 1;"></div>
-
-          <div style="font-size: 0.76rem; color: #006818; margin-top: 6px; display: flex; align-items: center; gap: 6px; font-weight: 700;">
-            <i class="fas fa-check-circle" style="color: #006818;"></i>
-            <span>Verified Exact Location & Direct Landlord Directions Available</span>
-          </div>
-
-          <!-- GPS Protection Card (Subtle notice) -->
-          <div id="detail-gps-locked-card" style="display: none;"></div>
-        </div>
-
-        <!-- Landlord / Agency Contacts Box -->
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 14px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-            <div>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-weight: 800; font-size: 1.05rem; color: #166534;" id="detail-landlord-name">-</span>
-                <span id="detail-management-badge" style="background: #dcfce7; color: #15803d; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 20px;">Direct Landlord</span>
-              </div>
-              
-              <!-- Enhanced Verification Container - populated by verification.js -->
-              <div id="detail-verification-container" style="margin-top: 12px;"></div>
-              <div style="font-size: 0.8rem; color: #15803d;" id="detail-landlord-since">-</div>
-              <div style="font-size: 0.88rem; font-weight: 700; margin-top: 4px; color: #0f172a;" id="detail-landlord-phone-display">-</div>
-            </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-              <button type="button" class="btn-primary" style="padding: 9px 15px; font-size: 0.84rem; border-radius: 8px; background: #006818; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; color: white; box-shadow: 0 2px 8px rgba(0,104,24,0.35);" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, 'physical')">
-                <i class="fas fa-walking"></i> In-Person Walk-In
-              </button>
-              <button type="button" class="btn-primary" style="padding: 9px 15px; font-size: 0.84rem; border-radius: 8px; background: #25D366; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; color: white; box-shadow: 0 2px 8px rgba(37,211,102,0.35);" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id, 'virtual')">
-                <i class="fab fa-whatsapp"></i> Live Video Tour
-              </button>
-              <button id="detail-btn-inbox-chat" class="btn-secondary" style="padding: 9px 15px; font-size: 0.86rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1.5px solid #cbd5e1; background: white;" onclick="app.openChatForCurrentProperty()">
-                <i class="fas fa-comment-dots"></i> Message Landlord
-              </button>
-              <a id="detail-btn-call" href="#" class="btn-secondary" style="padding: 9px 14px; font-size: 0.86rem; border-radius: 8px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; border: 1.5px solid #cbd5e1; background: #f8fafc; color: #64748b;">
-                <i class="fas fa-lock"></i> Call Protected
-              </a>
-              <a id="detail-btn-directions" href="#" target="_blank" class="btn-secondary" style="display: none; padding: 9px 12px; font-size: 0.86rem; border-radius: 8px; text-decoration: none; align-items: center; gap: 5px; border: 1.5px solid #cbd5e1; background: white;">
-                <i class="fas fa-directions"></i> Maps
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- On-Site Caretaker Contact Card (If available) -->
-        <div id="detail-caretaker-card" style="display: none; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 16px; margin-bottom: 22px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
-                <i class="fas fa-key"></i>
-              </div>
-              <div>
-                <div style="font-weight: 800; font-size: 0.92rem; color: #92400e;">
-                  On-Site Caretaker: <span id="detail-caretaker-name" style="color: #78350f;">Mwangi</span>
-                </div>
-                <div style="font-size: 0.78rem; color: #b45309;">
-                  Available at the building gate for instant physical room viewing & keys
-                </div>
-              </div>
-            </div>
-            <a id="detail-btn-caretaker-call" href="#" class="btn-primary" style="padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; background: #d97706; border: none; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px;">
-              <i class="fas fa-phone-alt"></i> Call Caretaker
-            </a>
-          </div>
-        </div>
-
-        <!-- Value-Add Affiliate Cards (Monetization: Lead Generation) -->
-        <div class="detail-affiliate-grid">
-          <!-- Real Nairobi Moving Partners Card -->
-          <div style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1.5px solid #fed7aa; border-radius: 12px; padding: 16px; cursor: pointer; transition: transform 0.2s ease;" onclick="app.openModal('modal-lead-movers')">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 38px; height: 38px; border-radius: 10px; background: #ea580c; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-truck-moving" style="color: white; font-size: 1rem;"></i>
-                </div>
-                <div>
-                  <div style="font-weight: 800; font-size: 0.92rem; color: #9a3412;">Nairobi Movers Network</div>
-                  <div style="font-size: 0.75rem; color: #c2410c; font-weight: 600;">Nellions, Cube, Taylor & Alpha Movers</div>
-                </div>
-              </div>
-              <span style="background: #ffedd5; color: #c2410c; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #fdba74;">VERIFIED</span>
-            </div>
-            <p style="font-size: 0.8rem; color: #78350f; line-height: 1.5; margin-bottom: 10px;">Professional packing, careful transport & unpacking across Nairobi estates. Free instant quotes & same-day moves.</p>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn-primary" onclick="app.openModal('modal-lead-movers')" style="flex: 1; background: #ea580c; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
-                <i class="fas fa-calculator"></i> Get Moving Quotes
-              </button>
-            </div>
-          </div>
-
-          <!-- Real Home Fibre & 5G Connection Card -->
-          <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 16px; cursor: pointer; transition: transform 0.2s ease;" onclick="app.openModal('modal-lead-fibre')">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 38px; height: 38px; border-radius: 10px; background: #0284c7; display: flex; align-items: center; justify-content: center;">
-                  <i class="fas fa-wifi" style="color: white; font-size: 1rem;"></i>
-                </div>
-                <div>
-                  <div style="font-weight: 800; font-size: 0.92rem; color: #075985;">Home Fibre & 5G Internet</div>
-                  <div style="font-size: 0.75rem; color: #0369a1; font-weight: 600;">Safaricom, Zuku, Airtel 5G & Faiba</div>
-                </div>
-              </div>
-              <span style="background: #e0f2fe; color: #0284c7; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #7dd3fc;">OFFICIAL</span>
-            </div>
-            <p style="font-size: 0.8rem; color: #0c4a6e; line-height: 1.5; margin-bottom: 10px;">Fast 24-hr technician installation. Safaricom from KSh 2,999 (40Mbps), Airtel 5G from KSh 1,999 (15Mbps), Zuku & Faiba.</p>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn-primary" onclick="app.openModal('modal-lead-fibre')" style="flex: 1; background: #0284c7; font-size: 0.82rem; padding: 8px; border-radius: 6px; font-weight: 700; border: none; color: white; cursor: pointer;">
-                <i class="fas fa-bolt"></i> Check Coverage & Book
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Public Comments, Tenant Critiques & Live Discussion Section -->
-        <div style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 18px;">
-          <div id="detail-comments-container"></div>
-        </div>
-
-        <!-- Dynamic Verified Services Section -->
-        <div id="detail-services-container" style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 18px;"></div>
-
-        <!-- Other Related Houses & Similar Rentals Section (Desktop/Modal View) -->
-        <div id="detail-related-houses-section" style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 18px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-            <div>
-              <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 7px;">
-                <i class="fas fa-home" style="color: #006818;"></i> Other Related Houses
-              </h4>
-              <div style="font-size: 0.78rem; color: #64748b; margin-top: 2px;" id="detail-related-sub">Similar verified rentals in this estate</div>
-            </div>
-            <button type="button" onclick="app.closeModal('modal-property-detail')" style="font-size: 0.75rem; font-weight: 700; color: #006818; background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 4px 10px; cursor: pointer;">
-              Browse All
-            </button>
-          </div>
-          <div id="detail-related-houses-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;"></div>
-        </div>
-
+      <!-- PWA-style Scrollable Content Area -->
+      <div class="modal-body" id="km-desk-detail-body-slot" style="padding:0; overflow-y:auto; flex:1; scroll-behavior:smooth;">
+        <!-- Injected via window.KMDeskDetail.build() -->
       </div>
-
-      <!-- Sticky Quick-Action Footer Bar -->
-      <div id="detail-sticky-footer" style="background: #ffffff; border-top: 1px solid #e2e8f0; padding: 10px 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); z-index: 10; flex-shrink: 0;">
-        <div style="min-width: 0;">
-          <div style="font-size: 1.15rem; font-weight: 900; color: #00b53f; line-height: 1.1;" id="detail-sticky-price">KSh 0/mo</div>
-          <div style="font-size: 0.74rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;" id="detail-sticky-suburb">-</div>
-        </div>
-        <div style="display: flex; gap: 8px; flex-shrink: 0;">
-          <button type="button" class="btn-secondary" onclick="app.openChatForCurrentProperty()" style="padding: 8px 13px; font-size: 0.82rem; font-weight: 700; border-radius: 8px; border: 1.5px solid #cbd5e1; background: white; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-            <i class="fas fa-comment-dots"></i> Message
-          </button>
-          <button type="button" class="btn-primary" onclick="KejaViewing.openBookingModal(app.selectedPropertyForDetail && app.selectedPropertyForDetail.id)" style="padding: 8px 16px; font-size: 0.86rem; font-weight: 800; border-radius: 8px; background: #00b53f; border: none; color: white; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,181,63,0.35);">
-            <i class="fas fa-calendar-check"></i> Schedule Free Viewing
-          </button>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -3915,7 +3604,12 @@
             </div>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="app.closeModal('modal-messages')" style="color: #94a3b8; background: rgba(255,255,255,0.08); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: none; font-size: 1.1rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.color='#94a3b8'; this.style.background='rgba(255,255,255,0.08)'">&times;</button>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button type="button" onclick="app.startInAppCall()" style="background:rgba(34,197,94,0.18); border:1px solid rgba(34,197,94,0.4); color:#4ade80; border-radius:8px; padding:6px 12px; font-weight:800; font-size:11.5px; cursor:pointer; display:flex; align-items:center; gap:5px; transition:background 0.15s;" title="HD In-App Call">
+            <i class="fas fa-phone-alt"></i> <span>Call</span>
+          </button>
+          <button class="modal-close-btn" onclick="app.closeModal('modal-messages')" style="color: #94a3b8; background: rgba(255,255,255,0.08); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: none; font-size: 1.1rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.color='#94a3b8'; this.style.background='rgba(255,255,255,0.08)'">&times;</button>
+        </div>
       </div>
 
       <!-- Quick Context Property Bar with 1-Click Booking Button -->
@@ -6676,6 +6370,11 @@ window.KM_LOCATION_DATA = {
         "areas": [
           "Syokimau",
           "Mlolongo",
+          "Mlolongo Phase 1",
+          "Mlolongo Phase 2",
+          "Mlolongo Phase 3",
+          "Mlolongo Phase 4",
+          "Katangaita",
           "Great Wall Gardens",
           "Crystal Rivers",
           "Greenpark Estate",
@@ -6871,11 +6570,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script src="js/app.js?v=115.0" defer></script>
+<script src="js/desk-detail-modal.js?v=116.0"></script>
+  <script src="js/in-app-call.js?v=116.0"></script>
+  <script src="js/app.js?v=116.0" defer></script>
   <script src="js/viewing-booking.js?v=115.0" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
-  <script src="js/mobile-layout.js?v=106.0" defer></script>
+  <script src="js/mobile-layout.js?v=116.0" defer></script>
   
   <!-- Secondary Features: Deferred loading -->
   <script src="js/reviews.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>

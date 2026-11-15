@@ -12551,6 +12551,326 @@ const SEED_PROPERTIES = [
     ],
     "photoCount": 6
   }
+,
+{
+  "id": "prop-mlolongo-katangaita-001",
+  "title": "Modern 1 Bedroom Apartment in Katangaita, Mlolongo",
+  "description": "Spacious 1 bedroom apartment in Katangaita, Mlolongo. Well-aerated unit with ceramic tiling, clean borehole water 24/7, prepaid token meter, balcony, high-perimeter wall with razor wire, and 5-min walk to Mombasa Road stage.",
+  "category": "1 Bedroom",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "sizeSqm": 48,
+  "rentKes": 14000,
+  "depositKes": 14000,
+  "county": "Machakos",
+  "countyId": "loc-county-machakos",
+  "corridorId": "mombasa_rd",
+  "area": "Mlolongo",
+  "areaId": "loc-county-machakos-mlolongo",
+  "estateSuburb": "Katangaita",
+  "estateId": "loc-county-machakos-mlolongo-katangaita",
+  "phase": "Katangaita",
+  "locationId": "loc-county-machakos-mlolongo-katangaita",
+  "locationPath": [
+    "Machakos",
+    "Mlolongo",
+    "Katangaita"
+  ],
+  "displayLocation": "Katangaita · Mlolongo, Machakos",
+  "locationDisplay": "Katangaita · Mlolongo, Machakos",
+  "exactLocation": "Katangaita, off Mombasa Road, Mlolongo",
+  "latitude": -1.382,
+  "longitude": 36.962,
+  "isFeatured": true,
+  "isTopAd": true,
+  "isVerified": true,
+  "badgeType": "verified",
+  "status": "approved",
+  "isApproved": true,
+  "photoCount": 5,
+  "media": [
+    {
+      "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Living Room"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Bedroom"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Kitchen"
+    }
+  ],
+  "photos": [
+    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80"
+  ],
+  "amenities": [
+    "wifi",
+    "borehole",
+    "cctv",
+    "parking",
+    "balcony"
+  ],
+  "specAmenitiesText": "1 Bed · 1 Bath · Borehole · Parking",
+  "landlord": {
+    "id": "usr-ml-kat-01",
+    "name": "David Mutua",
+    "phone": "0722123456",
+    "whatsapp": "0722123456",
+    "isVerified": true
+  }
+},
+{
+  "id": "prop-mlolongo-katangaita-002",
+  "title": "Executive Bedsitter in Katangaita Road, Mlolongo",
+  "description": "Newly completed executive bedsitter in Katangaita Mlolongo. Features modern kitchen counter, tiled floors, instant hot shower, secure gate, 24/7 borehole water, pre-paid electricity tokens.",
+  "category": "Bedsitter",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "sizeSqm": 28,
+  "rentKes": 7500,
+  "depositKes": 7500,
+  "county": "Machakos",
+  "countyId": "loc-county-machakos",
+  "corridorId": "mombasa_rd",
+  "area": "Mlolongo",
+  "areaId": "loc-county-machakos-mlolongo",
+  "estateSuburb": "Katangaita",
+  "estateId": "loc-county-machakos-mlolongo-katangaita",
+  "phase": "Katangaita",
+  "locationId": "loc-county-machakos-mlolongo-katangaita-bedsitter",
+  "locationPath": [
+    "Machakos",
+    "Mlolongo",
+    "Katangaita"
+  ],
+  "displayLocation": "Katangaita Road · Mlolongo, Machakos",
+  "locationDisplay": "Katangaita Road · Mlolongo, Machakos",
+  "exactLocation": "Katangaita Road, Mlolongo",
+  "latitude": -1.3825,
+  "longitude": 36.9625,
+  "isFeatured": false,
+  "isTopAd": false,
+  "isVerified": true,
+  "badgeType": "verified",
+  "status": "approved",
+  "isApproved": true,
+  "photoCount": 4,
+  "media": [
+    {
+      "url": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Studio space"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Kitchenette"
+    }
+  ],
+  "photos": [
+    "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80"
+  ],
+  "amenities": [
+    "borehole",
+    "cctv",
+    "hot_shower"
+  ],
+  "specAmenitiesText": "Bedsitter · 1 Bath · Hot Shower · Borehole",
+  "landlord": {
+    "id": "usr-ml-kat-02",
+    "name": "Grace Mwende",
+    "phone": "0711987654",
+    "whatsapp": "0711987654",
+    "isVerified": true
+  }
+},
+{
+  "id": "prop-mlolongo-phase2-001",
+  "title": "Spacious 2 Bedroom Master Ensuite in Mlolongo Phase 2",
+  "description": "Delightful 2 bedroom master ensuite apartment in Mlolongo Phase 2. Gated compound with ample parking, backup water tanks, security guard 24/7, close to shopping centers.",
+  "category": "2 Bedroom",
+  "bedrooms": 2,
+  "bathrooms": 2,
+  "sizeSqm": 80,
+  "rentKes": 22000,
+  "depositKes": 22000,
+  "county": "Machakos",
+  "countyId": "loc-county-machakos",
+  "corridorId": "mombasa_rd",
+  "area": "Mlolongo",
+  "areaId": "loc-county-machakos-mlolongo",
+  "estateSuburb": "Phase 2",
+  "estateId": "loc-county-machakos-mlolongo-phase-2",
+  "phase": "Phase 2",
+  "locationId": "loc-county-machakos-mlolongo-phase-2",
+  "locationPath": [
+    "Machakos",
+    "Mlolongo",
+    "Phase 2"
+  ],
+  "displayLocation": "Phase 2 · Mlolongo, Machakos",
+  "locationDisplay": "Phase 2 · Mlolongo, Machakos",
+  "exactLocation": "Phase 2, Mlolongo",
+  "latitude": -1.383,
+  "longitude": 36.963,
+  "isFeatured": true,
+  "isTopAd": true,
+  "isVerified": true,
+  "badgeType": "verified",
+  "status": "approved",
+  "isApproved": true,
+  "photoCount": 5,
+  "media": [
+    {
+      "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Living Room"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Master Bedroom"
+    }
+  ],
+  "photos": [
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80"
+  ],
+  "amenities": [
+    "wifi",
+    "borehole",
+    "cctv",
+    "parking",
+    "master_ensuite"
+  ],
+  "specAmenitiesText": "2 Bed · 2 Bath · Ensuite · Parking",
+  "landlord": {
+    "id": "usr-ml-p2-01",
+    "name": "Peter Nzioka",
+    "phone": "0733555777",
+    "whatsapp": "0733555777",
+    "isVerified": true
+  }
+},
+{
+  "id": "prop-mlolongo-phase3-001",
+  "title": "Charming 1 Bedroom near Weighbridge, Mlolongo Phase 3",
+  "description": "Clean, well-maintained 1 bedroom apartment in Mlolongo Phase 3 near the Weighbridge. Convenient commute via Expressway and Mombasa Road, prepaid electricity, high-speed WiFi ready.",
+  "category": "1 Bedroom",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "sizeSqm": 45,
+  "rentKes": 13000,
+  "depositKes": 13000,
+  "county": "Machakos",
+  "countyId": "loc-county-machakos",
+  "corridorId": "mombasa_rd",
+  "area": "Mlolongo",
+  "areaId": "loc-county-machakos-mlolongo",
+  "estateSuburb": "Phase 3 (Weighbridge)",
+  "estateId": "loc-county-machakos-mlolongo-phase-3",
+  "phase": "Phase 3 (Weighbridge)",
+  "locationId": "loc-county-machakos-mlolongo-phase-3",
+  "locationPath": [
+    "Machakos",
+    "Mlolongo",
+    "Phase 3 (Weighbridge)"
+  ],
+  "displayLocation": "Phase 3 (Weighbridge) · Mlolongo, Machakos",
+  "locationDisplay": "Phase 3 (Weighbridge) · Mlolongo, Machakos",
+  "exactLocation": "Phase 3 Weighbridge, Mlolongo",
+  "latitude": -1.385,
+  "longitude": 36.964,
+  "isFeatured": false,
+  "isTopAd": false,
+  "isVerified": true,
+  "badgeType": "verified",
+  "status": "approved",
+  "isApproved": true,
+  "photoCount": 4,
+  "media": [
+    {
+      "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Living Area"
+    }
+  ],
+  "photos": [
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"
+  ],
+  "amenities": [
+    "borehole",
+    "cctv",
+    "parking"
+  ],
+  "specAmenitiesText": "1 Bed · 1 Bath · Weighbridge · Borehole",
+  "landlord": {
+    "id": "usr-ml-p3-01",
+    "name": "Faith Kioko",
+    "phone": "0720444333",
+    "whatsapp": "0720444333",
+    "isVerified": true
+  }
+},
+{
+  "id": "prop-mlolongo-phase4-001",
+  "title": "Affordable Bedsitter in Mlolongo Phase 4",
+  "description": "Quiet and secure bedsitter located in Mlolongo Phase 4. Tiled flooring, dedicated water meter, token power, CCTV surveillance, 7 minutes to Mombasa Road.",
+  "category": "Bedsitter",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "sizeSqm": 25,
+  "rentKes": 8000,
+  "depositKes": 8000,
+  "county": "Machakos",
+  "countyId": "loc-county-machakos",
+  "corridorId": "mombasa_rd",
+  "area": "Mlolongo",
+  "areaId": "loc-county-machakos-mlolongo",
+  "estateSuburb": "Phase 4",
+  "estateId": "loc-county-machakos-mlolongo-phase-4",
+  "phase": "Phase 4",
+  "locationId": "loc-county-machakos-mlolongo-phase-4",
+  "locationPath": [
+    "Machakos",
+    "Mlolongo",
+    "Phase 4"
+  ],
+  "displayLocation": "Phase 4 · Mlolongo, Machakos",
+  "locationDisplay": "Phase 4 · Mlolongo, Machakos",
+  "exactLocation": "Phase 4, Mlolongo",
+  "latitude": -1.386,
+  "longitude": 36.965,
+  "isFeatured": false,
+  "isTopAd": false,
+  "isVerified": true,
+  "badgeType": "verified",
+  "status": "approved",
+  "isApproved": true,
+  "photoCount": 4,
+  "media": [
+    {
+      "url": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Room"
+    }
+  ],
+  "photos": [
+    "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80"
+  ],
+  "amenities": [
+    "borehole",
+    "cctv",
+    "hot_shower"
+  ],
+  "specAmenitiesText": "Bedsitter · 1 Bath · Phase 4 · Borehole",
+  "landlord": {
+    "id": "usr-ml-p4-01",
+    "name": "Samuel Musyoka",
+    "phone": "0718555222",
+    "whatsapp": "0718555222",
+    "isVerified": true
+  }
+}
 ];
 
 const SEED_REVIEWS = {

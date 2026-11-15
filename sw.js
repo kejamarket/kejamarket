@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v115-pwa-booking-parity';
+const CACHE_NAME = 'kejamarket-v116-desktop-pwa-detail-parity-inapp-call';
 
 const STATIC_ASSETS = [
   '/',
@@ -47,6 +47,8 @@ const STATIC_ASSETS = [
   '/vendor/chartjs/chart.min.js',
 
   // Core & Feature JavaScript Files
+  '/js/desk-detail-modal.js',
+  '/js/in-app-call.js',
   '/js/mobile-layout.js',
   '/js/offline-manager.js',
   '/js/auth.js',

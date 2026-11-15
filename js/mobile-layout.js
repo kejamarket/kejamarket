@@ -134,7 +134,7 @@
       areas: [
         { name: 'All Machakos', val: 'Machakos' },
         { name: 'Syokimau', val: 'Syokimau', subZones: ['Katani Rd', 'Airport Rd', 'Gateway Mall Area', 'Mwananchi Rd', 'Community Rd', 'Kiungani Rd'] },
-        { name: 'Mlolongo', val: 'Mlolongo', subZones: ['Phase 1', 'Phase 2', 'Phase 3 (Weighbridge)', 'Phase 4', 'Expressway End', 'Mlolongo Town'] },
+        { name: 'Mlolongo', val: 'Mlolongo', subZones: ['Phase 1', 'Phase 2', 'Phase 3 (Weighbridge)', 'Phase 4', 'Katangaita', 'Kasina', 'Sabaki', 'Expressway End', 'Mlolongo Town'] },
         { name: 'Athi River', val: 'Athi River', subZones: ['Green Park', 'Crystal Rivers', 'Makadara', 'Mavoko Town', 'Greatwall Gardens', 'Bondeni', 'Highway'] },
         { name: 'Machakos Town', val: 'Machakos Town', subZones: ['Machakos CBD', 'Machakos Kalimoni', 'Kalawa Rd'] },
         { name: 'Katani', val: 'Katani', subZones: ['Katani Road', 'Katani Estate'] },
@@ -899,7 +899,7 @@
               <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Ruiru', ['Kihunguro', 'Mugutha', 'Kimbo', 'Toll Station', 'Murera', 'Membley'])">&#127807; Ruiru &#8250;</div>
               <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Thika', ['Section 9', 'Ngoingwa', 'Landless', 'Makongeni', 'Thika CBD'])">&#127807; Thika &#8250;</div>
               <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Juja', ['Juja Farm', 'Juja City', 'Kalimoni', 'Murera'])">&#127807; Juja &#8250;</div>
-              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Mlolongo', ['Phase 1', 'Phase 2', 'Phase 3 (Weighbridge)', 'Phase 4', 'Expressway End'])">&#9992;&#65039; Mlolongo &#8250;</div>
+              <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Mlolongo', ['Phase 1', 'Phase 2', 'Phase 3 (Weighbridge)', 'Phase 4', 'Katangaita', 'Kasina', 'Sabaki', 'Expressway End', 'Mlolongo Town'])">&#9992;&#65039; Mlolongo &#8250;</div>
               <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Athi River', ['Green Park', 'Crystal Rivers', 'Makadara', 'Greatwall Gardens'])">&#9992;&#65039; Athi River &#8250;</div>
               <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Ngong', ['Ngong CBD', 'Milele Mall Area', 'Kibiko', 'Matasia', 'Bulbul'])">&#129409; Ngong &#8250;</div>
               <div class="km-sheet-loc-item" onclick="MobileApp.showLocSubZones('Nyali', ['Nyali Beach', 'Nyali Estate', 'Mkomani', 'Links Rd'])">&#127754; Nyali (Mombasa) &#8250;</div>
@@ -2928,7 +2928,8 @@
         </div>
         <div style="display:flex; gap:6px;">
           <a href="https://wa.me/${cleanWa}?text=${encodeURIComponent(prop ? 'Hi ' + landlordName + ', I am inquiring about ' + prop.title + ' on KejaMarket' : 'Hello')}" target="_blank" rel="noopener noreferrer" class="back-btn" style="color:#25D366;" title="Chat on WhatsApp"><i class="fab fa-whatsapp" style="font-size:18px;"></i></a>
-          <a href="tel:${phone}" class="back-btn" style="color:#006818;" title="Call Landlord"><i class="fas fa-phone-alt"></i></a>
+          <button type="button" class="back-btn" onclick="MobileApp.startInAppCall('${landlordName.replace(/'/g, "\\'")}', '${phone}', '${(prop ? prop.title : '').replace(/'/g, "\\'")}')" style="color:#006818; background:#f0fdf4; border:1px solid #bbf7d0;" title="HD In-App Call"><i class="fas fa-phone-alt"></i></button>
+          <a href="tel:${phone}" class="back-btn" style="color:#64748b;" title="Direct GSM Call"><i class="fas fa-sim-card"></i></a>
         </div>
       </div>
     `;
@@ -4166,6 +4167,14 @@
     }
   }
 
+  function startInAppCall(name, phone, contextTitle) {
+    if (window.KMInAppCall) {
+      window.KMInAppCall.start(name, phone, contextTitle);
+    } else {
+      window.location.href = `tel:${(phone || '').replace(/[^0-9+]/g, '')}`;
+    }
+  }
+
   function sendChatMessage() {
     const input = document.getElementById('km-chat-input');
     if (!input || !input.value.trim()) return;
@@ -4175,11 +4184,30 @@
     const area = document.getElementById('km-chat-messages-area');
     if (area) {
       const bubble = document.createElement('div');
+      const msgId = 'km-msg-' + Date.now();
       bubble.className = 'km-chat-bubble out';
+      bubble.id = msgId;
       bubble.innerHTML = `
-        <div class="km-bubble-meta" style="color:rgba(255,255,255,0.85);">You • Just now</div>
+        <div class="km-bubble-meta" style="color:rgba(255,255,255,0.85); display:flex; justify-content:space-between; align-items:center;">
+          <span>You • Just now</span>
+          <span class="km-tick-indicator" style="font-size:11px; margin-left:6px; opacity:0.85;" title="Sent"><i class="fas fa-check"></i></span>
+        </div>
         <div>${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
       `;
+      setTimeout(() => {
+        const b = document.getElementById(msgId);
+        if (b) {
+          const t = b.querySelector('.km-tick-indicator');
+          if (t) { t.innerHTML = '<i class="fas fa-check-double"></i>'; t.title = 'Delivered'; }
+        }
+      }, 400);
+      setTimeout(() => {
+        const b = document.getElementById(msgId);
+        if (b) {
+          const t = b.querySelector('.km-tick-indicator');
+          if (t) { t.innerHTML = '<i class="fas fa-check-double" style="color:#60a5fa; font-weight:bold;"></i>'; t.title = 'Read'; }
+        }
+      }, 1000);
       area.appendChild(bubble);
       area.scrollTop = area.scrollHeight;
 
@@ -4548,6 +4576,7 @@
     switchHeroPhoto,
     submitViewingRequest,
     sendChatMessage,
+    startInAppCall,
     sendQuickReply,
     shareProperty,
     setBudgetPreset,

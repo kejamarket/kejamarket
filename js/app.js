@@ -1605,6 +1605,82 @@ class NairobiRentalsApp {
       bText.textContent = 'Kenya › ' + (this.activeCounty ? this.activeCounty + ' › ' : '') + areaName;
     }
 
+    // Hierarchical Sub-Zones / Phases Lookup (e.g. Mlolongo -> Phase 1, Phase 2, Katangaita)
+    const kca = window.KENYA_COUNTY_AREAS || {};
+    let matchedAreaObj = null;
+    for (const cKey in kca) {
+      if (kca[cKey].areas) {
+        const found = kca[cKey].areas.find(a => 
+          (a.val && a.val.toLowerCase() === areaName.toLowerCase()) || 
+          (a.name && a.name.toLowerCase() === areaName.toLowerCase())
+        );
+        if (found) { matchedAreaObj = found; break; }
+      }
+    }
+
+    const subWrapper = document.getElementById('km-desk-subzones-wrapper');
+    const subBar = document.getElementById('km-desk-subzones-bar');
+    const subHeader = document.getElementById('km-desk-subzones-header');
+
+    if (subWrapper && subBar) {
+      if (matchedAreaObj && matchedAreaObj.subZones && matchedAreaObj.subZones.length > 0) {
+        subWrapper.style.display = 'block';
+        if (subHeader) subHeader.innerHTML = '<i class="fas fa-layer-group" style="color:#006818;"></i> <span>' + (matchedAreaObj.name || areaName) + ' Zones &amp; Phases:</span>';
+        
+        let subHtml = '<button type="button" class="km-desk-subzone-chip active" onclick="app.selectDesktopSubZone(\'all\', \'' + areaName.replace(/'/g, "\\'") + '\', this)" style="padding:2px 8px; font-size:10.5px; font-weight:700; border-radius:12px; border:1px solid #006818; background:#006818; color:#ffffff; cursor:pointer;">All ' + areaName + '</button>';
+        
+        subHtml += matchedAreaObj.subZones.map(sz => {
+          return '<button type="button" class="km-desk-subzone-chip" onclick="app.selectDesktopSubZone(\'' + sz.replace(/'/g, "\\'") + '\', \'' + areaName.replace(/'/g, "\\'") + '\', this)" style="padding:2px 8px; font-size:10.5px; font-weight:600; border-radius:12px; border:1px solid #e2e8f0; background:#f1f5f9; color:#334155; cursor:pointer; transition:all 0.15s ease;">' + sz + '</button>';
+        }).join('');
+        
+        subBar.innerHTML = subHtml;
+      } else {
+        subWrapper.style.display = 'none';
+        subBar.innerHTML = '';
+      }
+    }
+
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  selectDesktopSubZone(subZoneName, parentArea, btnEl) {
+    document.querySelectorAll('.km-desk-subzone-chip').forEach(c => {
+      c.style.background = '#f1f5f9';
+      c.style.color = '#334155';
+      c.style.borderColor = '#e2e8f0';
+      c.classList.remove('active');
+    });
+
+    if (btnEl) {
+      btnEl.style.background = '#006818';
+      btnEl.style.color = '#ffffff';
+      btnEl.style.borderColor = '#006818';
+      btnEl.classList.add('active');
+    }
+
+    if (!subZoneName || subZoneName === 'all') {
+      this.selectedLocation = {
+        name: parentArea,
+        type: 'AREA',
+        county: this.activeCounty || '',
+        fullPath: (this.activeCounty ? this.activeCounty + ' → ' : '') + parentArea
+      };
+    } else {
+      this.selectedLocation = {
+        name: subZoneName,
+        parentArea: parentArea,
+        type: 'SUBZONE',
+        county: this.activeCounty || '',
+        fullPath: (this.activeCounty ? this.activeCounty + ' → ' : '') + parentArea + ' → ' + subZoneName
+      };
+    }
+
+    const bText = document.getElementById('km-desk-breadcrumb-text');
+    if (bText) {
+      bText.textContent = 'Kenya › ' + (this.activeCounty ? this.activeCounty + ' › ' : '') + parentArea + (subZoneName !== 'all' ? ' › ' + subZoneName : '');
+    }
+
     this.currentPage = 1;
     this.applyFilters();
   }
@@ -2043,7 +2119,16 @@ class NairobiRentalsApp {
           (p.areaId && p.areaId === locId) ||
           (p.countyId && p.countyId === locId);
 
-        const matchesPath = (p.locationPath && p.locationPath.some(item => item.toLowerCase() === locName)) ||
+        const matchesSubZone = loc.type === 'SUBZONE' && (
+          (p.phase && p.phase.toLowerCase().includes(locName)) ||
+          (p.phaseId && p.phaseId.toLowerCase().includes(locName)) ||
+          (p.estateSuburb && p.estateSuburb.toLowerCase().includes(locName)) ||
+          (p.exactLocation && p.exactLocation.toLowerCase().includes(locName)) ||
+          (p.title && p.title.toLowerCase().includes(locName)) ||
+          (p.description && p.description.toLowerCase().includes(locName))
+        );
+
+        const matchesPath = matchesSubZone || (p.locationPath && p.locationPath.some(item => item.toLowerCase() === locName)) ||
           (p.estateSuburb && p.estateSuburb.toLowerCase().includes(locName)) ||
           (p.displayLocation && p.displayLocation.toLowerCase().includes(locName)) ||
           (p.locationDisplay && p.locationDisplay.toLowerCase().includes(locName)) ||
@@ -2739,6 +2824,36 @@ class NairobiRentalsApp {
     }
 
     this.selectedPropertyForDetail = p;
+
+    // PWA-PARITY: Render exact PWA detail view inside desktop modal
+    if (window.KMDeskDetail) {
+      const coords = this.getCoordinatesForProperty(p);
+      const html = window.KMDeskDetail.build(
+        p,
+        coords,
+        this.properties,
+        () => this.openChatForCurrentProperty(),
+        (id, type) => this.requestViewing(id, type)
+      );
+      const titleEl = document.getElementById('km-desk-detail-title-text');
+      if (titleEl) titleEl.textContent = p.title;
+      const bodySlot = document.getElementById('km-desk-detail-body-slot') || document.querySelector('#modal-property-detail .modal-body');
+      if (bodySlot) {
+        bodySlot.innerHTML = html;
+        window.KMDeskDetail.wireEvents(
+          bodySlot,
+          p,
+          () => this.openChatForCurrentProperty(),
+          (id, type) => this.requestViewing(id, type)
+        );
+        setTimeout(() => {
+          window.KMDeskDetail.initMap(p, coords);
+        }, 200);
+      }
+      this.openModal('modal-property-detail');
+      return;
+    }
+
     const isBnb = p.isBnb || p.category.includes('BnB') || p.category.includes('Airbnb') || p.category.includes('Villa') || p.rentPeriod === 'night';
     const isHourly = p.rentPeriod === 'hour' || p.category.includes('Boardroom');
     const isDaily = p.rentPeriod === 'day' || p.category.includes('Conference') || p.category.includes('Event') || p.category.includes('Hall');
@@ -3616,7 +3731,7 @@ class NairobiRentalsApp {
       titleEl.textContent = prop.landlord?.name || 'Landlord';
     }
     if (subEl) {
-      subEl.textContent = `${prop.estateSuburb} · Direct Landlord Chat`;
+      subEl.innerHTML = `<span>${prop.estateSuburb || 'Nairobi'}</span> &bull; <span style="color:#4ade80; font-weight:700;"><i class="fas fa-circle" style="font-size:7px;"></i> Online now</span> &bull; <span style="color:#94a3b8;">Replies in &lt; 2m</span>`;
     }
     if (banner && bannerTitle && bannerPrice) {
       banner.style.display = 'flex';
@@ -3679,6 +3794,18 @@ class NairobiRentalsApp {
     setTimeout(() => {
       if (input) input.focus();
     }, 300);
+  }
+
+  startInAppCall() {
+    const prop = this.activeChatProperty || this.selectedPropertyForDetail;
+    const name = prop?.landlord?.name || prop?.landlordName || 'Verified Landlord';
+    const phone = prop?.landlord?.phone || prop?.phone || '+254792409540';
+    const title = prop?.title || 'KejaMarket Property Inquiry';
+    if (window.KMInAppCall) {
+      window.KMInAppCall.start(name, phone, title);
+    } else {
+      window.location.href = `tel:${phone.replace(/[^0-9+]/g, '')}`;
+    }
   }
 
   openChatForCurrentProperty() {
@@ -3768,7 +3895,8 @@ class NairobiRentalsApp {
       return `
         <div style="display: flex; flex-direction: column; align-items: ${isMe ? 'flex-end' : 'flex-start'}; margin-bottom: 4px;">
           <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 2px; padding: 0 4px;">
-            ${isMe ? 'You' : (m.senderName || 'Landlord')} · ${timeStr}
+            ${isMe ? 'You' : (m.senderName || 'Landlord')} · ${timeStr}</span>
+            ${isMe ? '<span style="color:#0284c7; margin-left:4px; font-size:11px; font-weight:800;" title="Delivered & Read"><i class="fas fa-check-double"></i></span>' : ''}<span>
           </div>
           <div style="max-width: 82%; padding: 9px 13px; border-radius: ${isMe ? '14px 14px 2px 14px' : '14px 14px 14px 2px'}; background: ${isMe ? '#1db010' : '#ffffff'}; color: ${isMe ? '#ffffff' : '#1e293b'}; font-size: 0.86rem; line-height: 1.4; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: ${isMe ? 'none' : '1px solid #e2e8f0'}; word-break: break-word;">
             ${m.text}
