@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v107-toolbar-redesign-no-count';
+const CACHE_NAME = 'kejamarket-v108-strict-category-filter-bubbles';
 
 const STATIC_ASSETS = [
   '/',

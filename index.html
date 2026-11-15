@@ -15,7 +15,7 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
-  <link rel="preload" href="js/app.js?v=107.0" as="script">
+  <link rel="preload" href="js/app.js?v=108.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -231,6 +231,27 @@
       width: 100% !important;
       justify-content: space-between !important;
     }
+  }
+
+
+  /* Story bubble active ring and smooth animations */
+  .km-story-bubble {
+    transition: transform 0.15s ease !important;
+  }
+  .km-story-bubble .km-story-icon-ring {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  .km-story-bubble:hover .km-story-icon-ring {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+  .km-story-bubble.active .km-story-icon-ring {
+    box-shadow: 0 0 0 3px #22c55e, 0 4px 14px rgba(34, 197, 94, 0.4) !important;
+    transform: translateY(-3px) scale(1.06) !important;
+  }
+  .km-story-bubble.active .km-story-label {
+    color: #047857 !important;
+    font-weight: 900 !important;
   }
 
 </style>
@@ -1254,7 +1275,7 @@
           <div class="km-tab-panel km-panel-active" id="km-panel-rentals">
             <div class="km-desk-story-scroll" style="display:flex; align-items:flex-start; gap:16px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;">
               <button type="button" class="km-story-bubble active" onclick="app.filterCategory('all', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-all" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e8f8ee; color:#006818; box-shadow: 0 0 0 2.5px #006818, 0 4px 12px rgba(0,104,24,0.35);"><i class="fas fa-border-all"></i></div>
+                <div class="km-story-icon-ring km-cat-all" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e8f8ee; color:#006818;"><i class="fas fa-border-all"></i></div>
                 <span class="km-story-label" style="font-size:11.5px; font-weight:900; color:#006818; margin-top:6px; text-align:center;">All</span>
               </button>
               <button type="button" class="km-story-bubble" onclick="app.filterCategory('Single Room', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
@@ -5426,7 +5447,7 @@
   <script src="js/auth.js?v=5.1&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/components/location-picker.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
-  <script src="js/app.js?v=107.0" defer></script>
+  <script src="js/app.js?v=108.0" defer></script>
   <script src="js/viewing-booking.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
@@ -5639,7 +5660,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js?v=107.0');
+      navigator.serviceWorker.register('/sw.js?v=108.0');
     }
   </script>
   <!-- Modal: Admin Omni-Channel Social Blast Suite (WhatsApp, Instagram, Facebook, TikTok) -->

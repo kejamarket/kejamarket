@@ -421,8 +421,67 @@ class NairobiRentalsApp {
 
   setCategory(categoryName, el) {
     this.activeCategory = categoryName;
-    
-    // Update horizontal pills active class
+
+    // 1. Update km-story-bubble active state (Bedsitter, Single Room, etc.)
+    document.querySelectorAll('.km-story-bubble').forEach(b => {
+      let isMatch = false;
+      const fnAttr = (b.getAttribute('onclick') || '').toLowerCase();
+      const target = (categoryName || 'all').toLowerCase();
+
+      if (el && (b === el || b.contains(el))) {
+        isMatch = true;
+      } else if (target === 'all') {
+        isMatch = fnAttr.includes("'all'") || fnAttr.includes('"all"');
+      } else {
+        isMatch = fnAttr.includes(target);
+      }
+
+      b.classList.toggle('active', isMatch);
+      const ring = b.querySelector('.km-story-icon-ring') || b.querySelector('div');
+      const label = b.querySelector('.km-story-label') || b.querySelector('span');
+      if (ring) {
+        if (isMatch) {
+          ring.style.boxShadow = '0 0 0 3px #22c55e, 0 4px 14px rgba(34, 197, 94, 0.4)';
+          ring.style.transform = 'translateY(-3px) scale(1.06)';
+        } else {
+          ring.style.boxShadow = 'none';
+          ring.style.transform = 'none';
+        }
+      }
+      if (label) {
+        label.style.color = isMatch ? '#047857' : '#475569';
+        label.style.fontWeight = isMatch ? '900' : '700';
+      }
+    });
+
+    // 2. Sync sidebar checkboxes with selected category
+    document.querySelectorAll('.prop-type-checkbox').forEach(cb => {
+      const cbVal = cb.value.toLowerCase();
+      const target = (categoryName || '').toLowerCase();
+      if (target === 'all' || !target) {
+        cb.checked = false;
+      } else if (target.includes('bedsitter') && cbVal.includes('bedsitter')) {
+        cb.checked = true;
+      } else if (target.includes('single') && cbVal.includes('single')) {
+        cb.checked = true;
+      } else if (target.includes('double') && cbVal.includes('double')) {
+        cb.checked = true;
+      } else if (target.includes('1 bed') && cbVal.includes('1 bed')) {
+        cb.checked = true;
+      } else if (target.includes('2 bed') && cbVal.includes('2 bed')) {
+        cb.checked = true;
+      } else if (target.includes('3 bed') && cbVal.includes('3 bed')) {
+        cb.checked = true;
+      } else if (target.includes('apartment') && cbVal.includes('apartment')) {
+        cb.checked = true;
+      } else if ((target.includes('bnb') || target.includes('airbnb')) && cbVal.includes('bnb')) {
+        cb.checked = true;
+      } else {
+        cb.checked = false;
+      }
+    });
+
+    // 3. Update horizontal pills active class
     document.querySelectorAll('.category-pill, .km-desk-cat-pill').forEach(p => {
       const isMatch = (categoryName.toLowerCase() === 'all') 
         ? p.textContent.trim().toLowerCase().includes('all') 
@@ -441,7 +500,7 @@ class NairobiRentalsApp {
       }
     });
 
-    // Update sidebar list active class
+    // 4. Update sidebar list active class
     document.querySelectorAll('.sidebar-cat-item').forEach(p => {
       p.classList.toggle('active', p.getAttribute('data-category') === categoryName);
     });
@@ -1153,12 +1212,30 @@ class NairobiRentalsApp {
     const locTextEl = document.querySelector('.results-location-text');
     if (locTextEl) {
       const locName = this.selectedSuburb || 'Nairobi & Environs';
+      const cat = (this.activeCategory || 'All').toLowerCase();
+
       if (this.currentFilterMode === 'services') {
         locTextEl.innerHTML = `Verified Service Providers in <span id="results-count-loc">${locName}</span>`;
       } else if (this.currentFilterMode === 'marketplace') {
         locTextEl.innerHTML = `Used Items & Moving Sale in <span id="results-count-loc">${locName}</span>`;
-      } else if (this.activeCategory === 'Land') {
+      } else if (cat === 'land') {
         locTextEl.innerHTML = `Plots & Land for Sale in <span id="results-count-loc">${locName}</span>`;
+      } else if (cat.includes('bedsitter')) {
+        locTextEl.innerHTML = `Bedsitters in <span id="results-count-loc">${locName}</span>`;
+      } else if (cat.includes('single')) {
+        locTextEl.innerHTML = `Single Rooms in <span id="results-count-loc">${locName}</span>`;
+      } else if (cat.includes('double')) {
+        locTextEl.innerHTML = `Double Rooms in <span id="results-count-loc">${locName}</span>`;
+      } else if (cat.includes('1 bed')) {
+        locTextEl.innerHTML = `1-Bedroom Rentals in <span id="results-count-loc">${locName}</span>`;
+      } else if (cat.includes('2 bed')) {
+        locTextEl.innerHTML = `2-Bedroom Rentals in <span id="results-count-loc">${locName}</span>`;
+      } else if (cat.includes('3 bed')) {
+        locTextEl.innerHTML = `3+ Bedroom Rentals in <span id="results-count-loc">${locName}</span>`;
+      } else if (cat.includes('apartment')) {
+        locTextEl.innerHTML = `Apartments in <span id="results-count-loc">${locName}</span>`;
+      } else if (cat.includes('bnb') || cat.includes('airbnb')) {
+        locTextEl.innerHTML = `BnBs & Short Stays in <span id="results-count-loc">${locName}</span>`;
       } else {
         locTextEl.innerHTML = `Properties in <span id="results-count-loc">${locName}</span>`;
       }
@@ -1810,64 +1887,74 @@ class NairobiRentalsApp {
         if (!pLoc.includes(sub)) return false;
       }
 
-      // Category filter
+      // Category filter - STRICTLY MATCH ONLY SELECTED TYPE
       if (this.activeCategory && this.activeCategory !== 'All') {
-        const cat = this.activeCategory.toLowerCase();
-        const pCat = (p.category || '').toLowerCase();
-        let matchesCategory = (p.category === this.activeCategory);
-        if (!matchesCategory) {
-          if (cat.includes('airbnb') || cat.includes('bnb') || cat.includes('short')) {
-            matchesCategory = Boolean(
-              p.isBnb || 
-              p.rentPeriod === 'night' || 
-              pCat.includes('bnb') || 
-              pCat.includes('airbnb') || 
-              pCat.includes('short') || 
-              pCat.includes('villa') || 
-              (p.title && (p.title.toLowerCase().includes('bnb') || p.title.toLowerCase().includes('airbnb')))
-            );
-          } else if (cat === 'rentals' || cat === 'rental') {
-            matchesCategory = Boolean(!p.isForSale && !pCat.includes('land') && !pCat.includes('plot'));
-          } else if (cat.includes('selling') || cat.includes('sale')) {
-            matchesCategory = Boolean(
-              p.isForSale || 
-              pCat.includes('selling') || 
-              pCat.includes('sale') || 
-              pCat.includes('bungalow') || 
-              pCat.includes('maisonette') || 
-              pCat.includes('plot') || 
-              (p.title && p.title.toLowerCase().includes('for sale'))
-            );
-          } else if (cat.includes('apartment')) {
-            matchesCategory = Boolean(
-              pCat.includes('apartment') || 
-              pCat.includes('bedroom') || 
-              pCat.includes('bedsitter') || 
-              pCat.includes('studio') ||
-              pCat.includes('penthouse')
-            );
-          } else if (cat.includes('land') || cat.includes('plot')) {
-            matchesCategory = Boolean(pCat.includes('land') || pCat.includes('plot') || (p.title && p.title.toLowerCase().includes('plot')));
-          } else if (cat.includes('bedsitter') || cat.includes('studio')) {
-            matchesCategory = pCat.includes('bedsitter') || pCat.includes('studio') || p.bedrooms === 0;
-          } else if (cat.includes('single')) {
-            matchesCategory = pCat.includes('single');
-          } else if (cat.includes('1 bed')) {
-            matchesCategory = pCat.includes('1 bed') || p.bedrooms === 1;
-          } else if (cat.includes('2 bed')) {
-            matchesCategory = pCat.includes('2 bed') || p.bedrooms === 2;
-          } else if (cat.includes('3 bed')) {
-            matchesCategory = pCat.includes('3 bed') || p.bedrooms === 3;
-          } else if (cat.includes('4 bed')) {
-            matchesCategory = pCat.includes('4 bed') || p.bedrooms >= 4;
-          } else if (cat.includes('bungalow')) {
-            matchesCategory = pCat.includes('bungalow');
-          } else if (cat.includes('maisonette') || cat.includes('townhouse')) {
-            matchesCategory = pCat.includes('maisonette') || pCat.includes('townhouse');
-          } else {
-            matchesCategory = pCat.includes(cat);
-          }
+        const cat = this.activeCategory.toLowerCase().trim();
+        const pCat = (p.category || '').toLowerCase().trim();
+        const pTitle = (p.title || '').toLowerCase().trim();
+        const pType = (p.type || p.propertyType || '').toLowerCase().trim();
+        const beds = Number(p.bedrooms ?? (p.beds ?? -1));
+
+        let matchesCategory = false;
+
+        if (cat.includes('airbnb') || cat.includes('bnb') || cat.includes('short')) {
+          matchesCategory = Boolean(
+            p.isBnb || 
+            p.rentPeriod === 'night' || 
+            pCat.includes('bnb') || 
+            pCat.includes('airbnb') || 
+            pCat.includes('short') || 
+            pTitle.includes('bnb') || 
+            pTitle.includes('airbnb')
+          );
+        } else if (cat === 'rentals' || cat === 'rental') {
+          matchesCategory = Boolean(!p.isForSale && !pCat.includes('land') && !pCat.includes('plot'));
+        } else if (cat.includes('selling') || cat.includes('sale')) {
+          matchesCategory = Boolean(
+            p.isForSale || 
+            pCat.includes('selling') || 
+            pCat.includes('sale') || 
+            pCat.includes('bungalow') || 
+            pCat.includes('maisonette') || 
+            pCat.includes('plot') || 
+            pTitle.includes('for sale')
+          );
+        } else if (cat.includes('bedsitter') || cat === 'bedsitters') {
+          // STRICT: ONLY Bedsitters!
+          // Exclude multi-bedroom apartments, 1-bed, 2-bed, etc.
+          const hasBedsitterWord = pCat.includes('bedsitter') || pTitle.includes('bedsitter');
+          const isExplicitMultiBed = (beds >= 1 && !hasBedsitterWord) || pTitle.includes('1 bedroom') || pTitle.includes('2 bedroom') || pTitle.includes('3 bedroom') || pTitle.includes('apartment');
+          matchesCategory = hasBedsitterWord && !isExplicitMultiBed;
+        } else if (cat.includes('single')) {
+          // STRICT: ONLY Single Room
+          matchesCategory = (pCat.includes('single') || pTitle.includes('single room') || pTitle.includes('single-room')) && !pTitle.includes('double') && !pTitle.includes('bedsitter');
+        } else if (cat.includes('double')) {
+          // STRICT: ONLY Double Room
+          matchesCategory = pCat.includes('double') || pTitle.includes('double room') || pTitle.includes('double-room');
+        } else if (cat.includes('1 bed')) {
+          // STRICT: ONLY 1 Bedroom (no bedsitters)
+          const isNotBedsitter = !pCat.includes('bedsitter') && !pTitle.includes('bedsitter') && !pCat.includes('single');
+          matchesCategory = isNotBedsitter && (beds === 1 || pCat.includes('1 bed') || pTitle.includes('1 bed') || pTitle.includes('1-bed') || pTitle.includes('one bed'));
+        } else if (cat.includes('2 bed')) {
+          // STRICT: ONLY 2 Bedrooms
+          matchesCategory = (beds === 2 || pCat.includes('2 bed') || pTitle.includes('2 bed') || pTitle.includes('2-bed') || pTitle.includes('two bed'));
+        } else if (cat.includes('3 bed')) {
+          // STRICT: ONLY 3+ Bedrooms
+          matchesCategory = (beds >= 3 || pCat.includes('3 bed') || pTitle.includes('3 bed') || pTitle.includes('3-bed') || pTitle.includes('three bed') || pCat.includes('4 bed') || pTitle.includes('4 bed'));
+        } else if (cat.includes('apartment')) {
+          // STRICT: ONLY Apartments (no single rooms or plain bedsitters)
+          const isNotSingleOrBedsitter = !pCat.includes('bedsitter') && !pTitle.includes('bedsitter') && !pCat.includes('single room') && !pTitle.includes('single room');
+          matchesCategory = isNotSingleOrBedsitter && (pType.includes('apartment') || pCat.includes('apartment') || pTitle.includes('apartment') || pTitle.includes('flat') || pCat.includes('bedroom') || beds >= 1);
+        } else if (cat.includes('land') || cat.includes('plot')) {
+          matchesCategory = Boolean(pCat.includes('land') || pCat.includes('plot') || pTitle.includes('plot') || pTitle.includes('land'));
+        } else if (cat.includes('bungalow')) {
+          matchesCategory = pCat.includes('bungalow') || pTitle.includes('bungalow');
+        } else if (cat.includes('maisonette') || cat.includes('townhouse')) {
+          matchesCategory = pCat.includes('maisonette') || pCat.includes('townhouse') || pTitle.includes('maisonette') || pTitle.includes('townhouse');
+        } else {
+          matchesCategory = (p.category === this.activeCategory) || pCat.includes(cat) || pTitle.includes(cat);
         }
+
         if (!matchesCategory) return false;
       }
 
