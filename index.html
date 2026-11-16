@@ -17,7 +17,7 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=128.0" as="style">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=129.0" as="style">
   <link rel="preload" href="js/app.js?v=117.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
@@ -1309,22 +1309,22 @@
         </button>
 
         <!-- Profile Dropdown -->
-        <div class="header-profile-dropdown">
-          <button class="btn-profile" onclick="kejaAuth.toggleProfileDropdown()">
-            <div class="profile-avatar">
+                <div class="header-profile-dropdown" style="position: relative;">
+          <button type="button" class="btn-profile" id="btn-auth-header" onclick="kejaAuth.toggleProfileDropdown()" title="Account & Profile">
+            <div class="profile-avatar" id="header-user-avatar">
               <i class="fas fa-user-circle"></i>
             </div>
             <span class="profile-name" id="auth-header-label">Sign In</span>
-            <i class="fas fa-chevron-down"></i>
+            <i class="fas fa-chevron-down profile-chevron"></i>
           </button>
+
+          <!-- Profile Dropdown Menu (Directly anchored beneath the button) -->
+          <div id="profile-dropdown" class="profile-dropdown-panel" style="display:none;">
+            <div id="profile-dropdown-content"></div>
+          </div>
         </div>
 
       </div>
-    </div>
-
-    <!-- Profile Dropdown Menu (Hidden by default) -->
-    <div id="profile-dropdown" style="display:none; position:absolute; top:48px; right:20px; z-index:9999; background:white; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.15); min-width:280px; max-width:320px;">
-      <div id="profile-dropdown-content"></div>
     </div>
   </header>
 

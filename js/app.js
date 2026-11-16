@@ -3504,15 +3504,11 @@ class NairobiRentalsApp {
       scrollWheelZoom: true
     }).setView([coords.lat, coords.lng], 15);
     
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-      minZoom: 5,
-      subdomains: ['a','b','c','d'],
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      tileSize: 256,
-      detectRetina: true,
-      updateWhenZooming: false
-    }).addTo(this.detailMap);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        minZoom: 3,
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
+      }).addTo(this.detailMap);
 
     this.detailMarker = L.marker([coords.lat, coords.lng]).addTo(this.detailMap)
       .bindPopup(`<b>${property.title}</b><br><span style="color:#006818;font-weight:bold;">KSh ${rentText.toLocaleString()}/mo</span><br>${property.estateSuburb || coords.areaName}`)

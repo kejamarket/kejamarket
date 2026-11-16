@@ -29,17 +29,11 @@ class MapController {
     }).setView(this.nairobiCenter, this.defaultZoom);
 
     // Use high-performance CartoDB Voyager tiles (crisp real estate maps, no 403 blocks)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-      minZoom: 8,
-      attribution: '© <a href="https://carto.com/">CARTO</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
-      subdomains: ['a', 'b', 'c', 'd'],
-      tileSize: 256,
-      zoomOffset: 0,
-      detectRetina: true,
-      updateWhenZooming: false,
-      keepBuffer: 2
-    }).addTo(this.fullMap);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        minZoom: 3,
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
+      }).addTo(this.fullMap);
 
     this.fullMarkersGroup = L.layerGroup().addTo(this.fullMap);
   }
@@ -55,17 +49,11 @@ class MapController {
     }).setView(this.nairobiCenter, this.defaultZoom);
 
     // Use high-performance CartoDB Voyager tiles (crisp real estate maps, no 403 blocks)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-      minZoom: 8,
-      attribution: '© <a href="https://carto.com/">CARTO</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
-      subdomains: ['a', 'b', 'c', 'd'],
-      tileSize: 256,
-      zoomOffset: 0,
-      detectRetina: true,
-      updateWhenZooming: false,
-      keepBuffer: 2
-    }).addTo(this.splitMap);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        minZoom: 3,
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
+      }).addTo(this.splitMap);
 
     this.splitMarkersGroup = L.layerGroup().addTo(this.splitMap);
   }

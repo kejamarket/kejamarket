@@ -2227,10 +2227,10 @@
       }).setView([coords.lat, coords.lng], 15);
 
       // High-performance CartoDB Voyager tiles (never blocked with 403 like OSM)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 19,
-        subdomains: ['a', 'b', 'c', 'd'],
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        minZoom: 3,
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
       }).addTo(map);
 
       // KejaMarket Signature Green Pin

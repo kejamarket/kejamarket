@@ -802,15 +802,11 @@ class LandlordManager {
           scrollWheelZoom: true     // Allow mouse wheel zoom
         }).setView([this.selectedCoords.lat, this.selectedCoords.lng], 13);
         
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          maxZoom: 19,
-          minZoom: 10,
-          attribution: '© <a href="https://carto.com/">CARTO</a> | © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | © <a href="https://kejamarket.co.ke">KejaMarket</a>',
-          subdomains: ['a', 'b', 'c', 'd'],
-          tileSize: 256,
-          detectRetina: true,
-          updateWhenZooming: false
-        }).addTo(this.postMap);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        minZoom: 3,
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
+      }).addTo(this.postMap);
 
         this.postMarker = L.marker([this.selectedCoords.lat, this.selectedCoords.lng], {
           draggable: true

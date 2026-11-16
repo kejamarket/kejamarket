@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v128-map-video-fix';
+const CACHE_NAME = 'kejamarket-v129-maps-profile-perfect';
 
 const STATIC_ASSETS = [
   '/',

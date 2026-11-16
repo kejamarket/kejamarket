@@ -340,10 +340,10 @@
         attributionControl: false, zoomControl: true, scrollWheelZoom: false
       }).setView([coords.lat, coords.lng], 15);
 
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 19,
-        subdomains: ['a','b','c','d'],
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        minZoom: 3,
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
       }).addTo(this._map);
 
       var pinIcon = L.divIcon({
