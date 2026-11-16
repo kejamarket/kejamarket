@@ -3064,14 +3064,33 @@ html, body {
 
 /* ── Modernized Post Property Modal Wizard (Jiji / Jumia Deals Inspired) ── */
 #modal-post-ad,
-#modal-post-ad *,
 #modal-post-ad input,
 #modal-post-ad select,
 #modal-post-ad textarea,
 #modal-post-ad button,
-#modal-post-ad label {
+#modal-post-ad label,
+#modal-post-ad p,
+#modal-post-ad span:not(.fa):not(.fas):not(.far):not(.fab):not(.fa-solid):not(.fa-regular),
+#modal-post-ad div:not(.fa):not(.fas):not(.far):not(.fab) {
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   box-sizing: border-box !important;
+}
+
+/* Restore Font Awesome icon font - never override with Poppins */
+#modal-post-ad i,
+#modal-post-ad .fa,
+#modal-post-ad .fas,
+#modal-post-ad .far,
+#modal-post-ad .fab,
+#modal-post-ad .fa-solid,
+#modal-post-ad .fa-regular,
+#modal-post-ad [class*="fa-"] {
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 5 Free", "FontAwesome" !important;
+  font-style: normal !important;
+  font-weight: 900 !important;
+  font-variant: normal !important;
+  text-rendering: auto !important;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 #modal-post-ad {
@@ -3167,6 +3186,9 @@ html, body {
   flex: 1 1 auto !important;
   background: #f8fafc !important;
   box-sizing: border-box !important;
+  min-height: 0 !important;
+  color: #1e293b !important;
+  display: block !important;
 }
 
 #modal-post-ad .modal-body::-webkit-scrollbar {
@@ -3193,6 +3215,7 @@ html, body {
   box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
   box-sizing: border-box !important;
   transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+  color: #0f172a !important;
 }
 
 .post-step-card:focus-within {

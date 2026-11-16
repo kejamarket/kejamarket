@@ -327,12 +327,7 @@ class LandlordManager {
     if (!fileInput) return;
 
     if (dropzone) {
-      dropzone.onclick = (e) => {
-        // Direct click trigger
-        if (e.target !== fileInput) {
-          fileInput.click();
-        }
-      };
+      // Label dropzone triggers fileInput natively; no manual .click() needed
 
       dropzone.ondragover = (e) => {
         e.preventDefault();
@@ -399,6 +394,27 @@ class LandlordManager {
     };
   }
 
+  compressAndWatermarkImageSafe(file, maxDimension = 1280, quality = 0.82) {
+    const timeoutMs = 4000;
+    const timeoutPromise = new Promise(resolve => {
+      setTimeout(() => resolve(null), timeoutMs);
+    });
+    return Promise.race([
+      this.compressAndWatermarkImage(file, maxDimension, quality),
+      timeoutPromise
+    ]).then(result => {
+      if (result !== null) return result;
+      // Timeout fallback: use FileReader directly
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = () => resolve(URL.createObjectURL(file));
+        reader.readAsDataURL(file);
+      });
+    });
+  }
+
+
   async handleFiles(files) {
     const previewGrid = document.getElementById('post-photos-preview');
     if (!previewGrid) return;
@@ -427,7 +443,7 @@ class LandlordManager {
 
     for (const file of filesToProcess) {
       try {
-        const compressedDataUrl = await this.compressAndWatermarkImage(file, 1280, 0.82);
+        const compressedDataUrl = await this.compressAndWatermarkImageSafe(file, 1280, 0.82);
         if (this.uploadedImages.length < 5) {
           this.uploadedImages.push(compressedDataUrl);
           this.renderPhotoPreviews();
