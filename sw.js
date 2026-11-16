@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v124-map-fix';
+const CACHE_NAME = 'kejamarket-v125-post-modal-beauty';
 
 const STATIC_ASSETS = [
   '/',

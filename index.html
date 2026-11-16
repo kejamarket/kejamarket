@@ -11,10 +11,13 @@
   <!-- Resource Hints: Improve Performance -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <!-- Poppins Font for KejaMarket Brand Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=106.0" as="style">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=125.0" as="style">
   <link rel="preload" href="js/app.js?v=117.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
@@ -24,7 +27,7 @@
 
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=106.0">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=125.0">
   
   
   <!-- Hierarchical Location Search Component -->
@@ -3119,13 +3122,13 @@
 
             <!-- Tappable Dropzone Box (Acts as a native file label) -->
             <label for="post-photos-input" class="photo-dropzone-modern" id="photo-dropzone">
-              <div class="photo-icon-circle">
-                <i class="fas fa-camera"></i>
+              <div class="photo-hero-icon-wrap">
+                <i class="fas fa-camera km-photo-large-icon"></i>
               </div>
-              <div class="photo-title">Tap to Take or Choose Photos (Max 5)</div>
-              <div class="photo-sub">1st photo will be your Cover Picture · Free KejaMarket Watermark protection</div>
+              <div class="photo-title">Tap or Drag to Add Property Photos</div>
+              <div class="photo-sub">1st photo will be your Cover Picture · Free KejaMarket watermark protection</div>
               <span class="km-btn-browse-photos">
-                <i class="fas fa-images"></i> Select Photos (Gallery / Camera)
+                <i class="fas fa-images"></i> Browse Gallery / Take Photo
               </span>
             </label>
 
@@ -3140,9 +3143,12 @@
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <label style="font-weight: 700; font-size: 0.84rem; color: #0f172a; margin: 0;">Video Tour <span style="font-weight: 400; color: #64748b;">(Optional &mdash; up to 1m 30s)</span></label>
               </div>
-              <label for="post-videos-input" class="photo-dropzone" id="video-dropzone" style="background: #faf5ff; border: 1.5px dashed #c084fc; cursor: pointer; text-align: center; padding: 12px; border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <i class="fas fa-video" style="font-size: 1.2rem; color: #7c3aed;"></i>
-                <span style="font-size: 0.82rem; font-weight: 700; color: #581c87;">Tap to upload 1 video tour (Max 90 seconds)</span>
+              <label for="post-videos-input" class="video-dropzone-modern" id="video-dropzone">
+                <i class="fas fa-video km-video-large-icon"></i>
+                <div style="text-align: left;">
+                  <div class="video-dropzone-title">Upload Video Tour (Optional &mdash; Max 90s)</div>
+                  <div class="video-dropzone-sub">Short walkthrough showing rooms and building compound</div>
+                </div>
               </label>
               <input type="file" id="post-videos-input" accept="video/mp4,video/webm,video/quicktime,video/*" style="position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; z-index: -1;">
               <div id="post-videos-preview" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;"></div>
