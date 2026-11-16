@@ -340,8 +340,10 @@
         attributionControl: false, zoomControl: true, scrollWheelZoom: false
       }).setView([coords.lat, coords.lng], 15);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19, subdomains: ['a','b','c']
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        subdomains: ['a','b','c','d'],
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(this._map);
 
       var pinIcon = L.divIcon({

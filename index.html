@@ -17,7 +17,7 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=127.0" as="style">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=128.0" as="style">
   <link rel="preload" href="js/app.js?v=117.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
@@ -3148,14 +3148,18 @@
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <label style="font-weight: 700; font-size: 0.84rem; color: #0f172a; margin: 0;">Video Tour <span style="font-weight: 400; color: #64748b;">(Optional &mdash; up to 1m 30s)</span></label>
               </div>
-              <label for="post-videos-input" class="video-dropzone-modern" id="video-dropzone">
+                            <div class="video-dropzone-modern" id="video-dropzone" role="button" tabindex="0" aria-label="Add video tour">
                 <i class="fas fa-video km-video-large-icon"></i>
-                <div style="text-align: left;">
-                  <div class="video-dropzone-title">Upload Video Tour (Optional &mdash; Max 90s)</div>
-                  <div class="video-dropzone-sub">Short walkthrough showing rooms and building compound</div>
+                <div style="text-align: left; flex: 1;">
+                  <div class="video-dropzone-title">Tap to Upload Video Tour <span style="font-weight:400;color:#7c3aed;font-size:0.78rem;">(Optional — Max 90s)</span></div>
+                  <div class="video-dropzone-sub">MP4, MOV, WebM &bull; Max 80MB &bull; Shows rooms &amp; compound</div>
                 </div>
-              </label>
-              <input type="file" id="post-videos-input" accept="video/mp4,video/webm,video/quicktime,video/*" style="position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; z-index: -1;">
+                <span class="km-btn-browse-video">
+                  <i class="fas fa-upload"></i>
+                </span>
+              </div>
+              <!-- Hidden video input triggered by JS -->
+              <input type="file" id="post-videos-input" accept="video/mp4,video/webm,video/quicktime,video/*" style="display:none;">
               <div id="post-videos-preview" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;"></div>
             </div>
           </div>

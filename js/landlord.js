@@ -382,37 +382,53 @@ class LandlordManager {
 
     if (!videoInput) return;
 
+    // Click: open file picker when user taps the dropzone div
     if (videoDropzone) {
-      videoDropzone.onclick = (e) => {
-        if (e.target !== videoInput) {
+      videoDropzone.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        videoInput.click();
+      });
+
+      // Keyboard support
+      videoDropzone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
           videoInput.click();
         }
-      };
+      });
 
-      videoDropzone.ondragover = (e) => {
+      // Drag & Drop
+      videoDropzone.addEventListener('dragover', (e) => {
         e.preventDefault();
-        videoDropzone.style.borderColor = '#7c3aed';
-      };
+        e.stopPropagation();
+        videoDropzone.classList.add('dragover');
+      });
 
-      videoDropzone.ondragleave = () => {
-        videoDropzone.style.borderColor = '#c084fc';
-      };
-
-      videoDropzone.ondrop = (e) => {
+      videoDropzone.addEventListener('dragleave', (e) => {
         e.preventDefault();
-        videoDropzone.style.borderColor = '#c084fc';
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-          this.handleVideoFiles(e.dataTransfer.files);
+        videoDropzone.classList.remove('dragover');
+      });
+
+      videoDropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        videoDropzone.classList.remove('dragover');
+        const files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files.length > 0) {
+          this.handleVideoFiles(files);
         }
-      };
+      });
     }
 
-    videoInput.onchange = (e) => {
-      if (e.target.files && e.target.files.length > 0) {
-        this.handleVideoFiles(e.target.files);
-        videoInput.value = '';
+    // File input change — only place video is processed
+    videoInput.addEventListener('change', (e) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        this.handleVideoFiles(files);
       }
-    };
+      videoInput.value = '';
+    });
   }
 
   async handleFiles(files) {

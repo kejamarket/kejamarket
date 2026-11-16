@@ -3504,11 +3504,11 @@ class NairobiRentalsApp {
       scrollWheelZoom: true
     }).setView([coords.lat, coords.lng], 15);
     
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
       minZoom: 5,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      subdomains: ['a', 'b', 'c'],
+      subdomains: ['a','b','c','d'],
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       tileSize: 256,
       detectRetina: true,
       updateWhenZooming: false
