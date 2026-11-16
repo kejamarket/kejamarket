@@ -1038,7 +1038,78 @@
   }
 
   // Screen Switcher with History State Support
-  function showScreen(screen, params = {}, isBackNav = false) {
+  
+  let pwaLiveMapInstance = null;
+  function initPwaLiveMap(properties) {
+    const el = document.getElementById('km-pwa-live-map');
+    if (!el || typeof L === 'undefined') return;
+
+    if (pwaLiveMapInstance) {
+      try { pwaLiveMapInstance.remove(); } catch(e) {}
+      pwaLiveMapInstance = null;
+    }
+
+    pwaLiveMapInstance = L.map('km-pwa-live-map', {
+      zoomControl: true,
+      attributionControl: false
+    }).setView([-1.286389, 36.817223], 12);
+
+    L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}', {
+      subdomains: ['0', '1', '2', '3'],
+      maxZoom: 20
+    }).addTo(pwaLiveMapInstance);
+
+    const bounds = [];
+    (properties || []).forEach((prop, idx) => {
+      let lat = prop.latitude || prop.lat;
+      let lng = prop.longitude || prop.lng;
+      if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+        if (window.app && typeof window.app.getCoordinatesForProperty === 'function') {
+          const c = window.app.getCoordinatesForProperty(prop);
+          if (c && c.lat && c.lng) { lat = c.lat; lng = c.lng; }
+        }
+      }
+      if (!lat || !lng || isNaN(lat)) { lat = -1.286389; lng = 36.817223; }
+
+      const jLat = ((idx % 7) - 3) * 0.0024;
+      const jLng = (((idx * 3) % 7) - 3) * 0.0024;
+      const fLat = Number(lat) + jLat;
+      const fLng = Number(lng) + jLng;
+
+      const price = Number(prop.rentKes || prop.price || 0);
+      const priceText = price >= 1000 ? ('KSh ' + (price/1000).toFixed(price%1000===0?0:1) + 'k') : ('KSh ' + price);
+      
+      const pinIcon = L.divIcon({
+        className: 'custom-pin-wrapper',
+        html: `<div class="custom-price-pin" style="background:#00b53f; color:white; font-size:11px; font-weight:800; padding:3px 7px; border-radius:12px; border:2px solid white; box-shadow:0 3px 8px rgba(0,0,0,0.3); white-space:nowrap;">${priceText}</div>`,
+        iconSize: [60, 24],
+        iconAnchor: [30, 24]
+      });
+
+      const popup = `
+        <div style="font-family:'Poppins',sans-serif; width:200px;">
+          <img src="${(prop.media && prop.media[0] && prop.media[0].url) || prop.thumbnail || ''}" style="width:100%; height:90px; object-fit:cover; border-radius:6px; margin-bottom:6px;">
+          <div style="font-weight:800; font-size:13px; color:#006818;">KSh ${price.toLocaleString()}</div>
+          <div style="font-weight:700; font-size:12px; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${prop.title || 'Property'}</div>
+          <div style="font-size:11px; color:#64748b; margin-bottom:6px;">${prop.estateSuburb || prop.county || ''}</div>
+          <button onclick="MobileApp.openProperty('${prop.id}')" style="width:100%; background:#00b53f; color:white; border:none; border-radius:6px; padding:6px; font-weight:700; font-size:11.5px; cursor:pointer;">View House</button>
+        </div>
+      `;
+
+      L.marker([fLat, fLng], { icon: pinIcon }).addTo(pwaLiveMapInstance).bindPopup(popup);
+      bounds.push([fLat, fLng]);
+    });
+
+    if (bounds.length > 0) {
+      pwaLiveMapInstance.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
+    }
+
+    setTimeout(() => {
+      if (pwaLiveMapInstance) pwaLiveMapInstance.invalidateSize();
+    }, 200);
+  }
+
+function showScreen(screen, params = {}, isBackNav = false) {
     if (!isBackNav && typeof window !== 'undefined' && window.history && screen !== State.currentScreen) {
       try {
         const hash = '#' + screen + (params && (params.id || typeof params === 'string') ? ('?id=' + (params.id || params)) : '');
@@ -2227,10 +2298,10 @@
       }).setView([coords.lat, coords.lng], 15);
 
       // High-performance CartoDB Voyager tiles (never blocked with 403 like OSM)
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19,
-        minZoom: 3,
-        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
+      L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}', {
+        subdomains: ['0', '1', '2', '3'],
+        maxZoom: 20,
+        attribution: '&copy; Google Maps'
       }).addTo(map);
 
       // KejaMarket Signature Green Pin

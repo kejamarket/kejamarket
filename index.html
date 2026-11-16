@@ -17,7 +17,7 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=130.0" as="style">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=132.0" as="style">
   <link rel="preload" href="js/app.js?v=117.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
@@ -2106,42 +2106,127 @@
 
           <!-- RENTALS sub-bubbles -->
           <div class="km-tab-panel km-panel-active" id="km-panel-rentals">
-            <div class="km-desk-story-scroll" style="display:flex; align-items:flex-start; gap:16px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;">
-              <button type="button" class="km-story-bubble active" onclick="app.filterCategory('all', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-all" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e8f8ee; color:#006818;"><i class="fas fa-border-all"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:900; color:#006818; margin-top:6px; text-align:center;">All</span>
+            <!-- Horizontal Category Story Bubbles Track with Left & Right Scroll Chevrons -->
+            <div class="km-story-categories-wrapper km-desk-categories-wrapper" id="km-desk-story-wrapper">
+              <!-- Left Arrow Button -->
+              <button type="button" class="km-story-scroll-btn km-story-scroll-prev" id="km-desk-story-prev-btn" onclick="app.scrollCategoryStories(-1)" aria-label="Previous property types" style="display:none;">
+                <i class="fas fa-chevron-left"></i>
               </button>
-              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Single Room', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-single" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e0f2fe; color:#0284c7;"><i class="fas fa-door-closed"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Single Room</span>
-              </button>
-              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Double Room', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-double" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#ffedd5; color:#ea580c;"><i class="fas fa-person-booth"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Double Room</span>
-              </button>
-              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Bedsitter', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-bedsitters" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#e8f8ee; color:#1db010;"><i class="fas fa-bed"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Bedsitters</span>
-              </button>
-              <button type="button" class="km-story-bubble" onclick="app.filterCategory('1 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-1bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#ecfdf5; color:#10b981;"><i class="fas fa-door-open"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">1 Bed</span>
-              </button>
-              <button type="button" class="km-story-bubble" onclick="app.filterCategory('2 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-2bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fef2f2; color:#ef4444;"><i class="fas fa-home"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">2 Beds</span>
-              </button>
-              <button type="button" class="km-story-bubble" onclick="app.filterCategory('3 Bedroom', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-3bed" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#f5f3ff; color:#8b5cf6;"><i class="fas fa-building"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">3+ Beds</span>
-              </button>
-              <button type="button" class="km-story-bubble" onclick="app.filterCategory('Apartment', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-apartments" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#fffbeb; color:#f59e0b;"><i class="fas fa-city"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">Apartments</span>
-              </button>
-              <button type="button" class="km-story-bubble" onclick="app.filterCategory('BnB', this)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; border:none; background:none; padding:0; outline:none; width:68px;">
-                <div class="km-story-icon-ring km-cat-bnb" style="width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; background:#faf5ff; color:#a855f7;"><i class="fas fa-key"></i></div>
-                <span class="km-story-label" style="font-size:11.5px; font-weight:700; color:#475569; margin-top:6px; text-align:center;">BnB / Stays</span>
+
+              <!-- Scrollable Track with All Property Types -->
+              <div class="km-story-bubbles-scroll" id="km-desk-story-scroll" onscroll="app.onDeskStoryScroll()">
+                <!-- 1. All -->
+                <button type="button" class="km-story-bubble active" onclick="app.filterCategory('all', this)">
+                  <div class="km-story-icon-ring km-cat-all"><i class="fas fa-border-all"></i></div>
+                  <span class="km-story-label">All</span>
+                </button>
+
+                <!-- 2. Single Room -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Single Room', this)">
+                  <div class="km-story-icon-ring km-cat-single"><i class="fas fa-door-closed"></i></div>
+                  <span class="km-story-label">Single Room</span>
+                </button>
+
+                <!-- 3. Double Room -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Double Room', this)">
+                  <div class="km-story-icon-ring km-cat-double"><i class="fas fa-person-booth"></i></div>
+                  <span class="km-story-label">Double Room</span>
+                </button>
+
+                <!-- 4. Bedsitter -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Bedsitter', this)">
+                  <div class="km-story-icon-ring km-cat-bedsitters"><i class="fas fa-bed"></i></div>
+                  <span class="km-story-label">Bedsitters</span>
+                </button>
+
+                <!-- 5. 1 Bed -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('1 Bedroom', this)">
+                  <div class="km-story-icon-ring km-cat-1bed"><i class="fas fa-door-open"></i></div>
+                  <span class="km-story-label">1 Bed</span>
+                </button>
+
+                <!-- 6. 2 Beds -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('2 Bedroom', this)">
+                  <div class="km-story-icon-ring km-cat-2bed"><i class="fas fa-home"></i></div>
+                  <span class="km-story-label">2 Beds</span>
+                </button>
+
+                <!-- 7. 3+ Beds -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('3 Bedroom', this)">
+                  <div class="km-story-icon-ring km-cat-3bed"><i class="fas fa-building"></i></div>
+                  <span class="km-story-label">3+ Beds</span>
+                </button>
+
+                <!-- 8. 4+ Beds -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('4+ Bedrooms', this)">
+                  <div class="km-story-icon-ring km-cat-4bed"><i class="fas fa-star"></i></div>
+                  <span class="km-story-label">4+ Beds</span>
+                </button>
+
+                <!-- 9. Apartments -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Apartment', this)">
+                  <div class="km-story-icon-ring km-cat-apartments"><i class="fas fa-city"></i></div>
+                  <span class="km-story-label">Apartments</span>
+                </button>
+
+                <!-- 10. BnB / Stays -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('BnB', this)">
+                  <div class="km-story-icon-ring km-cat-bnb"><i class="fas fa-umbrella-beach"></i></div>
+                  <span class="km-story-label">BnB / Stays</span>
+                </button>
+
+                <!-- 11. Studio -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Studio', this)">
+                  <div class="km-story-icon-ring km-cat-studio"><i class="fas fa-couch"></i></div>
+                  <span class="km-story-label">Studio</span>
+                </button>
+
+                <!-- 12. Maisonettes -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Maisonette', this)">
+                  <div class="km-story-icon-ring km-cat-mansion"><i class="fas fa-monument"></i></div>
+                  <span class="km-story-label">Maisonettes</span>
+                </button>
+
+                <!-- 13. Townhouses -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Townhouse', this)">
+                  <div class="km-story-icon-ring km-cat-townhouse"><i class="fas fa-landmark"></i></div>
+                  <span class="km-story-label">Townhouses</span>
+                </button>
+
+                <!-- 14. Bungalows -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Bungalow', this)">
+                  <div class="km-story-icon-ring km-cat-bungalow"><i class="fas fa-warehouse"></i></div>
+                  <span class="km-story-label">Bungalows</span>
+                </button>
+
+                <!-- 15. Commercial -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Commercial', this)">
+                  <div class="km-story-icon-ring km-cat-commercial"><i class="fas fa-store"></i></div>
+                  <span class="km-story-label">Commercial</span>
+                </button>
+
+                <!-- 16. Offices -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Office', this)">
+                  <div class="km-story-icon-ring km-cat-office"><i class="fas fa-briefcase"></i></div>
+                  <span class="km-story-label">Offices</span>
+                </button>
+
+                <!-- 17. Shops / Stalls -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Shop', this)">
+                  <div class="km-story-icon-ring km-cat-shop"><i class="fas fa-shopping-bag"></i></div>
+                  <span class="km-story-label">Shops / Stalls</span>
+                </button>
+
+                <!-- 18. Land / Plots -->
+                <button type="button" class="km-story-bubble" onclick="app.filterCategory('Land', this)">
+                  <div class="km-story-icon-ring km-cat-land"><i class="fas fa-map-marked-alt"></i></div>
+                  <span class="km-story-label">Land / Plots</span>
+                </button>
+              </div>
+
+              <!-- Right Arrow Button -->
+              <button type="button" class="km-story-scroll-btn km-story-scroll-next" id="km-desk-story-next-btn" onclick="app.scrollCategoryStories(1)" aria-label="More property types">
+                <i class="fas fa-chevron-right"></i>
               </button>
             </div>
           </div>

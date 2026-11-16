@@ -340,10 +340,10 @@
         attributionControl: false, zoomControl: true, scrollWheelZoom: false
       }).setView([coords.lat, coords.lng], 15);
 
-            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19,
-        minZoom: 3,
-        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
+            L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}', {
+        subdomains: ['0', '1', '2', '3'],
+        maxZoom: 20,
+        attribution: '&copy; Google Maps'
       }).addTo(this._map);
 
       var pinIcon = L.divIcon({

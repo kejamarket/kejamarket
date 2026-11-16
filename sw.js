@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v130-live-esri-maps';
+const CACHE_NAME = 'kejamarket-v132-google-maps-full-categories';
 
 const STATIC_ASSETS = [
   '/',
@@ -137,6 +137,8 @@ self.addEventListener('fetch', (event) => {
   // 1b. NEVER intercept external map tiles or third-party GIS servers
   // Let the browser fetch map tiles directly with native browser HTTP caching
   if (
+    url.hostname.includes('google.com') ||
+    url.hostname.includes('googleapis.com') ||
     url.hostname.includes('arcgisonline.com') ||
     url.hostname.includes('cartocdn.com') ||
     url.hostname.includes('openstreetmap.org') ||

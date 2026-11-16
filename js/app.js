@@ -419,6 +419,30 @@ class NairobiRentalsApp {
     this.setCategory(cat, el);
   }
 
+  scrollCategoryStories(dir) {
+    const el = document.getElementById('km-desk-story-scroll');
+    if (!el) return;
+    el.scrollBy({ left: dir * 300, behavior: 'smooth' });
+    setTimeout(() => this.onDeskStoryScroll(), 320);
+  }
+
+  onDeskStoryScroll() {
+    const el = document.getElementById('km-desk-story-scroll');
+    const prevBtn = document.getElementById('km-desk-story-prev-btn');
+    const nextBtn = document.getElementById('km-desk-story-next-btn');
+    if (!el) return;
+
+    if (prevBtn) {
+      prevBtn.style.display = el.scrollLeft > 15 ? 'flex' : 'none';
+    }
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const isAtEnd = el.scrollLeft >= maxScroll - 15;
+    if (nextBtn) {
+      nextBtn.style.display = isAtEnd ? 'none' : 'flex';
+    }
+  }
+
+
   setBedroomsFilter(bedsVal, btnEl) {
     const sel = document.getElementById('filter-bedrooms');
     if (sel) sel.value = bedsVal;
@@ -3504,10 +3528,10 @@ class NairobiRentalsApp {
       scrollWheelZoom: true
     }).setView([coords.lat, coords.lng], 15);
     
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19,
-        minZoom: 3,
-        attribution: '&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Real Estate Maps'
+    L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}', {
+        subdomains: ['0', '1', '2', '3'],
+        maxZoom: 20,
+        attribution: '&copy; Google Maps'
       }).addTo(this.detailMap);
 
     this.detailMarker = L.marker([coords.lat, coords.lng]).addTo(this.detailMap)
