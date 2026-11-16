@@ -17,7 +17,7 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=126.0" as="style">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=127.0" as="style">
   <link rel="preload" href="js/app.js?v=117.0" as="script">
   <link rel="preload" href="js/auth.js?v=100.0&t=20261114_tenant_rbac_backbutton" as="script">
   
@@ -3121,19 +3121,24 @@
             </div>
 
             <!-- Tappable Dropzone Box (Acts as a native file label) -->
-            <label for="post-photos-input" class="photo-dropzone-modern" id="photo-dropzone">
+                        <!-- Photo Upload Zone — simple clickable div, works on all devices -->
+            <div class="photo-dropzone-modern" id="photo-dropzone" role="button" tabindex="0" aria-label="Add photos">
               <div class="photo-hero-icon-wrap">
                 <i class="fas fa-camera km-photo-large-icon"></i>
               </div>
-              <div class="photo-title">Tap or Drag to Add Property Photos</div>
-              <div class="photo-sub">1st photo will be your Cover Picture · Free KejaMarket watermark protection</div>
+              <div class="photo-title">Tap or Click to Add Property Photos</div>
+              <div class="photo-sub">1st photo becomes your Cover Photo &bull; Max 5 photos &bull; Watermark added automatically</div>
               <span class="km-btn-browse-photos">
-                <i class="fas fa-images"></i> Browse Gallery / Take Photo
+                <i class="fas fa-images"></i>&nbsp; Browse Gallery / Take Photo
               </span>
-            </label>
+              <div class="photo-upload-progress" id="photo-upload-progress" style="display:none;">
+                <div class="photo-upload-bar"></div>
+                <span class="photo-upload-text">Processing photos...</span>
+              </div>
+            </div>
 
-            <!-- Real native file input with multi-select -->
-            <input type="file" id="post-photos-input" multiple accept="image/jpeg,image/png,image/webp,image/*" style="position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; z-index: -1;">
+            <!-- Real native file input — triggered by JS click, never shown -->
+            <input type="file" id="post-photos-input" multiple accept="image/jpeg,image/png,image/webp,image/*" style="display:none;">
             
             <!-- Dynamic Photo Preview Grid with delete and cover badge -->
             <div id="post-photos-preview"></div>

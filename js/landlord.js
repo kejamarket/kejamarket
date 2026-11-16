@@ -326,33 +326,54 @@ class LandlordManager {
 
     if (!fileInput) return;
 
+    // Click: open file picker when user taps/clicks the dropzone div
     if (dropzone) {
-      // Label dropzone triggers fileInput natively; no manual .click() needed
-
-      dropzone.ondragover = (e) => {
+      dropzone.addEventListener('click', (e) => {
         e.preventDefault();
-        dropzone.classList.add('dragover');
-      };
+        e.stopPropagation();
+        fileInput.click();
+      });
 
-      dropzone.ondragleave = () => {
-        dropzone.classList.remove('dragover');
-      };
-
-      dropzone.ondrop = (e) => {
-        e.preventDefault();
-        dropzone.classList.remove('dragover');
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-          this.handleFiles(e.dataTransfer.files);
+      // Keyboard: allow Enter/Space to trigger
+      dropzone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          fileInput.click();
         }
-      };
+      });
+
+      // Drag & Drop support
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.add('dragover');
+      });
+
+      dropzone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.remove('dragover');
+        const files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files.length > 0) {
+          this.handleFiles(files);
+        }
+      });
     }
 
-    fileInput.onchange = (e) => {
-      if (e.target.files && e.target.files.length > 0) {
-        this.handleFiles(e.target.files);
-        fileInput.value = ''; // Reset so picking the same files or re-selecting works every time
+    // File input change — this is the ONLY place photos are processed
+    fileInput.addEventListener('change', (e) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        this.handleFiles(files);
       }
-    };
+      // Reset value so the same file can be re-selected
+      fileInput.value = '';
+    });
   }
 
   setupVideoDropzone() {
@@ -394,75 +415,115 @@ class LandlordManager {
     };
   }
 
-  compressAndWatermarkImageSafe(file, maxDimension = 1280, quality = 0.82) {
-    const timeoutMs = 4000;
-    const timeoutPromise = new Promise(resolve => {
-      setTimeout(() => resolve(null), timeoutMs);
-    });
-    return Promise.race([
-      this.compressAndWatermarkImage(file, maxDimension, quality),
-      timeoutPromise
-    ]).then(result => {
-      if (result !== null) return result;
-      // Timeout fallback: use FileReader directly
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.onerror = () => resolve(URL.createObjectURL(file));
-        reader.readAsDataURL(file);
-      });
-    });
-  }
-
-
   async handleFiles(files) {
     const previewGrid = document.getElementById('post-photos-preview');
+    const dropzone = document.getElementById('photo-dropzone');
+    const progressEl = document.getElementById('photo-upload-progress');
+
     if (!previewGrid) return;
 
     const remainingSlots = 5 - this.uploadedImages.length;
     if (remainingSlots <= 0) {
-      if (window.app && typeof window.app.showToast === 'function') {
-        window.app.showToast('Maximum 5 photos allowed. Remove a photo to add another.', 'info');
-      }
+      this.showUploadToast('Maximum 5 photos allowed. Remove a photo first.', 'info');
       return;
     }
 
+    // Filter to valid image files only
     const filesToProcess = Array.from(files)
-      .filter(f => f.type.startsWith('image/') || /\.(jpe?g|png|webp)$/i.test(f.name))
+      .filter(f => f.type.startsWith('image/') || /\.(jpe?g|png|webp|gif|heic|heif)$/i.test(f.name))
       .slice(0, remainingSlots);
 
     if (filesToProcess.length === 0) {
-      if (window.app && typeof window.app.showToast === 'function') {
-        window.app.showToast('Please select valid photos (JPG, PNG, WebP).', 'warning');
-      }
+      this.showUploadToast('Please select image files (JPG, PNG, WebP).', 'warning');
       return;
     }
 
-    const dropzone = document.getElementById('photo-dropzone');
-    if (dropzone) dropzone.style.opacity = '0.6';
+    // Show loading state
+    if (dropzone) {
+      dropzone.style.opacity = '0.65';
+      dropzone.style.pointerEvents = 'none';
+    }
+    if (progressEl) progressEl.style.display = 'flex';
+
+    let addedCount = 0;
 
     for (const file of filesToProcess) {
       try {
-        const compressedDataUrl = await this.compressAndWatermarkImageSafe(file, 1280, 0.82);
-        if (this.uploadedImages.length < 5) {
-          this.uploadedImages.push(compressedDataUrl);
+        // Try canvas compress + watermark with timeout fallback
+        let dataUrl = await this.processImageSafe(file);
+        if (dataUrl && this.uploadedImages.length < 5) {
+          this.uploadedImages.push(dataUrl);
           this.renderPhotoPreviews();
+          addedCount++;
         }
       } catch (err) {
-        console.warn('Image processing fallback:', err);
-        const rawUrl = await this.fileToDataUrl(file);
-        if (this.uploadedImages.length < 5) {
-          this.uploadedImages.push(rawUrl);
-          this.renderPhotoPreviews();
+        console.warn('[KejaMarket] Photo processing error:', err);
+        // Last resort: raw FileReader
+        try {
+          const rawUrl = await this.fileToDataUrl(file);
+          if (rawUrl && this.uploadedImages.length < 5) {
+            this.uploadedImages.push(rawUrl);
+            this.renderPhotoPreviews();
+            addedCount++;
+          }
+        } catch (e2) {
+          console.error('[KejaMarket] Could not load photo:', e2);
         }
       }
     }
 
-    if (dropzone) dropzone.style.opacity = '1';
-
-    if (window.app && typeof window.app.showToast === 'function') {
-      window.app.showToast(`📸 ${this.uploadedImages.length} of 5 photos added!`, 'success');
+    // Reset loading state
+    if (dropzone) {
+      dropzone.style.opacity = '1';
+      dropzone.style.pointerEvents = '';
     }
+    if (progressEl) progressEl.style.display = 'none';
+
+    if (addedCount > 0) {
+      this.showUploadToast(`📸 ${addedCount} photo${addedCount > 1 ? 's' : ''} added! Total: ${this.uploadedImages.length}/5`, 'success');
+    }
+  }
+
+  showUploadToast(msg, type) {
+    if (window.app && typeof window.app.showToast === 'function') {
+      window.app.showToast(msg, type);
+    }
+  }
+
+  // Safe image processor with 5-second timeout fallback
+  processImageSafe(file) {
+    return new Promise((resolve, reject) => {
+      let settled = false;
+
+      // Timeout: after 5s give up compression and use FileReader
+      const timer = setTimeout(() => {
+        if (settled) return;
+        settled = true;
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = () => reject(new Error('FileReader failed'));
+        reader.readAsDataURL(file);
+      }, 5000);
+
+      // Attempt canvas compression
+      this.compressAndWatermarkImage(file, 1280, 0.82)
+        .then((result) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          resolve(result);
+        })
+        .catch((err) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          // Fallback to FileReader
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = () => reject(err);
+          reader.readAsDataURL(file);
+        });
+    });
   }
 
   fileToDataUrl(file) {
