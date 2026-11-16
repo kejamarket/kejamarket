@@ -360,9 +360,14 @@
         radius: 250, color: '#006818', fillColor: '#1db010', fillOpacity: 0.16, weight: 2
       }).addTo(this._map);
 
-      setTimeout(function() {
-        if (KMDeskDetail._map) KMDeskDetail._map.invalidateSize();
-      }, 300);
+      var currentMap = this._map;
+      [50, 150, 300, 600, 1200].forEach(function(delay) {
+        setTimeout(function() {
+          if (currentMap) {
+            try { currentMap.invalidateSize(); } catch(e) {}
+          }
+        }, delay);
+      });
     }
   };
 

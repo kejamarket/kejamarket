@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v129-maps-profile-perfect';
+const CACHE_NAME = 'kejamarket-v130-live-esri-maps';
 
 const STATIC_ASSETS = [
   '/',
@@ -133,6 +133,20 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') {
     return;
   }
+
+  // 1b. NEVER intercept external map tiles or third-party GIS servers
+  // Let the browser fetch map tiles directly with native browser HTTP caching
+  if (
+    url.hostname.includes('arcgisonline.com') ||
+    url.hostname.includes('cartocdn.com') ||
+    url.hostname.includes('openstreetmap.org') ||
+    url.hostname.includes('tile.') ||
+    url.pathname.includes('/tile/') ||
+    url.pathname.includes('/MapServer/')
+  ) {
+    return;
+  }
+
 
   // 2. Handle API calls: network only, return JSON offline notification if network fails
   if (url.pathname.startsWith('/api/')) {
