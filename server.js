@@ -460,6 +460,23 @@ async function initializeDatabase() {
         } catch (vErr) {}
 
         await pool.end();
+        
+        // Ensure viewing bookings & requests foreign keys cascade on user delete
+        try {
+          await store.query(`
+            ALTER TABLE viewing_bookings DROP CONSTRAINT IF EXISTS viewing_bookings_tenant_id_fkey;
+            ALTER TABLE viewing_bookings ADD CONSTRAINT viewing_bookings_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES users(id) ON DELETE CASCADE;
+
+            ALTER TABLE viewing_requests DROP CONSTRAINT IF EXISTS viewing_requests_tenant_id_fkey;
+            ALTER TABLE viewing_requests ADD CONSTRAINT viewing_requests_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES users(id) ON DELETE CASCADE;
+
+            ALTER TABLE viewing_policy_acceptances DROP CONSTRAINT IF EXISTS viewing_policy_acceptances_tenant_id_fkey;
+            ALTER TABLE viewing_policy_acceptances ADD CONSTRAINT viewing_policy_acceptances_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES users(id) ON DELETE CASCADE;
+          `);
+        } catch (fkErr) {
+          console.warn('FK constraint cascade migration notice:', fkErr.message);
+        }
+
         console.log('✅ Schema migrations and OS domain tables applied');
       } catch (schemaErr) {
         console.warn('Schema update notice:', schemaErr.message);
@@ -3596,15 +3613,25 @@ app.put('/api/admin/vacancy-reports/:id', requireAuth, requireAdmin, async (req,
         memoryVacancyReports.push(report);
       }
     }
-    
+
+    // Also try updating in DB regardless, and if report not in memory but in DB, synthesize a success
+    let dbUpdated = false;
     if (store && store.isConnected && store.query) {
       try {
-        await store.query(
+        const dbResult = await store.query(
           `UPDATE vacancy_reports 
            SET status = COALESCE($1, status), admin_notes = COALESCE($2, admin_notes), reviewed_by = $3, updated_at = NOW() 
-           WHERE id = $4`,
+           WHERE id = $4 RETURNING id, status, admin_notes`,
           [status || null, adminNotes !== undefined ? adminNotes : null, req.user.name, id]
         );
+        if (dbResult.rows && dbResult.rows.length > 0) {
+          dbUpdated = true;
+          if (!report) {
+            // Reconstruct from DB row so we can respond
+            report = { id, status: dbResult.rows[0].status, adminNotes: dbResult.rows[0].admin_notes };
+            memoryVacancyReports.push(report);
+          }
+        }
       } catch (dbErr) {
         console.warn('DB vacancy report update warning:', dbErr.message);
       }
@@ -4755,6 +4782,68 @@ app.post('/api/admin/users', requireAuth, requirePermission('user.create'), audi
 });
 
 // DELETE /api/admin/users/:id - Permanently delete user account (admin only)
+
+// Helper to cascade delete a user and all their relational dependencies across all tables
+async function deleteUserAndDependencies(uid, store) {
+  if (store.isConnected && store.query) {
+    // 1. Viewing bookings, requests, policies, slot locks
+    await store.query('DELETE FROM viewing_policy_acceptances WHERE tenant_id = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM viewing_slot_locks WHERE request_id IN (SELECT id FROM viewing_requests WHERE tenant_id = $1)', [uid]).catch(() => {});
+    await store.query('DELETE FROM viewing_bookings WHERE tenant_id = $1', [uid]).catch(() => {});
+    await store.query('UPDATE viewing_bookings SET outcome_recorded_by = NULL WHERE outcome_recorded_by = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM viewing_requests WHERE tenant_id = $1', [uid]).catch(() => {});
+    await store.query('UPDATE viewing_requests SET confirmed_by_staff_id = NULL WHERE confirmed_by_staff_id = $1', [uid]).catch(() => {});
+    await store.query('UPDATE viewing_requests SET assigned_admin_id = NULL WHERE assigned_admin_id = $1', [uid]).catch(() => {});
+
+    // 2. Properties & media
+    await store.query('DELETE FROM property_media WHERE property_id IN (SELECT id FROM properties WHERE landlord_id = $1 OR raw_data->>\'userId\' = $1)', [uid]).catch(() => {});
+    await store.query('DELETE FROM properties WHERE landlord_id = $1 OR raw_data->>\'userId\' = $1', [uid]).catch(() => {});
+
+    // 3. Services & reviews
+    await store.query('DELETE FROM service_reviews WHERE reviewer_id = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM services WHERE provider_id = $1', [uid]).catch(() => {});
+
+    // 4. Marketplace items
+    await store.query('DELETE FROM marketplace_items WHERE seller_id = $1', [uid]).catch(() => {});
+
+    // 5. Inquiries & reviews
+    await store.query('DELETE FROM inquiries WHERE from_user_id = $1 OR to_user_id = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM reviews WHERE reviewer_id = $1 OR target_user_id = $1', [uid]).catch(() => {});
+
+    // 6. Messages & conversations
+    await store.query('DELETE FROM messages WHERE sender_id = $1 OR from_user_id = $1 OR to_user_id = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM conversations WHERE participant_1 = $1 OR participant_2 = $1', [uid]).catch(() => {});
+
+    // 7. Support tickets, saved props, house hunts, transactions
+    await store.query('DELETE FROM support_tickets WHERE user_id = $1 OR assigned_to = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM saved_properties WHERE user_id = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM house_hunts WHERE user_id = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM transactions WHERE user_id = $1', [uid]).catch(() => {});
+
+    // 8. Fraud flags & risk scores
+    await store.query('DELETE FROM fraud_flags WHERE user_id = $1 OR assigned_to = $1 OR investigated_by = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM user_risk_scores WHERE user_id = $1', [uid]).catch(() => {});
+
+    // 9. Profiles & roles
+    await store.query('DELETE FROM landlord_profiles WHERE user_id = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM user_profiles WHERE user_id = $1', [uid]).catch(() => {});
+    await store.query('DELETE FROM user_roles WHERE user_id = $1', [uid]).catch(() => {});
+    await store.query('UPDATE audit_logs SET user_id = NULL WHERE user_id = $1', [uid]).catch(() => {});
+
+    // 10. Finally delete the user account
+    await store.query('DELETE FROM users WHERE id = $1', [uid]);
+  }
+  if (store.data) {
+    if (store.data.properties) store.data.properties = store.data.properties.filter(p => p.userId !== uid && p.landlordId !== uid && p.postedBy !== uid);
+    if (store.data.services) store.data.services = store.data.services.filter(s => s.providerId !== uid);
+    if (store.data.marketplace) store.data.marketplace = store.data.marketplace.filter(m => m.sellerId !== uid);
+    if (store.data.inquiries) store.data.inquiries = store.data.inquiries.filter(i => i.fromUserId !== uid && i.toUserId !== uid);
+    if (store.data.reviews) store.data.reviews = store.data.reviews.filter(r => r.reviewerId !== uid && r.targetUserId !== uid);
+    if (store.data.messages) store.data.messages = store.data.messages.filter(m => m.fromUserId !== uid && m.toUserId !== uid);
+    if (store.data.users) store.data.users = store.data.users.filter(u => u.id !== uid);
+  }
+}
+
 app.delete('/api/admin/users/:id', requireAuth, requirePermission('user.delete'), auditRequest, async (req, res) => {
   try {
     
@@ -4775,33 +4864,10 @@ app.delete('/api/admin/users/:id', requireAuth, requirePermission('user.delete')
     console.log(`[USER DELETION] Admin ${req.user.id} (${req.user.name}) deleting user ${id} (${user.name})`);
     console.log(`[USER DELETION] Reason: ${reason || 'No reason provided'}`);
     
-    // Delete user's properties, services, marketplace items
-    if (store.isConnected && store.query) {
-      // PostgreSQL - cascade delete related data
-      await store.query('DELETE FROM properties WHERE landlord_id = $1 OR raw_data->>\'userId\' = $1', [id]);
-      await store.query('DELETE FROM services WHERE provider_id = $1', [id]);
-      await store.query('DELETE FROM marketplace_items WHERE seller_id = $1', [id]);
-      await store.query('DELETE FROM inquiries WHERE from_user_id = $1 OR to_user_id = $1', [id]);
-      await store.query('DELETE FROM reviews WHERE reviewer_id = $1 OR target_user_id = $1', [id]);
-      await store.query('DELETE FROM messages WHERE from_user_id = $1 OR to_user_id = $1', [id]);
-      await store.query('DELETE FROM house_hunts WHERE user_id = $1', [id]);
-      await store.query('DELETE FROM transactions WHERE user_id = $1', [id]);
-      await store.query('DELETE FROM support_tickets WHERE user_id = $1', [id]);
-      
-      // Finally delete the user
-      await store.query('DELETE FROM users WHERE id = $1', [id]);
-    } else {
-      // JSON store - remove user and related data
-      if (store.data) {
-        store.data.properties = (store.data.properties || []).filter(p => p.userId !== id && p.landlordId !== id && p.postedBy !== id);
-        store.data.services = (store.data.services || []).filter(s => s.providerId !== id);
-        store.data.marketplace = (store.data.marketplace || []).filter(m => m.sellerId !== id);
-        store.data.inquiries = (store.data.inquiries || []).filter(i => i.fromUserId !== id && i.toUserId !== id);
-        store.data.reviews = (store.data.reviews || []).filter(r => r.reviewerId !== id && r.targetUserId !== id);
-        store.data.messages = (store.data.messages || []).filter(m => m.fromUserId !== id && m.toUserId !== id);
-        store.data.users = (store.data.users || []).filter(u => u.id !== id);
-        await store.saveData();
-      }
+    // Cleanly delete user and all relational dependencies
+    await deleteUserAndDependencies(id, store);
+    if (store.data && store.data.users) {
+      await store.saveData ? store.saveData() : null;
     }
     
     // Log admin action
@@ -6058,18 +6124,7 @@ app.post('/api/admin/users/bulk-delete', requireAuth, async (req, res) => {
     }
     const safeUserIds = userIds.filter(uid => uid !== req.user.id);
     for (const uid of safeUserIds) {
-      if (store.isConnected && store.query) {
-        await store.query('DELETE FROM properties WHERE landlord_id = $1', [uid]);
-        await store.query('DELETE FROM services WHERE provider_id = $1', [uid]);
-        await store.query('DELETE FROM marketplace_items WHERE seller_id = $1', [uid]);
-        await store.query('DELETE FROM users WHERE id = $1', [uid]);
-      }
-      if (store.data) {
-        if (store.data.properties) store.data.properties = store.data.properties.filter(p => p.userId !== uid && p.landlordId !== uid);
-        if (store.data.services) store.data.services = store.data.services.filter(s => s.providerId !== uid);
-        if (store.data.marketplace) store.data.marketplace = store.data.marketplace.filter(m => m.sellerId !== uid);
-        if (store.data.users) store.data.users = store.data.users.filter(u => u.id !== uid);
-      }
+      await deleteUserAndDependencies(uid, store);
     }
     if (store.data) await store.save();
     res.json({ success: true, message: `Successfully deleted ${safeUserIds.length} user accounts.` });
@@ -8111,7 +8166,7 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
     return res.status(400).json({ success: false, message: 'Invalid itemType. Use: property, service, or marketplace' });
   } catch (err) {
     console.error('Admin approve error:', err.message);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, message: err.message, error: err.message });
   }
 });
 

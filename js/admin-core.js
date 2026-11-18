@@ -511,6 +511,7 @@ const AdminCore = (() => {
           break;
         case 'hunts-sla':
           if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSmartHouseHunts();
+          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Smart House Hunt 72H...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadSmartHouseHunts(); }, 800); }
           break;
         case 'daraja-reconciliation':
         case 'finance-refunds':
@@ -523,17 +524,21 @@ const AdminCore = (() => {
         case 'compliance-dsr':
         case 'compliance-breach':
           if (window.AdminOSExtensions) await window.AdminOSExtensions.loadODPCCompliance();
+          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading ODPC Compliance Centre...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadODPCCompliance(); }, 800); }
           break;
         case 'super-governance':
         case 'security-sessions':
           if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSuperGovernance();
+          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Super Governance...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadSuperGovernance(); }, 800); }
           break;
         case 'disputes':
           if (window.AdminOSExtensions) await window.AdminOSExtensions.loadDisputes();
+          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Disputes...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadDisputes(); }, 800); }
           break;
         case 'seo-manager':
         case 'seo-sitemap':
           if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSEOManager();
+          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading SEO Manager...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadSEOManager(); }, 800); }
           break;
         default:
           contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><p>Module "${moduleName}" is active.</p></div>`;

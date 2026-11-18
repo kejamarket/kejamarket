@@ -763,19 +763,19 @@ class PostgreSQLStore {
 
     if (updates.isVerified !== undefined || updates.is_verified !== undefined) {
       const verVal = updates.isVerified !== undefined ? updates.isVerified : updates.is_verified;
-      colUpdates.push(`is_verified = ${colIdx++}`);
+      colUpdates.push(`is_verified = $${colIdx++}`);
       colValues.push(!!verVal);
     }
     if (updates.status !== undefined) {
-      colUpdates.push(`status = ${colIdx++}`);
+      colUpdates.push(`status = $${colIdx++}`);
       colValues.push(updates.status);
     }
     if (updates.listing_status !== undefined || updates.listingStatus !== undefined) {
-      colUpdates.push(`listing_status = ${colIdx++}`);
+      colUpdates.push(`listing_status = $${colIdx++}`);
       colValues.push(updates.listing_status || updates.listingStatus);
     }
     if (updates.is_active !== undefined || updates.isActive !== undefined) {
-      colUpdates.push(`is_active = ${colIdx++}`);
+      colUpdates.push(`is_active = $${colIdx++}`);
       colValues.push(!!(updates.is_active ?? updates.isActive));
     }
     if (updates.isFeatured !== undefined || updates.is_featured !== undefined) {
