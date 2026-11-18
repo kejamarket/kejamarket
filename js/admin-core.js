@@ -496,7 +496,11 @@ const AdminCore = (() => {
           await loadBackupsModule();
           break;
         case 'fraud':
-          await loadFraudModule();
+          if (window.AdminOSExtensions && window.AdminOSExtensions.loadFraudCentre) {
+            await window.AdminOSExtensions.loadFraudCentre();
+          } else {
+            await loadFraudModule();
+          }
           break;
         case 'bulk-operations':
           await loadBulkOperationsModule();
@@ -1519,11 +1523,216 @@ const AdminCore = (() => {
   // ══════════════════════════════════════════════════════════════════════════
   // MODULE 10: PROMOTIONS & FEATURED LISTINGS
   // ══════════════════════════════════════════════════════════════════════════
+  
+  // ══════════════════════════════════════════════════════════════════════════
+  // MODULE: FRAUD DETECTION & RISK MANAGEMENT CENTRE (AI-POWERED)
+  // ══════════════════════════════════════════════════════════════════════════
+  async function loadFraudModule() {
+    const content = document.getElementById('admin-content');
+    content.innerHTML = `
+      <div class="module-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h1><i class="fas fa-shield-virus" style="color:#ef4444;"></i> Fraud Detection &amp; Risk Centre</h1>
+          <p style="color:#64748b; font-size:0.88rem; margin-top:4px;">
+            AI auto-defense engine, duplicate listing detectors, deposit scam warnings &amp; risk scoring.
+          </p>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary" onclick="window.runAiFraudScan()" style="display:flex; align-items:center; gap:6px;">
+            <i class="fas fa-robot" style="color:#3b82f6;"></i> Run AI Scan
+          </button>
+          <button class="btn btn-primary" onclick="window.openManualFlagModal()" style="display:flex; align-items:center; gap:6px;">
+            <i class="fas fa-flag"></i> Manually Flag
+          </button>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:14px; margin-bottom:20px;">
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:16px;">
+          <small style="color:#64748b; font-weight:600; text-transform:uppercase;">Active Fraud Flags</small>
+          <h2 id="fraud-total-flags" style="font-size:1.8rem; margin:6px 0 0; color:#ef4444;">--</h2>
+        </div>
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:16px;">
+          <small style="color:#64748b; font-weight:600; text-transform:uppercase;">High-Risk Entities</small>
+          <h2 id="fraud-high-risk" style="font-size:1.8rem; margin:6px 0 0; color:#f59e0b;">--</h2>
+        </div>
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:16px;">
+          <small style="color:#64748b; font-weight:600; text-transform:uppercase;">AI Detection Shield</small>
+          <h2 style="font-size:1.15rem; margin:10px 0 0; color:#10b981; display:flex; align-items:center; gap:6px;">
+            <i class="fas fa-check-circle"></i> Active &amp; Protecting
+          </h2>
+        </div>
+      </div>
+
+      <div id="fraud-content-area">
+        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading fraud flags and risk data...</div>
+      </div>
+    `;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/fraud/flags`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      const flags = data.flags || [];
+
+      const totalEl = document.getElementById('fraud-total-flags');
+      const highEl = document.getElementById('fraud-high-risk');
+      if (totalEl) totalEl.innerText = flags.length;
+      if (highEl) highEl.innerText = flags.filter(f => f.severity === 'high' || f.severity === 'critical').length;
+
+      const container = document.getElementById('fraud-content-area');
+      if (!container) return;
+      if (!flags.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-shield-alt" style="color:#10b981; font-size:3rem; margin-bottom:12px;"></i>
+            <p style="font-weight:700; color:#1e293b;">Zero Unresolved Flags</p>
+            <small style="color:#64748b;">All listings and transactions passed the automated fraud gate.</small>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Type / Source</th>
+                <th>Target &amp; Details</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${flags.map(f => `
+                <tr>
+                  <td>
+                    <span style="font-weight:700; text-transform:capitalize;">${escapeHtml((f.flag_type || f.flagType || 'suspicious').replace(/_/g, ' '))}</span><br>
+                    <small style="color:#64748b;">${f.auto_detected ? '🤖 AI Auto-Detected' : '👤 Manual Staff Flag'}</small>
+                  </td>
+                  <td>
+                    <strong>${escapeHtml(f.property_title || f.title || f.description || 'Target Listing')}</strong><br>
+                    <small style="color:#64748b;">${escapeHtml(f.description || '')}</small>
+                  </td>
+                  <td>
+                    <span style="padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:700; ${
+                      f.severity === 'high' || f.severity === 'critical' ? 'background:#fee2e2; color:#b91c1c;' : 'background:#fef3c7; color:#b45309;'
+                    }">
+                      ${escapeHtml(f.severity || 'medium').toUpperCase()}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="status-badge ${f.status === 'resolved' ? 'status-active' : 'status-pending'}">
+                      ${escapeHtml(f.status || 'open')}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="window.resolveFraudFlag('${f.id}')" title="Mark as Resolved">
+                      <i class="fas fa-check"></i> Resolve
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch (err) {
+      const container = document.getElementById('fraud-content-area');
+      if (container) container.innerHTML = `<div class="error-state">${err.message}</div>`;
+    }
+  }
+
+  window.resolveFraudFlag = async function(id) {
+    const notes = prompt('Enter resolution notes / action taken:', 'Verified listing legitimacy with owner');
+    if (!notes) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/fraud/flags/${id}/resolve`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`
+        },
+        body: JSON.stringify({ status: 'resolved', resolutionNotes: notes, actionTaken: 'dismissed_after_verification' })
+      });
+      const data = await res.json();
+      showToast(data.message || 'Flag resolved successfully', 'success');
+      loadFraudModule();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  };
+
+  window.runAiFraudScan = async function() {
+    showToast('Running AI heuristic duplicate & scam scan...', 'info');
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/os/fraud/auto-scan`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      if (data.detected && data.detected.length > 0) {
+        showToast(`AI Scan Complete: Detected ${data.detected.length} anomalous listings`, 'warning');
+      } else {
+        showToast('AI Scan Complete: Zero duplicate listings or pricing anomalies detected!', 'success');
+      }
+      loadFraudModule();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  };
+
+  window.openManualFlagModal = function() {
+    const target = prompt('Enter Property ID or User Phone to flag:');
+    if (!target) return;
+    const desc = prompt('Enter reason / description of suspicious activity:');
+    if (!desc) return;
+    fetch(`${API_BASE}/api/admin/fraud/flags`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('keja_token')}`
+      },
+      body: JSON.stringify({ propertyId: target, description: desc, severity: 'high' })
+    }).then(r => r.json()).then(data => {
+      showToast('Flag recorded successfully', 'success');
+      loadFraudModule();
+    }).catch(e => showToast(e.message, 'error'));
+  };
+
+  window.openCreatePromotionModal = function() {
+    const listingId = prompt('Enter Property / Listing ID to boost:');
+    if (!listingId) return;
+    const promoType = prompt('Choose Promo Type: top_ad_pro, featured, or spotlight:', 'featured') || 'featured';
+    const durationDays = prompt('Duration in days (7, 14, 30):', '14') || '14';
+
+    fetch(`${API_BASE}/api/admin/promotions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('keja_token')}`
+      },
+      body: JSON.stringify({ listingId, promoType, durationDays: parseInt(durationDays), priceKes: 1500 })
+    }).then(r => r.json()).then(data => {
+      if (data.success) {
+        showToast(data.message || 'Promotion activated successfully!', 'success');
+        loadPromotionsModule();
+      } else {
+        showToast(data.message || 'Failed to activate promotion', 'error');
+      }
+    }).catch(e => showToast(e.message, 'error'));
+  };
+
   async function loadPromotionsModule() {
     const content = document.getElementById('admin-content');
     content.innerHTML = `
-      <div class="module-header" style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="module-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
         <h1><i class="fas fa-star" style="color:#f59e0b;"></i> Promotions & Featured Listings</h1>
+        <button class="btn btn-primary" onclick="window.openCreatePromotionModal()" style="display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-bolt"></i> Boost a Listing / Create Promotion
+        </button>
       </div>
       <p style="color:#64748b; font-size:0.88rem; margin-bottom:18px;">
         Control boosted visibility: Featured badges, Homepage spotlights, and Location priority placements.

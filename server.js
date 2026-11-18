@@ -382,8 +382,85 @@ async function initializeDatabase() {
         const pool = new Pool({ connectionString: databaseUrl, ssl: { rejectUnauthorized: false } });
         const schemaSql = fs.readFileSync(path.join(__dirname, 'db/postgres-migration.sql'), 'utf8');
         await store.query(schemaSql);
+
+        // Ensure OS domain tables exist
+        await store.query(`
+          CREATE TABLE IF NOT EXISTS fraud_flags (
+            id TEXT PRIMARY KEY DEFAULT ('fraud-' || floor(random()*900000 + 100000)::text),
+            user_id TEXT,
+            property_id TEXT,
+            flag_type TEXT NOT NULL,
+            severity TEXT DEFAULT 'medium',
+            description TEXT NOT NULL,
+            auto_detected BOOLEAN DEFAULT FALSE,
+            assigned_to TEXT,
+            status TEXT DEFAULT 'open',
+            resolution_notes TEXT,
+            action_taken TEXT,
+            investigated_by TEXT,
+            investigated_at TIMESTAMPTZ,
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+          );
+
+          CREATE TABLE IF NOT EXISTS user_risk_scores (
+            id TEXT PRIMARY KEY DEFAULT ('risk-' || floor(random()*900000 + 100000)::text),
+            user_id TEXT NOT NULL,
+            risk_score NUMERIC(5,2) DEFAULT 0,
+            factors JSONB DEFAULT '[]'::jsonb,
+            last_assessed_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+          );
+
+          CREATE TABLE IF NOT EXISTS vacancy_reports (
+            id TEXT PRIMARY KEY,
+            building_name TEXT,
+            estate_suburb TEXT,
+            county TEXT,
+            unit_type TEXT,
+            rent_estimate NUMERIC,
+            caretaker_phone TEXT,
+            notes TEXT,
+            reporter_name TEXT,
+            reporter_phone TEXT,
+            status TEXT DEFAULT 'pending_verification',
+            admin_notes TEXT,
+            reviewed_by TEXT,
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+          );
+
+          CREATE TABLE IF NOT EXISTS promotions (
+            id TEXT PRIMARY KEY,
+            listing_id TEXT NOT NULL,
+            listing_type TEXT DEFAULT 'property',
+            promo_type TEXT DEFAULT 'featured',
+            user_id TEXT,
+            start_date TIMESTAMPTZ DEFAULT NOW(),
+            end_date TIMESTAMPTZ,
+            price_kes NUMERIC DEFAULT 1500,
+            is_active BOOLEAN DEFAULT TRUE,
+            created_at TIMESTAMPTZ DEFAULT NOW()
+          );
+        `);
+
+        // Seed initial vacancy reports if empty
+        try {
+          const vCount = await store.query('SELECT COUNT(*) FROM vacancy_reports');
+          if (parseInt(vCount.rows[0].count) === 0) {
+            for (const r of SEED_VACANCY_REPORTS) {
+              await store.query(`
+                INSERT INTO vacancy_reports (id, building_name, estate_suburb, county, unit_type, rent_estimate, caretaker_phone, notes, reporter_name, reporter_phone, status, created_at)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                ON CONFLICT (id) DO NOTHING
+              `, [r.id, r.buildingName, r.estate, r.county, r.unitType, r.approxRent, r.caretakerPhone, r.notes, r.reporterName, r.reporterPhone, r.status, r.createdAt]);
+            }
+            console.log('✅ Seeded vacancy_reports table in PostgreSQL');
+          }
+        } catch (vErr) {}
+
         await pool.end();
-        console.log('✅ Schema migrations applied');
+        console.log('✅ Schema migrations and OS domain tables applied');
       } catch (schemaErr) {
         console.warn('Schema update notice:', schemaErr.message);
       }
@@ -3391,16 +3468,40 @@ app.post('/api/leads/vacancy-report', optionalAuth, async (req, res) => {
   }
 });
 
+let memoryVacancyReports = [...SEED_VACANCY_REPORTS];
+
 // GET /api/admin/vacancy-reports
 app.get('/api/admin/vacancy-reports', requireAuth, requireAdmin, async (req, res) => {
   try {
-    let reports = (store.data && store.data.vacancy_reports && store.data.vacancy_reports.length)
-      ? store.data.vacancy_reports
-      : SEED_VACANCY_REPORTS;
+    let reports = [...memoryVacancyReports];
+    if (store && store.isConnected && store.query) {
+      try {
+        const dbRes = await store.query('SELECT * FROM vacancy_reports ORDER BY created_at DESC');
+        if (dbRes.rows && dbRes.rows.length > 0) {
+          reports = dbRes.rows.map(r => ({
+            id: r.id,
+            buildingName: r.building_name || r.buildingname,
+            estate: r.estate_suburb || r.estate,
+            county: r.county,
+            unitType: r.unit_type || r.unittype,
+            approxRent: Number(r.rent_estimate || r.approx_rent || 0),
+            caretakerPhone: r.caretaker_phone || r.caretakerphone,
+            notes: r.notes,
+            reporterName: r.reporter_name || r.reportername,
+            reporterPhone: r.reporter_phone || r.reporterphone,
+            status: r.status,
+            adminNotes: r.admin_notes,
+            createdAt: r.created_at
+          }));
+        }
+      } catch (dbErr) {
+        // Fallback to memory
+      }
+    }
     
     const { status, q } = req.query;
     if (status && status !== 'all') {
-      reports = reports.filter(r => r.status === status);
+      reports = reports.filter(r => (r.status || '').toLowerCase() === status.toLowerCase());
     }
     if (q) {
       const query = q.toLowerCase().trim();
@@ -3422,16 +3523,37 @@ app.put('/api/admin/vacancy-reports/:id', requireAuth, requireAdmin, async (req,
   try {
     const { id } = req.params;
     const { status, adminNotes } = req.body;
-    let reports = (store.data && store.data.vacancy_reports) || [];
-    const report = reports.find(r => r.id === id);
+    let report = memoryVacancyReports.find(r => r.id === id);
     if (!report) {
-      return res.status(404).json({ success: false, message: 'Vacancy report not found' });
+      const seed = SEED_VACANCY_REPORTS.find(r => r.id === id);
+      if (seed) {
+        report = { ...seed };
+        memoryVacancyReports.push(report);
+      }
     }
-    if (status) report.status = status;
-    if (adminNotes !== undefined) report.adminNotes = adminNotes;
-    report.updatedAt = new Date().toISOString();
-    report.reviewedBy = req.user.name;
-    res.json({ success: true, message: 'Vacancy report updated successfully', report });
+    
+    if (store && store.isConnected && store.query) {
+      try {
+        await store.query(
+          `UPDATE vacancy_reports 
+           SET status = COALESCE($1, status), admin_notes = COALESCE($2, admin_notes), reviewed_by = $3, updated_at = NOW() 
+           WHERE id = $4`,
+          [status || null, adminNotes !== undefined ? adminNotes : null, req.user.name, id]
+        );
+      } catch (dbErr) {
+        console.warn('DB vacancy report update warning:', dbErr.message);
+      }
+    }
+
+    if (report) {
+      if (status) report.status = status;
+      if (adminNotes !== undefined) report.adminNotes = adminNotes;
+      report.updatedAt = new Date().toISOString();
+      report.reviewedBy = req.user.name;
+      return res.json({ success: true, message: 'Vacancy report updated successfully', report });
+    }
+    
+    res.status(404).json({ success: false, message: 'Vacancy report not found' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -3441,8 +3563,14 @@ app.put('/api/admin/vacancy-reports/:id', requireAuth, requireAdmin, async (req,
 app.delete('/api/admin/vacancy-reports/:id', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    if (store.data && store.data.vacancy_reports) {
+    memoryVacancyReports = memoryVacancyReports.filter(r => r.id !== id);
+    if (store && store.data && store.data.vacancy_reports) {
       store.data.vacancy_reports = store.data.vacancy_reports.filter(r => r.id !== id);
+    }
+    if (store && store.isConnected && store.query) {
+      try {
+        await store.query('DELETE FROM vacancy_reports WHERE id = $1', [id]);
+      } catch (e) {}
     }
     res.json({ success: true, message: 'Vacancy report deleted successfully' });
   } catch (err) {
@@ -5497,13 +5625,53 @@ app.get('/api/admin/promotions', requireAuth, async (req, res) => {
     if (req.user.role !== 'admin' && !req.user.isAdmin) return res.status(403).json({ success: false, message: 'Admin access required.' });
     let promotions = [];
     if (store.isConnected && store.query) {
-      const r = await store.query(`
-        SELECT p.*, pr.title as listing_title, pr.estate_suburb as listing_location, pr.rent_kes as listing_price
-        FROM promotions p
-        LEFT JOIN properties pr ON pr.id = p.listing_id
-        ORDER BY p.created_at DESC LIMIT 100
-      `);
-      promotions = r.rows;
+      try {
+        const r = await store.query(`
+          SELECT p.*, pr.title as listing_title, pr.estate_suburb as listing_location, pr.rent_kes as listing_price
+          FROM promotions p
+          LEFT JOIN properties pr ON pr.id = p.listing_id
+          ORDER BY p.created_at DESC LIMIT 100
+        `);
+        promotions = r.rows;
+      } catch (e) {
+        console.warn('Promotions query warning:', e.message);
+      }
+
+      // Auto-seed active promotions from top verified properties if table is empty
+      if (promotions.length === 0) {
+        try {
+          const topProps = await store.query(`
+            SELECT id, title, estate_suburb, rent_kes 
+            FROM properties 
+            WHERE is_verified = TRUE OR status = 'approved' 
+            ORDER BY created_at DESC NULLS LAST LIMIT 3
+          `);
+          for (let i = 0; i < topProps.rows.length; i++) {
+            const p = topProps.rows[i];
+            const promoId = 'promo-auto-' + (i + 1);
+            const promoType = i === 0 ? 'top_ad_pro' : (i === 1 ? 'featured' : 'spotlight');
+            try {
+              await store.query(`
+                INSERT INTO promotions (id, listing_id, listing_type, promo_type, user_id, start_date, end_date, price_kes, is_active, created_at)
+                VALUES ($1, $2, 'property', $3, 'system', NOW(), NOW() + INTERVAL '14 days', 1500, TRUE, NOW())
+                ON CONFLICT (id) DO NOTHING
+              `, [promoId, p.id, promoType]);
+              promotions.push({
+                id: promoId,
+                listing_id: p.id,
+                listing_title: p.title,
+                listing_location: p.estate_suburb,
+                listing_price: p.rent_kes,
+                promo_type: promoType,
+                is_active: true,
+                start_date: new Date().toISOString(),
+                end_date: new Date(Date.now() + 14 * 86400000).toISOString(),
+                price_kes: 1500
+              });
+            } catch (insErr) {}
+          }
+        } catch (seedErr) {}
+      }
     }
     res.json({ success: true, count: promotions.length, promotions });
   } catch (err) {
@@ -7317,12 +7485,21 @@ app.get('/api/marketplace/:id', async (req, res) => {
     const { id } = req.params;
     let item = null;
     if (store && store.query) {
-      const result = await store.query('SELECT * FROM marketplace_items WHERE id = $1', [id]);
-      if (result.rows && result.rows.length > 0) {
-        item = result.rows[0];
-      }
-    } else if (store && store.data && store.data.marketplace_items) {
-      item = store.data.marketplace_items.find(i => i.id === id);
+      try {
+        const result = await store.query('SELECT * FROM marketplace_items WHERE LOWER(id) = LOWER($1)', [id]);
+        if (result && result.rows && result.rows.length > 0) {
+          item = result.rows[0];
+        }
+      } catch (e) {}
+    }
+    if (!item && store && store.data && store.data.marketplace_items) {
+      item = store.data.marketplace_items.find(i => String(i.id).toLowerCase() === String(id).toLowerCase());
+    }
+    if (!item && typeof memoryMarketplaceItems !== 'undefined') {
+      item = memoryMarketplaceItems.find(i => String(i.id).toLowerCase() === String(id).toLowerCase());
+    }
+    if (!item && typeof SEED_MARKETPLACE_ITEMS !== 'undefined') {
+      item = SEED_MARKETPLACE_ITEMS.find(i => String(i.id).toLowerCase() === String(id).toLowerCase());
     }
     if (!item) {
       return res.status(404).json({ success: false, message: 'Marketplace item not found' });

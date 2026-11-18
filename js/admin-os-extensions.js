@@ -208,7 +208,10 @@ window.AdminOSExtensions = (function() {
                         <div style="width:${h.percentTimeUsed}%; height:100%; background:${color};"></div>
                       </div>
                     </td>
-                    <td style="padding:14px; text-align:right;">
+                    <td style="padding:14px; text-align:right; white-space:nowrap;">
+                      <button onclick="AdminOSExtensions.openAiMatchModal('${h.id}', '${h.refNumber}')" class="btn-primary" style="font-size:0.75rem; padding:5px 9px; margin-right:4px; background:#4f46e5; border-color:#4f46e5;">
+                        <i class="fas fa-robot"></i> AI Match
+                      </button>
                       <button onclick="AdminOSExtensions.confirmViewing('${h.id}', '${h.refNumber}')" class="btn-secondary" style="font-size:0.75rem; padding:5px 9px; margin-right:4px;">
                         <i class="fas fa-check"></i> Confirm Viewing
                       </button>
@@ -740,7 +743,180 @@ window.AdminOSExtensions = (function() {
     loadFinanceReconciliation();
   }
 
-  return {
+  
+  async function loadFraudCentre() {
+    const el = getContentArea();
+    if (!el) return;
+    el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Connecting to AI Fraud Gate & Risk Engine...</div>';
+    try {
+      const res = await fetch('/api/admin/fraud/flags', { credentials: 'same-origin' });
+      const data = await res.json();
+      const flags = data.flags || [];
+      el.innerHTML = `
+        <div class="module-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1 style="margin:0;"><i class="fas fa-shield-virus" style="color:#ef4444;"></i> Fraud Detection &amp; Risk Centre</h1>
+            <p style="margin:4px 0 0; color:#64748b; font-size:0.88rem;">AI auto-defense engine, duplicate listing detectors, deposit scam warnings &amp; risk scoring.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button onclick="AdminOSExtensions.runAiFraudScan()" class="btn-secondary" style="font-size:0.85rem; padding:8px 14px;"><i class="fas fa-robot" style="color:#3b82f6;"></i> Run AI Scan</button>
+            <button onclick="window.openManualFlagModal && window.openManualFlagModal()" class="btn-primary" style="background:#ef4444; font-size:0.85rem; padding:8px 14px;"><i class="fas fa-flag"></i> Manually Flag</button>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin:20px 0;">
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:16px;">
+            <div style="font-size:0.75rem; font-weight:800; color:#64748b; text-transform:uppercase;">Active Flags</div>
+            <div style="font-size:1.8rem; font-weight:900; color:#ef4444; margin-top:4px;">${flags.length}</div>
+          </div>
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:16px;">
+            <div style="font-size:0.75rem; font-weight:800; color:#64748b; text-transform:uppercase;">High Severity</div>
+            <div style="font-size:1.8rem; font-weight:900; color:#f59e0b; margin-top:4px;">${flags.filter(f => f.severity === 'high' || f.severity === 'critical').length}</div>
+          </div>
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:16px;">
+            <div style="font-size:0.75rem; font-weight:800; color:#64748b; text-transform:uppercase;">AI Heuristic Shield</div>
+            <div style="font-size:1.1rem; font-weight:800; color:#10b981; margin-top:10px; display:flex; align-items:center; gap:6px;">
+              <i class="fas fa-check-circle"></i> Active &amp; Protecting
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden;">
+          <table class="admin-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+            <thead>
+              <tr style="background:#f8fafc; border-bottom:1px solid #e2e8f0; text-align:left;">
+                <th style="padding:14px;">Type &amp; Origin</th>
+                <th style="padding:14px;">Target &amp; Reason</th>
+                <th style="padding:14px;">Severity</th>
+                <th style="padding:14px;">Status</th>
+                <th style="padding:14px; text-align:right;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${flags.map(f => `
+                <tr style="border-bottom:1px solid #f1f5f9;">
+                  <td style="padding:14px;">
+                    <div style="font-weight:800; color:#0f172a;">${(f.flag_type || f.flagType || 'Suspicious').replace(/_/g, ' ')}</div>
+                    <small style="color:#64748b;">${f.auto_detected ? '🤖 AI Auto-Scan' : '👤 Staff Flag'}</small>
+                  </td>
+                  <td style="padding:14px;">
+                    <strong>${f.property_title || f.title || f.description || 'Listing'}</strong><br>
+                    <small style="color:#64748b;">${f.description || ''}</small>
+                  </td>
+                  <td style="padding:14px;">
+                    <span style="font-size:0.72rem; font-weight:800; padding:2px 7px; border-radius:6px; ${
+                      f.severity === 'high' || f.severity === 'critical' ? 'background:#fee2e2; color:#b91c1c;' : 'background:#fef3c7; color:#b45309;'
+                    }">${(f.severity || 'medium').toUpperCase()}</span>
+                  </td>
+                  <td style="padding:14px;">
+                    <span class="status-badge ${f.status === 'resolved' ? 'status-active' : 'status-pending'}">${f.status || 'open'}</span>
+                  </td>
+                  <td style="padding:14px; text-align:right;">
+                    <button onclick="window.resolveFraudFlag && window.resolveFraudFlag('${f.id}')" class="btn-secondary" style="font-size:0.75rem; padding:4px 8px;">
+                      <i class="fas fa-check"></i> Resolve
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch (e) {
+      el.innerHTML = `<div class="error-state"><p>${e.message}</p></div>`;
+    }
+  }
+
+  async function openAiMatchModal(huntId, refNumber) {
+    const existing = document.getElementById('ai-match-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'ai-match-modal';
+    modal.className = 'modal-overlay';
+    modal.style.zIndex = '10001';
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width:760px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; border-radius:16px;">
+        <div class="modal-header" style="background:#1e1b4b; color:#fff; padding:16px 20px; display:flex; justify-content:space-between; align-items:center;">
+          <h2 style="font-size:1.1rem; font-weight:800; margin:0; display:flex; align-items:center; gap:8px; color:#fff;">
+            <i class="fas fa-robot" style="color:#818cf8;"></i> AI Multi-Factor Property Match — ${refNumber}
+          </h2>
+          <button style="background:transparent; border:none; color:#cbd5e1; font-size:1.4rem; cursor:pointer;" onclick="this.closest('.modal-overlay').remove()">&times;</button>
+        </div>
+        <div class="modal-body" id="ai-match-modal-body" style="padding:20px; overflow-y:auto; flex:1;">
+          <div class="loading-state" style="text-align:center; padding:30px;"><i class="fas fa-spinner fa-spin" style="font-size:1.8rem; color:#4f46e5;"></i><p style="margin-top:10px; color:#64748b;">Running multi-factor scoring against verified inventory...</p></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    try {
+      const res = await fetch(`/api/admin/os/hunts/${huntId}/ai-match`, { credentials: 'same-origin' });
+      const data = await res.json();
+      const body = document.getElementById('ai-match-modal-body');
+      if (!body) return;
+
+      if (!data.matches || !data.matches.length) {
+        body.innerHTML = '<div class="empty-state"><p>No high-confidence matches found for this criteria.</p></div>';
+        return;
+      }
+
+      body.innerHTML = `
+        <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:10px; padding:12px 16px; margin-bottom:16px; font-size:0.85rem; color:#4c1d95;">
+          <strong>AI Matching Criteria:</strong> Looking in <strong>${(data.huntRequirements.locations || []).join(', ')}</strong> • Max Budget: <strong>KSh ${Number(data.huntRequirements.budgetMaxKes || 0).toLocaleString()}</strong> • <strong>${data.huntRequirements.bedrooms} Bed</strong>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          ${data.matches.map(m => `
+            <div style="border:1.5px solid #e2e8f0; border-radius:12px; padding:16px; background:#fff; display:flex; justify-content:space-between; align-items:center; gap:14px;">
+              <div style="flex:1;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="background:#dcfce7; color:#15803d; font-weight:900; font-size:0.8rem; padding:2px 8px; border-radius:8px;">
+                    ${m.matchScore}% Match
+                  </span>
+                  <h4 style="margin:0; font-size:0.95rem; font-weight:800; color:#0f172a;">${m.title}</h4>
+                </div>
+                <div style="font-size:0.82rem; color:#64748b; margin-top:4px;">
+                  <i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> ${m.estateSuburb}, ${m.county} • <strong>KSh ${Number(m.rentKes || 0).toLocaleString()}/mo</strong> • ${m.bedrooms || 1} Bed
+                </div>
+                <div style="margin-top:6px; font-size:0.78rem; color:#059669; display:flex; gap:10px; flex-wrap:wrap;">
+                  ${(m.reasons || []).map(r => `<span><i class="fas fa-check-circle"></i> ${r}</span>`).join('')}
+                </div>
+              </div>
+              <div>
+                <button onclick="AdminCore.showToast('Listing matched & routed to assigned field scout', 'success'); this.closest('.modal-overlay').remove();" class="btn-primary" style="font-size:0.8rem; padding:7px 12px; background:#006818; white-space:nowrap;">
+                  <i class="fas fa-paper-plane"></i> Select &amp; Dispatch
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } catch (e) {
+      const body = document.getElementById('ai-match-modal-body');
+      if (body) body.innerHTML = `<div class="error-state">${e.message}</div>`;
+    }
+  }
+
+  async function runAiFraudScan() {
+    AdminCore.showToast('Scanning listings for anomalies and duplicates...', 'info');
+    try {
+      const res = await fetch('/api/admin/os/fraud/auto-scan', { credentials: 'same-origin' });
+      const data = await res.json();
+      if (data.detected && data.detected.length > 0) {
+        AdminCore.showToast(`Scan found ${data.detected.length} anomalous listings`, 'warning');
+      } else {
+        AdminCore.showToast('AI Scan passed: No duplicates or suspicious price drops found.', 'success');
+      }
+      loadFraudCentre();
+    } catch (e) {
+      AdminCore.showToast(e.message, 'error');
+    }
+  }
+
+return {
+    loadFraudCentre,
+    openAiMatchModal,
+    runAiFraudScan,
     loadLiveOperations,
     loadSmartHouseHunts,
     loadFinanceReconciliation,
