@@ -18,8 +18,8 @@
   
   <!-- Preload Critical Resources -->
   <link rel="preload" href="css/kejamarket-redesign.css?v=132.0" as="style">
-  <link rel="preload" href="js/app.js?v=134.0" as="script">
-  <link rel="preload" href="js/auth.js?v=134.0&t=20261114_tenant_rbac_backbutton" as="script">
+  <link rel="preload" href="js/app.js?v=135.0" as="script">
+  <link rel="preload" href="js/auth.js?v=135.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -6157,14 +6157,14 @@
 
   <!-- Maps & Leaflet -->
   <script src="vendor/leaflet/leaflet.js" defer></script>
-  <script src="js/map.js?v=134.0" defer></script>
+  <script src="js/map.js?v=135.0" defer></script>
 
   <!-- Landlord & Management (Must load before app.init) -->
   <script src="js/landlord.js?v=106.0" defer></script>
 
   <!-- Critical: Core functionality & Auth -->
   <script src="js/offline-manager.js?v=32.0" defer></script>
-  <script src="js/auth.js?v=134.0&t=202610180330" defer></script>
+  <script src="js/auth.js?v=135.0&t=202610180330" defer></script>
   <script src="js/new-auth.js?v=2.1&t=202610180330" defer></script>
   <script src="js/components/location-picker.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
   
@@ -6741,14 +6741,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script src="js/desk-detail-modal.js?v=133.0"></script>
+<script src="js/desk-detail-modal.js?v=135.0"></script>
   <script src="js/in-app-call.js?v=117.0"></script>
   <script src="js/share-card.js?v=117.0"></script>
-  <script src="js/app.js?v=134.0" defer></script>
+  <script src="js/app.js?v=135.0" defer></script>
   <script src="js/viewing-booking.js?v=115.0" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
-  <script src="js/mobile-layout.js?v=134.0" defer></script>
+  <script src="js/mobile-layout.js?v=135.0" defer></script>
   
   <!-- Secondary Features: Deferred loading -->
   <script src="js/reviews.js?v=100.0&t=20261114_tenant_rbac_backbutton" defer></script>
@@ -6957,20 +6957,9 @@ document.addEventListener('DOMContentLoaded', function() {
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      let isRefreshing = false;
-      navigator.serviceWorker.addEventListener('controllerchange', function() {
-        if (!isRefreshing) {
-          isRefreshing = true;
-          console.log('[SW] New version activated, auto-refreshing for fresh Google Maps and Categories...');
-          window.location.reload();
-        }
-      });
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js').then(function(reg) {
           console.log('[SW] ServiceWorker registered successfully:', reg.scope);
-          if (reg.update) {
-            reg.update();
-          }
         }).catch(function(err) {
           console.warn('[SW] ServiceWorker registration skipped:', err);
         });

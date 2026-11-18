@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v134-approval-profile-signout';
+const CACHE_NAME = 'kejamarket-v135-stable-no-reload';
 
 const STATIC_ASSETS = [
   '/',

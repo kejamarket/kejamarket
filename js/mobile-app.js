@@ -45,7 +45,11 @@ class MobileApp {
         const wasMobile = this.isMobile;
         this.isMobile = this.detectMobile();
         if (wasMobile !== this.isMobile) {
-          location.reload(); // Reload to apply correct layout
+          if (this.isMobile) {
+            this.enableMobileMode();
+          } else {
+            this.disableMobileMode();
+          }
         }
       }, 250);
     });
@@ -189,8 +193,6 @@ class MobileApp {
     console.log('📱 Refreshing...');
     if (window.app && app.refreshProperties) {
       app.refreshProperties();
-    } else {
-      location.reload();
     }
   }
 
