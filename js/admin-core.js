@@ -501,6 +501,36 @@ const AdminCore = (() => {
         case 'bulk-operations':
           await loadBulkOperationsModule();
           break;
+        case 'live-operations':
+          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadLiveOperations();
+          else await loadDashboard();
+          break;
+        case 'hunts-sla':
+          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSmartHouseHunts();
+          break;
+        case 'daraja-reconciliation':
+        case 'finance-refunds':
+        case 'finance-ledger':
+        case 'finance-payouts':
+          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadFinanceReconciliation();
+          else await loadFinanceModule();
+          break;
+        case 'compliance-odpc':
+        case 'compliance-dsr':
+        case 'compliance-breach':
+          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadODPCCompliance();
+          break;
+        case 'super-governance':
+        case 'security-sessions':
+          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSuperGovernance();
+          break;
+        case 'disputes':
+          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadDisputes();
+          break;
+        case 'seo-manager':
+        case 'seo-sitemap':
+          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSEOManager();
+          break;
         default:
           contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><p>Module "${moduleName}" is active.</p></div>`;
       }

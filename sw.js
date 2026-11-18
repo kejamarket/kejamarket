@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v135-stable-no-reload';
+const CACHE_NAME = 'kejamarket-v137-super-admin-os';
 
 const STATIC_ASSETS = [
   '/',
@@ -74,6 +74,7 @@ const STATIC_ASSETS = [
   '/js/app.js',
   '/js/instagram-integration.js',
   '/js/admin.js',
+  '/js/admin-os-extensions.js',
 
   // Icons and Fallbacks
   '/icons/offline-placeholder.svg',

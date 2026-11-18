@@ -8634,9 +8634,16 @@ app.get('/api/seed-database', async (req, res) => {
   }
 });
 
-
-
-
+// ═════════════════════════════════════════════════════════════════════════
+// KEJAMARKET SUPER ADMIN OS EXTENDED API ROUTER
+// ═════════════════════════════════════════════════════════════════════════
+try {
+  const adminOsRouter = require('./api/admin-os')(store, requireAuth, requirePermission, auditRequest);
+  app.use('/api/admin', adminOsRouter);
+  console.log('✅ KejaMarket Super Admin OS Extended API Suite mounted successfully');
+} catch (osMountErr) {
+  console.warn('Super Admin OS Router notice:', osMountErr.message);
+}
 
 async function startServer() {
   await initializeDatabase();
