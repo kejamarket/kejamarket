@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v140-super-admin-os';
+const CACHE_NAME = 'kejamarket-v141-fix-approve-delete-fk';
 
 const STATIC_ASSETS = [
   '/',

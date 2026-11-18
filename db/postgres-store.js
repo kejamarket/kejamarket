@@ -757,8 +757,8 @@ class PostgreSQLStore {
     }
 
     // Build SQL for explicit column updates — ONLY columns that exist in the properties table:
-    // is_verified, status, is_featured, is_top_ad, raw_data
-    // NOTE: listing_status and is_active do NOT exist as real columns; they live in raw_data only
+    // is_verified, status, is_active, is_featured, is_top_ad, raw_data
+    // NOTE: listing_status is stored in raw_data only (no real column)
     const colUpdates = [];
     const colValues = [];
     let colIdx = 1;
@@ -772,7 +772,12 @@ class PostgreSQLStore {
       colUpdates.push(`status = $${colIdx++}`);
       colValues.push(updates.status);
     }
-    // listing_status and is_active are NOT real columns — they are stored in raw_data below
+    // is_active IS a real column (added by startup migration and schema.sql)
+    if (updates.is_active !== undefined || updates.isActive !== undefined) {
+      colUpdates.push(`is_active = $${colIdx++}`);
+      colValues.push(!!(updates.is_active ?? updates.isActive));
+    }
+    // listing_status is NOT a real column — stored in raw_data below
     if (updates.isFeatured !== undefined || updates.is_featured !== undefined) {
       colUpdates.push(`is_featured = $${colIdx++}`);
       colValues.push(!!(updates.isFeatured ?? updates.is_featured));
@@ -794,23 +799,34 @@ class PostgreSQLStore {
       );
     } catch (updateErr) {
       console.warn('Primary property update failed, falling back to minimal patch:', updateErr.message);
-      // Fallback: update ONLY is_verified and raw_data to be completely resilient against any missing column
+      // Fallback: update ONLY is_verified + is_active + raw_data — resilient against any missing column
       try {
         const isVer = updates.isVerified !== undefined ? updates.isVerified : updates.is_verified;
-        if (isVer !== undefined) {
-          await this.query(
-            `UPDATE properties SET is_verified = $1, raw_data = raw_data || $2::jsonb WHERE id = $3`,
-            [!!isVer, JSON.stringify(updates), id]
-          );
-        } else {
+        const isActive = updates.is_active !== undefined ? updates.is_active : updates.isActive;
+        const fallbackCols = [];
+        const fallbackVals = [];
+        let fi = 1;
+        if (isVer !== undefined) { fallbackCols.push(`is_verified = $${fi++}`); fallbackVals.push(!!isVer); }
+        if (isActive !== undefined) { fallbackCols.push(`is_active = $${fi++}`); fallbackVals.push(!!isActive); }
+        if (updates.status !== undefined) { fallbackCols.push(`status = $${fi++}`); fallbackVals.push(updates.status); }
+        fallbackCols.push(`raw_data = raw_data || $${fi++}::jsonb`);
+        fallbackVals.push(JSON.stringify(updates));
+        fallbackVals.push(id);
+        await this.query(
+          `UPDATE properties SET ${fallbackCols.join(', ')} WHERE id = $${fi}`,
+          fallbackVals
+        );
+      } catch (fallbackErr) {
+        // Last-resort: raw_data patch only
+        try {
           await this.query(
             `UPDATE properties SET raw_data = raw_data || $1::jsonb WHERE id = $2`,
             [JSON.stringify(updates), id]
           );
+        } catch (finalErr) {
+          console.error('Property update final fallback error:', finalErr.message);
+          throw updateErr;
         }
-      } catch (fallbackErr) {
-        console.error('Property update fallback error:', fallbackErr.message);
-        throw updateErr;
       }
     }
 

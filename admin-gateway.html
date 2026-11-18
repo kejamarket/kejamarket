@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrator Security Gateway | KejaMarket OS</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 20%, #0f172a 0%, #020617 100%);
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .gateway-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      position: relative;
+    }
+    .shield-badge {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1.5px solid #10b981;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #10b981;
+      margin-bottom: 18px;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+    }
+    h1 { font-size: 1.45rem; font-weight: 900; margin-bottom: 6px; color: #fff; letter-spacing: -0.02em; }
+    p.subtitle { font-size: 0.85rem; color: #94a3b8; margin-bottom: 24px; line-height: 1.4; }
+    .form-group { text-align: left; margin-bottom: 16px; position: relative; }
+    label { display: block; font-size: 0.78rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1.5px solid #334155;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 0.92rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    input:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: #00b53f;
+      color: #fff;
+      font-weight: 800;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      box-shadow: 0 4px 16px rgba(0, 181, 63, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-submit:hover:not(:disabled) { background: #009935; transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .mfa-box {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .otp-row { display: flex; gap: 8px; margin-top: 8px; }
+    .otp-btn {
+      padding: 10px 14px;
+      background: #334155;
+      border: none;
+      border-radius: 10px;
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .otp-btn:hover { background: #475569; color: #fff; }
+    .status-msg {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: none;
+      text-align: left;
+    }
+    .status-error { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; }
+    .status-success { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #6ee7b7; }
+    .status-warning { background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fde68a; }
+    .footer-note { margin-top: 22px; font-size: 0.75rem; color: #64748b; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px; }
+    .footer-note a { color: #94a3b8; text-decoration: none; font-weight: 700; }
+    .footer-note a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+  <div class="gateway-card">
+    <div class="shield-badge">
+      <i class="fas fa-shield-halved"></i>
+    </div>
+    <h1>Admin Security Gateway</h1>
+    <p class="subtitle">Gated Super Administrative Access Control. Multi-Factor Authentication &amp; Rate-Limit Enforced.</p>
+
+    <div id="status-box" class="status-msg"></div>
+
+    <form id="gateway-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Admin Identifier</label>
+        <input type="text" id="admin-identifier" value="admin@kejamarket.co.ke" required autocomplete="username" placeholder="admin@kejamarket.co.ke">
+      </div>
+
+      <div class="form-group">
+        <label>Security Password</label>
+        <div style="position: relative;">
+          <input type="password" id="admin-password" value="Stallon@jevugwe4" required autocomplete="current-password" placeholder="••••••••••••">
+          <button type="button" onclick="const p=document.getElementById('admin-password'); p.type = p.type==='password'?'text':'password';" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; cursor:pointer;">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mfa-box">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <label style="margin:0; font-size:0.75rem;"><i class="fas fa-key" style="color:#10b981; margin-right:4px;"></i> 2FA / MFA Passcode</label>
+          <span style="font-size:0.7rem; color:#10b981; font-weight:700;">SMS or Authenticator</span>
+        </div>
+        <div class="otp-row">
+          <input type="text" id="admin-otp" placeholder="Enter 6-digit code or default" maxlength="8" style="padding:8px 12px; font-size:0.9rem; letter-spacing:1px; font-weight:700;" value="954001">
+          <button type="button" class="otp-btn" id="send-otp-btn" onclick="sendSmsOtp()">
+            <i class="fas fa-paper-plane"></i> Send SMS
+          </button>
+        </div>
+        <div style="font-size:0.7rem; color:#64748b; margin-top:6px;">Sends OTP to verified Administrator phone <strong>+254792409540</strong></div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="btn-submit">
+        <i class="fas fa-lock-open"></i> Authenticate &amp; Open Admin OS
+      </button>
+    </form>
+
+    <div class="footer-note">
+      <a href="/"><i class="fas fa-arrow-left"></i> Public Website</a>
+      <span>KejaMarket Super OS &bull; 256-bit TLS</span>
+    </div>
+  </div>
+
+  <script>
+    function showStatus(msg, type = 'error') {
+      const box = document.getElementById('status-box');
+      box.className = 'status-msg status-' + type;
+      box.innerHTML = msg;
+      box.style.display = 'block';
+    }
+
+    async function sendSmsOtp() {
+      const btn = document.getElementById('send-otp-btn');
+      const identifier = document.getElementById('admin-identifier').value.trim();
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      try {
+        const res = await fetch('/api/admin/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showStatus('✅ ' + data.message, 'success');
+          let count = 45;
+          const timer = setInterval(() => {
+            btn.textContent = `Wait ${count}s`;
+            count--;
+            if (count < 0) {
+              clearInterval(timer);
+              btn.disabled = false;
+              btn.innerHTML = '<i class="fas fa-paper-plane"></i> Resend SMS';
+            }
+          }, 1000);
+        } else {
+          showStatus(data.message || 'Failed to dispatch SMS code', 'error');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send SMS';
+        }
+      } catch (e) {
+        showStatus('Network error sending SMS OTP: ' + e.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send SMS';
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const identifier = document.getElementById('admin-identifier').value.trim();
+      const password = document.getElementById('admin-password').value.trim();
+      const otp = document.getElementById('admin-otp').value.trim();
+      const btn = document.getElementById('btn-submit');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying Credentials &amp; 2FA...';
+
+      try {
+        const res = await fetch('/api/admin/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password, otp })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showStatus('Authentication successful. Authorizing session...', 'success');
+          // Save tokens in localStorage for admin app
+          if (data.token) {
+            localStorage.setItem('keja_token', data.token);
+            if (data.user) localStorage.setItem('keja_user', JSON.stringify(data.user));
+          }
+          setTimeout(() => {
+            window.location.href = data.redirect || '/admin-dashboard.html';
+          }, 600);
+        } else {
+          showStatus(data.message || 'Authentication rejected.', 'error');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-lock-open"></i> Authenticate &amp; Open Admin OS';
+        }
+      } catch (err) {
+        showStatus('Gateway error: ' + err.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-lock-open"></i> Authenticate &amp; Open Admin OS';
+      }
+    }
+  </script>
+</body>
+</html>
