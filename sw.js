@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v132-google-maps-full-categories';
+const CACHE_NAME = 'kejamarket-v133-google-maps-cache-bust';
 
 const STATIC_ASSETS = [
   '/',
