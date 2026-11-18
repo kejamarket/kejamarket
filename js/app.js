@@ -112,8 +112,8 @@ class NairobiRentalsApp {
     try {
       // 2.5-second timeout - Supabase connection may hang on localhost
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2500);
-      const res = await fetch('/api/properties', { signal: controller.signal });
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const res = await fetch('/api/properties?pageSize=300&sort=newest', { signal: controller.signal });
       clearTimeout(timeoutId);
       if (res.ok) {
         const data = await res.json();
@@ -158,12 +158,21 @@ class NairobiRentalsApp {
             verified: this.properties[0].isVerified
           } : 'none');
 
-          // Prepend 12 reference properties at top
+          // Real live approved properties sorted newest first so newly approved listings appear right at top!
+          const realProps = this.properties.filter(p => !p.id.startsWith('km-ref-'));
+          realProps.sort((a, b) => {
+            const tA = new Date(a.createdAt || a.created_at || a.approvedAt || 0).getTime();
+            const tB = new Date(b.createdAt || b.created_at || b.approvedAt || 0).getTime();
+            return tB - tA;
+          });
+
           const kmRefSeed = (typeof SEED_PROPERTIES !== 'undefined' ? SEED_PROPERTIES : [])
             .filter(s => s.id && s.id.startsWith('km-ref-'))
             .map(p => this.normalizeProperty(p));
-          const refIds = new Set(kmRefSeed.map(p => p.id));
-          this.properties = [...kmRefSeed, ...this.properties.filter(p => !refIds.has(p.id))];
+          const realIds = new Set(realProps.map(p => p.id));
+          
+          // Real properties come first, reference properties follow
+          this.properties = [...realProps, ...kmRefSeed.filter(s => !realIds.has(s.id))];
 
           console.log('Loaded real properties from API + reference cards:', this.properties.length);
           

@@ -1213,26 +1213,23 @@ function showScreen(screen, params = {}, isBackNav = false) {
   function getFilteredPropertiesList() {
     let list = [...State.properties];
 
-    // Category filter
+    // Category filter: All 18 property types supported
     const cat = (State.selectedCategory || 'all').toLowerCase();
     if (cat && cat !== 'all') {
       if (cat === 'single-room') {
         list = list.filter(p => 
           (p.category && (p.category.toLowerCase().includes('single') || p.category.toLowerCase() === 'single room')) ||
-          (p.title && p.title.toLowerCase().includes('single room')) ||
-          (p.badgeLabel && p.badgeLabel.toLowerCase().includes('single'))
+          (p.title && p.title.toLowerCase().includes('single room'))
         );
       } else if (cat === 'double-room') {
         list = list.filter(p => 
           (p.category && (p.category.toLowerCase().includes('double') || p.category.toLowerCase() === 'double room')) ||
-          (p.title && p.title.toLowerCase().includes('double room')) ||
-          (p.badgeLabel && p.badgeLabel.toLowerCase().includes('double'))
+          (p.title && p.title.toLowerCase().includes('double room'))
         );
       } else if (cat === 'bedsitters') {
         list = list.filter(p => 
           (p.category && (p.category.toLowerCase().includes('bedsitter') || p.category.toLowerCase().includes('studio'))) ||
-          (p.title && (p.title.toLowerCase().includes('bedsitter') || p.title.toLowerCase().includes('studio'))) ||
-          (p.badgeLabel && p.badgeLabel.toLowerCase().includes('bedsitter'))
+          (p.title && (p.title.toLowerCase().includes('bedsitter') || p.title.toLowerCase().includes('studio')))
         );
       } else if (cat === 'studio') {
         list = list.filter(p => 
@@ -1240,23 +1237,35 @@ function showScreen(screen, params = {}, isBackNav = false) {
           (p.title && p.title.toLowerCase().includes('studio'))
         );
       } else if (cat === '1-bedroom') {
-        list = list.filter(p => p.bedrooms === 1 && !p.isBnb && !(p.category && (p.category.toLowerCase().includes('bedsitter') || p.category.toLowerCase().includes('single'))));
+        list = list.filter(p => (p.bedrooms === 1 || (p.category && p.category.toLowerCase().includes('1 bed')) || (p.title && p.title.toLowerCase().includes('1 bed'))) && !p.isBnb);
       } else if (cat === '2-bedroom') {
-        list = list.filter(p => p.bedrooms === 2 && !p.isBnb && !(p.category && p.category.toLowerCase().includes('double')));
+        list = list.filter(p => (p.bedrooms === 2 || (p.category && p.category.toLowerCase().includes('2 bed')) || (p.title && p.title.toLowerCase().includes('2 bed'))) && !p.isBnb);
       } else if (cat === '3-bedroom') {
-        list = list.filter(p => (p.bedrooms || 0) >= 3 && !p.isBnb);
+        list = list.filter(p => (p.bedrooms === 3 || (p.category && p.category.toLowerCase().includes('3 bed')) || (p.title && p.title.toLowerCase().includes('3 bed'))) && !p.isBnb);
+      } else if (cat === '4-bedroom') {
+        list = list.filter(p => ((p.bedrooms || 0) >= 4 || (p.category && p.category.toLowerCase().includes('4 bed')) || (p.title && p.title.toLowerCase().includes('4 bed'))) && !p.isBnb);
       } else if (cat === 'apartments') {
         list = list.filter(p => p.category && (p.category.toLowerCase().includes('apartment') || p.category.toLowerCase().includes('flat')));
       } else if (cat === 'bnb') {
         list = list.filter(p => p.isBnb || (p.category && (p.category.toLowerCase().includes('bnb') || p.category.toLowerCase().includes('airbnb'))));
       } else if (cat === 'mansion') {
-        list = list.filter(p => p.category && (p.category.toLowerCase().includes('mansion') || p.category.toLowerCase().includes('townhouse') || p.category.toLowerCase().includes('villa') || p.category.toLowerCase().includes('own compound')));
-      } else if (cat === 'land') {
-        list = list.filter(p => p.category && (p.category.toLowerCase().includes('land') || p.category.toLowerCase().includes('plot')));
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('mansion') || p.category.toLowerCase().includes('maisonette')));
+      } else if (cat === 'townhouse') {
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('townhouse') || p.category.toLowerCase().includes('maisonette')));
+      } else if (cat === 'bungalow') {
+        list = list.filter(p => p.category && p.category.toLowerCase().includes('bungalow'));
       } else if (cat === 'commercial') {
         list = list.filter(p => p.category && (p.category.toLowerCase().includes('commercial') || p.category.toLowerCase().includes('office') || p.category.toLowerCase().includes('shop')));
+      } else if (cat === 'offices') {
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('office') || p.category.toLowerCase().includes('commercial')));
+      } else if (cat === 'shops') {
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('shop') || p.category.toLowerCase().includes('stall')));
+      } else if (cat === 'land') {
+        list = list.filter(p => p.category && (p.category.toLowerCase().includes('land') || p.category.toLowerCase().includes('plot')));
       } else if (cat === 'services') {
         list = list.filter(p => p.category && (p.category.toLowerCase().includes('service') || p.category.toLowerCase().includes('mover')));
+      } else if (cat === 'marketplace') {
+        list = list.filter(p => p.category && p.category.toLowerCase().includes('used'));
       }
     }
 
@@ -2753,173 +2762,127 @@ function showScreen(screen, params = {}, isBackNav = false) {
       const roleLabel = session.role === 'landlord' ? 'Verified Landlord' : (session.role === 'admin' ? 'Administrator' : 'Tenant Account');
 
       mSlot.innerHTML = `
-        <div style="padding-bottom:80px;">
-          <div class="km-profile-header">
-            <div class="km-profile-avatar-big">${initials}</div>
-            <div>
-              <div class="km-profile-name">${displayName}</div>
-              <div class="km-profile-email">${displayContact}</div>
-              <span style="display:inline-block; margin-top:4px; font-size:10.5px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:12px;">
+        <div style="padding-bottom:90px; background:#f8fafc; min-height:100%;">
+          <!-- Profile Identity Card -->
+          <div class="km-profile-header" style="background:#ffffff; margin:14px; padding:18px; border-radius:16px; border:1px solid #e2e8f0; display:flex; align-items:center; gap:16px; box-shadow:0 1px 3px rgba(15,23,42,0.04);">
+            <div class="km-profile-avatar-big" style="width:58px; height:58px; border-radius:50%; background:linear-gradient(135deg, #006818 0%, #00b53f 100%); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:800; flex-shrink:0;">
+              ${initials}
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div class="km-profile-name" style="font-size:16px; font-weight:800; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${displayName}</div>
+              <div class="km-profile-email" style="font-size:13px; color:#64748b; margin-top:2px;">${displayContact}</div>
+              <span style="display:inline-flex; align-items:center; gap:4px; margin-top:6px; font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:20px;">
                 <i class="fas fa-check-circle"></i> ${roleLabel}
               </span>
             </div>
           </div>
 
-          <div class="km-profile-menu">
-            ${session.role === 'landlord' || session.role === 'admin' ? `
-              <div class="km-profile-item" onclick="if(window.app && app.openLandlordPortal) app.openLandlordPortal(); else MobileApp.openPostAd();">
-                <div class="km-profile-item-icon" style="background:#e8f8ee; color:#006818;"><i class="fas fa-home"></i></div>
-                <div class="km-profile-item-title">Landlord Dashboard & My Properties</div>
-                <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-              </div>
-            ` : ''}
+          <!-- Section 1: My Activity (Listings, Bookings, Messages) -->
+          <div style="margin:0 14px 14px;">
+            <div style="font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#94a3b8; margin:0 4px 8px;">My Activity</div>
+            <div class="km-profile-menu" style="background:#ffffff; border-radius:14px; border:1px solid #e2e8f0; overflow:hidden;">
+              ${session.role === 'landlord' || session.role === 'admin' ? `
+                <div class="km-profile-item" onclick="if(window.app && app.openLandlordPortal) app.openLandlordPortal(); else MobileApp.openPostAd();">
+                  <div class="km-profile-item-icon" style="background:#e8f8ee; color:#006818;"><i class="fas fa-building"></i></div>
+                  <div class="km-profile-item-title">Landlord Dashboard & My Properties</div>
+                  <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+                </div>
+              ` : ''}
 
-            ${(session.role === 'tenant' || session.role === 'buyer') ? `
-              <div class="km-profile-item" onclick="MobileApp.openPostAd()">
-                <div class="km-profile-item-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-exchange-alt"></i></div>
-                <div class="km-profile-item-title">Become a Landlord / List Property</div>
-                <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-              </div>
-            ` : `
               <div class="km-profile-item" onclick="MobileApp.openPostAd()">
                 <div class="km-profile-item-icon" style="background:#e8f8ee; color:#006818;"><i class="fas fa-plus-circle"></i></div>
                 <div class="km-profile-item-title">Post a Property for Free</div>
                 <i class="fas fa-chevron-right km-profile-item-arrow"></i>
               </div>
-            `}
 
-            <div class="km-profile-item" onclick="MobileApp.showScreen('favorites')">
-              <div class="km-profile-item-icon"><i class="fas fa-heart"></i></div>
-              <div class="km-profile-item-title">Saved Listings</div>
-              <span style="background:#006818; color:white; border-radius:12px; padding:2px 8px; font-size:11px; font-weight:800;">${State.favorites.length}</span>
+              <div class="km-profile-item" onclick="MobileApp.showScreen('favorites')">
+                <div class="km-profile-item-icon" style="background:#fef2f2; color:#ef4444;"><i class="fas fa-heart"></i></div>
+                <div class="km-profile-item-title">Saved Listings</div>
+                <span style="background:#006818; color:white; border-radius:12px; padding:2px 8px; font-size:11px; font-weight:800;">${State.favorites.length}</span>
+              </div>
+
+              <div class="km-profile-item" onclick="MobileApp.showScreen('my-requests')">
+                <div class="km-profile-item-icon" style="background:#f0f9ff; color:#0284c7;"><i class="fas fa-calendar-check"></i></div>
+                <div class="km-profile-item-title">My Viewing Appointments</div>
+                <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+              </div>
+
+              <div class="km-profile-item" onclick="MobileApp.showScreen('messages')">
+                <div class="km-profile-item-icon" style="background:#fdf4ff; color:#a855f7;"><i class="fas fa-comment-dots"></i></div>
+                <div class="km-profile-item-title">Messages & Inquiries</div>
+                <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+              </div>
             </div>
+          </div>
 
-            <div class="km-profile-item" onclick="MobileApp.showScreen('my-requests')">
-              <div class="km-profile-item-icon"><i class="fas fa-clock"></i></div>
-              <div class="km-profile-item-title">My Viewing Appointments</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+          <!-- Section 2: Support & Safety -->
+          <div style="margin:0 14px 14px;">
+            <div style="font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#94a3b8; margin:0 4px 8px;">Help & Support</div>
+            <div class="km-profile-menu" style="background:#ffffff; border-radius:14px; border:1px solid #e2e8f0; overflow:hidden;">
+              <a href="https://wa.me/254792409540?text=Hi%20KejaMarket%20Support" target="_blank" class="km-profile-item" style="text-decoration:none;">
+                <div class="km-profile-item-icon" style="background:#dcfce7; color:#25D366;"><i class="fab fa-whatsapp"></i></div>
+                <div class="km-profile-item-title">WhatsApp Customer Support</div>
+                <i class="fas fa-external-link-alt km-profile-item-arrow"></i>
+              </a>
+
+              <div class="km-profile-item" onclick="if(window.app && app.openModal) app.openModal('modal-faq');">
+                <div class="km-profile-item-icon" style="background:#f1f5f9; color:#475569;"><i class="fas fa-shield-alt"></i></div>
+                <div class="km-profile-item-title">Trust & Safety Guidelines</div>
+                <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+              </div>
             </div>
+          </div>
 
-            <div class="km-profile-item" onclick="MobileApp.showScreen('afford')">
-              <div class="km-profile-item-icon"><i class="fas fa-calculator"></i></div>
-              <div class="km-profile-item-title">What Can I Afford? Calculator</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.openWhatsAppAlerts()">
-              <div class="km-profile-item-icon" style="background:#e8f8ee; color:#25D366;"><i class="fab fa-whatsapp"></i></div>
-              <div class="km-profile-item-title">Instant WhatsApp Vacancy Alerts</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.showScreen('smarthunt')">
-              <div class="km-profile-item-icon" style="background:#f0fff0; color:#006818;"><i class="fas fa-search-location"></i></div>
-              <div class="km-profile-item-title">Hire a House Hunter (72h Concierge)</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.openMovers()">
-              <div class="km-profile-item-icon" style="background:#fff7ed; color:#ea580c;"><i class="fas fa-truck-moving"></i></div>
-              <div class="km-profile-item-title">Verified Nairobi Movers & Quotes</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.openFibre()">
-              <div class="km-profile-item-icon" style="background:#f0f9ff; color:#0284c7;"><i class="fas fa-wifi"></i></div>
-              <div class="km-profile-item-title">Home Fibre & 5G Internet Setup</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <a href="https://wa.me/254792409540?text=Hi%20KejaMarket%20Support" target="_blank" class="km-profile-item">
-              <div class="km-profile-item-icon" style="background:#dcfce7; color:#25D366;"><i class="fab fa-whatsapp"></i></div>
-              <div class="km-profile-item-title">WhatsApp Customer Support</div>
-              <i class="fas fa-external-link-alt km-profile-item-arrow"></i>
-            </a>
-
-            <div class="km-profile-item" onclick="MobileApp.logout()" style="margin-top:14px; border-color:#fee2e2;">
-              <div class="km-profile-item-icon" style="background:#fef2f2; color:#ef4444;"><i class="fas fa-sign-out-alt"></i></div>
-              <div class="km-profile-item-title" style="color:#ef4444; font-weight:800;">Sign Out (${displayName})</div>
-            </div>
+          <!-- Section 3: Clean Sign Out Button (Jiji/Jumia Standard) -->
+          <div style="margin:16px 14px 24px;">
+            <button type="button" onclick="MobileApp.logout()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; background:#fff; border:1.5px solid #fecaca; color:#dc2626; border-radius:12px; padding:14px; font-weight:800; font-size:14px; cursor:pointer; box-shadow:0 1px 3px rgba(220,38,38,0.06);">
+              <i class="fas fa-sign-out-alt"></i> Sign Out (${displayName})
+            </button>
           </div>
         </div>
       `;
     } else {
-      // Clean Auth Screen for Unauthenticated Visitors
+      // Clean Guest Screen
       mSlot.innerHTML = `
-        <div style="padding-bottom:80px;">
-          <div class="km-profile-header" style="flex-direction:column; align-items:center; text-align:center; gap:12px; background:linear-gradient(135deg, #006818 0%, #004d12 100%); color:#ffffff; padding:22px 18px; border-radius:14px; margin:12px; box-shadow:0 4px 14px rgba(0,104,24,0.22);">
-            <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:22px; color:#ffffff;">
-              <i class="fas fa-shield-alt"></i>
+        <div style="padding-bottom:90px; background:#f8fafc; min-height:100%;">
+          <div class="km-profile-header" style="flex-direction:column; align-items:center; text-align:center; gap:12px; background:linear-gradient(135deg, #006818 0%, #004d12 100%); color:#ffffff; padding:24px 18px; border-radius:16px; margin:14px; box-shadow:0 4px 14px rgba(0,104,24,0.22);">
+            <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:24px; color:#ffffff;">
+              <i class="fas fa-user-circle"></i>
             </div>
             <div>
-              <div style="font-size:17px; font-weight:800; color:#ffffff; letter-spacing:-0.3px;">Sign In to KejaMarket</div>
+              <div style="font-size:18px; font-weight:800; color:#ffffff; letter-spacing:-0.3px;">Sign In to KejaMarket</div>
               <div style="font-size:12px; color:#e2e8f0; line-height:1.4; margin-top:4px; max-width:280px;">
                 Direct landlord contacts, verified houses, free scheduled viewings, and zero broker fees.
               </div>
             </div>
-
-            <div style="width:100%; display:flex; flex-direction:column; gap:8px; margin-top:6px;">
-              <button type="button" class="km-btn-signin" onclick="MobileApp.openSignIn()" style="background:#ffffff; color:#006818; border:none; padding:12px 18px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
-                <i class="fas fa-sign-in-alt"></i> Sign In to My Account
+            <div style="display:flex; gap:10px; width:100%; max-width:280px; margin-top:4px;">
+              <button type="button" onclick="MobileApp.openSignIn()" style="flex:1; background:#ffffff; color:#006818; border:none; padding:11px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+                Sign In
               </button>
-              <button type="button" class="km-btn-signup" onclick="MobileApp.openSignUp()" style="background:transparent; color:#ffffff; border:1.5px solid rgba(255,255,255,0.7); padding:11px 18px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
-                <i class="fas fa-user-plus"></i> Create Free Account
+              <button type="button" onclick="MobileApp.openSignUp()" style="flex:1; background:rgba(255,255,255,0.15); color:#ffffff; border:1px solid rgba(255,255,255,0.35); padding:11px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer;">
+                Register
               </button>
-            </div>
-
-            <div style="font-size:11px; color:#bbf7d0; display:flex; align-items:center; gap:6px; margin-top:4px;">
-              <i class="fas fa-check-circle"></i> Instant SMS OTP verification • 100% Free Tenant Accounts
             </div>
           </div>
 
-          <div class="km-profile-menu">
-            <div class="km-profile-item" onclick="MobileApp.openPostAd()">
-              <div class="km-profile-item-icon" style="background:#e8f8ee; color:#006818;"><i class="fas fa-plus-circle"></i></div>
-              <div class="km-profile-item-title">Post a Property (Landlord / Agent)</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+          <div style="margin:0 14px;">
+            <div class="km-profile-menu" style="background:#ffffff; border-radius:14px; border:1px solid #e2e8f0; overflow:hidden;">
+              <div class="km-profile-item" onclick="MobileApp.showScreen('favorites')">
+                <div class="km-profile-item-icon" style="background:#fef2f2; color:#ef4444;"><i class="fas fa-heart"></i></div>
+                <div class="km-profile-item-title">Saved Listings</div>
+                <span style="background:#006818; color:white; border-radius:12px; padding:2px 8px; font-size:11px; font-weight:800;">${State.favorites.length}</span>
+              </div>
+              <a href="https://wa.me/254792409540?text=Hi%20KejaMarket%20Support" target="_blank" class="km-profile-item" style="text-decoration:none;">
+                <div class="km-profile-item-icon" style="background:#dcfce7; color:#25D366;"><i class="fab fa-whatsapp"></i></div>
+                <div class="km-profile-item-title">WhatsApp Customer Support</div>
+                <i class="fas fa-external-link-alt km-profile-item-arrow"></i>
+              </a>
+              <div class="km-profile-item" onclick="if(window.app && app.openModal) app.openModal('modal-faq');">
+                <div class="km-profile-item-icon" style="background:#f1f5f9; color:#475569;"><i class="fas fa-shield-alt"></i></div>
+                <div class="km-profile-item-title">Trust & Safety Guidelines</div>
+                <i class="fas fa-chevron-right km-profile-item-arrow"></i>
+              </div>
             </div>
-
-            <div class="km-profile-item" onclick="MobileApp.showScreen('favorites')">
-              <div class="km-profile-item-icon"><i class="fas fa-heart"></i></div>
-              <div class="km-profile-item-title">Saved Listings</div>
-              <span style="background:#006818; color:white; border-radius:12px; padding:2px 8px; font-size:11px; font-weight:800;">${State.favorites.length}</span>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.showScreen('afford')">
-              <div class="km-profile-item-icon"><i class="fas fa-calculator"></i></div>
-              <div class="km-profile-item-title">What Can I Afford? Calculator</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.openWhatsAppAlerts()">
-              <div class="km-profile-item-icon" style="background:#e8f8ee; color:#25D366;"><i class="fab fa-whatsapp"></i></div>
-              <div class="km-profile-item-title">Instant WhatsApp Vacancy Alerts</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.showScreen('smarthunt')">
-              <div class="km-profile-item-icon" style="background:#f0fff0; color:#006818;"><i class="fas fa-search-location"></i></div>
-              <div class="km-profile-item-title">Hire a House Hunter (72h Concierge)</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.openMovers()">
-              <div class="km-profile-item-icon" style="background:#fff7ed; color:#ea580c;"><i class="fas fa-truck-moving"></i></div>
-              <div class="km-profile-item-title">Verified Nairobi Movers & Quotes</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <div class="km-profile-item" onclick="MobileApp.openFibre()">
-              <div class="km-profile-item-icon" style="background:#f0f9ff; color:#0284c7;"><i class="fas fa-wifi"></i></div>
-              <div class="km-profile-item-title">Home Fibre & 5G Internet Setup</div>
-              <i class="fas fa-chevron-right km-profile-item-arrow"></i>
-            </div>
-
-            <a href="https://wa.me/254792409540?text=Hi%20KejaMarket%20Support" target="_blank" class="km-profile-item">
-              <div class="km-profile-item-icon" style="background:#dcfce7; color:#25D366;"><i class="fab fa-whatsapp"></i></div>
-              <div class="km-profile-item-title">WhatsApp Customer Support</div>
-              <i class="fas fa-external-link-alt km-profile-item-arrow"></i>
-            </a>
           </div>
         </div>
       `;
@@ -4610,15 +4573,28 @@ function showScreen(screen, params = {}, isBackNav = false) {
   }
 
   function logout() {
-    if (window.kejaAuth && typeof window.kejaAuth.signOut === 'function') {
-      window.kejaAuth.signOut();
-    } else {
-      ['keja_token', 'keja_user', 'keja_session', 'kejamarket_user'].forEach(k => localStorage.removeItem(k));
-      window.location.reload();
-    }
+    console.log('[MobileApp] Initiating clean sign out...');
+    const keys = [
+      'keja_token', 'keja_session', 'keja_user', 'kejamarket_user',
+      'kejamarket_auth_token', 'user', 'currentUser', 'admin_auth',
+      'admin_token', 'admin_user', 'token', 'auth_token'
+    ];
+    keys.forEach(k => {
+      try { localStorage.removeItem(k); } catch (_) {}
+      try { sessionStorage.removeItem(k); } catch (_) {}
+    });
+    try {
+      document.cookie = 'token=; Max-Age=0; path=/;';
+      document.cookie = 'keja_token=; Max-Age=0; path=/;';
+    } catch (_) {}
+    try {
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', '/');
+      }
+    } catch (_) {}
+    window.location.replace('/');
   }
 
-  // Export to window
   window.MobileApp = {
     init,
     showScreen,

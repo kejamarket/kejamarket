@@ -387,6 +387,21 @@ async function initializeDatabase() {
       } catch (schemaErr) {
         console.warn('Schema update notice:', schemaErr.message);
       }
+      try {
+        await store.query(`
+          UPDATE properties 
+          SET status = 'approved',
+              listing_status = 'published',
+              is_verified = TRUE,
+              is_active = TRUE
+          WHERE (raw_data->>'status') = 'approved' 
+             OR (raw_data->>'isApproved') = 'true'
+             OR is_verified = TRUE;
+        `);
+        console.log('✅ Synced verified & approved status across all published properties');
+      } catch (syncErr) {
+        console.warn('Startup sync notice:', syncErr.message);
+      }
       console.log('✅ PostgreSQL database (Supabase) connected successfully');
     } else {
       console.warn('⚠️ï¸ PostgreSQL store not connected; using store fallback');
@@ -2829,6 +2844,11 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
   const updated = await store.updateProperty(id, {
     status: 'approved',
     isApproved: true,
+    isVerified: true,
+    is_verified: true,
+    listing_status: 'published',
+    is_active: true,
+    availability_last_confirmed_at: new Date().toISOString(),
     approvedAt: new Date().toISOString(),
     approvedBy: user.id
   });
@@ -7739,6 +7759,8 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
       if (!store.updateProperty) return res.status(400).json({ success: false, message: 'Property store not available' });
       const updated = await store.updateProperty(itemId, {
         is_verified: true, isVerified: true, status: 'approved', isApproved: true,
+        listing_status: 'published', is_active: true,
+        availability_last_confirmed_at: new Date().toISOString(),
         approvedAt: new Date().toISOString(), approvedBy: req.user.id
       });
       if (!updated) return res.status(404).json({ success: false, message: 'Property not found' });

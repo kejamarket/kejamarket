@@ -109,6 +109,11 @@ const kejaAuth = (() => {
       'kejamarket_auth_token',
       'user',
       'currentUser',
+      'admin_auth',
+      'admin_token',
+      'admin_user',
+      'token',
+      'auth_token',
       'keja_active_hunt_id'
     ];
     sessionKeys.forEach(key => {
@@ -887,11 +892,16 @@ const kejaAuth = (() => {
     window.dispatchEvent(new CustomEvent('keja:auth:logout'));
     window.dispatchEvent(new CustomEvent('auth-changed', { detail: { user: null } }));
     
-    // Redirect / reload to refresh the page to a clean logged-out guest state
-    console.log('[AUTH] Redirecting to homepage...');
+    // Reset hash and force clean reload to homepage as unsigned guest (Jiji/Jumia standard)
+    console.log('[AUTH] Clean sign out: replacing URL with homepage guest state...');
+    try {
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', '/');
+      }
+    } catch (_) {}
     setTimeout(() => {
-      window.location.href = '/';
-    }, 250);
+      window.location.replace('/');
+    }, 150);
   }
 
   /* ─────────────────────────────────────────

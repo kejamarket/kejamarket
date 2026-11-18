@@ -513,12 +513,14 @@ class PostgreSQLStore {
           const depNum = parseFloat(row.deposit_kes) || 0;
           // Explicit: only true when the column is literally true — null/undefined means PENDING
           const isVer = row.is_verified === true;
-          const status = row.raw_data?.status || (isVer ? 'approved' : 'pending');
+          const status = row.raw_data?.status || row.status || (isVer ? 'approved' : 'pending');
           const photosArr = (row.photos && row.photos.length > 0) ? row.photos : (row.raw_data?.photos || []);
           return {
             ...row.raw_data,
             id: row.id,
             title: row.title,
+            createdAt: row.created_at || row.raw_data?.createdAt || row.approved_at,
+            created_at: row.created_at || row.raw_data?.createdAt || row.approved_at,
             rent: rentNum,
             rentKes: rentNum,
             rent_kes: rentNum,
@@ -761,8 +763,20 @@ class PostgreSQLStore {
 
     if (updates.isVerified !== undefined || updates.is_verified !== undefined) {
       const verVal = updates.isVerified !== undefined ? updates.isVerified : updates.is_verified;
-      colUpdates.push(`is_verified = $${colIdx++}`);
+      colUpdates.push(`is_verified = ${colIdx++}`);
       colValues.push(!!verVal);
+    }
+    if (updates.status !== undefined) {
+      colUpdates.push(`status = ${colIdx++}`);
+      colValues.push(updates.status);
+    }
+    if (updates.listing_status !== undefined || updates.listingStatus !== undefined) {
+      colUpdates.push(`listing_status = ${colIdx++}`);
+      colValues.push(updates.listing_status || updates.listingStatus);
+    }
+    if (updates.is_active !== undefined || updates.isActive !== undefined) {
+      colUpdates.push(`is_active = ${colIdx++}`);
+      colValues.push(!!(updates.is_active ?? updates.isActive));
     }
     if (updates.isFeatured !== undefined || updates.is_featured !== undefined) {
       colUpdates.push(`is_featured = $${colIdx++}`);

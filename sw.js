@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v133-google-maps-cache-bust';
+const CACHE_NAME = 'kejamarket-v134-approval-profile-signout';
 
 const STATIC_ASSETS = [
   '/',
