@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v139-super-admin-os';
+const CACHE_NAME = 'kejamarket-v140-super-admin-os';
 
 const STATIC_ASSETS = [
   '/',

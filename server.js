@@ -472,6 +472,14 @@ async function initializeDatabase() {
 
             ALTER TABLE viewing_policy_acceptances DROP CONSTRAINT IF EXISTS viewing_policy_acceptances_tenant_id_fkey;
             ALTER TABLE viewing_policy_acceptances ADD CONSTRAINT viewing_policy_acceptances_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES users(id) ON DELETE CASCADE;
+
+            -- Ensure properties table has all expected columns
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'approved';
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE;
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS listing_status TEXT DEFAULT 'published';
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT FALSE;
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS is_top_ad BOOLEAN DEFAULT FALSE;
           `);
         } catch (fkErr) {
           console.warn('FK constraint cascade migration notice:', fkErr.message);
@@ -8095,8 +8103,8 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
       // Get property details for notification
       const prop = await (store.getPropertyById ? store.getPropertyById(itemId) : updated);
       const title = prop?.title || 'Your listing';
-      const ownerId = prop?.landlord?.id || prop?.landlordId;
-      const phone = prop?.landlordPhone || prop?.landlord?.phone || prop?.caretakerPhone;
+      const ownerId = prop?.landlord?.id || prop?.landlordId || prop?.landlord_id || prop?.userId || prop?.user_id || prop?.raw_data?.landlordId;
+      const phone = prop?.landlordPhone || prop?.landlord?.phone || prop?.caretakerPhone || prop?.caretaker_phone || prop?.phone || prop?.raw_data?.caretakerPhone || prop?.raw_data?.landlordPhone;
       // Inbox notification
       if (ownerId) sendApprovalInbox({ userId: ownerId, userRole: 'landlord', title, listingId: itemId, type: 'property' });
       // SMS notification
@@ -8204,8 +8212,8 @@ app.post('/api/admin/reject', requireAuth, async (req, res) => {
         status: 'rejected', is_verified: false, isVerified: false, isApproved: false,
         rejectionReason: reason, rejectedAt: new Date().toISOString(), rejectedBy: req.user.id
       });
-      const ownerId = prop.landlord?.id || prop.landlordId;
-      const phone = prop.landlordPhone || prop.landlord?.phone || prop.caretakerPhone;
+      const ownerId = prop?.landlord?.id || prop?.landlordId || prop?.landlord_id || prop?.userId || prop?.user_id || prop?.raw_data?.landlordId;
+      const phone = prop?.landlordPhone || prop?.landlord?.phone || prop?.caretakerPhone || prop?.caretaker_phone || prop?.phone || prop?.raw_data?.caretakerPhone || prop?.raw_data?.landlordPhone;
       if (ownerId) sendRejectionInbox({ userId: ownerId, userRole: 'landlord', title: prop.title, listingId: itemId, type: 'property', reason });
       if (phone) sendSMS(phone, `❌ KejaMarket: Your property "${prop.title}" was NOT approved.\n\nReason: ${reason}\n\nPlease update and resubmit from your Landlord Portal.`).catch(e => console.warn('Reject property SMS:', e.message));
       await logAdminAction(req.user, 'REJECTED_PROPERTY', 'property', itemId, prop.title, { status: 'pending' }, { status: 'rejected', reason }, reason, req);
