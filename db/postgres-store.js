@@ -506,7 +506,7 @@ class PostgreSQLStore {
           FROM properties p 
           LEFT JOIN property_media pm ON p.id = pm.property_id 
           GROUP BY p.id 
-          ORDER BY p.created_at DESC
+          ORDER BY p.created_at DESC NULLS LAST
         `);
         return result.rows.map(row => {
           const rentNum = parseFloat(row.rent_kes) || 0;
@@ -1320,13 +1320,13 @@ class PostgreSQLStore {
     const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
     const orderMap = {
-      newest: 'created_at DESC',
-      price_asc: 'rent_kes ASC',
-      price_desc: 'rent_kes DESC',
-      featured: 'is_featured DESC, is_top_ad DESC, created_at DESC',
+      newest: 'created_at DESC NULLS LAST',
+      price_asc: 'rent_kes ASC NULLS LAST',
+      price_desc: 'rent_kes DESC NULLS LAST',
+      featured: 'is_featured DESC, is_top_ad DESC, created_at DESC NULLS LAST',
       category_asc: 'category ASC, rent_kes ASC'
     };
-    const orderBy = orderMap[sort] || 'created_at DESC';
+    const orderBy = orderMap[sort] || 'created_at DESC NULLS LAST';
 
     // Count total
     const countResult = await this.query(`SELECT COUNT(*) FROM properties ${where}`, values);

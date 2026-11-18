@@ -398,7 +398,16 @@ async function initializeDatabase() {
              OR (raw_data->>'isApproved') = 'true'
              OR is_verified = TRUE;
         `);
-        console.log('✅ Synced verified & approved status across all published properties');
+        await store.query(`
+          UPDATE properties 
+          SET created_at = COALESCE(
+            created_at, 
+            NULLIF(raw_data->>'createdAt', '')::timestamptz, 
+            '2026-01-01 00:00:00+00'::timestamptz
+          )
+          WHERE created_at IS NULL;
+        `);
+        console.log('✅ Synced verified & approved status and timestamps across all published properties');
       } catch (syncErr) {
         console.warn('Startup sync notice:', syncErr.message);
       }
