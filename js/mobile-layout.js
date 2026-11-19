@@ -782,10 +782,14 @@
     if (sharedPropId) {
       showScreen('detail', sharedPropId);
     } else {
-      showScreen('home');
+      showScreen('home', {}, true);
       try {
-        if (typeof window !== 'undefined' && window.history && !window.location.hash) {
-          window.history.replaceState({ kmType: 'screen', screen: 'home' }, '', '#home');
+        if (typeof window !== 'undefined' && window.history) {
+          if (window.location.hash === '#home') {
+            window.history.replaceState({ kmType: 'screen', screen: 'home' }, '', window.location.pathname + window.location.search);
+          } else if (!window.location.hash) {
+            window.history.replaceState({ kmType: 'screen', screen: 'home' }, '', window.location.pathname + window.location.search);
+          }
         }
       } catch (e) {}
     }
@@ -1112,8 +1116,12 @@
 function showScreen(screen, params = {}, isBackNav = false) {
     if (!isBackNav && typeof window !== 'undefined' && window.history && screen !== State.currentScreen) {
       try {
-        const hash = '#' + screen + (params && (params.id || typeof params === 'string') ? ('?id=' + (params.id || params)) : '');
-        window.history.pushState({ kmType: 'screen', screen, params }, '', hash);
+        if (screen === 'home') {
+          window.history.pushState({ kmType: 'screen', screen: 'home', params }, '', window.location.pathname + window.location.search);
+        } else {
+          const hash = '#' + screen + (params && (params.id || typeof params === 'string') ? ('?id=' + (params.id || params)) : '');
+          window.history.pushState({ kmType: 'screen', screen, params }, '', hash);
+        }
       } catch (e) {}
     }
     State.currentScreen = screen;
@@ -3577,7 +3585,7 @@ function showScreen(screen, params = {}, isBackNav = false) {
       if (now - lastBackPressTime > 2500) {
         lastBackPressTime = now;
         try {
-          window.history.pushState({ kmType: 'screen', screen: 'home' }, '', '#home');
+          window.history.pushState({ kmType: 'screen', screen: 'home' }, '', window.location.pathname + window.location.search);
         } catch (err) {}
         if (window.app && typeof window.app.showToast === 'function') {
           window.app.showToast('Press back again to exit', 'info');

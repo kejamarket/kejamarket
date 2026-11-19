@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v141-fix-approve-delete-fk';
+const CACHE_NAME = 'kejamarket-v142-clean-header-spacing';
 
 const STATIC_ASSETS = [
   '/',

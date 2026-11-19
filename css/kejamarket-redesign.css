@@ -3653,13 +3653,20 @@ html, body { overflow-x: clip !important;
   color: #94a3b8 !important;
 }
 
-/* Header Actions Container */
+/* Header Actions Container - Spacious & Elegant on Desktop */
 .header-actions {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: 16px !important;
   flex-shrink: 0 !important;
   margin-left: auto !important;
+  padding-right: 2px !important;
+}
+
+@media (min-width: 1200px) {
+  .header-actions {
+    gap: 18px !important;
+  }
 }
 
 /* Action Buttons */
@@ -3732,43 +3739,60 @@ html, body { overflow-x: clip !important;
 }
 
 .btn-icon-action {
-  width: 38px !important;
-  height: 38px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
   border-radius: 50% !important;
-  background: #f8fafc !important;
-  border: 1px solid #e2e8f0 !important;
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
   color: #475569 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
-  transition: all 0.15s ease !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   position: relative !important;
   flex-shrink: 0 !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+  margin: 0 !important;
 }
 
 .btn-icon-action:hover {
-  background: #f1f5f9 !important;
+  background: #f8fafc !important;
   color: #0f172a !important;
   border-color: #cbd5e1 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08) !important;
+}
+
+.btn-icon-action i {
+  font-size: 1.05rem !important;
+}
+
+.btn-notifications {
+  position: relative !important;
+  overflow: visible !important;
 }
 
 .notif-badge {
   position: absolute !important;
-  top: -2px !important;
-  right: -2px !important;
+  top: -3px !important;
+  right: -3px !important;
   background: #ef4444 !important;
   color: #ffffff !important;
-  border-radius: 50% !important;
+  border-radius: 999px !important;
   font-size: 0.65rem !important;
   font-weight: 800 !important;
-  min-width: 16px !important;
-  height: 16px !important;
+  min-width: 18px !important;
+  height: 18px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   border: 2px solid #ffffff !important;
   line-height: 1 !important;
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.35) !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -3780,39 +3804,44 @@ html, body { overflow-x: clip !important;
   display: flex !important;
   align-items: center !important;
   flex-shrink: 0 !important;
+  margin-left: 6px !important; /* Critical breathing room away from notification bell badge */
 }
 
 #btn-auth-header,
 .btn-profile {
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: 10px !important;
   background: #ffffff !important;
   border: 1.5px solid #e2e8f0 !important;
   border-radius: 999px !important;
-  padding: 4px 12px 4px 5px !important;
-  height: 38px !important;
+  padding: 4px 14px 4px 6px !important;
+  height: 40px !important;
+  min-height: 40px !important;
   cursor: pointer !important;
   flex-shrink: 0 !important;
   font-family: 'Poppins', sans-serif !important;
-  transition: all 0.18s ease !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
   color: #0f172a !important;
   white-space: nowrap !important;
+  box-sizing: border-box !important;
+  outline: none !important;
 }
 
 #btn-auth-header:hover,
 .btn-profile:hover {
   border-color: #00b53f !important;
   background: #f0fdf4 !important;
-  box-shadow: 0 3px 8px rgba(0, 181, 63, 0.15) !important;
+  box-shadow: 0 3px 10px rgba(0, 181, 63, 0.16) !important;
   transform: translateY(-1px) !important;
 }
 
 .profile-avatar,
 #header-user-avatar {
-  width: 28px !important;
-  height: 28px !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
   border-radius: 50% !important;
   background: #00b53f !important;
   color: #ffffff !important;
@@ -3820,33 +3849,57 @@ html, body { overflow-x: clip !important;
   align-items: center !important;
   justify-content: center !important;
   flex-shrink: 0 !important;
-  font-size: 0.85rem !important;
+  font-size: 0.95rem !important;
   font-weight: 700 !important;
+  margin: 0 !important;
+  box-shadow: 0 1px 3px rgba(0, 181, 63, 0.25) !important;
 }
 
 .profile-avatar i,
 #header-user-avatar i {
   color: #ffffff !important;
-  font-size: 0.82rem !important;
+  font-size: 0.95rem !important;
 }
 
 .profile-name,
 #auth-header-label {
-  font-size: 0.84rem !important;
+  display: inline-block !important;
+  font-size: 0.86rem !important;
   font-weight: 700 !important;
   color: #0f172a !important;
-  max-width: 110px !important;
+  max-width: 120px !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   font-family: 'Poppins', sans-serif !important;
+  letter-spacing: -0.2px !important;
 }
 
 .profile-chevron {
-  font-size: 0.65rem !important;
+  display: inline-block !important;
+  font-size: 0.68rem !important;
   color: #94a3b8 !important;
   margin-left: 2px !important;
-  transition: transform 0.15s ease !important;
+  transition: transform 0.2s ease !important;
+}
+
+/* Ensure that when screen width causes label to hide, the chevron also hides cleanly and button is a neat circle */
+@media (max-width: 1024px) {
+  .btn-profile {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+  }
+  .profile-chevron {
+    display: none !important;
+  }
+  .profile-name,
+  #auth-header-label {
+    display: none !important;
+  }
 }
 
 /* Profile Dropdown Panel */
