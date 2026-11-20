@@ -838,17 +838,30 @@ const AdminCore = (() => {
   function updateSidebarBadges(data) {
     const pendingCount = (data.attention?.pendingApproval) || 0;
     const reportedCount = (data.attention?.reportedListings) || 0;
-
-    const pendingBadge = document.getElementById('badge-pending-listings');
-    if (pendingBadge) {
-      pendingBadge.textContent = pendingCount;
-      pendingBadge.style.display = pendingCount > 0 ? 'inline-block' : 'none';
-    }
+    updatePendingBadge(pendingCount);
 
     const repBadge = document.getElementById('badge-reported-listings');
     if (repBadge) {
       repBadge.textContent = reportedCount;
       repBadge.style.display = reportedCount > 0 ? 'inline-block' : 'none';
+    }
+  }
+
+  function updatePendingBadge(count) {
+    const pendingBadge = document.getElementById('badge-pending-listings');
+    if (pendingBadge) {
+      pendingBadge.textContent = count;
+      pendingBadge.style.display = count > 0 ? 'inline-block' : 'none';
+    }
+  }
+
+  function decrementPendingCount(amount = 1) {
+    const pendingBadge = document.getElementById('badge-pending-listings');
+    if (pendingBadge) {
+      let current = parseInt(pendingBadge.textContent) || 0;
+      let next = Math.max(0, current - amount);
+      pendingBadge.textContent = next;
+      pendingBadge.style.display = next > 0 ? 'inline-block' : 'none';
     }
   }
 
@@ -3795,6 +3808,8 @@ const AdminCore = (() => {
     closeDispatchModal,
     submitManualDispatch,
     refreshCurrentModule,
+    updatePendingBadge,
+    decrementPendingCount,
     logout,
     state
   };

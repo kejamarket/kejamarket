@@ -8369,6 +8369,15 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
         availability_last_confirmed_at: new Date().toISOString(),
         approvedAt: new Date().toISOString(), approvedBy: req.user.id
       });
+      // Direct SQL update to ensure columns are guaranteed set in Postgres:
+      if (store.isConnected && store.query) {
+        try {
+          await store.query(
+            "UPDATE properties SET is_verified = true, status = 'approved', is_active = true, updated_at = NOW() WHERE id = $1 OR LOWER(id) = LOWER($1)",
+            [itemId]
+          );
+        } catch (dbErr) { console.warn('Direct SQL approve notice:', dbErr.message); }
+      }
       if (!updated) return res.status(404).json({ success: false, message: 'Property not found' });
       // Get property details for notification
       const prop = await (store.getPropertyById ? store.getPropertyById(itemId) : updated);
@@ -8482,6 +8491,15 @@ app.post('/api/admin/reject', requireAuth, async (req, res) => {
         status: 'rejected', is_verified: false, isVerified: false, isApproved: false,
         rejectionReason: reason, rejectedAt: new Date().toISOString(), rejectedBy: req.user.id
       });
+      // Direct SQL update to ensure status is marked rejected in Postgres:
+      if (store.isConnected && store.query) {
+        try {
+          await store.query(
+            "UPDATE properties SET is_verified = false, status = 'rejected', rejection_reason = $1, is_active = false, updated_at = NOW() WHERE id = $2 OR LOWER(id) = LOWER($2)",
+            [reason, itemId]
+          );
+        } catch (dbErr) { console.warn('Direct SQL reject notice:', dbErr.message); }
+      }
       const ownerId = prop?.landlord?.id || prop?.landlordId || prop?.landlord_id || prop?.userId || prop?.user_id || prop?.raw_data?.landlordId;
       const phone = prop?.landlordPhone || prop?.landlord?.phone || prop?.caretakerPhone || prop?.caretaker_phone || prop?.phone || prop?.raw_data?.caretakerPhone || prop?.raw_data?.landlordPhone;
       if (ownerId) sendRejectionInbox({ userId: ownerId, userRole: 'landlord', title: prop.title, listingId: itemId, type: 'property', reason });

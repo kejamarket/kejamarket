@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v143-whatsapp-comm-zero-fouc-admin-fix';
+const CACHE_NAME = 'kejamarket-v144-automated-listing-approval-live-badges';
 
 const STATIC_ASSETS = [
   '/',

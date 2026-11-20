@@ -445,6 +445,19 @@ const AdminProperties = (() => {
   async function approveProperty(propertyId) {
     if (!confirm('Approve this property listing?')) return;
 
+    if (window.AdminCore && typeof window.AdminCore.decrementPendingCount === 'function') {
+      window.AdminCore.decrementPendingCount(1);
+    }
+
+    // Optimistically update table row
+    const row = document.querySelector(`tr[data-id="${propertyId}"]`) || document.getElementById(`prop-row-${propertyId}`);
+    if (row) {
+      const statusBadge = row.querySelector('.badge') || row.querySelector('td:nth-child(5)');
+      if (statusBadge) {
+        statusBadge.innerHTML = '<span class="badge badge-success" style="background:#10b981; color:#fff; padding:2px 8px; border-radius:10px; font-weight:700;">Approved</span>';
+      }
+    }
+
     try {
       const res = await fetch(`${API_BASE}/api/admin/approve`, {
         method: 'POST',
@@ -452,14 +465,14 @@ const AdminProperties = (() => {
           'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ propertyId })
+        body: JSON.stringify({ itemType: 'property', itemId: propertyId, propertyId })
       });
 
       if (!res.ok) throw new Error('Failed to approve property');
 
-      showToast('Property approved successfully', 'success');
+      showToast('✅ Property approved and published LIVE', 'success');
       
-      // Reload or navigate
+      // Reload or refresh view
       if (document.getElementById('properties-content')) {
         await loadProperties();
       } else {
@@ -468,7 +481,7 @@ const AdminProperties = (() => {
       
     } catch (error) {
       console.error('Error approving property:', error);
-      alert('Failed to approve property: ' + error.message);
+      showToast('Failed to approve property: ' + error.message, 'error');
     }
   }
 

@@ -60,7 +60,12 @@ const AdminVerification = (() => {
     if (!res.ok) throw new Error('Failed to load pending listings');
     const data = await res.json();
     // Return combined pending items (properties + services + marketplace)
-    return data.items || [];
+    const items = data.items || [];
+    currentItems = items;
+    if (window.AdminCore && typeof window.AdminCore.updatePendingBadge === 'function') {
+      window.AdminCore.updatePendingBadge(items.length);
+    }
+    return items;
   }
 
   // Load pending documents
@@ -177,23 +182,23 @@ const AdminVerification = (() => {
       <div class="verification-stats">
         <div class="stat-box">
           <i class="fas fa-clock"></i>
-          <div><div class="stat-number">${items.length}</div><div class="stat-label">Total Pending</div></div>
+          <div><div class="stat-number" id="stat-val-total-pending">${items.length}</div><div class="stat-label">Total Pending</div></div>
         </div>
         <div class="stat-box">
           <i class="fas fa-home"></i>
-          <div><div class="stat-number">${props.length}</div><div class="stat-label">Properties</div></div>
+          <div><div class="stat-number" id="stat-val-props-pending">${props.length}</div><div class="stat-label">Properties</div></div>
         </div>
         <div class="stat-box">
           <i class="fas fa-tools"></i>
-          <div><div class="stat-number">${svcs.length}</div><div class="stat-label">Services</div></div>
+          <div><div class="stat-number" id="stat-val-svcs-pending">${svcs.length}</div><div class="stat-label">Services</div></div>
         </div>
         <div class="stat-box">
           <i class="fas fa-shopping-bag"></i>
-          <div><div class="stat-number">${mkts.length}</div><div class="stat-label">Marketplace</div></div>
+          <div><div class="stat-number" id="stat-val-mkts-pending">${mkts.length}</div><div class="stat-label">Marketplace</div></div>
         </div>
       </div>
 
-      <div class="verification-grid">
+      <div class="verification-grid" id="pending-verification-grid">
         ${items.map(item => {
           const type = item.type || 'property';
           const color = typeColor[type] || '#4f46e5';
@@ -205,7 +210,7 @@ const AdminVerification = (() => {
           const thumb = extractImageUrl(rawFirst);
           const thumbStyle = thumb ? `background-image:url('${thumb}');background-size:cover;background-position:center;` : 'background:#f1f5f9;display:flex;align-items:center;justify-content:center;';
           return `
-          <div class="verification-card">
+          <div class="verification-card" id="verif-card-${type}-${item.id}" data-type="${type}" data-id="${item.id}" style="transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform, opacity, max-height;">
             <div class="verification-card-header" style="display:flex;justify-content:space-between;align-items:center;">
               <span style="background:${color};color:#fff;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">
                 <i class="fas ${icon}"></i> ${label}
@@ -629,9 +634,75 @@ const AdminVerification = (() => {
     }
   }
 
+  // Reusable card animation & counter decrement automation
+  function vanishCard(type, id) {
+    const card = document.getElementById(`verif-card-${type}-${id}`) || document.querySelector(`[data-id="${id}"]`);
+    if (card) {
+      card.style.transition = 'all 0.38s cubic-bezier(0.4, 0, 0.2, 1)';
+      card.style.transform = 'scale(0.88) translateY(-16px)';
+      card.style.opacity = '0';
+      card.style.pointerEvents = 'none';
+      setTimeout(() => {
+        card.style.maxHeight = '0px';
+        card.style.marginTop = '0px';
+        card.style.marginBottom = '0px';
+        card.style.paddingTop = '0px';
+        card.style.paddingBottom = '0px';
+        card.style.overflow = 'hidden';
+      }, 120);
+      setTimeout(() => {
+        if (card.parentNode) card.remove();
+        checkEmptyGrid();
+      }, 400);
+    }
+
+    // Decrement sidebar pending badge
+    if (window.AdminCore && typeof window.AdminCore.decrementPendingCount === 'function') {
+      window.AdminCore.decrementPendingCount(1);
+    }
+
+    // Decrement page stat counters
+    const totalStat = document.getElementById('stat-val-total-pending');
+    if (totalStat) {
+      let n = Math.max(0, (parseInt(totalStat.textContent) || 0) - 1);
+      totalStat.textContent = n;
+    }
+    const typeStatId = type === 'property' ? 'stat-val-props-pending' : type === 'service' ? 'stat-val-svcs-pending' : 'stat-val-mkts-pending';
+    const typeStat = document.getElementById(typeStatId);
+    if (typeStat) {
+      let n = Math.max(0, (parseInt(typeStat.textContent) || 0) - 1);
+      typeStat.textContent = n;
+    }
+
+    // Remove from in-memory array
+    currentItems = currentItems.filter(i => String(i.id) !== String(id));
+  }
+
+  function checkEmptyGrid() {
+    const grid = document.getElementById('pending-verification-grid');
+    if (grid && grid.querySelectorAll('.verification-card').length === 0) {
+      const content = document.getElementById('verification-content');
+      if (content) {
+        content.innerHTML = `
+          <div class="empty-state" style="padding: 48px 20px; text-align: center; background:#fff; border-radius:16px; border:1px solid #e2e8f0; margin-top:20px;">
+            <div style="width: 68px; height: 68px; border-radius: 50%; background: #dcfce7; color: #16a34a; font-size: 32px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+              <i class="fas fa-check-double"></i>
+            </div>
+            <h3 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">All Pending Moderation Cleared!</h3>
+            <p style="color: #64748b; font-size: 0.92rem; max-width: 420px; margin: 0 auto;">Great job! Every submitted property, artisan pro, and marketplace item has been verified and processed.</p>
+          </div>
+        `;
+      }
+    }
+  }
+
   // Quick approve — handles property, service, marketplace
   async function quickApprove(type, id, title) {
     if (!confirm(`Approve this ${type} listing${title ? ': "' + title + '"' : ''}?\n\nThis will publish it immediately and notify the owner.`)) return;
+    
+    // 1. Immediately vanish card & decrement pending counter in real time
+    vanishCard(type, id);
+
     try {
       const res = await fetch(`${API_BASE}/api/admin/approve`, {
         method: 'POST',
@@ -644,10 +715,21 @@ const AdminVerification = (() => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to approve');
       showToast(`✅ ${type.charAt(0).toUpperCase() + type.slice(1)} approved and is now LIVE!`, 'success');
-      await loadVerificationItems();
+      
+      // Update All Properties count in sidebar if applicable
+      const allPropsBtn = document.querySelector('.admin-nav-btn[data-module="properties"] span');
+      if (allPropsBtn && type === 'property') {
+        const match = allPropsBtn.textContent.match(/\((\d+)\)/);
+        if (match) {
+          const nextCount = parseInt(match[1]) + 1;
+          allPropsBtn.textContent = `All Properties (${nextCount})`;
+        }
+      }
     } catch (error) {
       console.error('Error approving:', error);
       showToast('Failed to approve: ' + error.message, 'error');
+      // If network error, re-sync with server
+      await loadVerificationItems();
     }
   }
 
@@ -715,6 +797,10 @@ const AdminVerification = (() => {
     if (!details) { showToast('Please provide additional details', 'error'); return; }
     const fullReason = reason === 'other' ? details : `${reason}: ${details}`;
 
+    // 1. Close modal and immediately vanish card in real time
+    document.getElementById('quick-reject-modal')?.remove();
+    vanishCard(type, id);
+
     try {
       const res = await fetch(`${API_BASE}/api/admin/reject`, {
         method: 'POST',
@@ -726,11 +812,10 @@ const AdminVerification = (() => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to reject');
-      document.getElementById('quick-reject-modal')?.remove();
       showToast(`❌ Listing rejected. Owner has been notified.`, 'success');
-      await loadVerificationItems();
     } catch (err) {
       showToast('Failed to reject: ' + err.message, 'error');
+      await loadVerificationItems();
     }
   }
 
@@ -740,6 +825,9 @@ const AdminVerification = (() => {
     
     // Double confirmation for safety
     if (!confirm('⚠️ FINAL CONFIRMATION\n\nThis will PERMANENTLY delete the listing from the database.\nThere is NO way to recover it.\n\nClick OK to DELETE FOREVER.')) return;
+
+    // 1. Immediately vanish card in real time
+    vanishCard(type, id);
 
     try {
       let endpoint = '';
@@ -770,10 +858,10 @@ const AdminVerification = (() => {
       }
 
       showToast(`🗑️ ${type.charAt(0).toUpperCase() + type.slice(1)} deleted permanently.`, 'success');
-      await loadVerificationItems();
     } catch (error) {
       console.error('Error deleting:', error);
       showToast('Failed to delete: ' + error.message, 'error');
+      await loadVerificationItems();
     }
   }
 
