@@ -14,6 +14,17 @@
   <link rel="stylesheet" href="css/admin-dashboard.css?v=3.5&t=202610182340">
   <link rel="stylesheet" href="vendor/fonts/plus-jakarta-sans.css">
   <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+  <script>
+    // Immediate early event delegation for all admin buttons & navigation items
+    document.addEventListener('click', function(e) {
+      const navBtn = e.target.closest('.admin-nav-btn');
+      if (navBtn && navBtn.dataset && navBtn.dataset.module) {
+        if (window.AdminCore && typeof window.AdminCore.navigate === 'function') {
+          window.AdminCore.navigate(navBtn.dataset.module, navBtn.dataset.view || null);
+        }
+      }
+    });
+  </script>
 </head>
 <body>
 
@@ -42,11 +53,11 @@
       <!-- 01. Executive Command Centre -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">01. Executive Command</div>
-        <button class="admin-nav-btn active" data-module="dashboard" data-rbac="any">
+        <button class="admin-nav-btn active" data-module="dashboard" data-rbac="any" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-chart-line nav-icon"></i>
           <span>Overview Dashboard</span>
         </button>
-        <button class="admin-nav-btn" data-module="live-operations" data-rbac="any">
+        <button class="admin-nav-btn" data-module="live-operations" data-rbac="any" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-satellite-dish nav-icon" style="color:#10b981;"></i>
           <span>Live Operations Stream</span>
           <span class="admin-badge" style="margin-left:auto; background:#10b981; color:#fff; border-radius:10px; padding:2px 6px; font-size:10px; font-weight:800;">LIVE</span>
@@ -56,16 +67,16 @@
       <!-- 02. Property & Real Estate -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">02. Property & Real Estate</div>
-        <button class="admin-nav-btn" data-module="verification" data-view="pending" data-rbac="listings,super">
+        <button class="admin-nav-btn" data-module="verification" data-view="pending" data-rbac="listings,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-clock nav-icon" style="color:#f59e0b;"></i>
           <span>Pending Moderation</span>
           <span class="admin-badge" id="badge-pending-listings" style="display:none; margin-left:auto; background:#f59e0b; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:700;">0</span>
         </button>
-        <button class="admin-nav-btn" data-module="properties" data-rbac="listings,super">
+        <button class="admin-nav-btn" data-module="properties" data-rbac="listings,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-home nav-icon"></i>
           <span>All Properties (145)</span>
         </button>
-        <button class="admin-nav-btn" data-module="listings-reported" data-rbac="listings,super">
+        <button class="admin-nav-btn" data-module="listings-reported" data-rbac="listings,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-flag nav-icon" style="color:#ef4444;"></i>
           <span>Reported / Flagged</span>
           <span class="admin-badge" id="badge-reported-listings" style="display:none; margin-left:auto; background:#ef4444; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:700;">0</span>
@@ -75,7 +86,7 @@
       <!-- 03. Marketplace & Classifieds -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">03. Marketplace & Goods</div>
-        <button class="admin-nav-btn" data-module="marketplace" data-rbac="listings,super">
+        <button class="admin-nav-btn" data-module="marketplace" data-rbac="listings,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-shopping-bag nav-icon"></i>
           <span>Used Items & Products</span>
         </button>
@@ -84,7 +95,7 @@
       <!-- 04. Services Marketplace -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">04. Services Marketplace</div>
-        <button class="admin-nav-btn" data-module="services" data-rbac="listings,super">
+        <button class="admin-nav-btn" data-module="services" data-rbac="listings,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-tools nav-icon"></i>
           <span>Verified Artisans & Pros</span>
         </button>
@@ -93,24 +104,24 @@
       <!-- 05. Users, Identity & Trust -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">05. Users, Trust & KYC</div>
-        <button class="admin-nav-btn" data-module="users" data-rbac="users,super">
+        <button class="admin-nav-btn" data-module="users" data-rbac="users,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-users nav-icon"></i>
           <span>All Users & Accounts</span>
         </button>
-        <button class="admin-nav-btn" data-module="users-verified" data-rbac="users,verification,super">
+        <button class="admin-nav-btn" data-module="users-verified" data-rbac="users,verification,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-user-check nav-icon" style="color:#10b981;"></i>
           <span>Verified Accounts</span>
         </button>
-        <button class="admin-nav-btn" data-module="disputes" data-rbac="support,super">
+        <button class="admin-nav-btn" data-module="disputes" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-balance-scale nav-icon" style="color:#f59e0b;"></i>
           <span>Disputes & Complaints</span>
           <span class="admin-badge" style="margin-left:auto; background:#f59e0b; color:#fff; border-radius:10px; padding:2px 6px; font-size:10px; font-weight:800;">2 Open</span>
         </button>
-        <button class="admin-nav-btn" data-module="fraud" data-rbac="fraud,super">
+        <button class="admin-nav-btn" data-module="fraud" data-rbac="fraud,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-user-shield nav-icon" style="color:#ef4444;"></i>
           <span>Fraud & Risk Centre</span>
         </button>
-        <button class="admin-nav-btn" data-module="users-suspended" data-rbac="users,super">
+        <button class="admin-nav-btn" data-module="users-suspended" data-rbac="users,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-user-slash nav-icon" style="color:#dc2626;"></i>
           <span>Suspended / Banned</span>
         </button>
@@ -119,22 +130,22 @@
       <!-- 06. Viewing & Concierge (72H Smart House Hunt) -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">06. Viewing & Concierge</div>
-        <button class="admin-nav-btn" data-module="viewings" data-rbac="support,super">
+        <button class="admin-nav-btn" data-module="viewings" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-calendar-check nav-icon" style="color:#00b53f;"></i>
           <span>Live Viewing Queue</span>
           <span class="admin-badge" id="admin-viewings-count" style="display:none; margin-left:auto; background:#dc2626; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">0</span>
         </button>
-        <button class="admin-nav-btn" data-module="hunts-sla" data-rbac="support,super">
+        <button class="admin-nav-btn" data-module="hunts-sla" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-stopwatch nav-icon" style="color:#10b981;"></i>
           <span>Smart House Hunt 72H</span>
           <span class="admin-badge" id="admin-hunts-count" style="margin-left:auto; background:#10b981; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">8 Active</span>
         </button>
-        <button class="admin-nav-btn" data-module="scouts" data-rbac="any">
+        <button class="admin-nav-btn" data-module="scouts" data-rbac="any" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-binoculars nav-icon" style="color:#f59e0b;"></i>
           <span>Field Scouts & Dispatch</span>
           <span class="admin-badge" id="admin-scouts-badge" style="margin-left:auto; background:#f59e0b; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">6 Active</span>
         </button>
-        <button class="admin-nav-btn" data-module="vacancy-reports" data-rbac="any">
+        <button class="admin-nav-btn" data-module="vacancy-reports" data-rbac="any" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-map-marked-alt nav-icon" style="color:#00b53f;"></i>
           <span>Scout Vacancy Tips</span>
           <span class="admin-badge" id="admin-scout-count" style="display:none; margin-left:auto; background:#00b53f; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">0</span>
@@ -144,11 +155,11 @@
       <!-- 07. Portfolios & Property Operations -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">07. Portfolios & Units</div>
-        <button class="admin-nav-btn" data-module="buildings" data-rbac="listings,super">
+        <button class="admin-nav-btn" data-module="buildings" data-rbac="listings,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-building nav-icon"></i>
           <span>Buildings & Estates</span>
         </button>
-        <button class="admin-nav-btn" data-module="units" data-rbac="listings,super">
+        <button class="admin-nav-btn" data-module="units" data-rbac="listings,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-door-open nav-icon"></i>
           <span>Units & Tenancies</span>
         </button>
@@ -157,16 +168,16 @@
       <!-- 08. Communications & CRM -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">08. Communications & CRM</div>
-        <button class="admin-nav-btn" data-module="inquiries" data-rbac="support,super">
+        <button class="admin-nav-btn" data-module="inquiries" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-comments nav-icon" style="color:#3b82f6;"></i>
           <span>Tenant â†” Landlord Chats</span>
           <span class="admin-badge" id="badge-inquiries-count" style="display:none; margin-left:auto; background:#3b82f6; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">0</span>
         </button>
-        <button class="admin-nav-btn" data-module="messages-broadcast" data-rbac="support,super">
+        <button class="admin-nav-btn" data-module="messages-broadcast" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-bullhorn nav-icon"></i>
           <span>Broadcasts & SMS Engine</span>
         </button>
-        <button class="admin-nav-btn" data-module="support" data-rbac="support,super">
+        <button class="admin-nav-btn" data-module="support" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-ticket-alt nav-icon"></i>
           <span>Support Tickets</span>
         </button>
@@ -175,16 +186,16 @@
       <!-- 09. Finance & Daraja Accounting -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">09. Finance & Daraja M-Pesa</div>
-        <button class="admin-nav-btn" data-module="finance" data-rbac="finance,super">
+        <button class="admin-nav-btn" data-module="finance" data-rbac="finance,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-wallet nav-icon"></i>
           <span>Financial Overview & Fees</span>
         </button>
-        <button class="admin-nav-btn" data-module="daraja-reconciliation" data-rbac="finance,super">
+        <button class="admin-nav-btn" data-module="daraja-reconciliation" data-rbac="finance,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-file-invoice-dollar nav-icon" style="color:#0ea5e9;"></i>
           <span>Reconcile & 4-Eyes Refunds</span>
           <span class="admin-badge" style="margin-left:auto; background:#ef4444; color:#fff; border-radius:10px; padding:2px 6px; font-size:10px; font-weight:800;">4-EYES</span>
         </button>
-        <button class="admin-nav-btn" data-module="mpesa-config" data-rbac="finance,super">
+        <button class="admin-nav-btn" data-module="mpesa-config" data-rbac="finance,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-mobile-alt nav-icon"></i>
           <span>Daraja Credentials Vault</span>
         </button>
@@ -193,11 +204,11 @@
       <!-- 10. Plans & Monetization -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">10. Plans & Monetization</div>
-        <button class="admin-nav-btn" data-module="promotions" data-rbac="content,finance,super">
+        <button class="admin-nav-btn" data-module="promotions" data-rbac="content,finance,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-star nav-icon" style="color:#f59e0b;"></i>
           <span>TOP AD Boosts & Badges</span>
         </button>
-        <button class="admin-nav-btn" data-module="categories" data-rbac="content,super">
+        <button class="admin-nav-btn" data-module="categories" data-rbac="content,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-tags nav-icon"></i>
           <span>Categories & Pricing</span>
         </button>
@@ -206,7 +217,7 @@
       <!-- 11. Locations & Corridors -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">11. Locations & Hierarchy</div>
-        <button class="admin-nav-btn" data-module="locations" data-rbac="content,super">
+        <button class="admin-nav-btn" data-module="locations" data-rbac="content,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-map-marker-alt nav-icon"></i>
           <span>Counties & Corridors</span>
         </button>
@@ -215,11 +226,11 @@
       <!-- 12. Marketing, SEO & Growth -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">12. Marketing, SEO & Growth</div>
-        <button class="admin-nav-btn" data-module="seo-manager" data-rbac="content,super">
+        <button class="admin-nav-btn" data-module="seo-manager" data-rbac="content,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-search nav-icon" style="color:#0ea5e9;"></i>
           <span>SEO & Sitemap Manager</span>
         </button>
-        <button class="admin-nav-btn" data-module="analytics" data-rbac="super,finance,listings">
+        <button class="admin-nav-btn" data-module="analytics" data-rbac="super,finance,listings" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-chart-pie nav-icon"></i>
           <span>Analytics & Funnels</span>
         </button>
@@ -228,7 +239,7 @@
       <!-- 13. ODPC Data Protection & Compliance -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">13. ODPC Data Protection</div>
-        <button class="admin-nav-btn" data-module="compliance-odpc" data-rbac="super,admin.manage">
+        <button class="admin-nav-btn" data-module="compliance-odpc" data-rbac="super,admin.manage" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-shield-virus nav-icon" style="color:#8b5cf6;"></i>
           <span>ODPC Compliance Centre</span>
           <span class="admin-badge" style="margin-left:auto; background:#8b5cf6; color:#fff; border-radius:10px; padding:2px 6px; font-size:10px; font-weight:800;">ODPC</span>
@@ -238,11 +249,11 @@
       <!-- 14. Security & Audit Trail -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">14. Security & RBAC</div>
-        <button class="admin-nav-btn" data-module="adminUsers" data-rbac="super">
+        <button class="admin-nav-btn" data-module="adminUsers" data-rbac="super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-user-shield nav-icon"></i>
           <span>Admin RBAC & Roles</span>
         </button>
-        <button class="admin-nav-btn" data-module="audit" data-rbac="super">
+        <button class="admin-nav-btn" data-module="audit" data-rbac="super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-clipboard-list nav-icon"></i>
           <span>Immutable Audit Logs</span>
         </button>
@@ -251,15 +262,15 @@
       <!-- 15. System Administration & Super Governance -->
       <div class="sidebar-section">
         <div class="sidebar-section-title">15. System & Super Governance</div>
-        <button class="admin-nav-btn" data-module="system-settings" data-rbac="super">
+        <button class="admin-nav-btn" data-module="system-settings" data-rbac="super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-cogs nav-icon"></i>
           <span>System Settings</span>
         </button>
-        <button class="admin-nav-btn" data-module="backups" data-rbac="super">
+        <button class="admin-nav-btn" data-module="backups" data-rbac="super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-database nav-icon"></i>
           <span>Database & Backups</span>
         </button>
-        <button class="admin-nav-btn" data-module="super-governance" data-rbac="super">
+        <button class="admin-nav-btn" data-module="super-governance" data-rbac="super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-user-lock nav-icon" style="color:#dc2626;"></i>
           <span>Owner Command & Lockdown</span>
           <span class="admin-badge" style="margin-left:auto; background:#dc2626; color:#fff; border-radius:10px; padding:2px 6px; font-size:10px; font-weight:800;">MASTER</span>
@@ -324,7 +335,7 @@
           <div id="admin-user-name" class="user-name">Administrator</div>
           <div id="admin-user-role" class="user-role">Admin</div>
         </div>
-        <button class="admin-logout-btn btn-secondary" id="admin-logout">
+        <button class="admin-logout-btn btn-secondary" id="admin-logout" onclick="AdminCore.logout()">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
@@ -338,18 +349,18 @@
 </div>
 
 <!-- Admin System Scripts -->
-<script src="js/admin-core.js?v=140.0"></script>
-<script src="js/data/locations-master.js?v=140.0"></script>
-<script src="js/admin-locations.js?v=140.0"></script>
-<script src="js/admin-users.js?v=140.0"></script>
-<script src="js/admin-properties.js?v=140.0"></script>
-<script src="js/admin-verification.js?v=140.0"></script>
-<script src="js/admin-buildings.js?v=140.0"></script>
-<script src="js/admin-bnb.js?v=140.0"></script>
-<script src="js/admin-operations.js?v=140.0"></script>
-<script src="js/admin-hunts.js?v=140.0"></script>
-<script src="js/admin-viewings.js?v=140.0"></script>
-<script src="js/admin-os-extensions.js?v=140.0"></script>
+<script src="js/admin-core.js?v=142.0"></script>
+<script src="js/data/locations-master.js?v=142.0"></script>
+<script src="js/admin-locations.js?v=142.0"></script>
+<script src="js/admin-users.js?v=142.0"></script>
+<script src="js/admin-properties.js?v=142.0"></script>
+<script src="js/admin-verification.js?v=142.0"></script>
+<script src="js/admin-buildings.js?v=142.0"></script>
+<script src="js/admin-bnb.js?v=142.0"></script>
+<script src="js/admin-operations.js?v=142.0"></script>
+<script src="js/admin-hunts.js?v=142.0"></script>
+<script src="js/admin-viewings.js?v=142.0"></script>
+<script src="js/admin-os-extensions.js?v=142.0"></script>
 
 <!-- Mobile Menu Toggle Script -->
 <script>

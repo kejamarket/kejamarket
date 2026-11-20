@@ -97,6 +97,7 @@ const apiLimiter = rateLimit({
 });
 
 const app = express();
+app.set('trust proxy', 1);
 
 // â”€â”€ SECURITY HEADERS (helmet) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.use(helmet({
@@ -370,10 +371,19 @@ app.post('/api/admin/auth/login', async (req, res) => {
       { expiresIn: '14d' }
     );
 
+    const isHttps = req.secure || req.headers['x-forwarded-proto'] === 'https';
     res.cookie('keja_admin_token', token, {
       httpOnly: true,
-      secure: true,
+      secure: isHttps,
       sameSite: 'lax',
+      path: '/',
+      maxAge: 14 * 24 * 60 * 60 * 1000
+    });
+    res.cookie('keja_token', token, {
+      httpOnly: false,
+      secure: isHttps,
+      sameSite: 'lax',
+      path: '/',
       maxAge: 14 * 24 * 60 * 60 * 1000
     });
 
@@ -419,7 +429,8 @@ app.use((req, res, next) => {
                 cookies.keja_token || 
                 (req.headers.authorization && req.headers.authorization.startsWith('Bearer ') ? req.headers.authorization.split(' ')[1] : null) || 
                 req.query.admin_token || 
-                req.query.auth_token;
+                req.query.auth_token ||
+                req.query.token;
 
   if (!token) {
     // Unauthenticated request -> Return 404 (not the shell)
@@ -432,6 +443,24 @@ app.use((req, res, next) => {
     if (!decoded || (!decoded.isAdmin && decoded.role !== 'admin' && decoded.id !== 'usr-admin-01')) {
       return res.status(404).send(`<!DOCTYPE html><html><head><title>404 Not Found</title></head><body style="font-family:sans-serif;text-align:center;padding:50px;"><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p><hr><address>Apache/2.4.52 Server at kejamarket.co.ke Port 443</address></body></html>`);
     }
+
+    // Persist cookie on response so subsequent asset / API / page loads automatically carry the session
+    const isHttps = req.secure || req.headers['x-forwarded-proto'] === 'https';
+    res.cookie('keja_admin_token', token, {
+      httpOnly: true,
+      secure: isHttps,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 14 * 24 * 60 * 60 * 1000
+    });
+    res.cookie('keja_token', token, {
+      httpOnly: false,
+      secure: isHttps,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 14 * 24 * 60 * 60 * 1000
+    });
+
     // Authenticated admin: serve the admin dashboard
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     res.setHeader('Pragma', 'no-cache');

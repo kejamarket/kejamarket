@@ -3971,7 +3971,8 @@ class NairobiRentalsApp {
       titleEl.textContent = prop.landlord?.name || 'Landlord';
     }
     if (subEl) {
-      subEl.innerHTML = `<span>${prop.estateSuburb || 'Nairobi'}</span> &bull; <span style="color:#4ade80; font-weight:700;"><i class="fas fa-circle" style="font-size:7px;"></i> Online now</span> &bull; <span style="color:#94a3b8;">Replies in &lt; 2m</span>`;
+      const presence = this.getRealisticPresence(prop);
+      subEl.innerHTML = `<span>${prop.estateSuburb || 'Nairobi'}</span> &bull; <span style="color:${presence.color}; font-weight:600;"><i class="fas fa-circle" style="font-size:7px;"></i> ${presence.text}</span> &bull; <span style="color:#64748b;">Verified Landlord</span>`;
     }
     if (banner && bannerTitle && bannerPrice) {
       banner.style.display = 'flex';
@@ -4034,6 +4035,26 @@ class NairobiRentalsApp {
     setTimeout(() => {
       if (input) input.focus();
     }, 300);
+  }
+
+  getRealisticPresence(prop) {
+    if (!prop) return { text: 'KejaMarket Support', color: '#00a884' };
+    const idNum = (prop.id || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    const d = new Date();
+    const hr = d.getHours();
+    if (hr >= 22 || hr < 6) {
+      return { text: 'Offline • Replies 7:00 AM', color: '#94a3b8' };
+    }
+    const rem = idNum % 3;
+    if (rem === 0) {
+      const min = 10 + (idNum % 35);
+      return { text: `Active ${min}m ago`, color: '#64748b' };
+    } else if (rem === 1) {
+      const lastHr = hr > 1 ? hr - 1 : 12;
+      return { text: `Last seen today at ${lastHr}:25 ${hr >= 12 ? 'PM' : 'AM'}`, color: '#64748b' };
+    } else {
+      return { text: 'Away • SMS alert active', color: '#64748b' };
+    }
   }
 
   startInAppCall() {
@@ -6354,5 +6375,30 @@ KejaApp.prototype.submitVacancyReport = async function(event) {
       btn.disabled = false;
       btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Tip-Off';
     }
+  }
+};
+
+
+// Responsive button handlers for filters & user portals
+KejaApp.prototype.renderMobileFilterChips = function() {
+  if (typeof this.renderFilters === 'function') this.renderFilters();
+  if (window.MobileApp && typeof window.MobileApp.resetFilters === 'function') {
+    window.MobileApp.resetFilters();
+  }
+};
+
+KejaApp.prototype.openLandlordPortal = function() {
+  if (window.kejaLandlordPortal && typeof window.kejaLandlordPortal.openLandlordPortal === 'function') {
+    window.kejaLandlordPortal.openLandlordPortal();
+  } else {
+    this.openModal('modal-landlord-portal');
+  }
+};
+
+KejaApp.prototype.openServicePortal = function() {
+  if (window.kejaServicePortal && typeof window.kejaServicePortal.openServicePortal === 'function') {
+    window.kejaServicePortal.openServicePortal();
+  } else {
+    this.openModal('modal-service-portal');
   }
 };

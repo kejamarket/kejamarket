@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v142-clean-header-spacing';
+const CACHE_NAME = 'kejamarket-v143-whatsapp-comm-zero-fouc-admin-fix';
 
 const STATIC_ASSETS = [
   '/',

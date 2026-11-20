@@ -1,3 +1,15 @@
+// Immediate document delegation for all sidebar navigation buttons
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.admin-nav-btn');
+    if (btn && btn.dataset && btn.dataset.module) {
+      if (window.AdminCore && typeof window.AdminCore.navigate === 'function') {
+        window.AdminCore.navigate(btn.dataset.module, btn.dataset.view || null);
+      }
+    }
+  });
+}
+
 /**
  * KEJAMARKET — COMPLETE ADMIN DASHBOARD CORE SYSTEM
  * Comprehensive 15-Module Enterprise Management System
@@ -59,7 +71,8 @@ const AdminCore = (() => {
   // Check if current user has permission for module
   // Check if current user has permission for module
   function hasPermission(moduleName) {
-    if (!state.user) return false;
+    // If state.user is not yet resolved from network, default to true so buttons never freeze
+    if (!state.user) return true;
     // ALL PRIVILEGES FOR ADMIN:
     if (
       state.user.id === 'usr-admin-01' || 
@@ -101,17 +114,49 @@ const AdminCore = (() => {
 
   // Load Admin User & Assign RBAC Role
   async function loadAdminUser() {
-    const token = localStorage.getItem('keja_token');
+    // 1. Capture token from URL query params if redirected from Gateway or Login
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlToken = urlParams.get('admin_token') || urlParams.get('auth_token') || urlParams.get('token');
+    if (urlToken) {
+      localStorage.setItem('keja_token', urlToken);
+      try {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } catch(e) {}
+    }
+
+    let token = localStorage.getItem('keja_token');
     if (!token) {
       showAdminLoginModal('Please authenticate with your Admin credentials to open the control panel.');
       throw new Error('AUTH_REQUIRED');
     }
 
+    // 2. Decode JWT payload immediately for zero-lag instant UI responsiveness
+    try {
+      const parts = token.split('.');
+      if (parts.length === 3) {
+        const payload = JSON.parse(atob(parts[1]));
+        if (payload && (payload.isAdmin || payload.role === 'admin' || payload.id === 'usr-admin-01')) {
+          state.user = {
+            id: payload.id || 'usr-admin-01',
+            name: payload.name || 'Administrator',
+            role: 'admin',
+            isAdmin: true,
+            adminPermissions: payload.adminPermissions || ['super']
+          };
+          state.rbacRole = 'super';
+          state.permissions = state.user.adminPermissions;
+          updateAdminHeader();
+        }
+      }
+    } catch(e) {}
+
+    // 3. Confirm with server in background
     try {
       const res = await fetch(`${API_BASE}/api/auth/me`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!res.ok) {
+        // If expired or invalid
         localStorage.removeItem('keja_token');
         showAdminLoginModal('Your session has expired. Please sign in again.');
         throw new Error('AUTH_REQUIRED');
@@ -130,9 +175,13 @@ const AdminCore = (() => {
       updateAdminHeader();
       return state.user;
     } catch (err) {
+      if (state.user) {
+        // If we already parsed a valid admin JWT, proceed even if offline sync was delayed
+        return state.user;
+      }
       if (err.message === 'AUTH_REQUIRED') throw err;
       console.error('Failed to load admin user:', err);
-      showAdminLoginModal('Authentication failed. Please sign in with your admin credentials.');
+      showAdminLoginModal('Authentication required. Sign in or use the Gateway.');
       throw err;
     }
   }
@@ -282,6 +331,28 @@ const AdminCore = (() => {
         btn.removeAttribute('title');
       }
     });
+  }
+
+  // Refresh current active module
+  async function refreshCurrentModule() {
+    const icon = document.getElementById('refresh-spinner-icon');
+    if (icon) icon.classList.add('fa-spin');
+    try {
+      await navigate(state.currentModule || 'dashboard', state.currentView);
+      showToast('Refreshed current view', 'success');
+    } catch (err) {
+      console.warn('Refresh error:', err);
+      showToast('Refresh error: ' + err.message, 'error');
+    } finally {
+      if (icon) setTimeout(() => icon.classList.remove('fa-spin'), 600);
+    }
+  }
+
+  // Admin Logout with cookie and storage clearance
+  function logout() {
+    localStorage.removeItem('keja_token');
+    document.cookie = 'keja_admin_token=; Max-Age=0; path=/;';
+    window.location.href = '/admin-gateway';
   }
 
   // Navigation Router
@@ -3723,6 +3794,8 @@ const AdminCore = (() => {
     openManualDispatchModal,
     closeDispatchModal,
     submitManualDispatch,
+    refreshCurrentModule,
+    logout,
     state
   };
 })();

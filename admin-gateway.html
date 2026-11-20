@@ -242,7 +242,9 @@
             if (data.user) localStorage.setItem('keja_user', JSON.stringify(data.user));
           }
           setTimeout(() => {
-            window.location.href = data.redirect || '/admin-dashboard.html';
+            const redirectUrl = (data.redirect || '/admin-dashboard.html');
+            const glue = redirectUrl.includes('?') ? '&' : '?';
+            window.location.href = redirectUrl + (data.token ? glue + 'admin_token=' + encodeURIComponent(data.token) : '');
           }, 600);
         } else {
           showStatus(data.message || 'Authentication rejected.', 'error');
