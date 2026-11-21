@@ -7532,10 +7532,10 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="modal-header" style="background: #0f172a; color: white; padding: 16px 22px;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div style="width: 32px; height: 32px; border-radius: 8px; background: #059669; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: white;">
-            <i class="fas fa-radar"></i>
+            <i class="fas fa-search-location"></i>
           </div>
           <div>
-            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;">House Hunt Live Tracker</h3>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;" id="hunt-tracker-title">House Hunt Live Tracker</h3>
             <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #94a3b8;" id="tracker-hunt-id">Hunt ID:  &mdash; </p>
           </div>
         </div>
@@ -7544,126 +7544,154 @@ document.addEventListener('DOMContentLoaded', function() {
 
       <div class="modal-body" style="padding: 0; background: #ffffff; max-height: 85vh; overflow-y: auto;">
         
-        <!-- Live Countdown Timer Hero -->
-        <div class="hunt-timer-hero">
-          <div style="font-size: 0.78rem; font-weight: 800; color: #a7f3d0; text-transform: uppercase; letter-spacing: 1px;">
-            <i class="fas fa-clock"></i> 72-Hour Search In Progress
+        <!-- STATE 1: Empty / Initiate New Hunt (When no active hunt in progress) -->
+        <div id="hunt-tracker-empty" style="display: none; padding: 32px 24px; text-align: center;">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: #ecfdf5; border: 2px solid #a7f3d0; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #059669;">
+            <i class="fas fa-search-location"></i>
           </div>
-          <div class="hunt-countdown-digits" id="hunt-clock-digits">
-            71h : 59m : 59s
+          <h3 style="margin: 0 0 8px; font-size: 1.25rem; font-weight: 800; color: #0f172a;">No Active 72-Hour Hunt</h3>
+          <p style="font-size: 0.88rem; color: #64748b; line-height: 1.5; max-width: 440px; margin: 0 auto 20px;">
+            Hire our on-ground scout to physically inspect vacancies, test water pressure and KPLC tokens, and negotiate direct landlord viewings with <strong>0% broker commission</strong>.
+          </p>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 22px; text-align: left; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: #334155;">
+            <div><i class="fas fa-check-circle" style="color:#059669;"></i> 72h Dedicated Scout</div>
+            <div><i class="fas fa-check-circle" style="color:#059669;"></i> Tap Water Pressure Tested</div>
+            <div><i class="fas fa-check-circle" style="color:#059669;"></i> KPLC Token Meter Confirmed</div>
+            <div><i class="fas fa-check-circle" style="color:#059669;"></i> Free Physical Viewings</div>
           </div>
-          <div style="font-size: 0.82rem; color: #cbd5e1;" id="hunt-status-desc">
-            Your dedicated KejaMarket agent is currently cross-checking verified on-ground vacancies.
+
+          <div style="display: flex; flex-direction: column; gap: 10px; max-width: 380px; margin: 0 auto;">
+            <button type="button" onclick="app.closeModal('modal-hunt-tracker'); app.openHouseHuntModal();" style="background: #059669; color: white; border: none; padding: 13px 22px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(5,150,105,0.35); transition: transform 0.15s;">
+              <i class="fas fa-bolt"></i> Start 72-Hour House Hunt (KSh 2,000)
+            </button>
+            <a href="https://wa.me/254792409540?text=Hello%20KejaMarket,%20I%20want%20to%20hire%20a%20dedicated%20house%20hunter%20in%20Nairobi." target="_blank" style="background: #ffffff; color: #15803d; border: 1.5px solid #86efac; padding: 11px 20px; border-radius: 10px; font-weight: 700; font-size: 0.88rem; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <i class="fab fa-whatsapp" style="color: #22c55e; font-size: 1.1rem;"></i> Chat with Lead Scout on WhatsApp
+            </a>
           </div>
         </div>
 
-        <div style="padding: 20px 24px;">
-          
-          <!-- Bulletproof Horizontal Stepper Progression -->
-          <div class="hunt-stepper" id="hunt-stepper-nodes" style="display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; margin: 16px 0 22px 0 !important; position: relative !important; width: 100% !important;">
-            <div class="hunt-step-node active" data-step="1" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
-              <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">1</div>
-              <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Requirements</div>
+        <!-- STATE 2: Active Hunt Tracking (When hunt is live / pending) -->
+        <div id="hunt-tracker-content">
+          <!-- Live Countdown Timer Hero -->
+          <div class="hunt-timer-hero">
+            <div style="font-size: 0.78rem; font-weight: 800; color: #a7f3d0; text-transform: uppercase; letter-spacing: 1px;">
+              <i class="fas fa-clock"></i> 72-Hour Search In Progress
             </div>
-            <div class="hunt-step-node active" data-step="2" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
-              <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">2</div>
-              <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Searching</div>
+            <div class="hunt-countdown-digits" id="hunt-clock-digits">
+              72h : 00m : 00s
             </div>
-            <div class="hunt-step-node" data-step="3" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
-              <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">3</div>
-              <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Found</div>
-            </div>
-            <div class="hunt-step-node" data-step="4" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
-              <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">4</div>
-              <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Viewing</div>
-            </div>
-            <div class="hunt-step-node" data-step="5" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
-              <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">5</div>
-              <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Completed</div>
+            <div style="font-size: 0.82rem; color: #cbd5e1;" id="hunt-status-desc">
+              Your dedicated KejaMarket agent is currently cross-checking verified on-ground vacancies.
             </div>
           </div>
 
-          <!-- Pending Payment / Activation Action Box -->
-          <div id="hunt-activation-box" style="display: none; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px; padding: 16px; margin-bottom: 18px;">
-            <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.95rem; color: #92400e; margin-bottom: 6px;">
-              <i class="fas fa-exclamation-circle" style="color: #d97706; font-size: 1.15rem;"></i> Step 1: Complete Activation Payment (KSh 2,000)
-            </div>
-            <div style="font-size: 0.82rem; color: #78350f; line-height: 1.45; margin-bottom: 12px;">
-              Your house hunt request is ready! To dispatch our on-ground scout to inspect vacancies in your chosen areas, activate your 72-hour search with M-Pesa.
-            </div>
+          <div style="padding: 20px 24px;">
             
-            <div style="background: white; border: 1px solid #fef3c7; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-around; text-align: center; font-size: 0.82rem;">
-              <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">PAYBILL</span><br><strong style="font-size: 1rem; color: #0f172a;">4165507</strong></div>
-              <div style="border-left: 1px solid #fde68a;"></div>
-              <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">ACCOUNT</span><br><strong style="font-size: 1rem; color: #0f172a;">HOUSEHUNT</strong></div>
-              <div style="border-left: 1px solid #fde68a;"></div>
-              <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">AMOUNT</span><br><strong style="font-size: 1rem; color: #006818;">KSh 2,000</strong></div>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <button type="button" id="btn-hunt-resend-stk" onclick="app.triggerHuntPaymentPush()" style="background: #006818; color: white; border: none; padding: 11px 16px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,104,24,0.25);">
-                <i class="fas fa-mobile-alt"></i> Send M-Pesa Prompt to My Phone
-              </button>
-              <button type="button" onclick="app.checkHuntPayment()" style="background: white; color: #0f172a; border: 1.5px solid #cbd5e1; padding: 9px 16px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <i class="fas fa-sync-alt"></i> I Have Paid / Check Payment Status
-              </button>
-            </div>
-          </div>
-
-          <!-- Explainer: How this Live Tracker works -->
-          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px 14px; margin-bottom: 16px;">
-            <div style="font-weight: 800; font-size: 0.85rem; color: #064e3b; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-              <i class="fas fa-shield-alt" style="color: #006818;"></i> How Your 72-Hour Ground Hunt Works:
-            </div>
-            <div style="font-size: 0.8rem; color: #166534; line-height: 1.45;">
-              &bull; <strong>On-Ground Scouts:</strong> Our dedicated agent physically inspects vacancies in your preferred estates.<br>
-              &bull; <strong>Physical Testing:</strong> Tap water pressure tested, KPLC tokens confirmed, and gate security checked.<br>
-              &bull; <strong>Direct Landlords:</strong> Verified vacant units will appear below under <strong>"Curated Properties"</strong> with photos and videos!<br>
-              &bull; <strong>Free Viewings:</strong> When you like a house, our agent arranges your physical viewing with 0% broker fees!
-            </div>
-            <a href="https://wa.me/254792409540?text=Hello%20KejaMarket,%20I%20have%20an%20active%20House%20Hunt%20request." target="_blank" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; color: #15803d; font-weight: 800; font-size: 0.78rem; text-decoration: none;">
-              <i class="fab fa-whatsapp" style="color: #25D366; font-size: 1rem;"></i> Have questions? Chat with our Lead Scout on WhatsApp &rarr;
-            </a>
-          </div>
-          <!-- Tabs: Curated Found Properties & Concierge Chat -->
-          <div style="display: flex; gap: 8px; border-bottom: 2px solid #e2e8f0; margin-bottom: 16px;">
-            <button type="button" class="btn-hunt-tab active" id="btn-tab-hunt-props" onclick="app.switchHuntTrackerTab('props')" style="padding: 8px 16px; font-size: 0.88rem; font-weight: 800; background: none; border: none; border-bottom: 3px solid #059669; color: #064e3b; cursor: pointer;">
-              <i class="fas fa-home"></i> Curated Properties (<span id="hunt-found-count">0</span>)
-            </button>
-            <button type="button" class="btn-hunt-tab" id="btn-tab-hunt-chat" onclick="app.switchHuntTrackerTab('chat')" style="padding: 8px 16px; font-size: 0.88rem; font-weight: 700; background: none; border: none; border-bottom: 3px solid transparent; color: #64748b; cursor: pointer;">
-              <i class="fas fa-comments"></i> Agent Chat & Updates
-            </button>
-          </div>
-
-          <!-- Tab Content: Found Properties -->
-          <div id="hunt-pane-props">
-            <div id="hunt-properties-list" style="display: grid; gap: 14px;">
-              <!-- Empty state default -->
-              <div style="text-align: center; padding: 36px 16px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
-                <i class="fas fa-search-location" style="font-size: 2.2rem; color: #94a3b8; margin-bottom: 10px;"></i>
-                <h4 style="font-size: 1.05rem; font-weight: 800; color: #1e293b; margin-bottom: 6px;">Agent Is Hunting Units For You</h4>
-                <p style="font-size: 0.85rem; color: #64748b; max-width: 420px; margin: 0 auto;">
-                  Verified matches found in your selected areas will appear right here as our agent confirms them with caretakers.
-                </p>
+            <!-- Bulletproof Horizontal Stepper Progression -->
+            <div class="hunt-stepper" id="hunt-stepper-nodes" style="display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; margin: 16px 0 22px 0 !important; position: relative !important; width: 100% !important;">
+              <div class="hunt-step-node" data-step="1" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
+                <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">1</div>
+                <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Requirements</div>
+              </div>
+              <div class="hunt-step-node" data-step="2" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
+                <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">2</div>
+                <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Searching</div>
+              </div>
+              <div class="hunt-step-node" data-step="3" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
+                <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">3</div>
+                <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Found</div>
+              </div>
+              <div class="hunt-step-node" data-step="4" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
+                <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">4</div>
+                <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Viewing</div>
+              </div>
+              <div class="hunt-step-node" data-step="5" style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-align: center; position: relative; z-index: 2;">
+                <div class="hunt-step-circle" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">5</div>
+                <div class="hunt-step-label" style="font-size: 0.68rem; font-weight: 700; text-align: center;">Completed</div>
               </div>
             </div>
-          </div>
 
-          <!-- Tab Content: Concierge Chat -->
-          <div id="hunt-pane-chat" style="display: none;">
-            <div id="hunt-chat-messages" style="height: 280px; overflow-y: auto; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px;">
-              <div style="background: #e2e8f0; color: #334155; padding: 8px 12px; border-radius: 10px; font-size: 0.82rem; max-width: 80%;">
-                <strong>KejaMarket Concierge:</strong> Habari! Your 3-day search is live. Please message us here if you have any questions or want to prioritize specific streets.
+            <!-- Pending Payment / Activation Action Box -->
+            <div id="hunt-activation-box" style="display: none; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px; padding: 16px; margin-bottom: 18px;">
+              <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.95rem; color: #92400e; margin-bottom: 6px;">
+                <i class="fas fa-exclamation-circle" style="color: #d97706; font-size: 1.15rem;"></i> Step 1: Complete Activation Payment (KSh 2,000)
+              </div>
+              <div style="font-size: 0.82rem; color: #78350f; line-height: 1.45; margin-bottom: 12px;">
+                Your house hunt request is ready! To dispatch our on-ground scout to inspect vacancies in your chosen areas, activate your 72-hour search with M-Pesa.
+              </div>
+              <div style="background: white; border: 1px solid #fef3c7; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-around; text-align: center; font-size: 0.82rem;">
+                <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">PAYBILL</span><br><strong style="font-size: 1rem; color: #0f172a;">4165507</strong></div>
+                <div style="border-left: 1px solid #fde68a;"></div>
+                <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">ACCOUNT</span><br><strong style="font-size: 1rem; color: #0f172a;">HOUSEHUNT</strong></div>
+                <div style="border-left: 1px solid #fde68a;"></div>
+                <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">AMOUNT</span><br><strong style="font-size: 1rem; color: #006818;">KSh 2,000</strong></div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button type="button" id="btn-hunt-resend-stk" onclick="app.triggerHuntPaymentPush()" style="background: #006818; color: white; border: none; padding: 11px 16px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,104,24,0.25);">
+                  <i class="fas fa-mobile-alt"></i> Send M-Pesa Prompt to My Phone
+                </button>
+                <button type="button" onclick="app.checkHuntPayment()" style="background: white; color: #0f172a; border: 1.5px solid #cbd5e1; padding: 9px 16px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                  <i class="fas fa-sync-alt"></i> I Have Paid / Check Payment Status
+                </button>
               </div>
             </div>
-            <form id="form-hunt-chat" onsubmit="app.sendHuntChatMessage(event)" style="display: flex; gap: 8px;">
-              <input type="text" id="hunt-chat-input" placeholder="Type a message to your concierge agent..." required style="flex: 1; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.88rem; outline: none;">
-              <button type="submit" style="background: #059669; color: white; border: none; padding: 0 18px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; cursor: pointer;">
-                <i class="fas fa-paper-plane"></i>
-              </button>
-            </form>
-          </div>
 
+            <!-- Explainer: How this Live Tracker works -->
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px 14px; margin-bottom: 16px;">
+              <div style="font-weight: 800; font-size: 0.85rem; color: #064e3b; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                <i class="fas fa-shield-alt" style="color: #006818;"></i> How Your 72-Hour Ground Hunt Works:
+              </div>
+              <div style="font-size: 0.8rem; color: #166534; line-height: 1.45;">
+                &bull; <strong>On-Ground Scouts:</strong> Our dedicated agent physically inspects vacancies in your preferred estates.<br>
+                &bull; <strong>Physical Testing:</strong> Tap water pressure tested, KPLC tokens confirmed, and gate security checked.<br>
+                &bull; <strong>Direct Landlords:</strong> Verified vacant units will appear below under <strong>"Curated Properties"</strong> with photos and videos!<br>
+                &bull; <strong>Free Viewings:</strong> When you like a house, our agent arranges your physical viewing with 0% broker fees!
+              </div>
+              <a id="hunt-tracker-wa-link" href="https://wa.me/254792409540?text=Hello%20KejaMarket,%20I%20have%20an%20active%20House%20Hunt%20request." target="_blank" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; color: #15803d; font-weight: 800; font-size: 0.78rem; text-decoration: none;">
+                <i class="fab fa-whatsapp" style="color: #25D366; font-size: 1rem;"></i> Have questions? Chat with our Lead Scout on WhatsApp &rarr;
+              </a>
+            </div>
+            <!-- Tabs: Curated Found Properties & Concierge Chat -->
+            <div style="display: flex; gap: 8px; border-bottom: 2px solid #e2e8f0; margin-bottom: 16px;">
+              <button type="button" class="btn-hunt-tab active" id="btn-tab-hunt-props" onclick="app.switchHuntTrackerTab('props')" style="padding: 8px 16px; font-size: 0.88rem; font-weight: 800; background: none; border: none; border-bottom: 3px solid #059669; color: #064e3b; cursor: pointer;">
+                <i class="fas fa-home"></i> Curated Properties (<span id="hunt-found-count">0</span>)
+              </button>
+              <button type="button" class="btn-hunt-tab" id="btn-tab-hunt-chat" onclick="app.switchHuntTrackerTab('chat')" style="padding: 8px 16px; font-size: 0.88rem; font-weight: 700; background: none; border: none; border-bottom: 3px solid transparent; color: #64748b; cursor: pointer;">
+                <i class="fas fa-comments"></i> Agent Chat & Updates
+              </button>
+            </div>
+
+            <!-- Tab Content: Found Properties -->
+            <div id="hunt-pane-props">
+              <div id="hunt-properties-list" style="display: grid; gap: 14px;">
+                <!-- Empty state default -->
+                <div style="text-align: center; padding: 36px 16px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                  <i class="fas fa-search-location" style="font-size: 2.2rem; color: #94a3b8; margin-bottom: 10px;"></i>
+                  <h4 style="font-size: 1.05rem; font-weight: 800; color: #1e293b; margin-bottom: 6px;">Agent Is Hunting Units For You</h4>
+                  <p style="font-size: 0.85rem; color: #64748b; max-width: 420px; margin: 0 auto;">
+                    Verified matches found in your selected areas will appear right here as our agent confirms them with caretakers.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Content: Concierge Chat -->
+            <div id="hunt-pane-chat" style="display: none;">
+              <div id="hunt-chat-messages" style="height: 280px; overflow-y: auto; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="background: #e2e8f0; color: #334155; padding: 8px 12px; border-radius: 10px; font-size: 0.82rem; max-width: 80%;">
+                  <strong>KejaMarket Concierge:</strong> Habari! Your 3-day search is live. Please message us here if you have any questions or want to prioritize specific streets.
+                </div>
+              </div>
+              <form id="form-hunt-chat" onsubmit="app.sendHuntChatMessage(event)" style="display: flex; gap: 8px;">
+                <input type="text" id="hunt-chat-input" placeholder="Type a message to your concierge agent..." required style="flex: 1; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.88rem; outline: none;">
+                <button type="submit" style="background: #059669; color: white; border: none; padding: 0 18px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; cursor: pointer;">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+
+          </div>
         </div>
 
       </div>

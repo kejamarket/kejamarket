@@ -4016,6 +4016,10 @@ function showScreen(screen, params = {}, isBackNav = false) {
 
   function trackHunt() {
     const activeHuntId = localStorage.getItem('keja_active_hunt_id');
+    if (window.app && typeof window.app.openHuntTracker === 'function') {
+      window.app.openHuntTracker(activeHuntId);
+      return;
+    }
     if (window.app && typeof window.app.openHuntTrackerModal === 'function') {
       window.app.openHuntTrackerModal(activeHuntId);
       return;

@@ -3834,6 +3834,10 @@ class NairobiRentalsApp {
     if (modalId === 'modal-messages') {
       this.stopChatPolling();
     }
+    if (modalId === 'modal-hunt-tracker' && this._huntClockInterval) {
+      clearInterval(this._huntClockInterval);
+      this._huntClockInterval = null;
+    }
   }
 
   
@@ -5624,22 +5628,72 @@ class NairobiRentalsApp {
     this.closeAllPopups();
     this.openModal('modal-hunt-tracker');
 
+    const trackerContent = document.getElementById('hunt-tracker-content');
+    const trackerEmpty = document.getElementById('hunt-tracker-empty');
+    const huntIdEl = document.getElementById('tracker-hunt-id');
+    const trackerTitle = document.getElementById('hunt-tracker-title');
     const token = localStorage.getItem('keja_token') || sessionStorage.getItem('keja_token');
-    this._currentActiveHuntId = huntId;
+
+    let targetHuntId = huntId || this._currentActiveHuntId || localStorage.getItem('keja_active_hunt_id');
+
+    // If no active ID stored, query /api/house-hunt/my to see if user has an ongoing hunt
+    if ((!targetHuntId || targetHuntId === '—' || targetHuntId === '-') && token) {
+      try {
+        const myRes = await fetch('/api/house-hunt/my', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (myRes.ok) {
+          const myData = await myRes.json();
+          if (myData.success && Array.isArray(myData.hunts) && myData.hunts.length > 0) {
+            const active = myData.hunts.find(h => !h.isExpired && h.status !== 'COMPLETED') || myData.hunts[0];
+            if (active && active.id) {
+              targetHuntId = active.id;
+              localStorage.setItem('keja_active_hunt_id', targetHuntId);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Could not check user hunts:', err);
+      }
+    }
+
+    // If still no real hunt exists: show the start-hunt empty state
+    if (!targetHuntId || targetHuntId === '—' || targetHuntId === '-') {
+      this._currentActiveHuntId = null;
+      if (trackerContent) trackerContent.style.display = 'none';
+      if (trackerEmpty) trackerEmpty.style.display = 'block';
+      if (huntIdEl) huntIdEl.textContent = 'No Active Hunt Found';
+      if (trackerTitle) trackerTitle.textContent = '72-Hour Ground House Hunter';
+      return;
+    }
+
+    this._currentActiveHuntId = targetHuntId;
 
     try {
-      const res = await fetch(`/api/house-hunt/${huntId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+      const res = await fetch(`/api/house-hunt/${targetHuntId}`, {
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
       });
       const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Could not load hunt');
+      if (!res.ok || !data.success || !data.hunt) {
+        // Stale or deleted hunt
+        localStorage.removeItem('keja_active_hunt_id');
+        this._currentActiveHuntId = null;
+        if (trackerContent) trackerContent.style.display = 'none';
+        if (trackerEmpty) trackerEmpty.style.display = 'block';
+        if (huntIdEl) huntIdEl.textContent = 'No Active Hunt Found';
+        if (trackerTitle) trackerTitle.textContent = '72-Hour Ground House Hunter';
+        return;
       }
 
+      if (trackerContent) trackerContent.style.display = 'block';
+      if (trackerEmpty) trackerEmpty.style.display = 'none';
+      if (trackerTitle) trackerTitle.textContent = 'House Hunt Live Tracker';
       this.renderHuntTracker(data);
     } catch (err) {
       console.error('Hunt tracker load error:', err);
-      this.showToast('Error loading hunt details.', 'error');
+      if (trackerContent) trackerContent.style.display = 'none';
+      if (trackerEmpty) trackerEmpty.style.display = 'block';
+      if (huntIdEl) huntIdEl.textContent = 'No Active Hunt Found';
     }
   }
 
@@ -5651,9 +5705,19 @@ class NairobiRentalsApp {
     const huntIdEl = document.getElementById('tracker-hunt-id');
     const statusDesc = document.getElementById('hunt-status-desc');
     const foundCount = document.getElementById('hunt-found-count');
+    const waLink = document.getElementById('hunt-tracker-wa-link');
 
-    if (huntIdEl) huntIdEl.textContent = `Hunt ID: #${hunt.id.slice(-6).toUpperCase()} · Budget KSh ${(hunt.budgetMin||0).toLocaleString()} - ${(hunt.budgetMax||0).toLocaleString()}`;
+    const shortId = (hunt.id || '').slice(-6).toUpperCase();
+    const locsStr = Array.isArray(hunt.preferredLocations) ? hunt.preferredLocations.join(', ') : (hunt.preferredLocations || 'Nairobi');
+
+    if (huntIdEl) {
+      huntIdEl.textContent = `Hunt ID: #${shortId} · Budget KSh ${(hunt.budgetMin||0).toLocaleString()} - ${(hunt.budgetMax||0).toLocaleString()}`;
+    }
     if (foundCount) foundCount.textContent = properties.length;
+
+    if (waLink) {
+      waLink.href = `https://wa.me/254792409540?text=${encodeURIComponent(`Hello KejaMarket, I am inquiring about my active House Hunt #${shortId} in ${locsStr}.`)}`;
+    }
 
     // Start Live Clock
     const isPendingPayment = (hunt.status === 'PAYMENT_PENDING' || hunt.payment_status === 'pending' || !hunt.isPaid);
@@ -5665,16 +5729,18 @@ class NairobiRentalsApp {
     if (hunt.expiresAt && !isPendingPayment) {
       this.startHuntCountdown(new Date(hunt.expiresAt).getTime());
     } else {
+      if (this._huntClockInterval) clearInterval(this._huntClockInterval);
       const clockDigits = document.getElementById('hunt-clock-digits');
       if (clockDigits) {
-        clockDigits.textContent = isPendingPayment ? '72h : 00m : 00s' : '72h : 00m : 00s';
+        clockDigits.textContent = isPendingPayment ? '72h : 00m : 00s (Awaiting Activation)' : '72h : 00m : 00s';
+        clockDigits.style.color = isPendingPayment ? '#fef08a' : '#ffffff';
       }
     }
 
     if (statusDesc) {
       statusDesc.innerHTML = isPendingPayment
-        ? '<span style="color:#fbbf24; font-weight:800;"><i class="fas fa-exclamation-triangle"></i> Step 1: Complete Activation Below</span><br>Pay KSh 2,000 to dispatch our verified scout to ' + (hunt.preferredLocations || []).join(', ') + ' immediately.'
-        : '<span style="color:#34d399; font-weight:800;"><i class="fas fa-check-circle"></i> Scout Active on the Ground</span><br>Your dedicated scout is physically walking vacancies, inspecting water pressure & electricity tokens in ' + (hunt.preferredLocations || []).join(', ') + '.';
+        ? '<span style="color:#fbbf24; font-weight:800;"><i class="fas fa-exclamation-triangle"></i> Step 1: Complete Activation Below</span><br>Pay KSh 2,000 to dispatch our verified scout to ' + locsStr + ' immediately.'
+        : '<span style="color:#34d399; font-weight:800;"><i class="fas fa-check-circle"></i> Scout Active on the Ground</span><br>Your dedicated scout is physically walking vacancies, inspecting water pressure & electricity tokens in ' + locsStr + '.';
     }
 
     // Update Stepper
@@ -5692,9 +5758,25 @@ class NairobiRentalsApp {
       };
       const activeStep = statusMap[hunt.status] || 2;
       stepper.querySelectorAll('.hunt-step-node').forEach(node => {
-        const stepNum = parseInt(node.dataset.step);
+        const stepNum = parseInt(node.dataset.step, 10);
         node.classList.toggle('done', stepNum < activeStep);
         node.classList.toggle('active', stepNum === activeStep);
+        const circle = node.querySelector('.hunt-step-circle');
+        if (circle) {
+          if (stepNum < activeStep) {
+            circle.style.background = '#059669';
+            circle.style.color = '#ffffff';
+            circle.innerHTML = '<i class="fas fa-check" style="font-size:0.7rem;"></i>';
+          } else if (stepNum === activeStep) {
+            circle.style.background = '#059669';
+            circle.style.color = '#ffffff';
+            circle.textContent = stepNum;
+          } else {
+            circle.style.background = '#e2e8f0';
+            circle.style.color = '#64748b';
+            circle.textContent = stepNum;
+          }
+        }
       });
     }
 
@@ -5707,7 +5789,7 @@ class NairobiRentalsApp {
             <i class="fas fa-search-location" style="font-size: 2.2rem; color: #94a3b8; margin-bottom: 10px;"></i>
             <h4 style="font-size: 1.05rem; font-weight: 800; color: #1e293b; margin-bottom: 6px;">Agent Is Hunting Units For You</h4>
             <p style="font-size: 0.85rem; color: #64748b; max-width: 420px; margin: 0 auto;">
-              Verified matches in ${(hunt.preferredLocations || []).join(', ')} will appear here as soon as our agent checks them on the ground.
+              Verified matches in ${locsStr} will appear here as soon as our agent confirms them on the ground.
             </p>
           </div>
         `;
@@ -5721,14 +5803,14 @@ class NairobiRentalsApp {
                 </span>
                 ${p.viewing_status === 'arranged' ? '<span style="background:#fef08a; color:#854d0e; font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:10px;"><i class="fas fa-calendar-alt"></i> Viewing Arranged</span>' : ''}
               </div>
-              <h4 style="margin: 0 0 4px 0; font-size: 1rem; font-weight: 800; color: #0f172a;">${p.property_title}</h4>
-              <div style="font-size: 0.82rem; color: #64748b;">📍 ${p.property_location} · ${p.property_bedrooms ? p.property_bedrooms + ' Bed' : ''}</div>
+              <h4 style="margin: 0 0 4px 0; font-size: 1rem; font-weight: 800; color: #0f172a;">${p.property_title || p.title || 'Verified Rental'}</h4>
+              <div style="font-size: 0.82rem; color: #64748b;">📍 ${p.property_location || p.location || locsStr} · ${p.property_bedrooms ? p.property_bedrooms + ' Bed' : ''}</div>
               ${p.admin_note ? `<div style="font-size: 0.78rem; color: #334155; margin-top: 6px; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border-left: 3px solid #059669;"><strong>Agent Note:</strong> ${p.admin_note}</div>` : ''}
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 1.15rem; font-weight: 900; color: #059669;">KSh ${Number(p.property_price||0).toLocaleString('en-KE')}</div>
+              <div style="font-size: 1.15rem; font-weight: 900; color: #059669;">KSh ${Number(p.property_price || p.rent_kes || p.price || 0).toLocaleString('en-KE')}</div>
               <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 8px;">per month</div>
-              ${p.property_id ? `<button type="button" class="btn-primary" onclick="app.openPropertyDetail('${p.property_id}')" style="background:#0f172a; padding:6px 14px; font-size:0.8rem; font-weight:700; border-radius:6px; border:none; color:white; cursor:pointer;">View Listing</button>` : ''}
+              ${(p.property_id || p.id) ? `<button type="button" class="btn-primary" onclick="app.openPropertyDetail('${p.property_id || p.id}')" style="background:#0f172a; padding:6px 14px; font-size:0.8rem; font-weight:700; border-radius:6px; border:none; color:white; cursor:pointer;">View Listing</button>` : ''}
             </div>
           </div>
         `).join('');
@@ -5738,12 +5820,20 @@ class NairobiRentalsApp {
     // Render Messages
     const chatBox = document.getElementById('hunt-chat-messages');
     if (chatBox) {
-      chatBox.innerHTML = messages.map(m => `
-        <div style="align-self: ${m.sender_id === hunt.customer_id ? 'flex-end' : 'flex-start'}; background: ${m.sender_id === hunt.customer_id ? '#059669' : '#e2e8f0'}; color: ${m.sender_id === hunt.customer_id ? '#ffffff' : '#0f172a'}; padding: 8px 12px; border-radius: 10px; font-size: 0.84rem; max-width: 80%;">
-          <div style="font-size: 0.7rem; font-weight: 800; opacity: 0.85; margin-bottom: 2px;">${m.sender_name || 'Agent'}</div>
-          ${m.text || m.message_content || ''}
-        </div>
-      `).join('');
+      if (messages.length === 0) {
+        chatBox.innerHTML = `
+          <div style="background: #e2e8f0; color: #334155; padding: 10px 14px; border-radius: 10px; font-size: 0.84rem; max-width: 85%;">
+            <strong>KejaMarket Concierge:</strong> Habari! Your 3-day search for ${locsStr} is active. Message our lead scout here anytime to prioritize specific estates or features.
+          </div>
+        `;
+      } else {
+        chatBox.innerHTML = messages.map(m => `
+          <div style="align-self: ${m.sender_id === hunt.customerId || m.sender_id === hunt.customer_id ? 'flex-end' : 'flex-start'}; background: ${m.sender_id === hunt.customerId || m.sender_id === hunt.customer_id ? '#059669' : '#e2e8f0'}; color: ${m.sender_id === hunt.customerId || m.sender_id === hunt.customer_id ? '#ffffff' : '#0f172a'}; padding: 8px 12px; border-radius: 10px; font-size: 0.84rem; max-width: 80%;">
+            <div style="font-size: 0.7rem; font-weight: 800; opacity: 0.85; margin-bottom: 2px;">${m.sender_name || 'Agent'}</div>
+            ${m.text || m.message_content || ''}
+          </div>
+        `).join('');
+      }
       chatBox.scrollTop = chatBox.scrollHeight;
     }
   }
@@ -6400,5 +6490,13 @@ KejaApp.prototype.openServicePortal = function() {
     window.kejaServicePortal.openServicePortal();
   } else {
     this.openModal('modal-service-portal');
+  }
+};
+
+KejaApp.prototype.openHuntTrackerModal = function(huntId) {
+  if (typeof this.openHuntTracker === 'function') {
+    this.openHuntTracker(huntId);
+  } else {
+    this.openModal('modal-hunt-tracker');
   }
 };
