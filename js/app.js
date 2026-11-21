@@ -5739,7 +5739,7 @@ class NairobiRentalsApp {
 
     if (statusDesc) {
       statusDesc.innerHTML = isPendingPayment
-        ? '<span style="color:#fbbf24; font-weight:800;"><i class="fas fa-exclamation-triangle"></i> Step 1: Complete Activation Below</span><br>Pay KSh 2,000 to dispatch our verified scout to ' + locsStr + ' immediately.'
+        ? '<span style="color:#a7f3d0; font-weight:800;"><i class="fas fa-lock"></i> Awaiting Payment</span><br>Your KSh 2,000 is a <strong style="color:#ffffff;">KejaMarket platform fee</strong>. Our verified scout will be dispatched to <strong style="color:#ffffff;">' + locsStr + '</strong> immediately upon payment confirmation.'
         : '<span style="color:#34d399; font-weight:800;"><i class="fas fa-check-circle"></i> Scout Active on the Ground</span><br>Your dedicated scout is physically walking vacancies, inspecting water pressure & electricity tokens in ' + locsStr + '.';
     }
 

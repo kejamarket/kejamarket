@@ -7529,17 +7529,18 @@ document.addEventListener('DOMContentLoaded', function() {
        ==================================================================== -->
   <div class="modal-backdrop" id="modal-hunt-tracker" style="display: none; align-items: center; justify-content: center; z-index: 2950;">
     <div class="modal-dialog hunt-tracker-dialog">
-      <div class="modal-header" style="background: #0f172a; color: white; padding: 16px 22px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 32px; height: 32px; border-radius: 8px; background: #059669; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: white;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #004d11 0%, #006818 55%, #00b53f 100%); color: white; padding: 18px 22px; border-radius: 0;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.18); border: 1.5px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: white; flex-shrink: 0;">
             <i class="fas fa-search-location"></i>
           </div>
           <div>
-            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #ffffff;" id="hunt-tracker-title">House Hunt Live Tracker</h3>
-            <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #94a3b8;" id="tracker-hunt-id">Hunt ID:  &mdash; </p>
+            <div style="font-size: 0.65rem; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">KejaMarket</div>
+            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #ffffff; line-height: 1.2;" id="hunt-tracker-title">House Hunt Live Tracker</h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.72rem; color: rgba(255,255,255,0.75);" id="tracker-hunt-id">Hunt ID: &mdash;</p>
           </div>
         </div>
-        <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-hunt-tracker')" style="color: white; font-size: 1.8rem;">&times;</button>
+        <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-hunt-tracker')" style="color: rgba(255,255,255,0.85); font-size: 1.6rem; background: rgba(255,255,255,0.12); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); line-height: 1;">&times;</button>
       </div>
 
       <div class="modal-body" style="padding: 0; background: #ffffff; max-height: 85vh; overflow-y: auto;">
@@ -7551,7 +7552,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
           <h3 style="margin: 0 0 8px; font-size: 1.25rem; font-weight: 800; color: #0f172a;">No Active 72-Hour Hunt</h3>
           <p style="font-size: 0.88rem; color: #64748b; line-height: 1.5; max-width: 440px; margin: 0 auto 20px;">
-            Hire our on-ground scout to physically inspect vacancies, test water pressure and KPLC tokens, and negotiate direct landlord viewings with <strong>0% broker commission</strong>.
+            KejaMarket sends a dedicated on-ground scout to physically inspect vacancies, test water pressure and KPLC tokens, and arrange direct landlord viewings — all for a one-time <strong>platform service fee of KSh 2,000</strong> with <strong>0% broker commission</strong>.
           </p>
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 22px; text-align: left; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem; color: #334155;">
             <div><i class="fas fa-check-circle" style="color:#059669;"></i> 72h Dedicated Scout</div>
@@ -7580,7 +7581,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="hunt-countdown-digits" id="hunt-clock-digits">
               72h : 00m : 00s
             </div>
-            <div style="font-size: 0.82rem; color: #cbd5e1;" id="hunt-status-desc">
+            <div style="font-size: 0.84rem; color: rgba(255, 255, 255, 0.95); line-height: 1.45;" id="hunt-status-desc">
               Your dedicated KejaMarket agent is currently cross-checking verified on-ground vacancies.
             </div>
           </div>
@@ -7612,19 +7613,19 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <!-- Pending Payment / Activation Action Box -->
-            <div id="hunt-activation-box" style="display: none; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px; padding: 16px; margin-bottom: 18px;">
-              <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.95rem; color: #92400e; margin-bottom: 6px;">
-                <i class="fas fa-exclamation-circle" style="color: #d97706; font-size: 1.15rem;"></i> Step 1: Complete Activation Payment (KSh 2,000)
+            <div id="hunt-activation-box" style="display: none; background: linear-gradient(135deg, #f0fdf4, #e8f8ee); border: 1.5px solid #86efac; border-radius: 14px; padding: 18px; margin-bottom: 18px; box-shadow: 0 2px 12px rgba(0,104,24,0.08);">
+              <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.95rem; color: #065f46; margin-bottom: 8px;">
+                <i class="fas fa-lock-open" style="color: #006818; font-size: 1.1rem;"></i> Activate Your 72-Hour House Hunt — KSh 2,000 Platform Fee
               </div>
-              <div style="font-size: 0.82rem; color: #78350f; line-height: 1.45; margin-bottom: 12px;">
-                Your house hunt request is ready! To dispatch our on-ground scout to inspect vacancies in your chosen areas, activate your 72-hour search with M-Pesa.
+              <div style="font-size: 0.82rem; color: #166534; line-height: 1.5; margin-bottom: 14px;">
+                Your KSh 2,000 is a <strong>KejaMarket platform service fee</strong> — not paid to the scout directly. Once your payment is confirmed, KejaMarket assigns and dispatches a verified scout to begin searching your chosen areas immediately.
               </div>
-              <div style="background: white; border: 1px solid #fef3c7; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-around; text-align: center; font-size: 0.82rem;">
-                <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">PAYBILL</span><br><strong style="font-size: 1rem; color: #0f172a;">4165507</strong></div>
-                <div style="border-left: 1px solid #fde68a;"></div>
-                <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">ACCOUNT</span><br><strong style="font-size: 1rem; color: #0f172a;">HOUSEHUNT</strong></div>
-                <div style="border-left: 1px solid #fde68a;"></div>
-                <div><span style="color: #92400e; font-size: 0.7rem; font-weight: 700;">AMOUNT</span><br><strong style="font-size: 1rem; color: #006818;">KSh 2,000</strong></div>
+              <div style="background: white; border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; display: flex; justify-content: space-around; text-align: center; font-size: 0.82rem; box-shadow: 0 1px 4px rgba(0,104,24,0.07);">
+                <div><span style="color: #15803d; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Paybill</span><br><strong style="font-size: 1.05rem; color: #0f172a;">4165507</strong></div>
+                <div style="border-left: 1px solid #bbf7d0;"></div>
+                <div><span style="color: #15803d; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Account</span><br><strong style="font-size: 1.05rem; color: #0f172a;">HOUSEHUNT</strong></div>
+                <div style="border-left: 1px solid #bbf7d0;"></div>
+                <div><span style="color: #15803d; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Amount</span><br><strong style="font-size: 1.05rem; color: #006818;">KSh 2,000</strong></div>
               </div>
 
               <div style="display: flex; flex-direction: column; gap: 8px;">
