@@ -500,6 +500,11 @@ app.get(['/admin', '/admin.html', '/admin-dashboard'], (req, res) => {
   res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
 });
 
+// Landlord portal route aliases (convenience routes that open index.html into the landlord portal)
+app.get(['/landlord', '/landlord-portal', '/landlord.html', '/landlord-portal.html', '/landlord-dashboard', '/landlord-dashboard.html'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // ── SEO PUBLIC CRAWLABLE PAGES & DYNAMIC SITEMAPS ──────────────────────
 const { createSeoRouter } = require('./seo/routes');
 app.use(createSeoRouter(() => store));
