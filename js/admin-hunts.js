@@ -8,7 +8,13 @@ const AdminHunts = (() => {
   let _currentHunt = null;
 
   function getToken() {
-    return localStorage.getItem('keja_token');
+    return localStorage.getItem('keja_token') ||
+           localStorage.getItem('adminToken') ||
+           localStorage.getItem('token') ||
+           localStorage.getItem('authToken') ||
+           sessionStorage.getItem('keja_token') ||
+           sessionStorage.getItem('token') ||
+           '';
   }
 
   function formatPrice(val) {
@@ -210,7 +216,7 @@ const AdminHunts = (() => {
       const phone = h.customerPhone ? `<a href="tel:${h.customerPhone}" style="color:#059669; text-decoration:none; font-weight:700;"><i class="fas fa-phone-alt"></i> +${h.customerPhone}</a>` : '—';
       const propsCount = h.propertiesFound || 0;
       const viewingsCount = h.viewingsArranged || 0;
-      const isPaid = h.paymentStatus === 'SUCCESS' || h.paymentStatus === 'PAID';
+      const isPaid = h.paymentStatus === 'SUCCESS' || h.paymentStatus === 'PAID' || h.payment_status === 'SUCCESS' || h.payment_status === 'PAID';
 
       return `
         <tr style="border-bottom:1px solid #f1f5f9; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
@@ -244,7 +250,7 @@ const AdminHunts = (() => {
                 <i class="fas fa-tasks"></i> Manage
               </button>
               ${!isPaid ? `
-                <button onclick="AdminHunts.activateHunt('${h.id}')" title="Activate 72h Search & Mark as Paid" style="padding:7px 10px; font-size:0.78rem; font-weight:800; border-radius:7px; background:#dcfce7; color:#15803d; border:1px solid #86efac; cursor:pointer;">
+                <button onclick="AdminHunts.activateHunt('${h.id}', this)" id="btn-activate-${h.id}" title="Activate 72h Search & Mark as Paid" style="padding:7px 10px; font-size:0.78rem; font-weight:800; border-radius:7px; background:#dcfce7; color:#15803d; border:1px solid #86efac; cursor:pointer;">
                   <i class="fas fa-bolt"></i> Activate
                 </button>
               ` : ''}
@@ -658,15 +664,24 @@ const AdminHunts = (() => {
     document.body.appendChild(modal);
   }
 
-  async function activateHunt(huntId) {
+  async function activateHunt(huntId, btn) {
     if (!confirm('⚡ Activate 72-Hour Search?\n\nThis will mark the hunt as PAID, start the 72-hour countdown timer, and automatically dispatch the nearest field scout.')) {
       return;
+    }
+
+    const origHtml = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Activating...';
     }
 
     try {
       const res = await fetch(`/api/admin/house-hunts/${huntId}/activate`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${getToken()}` }
+        headers: {
+          'Authorization': `Bearer ${getToken()}`,
+          'Content-Type': 'application/json'
+        }
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to activate hunt');
@@ -674,6 +689,10 @@ const AdminHunts = (() => {
       await loadHouseHunts();
     } catch (e) {
       alert('Error: ' + e.message);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
     }
   }
 

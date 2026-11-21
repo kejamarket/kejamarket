@@ -1621,11 +1621,29 @@ class PostgreSQLStore {
   async updateHouseHunt(id, updates) {
     if (!this.isConnected) return this._hhFbUpdate(id, updates);
     const colMap = {
-      status:'status', paymentStatus:'payment_status', mpesaReceipt:'mpesa_receipt',
-      checkoutRequestId:'checkout_request_id', paidAt:'paid_at',
-      startedAt:'started_at', expiresAt:'expires_at',
-      adminNotes:'admin_notes', assignedAdminId:'assigned_admin_id',
-      propertiesFound:'properties_found', viewingsArranged:'viewings_arranged'
+      status:'status',
+      paymentStatus:'payment_status',
+      payment_status:'payment_status',
+      mpesaReceipt:'mpesa_receipt',
+      mpesa_receipt:'mpesa_receipt',
+      checkoutRequestId:'checkout_request_id',
+      checkout_request_id:'checkout_request_id',
+      paidAt:'paid_at',
+      paid_at:'paid_at',
+      startedAt:'started_at',
+      started_at:'started_at',
+      expiresAt:'expires_at',
+      expires_at:'expires_at',
+      activeExpiresAt:'expires_at',
+      active_expires_at:'expires_at',
+      adminNotes:'admin_notes',
+      admin_notes:'admin_notes',
+      assignedAdminId:'assigned_admin_id',
+      assigned_admin_id:'assigned_admin_id',
+      propertiesFound:'properties_found',
+      properties_found:'properties_found',
+      viewingsArranged:'viewings_arranged',
+      viewings_arranged:'viewings_arranged'
     };
     const fields = []; const v = []; let i = 1;
     for (const [k, col] of Object.entries(colMap)) {

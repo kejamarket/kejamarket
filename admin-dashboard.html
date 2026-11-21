@@ -135,10 +135,14 @@
           <span>Live Viewing Queue</span>
           <span class="admin-badge" id="admin-viewings-count" style="display:none; margin-left:auto; background:#dc2626; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">0</span>
         </button>
+        <button class="admin-nav-btn" data-module="house-hunts" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
+          <i class="fas fa-search-location nav-icon" style="color:#10b981;"></i>
+          <span>House Hunt Concierge</span>
+          <span class="admin-badge" id="admin-hunts-count" style="margin-left:auto; background:#10b981; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">1 Active</span>
+        </button>
         <button class="admin-nav-btn" data-module="hunts-sla" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-stopwatch nav-icon" style="color:#10b981;"></i>
-          <span>Smart House Hunt 72H</span>
-          <span class="admin-badge" id="admin-hunts-count" style="margin-left:auto; background:#10b981; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">8 Active</span>
+          <span>Smart House Hunt 72H SLA</span>
         </button>
         <button class="admin-nav-btn" data-module="scouts" data-rbac="any" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-binoculars nav-icon" style="color:#f59e0b;"></i>
@@ -170,7 +174,7 @@
         <div class="sidebar-section-title">08. Communications & CRM</div>
         <button class="admin-nav-btn" data-module="inquiries" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
           <i class="fas fa-comments nav-icon" style="color:#3b82f6;"></i>
-          <span>Tenant â†” Landlord Chats</span>
+          <span>Tenant &harr; Landlord Chats</span>
           <span class="admin-badge" id="badge-inquiries-count" style="display:none; margin-left:auto; background:#3b82f6; color:#fff; border-radius:10px; padding:2px 7px; font-size:11px; font-weight:800;">0</span>
         </button>
         <button class="admin-nav-btn" data-module="messages-broadcast" data-rbac="support,super" onclick="AdminCore.navigate(this.dataset.module, this.dataset.view)">
@@ -349,18 +353,18 @@
 </div>
 
 <!-- Admin System Scripts -->
-<script src="js/admin-core.js?v=142.0"></script>
-<script src="js/data/locations-master.js?v=142.0"></script>
-<script src="js/admin-locations.js?v=142.0"></script>
-<script src="js/admin-users.js?v=142.0"></script>
-<script src="js/admin-properties.js?v=142.0"></script>
-<script src="js/admin-verification.js?v=142.0"></script>
-<script src="js/admin-buildings.js?v=142.0"></script>
-<script src="js/admin-bnb.js?v=142.0"></script>
-<script src="js/admin-operations.js?v=142.0"></script>
-<script src="js/admin-hunts.js?v=142.0"></script>
-<script src="js/admin-viewings.js?v=142.0"></script>
-<script src="js/admin-os-extensions.js?v=142.0"></script>
+<script src="js/admin-core.js?v=151.0"></script>
+<script src="js/data/locations-master.js?v=151.0"></script>
+<script src="js/admin-locations.js?v=151.0"></script>
+<script src="js/admin-users.js?v=151.0"></script>
+<script src="js/admin-properties.js?v=151.0"></script>
+<script src="js/admin-verification.js?v=151.0"></script>
+<script src="js/admin-buildings.js?v=151.0"></script>
+<script src="js/admin-bnb.js?v=151.0"></script>
+<script src="js/admin-operations.js?v=151.0"></script>
+<script src="js/admin-hunts.js?v=151.0"></script>
+<script src="js/admin-viewings.js?v=151.0"></script>
+<script src="js/admin-os-extensions.js?v=151.0"></script>
 
 <!-- Mobile Menu Toggle Script -->
 <script>
