@@ -14,18 +14,26 @@ class LandlordPortal {
   init() {
     this.checkLandlordSession();
     
-    // AUTO-OPEN: If already logged in as landlord/agency on page load, open unified dashboard
-    // (dashboard has a one-click deep link to open the full property portal)
+    // Check if user directly navigated to landlord URL path or query
+    const isLandlordPath = window.location.pathname.includes('/landlord') || 
+                           window.location.search.includes('portal=landlord') ||
+                           window.location.hash.includes('landlord');
+
+    // AUTO-OPEN: If already logged in as landlord/agency on page load, or navigated to landlord URL
     const session = window.kejaAuth ? window.kejaAuth.getSession() : null;
-    if (session && (session.role === 'landlord' || session.role === 'agency') && 
-        session.role !== 'admin' && !session.isAdmin && session.id !== 'usr-admin-01') {
+    if ((session && (session.role === 'landlord' || session.role === 'agency') && 
+        session.role !== 'admin' && !session.isAdmin && session.id !== 'usr-admin-01') || isLandlordPath) {
       setTimeout(() => {
-        if (window.kejaDashboard && typeof window.kejaDashboard.open === 'function') {
-          window.kejaDashboard.open();
-        } else {
+        if (session && (session.role === 'landlord' || session.role === 'agency')) {
+          if (window.kejaDashboard && typeof window.kejaDashboard.open === 'function') {
+            window.kejaDashboard.open();
+          } else {
+            this.openLandlordPortal();
+          }
+        } else if (isLandlordPath) {
           this.openLandlordPortal();
         }
-      }, 1000);
+      }, 800);
     }
   }
 
