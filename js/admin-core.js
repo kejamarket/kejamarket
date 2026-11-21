@@ -124,7 +124,12 @@ const AdminCore = (() => {
       } catch(e) {}
     }
 
-    let token = localStorage.getItem('keja_token');
+    let token = localStorage.getItem('keja_token') ||
+                localStorage.getItem('adminToken') ||
+                localStorage.getItem('token') ||
+                localStorage.getItem('authToken') ||
+                sessionStorage.getItem('keja_token') ||
+                sessionStorage.getItem('token');
     if (!token) {
       showAdminLoginModal('Please authenticate with your Admin credentials to open the control panel.');
       throw new Error('AUTH_REQUIRED');
@@ -581,35 +586,55 @@ const AdminCore = (() => {
           else await loadDashboard();
           break;
         case 'hunts-sla':
-          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSmartHouseHunts();
-          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Smart House Hunt 72H...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadSmartHouseHunts(); }, 800); }
+          if (window.AdminOSExtensions && typeof window.AdminOSExtensions.loadSmartHouseHunts === 'function') {
+            await window.AdminOSExtensions.loadSmartHouseHunts();
+          } else if (window.AdminHunts && typeof window.AdminHunts.loadHouseHunts === 'function') {
+            await window.AdminHunts.loadHouseHunts();
+          } else {
+            contentArea.innerHTML = '<div class="error-state"><p>Smart House Hunt module is unavailable.</p></div>';
+          }
           break;
         case 'daraja-reconciliation':
         case 'finance-refunds':
         case 'finance-ledger':
         case 'finance-payouts':
-          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadFinanceReconciliation();
-          else await loadFinanceModule();
+          if (window.AdminOSExtensions && typeof window.AdminOSExtensions.loadFinanceReconciliation === 'function') {
+            await window.AdminOSExtensions.loadFinanceReconciliation();
+          } else {
+            await loadFinanceModule();
+          }
           break;
         case 'compliance-odpc':
         case 'compliance-dsr':
         case 'compliance-breach':
-          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadODPCCompliance();
-          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading ODPC Compliance Centre...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadODPCCompliance(); }, 800); }
+          if (window.AdminOSExtensions && typeof window.AdminOSExtensions.loadODPCCompliance === 'function') {
+            await window.AdminOSExtensions.loadODPCCompliance();
+          } else {
+            contentArea.innerHTML = '<div class="error-state"><p>ODPC Compliance module is unavailable.</p></div>';
+          }
           break;
         case 'super-governance':
         case 'security-sessions':
-          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSuperGovernance();
-          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Super Governance...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadSuperGovernance(); }, 800); }
+          if (window.AdminOSExtensions && typeof window.AdminOSExtensions.loadSuperGovernance === 'function') {
+            await window.AdminOSExtensions.loadSuperGovernance();
+          } else {
+            contentArea.innerHTML = '<div class="error-state"><p>Super Governance module is unavailable.</p></div>';
+          }
           break;
         case 'disputes':
-          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadDisputes();
-          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Disputes...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadDisputes(); }, 800); }
+          if (window.AdminOSExtensions && typeof window.AdminOSExtensions.loadDisputes === 'function') {
+            await window.AdminOSExtensions.loadDisputes();
+          } else {
+            contentArea.innerHTML = '<div class="error-state"><p>Disputes module is unavailable.</p></div>';
+          }
           break;
         case 'seo-manager':
         case 'seo-sitemap':
-          if (window.AdminOSExtensions) await window.AdminOSExtensions.loadSEOManager();
-          else { contentArea.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading SEO Manager...</div>'; setTimeout(() => { if (window.AdminOSExtensions) window.AdminOSExtensions.loadSEOManager(); }, 800); }
+          if (window.AdminOSExtensions && typeof window.AdminOSExtensions.loadSEOManager === 'function') {
+            await window.AdminOSExtensions.loadSEOManager();
+          } else {
+            contentArea.innerHTML = '<div class="error-state"><p>SEO Manager module is unavailable.</p></div>';
+          }
           break;
         default:
           contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><p>Module "${moduleName}" is active.</p></div>`;
@@ -1107,11 +1132,24 @@ const AdminCore = (() => {
   async function loadMarketplaceModule() {
     const content = document.getElementById('admin-content');
     content.innerHTML = `
-      <div class="module-header"><h1><i class="fas fa-shopping-bag"></i> Marketplace Items</h1></div>
+      <div class="module-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <h1><i class="fas fa-shopping-bag"></i> Marketplace Items</h1>
+      </div>
+      <div id="mkt-bulk-bar" style="display:none;background:#fef2f2;border:1.5px solid #ef4444;border-radius:10px;padding:12px 18px;margin-bottom:16px;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(239,68,68,0.15);">
+        <div style="font-weight:700;color:#991b1b;display:flex;align-items:center;gap:8px;">
+          <i class="fas fa-box-open" style="font-size:1.1rem;"></i>
+          <span><span id="mkt-selected-count" style="font-size:1.1rem;font-weight:900;">0</span> items selected</span>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button onclick="AdminCore.bulkDeleteMarketplaceItems()" style="background:#dc2626;color:white;font-weight:800;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+            <i class="fas fa-trash-alt"></i> Delete Selected
+          </button>
+        </div>
+      </div>
       <div id="marketplace-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading marketplace items...</div></div>
     `;
     try {
-      const res = await fetch(`${API_BASE}/api/marketplace?limit=100`);
+      const res = await fetch(`${API_BASE}/api/marketplace?limit=200`);
       const data = await res.json();
       const items = data.items || [];
       const container = document.getElementById('marketplace-content');
@@ -1121,24 +1159,87 @@ const AdminCore = (() => {
       }
       container.innerHTML = `
         <div class="table-container"><table class="admin-table">
-          <thead><tr><th>Item</th><th>Category</th><th>Price</th><th>Seller</th><th>Status</th><th>Actions</th></tr></thead>
+          <thead><tr>
+            <th style="width:40px;text-align:center;"><input type="checkbox" id="mkt-select-all" onchange="AdminCore.toggleSelectAllMarketplace(this)" style="width:17px;height:17px;cursor:pointer;"></th>
+            <th>Item</th><th>Category</th><th>Price</th><th>Seller</th><th>Status</th><th>Actions</th>
+          </tr></thead>
           <tbody>${items.map(i => `
             <tr>
-              <td><strong>${escapeHtml(i.title)}</strong><br><small style="color:#64748b;">${escapeHtml(i.location_suburb || 'Nairobi')}</small></td>
+              <td style="text-align:center;"><input type="checkbox" class="mkt-row-cb" value="${i.id}" onchange="AdminCore.updateMktBulkBar()" style="width:17px;height:17px;cursor:pointer;"></td>
+              <td><strong>${escapeHtml(i.title)}</strong><br><small style="color:#64748b;">${escapeHtml(i.location_suburb || i.location || 'Nairobi')}</small></td>
               <td>${escapeHtml(i.category || 'General')}</td>
-              <td><strong>KSh ${Number(i.price_kes || 0).toLocaleString()}</strong></td>
+              <td><strong>KSh ${Number(i.price_kes || i.price || 0).toLocaleString()}</strong></td>
               <td>${escapeHtml(i.seller_name || 'Seller')}<br><small style="color:#64748b;">${i.seller_phone || '-'}</small></td>
               <td><span class="status-badge status-active">${i.status || 'Active'}</span></td>
               <td>
-                <button class="btn-action" onclick="AdminVerification.viewDetails('marketplace', '${i.id}')"><i class="fas fa-eye"></i></button>
-                <button class="btn-action btn-delete" onclick="AdminVerification.quickReject('marketplace', '${i.id}', '${escapeHtml(i.title)}')"><i class="fas fa-times"></i></button>
+                <div style="display:flex;gap:5px;align-items:center;">
+                  <button class="btn-action" onclick="AdminVerification.viewDetails('marketplace', '${i.id}')" title="View"><i class="fas fa-eye"></i></button>
+                  <button class="btn-action btn-delete" onclick="AdminCore.deleteMarketplaceItem('${i.id}', '${escapeHtml(i.title)}')" title="Delete Item" style="background:#fee2e2;color:#dc2626;border-color:#fca5a5;"><i class="fas fa-trash-alt"></i></button>
+                </div>
               </td>
             </tr>
           `).join('')}</tbody>
         </table></div>
       `;
     } catch (err) {
-      document.getElementById('marketplace-content').innerHTML = `<div class="error-state">${err.message}</div>`;
+      const c = document.getElementById('marketplace-content');
+      if (c) c.innerHTML = `<div class="error-state">${err.message}</div>`;
+    }
+  }
+
+  function toggleSelectAllMarketplace(masterCb) {
+    document.querySelectorAll('.mkt-row-cb').forEach(cb => cb.checked = masterCb.checked);
+    updateMktBulkBar();
+  }
+
+  function updateMktBulkBar() {
+    const cbs = document.querySelectorAll('.mkt-row-cb:checked');
+    const bar = document.getElementById('mkt-bulk-bar');
+    const countEl = document.getElementById('mkt-selected-count');
+    if (!bar) return;
+    if (cbs.length > 0) {
+      bar.style.display = 'flex';
+      if (countEl) countEl.textContent = cbs.length;
+    } else {
+      bar.style.display = 'none';
+      const masterCb = document.getElementById('mkt-select-all');
+      if (masterCb) masterCb.checked = false;
+    }
+  }
+
+  async function deleteMarketplaceItem(itemId, itemTitle) {
+    if (!confirm(`Delete marketplace item "${itemTitle}"?\n\nThis action cannot be undone.`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/marketplace/${itemId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}` }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to delete item');
+      showToast('Marketplace item deleted', 'success');
+      await loadMarketplaceModule();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  async function bulkDeleteMarketplaceItems() {
+    const cbs = Array.from(document.querySelectorAll('.mkt-row-cb:checked'));
+    if (!cbs.length) return;
+    const itemIds = cbs.map(cb => cb.value);
+    if (!confirm(`Delete ${itemIds.length} selected marketplace items?\n\nThis action cannot be undone.`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/marketplace/bulk-delete`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('keja_token')}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ itemIds })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to delete items');
+      showToast(data.message || `Deleted ${itemIds.length} items`, 'success');
+      await loadMarketplaceModule();
+    } catch (e) {
+      alert('Error: ' + e.message);
     }
   }
 
@@ -1165,7 +1266,8 @@ const AdminCore = (() => {
       });
       const data = await res.json();
       const reports = data.reports || [];
-      const container = document.getElementById('reported-listings-content');
+      const container = content.querySelector('#reported-listings-content');
+      if (!container) return;
 
       if (!reports.length) {
         container.innerHTML = `
@@ -1210,7 +1312,8 @@ const AdminCore = (() => {
         </div>
       `;
     } catch (err) {
-      document.getElementById('reported-listings-content').innerHTML = `<div class="error-state">${err.message}</div>`;
+      const el = document.getElementById('reported-listings-content') || content;
+      if (el) el.innerHTML = `<div class="error-state">${escapeHtml(err.message)}</div>`;
     }
   }
 
@@ -3810,6 +3913,38 @@ const AdminCore = (() => {
     }
   }
 
+  async function loadBulkOperationsModule() {
+    const content = document.getElementById('admin-content');
+    content.innerHTML = `
+      <div class="module-header">
+        <h1><i class="fas fa-layer-group"></i> Bulk Operations & System Utilities</h1>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px;">
+        <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e2e8f0; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
+          <h3 style="margin-top:0; color:#0f172a;"><i class="fas fa-home" style="color:#059669;"></i> Properties Bulk Actions</h3>
+          <p style="color:#64748b; font-size:0.88rem;">Manage multiple properties at once. Select and batch approve or delete directly from the Properties manager.</p>
+          <button class="btn-primary" onclick="AdminCore.navigate('properties')" style="background:#059669; color:white; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;">
+            Open Property Manager
+          </button>
+        </div>
+        <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e2e8f0; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
+          <h3 style="margin-top:0; color:#0f172a;"><i class="fas fa-shopping-bag" style="color:#6366f1;"></i> Marketplace Bulk Actions</h3>
+          <p style="color:#64748b; font-size:0.88rem;">Multi-select items to delete obsolete or duplicate marketplace listings in one click.</p>
+          <button class="btn-primary" onclick="AdminCore.navigate('marketplace')" style="background:#6366f1; color:white; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;">
+            Open Marketplace Manager
+          </button>
+        </div>
+        <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e2e8f0; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
+          <h3 style="margin-top:0; color:#0f172a;"><i class="fas fa-users" style="color:#dc2626;"></i> Users Bulk Management</h3>
+          <p style="color:#64748b; font-size:0.88rem;">Multi-select spam accounts and delete or suspend them in bulk with safety checks.</p>
+          <button class="btn-primary" onclick="AdminCore.navigate('users')" style="background:#dc2626; color:white; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;">
+            Open User Management
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
   return {
     init,
     navigate,
@@ -3839,6 +3974,11 @@ const AdminCore = (() => {
     bulkApproveProps,
     bulkDeleteProps,
     deleteProperty,
+    toggleSelectAllMarketplace,
+    updateMktBulkBar,
+    deleteMarketplaceItem,
+    bulkDeleteMarketplaceItems,
+    loadBulkOperationsModule,
     toggleSelectAllInquiries,
     updateInqBulkBar,
     bulkDeleteInquiries,

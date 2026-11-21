@@ -11,6 +11,22 @@ window.AdminOSExtensions = (function() {
     return document.getElementById('admin-content');
   }
 
+  function getToken() {
+    return localStorage.getItem('keja_token') ||
+           localStorage.getItem('adminToken') ||
+           localStorage.getItem('token') ||
+           localStorage.getItem('authToken') ||
+           sessionStorage.getItem('keja_token') ||
+           sessionStorage.getItem('token') || '';
+  }
+
+  function getAuthHeaders() {
+    const t = getToken();
+    const h = { 'Content-Type': 'application/json' };
+    if (t) h['Authorization'] = 'Bearer ' + t;
+    return h;
+  }
+
   // ═════════════════════════════════════════════════════════════════════════
   // 1. EXECUTIVE COMMAND CENTRE: LIVE OPERATIONS & REAL-TIME STREAM
   // ═════════════════════════════════════════════════════════════════════════
@@ -127,7 +143,7 @@ window.AdminOSExtensions = (function() {
     el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading 72H Concierge Operations Pipeline...</div>';
 
     try {
-      const res = await fetch('/api/admin/os/hunts/sla-pipeline', { credentials: 'same-origin' });
+      const res = await fetch('/api/admin/os/hunts/sla-pipeline', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
       const hunts = data.hunts || [];
 
@@ -285,12 +301,12 @@ window.AdminOSExtensions = (function() {
     el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Daraja M-Pesa Accounting & Ledger...</div>';
 
     try {
-      const res = await fetch('/api/admin/os/finance/reconciliation', { credentials: 'same-origin' });
+      const res = await fetch('/api/admin/os/finance/reconciliation', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
-      const refRes = await fetch('/api/admin/os/finance/refunds', { credentials: 'same-origin' });
+      const refRes = await fetch('/api/admin/os/finance/refunds', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const refData = await refRes.json();
       const refunds = refData.refunds || [];
-      const vaultRes = await fetch('/api/admin/os/finance/vault-config', { credentials: 'same-origin' }).catch(() => ({ json: () => ({ vault: {} }) }));
+      const vaultRes = await fetch('/api/admin/os/finance/vault-config', { headers: getAuthHeaders(), credentials: 'same-origin' }).catch(() => ({ json: () => ({ vault: {} }) }));
       const vaultData = await vaultRes.json();
       const vault = vaultData.vault || {};
 
@@ -440,16 +456,11 @@ window.AdminOSExtensions = (function() {
             </div>
           </div>
         </div>
-      `;
-    } catch (err) {
-      el.innerHTML = `<div class="error-state"><p>${err.message}</p></div>`;
-    }
-  }
 
         <!-- Daraja Missing Callback Reconciliation Table -->
-        <div style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+        <div style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05); margin-top:20px;">
           <div style="padding:16px 20px; background:#f8fafc; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-weight:900; font-size:1rem; color:#0f172a;"><i class="fas fa-sync" style="color:#0ea5e9;"></i> Daraja Transaction Status API & Auto-Reconciler</div>
+            <div style="font-weight:900; font-size:1rem; color:#0f172a;"><i class="fas fa-sync" style="color:#0ea5e9;"></i> Daraja Transaction Status API &amp; Auto-Reconciler</div>
             <button onclick="AdminCore.showToast('Polled Safaricom Daraja API — All transactions matched', 'success')" class="btn-secondary" style="font-size:0.75rem; padding:5px 10px;">
               <i class="fas fa-cloud-download-alt"></i> Query Daraja Status API
             </button>
@@ -481,7 +492,7 @@ window.AdminOSExtensions = (function() {
     el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Kenyan ODPC Compliance Records...</div>';
 
     try {
-      const res = await fetch('/api/admin/os/compliance/summary', { credentials: 'same-origin' });
+      const res = await fetch('/api/admin/os/compliance/summary', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
       const comp = data.compliance || {};
 
@@ -596,7 +607,7 @@ window.AdminOSExtensions = (function() {
     el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Super Governance & Security Controls...</div>';
 
     try {
-      const res = await fetch('/api/admin/os/governance/status', { credentials: 'same-origin' });
+      const res = await fetch('/api/admin/os/governance/status', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
       const gov = data.governance || {};
       const sessions = data.activeSessions || [];
@@ -684,7 +695,7 @@ window.AdminOSExtensions = (function() {
     el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading Consumer Disputes Queue...</div>';
 
     try {
-      const res = await fetch('/api/admin/os/disputes', { credentials: 'same-origin' });
+      const res = await fetch('/api/admin/os/disputes', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
       const disputes = data.disputes || [];
 
@@ -796,7 +807,7 @@ window.AdminOSExtensions = (function() {
     try {
       const res = await fetch('/api/admin/os/governance/lockdown', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ enable, reason: 'Super Administrator Master Command' }),
         credentials: 'same-origin'
       });
@@ -815,7 +826,7 @@ window.AdminOSExtensions = (function() {
     try {
       const res = await fetch(`/api/admin/os/finance/refunds/${refundId}/approve`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         credentials: 'same-origin'
       });
       const data = await res.json();
@@ -835,6 +846,7 @@ window.AdminOSExtensions = (function() {
     try {
       const res = await fetch('/api/admin/os/governance/sessions/revoke-all', {
         method: 'POST',
+        headers: getAuthHeaders(),
         credentials: 'same-origin'
       });
       const data = await res.json();
@@ -848,7 +860,7 @@ window.AdminOSExtensions = (function() {
   async function regenerateSitemap() {
     AdminCore.showToast('Regenerating sitemap XML across all verified listings...', 'info');
     try {
-      const res = await fetch('/api/admin/os/seo/regenerate-sitemap', { method: 'POST', credentials: 'same-origin' });
+      const res = await fetch('/api/admin/os/seo/regenerate-sitemap', { method: 'POST', headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
       AdminCore.showToast(data.message, 'success');
     } catch (e) {
@@ -861,7 +873,7 @@ window.AdminOSExtensions = (function() {
     if (!note) return;
     fetch(`/api/admin/os/hunts/${huntId}/confirm-viewing`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ confirmationNote: note }),
       credentials: 'same-origin'
     }).then(r => r.json()).then(data => {
@@ -882,7 +894,7 @@ window.AdminOSExtensions = (function() {
     if (!el) return;
     el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Connecting to AI Fraud Gate & Risk Engine...</div>';
     try {
-      const res = await fetch('/api/admin/fraud/flags', { credentials: 'same-origin' });
+      const res = await fetch('/api/admin/fraud/flags', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
       const flags = data.flags || [];
       el.innerHTML = `
@@ -984,7 +996,7 @@ window.AdminOSExtensions = (function() {
     document.body.appendChild(modal);
 
     try {
-      const res = await fetch(`/api/admin/os/hunts/${huntId}/ai-match`, { credentials: 'same-origin' });
+      const res = await fetch(`/api/admin/os/hunts/${huntId}/ai-match`, { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
       const body = document.getElementById('ai-match-modal-body');
       if (!body) return;
@@ -1033,7 +1045,7 @@ window.AdminOSExtensions = (function() {
   async function runAiFraudScan() {
     AdminCore.showToast('Scanning listings for duplicates, price anomalies, velocity rules & photo syndicates...', 'info');
     try {
-      const res = await fetch('/api/admin/os/fraud/auto-scan', { credentials: 'same-origin' });
+      const res = await fetch('/api/admin/os/fraud/auto-scan', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
       if (data.detected && data.detected.length > 0) {
         AdminCore.showToast(`AI Risk Scanner detected ${data.detected.length} threat anomalies`, 'warning');
@@ -1054,7 +1066,7 @@ window.AdminOSExtensions = (function() {
     AdminCore.showToast('Verifying scout GPS coordinates on-site...', 'info');
     fetch(`/api/admin/os/hunts/${huntId}/scout-checkin`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ propertyTitle, latitude: -1.2921, longitude: 36.8219, notes: 'Geo-verified scout check-in' }),
       credentials: 'same-origin'
     }).then(r => r.json()).then(d => {
@@ -1068,7 +1080,7 @@ window.AdminOSExtensions = (function() {
     AdminCore.showToast(`Broadcasting bounty to corridor scouts...`, 'info');
     fetch(`/api/admin/os/hunts/${huntId}/trigger-bounty`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ corridor, budget, bedrooms }),
       credentials: 'same-origin'
     }).then(r => r.json()).then(d => {
@@ -1083,7 +1095,7 @@ window.AdminOSExtensions = (function() {
     const scoutCommission = prompt(`Scout Finder's Fee Commission to credit (KES):`, '3500');
     fetch(`/api/admin/os/hunts/${huntId}/settle`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ leaseAmountKes: Number(leaseAmount), scoutCommissionKes: Number(scoutCommission || 3500) }),
       credentials: 'same-origin'
     }).then(r => r.json()).then(d => {
@@ -1096,7 +1108,7 @@ window.AdminOSExtensions = (function() {
     if (!confirm(`Trigger 72-Hour Concierge SLA Breach Refund of KSh ${amountKes || 2000} to ${customerName} (${customerPhone})? This will route to Module 09 for Daraja B2C disbursement.`)) return;
     fetch(`/api/admin/os/hunts/${huntId}/auto-refund`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ customerName, customerPhone, amountKes: Number(amountKes || 2000) }),
       credentials: 'same-origin'
     }).then(r => r.json()).then(d => {
@@ -1110,7 +1122,7 @@ window.AdminOSExtensions = (function() {
     if (!reason) return;
     fetch(`/api/admin/os/finance/refunds/${refundId}/reject`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ rejectionReason: reason }),
       credentials: 'same-origin'
     }).then(r => r.json()).then(d => {

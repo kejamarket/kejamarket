@@ -676,12 +676,14 @@ const AdminHunts = (() => {
     }
 
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      const tok = getToken();
+      if (tok) headers['Authorization'] = `Bearer ${tok}`;
+
       const res = await fetch(`/api/admin/house-hunts/${huntId}/activate`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${getToken()}`,
-          'Content-Type': 'application/json'
-        }
+        credentials: 'include',
+        headers
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to activate hunt');
@@ -698,9 +700,14 @@ const AdminHunts = (() => {
 
   async function dispatchScoutPrompt(huntId) {
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      const tok = getToken();
+      if (tok) headers['Authorization'] = `Bearer ${tok}`;
+
       const res = await fetch(`/api/admin/house-hunts/${huntId}/activate`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${getToken()}` }
+        credentials: 'include',
+        headers
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to dispatch scout');

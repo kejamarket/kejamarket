@@ -155,6 +155,9 @@ const AdminUsers = (() => {
                     <button class="btn-icon" onclick="AdminUsers.viewUserDetail('${user.id}')" title="View Profile">
                       <i class="fas fa-eye"></i>
                     </button>
+                    <button class="btn-icon" onclick="AdminUsers.showSendMessageModal('${user.id}', '${escapeHtml(user.name)}', '${escapeHtml(user.phone || '')}')" title="Send Direct Message / SMS Info" style="background:#ecfdf5; color:#059669; border-color:#a7f3d0;">
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
                     <button class="btn-icon" onclick="AdminUsers.editUser('${user.id}')" title="Edit">
                       <i class="fas fa-edit"></i>
                     </button>
@@ -230,6 +233,9 @@ const AdminUsers = (() => {
           </h1>
         </div>
         <div class="action-buttons">
+          <button class="btn-primary" onclick="AdminUsers.showSendMessageModal('${user.id}', '${escapeHtml(user.name)}', '${escapeHtml(user.phone || '')}')" style="background:#059669; border-color:#059669;">
+            <i class="fas fa-paper-plane"></i> Send Direct Message
+          </button>
           <button class="btn-secondary" onclick="AdminUsers.editUser('${user.id}')">
             <i class="fas fa-edit"></i> Edit
           </button>
@@ -1075,6 +1081,91 @@ const AdminUsers = (() => {
     }
   }
 
+  // Show Direct Message / Info Modal
+  function showSendMessageModal(userId, userName, userPhone) {
+    const existing = document.getElementById('admin-send-msg-modal');
+    if (existing) existing.remove();
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'admin-send-msg-modal';
+    modal.innerHTML = `
+      <div class="modal-content" style="max-width:520px;">
+        <div class="modal-header" style="background:linear-gradient(135deg, #059669, #047857); color:white; border-radius:12px 12px 0 0; padding:18px 20px;">
+          <h2 style="margin:0; font-size:1.15rem; color:white;"><i class="fas fa-paper-plane"></i> Send Direct Message to ${escapeHtml(userName)}</h2>
+          <button class="modal-close" onclick="this.closest('.modal-overlay').remove()" style="color:white; opacity:0.8;"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" style="padding:20px;">
+          <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px 14px; margin-bottom:16px; font-size:0.85rem; color:#166534;">
+            <strong>Recipient:</strong> ${escapeHtml(userName)} &bull; ${userPhone ? '📞 ' + escapeHtml(userPhone) : 'In-App Only'}
+          </div>
+          <div class="form-group" style="margin-bottom:14px;">
+            <label style="font-weight:700; font-size:0.88rem; display:block; margin-bottom:6px;">Subject / Reason</label>
+            <input type="text" id="dm-subject" class="form-control" placeholder="e.g. Viewing Update / Account Notice / Listing Details" value="KejaMarket Concierge Notice" style="width:100%; padding:9px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+          </div>
+          <div class="form-group" style="margin-bottom:14px;">
+            <label style="font-weight:700; font-size:0.88rem; display:block; margin-bottom:6px;">Message Body *</label>
+            <textarea id="dm-message" class="form-control" rows="4" placeholder="Write your message or information to the user..." style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit;"></textarea>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <input type="checkbox" id="dm-send-sms" ${userPhone ? 'checked' : 'disabled'} style="width:18px; height:18px; cursor:pointer;">
+            <label for="dm-send-sms" style="font-size:0.88rem; font-weight:600; color:#334155; cursor:pointer;">
+              Deliver SMS directly to phone (${userPhone || 'No phone on profile'})
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer" style="padding:14px 20px; display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #e2e8f0;">
+          <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+          <button class="btn-primary" id="btn-submit-dm" onclick="AdminUsers.submitDirectMessage('${userId}')" style="background:#059669; border-color:#059669; padding:9px 20px; font-weight:700; border-radius:8px; color:white; cursor:pointer;">
+            <i class="fas fa-paper-plane"></i> Send Message Now
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  // Submit direct message
+  async function submitDirectMessage(userId) {
+    const subject = document.getElementById('dm-subject')?.value.trim();
+    const message = document.getElementById('dm-message')?.value.trim();
+    const sendSms = document.getElementById('dm-send-sms')?.checked ?? false;
+    const btn = document.getElementById('btn-submit-dm');
+
+    if (!message) {
+      alert('Please enter a message.');
+      return;
+    }
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/users/${userId}/message`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ subject, message, sendSms })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to send message');
+
+      const modal = document.getElementById('admin-send-msg-modal');
+      if (modal) modal.remove();
+
+      showToast(data.message || 'Message sent successfully!', 'success');
+    } catch (e) {
+      alert('Error: ' + e.message);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message Now';
+      }
+    }
+  }
+
   // Public API
   return {
     init,
@@ -1092,6 +1183,8 @@ const AdminUsers = (() => {
     confirmDeleteUser,
     exportUsers,
     showAddUserModal,
+    showSendMessageModal,
+    submitDirectMessage,
     toggleSelectAll,
     updateBulkBar,
     bulkDeleteUsers,
