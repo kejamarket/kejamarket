@@ -134,7 +134,16 @@ const AdminProperties = (() => {
                 <td><span class="badge badge-type">${formatPropertyType(property.propertyType)}</span></td>
                 <td style="font-weight: 700; color: #7c3aed;">KSh ${formatNumber(property.price || 0)}</td>
                 <td>${renderPropertyStatus(property)}</td>
-                <td style="font-size: 0.85rem; color: #64748b;">${formatDate(property.createdAt)}</td>
+                <td style="font-size: 0.82rem; line-height: 1.35;">
+                  <div style="font-weight: 600; color: #1e293b;"><i class="far fa-calendar-plus" style="color:#0ea5e9; font-size:0.75rem;"></i> Listed:</div>
+                  <div style="color: #475569; font-size: 0.78rem;">${formatDateTimeWithAgo(property.createdAt)}</div>
+                  ${(property.verified_at || property.verifiedAt || property.approved_at || property.approvedAt) ? `
+                    <div style="margin-top: 4px; font-weight: 600; color: #15803d;"><i class="far fa-check-circle" style="color:#16a34a; font-size:0.75rem;"></i> Approved:</div>
+                    <div style="color: #166534; font-size: 0.78rem;">${formatDateTimeWithAgo(property.verified_at || property.verifiedAt || property.approved_at || property.approvedAt)}</div>
+                  ` : (property.status === 'pending' || !property.isVerified) ? `
+                    <div style="margin-top: 3px; font-size: 0.75rem; color: #d97706; font-weight: 600;"><i class="fas fa-hourglass-half" style="font-size:0.7rem;"></i> Awaiting review</div>
+                  ` : ''}
+                </td>
                 <td>
                   <div class="action-buttons-group">
                     <button class="btn-icon" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;" onclick="AdminProperties.openSocialBlast('${property.id}')" title="Social Blast (WhatsApp, Instagram, FB, TikTok)"><i class="fas fa-bullhorn"></i></button>
@@ -778,6 +787,44 @@ const AdminProperties = (() => {
       month: 'short',
       year: 'numeric'
     });
+  }
+
+  function formatDateTime(dateString) {
+    if (!dateString) return '-';
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return '-';
+    return d.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    }) + ', ' + d.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+
+  function formatTimeAgo(dateString) {
+    if (!dateString) return '';
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return '';
+    const diffMs = Date.now() - d.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHrs = Math.floor(diffMin / 60);
+    const diffDays = Math.floor(diffHrs / 24);
+    if (diffMin < 1) return 'just now';
+    if (diffMin < 60) return `${diffMin}m ago`;
+    if (diffHrs < 24) return `${diffHrs}h ago`;
+    if (diffDays < 30) return `${diffDays}d ago`;
+    return `${Math.floor(diffDays / 30)}mo ago`;
+  }
+
+  function formatDateTimeWithAgo(dateString) {
+    if (!dateString) return '-';
+    const dt = formatDateTime(dateString);
+    const ago = formatTimeAgo(dateString);
+    return ago ? `${dt} <span style="font-size:0.75rem; color:#94a3b8; font-weight:500;">(${ago})</span>` : dt;
   }
 
   function formatNumber(num) {

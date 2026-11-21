@@ -1290,8 +1290,17 @@
         <i class="fas fa-chevron-down"></i>
       </div>
 
-      <!-- Top Header Spacer (Search moved to Left Sidebar) -->
-      <div class="header-spacer" style="flex: 1;"></div>
+      <!-- Primary Search Bar in Header -->
+      <div class="header-search-wrapper">
+        <form id="header-search-form" class="header-search-bar" onsubmit="if(window.app && app.applyFilters){ app.applyFilters(); } return false;">
+          <i class="fas fa-search" style="color:#00b53f; font-size:0.95rem; padding-left:12px; flex-shrink:0;"></i>
+          <input type="text" id="location-search-input" data-alias="header-search-input" class="header-search-input-box" placeholder="Search for estates, neighbourhoods, or areas..." autocomplete="off" onfocus="this.parentElement.style.borderColor='#00b53f'; this.parentElement.style.boxShadow='0 0 0 3px rgba(0,181,63,0.15)';" onblur="this.parentElement.style.borderColor=''; this.parentElement.style.boxShadow='';" oninput="if(window.app){ if(app.showSearchSuggestions) app.showSearchSuggestions(this.value); if(app.handleLocationSearchInput) app.handleLocationSearchInput(this.value); const clr=document.getElementById('btn-clear-search'); if(clr) clr.style.display=this.value?'flex':'none'; }">
+          <button type="button" id="btn-clear-search" onclick="if(window.app&&app.clearSearchInput){app.clearSearchInput();}else if(window.app&&app.clearLocationSearch){app.clearLocationSearch();} const inp=document.getElementById('location-search-input');if(inp){inp.value='';this.style.display='none';}" style="display:none; background:none; border:none; color:#94a3b8; font-size:0.85rem; cursor:pointer; padding:4px 8px; align-items:center; justify-content:center;"><i class="fas fa-times"></i></button>
+        </form>
+        <!-- Floating suggestions dropdown anchored directly beneath this search input -->
+        <div id="header-search-suggestions" class="search-suggestions-dropdown" style="display:none;"></div>
+        <div id="location-search-results" class="location-search-results-dropdown" style="display:none;"></div>
+      </div>
 
       <!-- Header Actions -->
       <div class="header-actions">
@@ -1418,19 +1427,7 @@
         </button>
       </div>
 
-      <!-- Primary Search Bar in Sidebar (Moved from Top Header) -->
-      <div class="sidebar-primary-search-box" style="padding: 10px 14px 6px 14px; position: relative;">
-        <form id="header-search-form" class="sidebar-search-form" onsubmit="if(window.app && app.applyFilters){ app.applyFilters(); } return false;" style="position: relative; width: 100%; margin: 0;">
-          <i class="fas fa-search sidebar-search-icon" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #00b53f; font-size: 0.95rem; pointer-events: none; z-index: 2;"></i>
-          <input type="text" id="location-search-input" data-alias="header-search-input" class="sidebar-search-input km-sb-input" placeholder="Search for estates, neighbourhoods, or areas..." autocomplete="off" style="width: 100% !important; height: 42px !important; padding: 0 34px 0 36px !important; border: 1.5px solid #cbd5e1 !important; border-radius: 10px !important; font-size: 0.85rem !important; font-weight: 500 !important; color: #0f172a !important; background: #ffffff !important; outline: none !important; transition: all 0.2s !important; box-sizing: border-box !important;" onfocus="this.style.borderColor='#00b53f'; this.style.boxShadow='0 0 0 3px rgba(0, 181, 63, 0.15)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';" oninput="if(window.app){ if(app.showSearchSuggestions) app.showSearchSuggestions(this.value); if(app.handleLocationSearchInput) app.handleLocationSearchInput(this.value); const clr = document.getElementById('btn-clear-search'); if(clr) clr.style.display = this.value ? 'flex' : 'none'; }">
-          <button type="button" id="btn-clear-search" class="sidebar-search-clear" style="display:none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; font-size: 0.85rem; cursor: pointer; padding: 4px; align-items: center; justify-content: center; z-index: 3;" onclick="if(window.app && app.clearSearchInput){ app.clearSearchInput(); } else if(window.app && app.clearLocationSearch){ app.clearLocationSearch(); } const inp=document.getElementById('location-search-input'); if(inp){ inp.value=''; this.style.display='none'; }">
-            <i class="fas fa-times"></i>
-          </button>
-        </form>
-        <!-- Floating suggestions dropdown anchored directly beneath this search input -->
-        <div id="header-search-suggestions" class="search-suggestions-dropdown" style="display:none;"></div>
-        <div id="location-search-results" class="location-search-results-dropdown" style="display:none;"></div>
-      </div>
+      <!-- Search bar moved to top header -->
 
       <!-- PROPERTIES FILTERS (Default View) -->
       <div id="filters-properties-container" class="filters-tab-container">
@@ -3219,10 +3216,10 @@
                 <span class="post-step-badge">3</span>
                 <div>
                   <h4 class="post-step-title">Property Photos</h4>
-                  <p class="post-step-subtitle">Upload 1 to 5 clear photos of rooms, kitchen, and bathroom</p>
+                  <p class="post-step-subtitle">Upload 1 to 20 clear photos of rooms, kitchen, and bathroom</p>
                 </div>
               </div>
-              <span id="post-photos-count" style="font-size: 0.76rem; font-weight: 800; color: #00b53f; background: #e8f8ee; padding: 3px 8px; border-radius: 6px;">0 / 5 photos</span>
+              <span id="post-photos-count" style="font-size: 0.76rem; font-weight: 800; color: #00b53f; background: #e8f8ee; padding: 3px 8px; border-radius: 6px;">0 / 20 photos</span>
             </div>
 
             <!-- Tappable Dropzone Box (Acts as a native file label) -->
@@ -3232,7 +3229,7 @@
                 <i class="fas fa-camera km-photo-large-icon"></i>
               </div>
               <div class="photo-title">Tap or Click to Add Property Photos</div>
-              <div class="photo-sub">1st photo becomes your Cover Photo &bull; Max 5 photos &bull; Watermark added automatically</div>
+              <div class="photo-sub">1st photo becomes your Cover Photo &bull; Max 20 photos &bull; Watermark added automatically</div>
               <span class="km-btn-browse-photos">
                 <i class="fas fa-images"></i>&nbsp; Browse Gallery / Take Photo
               </span>
@@ -8151,20 +8148,7 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Proxy for header-search-input -> location-search-input in sidebar
-(function() {
-  var origGet = document.getElementById.bind(document);
-  document.getElementById = function(id) {
-    var el = origGet(id);
-    if (!el && id === 'header-search-input') {
-      return origGet('location-search-input');
-    }
-    if (!el && id === 'header-search-suggestions') {
-      return origGet('location-search-results');
-    }
-    return el;
-  };
-})();
+// location-search-input is now in the top header (no proxy needed)
 </script>
 
 </body>

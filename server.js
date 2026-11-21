@@ -3085,7 +3085,7 @@ app.post('/api/properties', requireAuth, async (req, res) => {
     if (data.photos && Array.isArray(data.photos) && data.photos.length > 0) {
       try {
         const cdnUrls = await uploadService.uploadMultipleImages(
-          data.photos.slice(0, 16), 'kejamarket/properties'
+          data.photos.slice(0, 20), 'kejamarket/properties'
         );
         data.photos = cdnUrls;
         // Update media array too
@@ -4018,8 +4018,8 @@ app.post('/api/upload/images', uploadLimiter, optionalAuth, async (req, res) => 
     if (!images || !Array.isArray(images) || images.length === 0) {
       return res.status(400).json({ success: false, message: 'No images provided.' });
     }
-    if (images.length > 16) {
-      return res.status(400).json({ success: false, message: 'Maximum 16 images allowed.' });
+    if (images.length > 20) {
+      return res.status(400).json({ success: false, message: 'Maximum 20 images allowed.' });
     }
     const uploadFolder = folder || 'kejamarket/properties';
     const urls = await uploadService.uploadMultipleImages(images, uploadFolder);
@@ -6137,7 +6137,7 @@ app.get('/api/admin/system-settings', requireAuth, async (req, res) => {
         allowUserRegistration: true,
         requireListingApproval: true,
         listingExpiryDays: 60,
-        maxPhotosPerListing: 15,
+        maxPhotosPerListing: 20,
         maxVideoSizeMB: 50
       };
     }
@@ -8373,7 +8373,7 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
       if (store.isConnected && store.query) {
         try {
           await store.query(
-            "UPDATE properties SET is_verified = true, status = 'approved', is_active = true, updated_at = NOW() WHERE id = $1 OR LOWER(id) = LOWER($1)",
+            "UPDATE properties SET is_verified = true, status = 'approved', is_active = true, verified_at = NOW(), updated_at = NOW() WHERE id = $1 OR LOWER(id) = LOWER($1)",
             [itemId]
           );
         } catch (dbErr) { console.warn('Direct SQL approve notice:', dbErr.message); }

@@ -215,8 +215,8 @@ const AdminVerification = (() => {
               <span style="background:${color};color:#fff;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">
                 <i class="fas ${icon}"></i> ${label}
               </span>
-              <span class="verification-badge ${getDaysOld(item.created_at) > 3 ? 'urgent' : 'normal'}">
-                <i class="fas fa-clock"></i> ${getDaysOld(item.created_at)}d ago
+              <span class="verification-badge ${getDaysOld(item.created_at || item.createdAt) > 3 ? 'urgent' : 'normal'}" title="Listed on ${formatDateTime(item.created_at || item.createdAt)}">
+                <i class="fas fa-clock"></i> Listed ${formatTimeAgo(item.created_at || item.createdAt) || (getDaysOld(item.created_at || item.createdAt) + 'd ago')}
               </span>
             </div>
 
@@ -226,6 +226,9 @@ const AdminVerification = (() => {
 
             <div class="verification-card-body">
               <h3>${escapeHtml(item.title || 'Untitled')}</h3>
+              <div class="verification-detail" style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:6px; padding:5px 8px; margin:4px 0 8px 0; color:#0369a1; font-size:0.78rem;">
+                <i class="fas fa-calendar-alt" style="color:#0284c7;"></i> <strong>Listed for Approval:</strong> ${formatDateTimeWithAgo(item.created_at || item.createdAt)}
+              </div>
               <div class="verification-detail"><i class="fas fa-user"></i> ${escapeHtml(ownerName)} &bull; ${ownerPhone}</div>
               ${item.location || item.coverageArea ? `<div class="verification-detail"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(item.location || item.coverageArea || '')}</div>` : ''}
               ${item.price ? `<div class="verification-detail"><i class="fas fa-tag"></i> KSh ${formatNumber(item.price)}</div>` : ''}
@@ -906,6 +909,44 @@ const AdminVerification = (() => {
       month: 'short',
       year: 'numeric'
     });
+  }
+
+  function formatDateTime(dateString) {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return String(dateString);
+    return date.toLocaleString('en-KE', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+
+  function formatTimeAgo(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (seconds < 60) return 'just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days}d ago`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months}mo ago`;
+    return `${Math.floor(days / 365)}y ago`;
+  }
+
+  function formatDateTimeWithAgo(dateString) {
+    if (!dateString) return '-';
+    const dt = formatDateTime(dateString);
+    const ago = formatTimeAgo(dateString);
+    return ago ? `${dt} (${ago})` : dt;
   }
 
   function formatNumber(num) {

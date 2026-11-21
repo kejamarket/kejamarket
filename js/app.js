@@ -2114,8 +2114,8 @@ class NairobiRentalsApp {
     setTimeout(() => this.openLightbox(null), 100);
   }
 
-  // Handle photo file selection for forms (Max 5 photos)
-  handleFormPhotoFiles(inputEl, previewId, maxPhotos = 5) {
+  // Handle photo file selection for forms (Max 20 photos)
+  handleFormPhotoFiles(inputEl, previewId, maxPhotos = 20) {
     const previewGrid = document.getElementById(previewId);
     if (!previewGrid || !inputEl.files) return;
 

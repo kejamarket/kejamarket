@@ -1091,7 +1091,7 @@ const kejaDashboard = (() => {
             <div class="ud-conv-info">
               <div class="ud-conv-header">
                 <strong>${conv.other_participant_name || 'Inquiry Contact'}</strong>
-                <span class="ud-conv-time">${conv.last_message_at ? new Date(conv.last_message_at).toLocaleDateString() : ''}</span>
+                <span class="ud-conv-time">${conv.last_message_at ? new Date(conv.last_message_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) + ' ' + new Date(conv.last_message_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</span>
               </div>
               <p class="ud-conv-preview">${conv.last_message || 'Inquiry thread'}</p>
             </div>

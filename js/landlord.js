@@ -438,9 +438,9 @@ class LandlordManager {
 
     if (!previewGrid) return;
 
-    const remainingSlots = 5 - this.uploadedImages.length;
+    const remainingSlots = 20 - this.uploadedImages.length;
     if (remainingSlots <= 0) {
-      this.showUploadToast('Maximum 5 photos allowed. Remove a photo first.', 'info');
+      this.showUploadToast('Maximum 20 photos allowed. Remove a photo first.', 'info');
       return;
     }
 
@@ -467,7 +467,7 @@ class LandlordManager {
       try {
         // Try canvas compress + watermark with timeout fallback
         let dataUrl = await this.processImageSafe(file);
-        if (dataUrl && this.uploadedImages.length < 5) {
+        if (dataUrl && this.uploadedImages.length < 20) {
           this.uploadedImages.push(dataUrl);
           this.renderPhotoPreviews();
           addedCount++;
@@ -477,7 +477,7 @@ class LandlordManager {
         // Last resort: raw FileReader
         try {
           const rawUrl = await this.fileToDataUrl(file);
-          if (rawUrl && this.uploadedImages.length < 5) {
+          if (rawUrl && this.uploadedImages.length < 20) {
             this.uploadedImages.push(rawUrl);
             this.renderPhotoPreviews();
             addedCount++;
@@ -496,7 +496,7 @@ class LandlordManager {
     if (progressEl) progressEl.style.display = 'none';
 
     if (addedCount > 0) {
-      this.showUploadToast(`📸 ${addedCount} photo${addedCount > 1 ? 's' : ''} added! Total: ${this.uploadedImages.length}/5`, 'success');
+      this.showUploadToast(`📸 ${addedCount} photo${addedCount > 1 ? 's' : ''} added! Total: ${this.uploadedImages.length}/20`, 'success');
     }
   }
 
@@ -707,7 +707,7 @@ class LandlordManager {
     if (!previewGrid) return;
 
     if (countEl) {
-      countEl.textContent = `${this.uploadedImages.length} / 5 photos`;
+      countEl.textContent = `${this.uploadedImages.length} / 20 photos`;
       countEl.style.color = this.uploadedImages.length > 0 ? '#15803d' : '#64748b';
     }
 
@@ -733,7 +733,7 @@ class LandlordManager {
       </div>
     `).join('');
 
-    if (this.uploadedImages.length < 5) {
+    if (this.uploadedImages.length < 20) {
       html += `
         <label for="post-photos-input" class="photo-preview-add-tile" style="border:2px dashed #cbd5e1; border-radius:10px; height:90px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; cursor:pointer; background:#f8fafc; color:#64748b; transition:all 0.15s;" onmouseover="this.style.borderColor='#22c55e';this.style.color='#16a34a';" onmouseout="this.style.borderColor='#cbd5e1';this.style.color='#64748b';">
           <i class="fas fa-plus-circle" style="font-size:1.3rem;"></i>

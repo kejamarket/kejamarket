@@ -4251,7 +4251,7 @@ function showScreen(screen, params = {}, isBackNav = false) {
       bubble.id = msgId;
       bubble.innerHTML = `
         <div class="km-bubble-meta" style="color:rgba(255,255,255,0.85); display:flex; justify-content:space-between; align-items:center;">
-          <span>You • Just now</span>
+          <span>You • ${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
           <span class="km-tick-indicator" style="font-size:11px; margin-left:6px; opacity:0.85;" title="Sent"><i class="fas fa-check"></i></span>
         </div>
         <div>${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>

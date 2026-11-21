@@ -980,6 +980,7 @@ const AdminCore = (() => {
               <th>Location</th>
               <th>Status</th>
               <th>Quality Checks</th>
+              <th style="min-width:175px;"><i class="far fa-clock" style="color:#0284c7; margin-right:4px;"></i> Timeline (Listed &amp; Approved)</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -987,6 +988,10 @@ const AdminCore = (() => {
             ${properties.map(p => {
               const rent = parseFloat(p.rent_kes || p.rentKes || p.rent || 0);
               const isLive = p.is_verified || p.isVerified || p.status === 'approved';
+              const createdRaw = p.created_at || p.createdAt || p.date_created || p.date;
+              const approvedRaw = p.verified_at || p.verifiedAt || p.approved_at || p.approvedAt || (isLive ? (p.updated_at || p.updatedAt) : null);
+              const listedFormatted = createdRaw ? formatDateTimeWithAgo(createdRaw) : 'Unknown date';
+              const approvedFormatted = isLive && approvedRaw ? formatDateTimeWithAgo(approvedRaw) : null;
               return `
               <tr>
                 <td style="text-align:center;">
@@ -996,6 +1001,9 @@ const AdminCore = (() => {
                   <div onclick="AdminVerification.viewDetails('property', '${p.id}')" style="cursor:pointer;" title="Click to view full property details, photos and contact">
                     <strong style="color:#0f172a; text-decoration:underline dotted;">${escapeHtml(p.title || 'Untitled')}</strong><br>
                     <small style="color:#64748b;">ID: ${p.id} &bull; Landlord: ${escapeHtml(p.landlordName || p.landlord_id || 'Owner')}</small>
+                    <div style="font-size:0.74rem; color:#0284c7; margin-top:3px; display:flex; align-items:center; gap:4px;">
+                      <i class="far fa-clock"></i> Listed: ${createdRaw ? formatDateTime(createdRaw) : 'Recent'}
+                    </div>
                   </div>
                 </td>
                 <td><strong>KSh ${rent.toLocaleString()}</strong></td>
@@ -1011,6 +1019,28 @@ const AdminCore = (() => {
                       <i class="fas fa-exclamation-triangle"></i> ${p.qualityFlags.join(', ')}
                     </span>
                   ` : '<span style="color:#10b981; font-size:0.78rem; font-weight:700;"><i class="fas fa-check"></i> Passed</span>'}
+                </td>
+                <td style="font-size:0.78rem; line-height:1.45; min-width:170px;">
+                  <div style="color:#1e293b; margin-bottom:4px;">
+                    <strong style="color:#0284c7;"><i class="fas fa-calendar-plus" style="margin-right:3px;"></i> Listed:</strong><br>
+                    ${listedFormatted}
+                  </div>
+                  ${approvedFormatted ? `
+                    <div style="color:#15803d; border-top:1px dashed #cbd5e1; padding-top:3px;">
+                      <strong style="color:#16a34a;"><i class="fas fa-check-circle" style="margin-right:3px;"></i> Approved:</strong><br>
+                      ${approvedFormatted}
+                    </div>
+                  ` : (p.status === 'rejected' ? `
+                    <div style="color:#dc2626; border-top:1px dashed #cbd5e1; padding-top:3px;">
+                      <strong style="color:#dc2626;"><i class="fas fa-times-circle" style="margin-right:3px;"></i> Rejected:</strong><br>
+                      ${p.updated_at || p.updatedAt ? formatDateTimeWithAgo(p.updated_at || p.updatedAt) : 'Rejected'}
+                    </div>
+                  ` : `
+                    <div style="color:#b45309; border-top:1px dashed #cbd5e1; padding-top:3px;">
+                      <strong style="color:#d97706;"><i class="fas fa-hourglass-half" style="margin-right:3px;"></i> Awaiting Approval</strong><br>
+                      <span style="color:#92400e; font-size:0.73rem;">In moderation queue</span>
+                    </div>
+                  `)}
                 </td>
                 <td>
                   <div style="display:flex; gap:6px; align-items:center;">
@@ -2588,8 +2618,9 @@ const AdminCore = (() => {
                         ${escapeHtml(i.message || '')}
                       </div>
                     </td>
-                    <td style="padding:12px 16px; white-space:nowrap; font-size:0.78rem; color:#64748b;">
-                      ${formatDate(i.createdAt)}
+                    <td style="padding:12px 16px; white-space:nowrap; font-size:0.78rem; color:#334155; line-height:1.35;">
+                      <div style="font-weight:700; color:#0f172a;"><i class="far fa-clock" style="color:#00b53f; margin-right:4px;"></i>${formatDateTime(i.createdAt || i.created_at)}</div>
+                      <div style="color:#64748b; font-size:0.72rem;">${formatRelativeTime(i.createdAt || i.created_at)}</div>
                     </td>
                     <td style="padding:12px 16px;">
                       <div style="display:flex; gap:6px; align-items:center;">
@@ -2984,6 +3015,20 @@ const AdminCore = (() => {
     return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
+  function formatDateTime(d) {
+    if (!d) return '-';
+    const date = new Date(d);
+    if (isNaN(date.getTime())) return String(d);
+    return date.toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+
   function formatRelativeTime(d) {
     if (!d) return '';
     const diff = Math.floor((Date.now() - new Date(d).getTime()) / 1000);
@@ -2991,6 +3036,13 @@ const AdminCore = (() => {
     if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
     return `${Math.floor(diff / 86400)}d ago`;
+  }
+
+  function formatDateTimeWithAgo(d) {
+    if (!d) return '-';
+    const formatted = formatDateTime(d);
+    const rel = formatRelativeTime(d);
+    return rel ? `${formatted} <span style="color:#64748b; font-weight:600; font-size:0.75rem;">(${rel})</span>` : formatted;
   }
 
   function escapeHtml(str) {
