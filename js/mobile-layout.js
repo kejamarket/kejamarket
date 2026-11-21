@@ -3983,6 +3983,10 @@ function showScreen(screen, params = {}, isBackNav = false) {
   }
 
   function openWhatsAppAlerts() {
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-whatsapp-alerts');
+      return;
+    }
     const modal = document.getElementById('modal-whatsapp-alerts');
     if (modal) {
       modal.classList.add('open');
@@ -3991,24 +3995,24 @@ function showScreen(screen, params = {}, isBackNav = false) {
       modal.scrollTop = 0;
       return;
     }
-    if (typeof window.openWhatsAppAlertsWithAuth === 'function') {
-      window.openWhatsAppAlertsWithAuth();
-      return;
-    }
     window.open('https://wa.me/254792409540?text=Hello%20KejaMarket,%20I%20want%20to%20subscribe%20to%20WhatsApp%20Rental%20Alerts%20for%20vacancies%20in%20Kenya.', '_blank');
   }
 
   function openHouseHunt() {
+    if (window.app && typeof window.app.openHouseHuntModal === 'function') {
+      window.app.openHouseHuntModal();
+      return;
+    }
+    if (window.app && typeof window.app.openModal === 'function') {
+      window.app.openModal('modal-house-hunt');
+      return;
+    }
     const modal = document.getElementById('modal-house-hunt');
     if (modal) {
       modal.classList.add('open');
       modal.style.setProperty('display', 'flex', 'important');
       modal.style.setProperty('z-index', '99990', 'important');
       modal.scrollTop = 0;
-      return;
-    }
-    if (window.app && typeof window.app.openHouseHuntModal === 'function') {
-      window.app.openHouseHuntModal();
       return;
     }
     showScreen('smarthunt');
