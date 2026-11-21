@@ -244,8 +244,7 @@
 
 .input-group input {
   width: 100%;
-  padding: 0.6rem;
-  padding-left: 2.5rem;
+  padding: 0.6rem 2.75rem 0.6rem 2.5rem;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -258,26 +257,57 @@
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
 }
 
-.input-group i {
+.input-group > i.input-icon,
+.input-group > i:not(.password-toggle i) {
   position: absolute;
   left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
   color: #9ca3af;
   font-size: 0.9rem;
   pointer-events: none;
-  z-index: 2000000 !important;
+  z-index: 5;
 }
 
 /* Password Toggle */
+.input-group .password-toggle,
 .password-toggle {
-  position: absolute;
-  right: 0.75rem;
-  background: none;
-  border: none;
-  color: #9ca3af;
-  cursor: pointer;
-  padding: 0.25rem;
-  font-size: 0.9rem;
-  z-index: 2000000 !important;
+  position: absolute !important;
+  right: 0.75rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background: transparent !important;
+  border: none !important;
+  color: #64748b !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.95rem !important;
+  border-radius: 6px !important;
+  z-index: 25 !important;
+  pointer-events: auto !important;
+}
+
+.input-group .password-toggle:hover,
+.password-toggle:hover {
+  color: #059669 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.input-group .password-toggle i,
+.password-toggle i {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  color: inherit !important;
+  font-size: 15px !important;
+  pointer-events: none !important;
+  line-height: 1 !important;
 }
 
 /* ============================================================================

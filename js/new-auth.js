@@ -149,9 +149,13 @@ class AuthModal {
   }
 
   togglePassword(inputId) {
+    if (typeof window.togglePasswordVisibility === 'function') {
+      window.togglePasswordVisibility(inputId);
+      return;
+    }
     const input = document.getElementById(inputId);
     if (!input) return;
-    const btn = input.parentElement.querySelector('.password-toggle i');
+    const btn = input.parentElement ? input.parentElement.querySelector('.password-toggle i') : null;
 
     if (input.type === 'password') {
       input.type = 'text';

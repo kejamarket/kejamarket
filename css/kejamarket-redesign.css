@@ -533,21 +533,60 @@ body { background: #f7f9fb !important; }
 }
 
 /* Profile button */
-#btn-auth-header {
-  display: flex !important; align-items: center !important; gap: 6px !important;
-  background: #f1f5f9 !important; border: 1.5px solid var(--bdr) !important;
-  border-radius: var(--r-p) !important; padding: 3px 10px 3px 3px !important;
-  height: 34px !important; cursor: pointer !important; flex-shrink: 0 !important;
+#btn-auth-header,
+.btn-profile {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 999px !important;
+  padding: 3px 12px 3px 4px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  font-family: 'Poppins', sans-serif !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+  color: #0f172a !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+}
+#btn-auth-header:hover,
+.btn-profile:hover {
+  border-color: #00b53f !important;
+  background: #f0fdf4 !important;
+  box-shadow: 0 2px 8px rgba(0, 181, 63, 0.16) !important;
+}
+.header-user-avatar, #header-user-avatar, .profile-avatar {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 50% !important;
+  background: #00b53f !important;
+  color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 181, 63, 0.2) !important;
+}
+.header-user-avatar i, #header-user-avatar i, .profile-avatar i {
+  font-size: 0.95rem !important;
+  color: #fff !important;
+}
+#auth-header-label, .profile-name {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #0f172a !important;
+  max-width: 110px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
   font-family: 'Poppins', sans-serif !important;
 }
-#btn-auth-header:hover { border-color: var(--g) !important; }
-.header-user-avatar, #header-user-avatar {
-  width: 26px !important; height: 26px !important; border-radius: 50% !important;
-  background: #064e22 !important; color: #fff !important;
-  display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important;
-}
-.header-user-avatar i, #header-user-avatar i { font-size: 0.7rem !important; color: #fff !important; }
-#auth-header-label { font-size: 0.8rem !important; font-weight: 700 !important; color: var(--t7) !important; max-width: 90px !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; font-family: 'Poppins', sans-serif !important; }
 
 /* ════════════════════════════════════════════════════════════════
    2. SECONDARY NAV (row 2 — tabs)
@@ -3811,13 +3850,13 @@ html, body { overflow-x: clip !important;
 .btn-profile {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: 8px !important;
   background: #ffffff !important;
   border: 1.5px solid #e2e8f0 !important;
   border-radius: 999px !important;
-  padding: 4px 14px 4px 6px !important;
-  height: 40px !important;
-  min-height: 40px !important;
+  padding: 3px 12px 3px 4px !important;
+  height: 38px !important;
+  min-height: 38px !important;
   cursor: pointer !important;
   flex-shrink: 0 !important;
   font-family: 'Poppins', sans-serif !important;
@@ -3833,15 +3872,15 @@ html, body { overflow-x: clip !important;
 .btn-profile:hover {
   border-color: #00b53f !important;
   background: #f0fdf4 !important;
-  box-shadow: 0 3px 10px rgba(0, 181, 63, 0.16) !important;
+  box-shadow: 0 2px 8px rgba(0, 181, 63, 0.16) !important;
   transform: translateY(-1px) !important;
 }
 
 .profile-avatar,
 #header-user-avatar {
-  width: 30px !important;
-  height: 30px !important;
-  min-width: 30px !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
   border-radius: 50% !important;
   background: #00b53f !important;
   color: #ffffff !important;
@@ -3852,7 +3891,7 @@ html, body { overflow-x: clip !important;
   font-size: 0.95rem !important;
   font-weight: 700 !important;
   margin: 0 !important;
-  box-shadow: 0 1px 3px rgba(0, 181, 63, 0.25) !important;
+  box-shadow: 0 1px 2px rgba(0, 181, 63, 0.2) !important;
 }
 
 .profile-avatar i,
@@ -3864,10 +3903,10 @@ html, body { overflow-x: clip !important;
 .profile-name,
 #auth-header-label {
   display: inline-block !important;
-  font-size: 0.86rem !important;
-  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
   color: #0f172a !important;
-  max-width: 120px !important;
+  max-width: 110px !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -3878,17 +3917,18 @@ html, body { overflow-x: clip !important;
 .profile-chevron {
   display: inline-block !important;
   font-size: 0.68rem !important;
-  color: #94a3b8 !important;
+  color: #64748b !important;
   margin-left: 2px !important;
   transition: transform 0.2s ease !important;
 }
 
 /* Ensure that when screen width causes label to hide, the chevron also hides cleanly and button is a neat circle */
-@media (max-width: 1024px) {
-  .btn-profile {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
+@media (max-width: 768px) {
+  .btn-profile,
+  #btn-auth-header {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
     padding: 0 !important;
     justify-content: center !important;
     border-radius: 50% !important;

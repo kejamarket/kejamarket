@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="facebook-domain-verification" content="u4lsz829oa3heut3lfs4id6nmw95lv" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -1289,20 +1290,8 @@
         <i class="fas fa-chevron-down"></i>
       </div>
 
-      <!-- Search Bar -->
-      <div class="header-search-wrapper">
-        <form class="header-search-form" onsubmit="return false;">
-          <i class="fas fa-search search-icon"></i>
-          <input 
-            type="text" 
-            id="header-search-input" 
-            class="header-search-input" 
-            placeholder="Search for estates, neighbourhoods, or areas..." 
-            autocomplete="off"
-          >
-        </form>
-        <div id="header-search-suggestions" class="search-suggestions-dropdown"></div>
-      </div>
+      <!-- Top Header Spacer (Search moved to Left Sidebar) -->
+      <div class="header-spacer" style="flex: 1;"></div>
 
       <!-- Header Actions -->
       <div class="header-actions">
@@ -1429,6 +1418,20 @@
         </button>
       </div>
 
+      <!-- Primary Search Bar in Sidebar (Moved from Top Header) -->
+      <div class="sidebar-primary-search-box" style="padding: 10px 14px 6px 14px; position: relative;">
+        <form id="header-search-form" class="sidebar-search-form" onsubmit="if(window.app && app.applyFilters){ app.applyFilters(); } return false;" style="position: relative; width: 100%; margin: 0;">
+          <i class="fas fa-search sidebar-search-icon" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #00b53f; font-size: 0.95rem; pointer-events: none; z-index: 2;"></i>
+          <input type="text" id="location-search-input" data-alias="header-search-input" class="sidebar-search-input km-sb-input" placeholder="Search for estates, neighbourhoods, or areas..." autocomplete="off" style="width: 100% !important; height: 42px !important; padding: 0 34px 0 36px !important; border: 1.5px solid #cbd5e1 !important; border-radius: 10px !important; font-size: 0.85rem !important; font-weight: 500 !important; color: #0f172a !important; background: #ffffff !important; outline: none !important; transition: all 0.2s !important; box-sizing: border-box !important;" onfocus="this.style.borderColor='#00b53f'; this.style.boxShadow='0 0 0 3px rgba(0, 181, 63, 0.15)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';" oninput="if(window.app){ if(app.showSearchSuggestions) app.showSearchSuggestions(this.value); if(app.handleLocationSearchInput) app.handleLocationSearchInput(this.value); const clr = document.getElementById('btn-clear-search'); if(clr) clr.style.display = this.value ? 'flex' : 'none'; }">
+          <button type="button" id="btn-clear-search" class="sidebar-search-clear" style="display:none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; font-size: 0.85rem; cursor: pointer; padding: 4px; align-items: center; justify-content: center; z-index: 3;" onclick="if(window.app && app.clearSearchInput){ app.clearSearchInput(); } else if(window.app && app.clearLocationSearch){ app.clearLocationSearch(); } const inp=document.getElementById('location-search-input'); if(inp){ inp.value=''; this.style.display='none'; }">
+            <i class="fas fa-times"></i>
+          </button>
+        </form>
+        <!-- Floating suggestions dropdown anchored directly beneath this search input -->
+        <div id="header-search-suggestions" class="search-suggestions-dropdown" style="display:none;"></div>
+        <div id="location-search-results" class="location-search-results-dropdown" style="display:none;"></div>
+      </div>
+
       <!-- PROPERTIES FILTERS (Default View) -->
       <div id="filters-properties-container" class="filters-tab-container">
 
@@ -1440,19 +1443,8 @@
           </div>
           <div class="km-sb-sec-body" id="filter-sec-location" style="display:block;">
             
-            <!-- Suburb search input -->
-            <div class="km-sb-search-wrap" style="position: relative; width: 100%;">
-              <i class="fas fa-search km-sb-search-icon"></i>
-              <input type="text" id="location-search-input" class="km-sb-input" placeholder="Search estate, town or phase (e.g. Katangaita, Ruaka)..." oninput="app.handleLocationSearchInput && app.handleLocationSearchInput(this.value)" autocomplete="off">
-              <button type="button" id="btn-clear-location-search" class="km-sb-clear-input" style="display:none;" onclick="app.clearLocationSearch && app.clearLocationSearch()">
-                <i class="fas fa-times"></i>
-              </button>
-              <!-- Floating dropdown anchored directly beneath this search input -->
-              <div id="location-search-results" class="location-search-results-dropdown" style="display:none;"></div>
-            </div>
-
             <!-- County Select -->
-            <div style="margin-top:8px;">
+            <div style="margin-top:2px;">
               <select class="km-sb-select" id="filter-county" onchange="app.onCountyChange && app.onCountyChange(this.value)">
                 <option value="nairobi" selected>Nairobi City</option>
                 <option value="kiambu">Kiambu (Ruaka, Thika, Kikuyu)</option>
@@ -4546,7 +4538,7 @@
                 <div class="input-group">
                   <i class="fas fa-lock input-icon"></i>
                   <input type="password" id="signin-password" placeholder="Enter your password" autocomplete="current-password" required>
-                  <button type="button" class="password-toggle" onclick="authModal.togglePassword('signin-password')" tabindex="-1">
+                  <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signin-password', this); return false;" tabindex="-1" title="Toggle password visibility">
                     <i class="fas fa-eye"></i>
                   </button>
                 </div>
@@ -4703,7 +4695,7 @@
                 <div class="input-group">
                   <i class="fas fa-lock input-icon"></i>
                   <input type="password" id="signup-password" placeholder="Min 6 characters" autocomplete="new-password" required minlength="6">
-                  <button type="button" class="password-toggle" onclick="authModal.togglePassword('signup-password')" tabindex="-1">
+                  <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signup-password', this); return false;" tabindex="-1" title="Toggle password visibility">
                     <i class="fas fa-eye"></i>
                   </button>
                 </div>
@@ -4724,7 +4716,7 @@
                 <div class="input-group">
                   <i class="fas fa-lock input-icon"></i>
                   <input type="password" id="signup-confirm-password" placeholder="Re-enter your password" autocomplete="new-password" required>
-                  <button type="button" class="password-toggle" onclick="authModal.togglePassword('signup-confirm-password')" tabindex="-1">
+                  <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signup-confirm-password', this); return false;" tabindex="-1" title="Toggle password visibility">
                     <i class="fas fa-eye"></i>
                   </button>
                   <i class="fas fa-check-circle password-match-icon" id="password-match-icon" style="display:none;"></i>
@@ -4933,6 +4925,7 @@
       align-items: center;
       gap: 12px;
       flex-shrink: 0;
+      margin-left: auto;
     }
 
     /* Post Property Button */
@@ -4940,20 +4933,21 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 10px 20px;
-      background: #10b981;
+      padding: 9px 16px;
+      background: #00b53f;
       color: #ffffff;
       border: none;
       border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 0.88rem;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
       white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0, 181, 63, 0.25);
     }
 
     .btn-post-property:hover {
-      background: #059669;
+      background: #009634;
       transform: translateY(-1px);
     }
 
@@ -4963,28 +4957,33 @@
 
     /* Icon Action Buttons */
     .btn-icon-action {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: none;
+      border: 1.5px solid #e2e8f0;
       border-radius: 50%;
-      background: #f9fafb;
-      color: #4b5563;
+      background: #ffffff;
+      color: #475569;
       cursor: pointer;
       transition: all 0.2s;
       position: relative;
       flex-shrink: 0;
+      padding: 0;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
     }
 
     .btn-icon-action:hover {
-      background: #e5e7eb;
-      color: #1f2937;
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
+      transform: translateY(-1px);
     }
 
     .btn-icon-action i {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
     /* Notification Badge */
@@ -4994,69 +4993,89 @@
 
     .notif-badge {
       position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 18px;
-      height: 18px;
+      top: -3px;
+      right: -3px;
+      width: 17px;
+      height: 17px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: #ef4444;
       color: #ffffff;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 700;
       border-radius: 50%;
       border: 2px solid #ffffff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     }
 
     /* Profile Dropdown */
     .header-profile-dropdown {
       position: relative;
+      display: flex;
+      align-items: center;
       flex-shrink: 0;
+      margin-left: 4px;
     }
 
     .btn-profile {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 14px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
+      padding: 3px 12px 3px 4px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 999px;
       background: #ffffff;
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 0.9rem;
-      color: #1f2937;
-      font-weight: 500;
+      font-size: 0.88rem;
+      color: #0f172a;
+      font-weight: 600;
+      height: 38px;
+      min-height: 38px;
+      box-sizing: border-box;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
     }
 
     .btn-profile:hover {
-      background: #f9fafb;
-      border-color: #d1d5db;
+      background: #f0fdf4;
+      border-color: #00b53f;
+      box-shadow: 0 2px 8px rgba(0, 181, 63, 0.15);
     }
 
     .profile-avatar {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      background: #f3f4f6;
-      color: #6b7280;
+      background: #00b53f;
+      color: #ffffff;
+      box-shadow: 0 1px 2px rgba(0, 181, 63, 0.2);
     }
 
     .profile-avatar i {
-      font-size: 1.2rem;
+      font-size: 0.95rem;
+      color: #ffffff;
     }
 
     .profile-name {
       font-weight: 600;
+      font-size: 0.85rem;
+      color: #0f172a;
+      max-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
+    .profile-chevron,
     .btn-profile i.fa-chevron-down {
-      font-size: 0.7rem;
-      color: #9ca3af;
+      font-size: 0.68rem;
+      color: #64748b;
+      margin-left: 2px;
     }
 
     /* Responsive Design */
@@ -5065,16 +5084,12 @@
         gap: 16px;
       }
 
-      .header-search-wrapper {
-        max-width: 400px;
-      }
-
       .btn-post-property span {
         display: none;
       }
 
       .btn-post-property {
-        padding: 10px 14px;
+        padding: 9px 12px;
       }
 
       .brand-tagline {
@@ -5088,7 +5103,6 @@
       }
 
       .header-location-dropdown,
-      .header-search-wrapper,
       .brand-tagline {
         display: none;
       }
@@ -5104,8 +5118,8 @@
       }
 
       .btn-post-property {
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
         padding: 0;
         justify-content: center;
       }
@@ -5115,7 +5129,19 @@
       }
 
       .profile-name {
-        display: none;
+        display: none !important;
+      }
+      .profile-chevron,
+      .btn-profile i.fa-chevron-down {
+        display: none !important;
+      }
+      .btn-profile {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        padding: 0 !important;
+        justify-content: center !important;
+        border-radius: 50% !important;
       }
     }
 
@@ -5130,12 +5156,15 @@
       }
 
       .btn-profile {
-        padding: 6px 10px;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
       }
 
       .profile-avatar {
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
       }
     }
   </style>
@@ -8083,10 +8112,63 @@ window.clearLiveListingLocation = function() {
     btn.style.borderColor = '#86efac';
   }
 };
+
+/* ── Password Visibility Toggle & Search Bar Integration ── */
+window.togglePasswordVisibility = function(inputId, btn) {
+  try {
+    var input = typeof inputId === 'string' ? document.getElementById(inputId) : inputId;
+    if (!input) return;
+    var icon = (btn && btn.querySelector('i')) || (input.parentElement && input.parentElement.querySelector('.password-toggle i'));
+    if (input.type === 'password') {
+      input.type = 'text';
+      if (icon) {
+        icon.className = 'fas fa-eye-slash';
+      }
+    } else {
+      input.type = 'password';
+      if (icon) {
+        icon.className = 'fas fa-eye';
+      }
+    }
+  } catch (err) {
+    console.warn('togglePasswordVisibility error:', err);
+  }
+};
+
+if (!window.authModal) window.authModal = {};
+window.authModal.togglePassword = window.togglePasswordVisibility;
+
+// Global click delegation for all password toggle buttons
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.password-toggle');
+  if (btn) {
+    e.preventDefault();
+    e.stopPropagation();
+    var input = btn.parentElement ? btn.parentElement.querySelector('input') : null;
+    if (input) {
+      window.togglePasswordVisibility(input, btn);
+    }
+  }
+});
+
+// Proxy for header-search-input -> location-search-input in sidebar
+(function() {
+  var origGet = document.getElementById.bind(document);
+  document.getElementById = function(id) {
+    var el = origGet(id);
+    if (!el && id === 'header-search-input') {
+      return origGet('location-search-input');
+    }
+    if (!el && id === 'header-search-suggestions') {
+      return origGet('location-search-results');
+    }
+    return el;
+  };
+})();
 </script>
 
 </body>
-</html>>
+</html>
 
 
 
