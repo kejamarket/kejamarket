@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v157-smart-hunt-ai-free-split';
+const CACHE_NAME = 'kejamarket-v158-chatgpt-ai-advisor-estate-search';
 
 const STATIC_ASSETS = [
   '/',

@@ -7634,6 +7634,201 @@ app.post('/api/ai-house-match', async (req, res) => {
   }
 });
 
+// POST /api/ai-chat-assistant — ChatGPT-Style Conversational Housing Advisor with Opinions, Advice & Alternatives
+app.post('/api/ai-chat-assistant', async (req, res) => {
+  try {
+    const { message = '', history = [], estate = '', budget = null, bedrooms = null } = req.body || {};
+    const text = message.trim();
+    const lower = text.toLowerCase();
+
+    // 1. Detect location mentions
+    const knownLocations = [
+      'ruaka', 'kilimani', 'kileleshwa', 'lavington', 'westlands', 'parklands',
+      'roysambu', 'kasarani', 'kahawa', 'zimmerman', 'mirema', 'thika road',
+      'syokimau', 'mlolongo', 'kitengela', 'rongai', 'karen', 'ngong road',
+      'dagoretti', 'south b', 'south c', 'nairobi west', 'embakasi', 'fedha',
+      'nyayo estate', 'buruburu', 'donholm', 'utawala', 'kiambu road', 'thindigua',
+      'fourways', 'pangani', 'ngara', 'cbd', 'upper hill', 'madaraka', 'langata'
+    ];
+    let detectedLocation = estate || '';
+    if (!detectedLocation) {
+      for (const loc of knownLocations) {
+        if (lower.includes(loc)) {
+          detectedLocation = loc.charAt(0).toUpperCase() + loc.slice(1);
+          break;
+        }
+      }
+    }
+
+    // 2. Detect bedroom requirements
+    let detectedBeds = bedrooms;
+    if (detectedBeds === null || detectedBeds === undefined) {
+      if (lower.includes('bedsitter') || lower.includes('bed sitter') || lower.includes('studio')) {
+        detectedBeds = 'Bedsitter';
+      } else if (lower.includes('1 bed') || lower.includes('1bed') || lower.includes('1br') || lower.includes('one bed')) {
+        detectedBeds = '1';
+      } else if (lower.includes('2 bed') || lower.includes('2bed') || lower.includes('2br') || lower.includes('two bed')) {
+        detectedBeds = '2';
+      } else if (lower.includes('3 bed') || lower.includes('3bed') || lower.includes('3br') || lower.includes('three bed')) {
+        detectedBeds = '3';
+      } else if (lower.includes('4 bed') || lower.includes('4bed') || lower.includes('4br') || lower.includes('four bed')) {
+        detectedBeds = '4';
+      }
+    }
+
+    // 3. Detect budget mentions (e.g. "25k", "20000", "under 30,000", "below 15k")
+    let detectedBudget = budget ? Number(budget) : null;
+    if (!detectedBudget) {
+      const budgetMatch = lower.match(/(?:under|below|less than|max|budget|around|upto|up to|ksh|kes|\b)\s*(\d{1,2})(?:k|\s*000)\b/i) ||
+                          lower.match(/(\d{4,6})/);
+      if (budgetMatch) {
+        let rawVal = budgetMatch[1];
+        let num = parseInt(rawVal, 10);
+        if (num < 100) num = num * 1000;
+        if (num >= 3000 && num <= 300000) detectedBudget = num;
+      }
+    }
+
+    // 4. Formulate expert opinion, advice & alternatives
+    let opinionAdvice = '';
+    let alternatives = [];
+    const quickPrompts = [];
+
+    // Localized intelligence & realistic advice
+    const locLower = detectedLocation.toLowerCase();
+    if (locLower.includes('kilimani') || locLower.includes('kileleshwa')) {
+      if (detectedBudget && detectedBudget < 35000 && detectedBeds === '2') {
+        opinionAdvice = `💡 **Honest Market Reality in ${detectedLocation}:** In Kilimani & Kileleshwa, standard 2-bedroom units typically rent between **KSh 45,000 and KSh 85,000**. Finding a modern 2BR below KSh ${detectedBudget.toLocaleString()} is virtually impossible unless it's a shared servant quarter (DSQ).`;
+        alternatives = [
+          { area: 'Ngong Road / Dagoretti Corner', priceRange: 'KSh 22,000 – 28,000', commute: '5–10 mins to Junction & Kilimani', note: 'Spacious 2-bedrooms with great public transit.' },
+          { area: 'South C / Nairobi West', priceRange: 'KSh 26,000 – 32,000', commute: '15 mins via bypass / Langata Rd', note: 'Secure gated communities with steady water.' }
+        ];
+      } else {
+        opinionAdvice = `🏙️ **Kilimani & Kileleshwa Living:** Premium residential corridor favored for proximity to Westlands and Upper Hill. Expect modern amenities (high-speed lifts, gym, borehole, full backup generator). Boreholes are standard so water is rarely an issue, but service charges range between KSh 3,000 – 6,000/mo.`;
+      }
+      quickPrompts.push('Compare Kilimani vs Ngong Road', 'Kilimani 1-Beds under 35k', 'Water & service charge tips');
+    } else if (locLower.includes('ruaka')) {
+      opinionAdvice = `🌿 **Ruaka Market Advice:** Ruaka is Nairobi's top hotspot for young professionals. Average rents: Bedsitters (KSh 9k–13k), 1-Beds (KSh 15k–22k), 2-Beds (KSh 23k–32k).\n\n⚠️ **Tenant Tip on Water:** Ruaka relies heavily on boreholes. When viewing, always confirm if water is treated (sweet water) or saline/hard, and whether it's billed per token meter or flat rate. Commute to Westlands is ~15-20 mins via the Western Bypass!`;
+      if (detectedBudget && detectedBudget < 18000 && detectedBeds === '2') {
+        alternatives = [
+          { area: 'Ndenderu / Banana', priceRange: 'KSh 14,000 – 18,000', commute: '5 mins past Ruaka town', note: 'Much cheaper with larger square footage.' },
+          { area: 'Wangige / Kikuyu Road', priceRange: 'KSh 13,000 – 17,000', commute: '10 mins via Southern Bypass', note: 'Fresh farm produce and low cost of living.' }
+        ];
+      }
+      quickPrompts.push('Ruaka 2-Beds with Lift & Generator', 'Ndenderu cheaper alternatives', 'Ruaka borehole water guide');
+    } else if (locLower.includes('roysambu') || locLower.includes('kasarani') || locLower.includes('thika road')) {
+      opinionAdvice = `⚡ **Thika Road Corridor Overview:** Roysambu, Kasarani, and Mirema offer unmatched convenience for Thika Road and CBD commuters (Expressway & Superhighway). Bedsitters average KSh 8k–12k, 1BR KSh 14k–18k, 2BR KSh 20k–26k.\n\n💡 **Key Checks:** Ensure the apartment has its own dedicated prepaid KPLC token meter rather than shared sub-meters, and verify security protocols around TRM drive.`;
+      quickPrompts.push('Roysambu Bedsitters near TRM', 'Kasarani 1-Beds under 15k', 'Thika Road commute tips');
+    } else if (locLower.includes('syokimau') || locLower.includes('mlolongo') || locLower.includes('kitengela')) {
+      opinionAdvice = `🚆 **Mombasa Road Corridor (Syokimau / Mlolongo):** Syokimau offers spacious gated compounds and quick CBD access via the Expressway (15 mins) and SGR/Commuter Rail. Rents are very affordable: 1BR (KSh 12k–16k), 2BR (KSh 18k–25k), 3BR (KSh 28k–38k). Steady borehole water is standard in newer estates.`;
+      quickPrompts.push('Syokimau 2-Beds near SGR/Expressway', 'Mlolongo Phase 2 rentals', 'Water & token status in Syokimau');
+    } else if (locLower.includes('westlands')) {
+      opinionAdvice = `🌟 **Westlands Area Insight:** One of Nairobi's premier commercial and nightlife hubs. 1-Beds range from KSh 35k–55k; 2-Beds KSh 50k–95k. If looking for value within a modest budget, consider Parklands (near 3rd/4th Parklands) or Kangemi/Mountain View for lower rates.`;
+      alternatives = [
+        { area: 'Parklands Avenue', priceRange: 'KSh 30,000 – 45,000', commute: '3 mins to Westlands', note: 'Older spacious units with high security.' },
+        { area: 'Ruaka / Northern Bypass', priceRange: 'KSh 18,000 – 26,000', commute: '15 mins via bypass', note: 'Modern builds with rooftop lounge & gym.' }
+      ];
+      quickPrompts.push('Affordable units near Westlands', 'Parklands vs Westlands rent', 'Ruaka commute to Westlands');
+    } else {
+      opinionAdvice = `💡 **KejaBot Rental Intelligence:** When apartment hunting across Nairobi, always check 3 golden rules:\n1. **Water Security:** Confirm if the building has a reliable borehole or depends solely on Nairobi Water rationing.\n2. **Electricity Autonomy:** Insist on an autonomous prepaid KPLC token meter inside the house.\n3. **Deposit Terms:** Ask for written confirmation of deposit refund procedures before paying initial holding funds.`;
+      quickPrompts.push('Best 2-Beds in Ruaka under 25k', 'Affordable 1-Bed in Kilimani / Ngong Rd', 'Bedsitter in Roysambu near Thika Rd', 'Syokimau 2-Beds near Expressway');
+    }
+
+    // 5. Query candidate properties
+    let allProps = [];
+    if (store.isConnected && store.query) {
+      try {
+        const pr = await store.query(`
+          SELECT id, title, rent_kes, estate_suburb, county, bedrooms, bathrooms, is_verified, media, amenities, description
+          FROM properties
+          WHERE is_archived IS NOT TRUE
+          ORDER BY is_verified DESC, created_at DESC
+          LIMIT 150
+        `);
+        allProps = pr.rows || [];
+      } catch (e) {
+        console.warn('[AI CHAT DB PROPS]', e.message);
+      }
+    }
+    if (!allProps.length && store.data && Array.isArray(store.data.properties)) {
+      allProps = store.data.properties;
+    }
+
+    // Score properties
+    const scored = allProps.map(p => {
+      let score = 50;
+      const reasons = [];
+      const rent = Number(p.rent_kes || p.price || p.rent || 0);
+
+      if (detectedBudget) {
+        if (rent > 0 && rent <= detectedBudget) {
+          score += 35;
+          reasons.push(`Within KSh ${detectedBudget.toLocaleString()} budget`);
+        } else if (rent > 0 && Math.abs(rent - detectedBudget) <= 4000) {
+          score += 20;
+          reasons.push('Close to budget target');
+        }
+      }
+
+      const pLoc = `${p.estate_suburb || p.estateSuburb || ''} ${p.county || ''} ${p.title || ''}`.toLowerCase();
+      if (detectedLocation && pLoc.includes(detectedLocation.toLowerCase())) {
+        score += 30;
+        reasons.push(`Located in ${p.estate_suburb || p.estateSuburb || detectedLocation}`);
+      }
+
+      if (detectedBeds) {
+        if (String(p.bedrooms || '') === String(detectedBeds)) {
+          score += 20;
+          reasons.push(`Exact ${detectedBeds} Bedroom fit`);
+        }
+      }
+
+      if (p.is_verified || p.isVerified) {
+        score += 15;
+        reasons.push('Verified listing with tested water');
+      }
+
+      let photo = '/icons/icon-192.png';
+      if (p.media && Array.isArray(p.media) && p.media.length && p.media[0].url) {
+        photo = p.media[0].url;
+      } else if (p.images && Array.isArray(p.images) && p.images.length) {
+        photo = p.images[0];
+      }
+
+      return {
+        id: p.id,
+        title: p.title || 'Verified Rental Unit',
+        rentKes: rent,
+        estateSuburb: p.estate_suburb || p.estateSuburb || 'Nairobi',
+        county: p.county || 'Nairobi',
+        bedrooms: p.bedrooms || 1,
+        matchScore: Math.min(99, Math.max(68, score)),
+        reasons,
+        photo
+      };
+    });
+
+    // Pick top matching properties
+    scored.sort((a, b) => b.matchScore - a.matchScore);
+    const matchedProperties = scored.slice(0, 4);
+
+    res.json({
+      success: true,
+      userQuery: text,
+      detectedLocation,
+      detectedBeds,
+      detectedBudget,
+      opinionAdvice,
+      alternatives,
+      quickPrompts,
+      matchedProperties
+    });
+  } catch (err) {
+    console.error('[AI CHAT ASSISTANT ERROR]', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ============================================================
 // AUTOMATED AI CONCIERGE REMINDERS ENGINE
 // Checks searching/active hunts periodically:

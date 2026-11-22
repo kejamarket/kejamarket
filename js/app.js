@@ -5362,16 +5362,268 @@ class NairobiRentalsApp {
   }
 
   // ══════════════════════════════════════════════════════════════════
-  // 100% FREE SMART HOUSE HUNT AI ENGINE
+  // 100% FREE SMART HOUSE HUNT AI ENGINE (CHATGPT-STYLE ADVISOR)
   // ══════════════════════════════════════════════════════════════════
   openSmartHuntAI() {
     this.closeAllPopups();
-    const box = document.getElementById('ai-hunt-results-box');
-    if (box) {
-      box.style.display = 'none';
-      box.innerHTML = '';
-    }
+    this.setAiMode('chat');
     this.openModal('modal-smart-hunt-ai');
+  }
+
+  setAiMode(mode) {
+    const chatV = document.getElementById('ai-view-chat');
+    const filterV = document.getElementById('ai-view-filter');
+    const tabChat = document.getElementById('tab-ai-chat-mode');
+    const tabFilter = document.getElementById('tab-ai-filter-mode');
+
+    if (mode === 'chat') {
+      if (chatV) chatV.style.display = 'block';
+      if (filterV) filterV.style.display = 'none';
+      if (tabChat) {
+        tabChat.style.background = '#0284c7';
+        tabChat.style.color = '#ffffff';
+        tabChat.style.border = 'none';
+      }
+      if (tabFilter) {
+        tabFilter.style.background = '#f8fafc';
+        tabFilter.style.color = '#64748b';
+        tabFilter.style.border = '1.5px solid #e2e8f0';
+      }
+    } else {
+      if (chatV) chatV.style.display = 'none';
+      if (filterV) filterV.style.display = 'block';
+      if (tabFilter) {
+        tabFilter.style.background = '#0284c7';
+        tabFilter.style.color = '#ffffff';
+        tabFilter.style.border = 'none';
+      }
+      if (tabChat) {
+        tabChat.style.background = '#f8fafc';
+        tabChat.style.color = '#64748b';
+        tabChat.style.border = '1.5px solid #e2e8f0';
+      }
+    }
+  }
+
+  async handleAiEstateInput(val) {
+    const list = document.getElementById('ai-estate-suggestions');
+    const clr = document.getElementById('btn-clear-ai-estate');
+    if (!list) return;
+
+    if (!val || val.trim().length < 1) {
+      list.style.display = 'none';
+      list.innerHTML = '';
+      if (clr) clr.style.display = 'none';
+      return;
+    }
+    if (clr) clr.style.display = 'inline-block';
+
+    const q = val.toLowerCase().trim();
+    const suggestions = [];
+    const seen = new Set();
+
+    // 1. Check local rich counties & estates
+    const kca = window.KENYA_COUNTY_AREAS || {};
+    for (const [cKey, cObj] of Object.entries(kca)) {
+      if (!cObj || !Array.isArray(cObj.areas)) continue;
+      const county = cObj.name || cKey;
+      for (const area of cObj.areas) {
+        if (!area) continue;
+        const aName = area.name || area.val || '';
+        if (aName.toLowerCase().includes(q) && !seen.has(aName)) {
+          seen.add(aName);
+          suggestions.push({ name: aName, full: `${aName}, ${county}`, type: 'Town / Corridor' });
+        }
+        if (Array.isArray(area.subZones)) {
+          for (const sz of area.subZones) {
+            if (sz && sz.toLowerCase().includes(q) && !seen.has(sz)) {
+              seen.add(sz);
+              suggestions.push({ name: sz, full: `${sz} (${aName})`, type: 'Estate / Suburb' });
+            }
+          }
+        }
+      }
+    }
+
+    // 2. Query location search API if few suggestions
+    if (suggestions.length < 3) {
+      try {
+        const res = await fetch(`/api/location-search?q=${encodeURIComponent(q)}&limit=6`);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          for (const loc of data) {
+            if (loc && loc.name && !seen.has(loc.name)) {
+              seen.add(loc.name);
+              suggestions.push({ name: loc.name, full: loc.fullPath || loc.name, type: loc.type || 'Area' });
+            }
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (!suggestions.length) {
+      list.style.display = 'none';
+      return;
+    }
+
+    list.style.display = 'block';
+    list.innerHTML = suggestions.slice(0, 7).map(s => `
+      <div class="ai-estate-item" onclick="app.selectAiEstate('${this.escapeHtml(s.name)}')">
+        <div>
+          <strong style="color: #0f172a; font-size: 0.86rem;"><i class="fas fa-map-marker-alt" style="color: #0284c7; margin-right: 6px;"></i>${this.escapeHtml(s.name)}</strong>
+          <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">${this.escapeHtml(s.full)}</div>
+        </div>
+        <span style="background: #f1f5f9; color: #475569; font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 6px;">${this.escapeHtml(s.type)}</span>
+      </div>
+    `).join('');
+  }
+
+  selectAiEstate(name) {
+    const inp = document.getElementById('ai-estate-search-input');
+    const list = document.getElementById('ai-estate-suggestions');
+    const clr = document.getElementById('btn-clear-ai-estate');
+    if (inp) inp.value = name;
+    if (list) list.style.display = 'none';
+    if (clr) clr.style.display = 'inline-block';
+
+    // Auto-prompt ChatGPT AI advisor
+    this.sendAiChatMessage(`Tell me about rent rates, water supply, and verified apartments in ${name}`);
+  }
+
+  handleAiChatSubmit(e) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    const inp = document.getElementById('ai-chat-input');
+    if (!inp) return;
+    const text = inp.value.trim();
+    if (!text) return;
+    inp.value = '';
+    this.sendAiChatMessage(text);
+  }
+
+  async sendAiChatMessage(userMessage) {
+    const thread = document.getElementById('ai-chat-thread');
+    const input = document.getElementById('ai-chat-input');
+    const sendBtn = document.getElementById('btn-ai-send');
+    if (!thread) return;
+
+    // Hide starter prompts if first message
+    const starter = document.getElementById('ai-starter-prompts');
+    if (starter) starter.style.display = 'none';
+
+    // Append User Message Bubble
+    const userBubble = document.createElement('div');
+    userBubble.className = 'ai-bubble-user';
+    userBubble.textContent = userMessage;
+    thread.appendChild(userBubble);
+
+    // Append Typing Indicator
+    const typingBubble = document.createElement('div');
+    typingBubble.className = 'ai-bubble-bot';
+    typingBubble.id = 'ai-typing-indicator';
+    typingBubble.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="width: 24px; height: 24px; border-radius: 50%; background: #0284c7; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 900;">AI</div>
+        <span style="font-size: 0.84rem; color: #64748b;"><i class="fas fa-spinner fa-spin" style="color: #0284c7;"></i> KejaBot is analyzing platform listings &amp; formulating advice...</span>
+      </div>
+    `;
+    thread.appendChild(typingBubble);
+    thread.scrollTop = thread.scrollHeight;
+
+    if (sendBtn) sendBtn.disabled = true;
+
+    try {
+      const estateVal = document.getElementById('ai-estate-search-input')?.value || '';
+      const res = await fetch('/api/ai-chat-assistant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMessage, estate: estateVal })
+      });
+      const data = await res.json();
+
+      // Remove typing bubble
+      typingBubble.remove();
+
+      // Build Bot Message Bubble
+      const botBubble = document.createElement('div');
+      botBubble.className = 'ai-bubble-bot';
+
+      let html = `
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <div style="width: 26px; height: 26px; border-radius: 50%; background: #0284c7; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 900;">AI</div>
+          <strong style="color: #0369a1; font-size: 0.86rem;">KejaBot Rental Intelligence</strong>
+        </div>
+        <div style="font-size: 0.86rem; color: #0f172a; line-height: 1.5; white-space: pre-line;">${this.escapeHtml(data.opinionAdvice || '')}</div>
+      `;
+
+      // Alternatives Box
+      if (Array.isArray(data.alternatives) && data.alternatives.length > 0) {
+        html += `
+          <div style="margin-top: 10px; padding: 10px 12px; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 12px;">
+            <div style="font-size: 0.8rem; font-weight: 800; color: #b45309; margin-bottom: 4px;">
+              <i class="fas fa-lightbulb"></i> Recommended Alright Alternatives:
+            </div>
+            ${data.alternatives.map(alt => `
+              <div style="font-size: 0.78rem; color: #78350f; margin-top: 4px; border-top: 1px dashed #fed7aa; padding-top: 4px;">
+                <strong>${this.escapeHtml(alt.area)}</strong> (${this.escapeHtml(alt.priceRange)}) &bull; <em>${this.escapeHtml(alt.commute)}</em>
+                <div style="font-size: 0.72rem; color: #92400e;">${this.escapeHtml(alt.note)}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Matched Property Cards
+      if (Array.isArray(data.matchedProperties) && data.matchedProperties.length > 0) {
+        html += `
+          <div style="margin-top: 12px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+            <div style="font-size: 0.82rem; font-weight: 800; color: #008726; margin-bottom: 8px;">
+              <i class="fas fa-check-circle"></i> Top Active Matches in Platform Inventory:
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              ${data.matchedProperties.map(p => `
+                <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+                  <img src="${p.photo}" alt="${p.title}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; flex-shrink: 0;" onerror="this.src='/icons/icon-192.png'">
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 0.82rem; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${this.escapeHtml(p.title)}</div>
+                    <div style="font-size: 0.84rem; font-weight: 900; color: #008726; margin: 1px 0;">KSh ${Number(p.rentKes).toLocaleString()} <span style="font-size: 0.7rem; color: #64748b; font-weight: 600;">/ mo</span></div>
+                    <div style="font-size: 0.72rem; color: #64748b;">${this.escapeHtml(p.estateSuburb)}, ${this.escapeHtml(p.county)} &bull; ${p.bedrooms} Bed</div>
+                  </div>
+                  <button type="button" onclick="app.closeModal('modal-smart-hunt-ai'); app.openPropertyDetail && app.openPropertyDetail('${p.id}');" style="padding: 6px 10px; background: #0f172a; color: white; border: none; border-radius: 6px; font-size: 0.72rem; font-weight: 800; cursor: pointer; white-space: nowrap;">
+                    View &rarr;
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Quick Prompt Pills
+      if (Array.isArray(data.quickPrompts) && data.quickPrompts.length > 0) {
+        html += `
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;">
+            ${data.quickPrompts.map(qp => `
+              <button type="button" class="ai-prompt-chip" onclick="app.sendAiChatMessage('${this.escapeHtml(qp)}')">
+                <i class="fas fa-arrow-right"></i> ${this.escapeHtml(qp)}
+              </button>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      botBubble.innerHTML = html;
+      thread.appendChild(botBubble);
+      thread.scrollTop = thread.scrollHeight;
+    } catch (err) {
+      typingBubble.remove();
+      const errBubble = document.createElement('div');
+      errBubble.className = 'ai-bubble-bot';
+      errBubble.innerHTML = `<span style="color: #dc2626; font-size: 0.82rem;">Network or AI error: ${err.message}. Please try again.</span>`;
+      thread.appendChild(errBubble);
+    } finally {
+      if (sendBtn) sendBtn.disabled = false;
+      if (input) input.focus();
+    }
   }
 
   async runSmartHuntAI(e) {
