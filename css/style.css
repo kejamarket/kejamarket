@@ -5527,13 +5527,32 @@ body {
 .afford-comfort-badge-v2 {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background: #10b981;
+  gap: 5px;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(4px);
   color: white;
   border-radius: 20px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.afford-comfort-badge-v2.comfort {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.afford-comfort-badge-v2.stretch {
+  background: rgba(245, 158, 11, 0.9) !important;
+  color: #ffffff !important;
+  border-color: #fde68a !important;
+}
+
+.afford-comfort-badge-v2.risk {
+  background: rgba(239, 68, 68, 0.95) !important;
+  color: #ffffff !important;
+  border-color: #fecaca !important;
 }
 
 .afford-result-amount-v2 {

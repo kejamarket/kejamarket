@@ -18,8 +18,8 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=142.0" as="style">
-  <link rel="preload" href="js/app.js?v=135.0" as="script">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=155.0" as="style">
+  <link rel="preload" href="js/app.js?v=155.0" as="script">
   <link rel="preload" href="js/auth.js?v=135.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -28,7 +28,7 @@
 
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=142.0">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=155.0">
   
   
   <!-- Hierarchical Location Search Component -->
@@ -6798,7 +6798,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="js/desk-detail-modal.js?v=135.0"></script>
   <script src="js/in-app-call.js?v=117.0"></script>
   <script src="js/share-card.js?v=117.0"></script>
-  <script src="js/app.js?v=135.0" defer></script>
+  <script src="js/app.js?v=155.0" defer></script>
   <script src="js/viewing-booking.js?v=115.0" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
@@ -7070,177 +7070,193 @@ document.addEventListener('DOMContentLoaded', function() {
   <!-- ====================================================================
        MODAL: RENT AFFORDABILITY CALCULATOR ("What Can I Afford?")
        ==================================================================== -->
-  <div class="modal-backdrop" id="modal-affordability-calculator" style="display: none; align-items: center; justify-content: center; z-index: 2800;">
-    <div class="modal-dialog afford-modal-dialog-v2">
+  <!-- ====================================================================
+       MODAL: RENT AFFORDABILITY CALCULATOR ("What Can I Afford?")
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-affordability-calculator" style="display: none; align-items: center; justify-content: center; z-index: 2800; background: rgba(15, 23, 42, 0.72); backdrop-filter: blur(5px);">
+    <div class="modal-dialog afford-modal-dialog-v2" style="max-width: 680px; width: 94%; border-radius: 20px; background: #ffffff; box-shadow: 0 25px 60px rgba(0,0,0,0.3); overflow: hidden; border: 1.5px solid rgba(0, 104, 24, 0.2);">
       
-      <!-- Header with Logo -->
-      <div class="afford-modal-header-v2">
-        <div class="afford-logo-header">
-          <i class="fas fa-home" style="color: #10b981; font-size: 1.5rem;"></i>
-          <span class="afford-logo-text">Keja<span style="color: #10b981;">Market</span><span style="color: #64748b; font-size: 0.85rem;">.co.ke</span></span>
+      <!-- Top Brand Header with REAL KEJAMARKET LOGO -->
+      <div class="afford-modal-header-v2" style="background: #ffffff; padding: 18px 24px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="/icons/icon-192.png" alt="KejaMarket Logo" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; box-shadow: 0 3px 10px rgba(0, 104, 24, 0.25); border: 2px solid #00b53f;">
+          <div>
+            <div style="font-size: 1.35rem; font-weight: 900; letter-spacing: -0.5px; line-height: 1.1;">
+              <span style="color: #0f172a;">Keja</span><span style="color: #008726;">Market</span><span style="color: #64748b; font-size: 0.82rem; font-weight: 700;">.co.ke</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #008726; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px;">
+              <i class="fas fa-sparkles"></i> Kenya's #1 Verified Rental Platform
+            </div>
+          </div>
         </div>
-        <button class="modal-close-btn-v2" type="button" onclick="app.closeModal('modal-affordability-calculator')">&times;</button>
+        <button class="modal-close-btn-v2" type="button" onclick="app.closeModal('modal-affordability-calculator')" style="width: 36px; height: 36px; border-radius: 50%; background: #f8fafc; border: 1px solid #e2e8f0; color: #64748b; font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='#fee2e2'; this.style.color='#dc2626';" onmouseout="this.style.background='#f8fafc'; this.style.color='#64748b';">&times;</button>
       </div>
 
-      <div class="afford-modal-body-v2">
+      <!-- Modal Body -->
+      <div class="afford-modal-body-v2" style="padding: 24px 26px; max-height: calc(88vh - 75px); overflow-y: auto;">
         
-        <!-- Title -->
-        <h2 class="afford-title-v2">What Can I Afford?</h2>
-        <p class="afford-subtitle-v2">Smart Rent Affordability Calculator for Kenya</p>
+        <!-- Header Banner -->
+        <div style="margin-bottom: 22px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <h2 style="font-size: 1.55rem; font-weight: 900; color: #0f172a; margin: 0; letter-spacing: -0.4px;">
+              What Can I Afford?
+            </h2>
+            <span style="background: #ecfdf5; color: #008726; border: 1px solid #a7f3d0; padding: 4px 12px; border-radius: 20px; font-size: 0.76rem; font-weight: 800;">
+              <i class="fas fa-shield-check"></i> Prudent 25% – 30% Rule
+            </span>
+          </div>
+          <p style="font-size: 0.88rem; color: #64748b; margin: 6px 0 0 0; line-height: 1.45;">
+            Calculate your safe monthly rental bracket instantly based on your take-home pay, living expenses &amp; savings targets.
+          </p>
+        </div>
 
-        <!-- Input Grid - 2x2 -->
-        <div class="afford-inputs-grid-v2">
+        <!-- 2x2 Input Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 22px;">
           
           <!-- Monthly Net Income -->
-          <div class="afford-input-row-v2">
-            <div class="afford-input-icon-v2" style="background: #d1fae5; color: #059669;">
-              <i class="fas fa-money-bill-wave"></i>
-            </div>
-            <div class="afford-input-content-v2">
-              <label class="afford-input-label-v2">
-                Monthly Net Income
-                <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.75rem; margin-left: 4px;" title="Your take-home salary after taxes"></i>
-              </label>
-              <div class="afford-value-slider-v2">
-                <span class="afford-value-display-v2" id="afford-income-disp-v2">KSh 60,000</span>
-                <input type="range" class="afford-slider-v2" id="afford-income-slider-v2" min="10000" max="300000" step="2000" value="60000" oninput="app.syncAffordability(this, 'income')">
+          <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: border-color 0.2s;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #e8f7ee; color: #008726; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">
+                  <i class="fas fa-wallet"></i>
+                </div>
+                <span style="font-size: 0.82rem; font-weight: 800; color: #334155;">Monthly Net Income</span>
               </div>
+              <span id="afford-income-disp-v2" style="font-size: 1.15rem; font-weight: 900; color: #008726;">KSh 60,000</span>
+            </div>
+            <input type="range" class="afford-slider-v2" id="afford-income-slider-v2" min="10000" max="350000" step="2000" value="60000" oninput="app.syncAffordability(this, 'income')" style="width: 100%; accent-color: #008726; cursor: pointer;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">
+              <span>Min: KSh 10k</span>
+              <span>Max: KSh 350k+</span>
             </div>
           </div>
 
           <!-- Monthly Target Savings -->
-          <div class="afford-input-row-v2">
-            <div class="afford-input-icon-v2" style="background: #dbeafe; color: #2563eb;">
-              <i class="fas fa-piggy-bank"></i>
-            </div>
-            <div class="afford-input-content-v2">
-              <label class="afford-input-label-v2">
-                Monthly Target Savings
-                <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.75rem; margin-left: 4px;" title="How much you want to save each month"></i>
-              </label>
-              <div class="afford-value-slider-v2">
-                <span class="afford-value-display-v2" id="afford-savings-disp-v2">KSh 5,000</span>
-                <input type="range" class="afford-slider-v2" id="afford-savings-slider-v2" min="0" max="80000" step="500" value="5000" oninput="app.syncAffordability(this, 'savings')">
+          <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: border-color 0.2s;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">
+                  <i class="fas fa-piggy-bank"></i>
+                </div>
+                <span style="font-size: 0.82rem; font-weight: 800; color: #334155;">Monthly Savings Target</span>
               </div>
+              <span id="afford-savings-disp-v2" style="font-size: 1.15rem; font-weight: 900; color: #2563eb;">KSh 5,000</span>
+            </div>
+            <input type="range" class="afford-slider-v2" id="afford-savings-slider-v2" min="0" max="100000" step="1000" value="5000" oninput="app.syncAffordability(this, 'savings')" style="width: 100%; accent-color: #2563eb; cursor: pointer;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">
+              <span>Min: KSh 0</span>
+              <span>Max: KSh 100k</span>
             </div>
           </div>
 
           <!-- Monthly Living Expenses -->
-          <div class="afford-input-row-v2">
-            <div class="afford-input-icon-v2" style="background: #fee2e2; color: #dc2626;">
-              <i class="fas fa-shopping-basket"></i>
-            </div>
-            <div class="afford-input-content-v2">
-              <label class="afford-input-label-v2">
-                Monthly Living Expenses
-                <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.75rem; margin-left: 4px;" title="Food, transport, utilities, etc."></i>
-              </label>
-              <div class="afford-value-slider-v2">
-                <span class="afford-value-display-v2" id="afford-expenses-disp-v2">KSh 25,000</span>
-                <input type="range" class="afford-slider-v2" id="afford-expenses-slider-v2" min="0" max="150000" step="1000" value="25000" oninput="app.syncAffordability(this, 'expenses')">
+          <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: border-color 0.2s;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #fff1f2; color: #e11d48; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">
+                  <i class="fas fa-shopping-bag"></i>
+                </div>
+                <span style="font-size: 0.82rem; font-weight: 800; color: #334155;">Living &amp; Utility Expenses</span>
               </div>
+              <span id="afford-expenses-disp-v2" style="font-size: 1.15rem; font-weight: 900; color: #e11d48;">KSh 25,000</span>
+            </div>
+            <input type="range" class="afford-slider-v2" id="afford-expenses-slider-v2" min="0" max="180000" step="1000" value="25000" oninput="app.syncAffordability(this, 'expenses')" style="width: 100%; accent-color: #e11d48; cursor: pointer;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">
+              <span>Min: KSh 0</span>
+              <span>Max: KSh 180k</span>
             </div>
           </div>
 
-          <!-- Preferred Nairobi Area -->
-          <div class="afford-input-row-v2">
-            <div class="afford-input-icon-v2" style="background: #dbeafe; color: #0891b2;">
-              <i class="fas fa-map-marker-alt"></i>
+          <!-- Preferred Area -->
+          <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: border-color 0.2s;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <div style="width: 32px; height: 32px; border-radius: 8px; background: #fffbeb; color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">
+                <i class="fas fa-map-marked-alt"></i>
+              </div>
+              <span style="font-size: 0.82rem; font-weight: 800; color: #334155;">Preferred Location / Corridor</span>
             </div>
-            <div class="afford-input-content-v2">
-              <label class="afford-input-label-v2">
-                Preferred Nairobi Area
-                <i class="fas fa-info-circle" style="color: #94a3b8; font-size: 0.75rem; margin-left: 4px;" title="Optional: Filter by location"></i>
-              </label>
-              <select class="afford-select-v2" id="afford-location-v2" onchange="app.syncAffordability()">
-                <option value="">All Nairobi & Environs</option>
-                <option value="Westlands">Westlands / Parklands</option>
-                <option value="Kilimani">Kilimani / Kileleshwa</option>
-                <option value="Roysambu">Roysambu / Kasarani</option>
-                <option value="South B">South B / South C</option>
-                <option value="Ruaka">Ruaka / Rosslyn</option>
-                <option value="Langata">Langata / Karen</option>
-                <option value="Eastlands">Eastlands / Buruburu</option>
-                <option value="Syokimau">Syokimau / Mlolongo</option>
-              </select>
-            </div>
+            <select class="afford-select-v2" id="afford-location-v2" onchange="app.syncAffordability()" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 0.88rem; font-weight: 700; color: #0f172a; background: #f8fafc; cursor: pointer;">
+              <option value="">All Nairobi &amp; Environs</option>
+              <option value="Westlands">Westlands / Parklands / Riverside</option>
+              <option value="Kilimani">Kilimani / Kileleshwa / Lavington</option>
+              <option value="Ruaka">Ruaka / Rosslyn / Ndenderu</option>
+              <option value="Roysambu">Roysambu / Kasarani / Kahawa</option>
+              <option value="South B">South B / South C / Nairobi West</option>
+              <option value="Langata">Langata / Karen / Rongai</option>
+              <option value="Syokimau">Syokimau / Mlolongo / Kitengela</option>
+              <option value="Ngong Road">Ngong Road / Kilimani / Dagoretti</option>
+              <option value="Kiambu Road">Kiambu Road / Thindigua / Fourways</option>
+              <option value="Eastlands">Eastlands / Buruburu / Donholm</option>
+            </select>
           </div>
 
         </div>
 
-        <!-- Result Box -->
-        <div class="afford-result-card-v2">
-          <div class="afford-result-header-v2">
-            <div class="afford-result-icon-v2">
-              <i class="fas fa-home"></i>
+        <!-- The Hero Recommendation Card in KejaMarket Green Gradient -->
+        <div style="background: linear-gradient(135deg, #004d11 0%, #006818 50%, #00a838 100%); border-radius: 18px; padding: 22px 24px; color: #ffffff; box-shadow: 0 10px 25px rgba(0, 104, 24, 0.25); margin-bottom: 20px; position: relative; overflow: hidden;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+            <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 800; color: #bbf7d0; display: flex; align-items: center; gap: 6px;">
+              <i class="fas fa-home"></i> Recommended Monthly Rent Bracket
             </div>
-            <div>
-              <div class="afford-result-label-v2">Recommended Monthly Rent Bracket</div>
-              <div class="afford-comfort-badge-v2" id="afford-comfort-badge-v2">
-                <i class="fas fa-shield-check"></i> Comfort Zone
-              </div>
+            <div id="afford-comfort-badge-v2" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); color: #ffffff; font-weight: 800; font-size: 0.75rem; padding: 3px 10px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.3);">
+              <i class="fas fa-shield-check"></i> Comfort Zone (Safe &amp; Prudent)
             </div>
-          </div>
-          <div class="afford-result-amount-v2" id="afford-range-display-v2">
-            *KSh 15,000  &mdash;  18,000
-          </div>
-          <div class="afford-result-note-v2" id="afford-result-note-v2">
-            Calculated within 25% &mdash; 30% of take-home pay, with room for savings and unexpected emergencies.
-          </div>
-        </div>
-
-        <!-- Budget Allocation -->
-        <div class="afford-allocation-section-v2">
-          <div class="afford-allocation-title-v2">
-            <i class="fas fa-chart-pie"></i> Your Budget Allocation
           </div>
           
-          <!-- Progress Bar -->
-          <div class="afford-allocation-bar-v2">
-            <div class="afford-bar-segment-v2 afford-bar-rent-v2" id="bar-rent-v2" style="width: 28%;"></div>
-            <div class="afford-bar-segment-v2 afford-bar-expenses-v2" id="bar-expenses-v2" style="width: 42%;"></div>
-            <div class="afford-bar-segment-v2 afford-bar-savings-v2" id="bar-savings-v2" style="width: 8%;"></div>
-            <div class="afford-bar-segment-v2 afford-bar-buffer-v2" id="bar-buffer-v2" style="width: 22%;"></div>
+          <div id="afford-range-display-v2" style="font-size: 2.2rem; font-weight: 900; letter-spacing: -0.5px; margin: 4px 0 8px 0; line-height: 1.1;">
+            KSh 15,000 &mdash; 18,000 <span style="font-size: 1rem; font-weight: 600; opacity: 0.85;">/ month</span>
+          </div>
+          
+          <div id="afford-result-note-v2" style="font-size: 0.85rem; color: #e8f7ee; opacity: 0.95; line-height: 1.45;">
+            Calculated within 25% – 30% of take-home pay, with room for savings and unexpected emergencies.
+          </div>
+        </div>
+
+        <!-- Budget Allocation Breakdown -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px 18px; margin-bottom: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 0.82rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+              <i class="fas fa-chart-pie" style="color: #008726;"></i> Your Monthly Cashflow Allocation
+            </span>
           </div>
 
-          <!-- Legend with Icons -->
-          <div class="afford-allocation-legend-v2">
-            <div class="afford-legend-item-v2">
-              <i class="fas fa-home afford-legend-icon-v2" style="color: #059669;"></i>
-              <span>Rent</span>
-              <strong id="pct-rent-v2">28%</strong>
+          <!-- Stacked Progress Bar -->
+          <div style="height: 12px; background: #e2e8f0; border-radius: 10px; overflow: hidden; display: flex; margin-bottom: 12px;">
+            <div id="bar-rent-v2" style="width: 28%; background: #008726; transition: width 0.3s;" title="Rent"></div>
+            <div id="bar-expenses-v2" style="width: 42%; background: #0284c7; transition: width 0.3s;" title="Living Expenses"></div>
+            <div id="bar-savings-v2" style="width: 8%; background: #d97706; transition: width 0.3s;" title="Savings"></div>
+            <div id="bar-buffer-v2" style="width: 22%; background: #8b5cf6; transition: width 0.3s;" title="Emergency Buffer"></div>
+          </div>
+
+          <!-- Legend -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center;">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 4px;">
+              <div style="font-size: 0.68rem; color: #008726; font-weight: 700;">🏠 Rent</div>
+              <div id="pct-rent-v2" style="font-size: 0.88rem; font-weight: 900; color: #0f172a;">28%</div>
             </div>
-            <div class="afford-legend-item-v2">
-              <i class="fas fa-utensils afford-legend-icon-v2" style="color: #0891b2;"></i>
-              <span>Living</span>
-              <strong id="pct-expenses-v2">42%</strong>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 4px;">
+              <div style="font-size: 0.68rem; color: #0284c7; font-weight: 700;">🛒 Living</div>
+              <div id="pct-expenses-v2" style="font-size: 0.88rem; font-weight: 900; color: #0f172a;">42%</div>
             </div>
-            <div class="afford-legend-item-v2">
-              <i class="fas fa-piggy-bank afford-legend-icon-v2" style="color: #f59e0b;"></i>
-              <span>Savings</span>
-              <strong id="pct-savings-v2">8%</strong>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 4px;">
+              <div style="font-size: 0.68rem; color: #d97706; font-weight: 700;">💰 Savings</div>
+              <div id="pct-savings-v2" style="font-size: 0.88rem; font-weight: 900; color: #0f172a;">8%</div>
             </div>
-            <div class="afford-legend-item-v2">
-              <i class="fas fa-shield-alt afford-legend-icon-v2" style="color: #8b5cf6;"></i>
-              <span>Buffer</span>
-              <strong id="pct-buffer-v2">22%</strong>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 4px;">
+              <div style="font-size: 0.68rem; color: #8b5cf6; font-weight: 700;">🛡️ Buffer</div>
+              <div id="pct-buffer-v2" style="font-size: 0.88rem; font-weight: 900; color: #0f172a;">22%</div>
             </div>
           </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="afford-actions-v2">
-          <button type="button" class="afford-btn-primary-v2" onclick="app.applyAffordabilityFilter()">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button type="button" onclick="app.applyAffordabilityFilter()" style="flex: 1.4; min-width: 220px; background: #008726; color: white; border: none; padding: 14px 20px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(0, 135, 38, 0.3); transition: background 0.2s;" onmouseover="this.style.background='#006818';" onmouseout="this.style.background='#008726';">
             <i class="fas fa-home"></i> Show Matching Houses <i class="fas fa-arrow-right"></i>
           </button>
-          <button type="button" class="afford-btn-secondary-v2" onclick="app.closeModal('modal-affordability-calculator'); app.openHouseHuntModal();">
-            <i class="fas fa-user-tie"></i> Let Agent Hunt
+          <button type="button" onclick="app.closeModal('modal-affordability-calculator'); app.openHouseHuntModal();" style="flex: 1.2; min-width: 200px; background: #0f172a; color: white; border: none; padding: 14px 18px; border-radius: 12px; font-weight: 800; font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s;" onmouseover="this.style.background='#1e293b';" onmouseout="this.style.background='#0f172a';">
+            <i class="fas fa-bolt" style="color: #f59e0b;"></i> Let Agent Hunt (72H)
           </button>
-        </div>
-
-        <!-- Disclaimer -->
-        <div class="afford-disclaimer-v2">
-          <i class="fas fa-info-circle"></i> This is an estimate. Please account for transport, utilities, deposits and other costs.
         </div>
 
       </div>

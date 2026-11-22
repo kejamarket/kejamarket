@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v144-automated-listing-approval-live-badges';
+const CACHE_NAME = 'kejamarket-v155-smart-hunt-affordability-redesign';
 
 const STATIC_ASSETS = [
   '/',

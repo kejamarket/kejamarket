@@ -1028,8 +1028,8 @@ window.AdminOSExtensions = (function() {
                 </div>
               </div>
               <div>
-                <button onclick="AdminCore.showToast('Listing matched & routed to assigned field scout', 'success'); this.closest('.modal-overlay').remove();" class="btn-primary" style="font-size:0.8rem; padding:7px 12px; background:#006818; white-space:nowrap;">
-                  <i class="fas fa-paper-plane"></i> Select &amp; Dispatch
+                <button onclick="AdminOSExtensions.attachAiMatch('${huntId}', '${m.id}', '${escapeHtml(m.title)}')" class="btn-primary" style="font-size:0.8rem; padding:8px 14px; background:#006818; white-space:nowrap; border-radius:8px; cursor:pointer; font-weight:700;">
+                  <i class="fas fa-paper-plane"></i> Attach &amp; SMS Customer
                 </button>
               </div>
             </div>
@@ -1039,6 +1039,26 @@ window.AdminOSExtensions = (function() {
     } catch (e) {
       const body = document.getElementById('ai-match-modal-body');
       if (body) body.innerHTML = `<div class="error-state">${e.message}</div>`;
+    }
+  }
+
+  async function attachAiMatch(huntId, propId, title) {
+    try {
+      AdminCore.showToast(`Attaching ${title} to hunt...`, 'info');
+      const res = await fetch(`/api/admin/house-hunts/${huntId}/properties`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        credentials: 'same-origin',
+        body: JSON.stringify({ propertyId: propId, adminNote: 'AI Smart Match Recommendation' })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to attach property');
+      AdminCore.showToast(`✅ Matched property attached and dispatched via SMS to customer!`, 'success');
+      const modal = document.getElementById('ai-match-modal');
+      if (modal) modal.remove();
+      loadSmartHouseHunts();
+    } catch (e) {
+      AdminCore.showToast('Error: ' + e.message, 'error');
     }
   }
 
@@ -1152,7 +1172,8 @@ window.AdminOSExtensions = (function() {
     logScoutArrival,
     triggerCorridorBounty,
     settleHunt,
-    autoRefundHunt
+    autoRefundHunt,
+    attachAiMatch
   };
 
 })();

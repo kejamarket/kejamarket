@@ -102,9 +102,54 @@ button, input, select, textarea,
 }
 
 #modal-property-detail .modal-dialog,
-.ud-dialog,
-.afford-modal-dialog-v2 {
+.ud-dialog {
   max-width: 720px !important;
+}
+
+.afford-modal-dialog-v2 {
+  max-width: 680px !important;
+  width: 94% !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3) !important;
+}
+
+.afford-slider-v2 {
+  width: 100% !important;
+  height: 6px !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: #e2e8f0 !important;
+  border-radius: 6px !important;
+  outline: none !important;
+  cursor: pointer !important;
+}
+
+.afford-slider-v2::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  background: #008726 !important;
+  border: 3px solid #ffffff !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 6px rgba(0, 135, 38, 0.4) !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease !important;
+}
+
+.afford-slider-v2::-webkit-slider-thumb:hover {
+  transform: scale(1.15) !important;
+}
+
+.afford-slider-v2::-moz-range-thumb {
+  width: 20px !important;
+  height: 20px !important;
+  background: #008726 !important;
+  border: 3px solid #ffffff !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 6px rgba(0, 135, 38, 0.4) !important;
+  cursor: pointer !important;
 }
 
 .modal-header {

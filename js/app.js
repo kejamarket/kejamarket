@@ -5082,39 +5082,42 @@ class NairobiRentalsApp {
   }
 
   syncAffordability(sliderElem, type) {
+    const incomeSlider = document.getElementById('afford-income-slider-v2') || document.getElementById('afford-income-slider');
     const incomeInput = document.getElementById('afford-net-income');
-    const incomeSlider = document.getElementById('afford-income-slider');
-    const incomeDisp = document.getElementById('afford-income-disp');
+    const incomeDisp = document.getElementById('afford-income-disp-v2') || document.getElementById('afford-income-disp');
 
+    const expensesSlider = document.getElementById('afford-expenses-slider-v2') || document.getElementById('afford-expenses-slider');
     const expensesInput = document.getElementById('afford-expenses');
-    const expensesSlider = document.getElementById('afford-expenses-slider');
-    const expensesDisp = document.getElementById('afford-expenses-disp');
+    const expensesDisp = document.getElementById('afford-expenses-disp-v2') || document.getElementById('afford-expenses-disp');
 
+    const savingsSlider = document.getElementById('afford-savings-slider-v2') || document.getElementById('afford-savings-slider');
     const savingsInput = document.getElementById('afford-savings');
-    const savingsSlider = document.getElementById('afford-savings-slider');
-    const savingsDisp = document.getElementById('afford-savings-disp');
+    const savingsDisp = document.getElementById('afford-savings-disp-v2') || document.getElementById('afford-savings-disp');
 
     if (sliderElem && type === 'income') {
-      incomeInput.value = sliderElem.value;
-    } else if (incomeSlider && incomeInput) {
-      incomeSlider.value = incomeInput.value;
+      if (incomeInput) incomeInput.value = sliderElem.value;
+      if (incomeSlider) incomeSlider.value = sliderElem.value;
+    } else if (incomeSlider && incomeInput && !sliderElem) {
+      incomeInput.value = incomeSlider.value;
     }
 
     if (sliderElem && type === 'expenses') {
-      expensesInput.value = sliderElem.value;
-    } else if (expensesSlider && expensesInput) {
-      expensesSlider.value = expensesInput.value;
+      if (expensesInput) expensesInput.value = sliderElem.value;
+      if (expensesSlider) expensesSlider.value = sliderElem.value;
+    } else if (expensesSlider && expensesInput && !sliderElem) {
+      expensesInput.value = expensesSlider.value;
     }
 
     if (sliderElem && type === 'savings') {
-      savingsInput.value = sliderElem.value;
-    } else if (savingsSlider && savingsInput) {
-      savingsSlider.value = savingsInput.value;
+      if (savingsInput) savingsInput.value = sliderElem.value;
+      if (savingsSlider) savingsSlider.value = sliderElem.value;
+    } else if (savingsSlider && savingsInput && !sliderElem) {
+      savingsInput.value = savingsSlider.value;
     }
 
-    const income = Math.max(0, parseFloat(incomeInput.value) || 0);
-    const expenses = Math.max(0, parseFloat(expensesInput.value) || 0);
-    const savings = Math.max(0, parseFloat(savingsInput.value) || 0);
+    const income = Math.max(0, parseFloat(incomeSlider ? incomeSlider.value : (incomeInput ? incomeInput.value : 60000)) || 60000);
+    const expenses = Math.max(0, parseFloat(expensesSlider ? expensesSlider.value : (expensesInput ? expensesInput.value : 25000)) || 0);
+    const savings = Math.max(0, parseFloat(savingsSlider ? savingsSlider.value : (savingsInput ? savingsInput.value : 5000)) || 0);
 
     if (incomeDisp) incomeDisp.textContent = 'KSh ' + income.toLocaleString('en-KE');
     if (expensesDisp) expensesDisp.textContent = 'KSh ' + expenses.toLocaleString('en-KE');
@@ -5124,19 +5127,19 @@ class NairobiRentalsApp {
   }
 
   calculateAffordability(income, expenses, savings) {
-    const rangeDisp = document.getElementById('afford-range-display');
-    const badge = document.getElementById('afford-health-badge');
-    const note = document.getElementById('afford-rule-note');
+    const rangeDisp = document.getElementById('afford-range-display-v2') || document.getElementById('afford-range-display');
+    const badge = document.getElementById('afford-comfort-badge-v2') || document.getElementById('afford-health-badge');
+    const note = document.getElementById('afford-result-note-v2') || document.getElementById('afford-rule-note');
 
-    const barRent = document.getElementById('bar-rent');
-    const barExp = document.getElementById('bar-expenses');
-    const barSav = document.getElementById('bar-savings');
-    const barBuf = document.getElementById('bar-buffer');
+    const barRent = document.getElementById('bar-rent-v2') || document.getElementById('bar-rent');
+    const barExp = document.getElementById('bar-expenses-v2') || document.getElementById('bar-expenses');
+    const barSav = document.getElementById('bar-savings-v2') || document.getElementById('bar-savings');
+    const barBuf = document.getElementById('bar-buffer-v2') || document.getElementById('bar-buffer');
 
-    const pctRentEl = document.getElementById('pct-rent');
-    const pctExpEl = document.getElementById('pct-expenses');
-    const pctSavEl = document.getElementById('pct-savings');
-    const pctBufEl = document.getElementById('pct-buffer');
+    const pctRentEl = document.getElementById('pct-rent-v2') || document.getElementById('pct-rent');
+    const pctExpEl = document.getElementById('pct-expenses-v2') || document.getElementById('pct-expenses');
+    const pctSavEl = document.getElementById('pct-savings-v2') || document.getElementById('pct-savings');
+    const pctBufEl = document.getElementById('pct-buffer-v2') || document.getElementById('pct-buffer');
 
     if (!income || income <= 0) {
       if (rangeDisp) rangeDisp.textContent = 'KSh 0';
@@ -5163,7 +5166,7 @@ class NairobiRentalsApp {
     this._calculatedRentMax = maxRent;
 
     if (rangeDisp) {
-      rangeDisp.textContent = `KSh ${minRent.toLocaleString('en-KE')} - ${maxRent.toLocaleString('en-KE')}`;
+      rangeDisp.innerHTML = `KSh ${minRent.toLocaleString('en-KE')} &mdash; ${maxRent.toLocaleString('en-KE')} <span style="font-size:1rem; font-weight:600; opacity:0.85;">/ month</span>`;
     }
 
     // Evaluate Financial Health
@@ -5175,15 +5178,15 @@ class NairobiRentalsApp {
 
     if (badge) {
       if (rentRatio <= 0.30 && bufferRatio >= 0.15) {
-        badge.className = 'afford-health-pill comfort';
-        badge.innerHTML = '<i class="fas fa-shield-alt"></i> Comfort Zone (Safe & Prudent)';
-        if (note) note.textContent = 'Calculated within 25%-30% of take-home pay, with room for savings and unexpected emergencies.';
+        badge.className = 'afford-comfort-badge-v2 comfort';
+        badge.innerHTML = '<i class="fas fa-shield-check"></i> Comfort Zone (Safe & Prudent)';
+        if (note) note.textContent = 'Calculated within 25% – 30% of take-home pay, leaving healthy buffers for savings and emergencies.';
       } else if (rentRatio <= 0.38 && bufferRatio >= 0.05) {
-        badge.className = 'afford-health-pill stretch';
+        badge.className = 'afford-comfort-badge-v2 stretch';
         badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Stretch Zone (Manageable)';
         if (note) note.textContent = 'Rent is slightly higher than ideal. You can afford this if non-essential lifestyle expenses are trimmed.';
       } else {
-        badge.className = 'afford-health-pill risk';
+        badge.className = 'afford-comfort-badge-v2 risk';
         badge.innerHTML = '<i class="fas fa-exclamation-circle"></i> High Burden Risk';
         if (note) note.textContent = 'Living expenses take up a large share of your income. Consider looking for units under KSh ' + minRent.toLocaleString('en-KE') + '.';
       }
@@ -5207,7 +5210,7 @@ class NairobiRentalsApp {
   }
 
   applyAffordabilityFilter() {
-    const locSelect = document.getElementById('afford-location');
+    const locSelect = document.getElementById('afford-location-v2') || document.getElementById('afford-location');
     const selectedLoc = locSelect ? locSelect.value : '';
 
     const minRent = this._calculatedRentMin || 15000;
