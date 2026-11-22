@@ -50,8 +50,8 @@ class Store {
         this.data.comments = this.data.comments || {};
         this.data.verification_logs = this.data.verification_logs || [];
 
-        // Admin should be created via migrations, not auto-initialized
-        // this.ensureAdminUser();
+        // Ensure admin user exists with latest credentials
+        this.ensureAdminUser();
         // Ensure seed listings are available
         this.ensureSeedListings();
       } else {

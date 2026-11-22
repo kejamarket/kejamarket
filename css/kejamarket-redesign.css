@@ -3742,16 +3742,25 @@ html, body { overflow-x: clip !important;
 .header-actions {
   display: flex !important;
   align-items: center !important;
-  gap: 16px !important;
+  gap: 12px !important;
   flex-shrink: 0 !important;
   margin-left: auto !important;
-  padding-right: 2px !important;
+  padding-right: 8px !important;
 }
 
 @media (min-width: 1200px) {
   .header-actions {
-    gap: 18px !important;
+    gap: 14px !important;
   }
+}
+
+/* Visual separator between CTA buttons and icon buttons */
+.hdr-icon-divider {
+  width: 1px !important;
+  height: 28px !important;
+  background: #e2e8f0 !important;
+  margin: 0 6px !important;
+  flex-shrink: 0 !important;
 }
 
 /* Action Buttons */
@@ -4111,17 +4120,11 @@ html, body { overflow-x: clip !important;
 
 /* Responsive layout adjustments for desktop & laptops (1024px - 1366px) */
 @media (max-width: 1366px) {
-  .btn-top-wa-alerts span,
-  .btn-top-hunter span {
-    display: none !important;
-  }
+  /* Prevent scrambling: hide extra banner buttons from header on laptops since they have prominent hero cards */
   .btn-top-wa-alerts,
-  .btn-top-hunter {
-    padding: 8px 10px !important;
-    border-radius: 50% !important;
-    width: 38px !important;
-    height: 38px !important;
-    justify-content: center !important;
+  .btn-top-hunter,
+  .hdr-icon-divider {
+    display: none !important;
   }
 }
 
@@ -4130,6 +4133,9 @@ html, body { overflow-x: clip !important;
     padding: 6px 10px !important;
   }
   .header-search-wrapper {
-    max-width: 300px !important;
+    max-width: 280px !important;
+  }
+  .header-actions {
+    gap: 8px !important;
   }
 }

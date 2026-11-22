@@ -18,8 +18,8 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="css/kejamarket-redesign.css?v=155.0" as="style">
-  <link rel="preload" href="js/app.js?v=155.0" as="script">
+  <link rel="preload" href="css/kejamarket-redesign.css?v=157.0" as="style">
+  <link rel="preload" href="js/app.js?v=157.0" as="script">
   <link rel="preload" href="js/auth.js?v=135.0&t=20261114_tenant_rbac_backbutton" as="script">
   
   <!-- Font Awesome -->
@@ -28,7 +28,7 @@
 
   
   <!-- ONLY CSS FILE: KejaMarket Complete Design (Reference Match) -->
-  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=155.0">
+  <link rel="stylesheet" href="css/kejamarket-redesign.css?v=157.0">
   
   
   <!-- Hierarchical Location Search Component -->
@@ -1306,15 +1306,15 @@
       <div class="header-actions">
 
         <!-- WhatsApp Alerts Top Action -->
-        <button type="button" class="btn-top-wa-alerts" onclick="openWhatsAppAlertsWithAuth()" title="Get Free WhatsApp Vacancy Alerts" style="background:#25d366; color:white; border:none; border-radius:8px; padding:7px 12px; font-size:12.5px; font-weight:700; display:inline-flex; align-items:center; gap:6px; cursor:pointer; box-shadow:0 2px 6px rgba(37,211,102,0.3); transition:transform 0.2s;">
+        <button type="button" class="btn-top-wa-alerts" onclick="openWhatsAppAlertsWithAuth()" title="Get Free WhatsApp Vacancy Alerts">
           <i class="fab fa-whatsapp" style="font-size:15px;"></i>
-          <span>WhatsApp Alerts</span>
+          <span class="hdr-btn-label">WhatsApp Alerts</span>
         </button>
 
         <!-- 3-Day House Hunter Button -->
-        <button type="button" class="btn-top-hunter" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" title="Hire a 72-Hour Ground House Hunter" style="background:#006818; color:white; border:none; border-radius:8px; padding:7px 12px; font-size:12.5px; font-weight:700; display:inline-flex; align-items:center; gap:6px; cursor:pointer; transition:transform 0.2s;">
+        <button type="button" class="btn-top-hunter" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" title="Hire a 72-Hour Ground House Hunter">
           <i class="fas fa-search-location"></i>
-          <span>72h Hunter</span>
+          <span class="hdr-btn-label">72h Hunter</span>
         </button>
         
         <!-- Post Property Button -->
@@ -1322,6 +1322,9 @@
           <i class="fas fa-plus"></i>
           <span>Post Property</span>
         </button>
+
+        <!-- Divider -->
+        <div class="hdr-icon-divider"></div>
 
         <!-- Wishlist Heart -->
         <button class="btn-icon-action" onclick="app.toggleFavoritesView()" title="Saved">
@@ -1978,7 +1981,23 @@
             <!-- Desktop Feature Cards Strip - Circular Card Style -->
       <div class="keja-feature-strip desktop-only-feature-strip">
 
-        <!-- Card 1: 3-Day Smart House Hunt -->
+        <!-- Card 1: Smart AI House Hunt (FREE) -->
+        <div class="km-feature-card km-feat-ai-hunt" onclick="app.openSmartHuntAI && app.openSmartHuntAI()" role="button" tabindex="0">
+          <div class="km-feat-circle km-feat-circle-ai">
+            <i class="fas fa-brain"></i>
+          </div>
+          <div class="km-feat-body">
+            <div class="km-feat-title">Smart AI House Hunt</div>
+            <div class="km-feat-sub">AI matches properties to your exact needs instantly</div>
+            <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
+              <span class="km-feat-pill km-feat-pill-ai">Try Free &rarr;</span>
+              <span style="background:#ecfdf5; color:#059669; border:1px solid #6ee7b7; font-size:0.58rem; font-weight:800; padding:2px 7px; border-radius:20px; text-transform:uppercase; letter-spacing:0.3px;">FREE</span>
+            </div>
+          </div>
+          <div class="km-feat-corner-emoji">&#129302;</div>
+        </div>
+
+        <!-- Card 2: 3-Day Smart Hunt (PAID) -->
         <div class="km-feature-card km-feat-hunt" onclick="app.openHouseHuntModal && app.openHouseHuntModal()" role="button" tabindex="0">
           <div class="km-feat-circle km-feat-circle-green">
             <i class="fas fa-search-location"></i>
@@ -1986,12 +2005,15 @@
           <div class="km-feat-body">
             <div class="km-feat-title">3-Day Smart Hunt</div>
             <div class="km-feat-sub">Ground team finds you a home in 72 hours</div>
-            <span class="km-feat-pill km-feat-pill-green">Start Hunt &rarr;</span>
+            <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
+              <span class="km-feat-pill km-feat-pill-green">Start Hunt &rarr;</span>
+              <span style="background:#fff7ed; color:#c2410c; border:1px solid #fed7aa; font-size:0.58rem; font-weight:800; padding:2px 7px; border-radius:20px; text-transform:uppercase; letter-spacing:0.3px;">KSh 2,000</span>
+            </div>
           </div>
           <div class="km-feat-corner-emoji">&#127968;</div>
         </div>
 
-        <!-- Card 2: What Can I Afford? -->
+        <!-- Card 3: What Can I Afford? -->
         <div class="km-feature-card km-feat-afford" onclick="app.openAffordabilityCalculator && app.openAffordabilityCalculator()" role="button" tabindex="0">
           <div class="km-feat-circle km-feat-circle-purple">
             <i class="fas fa-calculator"></i>
@@ -1999,12 +2021,12 @@
           <div class="km-feat-body">
             <div class="km-feat-title">What Can I Afford?</div>
             <div class="km-feat-sub">Know your safe rent based on income</div>
-            <span class="km-feat-pill km-feat-pill-purple">Calculate &rarr;</span>
+            <span class="km-feat-pill km-feat-pill-purple" style="margin-top:4px; display:inline-block;">Calculate &rarr;</span>
           </div>
           <div class="km-feat-corner-emoji">&#128176;</div>
         </div>
 
-        <!-- Card 3: Instant Vacancy Alerts -->
+        <!-- Card 4: Instant Vacancy Alerts -->
         <div class="km-feature-card km-feat-alerts" onclick="openWhatsAppAlertsWithAuth && openWhatsAppAlertsWithAuth()" role="button" tabindex="0">
           <div class="km-feat-circle km-feat-circle-whatsapp">
             <i class="fab fa-whatsapp"></i>
@@ -2012,7 +2034,7 @@
           <div class="km-feat-body">
             <div class="km-feat-title">Vacancy Alerts</div>
             <div class="km-feat-sub">Instant SMS/WhatsApp when units open up</div>
-            <span class="km-feat-pill km-feat-pill-whatsapp">Get Alerts &rarr;</span>
+            <span class="km-feat-pill km-feat-pill-whatsapp" style="margin-top:4px; display:inline-block;">Get Alerts &rarr;</span>
           </div>
           <div class="km-feat-corner-emoji">&#128276;</div>
         </div>
@@ -2023,55 +2045,58 @@
       <style>
         .keja-feature-strip {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 10px;
-          margin-bottom: 16px;
-          padding: 0 16px;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 14px;
+          margin-bottom: 20px;
+          padding: 0 4px;
         }
         .km-feature-card {
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 12px 14px;
+          gap: 14px;
+          padding: 14px 16px;
           border-radius: 18px;
           position: relative;
           overflow: hidden;
           transition: transform 0.2s, box-shadow 0.2s;
           cursor: pointer;
-          min-height: 72px;
+          min-height: 80px;
           border: 1.5px solid transparent;
         }
         .km-feature-card:hover {
           transform: translateY(-3px);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+          box-shadow: 0 10px 28px rgba(0,0,0,0.13);
         }
-        .km-feat-hunt   { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-color: #6ee7b7; }
-        .km-feat-afford { background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); border-color: #c4b5fd; }
-        .km-feat-alerts { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: #86efac; }
+        .km-feat-ai-hunt { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); border-color: #7dd3fc; }
+        .km-feat-hunt    { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-color: #6ee7b7; }
+        .km-feat-afford  { background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); border-color: #c4b5fd; }
+        .km-feat-alerts  { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: #86efac; }
 
         .km-feat-circle {
-          width: 50px;
-          height: 50px;
+          width: 52px;
+          height: 52px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 20px;
+          font-size: 21px;
           flex-shrink: 0;
           box-shadow: 0 4px 14px rgba(0,0,0,0.18);
         }
+        .km-feat-circle-ai       { background: linear-gradient(135deg, #0ea5e9, #0369a1); color: white; }
         .km-feat-circle-green    { background: linear-gradient(135deg, #10b981, #059669); color: white; }
         .km-feat-circle-purple   { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
         .km-feat-circle-whatsapp { background: linear-gradient(135deg, #25d366, #128c7e); color: white; }
 
         .km-feat-body { flex: 1; min-width: 0; }
-        .km-feat-title { font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 2px; line-height: 1.2; }
-        .km-feat-sub   { font-size: 0.63rem; color: #475569; line-height: 1.3; margin-bottom: 6px;
+        .km-feat-title { font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 2px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .km-feat-sub   { font-size: 0.63rem; color: #475569; line-height: 1.3; margin-bottom: 0;
                          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .km-feat-pill  {
           display: inline-block; padding: 3px 10px; border-radius: 20px;
           font-size: 0.6rem; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase;
         }
+        .km-feat-pill-ai       { background: #0ea5e9; color: white; }
         .km-feat-pill-green    { background: #10b981; color: white; }
         .km-feat-pill-purple   { background: #8b5cf6; color: white; }
         .km-feat-pill-whatsapp { background: #25d366; color: white; }
@@ -2080,8 +2105,9 @@
           position: absolute; bottom: 6px; right: 10px;
           font-size: 26px; opacity: 0.16; line-height: 1; pointer-events: none;
         }
-        @media (max-width: 1100px) { .keja-feature-strip { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 700px)  { .keja-feature-strip { grid-template-columns: 1fr; gap: 8px; padding: 0 12px; } }
+        @media (max-width: 1200px) { .keja-feature-strip { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        @media (max-width: 700px)  { .keja-feature-strip { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 0 4px; } }
+        @media (max-width: 480px)  { .keja-feature-strip { grid-template-columns: 1fr; } }
       </style>
 
       <!-- Results Header & View Controls (Matches reference image exactly) -->
@@ -6798,7 +6824,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="js/desk-detail-modal.js?v=135.0"></script>
   <script src="js/in-app-call.js?v=117.0"></script>
   <script src="js/share-card.js?v=117.0"></script>
-  <script src="js/app.js?v=155.0" defer></script>
+  <script src="js/app.js?v=157.0" defer></script>
   <script src="js/viewing-booking.js?v=115.0" defer></script>
   
   <!-- KejaMarket PWA & Mobile Journey Controller -->
@@ -7382,6 +7408,108 @@ document.addEventListener('DOMContentLoaded', function() {
 
       <div class="modal-body" id="viewing-modal-body" style="padding: 20px; background: #ffffff; max-height: 82vh; overflow-y: auto;">
         <!-- Populated dynamically by KejaViewing client module -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: SMART HOUSE HUNT AI (100% FREE INSTANT MATCHING ENGINE)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-smart-hunt-ai" style="display: none; align-items: center; justify-content: center; z-index: 2900; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(5px);">
+    <div class="modal-dialog" style="max-width: 580px; width: 95%; border-radius: 20px; overflow: hidden; background: #ffffff; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border: 1.5px solid rgba(14, 165, 233, 0.25);">
+      
+      <!-- Modal Header -->
+      <div class="modal-header" style="background: linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #008726 100%); color: white; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="/icons/icon-192.png" alt="KejaMarket" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #ffffff;">Smart House Hunt AI</h3>
+              <span style="background: #ffffff; color: #0284c7; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 12px; letter-spacing: 0.5px; text-transform: uppercase;">100% FREE</span>
+            </div>
+            <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #e0f2fe;">Instant multi-factor AI property matcher &bull; No broker fees &bull; No payment required</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" type="button" onclick="app.closeModal('modal-smart-hunt-ai')" style="width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.2); border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.35)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">&times;</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body" style="padding: 22px 24px; background: #ffffff; max-height: calc(88vh - 75px); overflow-y: auto;">
+        
+        <!-- Explainer Card -->
+        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1.5px solid #7dd3fc; border-radius: 14px; padding: 14px 16px; margin-bottom: 18px;">
+          <div style="font-size: 0.88rem; font-weight: 800; color: #0369a1; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <i class="fas fa-brain" style="color: #0284c7;"></i> How Smart AI Hunt Works
+          </div>
+          <div style="font-size: 0.8rem; color: #0c4a6e; line-height: 1.45;">
+            Our algorithm scans all verified platform listings in real-time, matching budget limits, commuter corridors, water reliability, and bedroom configurations with 0 waiting time.
+          </div>
+        </div>
+
+        <!-- AI Criteria Form -->
+        <form id="form-smart-ai-hunt" onsubmit="app.runSmartHuntAI(event)">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Target Town or Corridor</label>
+              <select id="ai-hunt-location" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.88rem; font-weight: 700; color: #0f172a; background: #f8fafc;">
+                <option value="All Nairobi">All Nairobi &amp; Environs</option>
+                <option value="Ruaka">Ruaka / Ndenderu</option>
+                <option value="Westlands">Westlands / Parklands</option>
+                <option value="Kilimani">Kilimani / Kileleshwa</option>
+                <option value="Roysambu">Roysambu / Kasarani</option>
+                <option value="Syokimau">Syokimau / Mlolongo</option>
+                <option value="Rongai">Rongai / Langata</option>
+                <option value="Kitengela">Kitengela</option>
+                <option value="Ngong Road">Ngong Road / Dagoretti</option>
+                <option value="Kiambu Road">Kiambu Road / Thindigua</option>
+                <option value="South B">South B / South C</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Bedrooms</label>
+              <select id="ai-hunt-beds" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.88rem; font-weight: 700; color: #0f172a; background: #f8fafc;">
+                <option value="any">Any Configuration</option>
+                <option value="Bedsitter">Bedsitter</option>
+                <option value="1">1 Bedroom</option>
+                <option value="2" selected>2 Bedrooms</option>
+                <option value="3">3 Bedrooms</option>
+                <option value="4+">4+ Bedrooms</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Min Budget (KSh)</label>
+              <input type="number" id="ai-hunt-budget-min" value="10000" step="1000" min="3000" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.88rem; font-weight: 700; color: #0f172a; background: #f8fafc; box-sizing: border-box;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.78rem; font-weight: 800; color: #334155; margin-bottom: 4px;">Max Budget (KSh)</label>
+              <input type="number" id="ai-hunt-budget-max" value="25000" step="1000" min="5000" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.88rem; font-weight: 700; color: #0f172a; background: #f8fafc; box-sizing: border-box;">
+            </div>
+          </div>
+
+          <!-- Run Button -->
+          <button type="submit" id="btn-run-ai-match" style="width: 100%; padding: 13px 20px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #008726 100%); color: #ffffff; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35); transition: transform 0.15s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">
+            <i class="fas fa-sparkles"></i> <span>Scan &amp; Match Properties (Free)</span>
+          </button>
+        </form>
+
+        <!-- Dynamic Results Section -->
+        <div id="ai-hunt-results-box" style="margin-top: 20px; display: none;"></div>
+
+        <!-- Optional Upsell to 3-Day Physical Concierge Hunter -->
+        <div style="margin-top: 20px; padding: 14px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 200px;">
+            <div style="font-size: 0.82rem; font-weight: 800; color: #0f172a;"><i class="fas fa-walking" style="color: #008726;"></i> Need an on-ground scout to physically inspect?</div>
+            <div style="font-size: 0.74rem; color: #64748b; margin-top: 2px;">Hire a dedicated 72-Hour field hunter to visit units, check tokens &amp; arrange viewings for you.</div>
+          </div>
+          <button type="button" onclick="app.closeModal('modal-smart-hunt-ai'); app.openHouseHuntModal();" style="background: #006818; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; white-space: nowrap;">
+            3-Day Hunt (KSh 2,000) &rarr;
+          </button>
+        </div>
+
       </div>
     </div>
   </div>

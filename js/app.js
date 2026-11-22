@@ -5362,9 +5362,101 @@ class NairobiRentalsApp {
   }
 
   // ══════════════════════════════════════════════════════════════════
+  // 100% FREE SMART HOUSE HUNT AI ENGINE
+  // ══════════════════════════════════════════════════════════════════
+  openSmartHuntAI() {
+    this.closeAllPopups();
+    const box = document.getElementById('ai-hunt-results-box');
+    if (box) {
+      box.style.display = 'none';
+      box.innerHTML = '';
+    }
+    this.openModal('modal-smart-hunt-ai');
+  }
+
+  async runSmartHuntAI(e) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    const box = document.getElementById('ai-hunt-results-box');
+    const btn = document.getElementById('btn-run-ai-match');
+    if (!box) return;
+
+    box.style.display = 'block';
+    box.innerHTML = `
+      <div style="text-align: center; padding: 24px 16px; background: #f8fafc; border-radius: 14px; border: 1px solid #e2e8f0;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 1.8rem; color: #0284c7; margin-bottom: 10px;"></i>
+        <div style="font-size: 0.9rem; font-weight: 800; color: #0f172a;">AI is scanning platform inventory...</div>
+        <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">Matching verified rentals against your budget &amp; location</div>
+      </div>
+    `;
+
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+    }
+
+    try {
+      const loc = document.getElementById('ai-hunt-location')?.value || 'All Nairobi';
+      const beds = document.getElementById('ai-hunt-beds')?.value || '2';
+      const minB = document.getElementById('ai-hunt-budget-min')?.value || 10000;
+      const maxB = document.getElementById('ai-hunt-budget-max')?.value || 25000;
+
+      const res = await fetch('/api/ai-house-match', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ location: loc, bedrooms: beds, budgetMin: minB, budgetMax: maxB })
+      });
+      const data = await res.json();
+      if (!data.success || !data.matches || !data.matches.length) {
+        box.innerHTML = `
+          <div style="padding: 16px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; text-align: center;">
+            <div style="font-weight: 800; color: #b45309; font-size: 0.9rem;">No direct matching properties found</div>
+            <div style="font-size: 0.78rem; color: #78350f; margin-top: 4px;">Try expanding your budget range or choosing "All Nairobi" to view nearby units.</div>
+          </div>
+        `;
+        return;
+      }
+
+      box.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="font-size: 0.88rem; font-weight: 900; color: #0f172a;">
+            <i class="fas fa-check-circle" style="color: #008726;"></i> Found ${data.matches.length} Top AI Matches
+          </div>
+          <span style="font-size: 0.72rem; color: #64748b;">Ranked by AI fitness</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto; padding-right: 4px;">
+          ${data.matches.map(m => `
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 12px; background: #ffffff; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+              <img src="${m.photo}" alt="${m.title}" style="width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.src='/icons/icon-192.png'">
+              <div style="flex: 1; min-width: 0;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                  <div style="font-size: 0.86rem; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.title}</div>
+                  <span style="background: #ecfdf5; color: #008726; border: 1px solid #a7f3d0; font-size: 0.68rem; font-weight: 900; padding: 2px 6px; border-radius: 10px; flex-shrink: 0;">${m.matchScore}% Match</span>
+                </div>
+                <div style="font-size: 0.88rem; font-weight: 900; color: #008726; margin: 2px 0;">KSh ${Number(m.rentKes).toLocaleString()} <span style="font-size: 0.72rem; font-weight: 600; color: #64748b;">/ mo</span></div>
+                <div style="font-size: 0.74rem; color: #64748b;"><i class="fas fa-map-marker-alt" style="color: #008726;"></i> ${m.estateSuburb}, ${m.county} &bull; ${m.bedrooms} Bed</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px;">
+                  ${m.reasons.slice(0, 2).map(r => `<span style="background: #f1f5f9; color: #475569; font-size: 0.62rem; font-weight: 700; padding: 1px 6px; border-radius: 6px;">${r}</span>`).join('')}
+                </div>
+              </div>
+              <button type="button" onclick="app.closeModal('modal-smart-hunt-ai'); app.openPropertyDetail && app.openPropertyDetail('${m.id}');" style="padding: 7px 12px; background: #0f172a; color: white; border: none; border-radius: 8px; font-size: 0.74rem; font-weight: 800; cursor: pointer; white-space: nowrap; align-self: center;">
+                View &rarr;
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } catch (err) {
+      box.innerHTML = `<div style="color: #dc2626; font-size: 0.82rem; padding: 10px;">Error running AI search: ${err.message}</div>`;
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    }
+  }
+
   // 3-DAY HOUSE HUNT CONCIERGE SERVICE
   // ══════════════════════════════════════════════════════════════════
-
   openHouseHuntModal() {
     this.closeAllPopups();
 

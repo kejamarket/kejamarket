@@ -7533,6 +7533,107 @@ app.get('/api/admin/os/hunts/:id/ai-match', requireAuth, async (req, res) => {
   }
 });
 
+// POST /api/ai-house-match — 100% Free Public AI House Matcher for Tenants
+app.post('/api/ai-house-match', async (req, res) => {
+  try {
+    const { location, budgetMin, budgetMax, bedrooms, propertyType } = req.body || {};
+    const loc = (location || '').trim();
+    const minB = Number(budgetMin) || 0;
+    const maxB = Number(budgetMax) || 999999;
+    const beds = bedrooms && bedrooms !== 'any' ? bedrooms : null;
+
+    let allProps = [];
+    if (store.isConnected && store.query) {
+      try {
+        const pr = await store.query(`
+          SELECT id, title, rent_kes, estate_suburb, county, bedrooms, bathrooms, is_verified, media, amenities, description
+          FROM properties
+          WHERE is_archived IS NOT TRUE
+          ORDER BY is_verified DESC, created_at DESC
+          LIMIT 150
+        `);
+        allProps = pr.rows || [];
+      } catch (e) {
+        console.warn('[AI MATCH FREE DB]', e.message);
+      }
+    }
+    if (!allProps.length && store.data && Array.isArray(store.data.properties)) {
+      allProps = store.data.properties;
+    }
+
+    const scored = allProps.map(p => {
+      let score = 50;
+      const reasons = [];
+      const rent = Number(p.rent_kes || p.price || p.rent || 0);
+
+      if (rent >= minB && rent <= maxB) {
+        score += 35;
+        reasons.push('Exact budget fit');
+      } else if (rent > 0 && Math.abs(rent - ((minB + maxB) / 2)) < 5000) {
+        score += 20;
+        reasons.push('Close budget range');
+      }
+
+      const pLoc = `${p.estate_suburb || p.estateSuburb || ''} ${p.county || ''} ${p.title || ''}`.toLowerCase();
+      if (loc && loc !== 'All Nairobi' && pLoc.includes(loc.toLowerCase())) {
+        score += 30;
+        reasons.push(`Target area in ${p.estate_suburb || p.estateSuburb || loc}`);
+      } else {
+        score += 10;
+        reasons.push('Accessible Nairobi corridor');
+      }
+
+      const pBeds = String(p.bedrooms || '');
+      if (beds) {
+        if (pBeds === String(beds)) {
+          score += 20;
+          reasons.push(`Exact ${beds} bed configuration`);
+        } else {
+          score += 5;
+        }
+      } else {
+        score += 15;
+      }
+
+      if (p.is_verified || p.isVerified) {
+        score += 15;
+        reasons.push('Verified listing');
+      }
+
+      let photo = '/icons/icon-192.png';
+      if (p.media && Array.isArray(p.media) && p.media.length && p.media[0].url) {
+        photo = p.media[0].url;
+      } else if (p.images && Array.isArray(p.images) && p.images.length) {
+        photo = p.images[0];
+      }
+
+      return {
+        id: p.id,
+        title: p.title || 'Verified Rental Unit',
+        rentKes: rent,
+        estateSuburb: p.estate_suburb || p.estateSuburb || 'Nairobi',
+        county: p.county || 'Nairobi',
+        bedrooms: p.bedrooms || 1,
+        matchScore: Math.min(99, Math.max(68, score)),
+        reasons,
+        photo
+      };
+    });
+
+    scored.sort((a, b) => b.matchScore - a.matchScore);
+    const topMatches = scored.slice(0, 8);
+
+    res.json({
+      success: true,
+      totalScanned: allProps.length,
+      matches: topMatches
+    });
+  } catch (err) {
+    console.error('[AI MATCH FREE ERROR]', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ============================================================
 // AUTOMATED AI CONCIERGE REMINDERS ENGINE
 // Checks searching/active hunts periodically:

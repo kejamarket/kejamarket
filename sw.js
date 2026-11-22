@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v156-hunt-activate-fix';
+const CACHE_NAME = 'kejamarket-v157-smart-hunt-ai-free-split';
 
 const STATIC_ASSETS = [
   '/',
