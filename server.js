@@ -6976,12 +6976,10 @@ app.post('/api/admin/house-hunts/:id/activate', requireAuth, async (req, res) =>
     const expiry = new Date(now.getTime() + 72 * 3600 * 1000);
     const updates = {
       status: 'SEARCHING',
-      paymentStatus: 'PAID',
       payment_status: 'PAID',
-      paidAt: now.toISOString(),
-      startedAt: now.toISOString(),
-      expiresAt: expiry.toISOString(),
-      activeExpiresAt: expiry.toISOString()
+      paid_at: now.toISOString(),
+      started_at: now.toISOString(),
+      expires_at: expiry.toISOString()
     };
 
     // 1. Direct PostgreSQL Update so payment_status and expiry are 100% committed immediately

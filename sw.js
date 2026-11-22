@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v155-smart-hunt-affordability-redesign';
+const CACHE_NAME = 'kejamarket-v156-hunt-activate-fix';
 
 const STATIC_ASSETS = [
   '/',

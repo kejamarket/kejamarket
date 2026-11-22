@@ -1646,8 +1646,13 @@ class PostgreSQLStore {
       viewings_arranged:'viewings_arranged'
     };
     const fields = []; const v = []; let i = 1;
+    const seenCols = new Set();
     for (const [k, col] of Object.entries(colMap)) {
-      if (updates[k] !== undefined) { fields.push(`${col}=$${i++}`); v.push(updates[k]); }
+      if (updates[k] !== undefined && !seenCols.has(col)) {
+        seenCols.add(col);
+        fields.push(`${col}=$${i++}`);
+        v.push(updates[k]);
+      }
     }
     if (!fields.length) return this.getHouseHuntById(id);
     fields.push(`updated_at=$${i++}`); v.push(new Date().toISOString()); v.push(id);
@@ -1711,8 +1716,13 @@ class PostgreSQLStore {
       removedAt:'removed_at', removedReason:'removed_reason', isVerified:'is_verified'
     };
     const fields = []; const v = []; let i = 1;
+    const seenCols = new Set();
     for (const [k, col] of Object.entries(colMap)) {
-      if (updates[k] !== undefined) { fields.push(`${col}=$${i++}`); v.push(updates[k]); }
+      if (updates[k] !== undefined && !seenCols.has(col)) {
+        seenCols.add(col);
+        fields.push(`${col}=$${i++}`);
+        v.push(updates[k]);
+      }
     }
     if (!fields.length) return null;
     v.push(propId);
