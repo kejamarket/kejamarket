@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v160-back-button-caretaker-logo-date-hunt';
+const CACHE_NAME = 'kejamarket-v161-official-kejamarket-logo-package';
 
 const STATIC_ASSETS = [
   '/',
