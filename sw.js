@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v158-chatgpt-ai-advisor-estate-search';
+const CACHE_NAME = 'kejamarket-v160-back-button-caretaker-logo-date-hunt';
 
 const STATIC_ASSETS = [
   '/',

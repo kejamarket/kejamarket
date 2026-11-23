@@ -1275,7 +1275,7 @@
       <!-- Brand Logo -->
       <div class="brand-wrapper">
         <a href="index.html" class="brand-logo">
-          <img src="/icons/icon-192.png" alt="KejaMarket Logo" class="brand-logo-img">
+          <img src="/icons/kejamarket-logo.png" alt="KejaMarket Logo" class="brand-logo-img">
           <div class="brand-text">
             <span class="brand-name"><span class="brand-keja">Keja</span><span class="brand-market">Market</span></span>
             <span class="brand-tagline">Find your next place. Find what you need.</span>
@@ -2783,7 +2783,7 @@
     <!-- Col 1: Brand -->
     <div class="kf-col kf-col-brand">
       <div class="kf-brand">
-        <img src="/icons/icon-192.png" alt="KejaMarket" class="kf-brand-logo">
+        <img src="/icons/kejamarket-logo.png" alt="KejaMarket" class="kf-brand-logo">
         <div>
           <div class="kf-brand-name"><span class="kf-keja">Keja</span><span class="kf-market">Market</span></div>
           <div class="kf-brand-tag">Kenya's #1 Rental & Property Platform</div>
@@ -3088,10 +3088,15 @@
   <div class="modal-backdrop" id="modal-post-ad">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h3>
-          <i class="fas fa-plus-circle" style="color: #00b53f;"></i> Post Free Rental Ad
-          <span class="zero-fee-pill"><i class="fas fa-shield-alt"></i> 0% Broker Fees</span>
-        </h3>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button type="button" class="modal-back-btn" onclick="app.closeModal('modal-post-ad')" style="background:#f1f5f9; border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#0f172a; font-size:14px;" title="Go Back">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <h3 style="margin:0; display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-plus-circle" style="color: #00b53f;"></i> Post Free Rental Ad
+            <span class="zero-fee-pill"><i class="fas fa-shield-alt"></i> 0% Broker Fees</span>
+          </h3>
+        </div>
         <button type="button" class="modal-close-btn" onclick="app.closeModal('modal-post-ad')" aria-label="Close modal">&times;</button>
       </div>
       <div class="modal-body">
@@ -4606,8 +4611,8 @@
                 <button type="button" class="role-card-btn" data-role="landlord" onclick="authModal.selectRole('landlord')">
                   <div class="role-icon-box"><i class="fas fa-home"></i></div>
                   <div class="role-card-info">
-                    <strong>Landlord</strong>
-                    <span>List your property</span>
+                    <strong>Landlord / Caretaker</strong>
+                    <span>List &amp; manage property</span>
                   </div>
                   <div class="role-check-indicator"><i class="fas fa-check"></i></div>
                 </button>
@@ -4660,10 +4665,37 @@
               <!-- Landlord fields -->
               <div id="signup-landlord-fields" style="display:none;">
                 <div class="form-group">
-                  <label for="signup-landlord-area">Property Area</label>
+                  <label for="signup-landlord-area">Property Area / Location</label>
                   <div class="input-group">
                     <i class="fas fa-map-pin input-icon"></i>
                     <input type="text" id="signup-landlord-area" placeholder="e.g. Kilimani, Ruaka, Roysambu">
+                  </div>
+                </div>
+                <!-- Landlord privilege note -->
+                <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:9px;padding:10px 13px;font-size:0.8rem;color:#166534;margin-top:4px;">
+                  <i class="fas fa-crown" style="margin-right:5px;color:#16a34a;"></i>
+                  <strong>Landlord:</strong> Full ownership — post, edit, approve viewings, access revenue reports &amp; KYC verification badge.
+                </div>
+              </div>
+
+              <!-- Caretaker fields -->
+              <div id="signup-caretaker-fields" style="display:none;">
+                <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:0.82rem;color:#1e40af;">
+                  <i class="fas fa-info-circle" style="margin-right:5px;"></i>
+                  <strong>Caretaker Account:</strong> You can list and manage properties on behalf of property owners. You cannot transfer ownership or access financial reports. The property owner retains full rights.
+                </div>
+                <div class="form-group">
+                  <label for="signup-caretaker-building">Building / Estate Name</label>
+                  <div class="input-group">
+                    <i class="fas fa-building input-icon"></i>
+                    <input type="text" id="signup-caretaker-building" placeholder="e.g. Sunset Heights, Green Park Estate">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="signup-caretaker-area">Area / Location</label>
+                  <div class="input-group">
+                    <i class="fas fa-map-marker-alt input-icon"></i>
+                    <input type="text" id="signup-caretaker-area" placeholder="e.g. Kitengela, Rongai, Embakasi">
                   </div>
                 </div>
               </div>
@@ -7104,8 +7136,11 @@ document.addEventListener('DOMContentLoaded', function() {
       
       <!-- Top Brand Header with REAL KEJAMARKET LOGO -->
       <div class="afford-modal-header-v2" style="background: #ffffff; padding: 18px 24px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <img src="/icons/icon-192.png" alt="KejaMarket Logo" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; box-shadow: 0 3px 10px rgba(0, 104, 24, 0.25); border: 2px solid #00b53f;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="modal-back-btn" onclick="app.closeModal('modal-affordability-calculator')" style="background:#f1f5f9; border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#0f172a; font-size:14px;" title="Go Back">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <img src="/icons/kejamarket-logo.png" alt="KejaMarket Logo" style="width: 42px; height: 42px; border-radius: 8px; object-fit: contain; box-shadow: 0 3px 10px rgba(0, 104, 24, 0.25); border: 2px solid #00b53f; background: white; padding: 2px;">
           <div>
             <div style="font-size: 1.35rem; font-weight: 900; letter-spacing: -0.5px; line-height: 1.1;">
               <span style="color: #0f172a;">Keja</span><span style="color: #008726;">Market</span><span style="color: #64748b; font-size: 0.82rem; font-weight: 700;">.co.ke</span>
@@ -7394,7 +7429,10 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="modal-backdrop" id="modal-viewing-booking" style="display: none; align-items: center; justify-content: center; z-index: 2950;">
     <div class="modal-dialog" style="max-width: 520px; width: 95%; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.22); background: white;">
       <div class="modal-header" style="background: linear-gradient(135deg, #065f46 0%, #00b53f 100%); color: white; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;">
-        <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="modal-back-btn" onclick="if(window.KejaViewing && typeof KejaViewing.goBack === 'function'){ KejaViewing.goBack(); } else { app.closeModal('modal-viewing-booking'); }" style="background: rgba(255,255,255,0.22); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; margin-right: 4px; transition: background 0.15s;" title="Go Back">
+            <i class="fas fa-arrow-left"></i>
+          </button>
           <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
             <i class="fas fa-calendar-alt"></i>
           </div>
@@ -7420,8 +7458,11 @@ document.addEventListener('DOMContentLoaded', function() {
       
       <!-- Elevated Modal Header with High Contrast -->
       <div class="modal-header ai-chat-header">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <img src="/icons/icon-192.png" alt="KejaMarket" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.25); flex-shrink: 0;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="modal-back-btn" onclick="app.closeModal('modal-smart-hunt-ai')" style="background: rgba(255,255,255,0.22); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; margin-right: 2px; transition: background 0.15s;" title="Go Back">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <img src="/icons/kejamarket-logo.png" alt="KejaMarket" style="width: 40px; height: 40px; border-radius: 8px; border: 2px solid #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.25); flex-shrink: 0; background: white; object-fit: contain; padding: 2px;">
           <div>
             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
               <h3 style="margin: 0; font-size: 1.25rem; font-weight: 900; color: #ffffff !important; letter-spacing: -0.3px;">Smart House Hunt AI</h3>

@@ -200,8 +200,8 @@ const AdminCore = (() => {
       modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.92); backdrop-filter:blur(8px); z-index:9999999; display:flex; align-items:center; justify-content:center; padding:16px; box-sizing:border-box;';
       modal.innerHTML = `
         <div style="background:#ffffff; width:100%; max-width:440px; border-radius:20px; box-shadow:0 25px 60px rgba(0,0,0,0.5); padding:32px 28px; text-align:center; position:relative; border:1px solid #e2e8f0;">
-          <div style="width:64px; height:64px; border-radius:18px; background:rgba(0,181,63,0.12); border:2px solid #00b53f; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 16px;">
-            🏠
+          <div style="width:68px; height:68px; border-radius:18px; background:#ffffff; border:2px solid #00b53f; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; padding:4px; box-sizing:border-box; box-shadow:0 4px 12px rgba(0,181,63,0.18);">
+            <img src="/icons/kejamarket-logo.png" alt="KejaMarket Logo" style="width:100%; height:100%; object-fit:contain;">
           </div>
           <h2 style="margin:0 0 6px; font-size:1.45rem; font-weight:900; color:#0f172a;">KejaMarket Super Admin</h2>
           <p id="admin-login-msg" style="margin:0 0 20px; font-size:0.86rem; color:#64748b; line-height:1.4;">${msg || 'Sign in with your administrator credentials to open the control panel.'}</p>
@@ -511,10 +511,15 @@ const AdminCore = (() => {
         case 'buildings':
           if (window.AdminBuildings) {
             contentArea.innerHTML = `
-              <div class="module-header"><h1><i class="fas fa-building"></i> Buildings Management</h1></div>
+              <div class="module-header"><h1><i class="fas fa-building"></i> Buildings &amp; Estates Management</h1></div>
               <div id="buildings-content"><div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading buildings...</div></div>
             `;
-            await window.AdminBuildings.init('buildings');
+            try {
+              await window.AdminBuildings.init('buildings');
+            } catch (err) {
+              const bc = document.getElementById('buildings-content');
+              if (bc) bc.innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load buildings: ${err.message}</p></div>`;
+            }
           } else {
             contentArea.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>AdminBuildings module not loaded</p></div>';
           }
@@ -1013,9 +1018,10 @@ const AdminCore = (() => {
             ${properties.map(p => {
               const rent = parseFloat(p.rent_kes || p.rentKes || p.rent || 0);
               const isLive = p.is_verified || p.isVerified || p.status === 'approved';
-              const createdRaw = p.created_at || p.createdAt || p.date_created || p.date;
-              const approvedRaw = p.verified_at || p.verifiedAt || p.approved_at || p.approvedAt || (isLive ? (p.updated_at || p.updatedAt) : null);
-              const listedFormatted = createdRaw ? formatDateTimeWithAgo(createdRaw) : 'Unknown date';
+              const rawData = typeof p.raw_data === 'string' ? (() => { try { return JSON.parse(p.raw_data); } catch(e) { return {}; } })() : (p.raw_data || {});
+              const createdRaw = p.created_at || p.createdAt || p.date_created || p.date || rawData.createdAt || rawData.created_at || rawData.submittedAt || rawData.date;
+              const approvedRaw = p.verified_at || p.verifiedAt || p.approved_at || p.approvedAt || rawData.approvedAt || rawData.verified_at || (isLive ? (p.updated_at || p.updatedAt) : null);
+              const listedFormatted = createdRaw ? formatDateTimeWithAgo(createdRaw) : `<span style="color:#94a3b8;font-style:italic;">Date not recorded</span>`;
               const approvedFormatted = isLive && approvedRaw ? formatDateTimeWithAgo(approvedRaw) : null;
               return `
               <tr>
@@ -1027,7 +1033,7 @@ const AdminCore = (() => {
                     <strong style="color:#0f172a; text-decoration:underline dotted;">${escapeHtml(p.title || 'Untitled')}</strong><br>
                     <small style="color:#64748b;">ID: ${p.id} &bull; Landlord: ${escapeHtml(p.landlordName || p.landlord_id || 'Owner')}</small>
                     <div style="font-size:0.74rem; color:#0284c7; margin-top:3px; display:flex; align-items:center; gap:4px;">
-                      <i class="far fa-clock"></i> Listed: ${createdRaw ? formatDateTime(createdRaw) : 'Recent'}
+                      <i class="far fa-clock"></i> Submitted: ${createdRaw ? formatDateTime(createdRaw) : '<em style="color:#94a3b8;">Date not recorded</em>'}
                     </div>
                   </div>
                 </td>
@@ -1047,7 +1053,7 @@ const AdminCore = (() => {
                 </td>
                 <td style="font-size:0.78rem; line-height:1.45; min-width:170px;">
                   <div style="color:#1e293b; margin-bottom:4px;">
-                    <strong style="color:#0284c7;"><i class="fas fa-calendar-plus" style="margin-right:3px;"></i> Listed:</strong><br>
+                    <strong style="color:#0284c7;"><i class="fas fa-calendar-plus" style="margin-right:3px;"></i> Submitted for Approval:</strong><br>
                     ${listedFormatted}
                   </div>
                   ${approvedFormatted ? `

@@ -125,11 +125,13 @@ class AuthModal {
     const agencyFields = document.getElementById('signup-agency-fields');
     const serviceFields = document.getElementById('signup-service-fields');
     const landlordFields = document.getElementById('signup-landlord-fields');
+    const caretakerFields = document.getElementById('signup-caretaker-fields');
     const nameLabel = document.getElementById('signup-name-label');
 
     if (agencyFields) agencyFields.style.display = role === 'agency' ? 'block' : 'none';
     if (serviceFields) serviceFields.style.display = role === 'service' ? 'block' : 'none';
     if (landlordFields) landlordFields.style.display = role === 'landlord' ? 'block' : 'none';
+    if (caretakerFields) caretakerFields.style.display = role === 'caretaker' ? 'block' : 'none';
 
     if (nameLabel) {
       switch (role) {
@@ -141,6 +143,9 @@ class AuthModal {
           break;
         case 'landlord':
           nameLabel.textContent = 'Full Name / Property Owner';
+          break;
+        case 'caretaker':
+          nameLabel.textContent = 'Caretaker Full Name';
           break;
         default:
           nameLabel.textContent = 'Full Name';
@@ -374,6 +379,10 @@ class AuthModal {
       userData.officeLocation = document.getElementById('signup-agency-location')?.value?.trim() || '';
     } else if (this.selectedRole === 'landlord') {
       userData.area = document.getElementById('signup-landlord-area')?.value?.trim() || '';
+    } else if (this.selectedRole === 'caretaker') {
+      userData.buildingName = document.getElementById('signup-caretaker-building')?.value?.trim() || '';
+      userData.area = document.getElementById('signup-caretaker-area')?.value?.trim() || '';
+      userData.isCaretaker = true;
     } else if (this.selectedRole === 'service') {
       userData.serviceCategory = document.getElementById('signup-service-category')?.value || 'artisan';
       userData.serviceBusiness = document.getElementById('signup-service-business')?.value?.trim() || name;

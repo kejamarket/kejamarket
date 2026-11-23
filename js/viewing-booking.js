@@ -54,6 +54,15 @@ const KejaViewing = {
     }
   },
 
+  goBack() {
+    if (window.app && typeof app.closeModal === 'function') {
+      app.closeModal('modal-viewing-booking');
+    }
+    if (window.app && app.selectedPropertyForDetail && typeof app.openModal === 'function') {
+      app.openModal('modal-property-detail');
+    }
+  },
+
   selectViewingType(type, el) {
     this.selectedViewingType = type;
     document.querySelectorAll('.km-viewing-type-btn').forEach(b => {

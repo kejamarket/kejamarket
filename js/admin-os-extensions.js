@@ -139,12 +139,14 @@ window.AdminOSExtensions = (function() {
   async function loadSmartHouseHunts() {
     const el = getContentArea();
     if (!el) return;
+    if (window.AdminCore && AdminCore.state && AdminCore.state.currentModule !== 'hunts-sla') return;
 
     el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading 72H Concierge Operations Pipeline...</div>';
 
     try {
       const res = await fetch('/api/admin/os/hunts/sla-pipeline', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
+      if (window.AdminCore && AdminCore.state && AdminCore.state.currentModule !== 'hunts-sla') return;
       const hunts = data.hunts || [];
 
       el.innerHTML = `
@@ -219,7 +221,18 @@ window.AdminOSExtensions = (function() {
               </tr>
             </thead>
             <tbody>
-              ${hunts.map(h => {
+              ${hunts.length === 0 ? `
+                <tr style="border-bottom:1px solid #f1f5f9;">
+                  <td colspan="5" style="text-align:center; padding:36px 20px; color:#64748b;">
+                    <i class="fas fa-search-location" style="font-size:2.2rem; color:#cbd5e1; margin-bottom:10px; display:block;"></i>
+                    <div style="font-weight:800; font-size:1rem; color:#0f172a; margin-bottom:4px;">No Active 72H Concierge Hunts in Queue</div>
+                    <div style="font-size:0.82rem; color:#64748b; margin-bottom:14px;">All property search requests have been fulfilled or assigned to scouts.</div>
+                    <button onclick="AdminOSExtensions.openDispatchModal()" class="btn-primary" style="background:#006818; padding:8px 16px; border-radius:8px; font-weight:800; font-size:0.85rem; border:none; color:white; cursor:pointer;">
+                      <i class="fas fa-plus-circle"></i> Create / Dispatch New Hunt
+                    </button>
+                  </td>
+                </tr>
+              ` : hunts.map(h => {
                 const color = h.slaStatus === 'breached' ? '#dc2626' : (h.slaStatus === 'critical' ? '#f59e0b' : '#10b981');
                 const phaseBg = h.phaseNumber === 1 ? '#dbeafe' : (h.phaseNumber === 2 ? '#dcfce7' : (h.phaseNumber === 3 ? '#fef9c3' : (h.phaseNumber === 4 ? '#ffedd5' : '#f3e8ff')));
                 const phaseColor = h.phaseNumber === 1 ? '#1e40af' : (h.phaseNumber === 2 ? '#166534' : (h.phaseNumber === 3 ? '#854d0e' : (h.phaseNumber === 4 ? '#9a3412' : '#6b21a8')));

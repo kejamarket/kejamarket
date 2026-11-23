@@ -6705,25 +6705,76 @@ KejaApp.prototype.openPostPropertyModal = function(event) {
   if (!session) {
     if (window.kejaAuth) {
       window.kejaAuth.switchTab('signin');
-      window.kejaAuth.setRole('landlord', 'signin');
       window.kejaAuth.openAuthModal('signin');
       if (typeof this.showToast === 'function') {
-        this.showToast('Please sign in to a Landlord or Agent account to list a property.', 'info');
+        this.showToast('Please sign in to list a property.', 'info');
       }
     }
     return;
   }
   const role = (session.role || '').toLowerCase();
   const isAdmin = Boolean(session.isAdmin || session.is_admin || role === 'admin' || session.id === 'usr-admin-01');
-  if ((role === 'tenant' || role === 'buyer') && !isAdmin) {
-    if (window.MobileApp && typeof window.MobileApp.showTenantBlockedModal === 'function') {
-      window.MobileApp.showTenantBlockedModal();
-    } else if (typeof this.showToast === 'function') {
-      this.showToast('Tenants cannot post property listings. Only Landlords & Agents can list properties.', 'warning');
-    }
+  // Allow landlord, caretaker, agency, service, admin — block only pure tenant/buyer
+  const canPost = isAdmin || ['landlord', 'caretaker', 'agency', 'service'].includes(role);
+  if (!canPost) {
+    // Show a friendly modal with options — do NOT sign the user out
+    this._showPostOptionsForTenant(session);
     return;
   }
   this.openModal('modal-post-ad');
+};
+
+KejaApp.prototype._showPostOptionsForTenant = function(session) {
+  // Remove any existing tenant-post-modal
+  const existing = document.getElementById('modal-tenant-post-options');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'modal-tenant-post-options';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+      <div style="text-align:center;margin-bottom:18px;">
+        <i class="fas fa-bullhorn" style="font-size:2rem;color:#00b53f;"></i>
+        <h3 style="margin:10px 0 4px;font-size:1.15rem;font-weight:800;color:#0f172a;">What would you like to post?</h3>
+        <p style="margin:0;font-size:0.85rem;color:#64748b;">You are signed in as a <strong>${(session.name || 'Tenant')}</strong></p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button onclick="app.closeModal && app.closeModal(); document.getElementById('modal-tenant-post-options').remove(); app.openModal('modal-used-items')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:2px solid #fed7aa;border-radius:12px;background:#fff7ed;cursor:pointer;text-align:left;width:100%;">
+          <span style="font-size:1.5rem;">🛒</span>
+          <div>
+            <div style="font-weight:700;color:#c2410c;font-size:0.95rem;">Sell Used Item (Moving Sale)</div>
+            <div style="font-size:0.78rem;color:#9a3412;">Bed, sofa, fridge, cooker, TV & furniture, 100% Free!</div>
+          </div>
+        </button>
+        <button onclick="document.getElementById('modal-tenant-post-options').remove(); app.openReportVacancyModal && app.openReportVacancyModal()" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:2px solid #bbf7d0;border-radius:12px;background:#f0fdf4;cursor:pointer;text-align:left;width:100%;">
+          <span style="font-size:1.5rem;">🔍</span>
+          <div>
+            <div style="font-weight:700;color:#15803d;font-size:0.95rem;">Report a Vacant House (Keja Scout)</div>
+            <div style="font-size:0.78rem;color:#166534;">Know an empty house in your plot or gate To-Let sign? Tip us off!</div>
+          </div>
+        </button>
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:14px 16px;background:#f8fafc;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:1.5rem;">🏠</span>
+            <div style="flex:1;">
+              <div style="font-weight:700;color:#334155;font-size:0.95rem;">List a Rental House</div>
+              <div style="font-size:0.78rem;color:#64748b;">Requires a Landlord or Caretaker account.</div>
+            </div>
+          </div>
+          <button onclick="document.getElementById('modal-tenant-post-options').remove(); if(window.kejaAuth){window.kejaAuth.switchTab('signup');window.kejaAuth.openAuthModal('signup');}" style="margin-top:10px;width:100%;padding:10px;background:#0f172a;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.88rem;">
+            <i class="fas fa-user-plus"></i> Register as Landlord / Caretaker
+          </button>
+        </div>
+      </div>
+      <button onclick="document.getElementById('modal-tenant-post-options').remove()" style="margin-top:14px;width:100%;padding:9px;border:1.5px solid #e2e8f0;border-radius:8px;font-weight:600;cursor:pointer;background:#fff;color:#64748b;font-size:0.85rem;">Cancel</button>
+    </div>
+  `;
+  // Click outside to close
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) overlay.remove();
+  });
+  document.body.appendChild(overlay);
 };
 
 KejaApp.prototype.onCountyChange = function(county) {
