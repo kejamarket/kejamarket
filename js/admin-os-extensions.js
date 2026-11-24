@@ -139,14 +139,16 @@ window.AdminOSExtensions = (function() {
   async function loadSmartHouseHunts() {
     const el = getContentArea();
     if (!el) return;
-    if (window.AdminCore && AdminCore.state && AdminCore.state.currentModule !== 'hunts-sla') return;
+    const curMod = window.AdminCore && ((AdminCore.state && AdminCore.state.currentModule) || (typeof AdminCore.getCurrentModule === 'function' && AdminCore.getCurrentModule()));
+    if (curMod && curMod !== 'hunts-sla') return;
 
     el.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading 72H Concierge Operations Pipeline...</div>';
 
     try {
       const res = await fetch('/api/admin/os/hunts/sla-pipeline', { headers: getAuthHeaders(), credentials: 'same-origin' });
       const data = await res.json();
-      if (window.AdminCore && AdminCore.state && AdminCore.state.currentModule !== 'hunts-sla') return;
+      const curModAfter = window.AdminCore && ((AdminCore.state && AdminCore.state.currentModule) || (typeof AdminCore.getCurrentModule === 'function' && AdminCore.getCurrentModule()));
+      if (curModAfter && curModAfter !== 'hunts-sla') return;
       const hunts = data.hunts || [];
 
       el.innerHTML = `

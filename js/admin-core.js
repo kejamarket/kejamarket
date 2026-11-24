@@ -3952,6 +3952,8 @@ const AdminCore = (() => {
   }
 
   return {
+    state,
+    getCurrentModule: () => (state ? state.currentModule : null),
     init,
     navigate,
     showAdminLoginModal,

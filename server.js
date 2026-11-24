@@ -715,6 +715,9 @@ async function initializeDatabase() {
           `ALTER TABLE properties ADD COLUMN IF NOT EXISTS listing_status TEXT DEFAULT 'published'`,
           `ALTER TABLE properties ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT FALSE`,
           `ALTER TABLE properties ADD COLUMN IF NOT EXISTS is_top_ad BOOLEAN DEFAULT FALSE`,
+          `ALTER TABLE properties ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ`,
+          `ALTER TABLE properties ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ`,
+          `ALTER TABLE properties ADD COLUMN IF NOT EXISTS approved_at TIMESTAMPTZ`,
         ];
         for (const sql of colMigrations) {
           try { await store.query(sql); }
@@ -9349,12 +9352,15 @@ app.get('/api/admin/pending', requireAuth, async (req, res) => {
     let properties = [], services = [], items = [];
 
     if (store.isConnected && store.query) {
-      // Properties: pending = not verified and not rejected
+      // Properties: pending = not verified and not approved/rejected
       const propRes = await store.query(
         `SELECT id, title, description, rent_kes AS price, estate_suburb AS location, created_at,
                 landlord_id, raw_data, COALESCE(raw_data->'media', '[]'::jsonb) AS media, status
          FROM properties
-         WHERE (is_verified = false OR is_verified IS NULL) AND (status IS NULL OR status NOT IN ('approved','verified','rejected'))
+         WHERE (is_verified = false OR is_verified IS NULL) 
+           AND (status IS NULL OR status NOT IN ('approved','verified','rejected'))
+           AND (raw_data->>'status' IS NULL OR raw_data->>'status' NOT IN ('approved','verified','rejected'))
+           AND (raw_data->>'isApproved' IS NULL OR raw_data->>'isApproved' != 'true')
          ORDER BY created_at ASC`
       );
       properties = propRes.rows.map(p => ({

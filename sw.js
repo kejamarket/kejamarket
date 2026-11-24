@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v162-instant-approved-live-visibility';
+const CACHE_NAME = 'kejamarket-v163-permanent-approval-buildings-fix';
 
 const STATIC_ASSETS = [
   '/',

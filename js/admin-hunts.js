@@ -385,9 +385,10 @@ const AdminHunts = (() => {
             <!-- Add Property to Hunt -->
             <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-bottom:20px;">
               <h4 style="margin:0 0 12px 0; font-size:0.95rem; font-weight:800; color:#0f172a;"><i class="fas fa-plus-circle" style="color:#059669;"></i> Attach Property to this Hunt</h4>
-              <div style="display:flex; gap:10px; margin-bottom:8px;">
-                <input type="text" id="modal-attach-propid" placeholder="Enter Property ID or Title from catalog..." style="flex:1; padding:9px 12px; border:1.5px solid #cbd5e1; border-radius:8px; font-size:0.88rem;">
-                <input type="text" id="modal-attach-note" placeholder="Note to customer (e.g. 2nd floor, borehole, KSh 18k)..." style="flex:1.2; padding:9px 12px; border:1.5px solid #cbd5e1; border-radius:8px; font-size:0.88rem;">
+              <div style="display:flex; gap:10px; margin-bottom:8px; flex-wrap:wrap;">
+                <input type="text" id="modal-attach-propid" list="hunt-prop-datalist" placeholder="Select or type Property ID / Title..." style="flex:1; min-width:240px; padding:9px 12px; border:1.5px solid #cbd5e1; border-radius:8px; font-size:0.88rem;">
+                <datalist id="hunt-prop-datalist"></datalist>
+                <input type="text" id="modal-attach-note" placeholder="Note to customer (e.g. 2nd floor, borehole, KSh 18k)..." style="flex:1.2; min-width:240px; padding:9px 12px; border:1.5px solid #cbd5e1; border-radius:8px; font-size:0.88rem;">
                 <button type="button" class="btn-primary" onclick="AdminHunts.attachProperty('${hunt.id}')" style="background:#0f172a; padding:9px 16px; border-radius:8px; font-weight:800; border:none; color:white; cursor:pointer; white-space:nowrap;">
                   Attach Property
                 </button>
@@ -447,6 +448,17 @@ const AdminHunts = (() => {
         </div>
       </div>
     `;
+
+    // Populate property datalist for easy attachment
+    fetch('/api/properties?pageSize=100')
+      .then(r => r.json())
+      .then(d => {
+        const dl = document.getElementById('hunt-prop-datalist');
+        const props = d.properties || d.data || [];
+        if (dl && Array.isArray(props)) {
+          dl.innerHTML = props.map(p => `<option value="${p.id}">${escapeHtml(p.title || '')} — KSh ${(Number(p.rentKes || p.rent || 0)).toLocaleString()}/mo (${escapeHtml(p.estateSuburb || p.location || '')})</option>`).join('');
+        }
+      }).catch(() => {});
   }
 
   async function saveHuntUpdates(huntId) {

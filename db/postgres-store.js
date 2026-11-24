@@ -110,11 +110,23 @@ class PostgreSQLStore {
         // Ensure admin user exists with latest credentials
         await this.ensureAdminUser();
 
+        // Ensure properties table has all necessary operational columns
+        try {
+          await this.query(`
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ;
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ;
+            ALTER TABLE properties ADD COLUMN IF NOT EXISTS approved_at TIMESTAMPTZ;
+          `);
+        } catch (colErr) {
+          console.warn('⚠️ Column check warning:', colErr.message);
+        }
+
         // Ensure all approved properties have is_verified = TRUE and is_active = TRUE so they are immediately visible to the public
         try {
           await this.query(`
             UPDATE properties 
-            SET is_verified = TRUE, is_active = TRUE, status = 'approved'
+            SET is_verified = TRUE, is_active = TRUE, status = 'approved', updated_at = NOW()
             WHERE (status = 'approved' OR raw_data->>'status' = 'approved' OR (raw_data->>'isApproved')::boolean = true OR approved_at IS NOT NULL)
               AND (is_verified IS NOT TRUE OR is_active IS NOT TRUE OR status != 'approved');
           `);
