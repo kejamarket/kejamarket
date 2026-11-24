@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v163-permanent-approval-buildings-fix';
+const CACHE_NAME = 'kejamarket-v164-responsive-admin-os-tables';
 
 const STATIC_ASSETS = [
   '/',

@@ -211,8 +211,8 @@ window.AdminOSExtensions = (function() {
         </div>
 
         <!-- Hunts SLA Pipeline Table -->
-        <div style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-          <table class="admin-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+        <div class="table-container" style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow-x:auto; -webkit-overflow-scrolling:touch; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <table class="admin-table" style="width:100%; min-width:820px; border-collapse:collapse; font-size:0.85rem;">
             <thead>
               <tr style="background:#f8fafc; border-bottom:1px solid #e2e8f0; text-align:left;">
                 <th style="padding:14px;">Hunt Ref # &amp; Phase</th>
@@ -358,12 +358,12 @@ window.AdminOSExtensions = (function() {
         </div>
 
         <!-- Four-Eyes Refunds Queue -->
-        <div style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; margin-bottom:24px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+        <div class="table-container" style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; margin-bottom:24px; overflow-x:auto; -webkit-overflow-scrolling:touch; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
           <div style="padding:16px 20px; background:#f8fafc; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:900; font-size:1rem; color:#0f172a;"><i class="fas fa-users-cog" style="color:#ef4444;"></i> Four-Eyes Maker-Checker Authorizations Queue</div>
             <span style="font-size:0.75rem; font-weight:800; background:#fef2f2; color:#dc2626; padding:3px 9px; border-radius:12px;">${refunds.length} Active Records</span>
           </div>
-          <table class="admin-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+          <table class="admin-table" style="width:100%; min-width:820px; border-collapse:collapse; font-size:0.85rem;">
             <thead>
               <tr style="border-bottom:1px solid #e2e8f0; text-align:left; color:#64748b;">
                 <th style="padding:12px 18px;">Refund ID &amp; Receipt</th>
@@ -542,11 +542,11 @@ window.AdminOSExtensions = (function() {
         </div>
 
         <!-- Data Subject Requests (DSR) Management -->
-        <div style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05); margin-bottom:24px;">
+        <div class="table-container" style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow-x:auto; -webkit-overflow-scrolling:touch; box-shadow:0 1px 3px rgba(0,0,0,0.05); margin-bottom:24px;">
           <div style="padding:16px 20px; background:#f8fafc; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:900; font-size:1rem; color:#0f172a;"><i class="fas fa-user-clock" style="color:#8b5cf6;"></i> Data Subject Requests (DSR Queue — Section 26 Access & Section 40 Erasure)</div>
           </div>
-          <table class="admin-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+          <table class="admin-table" style="width:100%; min-width:820px; border-collapse:collapse; font-size:0.85rem;">
             <thead>
               <tr style="border-bottom:1px solid #e2e8f0; text-align:left; color:#64748b;">
                 <th style="padding:12px 18px;">Request ID</th>
@@ -653,14 +653,14 @@ window.AdminOSExtensions = (function() {
         </div>
 
         <!-- Active Administrative Sessions Matrix -->
-        <div style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05); margin-bottom:24px;">
+        <div class="table-container" style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow-x:auto; -webkit-overflow-scrolling:touch; box-shadow:0 1px 3px rgba(0,0,0,0.05); margin-bottom:24px;">
           <div style="padding:16px 20px; background:#f8fafc; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:900; font-size:1rem; color:#0f172a;"><i class="fas fa-desktop" style="color:#6366f1;"></i> Active Administrative Sessions & Remote Revocation</div>
             <button onclick="AdminOSExtensions.revokeAllSessions()" class="btn-secondary" style="font-size:0.75rem; padding:6px 12px; color:#dc2626; border-color:#fecaca;">
               <i class="fas fa-sign-out-alt"></i> Revoke All Other Sessions
             </button>
           </div>
-          <table class="admin-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+          <table class="admin-table" style="width:100%; min-width:820px; border-collapse:collapse; font-size:0.85rem;">
             <thead>
               <tr style="border-bottom:1px solid #e2e8f0; text-align:left; color:#64748b;">
                 <th style="padding:12px 18px;">Administrator</th>
@@ -722,8 +722,8 @@ window.AdminOSExtensions = (function() {
           </div>
         </div>
 
-        <div style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05); margin-top:20px;">
-          <table class="admin-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+        <div class="table-container" style="background:#ffffff; border-radius:16px; border:1px solid #e2e8f0; overflow-x:auto; -webkit-overflow-scrolling:touch; box-shadow:0 1px 3px rgba(0,0,0,0.05); margin-top:20px;">
+          <table class="admin-table" style="width:100%; min-width:820px; border-collapse:collapse; font-size:0.85rem;">
             <thead>
               <tr style="background:#f8fafc; border-bottom:1px solid #e2e8f0; text-align:left; color:#64748b;">
                 <th style="padding:14px 18px;">Dispute ID</th>
@@ -941,8 +941,8 @@ window.AdminOSExtensions = (function() {
           </div>
         </div>
 
-        <div style="background:#fff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden;">
-          <table class="admin-table" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+        <div class="table-container" style="background:#fff; border-radius:16px; border:1px solid #e2e8f0; overflow-x:auto; -webkit-overflow-scrolling:touch;">
+          <table class="admin-table" style="width:100%; min-width:820px; border-collapse:collapse; font-size:0.85rem;">
             <thead>
               <tr style="background:#f8fafc; border-bottom:1px solid #e2e8f0; text-align:left;">
                 <th style="padding:14px;">Type &amp; Origin</th>
