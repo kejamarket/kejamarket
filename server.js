@@ -750,7 +750,9 @@ async function initializeDatabase() {
           await store.query(`
             UPDATE properties 
             SET status = 'approved', is_verified = TRUE, is_active = TRUE
-            WHERE (raw_data->>'status') = 'approved' 
+            WHERE status = 'approved'
+               OR approved_at IS NOT NULL
+               OR (raw_data->>'status') = 'approved' 
                OR (raw_data->>'isApproved') = 'true'
                OR is_verified = TRUE
           `);
@@ -760,7 +762,7 @@ async function initializeDatabase() {
           try {
             await store.query(`
               UPDATE properties SET status = 'approved', is_verified = TRUE
-              WHERE (raw_data->>'status') = 'approved' OR (raw_data->>'isApproved') = 'true' OR is_verified = TRUE
+              WHERE status = 'approved' OR approved_at IS NOT NULL OR (raw_data->>'status') = 'approved' OR (raw_data->>'isApproved') = 'true' OR is_verified = TRUE
             `);
             console.log('✅ Synced approved status (without is_active)');
           } catch (e2) { console.warn('Startup status sync notice:', e2.message); }
@@ -2832,7 +2834,7 @@ app.get('/api/properties/area-stats', cache.middleware(120, 'area-stats'), async
     }
 
     const rawProps = (await store.getAllProperties()) || [];
-    const allProps = rawProps.filter(p => (p.is_verified === true || p.isVerified === true) && p.status !== 'pending' && p.status !== 'rejected');
+    const allProps = rawProps.filter(p => (p.is_verified === true || p.isVerified === true || p.status === 'approved' || p.isApproved === true) && p.status !== 'pending' && p.status !== 'rejected');
     const counts = {};
     (allProps || []).forEach(p => {
       const raw = p.raw_data || p;
@@ -2881,7 +2883,7 @@ app.get('/api/properties', cache.middleware(15, 'properties'), optionalAuth, asy
 
     // Filter and return only active, verified, non-occupied, valid-rent properties (Spec v1.1)
     let properties = (await store.getAllProperties() || []).filter(p => {
-      const isVerified = p.is_verified === true || p.isVerified === true;
+      const isVerified = p.is_verified === true || p.isVerified === true || p.status === 'approved' || p.isApproved === true;
       const rent = Number(p.rentKes ?? p.rent ?? p.rent_kes) || 0;
       const status = (p.status || (p.raw_data && p.raw_data.status) || '').toLowerCase();
       const listingStatus = (p.listing_status || (p.raw_data && p.raw_data.listing_status) || '').toLowerCase();
@@ -2958,7 +2960,12 @@ app.get('/api/properties/:id', optionalAuth, async (req, res) => {
   if (!property) {
     return res.status(404).json({ success: false, message: 'Property not found.' });
   }
-  const isUnverified = (property.is_verified === false || property.isVerified === false || property.status === 'pending');
+  const isLive = property.status === 'approved' || 
+                 property.is_verified === true || 
+                 property.isVerified === true || 
+                 property.isApproved === true ||
+                 (property.raw_data && (property.raw_data.status === 'approved' || property.raw_data.isApproved === true));
+  const isUnverified = !isLive || property.status === 'pending' || property.status === 'rejected';
   if (isUnverified) {
     const isAuthorized = req.user && (
       req.user.isAdmin || 
@@ -3176,6 +3183,13 @@ app.post('/api/properties', requireAuth, async (req, res) => {
     }
 
     const newProperty = await store.addProperty(data);
+    if (isAdmin && (data.status === 'approved' || data.isApproved)) {
+      if (typeof cache !== 'undefined' && cache.invalidate) {
+        cache.invalidate('properties');
+        cache.invalidate('area-stats');
+        cache.invalidate('public');
+      }
+    }
     
     // LANDLORD NOTIFICATION: Send SMS immediately after posting
     if (req.user && req.user.phone) {
@@ -3308,6 +3322,23 @@ app.put('/api/properties/:id/approve', requireAuth, async (req, res) => {
     approvedAt: new Date().toISOString(),
     approvedBy: user.id
   });
+
+  // Direct SQL update to ensure columns are guaranteed set in Postgres:
+  if (store.isConnected && store.query) {
+    try {
+      await store.query(
+        "UPDATE properties SET is_verified = TRUE, status = 'approved', is_active = TRUE, verified_at = NOW(), updated_at = NOW() WHERE id = $1 OR LOWER(id) = LOWER($1)",
+        [id]
+      );
+    } catch (dbErr) { console.warn('Direct SQL approve notice:', dbErr.message); }
+  }
+
+  // Invalidate cache immediately so listing is visible to the public instantly
+  if (typeof cache !== 'undefined' && cache.invalidate) {
+    cache.invalidate('properties');
+    cache.invalidate('area-stats');
+    cache.invalidate('public');
+  }
 
   // â”€â”€ Deliver WhatsApp alerts to matching subscribers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (store.getMatchingWhatsAppSubs) {
@@ -6507,7 +6538,12 @@ app.post('/api/admin/properties/bulk-approve', requireAuth, async (req, res) => 
       return res.status(400).json({ success: false, message: 'No property IDs provided.' });
     }
     if (store.isConnected && store.query) {
-      await store.query(`UPDATE properties SET status = 'approved', is_verified = true, verified_at = NOW() WHERE id = ANY($1)`, [propertyIds]);
+      await store.query(`UPDATE properties SET status = 'approved', is_verified = true, is_active = true, verified_at = NOW() WHERE id = ANY($1)`, [propertyIds]);
+    }
+    if (typeof cache !== 'undefined' && cache.invalidate) {
+      cache.invalidate('properties');
+      cache.invalidate('area-stats');
+      cache.invalidate('public');
     }
     if (store.data && store.data.properties) {
       const idSet = new Set(propertyIds);
@@ -9429,6 +9465,12 @@ app.post('/api/admin/approve', requireAuth, async (req, res) => {
           );
         } catch (dbErr) { console.warn('Direct SQL approve notice:', dbErr.message); }
       }
+      // Invalidate cache immediately so listing is visible to the public instantly
+      if (typeof cache !== 'undefined' && cache.invalidate) {
+        cache.invalidate('properties');
+        cache.invalidate('area-stats');
+        cache.invalidate('public');
+      }
       if (!updated) return res.status(404).json({ success: false, message: 'Property not found' });
       // Get property details for notification
       const prop = await (store.getPropertyById ? store.getPropertyById(itemId) : updated);
@@ -11268,6 +11310,11 @@ app.post('/api/admin/bulk/approve-listings', requireAuth, requirePermission('lis
     }
     
     const result = await bulkOpsService.bulkApproveListings(propertyIds, req.user.id);
+    if (typeof cache !== 'undefined' && cache.invalidate) {
+      cache.invalidate('properties');
+      cache.invalidate('area-stats');
+      cache.invalidate('public');
+    }
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

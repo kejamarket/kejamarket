@@ -109,6 +109,19 @@ class PostgreSQLStore {
 
         // Ensure admin user exists with latest credentials
         await this.ensureAdminUser();
+
+        // Ensure all approved properties have is_verified = TRUE and is_active = TRUE so they are immediately visible to the public
+        try {
+          await this.query(`
+            UPDATE properties 
+            SET is_verified = TRUE, is_active = TRUE, status = 'approved'
+            WHERE (status = 'approved' OR raw_data->>'status' = 'approved' OR (raw_data->>'isApproved')::boolean = true OR approved_at IS NOT NULL)
+              AND (is_verified IS NOT TRUE OR is_active IS NOT TRUE OR status != 'approved');
+          `);
+          console.log('✅ Synced approved properties to live status in database');
+        } catch (healErr) {
+          console.warn('⚠️ Property status sync notice:', healErr.message);
+        }
         return true;
       } catch (err) {
         console.warn(`⚠️ PostgreSQL connection attempt ${i + 1} failed:`, err.message);
@@ -537,9 +550,9 @@ class PostgreSQLStore {
         return result.rows.map(row => {
           const rentNum = parseFloat(row.rent_kes) || 0;
           const depNum = parseFloat(row.deposit_kes) || 0;
-          // Explicit: only true when the column is literally true — null/undefined means PENDING
-          const isVer = row.is_verified === true;
-          const status = row.raw_data?.status || row.status || (isVer ? 'approved' : 'pending');
+          // Explicit: only true when the column is literally true OR status is approved
+          const isVer = row.is_verified === true || row.status === 'approved' || row.raw_data?.status === 'approved' || row.raw_data?.isApproved === true;
+          const status = row.status || row.raw_data?.status || (isVer ? 'approved' : 'pending');
           const photosArr = (row.photos && row.photos.length > 0) ? row.photos : (row.raw_data?.photos || []);
           return {
             ...row.raw_data,
@@ -637,9 +650,9 @@ class PostgreSQLStore {
           const property = result.rows[0];
           const rentNum = parseFloat(property.rent_kes) || 0;
           const depNum = parseFloat(property.deposit_kes) || 0;
-          // Explicit: only true when the column is literally true
-          const isVer = property.is_verified === true;
-          const status = property.raw_data?.status || (isVer ? 'approved' : 'pending');
+          // Explicit: only true when the column is literally true OR status is approved
+          const isVer = property.is_verified === true || property.status === 'approved' || property.raw_data?.status === 'approved' || property.raw_data?.isApproved === true;
+          const status = property.status || property.raw_data?.status || (isVer ? 'approved' : 'pending');
           return {
             ...property.raw_data,
             id: property.id,
@@ -791,6 +804,16 @@ class PostgreSQLStore {
     // Build SQL for explicit column updates — ONLY columns that exist in the properties table:
     // is_verified, status, is_active, is_featured, is_top_ad, raw_data
     // NOTE: listing_status is stored in raw_data only (no real column)
+    if (updates.status === 'approved' || updates.isApproved === true) {
+      if (updates.isVerified === undefined && updates.is_verified === undefined) {
+        updates.isVerified = true;
+        updates.is_verified = true;
+      }
+      if (updates.is_active === undefined && updates.isActive === undefined) {
+        updates.is_active = true;
+        updates.isActive = true;
+      }
+    }
     const colUpdates = [];
     const colValues = [];
     let colIdx = 1;
@@ -1339,7 +1362,10 @@ class PostgreSQLStore {
     if (!this.isConnected) {
       let all = this.fallbackStore.getAllProperties();
       if (isVerified !== undefined) {
-        all = all.filter(p => (p.is_verified === true || p.isVerified === true) === !!isVerified);
+        all = all.filter(p => {
+          const isLive = p.is_verified === true || p.isVerified === true || p.status === 'approved' || p.isApproved === true;
+          return isLive === !!isVerified;
+        });
       }
       return { properties: all, total: all.length, page: 1, pageSize: all.length, totalPages: 1 };
     }
@@ -1349,8 +1375,11 @@ class PostgreSQLStore {
     let idx = 1;
 
     if (isVerified !== undefined) {
-      conditions.push(`is_verified = $${idx++}`);
-      values.push(!!isVerified);
+      if (isVerified) {
+        conditions.push(`(is_verified = true OR status = 'approved' OR raw_data->>'status' = 'approved' OR (raw_data->>'isApproved')::boolean = true)`);
+      } else {
+        conditions.push(`(is_verified = false AND (status IS NULL OR status = 'pending') AND (raw_data->>'status' IS NULL OR raw_data->>'status' = 'pending'))`);
+      }
     }
     if (category && category !== 'All') {
       conditions.push(`category = $${idx++}`);
@@ -1405,8 +1434,8 @@ class PostgreSQLStore {
     );
 
     const properties = dataResult.rows.map(row => {
-      const isVer = row.is_verified === true;
-      const status = row.raw_data?.status || (isVer ? 'approved' : 'pending');
+      const isVer = row.is_verified === true || row.status === 'approved' || row.raw_data?.status === 'approved' || row.raw_data?.isApproved === true;
+      const status = row.status || row.raw_data?.status || (isVer ? 'approved' : 'pending');
       return {
         ...row.raw_data,
         id: row.id,

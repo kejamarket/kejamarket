@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v161-official-kejamarket-logo-package';
+const CACHE_NAME = 'kejamarket-v162-instant-approved-live-visibility';
 
 const STATIC_ASSETS = [
   '/',
