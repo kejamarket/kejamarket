@@ -44,6 +44,14 @@ body.mobile-layout {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Strictly hide public total listings count across mobile */
+.km-feed-count strong,
+.location-result-count,
+.results-count-text,
+.results-number {
+  display: none !important;
+}
+
 /* Hide desktop-only layout when mobile is active */
 body.mobile-layout .site-header,
 body.mobile-layout .header-container,

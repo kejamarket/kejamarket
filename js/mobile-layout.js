@@ -1609,10 +1609,11 @@ function showScreen(screen, params = {}, isBackNav = false) {
         </div>
       ` : ''}
 
-      <!-- Feed Header with Count, Sort Dropdown & Dual View Toggle (Grid vs List) -->
+      <!-- Feed Header with Location/Category Label (Count strictly hidden), Sort Dropdown & Dual View Toggle (Grid vs List) -->
       <div class="km-feed-header">
-        <div class="km-feed-count">
-          <strong>${displayProps.length}</strong> listings found
+        <div class="km-feed-count" style="display: flex; align-items: center; gap: 5px; font-weight: 700; color: #0f172a; font-size: 13px;">
+          <i class="fas fa-map-marker-alt" style="color: #00b53f; font-size: 12px;"></i>
+          <span>${State.filters.location ? State.filters.location : 'Available Listings'}</span>
         </div>
         <div class="km-feed-actions">
           <div class="km-sort-trigger" onclick="MobileApp.cycleSort()">
@@ -3301,8 +3302,8 @@ function showScreen(screen, params = {}, isBackNav = false) {
 
   function updateFeedDisplay() {
     const props = getFilteredPropertiesList();
-    const countEl = document.querySelector('.km-feed-count strong');
-    if (countEl) countEl.textContent = props.length;
+    const countEl = document.querySelector('.km-feed-count span');
+    if (countEl) countEl.textContent = State.filters.location ? State.filters.location : 'Available Listings';
 
     const gridContainer = document.querySelector('.km-property-grid');
     const listContainer = document.querySelector('.km-property-list');

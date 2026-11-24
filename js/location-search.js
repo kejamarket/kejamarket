@@ -192,8 +192,8 @@ class LocationSearch {
    * Render a single location result with hierarchy display
    */
   renderLocationResult(loc) {
-    const propertyCount = loc.propertyCount || 0;
-    const countText = propertyCount > 0 ? `${propertyCount} ${propertyCount === 1 ? 'property' : 'properties'}` : '';
+    const propertyCount = 0;
+    const countText = '';
     const verifiedBadge = loc.isVerified ? '<span class="verified-badge"><i class="fas fa-check-circle"></i></span>' : '';
     
     // Get type icon
