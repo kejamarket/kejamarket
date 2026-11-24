@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kejamarket-v165-remove-public-listings-count';
+const CACHE_NAME = 'kejamarket-v166-button-responsiveness-and-escapehtml-fix';
 
 const STATIC_ASSETS = [
   '/',

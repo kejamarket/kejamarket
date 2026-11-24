@@ -7,6 +7,29 @@
 window.AdminOSExtensions = (function() {
   'use strict';
 
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  if (typeof window !== 'undefined' && !window.escapeHtml) {
+    window.escapeHtml = escapeHtml;
+  }
+
+  function showToast(msg, type = 'info') {
+    if (window.AdminCore && typeof window.AdminCore.showToast === 'function') {
+      return window.AdminCore.showToast(msg, type);
+    }
+    if (typeof window.showToast === 'function') {
+      return window.showToast(msg, type);
+    }
+    console.log(`[Toast ${type}]`, msg);
+  }
+
   function getContentArea() {
     return document.getElementById('admin-content');
   }
@@ -1043,7 +1066,7 @@ window.AdminOSExtensions = (function() {
                 </div>
               </div>
               <div>
-                <button onclick="AdminOSExtensions.attachAiMatch('${huntId}', '${m.id}', '${escapeHtml(m.title)}')" class="btn-primary" style="font-size:0.8rem; padding:8px 14px; background:#006818; white-space:nowrap; border-radius:8px; cursor:pointer; font-weight:700;">
+                <button data-hunt-id="${huntId}" data-prop-id="${m.id}" data-title="${escapeHtml(m.title)}" onclick="AdminOSExtensions.attachAiMatch(this.dataset.huntId, this.dataset.propId, this.dataset.title)" class="btn-primary" style="font-size:0.8rem; padding:8px 14px; background:#006818; white-space:nowrap; border-radius:8px; cursor:pointer; font-weight:700;">
                   <i class="fas fa-paper-plane"></i> Attach &amp; SMS Customer
                 </button>
               </div>
@@ -1152,6 +1175,44 @@ window.AdminOSExtensions = (function() {
     }).catch(e => AdminCore.showToast(e.message, 'error'));
   }
 
+  function openDispatchModal() {
+    if (window.AdminCore && typeof window.AdminCore.openManualDispatchModal === 'function') {
+      // If dispatchModal exists in DOM, open it directly
+      const modal = document.getElementById('dispatchModal');
+      if (modal) {
+        window.AdminCore.openManualDispatchModal('scout-auto', 'Available Corridor Scout', 'Nairobi General');
+        return;
+      }
+    }
+    if (window.AdminHunts && typeof window.AdminHunts.dispatchScoutPrompt === 'function') {
+      const huntId = prompt('Enter House Hunt ID to dispatch scout for (e.g. HH-EMO-01):', 'HH-EMO-01');
+      if (huntId) window.AdminHunts.dispatchScoutPrompt(huntId.trim());
+      return;
+    }
+    const huntId = prompt('Enter House Hunt ID to dispatch scout for:', 'HH-EMO-01');
+    if (!huntId) return;
+    fetch(`/api/admin/house-hunts/${encodeURIComponent(huntId.trim())}/activate`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      credentials: 'same-origin'
+    }).then(r => r.json()).then(d => {
+      showToast(d.message || 'Scout dispatch prompt executed', 'success');
+      loadSmartHouseHunts();
+    }).catch(e => showToast(e.message, 'error'));
+  }
+
+  function openRefundRequestModal() {
+    const huntId = prompt('Enter House Hunt ID or Transaction ID for Maker Refund Request:');
+    if (!huntId) return;
+    const customerName = prompt('Enter Customer Full Name:');
+    if (!customerName) return;
+    const customerPhone = prompt('Enter Customer Phone Number (07...):');
+    if (!customerPhone) return;
+    const amountKes = prompt('Enter Refund Amount in KSh:', '2000');
+    if (!amountKes) return;
+    autoRefundHunt(huntId.trim(), customerName.trim(), customerPhone.trim(), amountKes.trim());
+  }
+
   function rejectRefund(refundId) {
     const reason = prompt('Enter Checker rejection justification reason code:', 'Disputed by landlord; service delivered within terms');
     if (!reason) return;
@@ -1188,7 +1249,10 @@ window.AdminOSExtensions = (function() {
     triggerCorridorBounty,
     settleHunt,
     autoRefundHunt,
-    attachAiMatch
+    attachAiMatch,
+    openDispatchModal,
+    openRefundRequestModal,
+    escapeHtml
   };
 
 })();

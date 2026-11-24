@@ -682,9 +682,26 @@
       ]
     },
   };
-  // Expose KENYA_COUNTY_AREAS globally for desktop layout, location picker & filters
+  // Expose KENYA_COUNTY_AREAS and kmMobTab globally
   if (typeof window !== 'undefined') {
     window.KENYA_COUNTY_AREAS = KENYA_COUNTY_AREAS;
+    window.kmMobTab = function(tab, btn) {
+      document.querySelectorAll('.km-mob-tab').forEach(b => b.classList.remove('km-mob-tab-active'));
+      if (btn) btn.classList.add('km-mob-tab-active');
+      document.querySelectorAll('.km-mob-panel').forEach(p => p.classList.remove('km-mob-panel-active'));
+      const panel = document.getElementById('km-mob-panel-' + tab);
+      if (panel) panel.classList.add('km-mob-panel-active');
+
+      if (tab === 'services') {
+        if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('services');
+      } else if (tab === 'useditems') {
+        if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('marketplace');
+      } else if (tab === 'land') {
+        if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('land');
+      } else if (tab === 'rentals') {
+        if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('all');
+      }
+    };
   }
 
   function renderFilterAreaChips(countyId) {
@@ -4711,9 +4728,26 @@ function showScreen(screen, params = {}, isBackNav = false) {
     }
   };
 
-  // Expose KENYA_COUNTY_AREAS globally for desktop layout, location picker & filters
+  // Expose KENYA_COUNTY_AREAS and kmMobTab globally
   if (typeof window !== 'undefined') {
     window.KENYA_COUNTY_AREAS = KENYA_COUNTY_AREAS;
+    window.kmMobTab = function(tab, btn) {
+      document.querySelectorAll('.km-mob-tab').forEach(b => b.classList.remove('km-mob-tab-active'));
+      if (btn) btn.classList.add('km-mob-tab-active');
+      document.querySelectorAll('.km-mob-panel').forEach(p => p.classList.remove('km-mob-panel-active'));
+      const panel = document.getElementById('km-mob-panel-' + tab);
+      if (panel) panel.classList.add('km-mob-panel-active');
+
+      if (tab === 'services') {
+        if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('services');
+      } else if (tab === 'useditems') {
+        if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('marketplace');
+      } else if (tab === 'land') {
+        if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('land');
+      } else if (tab === 'rentals') {
+        if (window.MobileApp && MobileApp.setCategoryChip) MobileApp.setCategoryChip('all');
+      }
+    };
   }
 
   // Run on load

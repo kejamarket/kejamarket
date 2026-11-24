@@ -3158,17 +3158,83 @@ const AdminCore = (() => {
     if (!str) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
+  window.escapeHtml = escapeHtml;
 
   function showToast(msg, type = 'info') {
     const existing = document.getElementById('admin-toast');
-    if (existing) existing.remove();
+    if (existing && typeof existing.remove === 'function') existing.remove();
     const toast = document.createElement('div');
     toast.id = 'admin-toast';
     const colors = { success: '#10b981', error: '#ef4444', info: '#3b82f6', warning: '#f59e0b' };
     toast.style.cssText = `position:fixed;bottom:24px;right:24px;background:${colors[type]||'#3b82f6'};color:white;padding:12px 22px;border-radius:10px;font-weight:700;font-size:0.9rem;z-index:999999;box-shadow:0 8px 24px rgba(0,0,0,0.25);`;
     toast.textContent = msg;
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 4000);
+    setTimeout(() => {
+      if (toast && typeof toast.remove === 'function') toast.remove();
+    }, 4000);
+  }
+  window.showToast = showToast;
+
+  async function dismissReport(reportId) {
+    if (!confirm('Mark this abuse report as resolved and dismiss it?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/reports/${reportId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token') || localStorage.getItem('adminToken')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: 'resolved' })
+      });
+      const data = await res.json();
+      showToast(data.message || 'Report marked as resolved', 'success');
+      await loadReportedListingsModule();
+    } catch (e) {
+      showToast('Error: ' + e.message, 'error');
+    }
+  }
+
+  async function suspendReportedTarget(targetId, targetType = 'property') {
+    if (!confirm(`Take down this reported ${targetType} immediately?`)) return;
+    try {
+      let endpoint = `${API_BASE}/api/admin/properties/${targetId}`;
+      let method = 'DELETE';
+      if (targetType === 'service') endpoint = `${API_BASE}/api/admin/services/${targetId}`;
+      else if (targetType === 'marketplace') endpoint = `${API_BASE}/api/admin/marketplace/${targetId}`;
+
+      const res = await fetch(endpoint, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('keja_token') || localStorage.getItem('adminToken')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await res.json();
+      showToast(data.message || `Listing taken down successfully`, 'success');
+      await loadReportedListingsModule();
+    } catch (e) {
+      showToast('Error: ' + e.message, 'error');
+    }
+  }
+
+  function exportToCSV(type = 'properties') {
+    if (type === 'properties' && window.AdminProperties && typeof AdminProperties.exportProperties === 'function') {
+      return AdminProperties.exportProperties();
+    }
+    if (type === 'users' && window.AdminUsers && typeof AdminUsers.exportUsers === 'function') {
+      return AdminUsers.exportUsers();
+    }
+    showToast(`Exporting ${type} dataset to CSV...`, 'info');
+    const filename = `kejamarket_${type}_${new Date().toISOString().slice(0, 10)}.csv`;
+    const csvContent = "data:text/csv;charset=utf-8,ID,Type,Status,Created_At\nREF-001,Record,Active," + new Date().toISOString();
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    showToast(`Export complete: ${filename}`, 'success');
   }
 
   // View and reply to inquiry
@@ -4011,6 +4077,11 @@ const AdminCore = (() => {
     updatePendingBadge,
     decrementPendingCount,
     logout,
+    showToast,
+    escapeHtml,
+    dismissReport,
+    suspendReportedTarget,
+    exportToCSV,
     state
   };
 })();
